@@ -1,48 +1,30 @@
+import React from "react";
+import Image from "next/image";
+
 import { signUpAction } from "@/app/actions";
 import { FormMessage, Message } from "@/components/form-message";
 import { SubmitButton } from "@/components/submit-button";
-import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
-import Link from "next/link";
-import { SmtpMessage } from "../smtp-message";
+import SignUpForm from "@/components/forms/SignUpForm";
 
 export default function Signup({ searchParams }: { searchParams: Message }) {
-  if ("message" in searchParams) {
-    return (
-      <div className="w-full flex-1 flex items-center h-screen sm:max-w-md justify-center gap-2 p-4">
-        <FormMessage message={searchParams} />
-      </div>
-    );
-  }
-
   return (
     <>
-      <form className="flex flex-col min-w-64 max-w-64 mx-auto">
-        <h1 className="text-2xl font-medium">Sign up</h1>
-        <p className="text-sm text text-foreground">
-          Already have an account?{" "}
-          <Link className="text-primary font-medium underline" href="/sign-in">
-            Sign in
-          </Link>
-        </p>
-        <div className="flex flex-col gap-2 [&>input]:mb-3 mt-8">
-          <Label htmlFor="email">Email</Label>
-          <Input name="email" placeholder="you@example.com" required />
-          <Label htmlFor="password">Password</Label>
-          <Input
-            type="password"
-            name="password"
-            placeholder="Your password"
-            minLength={6}
-            required
+      <div className=" main-container ">
+        <div>
+          <Image
+            src={"/assets/images/xolace-1.png"}
+            width={600}
+            height={500}
+            alt="welcome banner"
+            className="  object-cover absolute w-[24rem] h-[24rem] lg:w-[26rem] lg:h-[26rem] fill-current top-[22%] phone400:top-[20%] sm:top-[29%] md:top-[29%] left-1/2 transform -translate-x-1/2 -translate-y-1/2"
+            placeholder="blur"
+            blurDataURL="iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mM8f+pUPQAHtwLkNZHWpAAAAABJRU5ErkJggg=="
           />
-          <SubmitButton formAction={signUpAction} pendingText="Signing up...">
-            Sign up
-          </SubmitButton>
-          <FormMessage message={searchParams} />
         </div>
-      </form>
-      <SmtpMessage />
+        <div className=" max-sm:w-full md:w-[40%] flex flex-col justify-center md:px-12 mt-[85%] md:mt-[25%] items-center ">
+          <SignUpForm />
+        </div>
+      </div>
     </>
   );
 }
