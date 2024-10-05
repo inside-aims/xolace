@@ -49,3 +49,14 @@ export const signUpSchema = z.object({
     required_error: "You need to select a gender type.",
   }),
 });
+
+export const PostSchema = z.object({
+  caption: z
+    .string()
+    .min(10, {
+      message: "Post must be at least 10 characters.",
+    })
+    .max(300, {
+      message: "Post must not be longer than 300 characters.",
+    }),
+});
