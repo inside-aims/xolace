@@ -60,3 +60,15 @@ export const PostSchema = z.object({
       message: "Post must not be longer than 300 characters.",
     }),
 });
+
+// Validation schema for comment form
+export const CommentSchema = z.object({
+  comment: z
+    .string()
+    .min(10, {
+      message: "Reply must be at least 10 characters.",
+    })
+    .max(200, {
+      message: "Reply must not be longer than 200 characters.",
+    }),
+});
