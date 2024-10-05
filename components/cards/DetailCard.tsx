@@ -17,11 +17,7 @@ import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import Image from "next/image";
 import PostDropdown from "../shared/PostDropdown";
 
-export function DetailCard({ post }: { post?: any }) {
-  if (!post) {
-    return <div>Post not found</div>;
-  }
-
+export function DetailCard() {
   return (
     <Card className="w-full md:w-full mb-5">
       <CardHeader className=" flex-row justify-between items-start px-4 py-2 ">
