@@ -19,7 +19,7 @@ const Feed = () => {
         <Loader />
       ) : (
         <ul className="flex flex-col flex-1 gap-3 w-full ">
-          <li key={"post.$id"} className="flex justify-center w-full">
+          <li key={"post.$id"} className="flex justify-center w-full ">
             <PostCard post={{}} />
           </li>
           <li key={"post.$id"} className="flex justify-center w-full">
