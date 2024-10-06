@@ -1,5 +1,6 @@
 import CreateIcon from "@/components/icons/CreateIcon";
 import HomeIcon from "@/components/icons/HomeIcon";
+import { Rss, UserPen } from "lucide-react";
 
 export const sidebarLinks = [
   {
@@ -7,11 +8,7 @@ export const sidebarLinks = [
     route: "/feed",
     label: "Home",
   },
-  // {
-  //   imgURL: "/assets/search.svg",
-  //   route: "/search",
-  //   label: "Search",
-  // },
+
   // {
   //   imgURL: "/assets/heart.svg",
   //   route: "/activity",
@@ -22,15 +19,20 @@ export const sidebarLinks = [
     route: "/create-post",
     label: "Create Post",
   },
+  {
+    imgURL: <UserPen />,
+    route: "/profile",
+    label: "Profile",
+  },
+  {
+    imgURL: <Rss />,
+    route: "/channel",
+    label: "Channel",
+  },
   // {
   //   imgURL: "/assets/community.svg",
   //   route: "/communities",
   //   label: "Communities",
-  // },
-  // {
-  //   imgURL: <HomeIcon />,
-  //   route: "/profile",
-  //   label: "Profile",
   // },
 ];
 
