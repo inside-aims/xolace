@@ -154,7 +154,7 @@ body {
   }
 
   .bottombar_container {
-    @apply flex items-center justify-between gap-3 xs:gap-5 bg-slate-200 dark:bg-glassmorphism opacity-[0.98]   w-[50%] z-40 rounded-full p-3;
+    @apply flex items-center justify-between gap-3 xs:gap-5 bg-slate-200 dark:bg-glassmorphism opacity-[0.98]   w-[50%] sm:w-[70%] z-40 rounded-full p-3;
   }
 
   .bottombar_link {
@@ -211,4 +211,19 @@ body {
   .custom-scrollbar::-webkit-scrollbar-thumb:hover {
     background: #7878a3;
   }
+}
+
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: #f7fafc17;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #7878a3;
+  border-radius: 20px;
+  border: 2px solid rgba(128, 128, 128, 0.199);
 }
