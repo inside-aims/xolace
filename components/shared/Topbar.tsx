@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 
@@ -10,16 +10,35 @@ import MobileNav from "./MobileNav";
 import { Button } from "../ui/button";
 import LogoutIcon from "../icons/LogoutIcon";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import { getSupabaseBrowserClient } from "@/utils/supabase/client";
 
 function Topbar() {
   const [isOpen, setIsOpen] = useState(false);
   const router = useRouter();
+  const supabase = getSupabaseBrowserClient();
 
   const handleSignOut = async (
     e: React.MouseEvent<HTMLButtonElement, MouseEvent>
   ) => {
     e.preventDefault();
+    supabase.auth.signOut();
   };
+
+  // Subscribe to sign out event
+  useEffect(() => {
+    const {
+      data: { subscription },
+    } = supabase.auth.onAuthStateChange((event, session) => {
+      if (event === "SIGNED_OUT") {
+        router.push(`/sign-in`);
+      }
+    });
+
+    // end subscription event
+    return () => {
+      subscription.unsubscribe();
+    };
+  }, []);
 
   return (
     <nav className=" topbar ">

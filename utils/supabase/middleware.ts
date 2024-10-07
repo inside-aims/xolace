@@ -22,30 +22,56 @@ export const updateSession = async (request: NextRequest) => {
           },
           setAll(cookiesToSet) {
             cookiesToSet.forEach(({ name, value }) =>
-              request.cookies.set(name, value),
+              request.cookies.set(name, value)
             );
             response = NextResponse.next({
               request,
             });
             cookiesToSet.forEach(({ name, value, options }) =>
-              response.cookies.set(name, value, options),
+              response.cookies.set(name, value, options)
             );
           },
         },
-      },
+      }
     );
 
     // This will refresh session if expired - required for Server Components
     // https://supabase.com/docs/guides/auth/server-side/nextjs
     const user = await supabase.auth.getUser();
 
-    // protected routes
-    if (request.nextUrl.pathname.startsWith("/protected") && user.error) {
+    // List of protected routes
+    const protectedRoutes = [
+      "/feed",
+      "/create-post",
+      "/post",
+      "/channel",
+      "/profile",
+    ];
+
+    // List of public routes
+    const publicRoutes = ["/", "/sign-in", "/sign-up"];
+
+    // Check if the request path matches any public route
+    const isPublicRoute = publicRoutes.some((route) =>
+      request.nextUrl.pathname.startsWith(route)
+    );
+
+    // Check if the request path matches any protected route
+    const isProtectedRoute = protectedRoutes.some((route) =>
+      request.nextUrl.pathname.startsWith(route)
+    );
+
+    // If user is not authenticated and trying to access a protected route, redirect to sign-in
+    if (isProtectedRoute && user.error) {
+      console.log(
+        `Unauthenticated user attempting to access: ${request.nextUrl.pathname}`
+      );
       return NextResponse.redirect(new URL("/sign-in", request.url));
     }
 
-    if (request.nextUrl.pathname === "/" && !user.error) {
-      return NextResponse.redirect(new URL("/protected", request.url));
+    // Redirect authenticated user from home page to '/feed' (or any default page)
+    if (isPublicRoute && !user.error) {
+      return NextResponse.redirect(new URL("/feed", request.url));
     }
 
     return response;

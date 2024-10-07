@@ -9,16 +9,35 @@ import Image from "next/image";
 import LogoutIcon from "../icons/LogoutIcon";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Button } from "../ui/button";
+import { getSupabaseBrowserClient } from "@/utils/supabase/client";
 
 function LeftSidebar() {
   const router = useRouter();
   const pathName = usePathname();
+  const supabase = getSupabaseBrowserClient();
 
   const handleSignOut = async (
     e: React.MouseEvent<HTMLButtonElement, MouseEvent>
   ) => {
     e.preventDefault();
+    supabase.auth.signOut();
   };
+
+  // Subscribe to sign out event
+  useEffect(() => {
+    const {
+      data: { subscription },
+    } = supabase.auth.onAuthStateChange((event, session) => {
+      if (event === "SIGNED_OUT") {
+        router.push(`/sign-in`);
+      }
+    });
+
+    // end subscription event
+    return () => {
+      subscription.unsubscribe();
+    };
+  }, []);
 
   return (
     <section className=" custom-scrollbar leftsidebar ">

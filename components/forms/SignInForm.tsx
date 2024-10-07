@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import Link from "next/link";
 
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -24,11 +24,15 @@ import { Checkbox } from "@/components/ui/checkbox";
 import ToggleEyeIcon from "../ui/ToggleEyeIcon";
 import { signinSchema } from "@/validation";
 import Loader from "../shared/Loader";
+import { getSupabaseBrowserClient } from "@/utils/supabase/client";
+import { format } from "path";
 
 const SignInForm = () => {
   const router = useRouter();
   const { toast } = useToast();
   const [showPassword, setShowPassword] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
+  const supabase = getSupabaseBrowserClient();
 
   // 1. Define your form.
   const form = useForm<z.infer<typeof signinSchema>>({
@@ -44,11 +48,55 @@ const SignInForm = () => {
   async function onSubmit(values: z.infer<typeof signinSchema>) {
     // Do something with the form values.
     // ✅ This will be type-safe and validated.
-
+    setIsLoading(true);
     console.log(values);
+    const { email, password } = values;
+
+    try {
+      supabase.auth
+        .signInWithPassword({
+          email: email,
+          password: password,
+        })
+        .then((result) => {
+          if (!result.data?.user) {
+            toast({
+              variant: "destructive",
+              title: " 😿 Invalid credentials, check email or password",
+            });
+            return;
+          }
+        });
+    } catch (error) {
+      console.log(error);
+    } finally {
+      setIsLoading(false);
+      form.reset();
+    }
 
     return;
   }
+
+  // Subscribe to the signin event from supabase to help redirect
+  // to feed when user is authenticated
+  useEffect(() => {
+    // listen for sign in events from the server(supabase)
+    const {
+      data: { subscription },
+    } = supabase.auth.onAuthStateChange((event, session) => {
+      if (event === "SIGNED_IN") {
+        toast({
+          title: " 😸 Welcome to Xolace!",
+        });
+        router.push("/feed");
+      }
+    });
+
+    // end subscription event
+    return () => {
+      subscription.unsubscribe();
+    };
+  }, []);
 
   return (
     <Form {...form}>
@@ -138,9 +186,9 @@ const SignInForm = () => {
           <Button
             className=" w-full dark:bg-sky-600 hover:dark:bg-sky-500"
             type="submit"
-            aria-disabled={false}
+            aria-disabled={isLoading}
           >
-            {false ? (
+            {isLoading ? (
               <div className="flex items-center justify-center gap-x-2">
                 {" "}
                 <Loader /> <span>Loading...</span>
