@@ -64,14 +64,16 @@ const SignInForm = () => {
               variant: "destructive",
               title: " 😿 Invalid credentials, check email or password",
             });
+            setIsLoading(false);
+            form.reset();
             return;
           }
+
+          setIsLoading(false);
+          form.reset();
         });
     } catch (error) {
       console.log(error);
-    } finally {
-      setIsLoading(false);
-      form.reset();
     }
 
     return;

@@ -70,7 +70,12 @@ export const updateSession = async (request: NextRequest) => {
     }
 
     // Redirect authenticated user from home page to '/feed' (or any default page)
-    if (isPublicRoute && !user.error) {
+    if (
+      (request.nextUrl.pathname === "/" ||
+        request.nextUrl.pathname === "/sign-in" ||
+        request.nextUrl.pathname === "/sign-up") &&
+      !user.error
+    ) {
       return NextResponse.redirect(new URL("/feed", request.url));
     }
 
