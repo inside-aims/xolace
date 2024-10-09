@@ -28,13 +28,17 @@ import { getSupabaseBrowserClient } from "@/utils/supabase/client";
 import { format } from "path";
 import { Separator } from "@/components/ui/separator";
 import AnonymousSignIn from "../ui/AnonymousSignIn";
+import { FORM_TYPES } from "@/constants";
 
-const SignInForm = () => {
+const SignInForm = ({ formType }: { formType: string }) => {
   const router = useRouter();
   const { toast } = useToast();
   const [showPassword, setShowPassword] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const supabase = getSupabaseBrowserClient();
+
+  const isPasswordRecovery = formType === FORM_TYPES.PASSWORD_RECOVERY;
+  const isPasswordLogin = formType === FORM_TYPES.PASSWORD_LOGIN;
 
   // 1. Define your form.
   const form = useForm<z.infer<typeof signinSchema>>({
@@ -177,7 +181,7 @@ const SignInForm = () => {
                 </div>
 
                 <Link
-                  href="#!"
+                  href="/forgot-password"
                   className=" absolute right-2 -top-[6px]  text-sm text-blue transition duration-150 ease-in-out hover:text-primary-600 focus:text-primary-600 active:text-primary-700 dark:text-primary-400 dark:hover:text-primary-500 dark:focus:text-primary-500 dark:active:text-primary-600"
                 >
                   Forgot password

@@ -46,6 +46,7 @@ export const updateSession = async (request: NextRequest) => {
       "/post",
       "/channel",
       "/profile",
+      "/change-password"
     ];
 
     // List of public routes

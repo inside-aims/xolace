@@ -31,6 +31,7 @@
     "lucide-react": "^0.436.0",
     "next": "latest",
     "next-themes": "^0.3.0",
+    "nodemailer": "^6.9.15",
     "prettier": "^3.3.3",
     "react": "18.2.0",
     "react-dom": "18.2.0",
