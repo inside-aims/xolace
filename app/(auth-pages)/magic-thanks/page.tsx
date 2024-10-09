@@ -9,7 +9,7 @@ const MagicLinkSuccessPage = ({ searchParams }: any) => {
   const isPasswordRecovery = type === FORM_TYPES.PASSWORD_RECOVERY;
 
   return (
-    <div className=" text-center pt-10">
+    <div className=" text-center pt-10 main-container">
       <h1 className=" text-2xl font-bold mb-5">
         {isPasswordRecovery && "Password "}
         Magic On its Way !! 🪄
