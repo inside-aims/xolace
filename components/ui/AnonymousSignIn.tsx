@@ -49,7 +49,7 @@ const AnonymousSignIn = () => {
     const AnonUser = data.user;
 
     //
-    const { data: profileUser } = await supabase
+    const { data: profileUser, error: profileError } = await supabase
       .from("profiles")
       .insert({
         username: `Anonymous${Math.random()}`,
@@ -58,6 +58,9 @@ const AnonymousSignIn = () => {
       })
       .select()
       .single();
+
+    console.log(profileUser);
+    console.log(profileError);
 
     toast({
       title: "��� Anonymous Sign-in Successful!",
