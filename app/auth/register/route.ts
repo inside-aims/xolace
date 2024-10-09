@@ -10,6 +10,7 @@ export async function POST(request: any) {
   const password = formData.get("password");
   const type = formData.get("type");
 
+  console.log(formData);
   console.log(username, email, password, type);
 
   const isNonEmptyString = (value: any) =>

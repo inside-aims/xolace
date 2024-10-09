@@ -35,6 +35,7 @@ const SignUpForm = () => {
 
   const { toast } = useToast();
   const [showPassword, setShowPassword] = useState(false);
+  const [gender, setGender] = useState("");
 
   // 1. Define your form.
   const form = useForm<z.infer<typeof signUpSchema>>({
@@ -63,8 +64,20 @@ const SignUpForm = () => {
 
     console.log(values);
     const { username, email, password, type } = values;
+    toast({
+      variant: "default",
+      title: "�� Creating account and profile",
+    });
   }
   // onSubmit={form.handleSubmit(onSubmit)}
+
+  //
+  const handleClick = () => {
+    toast({
+      variant: "default",
+      title: " ➰ Creating account and profile in a moment 🧐",
+    });
+  };
 
   return (
     <Form {...form}>
@@ -221,6 +234,7 @@ const SignUpForm = () => {
             disabled={false}
             className=" w-full dark:bg-sky-600 hover:dark:bg-sky-500"
             type="submit"
+            onClick={handleClick}
           >
             {false ? (
               <div className="flex items-center justify-center gap-x-2">
