@@ -26,6 +26,7 @@ import { useToast } from "@/components/ui/use-toast";
 import { signUpSchema } from "@/validation";
 
 import Loader from "../shared/Loader";
+import { urlPath } from "@/utils/url-helpers";
 
 const male: "male" = "male";
 const female: string = "female";
@@ -63,11 +64,13 @@ const SignUpForm = () => {
     console.log(values);
     const { username, email, password, type } = values;
   }
+  // onSubmit={form.handleSubmit(onSubmit)}
 
   return (
     <Form {...form}>
       <form
-        onSubmit={form.handleSubmit(onSubmit)}
+        method="POST"
+        action={urlPath("/auth/register")}
         className=" z-10  w-full max-sm:p-2 "
       >
         <FormField
@@ -215,11 +218,11 @@ const SignUpForm = () => {
         {/* submit button */}
         <div className=" px-8">
           <Button
-            disabled={true}
+            disabled={false}
             className=" w-full dark:bg-sky-600 hover:dark:bg-sky-500"
             type="submit"
           >
-            {true ? (
+            {false ? (
               <div className="flex items-center justify-center gap-x-2">
                 {" "}
                 <Loader /> <span>Loading...</span>

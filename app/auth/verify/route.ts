@@ -27,7 +27,7 @@ export async function GET(request: Request) {
     if (isRecovery) {
       return getRedirect("/change-password");
     } else {
-      return getRedirect("/tickets");
+      return getRedirect("/feed");
     }
   }
 }
