@@ -5,10 +5,11 @@ import { NextResponse, userAgent } from "next/server";
 
 export async function POST(request: any) {
   const formData = await request.formData();
+  const { searchParams } = new URL(request.url);
   const username = formData.get("username");
   const email = formData.get("email");
   const password = formData.get("password");
-  const type = formData.get("type");
+  const type = searchParams.get("type");
 
   console.log(formData);
   console.log(username, email, password, type);

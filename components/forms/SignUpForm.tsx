@@ -36,6 +36,7 @@ const SignUpForm = () => {
   const { toast } = useToast();
   const [showPassword, setShowPassword] = useState(false);
   const [gender, setGender] = useState("");
+  const [loading, setLoading] = useState(false);
 
   // 1. Define your form.
   const form = useForm<z.infer<typeof signUpSchema>>({
@@ -73,6 +74,7 @@ const SignUpForm = () => {
 
   //
   const handleClick = () => {
+    setLoading(true);
     toast({
       variant: "default",
       title: " ➰ Creating account and profile in a moment 🧐",
@@ -83,7 +85,7 @@ const SignUpForm = () => {
     <Form {...form}>
       <form
         method="POST"
-        action={urlPath("/auth/register")}
+        action={urlPath(`/auth/register?type=${gender}`)}
         className=" z-10  w-full max-sm:p-2 "
       >
         <FormField
@@ -168,8 +170,8 @@ const SignUpForm = () => {
                 <FormLabel>Select your gender...</FormLabel>
                 <FormControl>
                   <RadioGroup
-                    onValueChange={field.onChange}
-                    defaultValue={field.value}
+                    onValueChange={(value) => setGender(value)}
+                    defaultValue={gender}
                     className="flex justify-around items-center"
                   >
                     <FormItem className="flex items-center space-x-3 space-y-0">
@@ -231,12 +233,12 @@ const SignUpForm = () => {
         {/* submit button */}
         <div className=" px-8">
           <Button
-            disabled={false}
+            disabled={!terms}
             className=" w-full dark:bg-sky-600 hover:dark:bg-sky-500"
             type="submit"
             onClick={handleClick}
           >
-            {false ? (
+            {loading ? (
               <div className="flex items-center justify-center gap-x-2">
                 {" "}
                 <Loader /> <span>Loading...</span>

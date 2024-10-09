@@ -34,7 +34,30 @@ const AnonymousSignIn = () => {
       return;
     }
 
+    if (!data.user) {
+      toast({
+        title: "Error signing in anonymously:",
+        description: "There is no user data",
+      });
+      console.error("Error signing in anonymously:", error);
+      return;
+    }
+
     console.log("Data -> ", data);
+
+    // extract user
+    const AnonUser = data.user;
+
+    //
+    const { data: profileUser } = await supabase
+      .from("profiles")
+      .insert({
+        username: `Anonymous${Math.random()}`,
+        supabase_user: AnonUser.id,
+        avatar_url: "https://avatar.iran.liara.run/public",
+      })
+      .select()
+      .single();
 
     toast({
       title: "��� Anonymous Sign-in Successful!",

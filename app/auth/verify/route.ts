@@ -1,6 +1,7 @@
 import { createClient } from "@/utils/supabase/server";
 import { builderUrl } from "@/utils/url-helpers";
 import { NextResponse } from "next/server";
+import { MobileOtpType, EmailOtpType } from "@supabase/supabase-js";
 
 export async function GET(request: Request) {
   const { searchParams } = new URL(request.url);
@@ -8,7 +9,8 @@ export async function GET(request: Request) {
   const isRecovery = searchParams.get("type") === "recovery";
   const isSignUp = searchParams.get("type") === "signup";
 
-  let verifyType = "magiclink";
+  let verifyType: EmailOtpType | MobileOtpType;
+  verifyType = "magiclink";
   if (isRecovery) verifyType = "recovery";
   else if (isSignUp) verifyType = "signup";
 
