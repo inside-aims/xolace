@@ -51,7 +51,7 @@ export const signUpSchema = z.object({
 });
 
 export const PostSchema = z.object({
-  caption: z
+  content: z
     .string()
     .min(10, {
       message: "Post must be at least 10 characters.",
