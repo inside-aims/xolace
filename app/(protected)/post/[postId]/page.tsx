@@ -1,43 +1,46 @@
-"use client";
-
-import { useRouter } from "next/navigation";
+import { DoubleArrowLeftIcon } from "@radix-ui/react-icons";
+import { notFound } from "next/navigation";
 
 import { DetailCard } from "@/components/cards/DetailCard";
 import Loader from "@/components/shared/Loader";
 import { Button } from "@/components/ui/button";
 import PostDetailDrawer from "@/components/ui/PostDetailDrawer";
-import React, { useEffect, useState } from "react";
+import { createClient } from "@/utils/supabase/server";
 
-import { DoubleArrowLeftIcon } from "@radix-ui/react-icons";
-
-const PostDetail = ({ params }: { params: { postId: string } }) => {
-  const router = useRouter();
+const PostDetailPage = async ({ params }: { params: { postId: string } }) => {
+  const supabase = createClient();
   const { postId } = params;
-  const [isLoading, setIsLoading] = useState(false);
 
-  useEffect(() => {
-    console.log("about to fetch");
-  }, []);
+  // incase there is no post id
+  if (!postId) {
+    console.error("postId is missing from params.");
+    return notFound();
+  }
 
-  if (isLoading) {
-    return (
-      <div>
-        <Loader />
-      </div>
-    );
+  const { data: post, error } = await supabase
+    .from("posts")
+    .select("*")
+    .eq("id", postId)
+    .single();
+
+  console.log(error);
+  //  check for error
+  if (error) {
+    console.error("Error fetching post:", error.message);
+    return notFound();
   }
 
   return (
     <>
-      <Button
+      {/* <Button
         variant={"link"}
         className="dark:text-sky-500"
         onClick={() => router.back()}
       >
         <DoubleArrowLeftIcon className="dark:text-sky-500 text-sky-500 mr-1" />
         back
-      </Button>
-      <DetailCard />
+      </Button> */}
+      <DetailCard postId={postId} post={post} />
 
       {/* Drawer for comment form and comment cards */}
       <PostDetailDrawer />
@@ -45,4 +48,4 @@ const PostDetail = ({ params }: { params: { postId: string } }) => {
   );
 };
 
-export default PostDetail;
+export default PostDetailPage;
