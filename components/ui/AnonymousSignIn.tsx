@@ -15,6 +15,7 @@ import {
 import { Button } from "@/components/ui/button";
 import { useToast } from "./use-toast";
 import { getSupabaseBrowserClient } from "@/utils/supabase/client";
+import { generateRandomNumber } from "@/lib/utils";
 
 const AnonymousSignIn = () => {
   const supabase = getSupabaseBrowserClient();
@@ -52,7 +53,7 @@ const AnonymousSignIn = () => {
     const { data: profileUser, error: profileError } = await supabase
       .from("profiles")
       .insert({
-        username: `Anonymous${Math.random()}`,
+        username: `Anonymous${generateRandomNumber({ min: 1, max: 10000 })}`,
         supabase_user: AnonUser.id,
         avatar_url: "https://avatar.iran.liara.run/public",
       })
