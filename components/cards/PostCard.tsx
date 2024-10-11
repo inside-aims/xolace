@@ -22,7 +22,10 @@ type PostCardType = {
 
 export function PostCard({ className, post, section }: PostCardType) {
   return (
-    <Card className={`w-full  md:w-full mb-5 ${className}`} id={"post.$id"}>
+    <Card
+      className={`w-full  md:w-full mb-5 ${className} ring-1 ring-white/[0.05] transition duration-300 dark:ring-zinc-800 dark:hover:ring-zinc-700 dark:focus-visible:ring-[#FF2D20]`}
+      id={"post.$id"}
+    >
       <CardHeader className=" flex-row justify-between items-start px-4 py-2 ">
         <div className="flex gap-2 md:gap-4 items-center">
           <Avatar>
