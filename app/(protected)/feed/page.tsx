@@ -1,8 +1,7 @@
-"use client";
-import React, { useEffect } from "react";
+import React from "react";
 
-import { PostCard } from "@/components/cards/PostCard";
 import Loader from "@/components/shared/Loader";
+import FeedList from "@/components/shared/FeedList";
 
 const Feed = () => {
   //   const {
@@ -13,28 +12,7 @@ const Feed = () => {
 
   const isPostLoading = false;
 
-  return (
-    <>
-      {isPostLoading ? (
-        <Loader />
-      ) : (
-        <ul className="flex flex-col flex-1 gap-3 w-full ">
-          <li key={"post.$id"} className="flex justify-center w-full ">
-            <PostCard post={{}} />
-          </li>
-          <li key={"post.$id"} className="flex justify-center w-full">
-            <PostCard post={{}} />
-          </li>
-          <li key={"post.$id"} className="flex justify-center w-full">
-            <PostCard post={{}} />
-          </li>
-          <li key={"post.$id"} className="flex justify-center w-full">
-            <PostCard post={{}} />
-          </li>
-        </ul>
-      )}
-    </>
-  );
+  return <>{isPostLoading ? <Loader /> : <FeedList />}</>;
 };
 
 export default Feed;
