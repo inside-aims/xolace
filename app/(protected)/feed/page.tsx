@@ -1,18 +1,19 @@
-import React from "react";
+import React, { Suspense } from "react";
 
 import Loader from "@/components/shared/Loader";
 import FeedList from "@/components/shared/FeedList";
 
+export const dynamic = "force-dynamic";
+
 const Feed = () => {
-  //   const {
-  //     data: posts,
-  //     isLoading: isPostLoading,
-  //     isError: isErrorPosts,
-  //   } = useGetRecentPosts();
-
-  const isPostLoading = false;
-
-  return <>{isPostLoading ? <Loader /> : <FeedList />}</>;
+  return (
+    <>
+      {" "}
+      <Suspense fallback={<Loader />}>
+        <FeedList />
+      </Suspense>
+    </>
+  );
 };
 
 export default Feed;

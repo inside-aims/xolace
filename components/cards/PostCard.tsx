@@ -16,7 +16,7 @@ import { useEffect } from "react";
 
 type PostCardType = {
   className?: string;
-  post: {};
+  post: any;
   section?: "profile";
 };
 
@@ -24,38 +24,33 @@ export function PostCard({ className, post, section }: PostCardType) {
   return (
     <Card
       className={`w-full  md:w-full mb-5 ${className} ring-1 ring-white/[0.05] transition duration-300 dark:ring-zinc-800 dark:hover:ring-zinc-700 dark:focus-visible:ring-[#FF2D20]`}
-      id={"post.$id"}
+      id={post.id}
     >
       <CardHeader className=" flex-row justify-between items-start px-4 py-2 ">
         <div className="flex gap-2 md:gap-4 items-center">
           <Avatar>
             <AvatarImage
               //   src={section ? user?.avatarUrl : post.creator?.avatarUrl}
-              src={""}
+              src={post.author_avatar_url}
             />
             <AvatarFallback>CN</AvatarFallback>
           </Avatar>
           <div className="flex flex-col gap-1 items-start justify-center">
             <h5 className="text-small tracking-tight text-default-400">
               {/* {section ? user.username : post.creator.username} */}
-              user
+              {post.author_name}
             </h5>
           </div>
           <small className="ml-4 md:ml-10 text-sm dark:text-gray-400 text-zinc-500">
-            time
-            {/* {format("post.$createdAt")} */}
+            {format(post.created_at)}
           </small>
         </div>
-        <PostDropdown
-          postCard
-          userId={""}
-          permissions={[]}
-          postId={"post.$id"}
-        />
+        <PostDropdown postCard userId={""} permissions={[]} postId={post.id} />
       </CardHeader>
-      <Link href={`post/1`}>
+      <Link href={`post/${post.id}`}>
         <CardContent>
-          <p>
+          {post.content}
+          {/* <p>
             Frontend developer and UI/UX enthusiast. Join me on this coding
             adventure!
           </p>
@@ -64,7 +59,7 @@ export function PostCard({ className, post, section }: PostCardType) {
             <span className="py-2" aria-label="computer" role="img">
               💻
             </span>
-          </span>
+          </span> */}
         </CardContent>
       </Link>
       <CardFooter className="">
