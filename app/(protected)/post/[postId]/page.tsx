@@ -19,7 +19,14 @@ const PostDetailPage = async ({ params }: { params: { postId: string } }) => {
 
   const { data: post, error } = await supabase
     .from("posts")
-    .select("*")
+    .select(
+      `
+      *,
+         likes(
+         *
+         )
+   `
+    )
     .eq("id", postId)
     .single();
 
@@ -43,7 +50,7 @@ const PostDetailPage = async ({ params }: { params: { postId: string } }) => {
       <DetailCard postId={postId} post={post} />
 
       {/* Drawer for comment form and comment cards */}
-      <PostDetailDrawer />
+      <PostDetailDrawer post={post} />
     </>
   );
 };

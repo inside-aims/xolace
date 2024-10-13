@@ -40,7 +40,7 @@ import { useToast } from "../ui/use-toast";
 import Loader from "../shared/Loader";
 import { CommentSchema } from "@/validation";
 
-const PostDetailDrawer = () => {
+const PostDetailDrawer = ({ post }: any) => {
   const { toast } = useToast();
   const router = useRouter();
 
@@ -86,7 +86,11 @@ const PostDetailDrawer = () => {
               <DoubleArrowLeftIcon className="dark:text-sky-500 text-blue mr-1" />
               back
             </Button>
-            {true ? <PostStats /> : <div>Kindly refresh the page!!</div>}
+            {true ? (
+              <PostStats post={post} />
+            ) : (
+              <div>Kindly refresh the page!!</div>
+            )}
 
             <Form {...form}>
               <form

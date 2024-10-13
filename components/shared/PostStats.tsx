@@ -3,41 +3,36 @@
 import React, { useEffect, useState } from "react";
 import { HeartFilledIcon, HeartIcon } from "@radix-ui/react-icons";
 import { checkIsLiked } from "@/lib/utils";
+import LikeButton from "../ui/LikeButton";
 
 // type PostStatsProps ={
 //   post : Models.Document;
 //   userId: string;
 // }
 
-const PostStats = () => {
-  const handleLikePost = (e: React.MouseEvent) => {
-    // e.stopPropagation();
-    // let newLikes = [...likes]
-    // const hasLiked = newLikes.includes(userId)
-    // if(hasLiked){
-    //   newLikes = newLikes.filter((id)=> id !== userId)
-    // }
-    // else{
-    //   newLikes.push(userId)
-    // }
-    // setLikes(newLikes)
-    // likePost({postId : post.$id , likesArray: newLikes })
-  };
+const PostStats = ({ post, userId }: any) => {
+  // const likesList = post.likes.map((like: any) => like.user_id);
+  const likesList = post.likes.map((like: any) => {
+    return {
+      user_id: like.user_id,
+      id: like.id,
+    };
+  });
+  // getting the current user's exact like object
+
+  console.log("list-> ", likesList);
+  const [likes, setLikes] = useState(likesList);
 
   return (
     <div className="flex space-x-7">
       <div className="flex gap-1 items-center">
-        <p
-          className="font-semibold text-default-400 text-small cursor-pointer"
-          onClick={handleLikePost}
-        >
-          {checkIsLiked([], "") ? (
-            <HeartFilledIcon className="transition-all ease-in-out duration-300 w-[24px] h-[24px] dark:text-[#2e4ea7] text-[#b42d24]" />
-          ) : (
-            <HeartIcon className="transition-all ease-in-out duration-300 w-[24px] h-[24px] dark:text-[#f3f3f3] text-[#000000]" />
-          )}
-        </p>
-        <p className=" text-default-400 text-small">10</p>
+        <LikeButton
+          postId={post.id}
+          likes={likes}
+          setLikes={setLikes}
+          userId={userId}
+        />
+        <p className=" text-default-400 text-small">{likes.length}</p>
       </div>
       <div className="flex gap-1 items-center">
         <p className="font-semibold text-default-400 text-small">

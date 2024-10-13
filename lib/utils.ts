@@ -5,8 +5,11 @@ export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs));
 }
 
-export const checkIsLiked = (likeList: string[], userId: string) => {
-  return likeList.includes(userId);
+export const checkIsLiked = (
+  likeList: { id: number; user_id: string }[],
+  userId: string
+) => {
+  return likeList.some((like) => like.user_id === userId);
 };
 
 export const generateRandomNumber = ({
