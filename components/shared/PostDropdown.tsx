@@ -14,6 +14,8 @@ import {
 // import { handleDelete } from "@/hooks/useDelete";
 import { useToast } from "../ui/use-toast";
 import React from "react";
+import { useUserState } from "@/lib/store/user";
+import { getSupabaseBrowserClient } from "@/utils/supabase/client";
 
 type DropdownMenuProp = {
   comment?: boolean;
@@ -22,6 +24,8 @@ type DropdownMenuProp = {
   userId?: string | number;
   permissions?: string[];
   postId?: string;
+  commentId?: string;
+  commentCreatedBy?: string | number;
 };
 
 const PostDropdown: React.FC<DropdownMenuProp> = ({
@@ -31,9 +35,16 @@ const PostDropdown: React.FC<DropdownMenuProp> = ({
   userId,
   permissions,
   postId,
+  commentId,
+  commentCreatedBy,
 }) => {
+  const user = useUserState((state) => state.user);
+  const supabase = getSupabaseBrowserClient();
   const { toast } = useToast();
   const [isLoading, setIsLoading] = useState(false);
+
+  // check if user is author of the comment
+  const isAuthor = commentCreatedBy === user?.id;
 
   // Delete post logic goes here.
   //   const onDelete = async () => {
@@ -49,6 +60,27 @@ const PostDropdown: React.FC<DropdownMenuProp> = ({
   //       setIsLoading(false);
   //     }
   //   };
+
+  const onDelete = async () => {
+    setIsLoading(true);
+    try {
+      // await handleDelete({ comment, postCard, postId });
+      const response = await supabase
+        .from("comments")
+        .delete()
+        .eq("id", commentId);
+      toast({
+        title: `Successfully Deleted Comment.💯 `,
+      });
+    } catch (error) {
+      console.log(error);
+      toast({
+        title: "Error deleting comment:",
+      });
+    } finally {
+      setIsLoading(false);
+    }
+  };
   return (
     <>
       <DropdownMenu>
@@ -65,10 +97,10 @@ const PostDropdown: React.FC<DropdownMenuProp> = ({
         <DropdownMenuContent align="end">
           <DropdownMenuLabel>Actions</DropdownMenuLabel>
           <DropdownMenuSeparator />
-          {permissions?.includes(`delete(\"user:${userId}\")`) && (
+          {isAuthor && (
             <DropdownMenuItem
               className="hover:cursor-pointer"
-              onClick={() => console.log("delete")}
+              onClick={onDelete}
             >
               {isLoading
                 ? "Deleting..."
@@ -83,6 +115,10 @@ const PostDropdown: React.FC<DropdownMenuProp> = ({
               <Link href={`post/${postId}`}>View</Link>
             </DropdownMenuItem>
           )}
+
+          <DropdownMenuItem className="hover:cursor-pointer">
+            <Link href={``}>Report</Link>
+          </DropdownMenuItem>
         </DropdownMenuContent>
       </DropdownMenu>
     </>

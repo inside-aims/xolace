@@ -44,7 +44,9 @@ const CommentCard = ({ comment }: any) => {
           comment={true}
           userId={""}
           permissions={[]}
-          postId={"comment.$id"}
+          postId={""}
+          commentId={comment.id}
+          commentCreatedBy={comment.created_by}
         />
       </CardHeader>
       <CardContent className=" ">{comment.comment_text}</CardContent>

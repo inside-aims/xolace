@@ -22,7 +22,7 @@ export default async function ProtectedLayout({
 
   const { data: profileUser } = await supabase
     .from("profiles")
-    .select("id")
+    .select("*")
     .eq("supabase_user", supabase_user_id)
     .single();
 

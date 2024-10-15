@@ -29,6 +29,7 @@ const PostDetailPage = async ({ params }: { params: { postId: string } }) => {
    `
     )
     .eq("id", postId)
+    .order("created_at", { ascending: true, referencedTable: "comments" })
     .single();
 
   console.log(error);

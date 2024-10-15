@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
@@ -46,9 +46,10 @@ const PostDetailDrawer = ({ post }: any) => {
   const { toast } = useToast();
   const router = useRouter();
   const [comments, setComments] = useState(post?.comments || []);
+  const [isLoading, setIsLoading] = useState(false);
 
   //   counter for comment fields
-  const counter: number = 300;
+  const counter: number = 200;
 
   // initial height of the bottom drawer
   const [snap, setSnap] = useState<number | string | null>("180px");
@@ -67,8 +68,11 @@ const PostDetailDrawer = ({ post }: any) => {
 
   //
   async function onSubmit(data: z.infer<typeof CommentSchema>) {
+    setIsLoading(true);
     const { comment } = data;
     console.log(comment);
+
+    // inserting into the database table in supabase
     supabase
       .from("comments")
       .insert({
@@ -82,8 +86,47 @@ const PostDetailDrawer = ({ post }: any) => {
           variant: "default",
         });
         form.reset();
+        setIsLoading(false);
       });
   }
+
+  useEffect((): any => {
+    const listener = (payload: any) => {
+      const eventType = payload.eventType;
+
+      console.log("eventType", payload);
+
+      if (eventType === "INSERT") {
+        setComments((prevComments: any) => [...prevComments, payload.new]);
+      } else if (eventType === "DELETE") {
+        setComments((prevComments: any) =>
+          prevComments.filter((comment: any) => comment.id !== payload.old.id)
+        );
+      } else if (eventType === "UPDATE") {
+        setComments((prevComments: any) =>
+          prevComments.map((comment: any) =>
+            comment.id === payload.new.id ? payload.new : comment
+          )
+        );
+      }
+    };
+
+    const subscription = supabase
+      .channel("my-channel")
+      .on(
+        "postgres_changes",
+        {
+          event: "*",
+          schema: "public",
+          table: "comments",
+          // filter: `ticket=eq.${ticket}`,
+        },
+        listener
+      )
+      .subscribe();
+
+    return () => subscription.unsubscribe();
+  }, []);
 
   return (
     <>
@@ -141,7 +184,7 @@ const PostDetailDrawer = ({ post }: any) => {
                     type="submit"
                     className=" rounded-full"
                   >
-                    {false ? (
+                    {isLoading ? (
                       <div className="flex items-center justify-center gap-x-2">
                         {" "}
                         <Loader /> <span>Loading</span>
@@ -173,9 +216,9 @@ const PostDetailDrawer = ({ post }: any) => {
               }
             )}
           >
-            {comments.map((comment: any) => (
-              <CommentCard comment={comment} />
-            ))}
+            {comments
+              .map((comment: any) => <CommentCard comment={comment} />)
+              .reverse()}
             {comments.length == 0 && (
               <div>
                 <p>No comments</p>
