@@ -39,10 +39,13 @@ import PostStats from "../shared/PostStats";
 import { useToast } from "../ui/use-toast";
 import Loader from "../shared/Loader";
 import { CommentSchema } from "@/validation";
+import { getSupabaseBrowserClient } from "@/utils/supabase/client";
 
 const PostDetailDrawer = ({ post }: any) => {
+  const supabase = getSupabaseBrowserClient();
   const { toast } = useToast();
   const router = useRouter();
+  const [comments, setComments] = useState(post?.comments || []);
 
   //   counter for comment fields
   const counter: number = 300;
@@ -66,6 +69,20 @@ const PostDetailDrawer = ({ post }: any) => {
   async function onSubmit(data: z.infer<typeof CommentSchema>) {
     const { comment } = data;
     console.log(comment);
+    supabase
+      .from("comments")
+      .insert({
+        post: post.id,
+        comment_text: comment,
+      })
+      .then(() => {
+        toast({
+          title: "Comment Created 🖌️",
+          description: "Your comment has been successfully created! 😆",
+          variant: "default",
+        });
+        form.reset();
+      });
   }
 
   return (
@@ -87,7 +104,11 @@ const PostDetailDrawer = ({ post }: any) => {
               back
             </Button>
             {true ? (
-              <PostStats post={post} />
+              <PostStats
+                post={post}
+                section="details"
+                commentLength={comments.length}
+              />
             ) : (
               <div>Kindly refresh the page!!</div>
             )}
@@ -152,7 +173,14 @@ const PostDetailDrawer = ({ post }: any) => {
               }
             )}
           >
-            <CommentCard />
+            {comments.map((comment: any) => (
+              <CommentCard comment={comment} />
+            ))}
+            {comments.length == 0 && (
+              <div>
+                <p>No comments</p>
+              </div>
+            )}
           </div>
 
           <DrawerFooter>

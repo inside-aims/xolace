@@ -18,10 +18,9 @@ type PostCardType = {
   className?: string;
   post: any;
   section?: "profile";
-  userId?: any | null;
 };
 
-export function PostCard({ className, post, section, userId }: PostCardType) {
+export function PostCard({ className, post, section }: PostCardType) {
   return (
     <Card
       className={`w-full  md:w-full mb-5 ${className} ring-1 ring-white/[0.05] transition duration-300 dark:ring-zinc-800 dark:hover:ring-zinc-700 dark:focus-visible:ring-[#FF2D20]`}
@@ -64,7 +63,7 @@ export function PostCard({ className, post, section, userId }: PostCardType) {
         </CardContent>
       </Link>
       <CardFooter className="">
-        <PostStats post={post} userId={userId} />
+        <PostStats post={post} />
       </CardFooter>
     </Card>
   );

@@ -6,17 +6,17 @@ import { createClient } from "@/utils/supabase/server";
 const FeedList = async () => {
   const supabase = createClient();
 
-  const supabase_user_id: string | null =
-    (await supabase.auth.getUser()).data?.user?.id ?? null;
-  if (!supabase_user_id) {
-    throw new Error();
-  }
+  // const supabase_user_id: string | null =
+  //   (await supabase.auth.getUser()).data?.user?.id ?? null;
+  // if (!supabase_user_id) {
+  //   throw new Error();
+  // }
 
-  const { data: profileUser } = await supabase
-    .from("profiles")
-    .select("id")
-    .eq("supabase_user", supabase_user_id)
-    .single();
+  // const { data: profileUser } = await supabase
+  //   .from("profiles")
+  //   .select("id")
+  //   .eq("supabase_user", supabase_user_id)
+  //   .single();
 
   let postStatement = supabase
     .from("posts")
@@ -25,7 +25,8 @@ const FeedList = async () => {
        *,
           likes(
           *
-          )
+          ),
+          comments:comments(count)
     `
     )
     .order("created_at", { ascending: false });
@@ -41,7 +42,7 @@ const FeedList = async () => {
 
   console.log(
     "posts -> ",
-    posts?.map((test) => test)
+    posts?.map((test) => test.comments[0].count)
   );
 
   return (
@@ -49,7 +50,7 @@ const FeedList = async () => {
       <ul className="flex flex-col flex-1 gap-3 w-full ">
         {(posts || []).map((post) => (
           <li key={`${post.id}`} className="flex justify-center w-full ">
-            <PostCard post={post} userId={profileUser} />
+            <PostCard post={post} />
           </li>
         ))}
       </ul>

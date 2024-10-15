@@ -15,7 +15,7 @@ import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import PostDropdown from "../shared/PostDropdown";
 // import { IUser } from "@/types";
 
-const CommentCard = () => {
+const CommentCard = ({ comment }: any) => {
   // if (!comment) {
   //   return (
   //     <>
@@ -28,18 +28,16 @@ const CommentCard = () => {
       <CardHeader className=" flex-row justify-between items-start px-4 py-2 ">
         <div className="flex gap-2 items-center">
           <Avatar>
-            <AvatarImage src={""} />
+            <AvatarImage src={comment?.author_avatar_url} />
             <AvatarFallback>XO</AvatarFallback>
           </Avatar>
           <div className="flex flex-col gap-1 items-start justify-center">
             <h5 className="text-small tracking-tight text-default-400">
-              user
-              {/* {comment.creator.username} */}
+              {comment.author_name}
             </h5>
           </div>
           <small className="ml-4 text-sm dark:text-gray-400 text-zinc-500">
-            time
-            {/* {format(comment.$createdAt)} */}
+            {format(comment.created_at)}
           </small>
         </div>
         <PostDropdown
@@ -49,13 +47,7 @@ const CommentCard = () => {
           postId={"comment.$id"}
         />
       </CardHeader>
-      <CardContent className=" ">
-        Lorem ipsum dolor sit amet consectetur adipisicing elit. Quaerat dolorum
-        dicta, tempora non ipsa quisquam libero earum temporibus harum et
-        veritatis, necessitatibus deserunt ex id rem ipsum? Ab, autem
-        dignissimos.
-        {/* {comment.caption} */}
-      </CardContent>
+      <CardContent className=" ">{comment.comment_text}</CardContent>
     </Card>
   );
 };

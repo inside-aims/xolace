@@ -1,38 +1,80 @@
-"use client";
-
 import React, { useEffect, useState } from "react";
-import { HeartFilledIcon, HeartIcon } from "@radix-ui/react-icons";
-import { checkIsLiked } from "@/lib/utils";
-import LikeButton from "../ui/LikeButton";
+import { HeartIcon, HeartFilledIcon } from "@radix-ui/react-icons";
+import { getSupabaseBrowserClient } from "@/utils/supabase/client";
+import { toggleLikePost } from "@/utils/helpers/toggleLikePost";
+import { useUserState } from "@/lib/store/user";
 
-// type PostStatsProps ={
-//   post : Models.Document;
-//   userId: string;
-// }
+interface postStatProps {
+  post: any;
+  section?: string;
+  commentLength?: number;
+}
 
-const PostStats = ({ post, userId }: any) => {
-  // const likesList = post.likes.map((like: any) => like.user_id);
-  const likesList = post.likes.map((like: any) => {
-    return {
-      user_id: like.user_id,
-      id: like.id,
-    };
-  });
-  // getting the current user's exact like object
+const PostStats = ({
+  post,
+  section = "post",
+  commentLength,
+}: postStatProps) => {
+  const supabase = getSupabaseBrowserClient();
+  const user = useUserState((state) => state.user);
 
-  console.log("list-> ", likesList);
-  const [likes, setLikes] = useState(likesList);
+  // Set local state for likes
+  const [likes, setLikes] = useState(post.likes || []);
+  const [isLiked, setIsLiked] = useState(false);
+
+  // Check if the current user has liked this post
+  useEffect(() => {
+    if (user?.id) {
+      const likedByUser = likes.some((like: any) => like.user_id === user.id);
+      setIsLiked(likedByUser);
+    }
+  }, [likes, user?.id]);
+
+  // Real-time updates for likes
+  useEffect((): any => {
+    const subscription = supabase
+      .channel("public:likes")
+      .on(
+        "postgres_changes",
+        {
+          event: "*",
+          schema: "public",
+          table: "likes",
+          //filter: `post_id=eq.${post.id}`,
+        },
+        (payload) => {
+          const eventType = payload.eventType;
+          if (eventType === "INSERT") {
+            setLikes((prevLikes: any) => [...prevLikes, payload.new]);
+          } else if (eventType === "DELETE") {
+            setLikes((prevLikes: any) =>
+              prevLikes.filter((like: any) => like.id !== payload.old.id)
+            );
+          }
+        }
+      )
+      .subscribe();
+
+    return () => subscription.unsubscribe();
+  }, [post.id]);
+
+  // Handle like button click (with debounce)
+  const handleLike = async () => {
+    await toggleLikePost(post.id, isLiked, user?.id);
+    setIsLiked(!isLiked);
+  };
 
   return (
-    <div className="flex space-x-7">
-      <div className="flex gap-1 items-center">
-        <LikeButton
-          postId={post.id}
-          likes={likes}
-          setLikes={setLikes}
-          userId={userId}
-        />
-        <p className=" text-default-400 text-small">{likes.length}</p>
+    <div className="flex gap-4 items-center">
+      <div className="flex items-center">
+        <button onClick={handleLike}>
+          {isLiked ? (
+            <HeartFilledIcon className="transition-all ease-in-out duration-300 w-[24px] h-[24px] dark:text-[#2e4ea7] text-[#b42d24]" />
+          ) : (
+            <HeartIcon className="text-gray-500" />
+          )}
+        </button>
+        <span>{likes.length}</span>
       </div>
       <div className="flex gap-1 items-center">
         <p className="font-semibold text-default-400 text-small">
@@ -51,7 +93,9 @@ const PostStats = ({ post, userId }: any) => {
             />
           </svg>
         </p>
-        <p className="text-default-400 text-small">5</p>
+        <p className="text-default-400 text-small">
+          {section === "details" ? commentLength : post?.comments[0].count}
+        </p>
       </div>
     </div>
   );

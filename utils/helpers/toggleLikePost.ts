@@ -15,7 +15,7 @@ export const toggleLikePost = async (
         .from("likes")
         .delete()
         .eq("post_id", postId)
-        .eq("user_id", userId.id);
+        .eq("user_id", userId);
   } else {
     // If not liked, insert a new like
     result = await supabase.from("likes").insert({ post_id: postId });

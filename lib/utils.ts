@@ -9,7 +9,10 @@ export const checkIsLiked = (
   likeList: { id: number; user_id: string }[],
   userId: string
 ) => {
-  return likeList.some((like) => like.user_id === userId);
+  return likeList.some((like) => {
+    console.log("Checks -> ", like.user_id, userId, like.id);
+    return like.user_id === userId;
+  });
 };
 
 export const generateRandomNumber = ({

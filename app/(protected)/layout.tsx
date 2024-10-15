@@ -4,12 +4,28 @@ import LeftSidebar from "@/components/shared/LeftSideBar";
 import Bottombar from "@/components/shared/Bottombar";
 import Topbar from "@/components/shared/Topbar";
 import Loader from "@/components/shared/Loader";
+import { createClient } from "@/utils/supabase/server";
+import InitUser from "@/lib/store/initUser";
 
-export default function ProtectedLayout({
+export default async function ProtectedLayout({
   children,
 }: Readonly<{
   children: React.ReactNode;
 }>) {
+  const supabase = createClient();
+
+  const supabase_user_id: string | null =
+    (await supabase.auth.getUser()).data?.user?.id ?? null;
+  if (!supabase_user_id) {
+    throw new Error();
+  }
+
+  const { data: profileUser } = await supabase
+    .from("profiles")
+    .select("id")
+    .eq("supabase_user", supabase_user_id)
+    .single();
+
   return (
     <>
       <Topbar />
@@ -20,6 +36,7 @@ export default function ProtectedLayout({
         </section>
       </main>
       <Bottombar />
+      <InitUser user={profileUser} />
     </>
   );
 }

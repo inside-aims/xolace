@@ -24,7 +24,8 @@ const PostDetailPage = async ({ params }: { params: { postId: string } }) => {
       *,
          likes(
          *
-         )
+         ),
+         comments(*)
    `
     )
     .eq("id", postId)
