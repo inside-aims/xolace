@@ -21,9 +21,8 @@ type DropdownMenuProp = {
   comment?: boolean;
   postDetail?: boolean;
   postCard?: boolean;
-  userId?: string | number;
-  permissions?: string[];
   postId?: string;
+  postCreatedBy?: string | number;
   commentId?: string;
   commentCreatedBy?: string | number;
 };
@@ -32,9 +31,8 @@ const PostDropdown: React.FC<DropdownMenuProp> = ({
   comment,
   postDetail,
   postCard,
-  userId,
-  permissions,
   postId,
+  postCreatedBy,
   commentId,
   commentCreatedBy,
 }) => {
@@ -44,24 +42,13 @@ const PostDropdown: React.FC<DropdownMenuProp> = ({
   const [isLoading, setIsLoading] = useState(false);
 
   // check if user is author of the comment
-  const isAuthor = commentCreatedBy === user?.id;
+  const isCommentAuthor = commentCreatedBy === user?.id;
 
-  // Delete post logic goes here.
-  //   const onDelete = async () => {
-  //     setIsLoading(true);
-  //     try {
-  //       await handleDelete({ comment, postCard, postId });
-  //       toast({
-  //         title: `Successfully Deleted Post. `,
-  //       });
-  //     } catch (error) {
-  //       console.log(error);
-  //     } finally {
-  //       setIsLoading(false);
-  //     }
-  //   };
+  // check if user is the author of the post
+  const isPostAuthor = postCreatedBy === user?.id;
 
-  const onDelete = async () => {
+  //  delete comment
+  const onCommentDelete = async () => {
     setIsLoading(true);
     try {
       // await handleDelete({ comment, postCard, postId });
@@ -81,6 +68,27 @@ const PostDropdown: React.FC<DropdownMenuProp> = ({
       setIsLoading(false);
     }
   };
+
+  // delete post
+  const onPostDelete = async () => {
+    setIsLoading(true);
+    try {
+      // await handleDelete({ comment, postCard, postId });
+      const response = await supabase.from("posts").delete().eq("id", postId);
+      toast({
+        title: `Successfully Deleted Post.💯 `,
+      });
+    } catch (error) {
+      console.log(error);
+      toast({
+        title: "Error deleting post:",
+      });
+      throw new Error();
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
   return (
     <>
       <DropdownMenu>
@@ -97,16 +105,26 @@ const PostDropdown: React.FC<DropdownMenuProp> = ({
         <DropdownMenuContent align="end">
           <DropdownMenuLabel>Actions</DropdownMenuLabel>
           <DropdownMenuSeparator />
-          {isAuthor && (
+          {isCommentAuthor && (
             <DropdownMenuItem
               className="hover:cursor-pointer"
-              onClick={onDelete}
+              onClick={onCommentDelete}
             >
               {isLoading
                 ? "Deleting..."
                 : comment
                   ? "Delete Comment"
                   : "Delete Post"}
+            </DropdownMenuItem>
+          )}
+
+          {/* delete action for post */}
+          {isPostAuthor && (
+            <DropdownMenuItem
+              className="hover:cursor-pointer"
+              onClick={onPostDelete}
+            >
+              {isLoading ? "Deleting..." : "Delete Post"}
             </DropdownMenuItem>
           )}
 

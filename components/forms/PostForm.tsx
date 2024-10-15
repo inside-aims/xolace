@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
@@ -30,6 +30,7 @@ export function PostForm() {
   const [isLoading, setIsLoading] = useState(false);
   const counter: number = 300;
 
+  //  form
   const form = useForm<z.infer<typeof PostSchema>>({
     resolver: zodResolver(PostSchema),
     defaultValues: {
@@ -81,6 +82,10 @@ export function PostForm() {
       form.reset();
     }
   }
+
+  useEffect(() => {
+    router.prefetch(`post/[postId]`);
+  }, []);
 
   return (
     <Form {...form}>

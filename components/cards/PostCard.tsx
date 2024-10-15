@@ -45,7 +45,11 @@ export function PostCard({ className, post, section }: PostCardType) {
             {format(post.created_at)}
           </small>
         </div>
-        <PostDropdown postCard userId={""} permissions={[]} postId={post.id} />
+        <PostDropdown
+          postCard
+          postId={post.id}
+          postCreatedBy={post.created_by}
+        />
       </CardHeader>
       <Link href={`post/${post.id}`}>
         <CardContent>
