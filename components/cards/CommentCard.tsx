@@ -42,8 +42,6 @@ const CommentCard = ({ comment }: any) => {
         </div>
         <PostDropdown
           comment={true}
-          userId={""}
-          permissions={[]}
           postId={""}
           commentId={comment.id}
           commentCreatedBy={comment.created_by}

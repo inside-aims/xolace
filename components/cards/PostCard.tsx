@@ -33,7 +33,7 @@ export function PostCard({ className, post, section }: PostCardType) {
               //   src={section ? user?.avatarUrl : post.creator?.avatarUrl}
               src={post.author_avatar_url}
             />
-            <AvatarFallback>CN</AvatarFallback>
+            <AvatarFallback>XO</AvatarFallback>
           </Avatar>
           <div className="flex flex-col gap-1 items-start justify-center">
             <h5 className="text-small tracking-tight text-default-400">

@@ -10,8 +10,11 @@ import LogoutIcon from "../icons/LogoutIcon";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Button } from "../ui/button";
 import { getSupabaseBrowserClient } from "@/utils/supabase/client";
+import { useUserState } from "@/lib/store/user";
 
 function LeftSidebar() {
+  // get user profile data
+  const user = useUserState((state) => state.user);
   const router = useRouter();
   const pathName = usePathname();
   const supabase = getSupabaseBrowserClient();
@@ -44,13 +47,12 @@ function LeftSidebar() {
       <div className=" flex flex-1 flex-col w-full gap-6 px-6  ">
         <div className=" flex flex-row items-center  gap-x-2 py-2 mb-10">
           <Avatar>
-            <AvatarImage src={""} />
-            <AvatarFallback>CN</AvatarFallback>
+            <AvatarImage src={user?.avatar_url} />
+            <AvatarFallback>XO🦸</AvatarFallback>
           </Avatar>
           <div className=" flex flex-col">
             <h5 className="text-small tracking-tight text-default-400 text-dark-2 dark:text-light-3">
-              {/* {user.username} */}
-              user
+              {user?.username}
             </h5>
           </div>
         </div>

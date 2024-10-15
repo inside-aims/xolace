@@ -23,22 +23,61 @@ import UpdateUsernameCardForm from "@/components/forms/UpdateUsernameCardForm";
 import DeleteUserAccountCard from "@/components/cards/DeleteUserAccountCard";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import Loader from "@/components/shared/Loader";
+import { useUserState } from "@/lib/store/user";
+import { getSupabaseBrowserClient } from "@/utils/supabase/client";
 
 const Profile = () => {
+  // get user profile data
+  const user = useUserState((state) => state.user);
+
+  // initialize supabase client
+  const supabase = getSupabaseBrowserClient();
+
   const [isLoadingPosts, setIsLoadingPosts] = useState(false);
+  const [posts, setPosts] = useState<any>([]);
+
+  // fetch user posts
+  useEffect(() => {
+    const fetchUserPosts = async () => {
+      let postStatement = supabase
+        .from("posts")
+        .select(
+          `
+       *,
+          likes(
+          *
+          ),
+          comments:comments(count)
+    `
+        )
+        .eq("created_by", user?.id)
+        .order("created_at", { ascending: false });
+      const { data: postData, error } = await postStatement;
+
+      if (error) {
+        console.error(error);
+      } else {
+        setPosts(postData);
+      }
+    };
+
+    setIsLoadingPosts(true);
+    fetchUserPosts();
+    setIsLoadingPosts(false);
+  }, []);
 
   return (
     <>
       <div className="flex gap-3 md:gap-4 items-center justify-center">
         <Avatar>
-          <AvatarImage src={"user?.avatarUrl"} />
+          <AvatarImage src={user?.avatar_url} />
           <AvatarFallback>CN</AvatarFallback>
         </Avatar>
         <div className="flex flex-col gap-1 items-start justify-center">
           <h5 className="text-small tracking-tight text-default-400 text-dark-2 dark:text-white">
-            {"user.username"}
+            {user?.username}
           </h5>
-          <h4 className="text-dark-4/65 dark:text-gray-400">{"5"}</h4>
+          <h4 className="text-dark-4/65 dark:text-gray-400">{posts.length}</h4>
         </div>
       </div>
       <Separator className=" my-4" />
@@ -55,19 +94,15 @@ const Profile = () => {
                 <Loader />
               ) : (
                 <ul className="flex flex-col flex-1 gap-3 w-full ">
-                  <li key={"post.$id"} className="flex justify-center w-full">
-                    <PostCard post={{}} section="profile" />
-                  </li>
-
-                  <li key={"post.$id"} className="flex justify-center w-full">
-                    <PostCard post={{}} section="profile" />
-                  </li>
-
-                  <li key={"post.$id"} className="flex justify-center w-full">
-                    <PostCard post={{}} section="profile" />
-                  </li>
+                  {posts.map((post: any) => (
+                    <li key={post.id} className="flex justify-center w-full">
+                      <PostCard post={post} section="profile" />
+                    </li>
+                  ))}
                 </ul>
               )}
+
+              {posts.length === 0 && <p>You have no posts🤔</p>}
             </div>
           </ScrollArea>
         </TabsContent>
