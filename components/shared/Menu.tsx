@@ -4,15 +4,14 @@ import React, { Dispatch, SetStateAction } from "react";
 import { navLinks } from "@/constants";
 import ResponsiveNavLink from "./ResponsiveNavLinks";
 import { motion } from "framer-motion";
+import { useUserState } from "@/lib/store/user";
 
 export function Menu({
   setIsOpen,
 }: {
   setIsOpen: Dispatch<SetStateAction<boolean>>;
 }) {
-  const user = {
-    username: "John doe",
-  };
+  const user = useUserState((state) => state.user);
   const handleClick = () => {
     setIsOpen(false);
   };
@@ -32,7 +31,7 @@ export function Menu({
       }}
       className="w-[70vw] flex flex-col items-center justify-center gap-5 fixed bg-gray-900/90 dark:bg-gray-200 rounded-xl backdrop-blur-md left-[50%] top-[50%] z-30 py-12"
     >
-      <ul className="flex flex-col gap-5 dark:text-dark-3 text-white">
+      <div className="flex flex-col gap-5 dark:text-dark-3 text-white">
         <div className="font-medium text-base dark:text-gray-800 text-gray-200">
           <span>&#128526; </span>
           {user?.username}
@@ -47,7 +46,7 @@ export function Menu({
             {link.label}
           </ResponsiveNavLink>
         ))}
-      </ul>
+      </div>
     </motion.div>
   );
 }

@@ -74,7 +74,20 @@ const PostDropdown: React.FC<DropdownMenuProp> = ({
     setIsLoading(true);
     try {
       // await handleDelete({ comment, postCard, postId });
-      const response = await supabase.from("posts").delete().eq("id", postId);
+      const { error: deleteError } = await supabase
+        .from("posts")
+        .delete()
+        .eq("id", postId);
+
+      if (deleteError) {
+        toast({
+          title: "Error deleting post",
+          description: "Oops! Something went wrong , please try again 👀 ",
+        });
+        throw new Error();
+      }
+
+      // display success toast
       toast({
         title: `Successfully Deleted Post.💯 `,
       });
