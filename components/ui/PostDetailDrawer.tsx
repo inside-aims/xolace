@@ -169,7 +169,7 @@ const PostDetailDrawer = ({ post }: any) => {
                       <FormControl>
                         <Textarea
                           placeholder="Post your reply"
-                          className="resize-none mb-2 h-[40px] rounded-full text-dark-1 dark:text-white"
+                          className="resize-none mb-2 h-[42px] rounded-full text-dark-1 dark:text-white"
                           {...field}
                         />
                       </FormControl>
