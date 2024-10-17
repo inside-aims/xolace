@@ -1,5 +1,9 @@
 drop trigger if exists "tr_posts_autoset_author_name" on "public"."posts";
 
+alter table "public"."likes" drop constraint "likes_post_id_fkey";
+
+alter table "public"."likes" drop constraint "likes_user_id_fkey";
+
 alter table "public"."posts" drop constraint "posts_created_by_fkey";
 
 drop function if exists "public"."set_post_author_name_and_author_avatar"();
@@ -29,22 +33,20 @@ alter table "public"."comments" add constraint "comments_post_fkey1" FOREIGN KEY
 
 alter table "public"."comments" validate constraint "comments_post_fkey1";
 
-alter table "public"."posts" add constraint "posts_created_by_fkey" FOREIGN KEY (created_by) REFERENCES profiles(id) ON UPDATE CASCADE ON DELETE SET DEFAULT not valid;
+alter table "public"."likes" add constraint "likes_post_id_fkey" FOREIGN KEY (post_id) REFERENCES posts(id) ON UPDATE CASCADE ON DELETE CASCADE not valid;
+
+alter table "public"."likes" validate constraint "likes_post_id_fkey";
+
+alter table "public"."likes" add constraint "likes_user_id_fkey" FOREIGN KEY (user_id) REFERENCES profiles(id) ON UPDATE CASCADE ON DELETE SET NULL not valid;
+
+alter table "public"."likes" validate constraint "likes_user_id_fkey";
+
+alter table "public"."posts" add constraint "posts_created_by_fkey" FOREIGN KEY (created_by) REFERENCES profiles(id) ON UPDATE CASCADE ON DELETE SET NULL not valid;
 
 alter table "public"."posts" validate constraint "posts_created_by_fkey";
 
 set check_function_bodies = off;
-CREATE SCHEMA rls_helpers;
-CREATE OR REPLACE FUNCTION rls_helpers.is_same_user(profile_id UUID)
-RETURNS BOOLEAN AS $$
-BEGIN
-  RETURN (
-    EXISTS (
-      SELECT FROM profiles WHERE id=profile_id AND supabase_user = auth.uid()
-    )
-  );
-END;
-$$ LANGUAGE plpgsql;
+
 CREATE OR REPLACE FUNCTION public.set_author_name_and_author_avatar()
  RETURNS trigger
  LANGUAGE plpgsql
@@ -130,27 +132,26 @@ using (rls_helpers.is_same_user(created_by))
 with check (rls_helpers.is_same_user(created_by));
 
 
+create policy "allow delete for user who created post"
+on "public"."posts"
+as permissive
+for delete
+to authenticated
+using (rls_helpers.is_same_user(created_by));
+
+
+create policy "Enable read access for all users"
+on "public"."profiles"
+as permissive
+for select
+to public
+using (true);
+
+
 CREATE TRIGGER tr_comments_autoset_author_name BEFORE INSERT ON public.comments FOR EACH ROW EXECUTE FUNCTION set_author_name_and_author_avatar();
 
 CREATE TRIGGER tr_comments_autoset_created_by BEFORE INSERT ON public.comments FOR EACH ROW EXECUTE FUNCTION set_created_by_value();
 
 CREATE TRIGGER tr_posts_autoset_author_name BEFORE INSERT ON public.posts FOR EACH ROW EXECUTE FUNCTION set_author_name_and_author_avatar();
-
-
-create schema if not exists "rls_helpers";
-
-set check_function_bodies = off;
-
-CREATE OR REPLACE FUNCTION rls_helpers.is_same_user(profile_id uuid)
- RETURNS boolean
- LANGUAGE plpgsql
-AS $function$BEGIN
-  RETURN (
-    EXISTS (
-      SELECT FROM profiles WHERE id=profile_id AND supabase_user = auth.uid()
-    )
-  );
-END;$function$
-;
 
 
