@@ -65,7 +65,7 @@ export function PostForm() {
         .from("posts")
         .insert({
           content,
-          mood,
+          mood: mood.value,
         })
         .select()
         .single();
