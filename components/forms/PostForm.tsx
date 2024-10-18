@@ -22,12 +22,23 @@ import Loader from "../shared/Loader";
 import { PostSchema } from "@/validation";
 import { getSupabaseBrowserClient } from "@/utils/supabase/client";
 import { urlPath } from "@/utils/url-helpers";
+import { postMoods } from "@/constants";
 
 export function PostForm() {
   const supabase = getSupabaseBrowserClient();
   const { toast } = useToast();
   const router = useRouter();
   const [isLoading, setIsLoading] = useState(false);
+  const [mood, setMood] = useState(postMoods[0]);
+
+  // get mood boolean value
+  const isNeutral = mood.value === "neutral";
+  const isHappy = mood.value === "happy";
+  const isSad = mood.value === "sad";
+  const isAngry = mood.value === "angry";
+  const isConfused = mood.value === "confused";
+
+  //  counter for comment fields
   const counter: number = 300;
 
   //  form
@@ -42,6 +53,7 @@ export function PostForm() {
   const { watch } = form;
   const content = watch("content");
 
+  // function to handle submit
   async function onSubmit(data: z.infer<typeof PostSchema>) {
     // Do something with the form values.
     setIsLoading(true);
@@ -53,11 +65,16 @@ export function PostForm() {
         .from("posts")
         .insert({
           content,
+          mood,
         })
         .select()
         .single();
 
       if (postError) {
+        toast({
+          variant: "destructive",
+          title: "Oops, something must have gone wrong 😵‍💫!",
+        });
         console.log(postError);
         return;
       }
@@ -97,14 +114,20 @@ export function PostForm() {
           control={form.control}
           name="content"
           render={({ field }) => (
-            <FormItem>
+            <FormItem className="relative">
               <FormControl>
                 <Textarea
                   placeholder="What's on your mind?"
-                  className="resize-none h-[130px] text-dark-2 dark:text-white"
+                  className={`resize-none h-[130px] text-dark-2 dark:text-white transition-all duration-300
+                    ${isHappy && "border-green-500 dark:border-green-400"} ${isSad && "border-blue dark:border-sky-400"}
+                    ${isAngry && "border-red-500 dark:border-red-400"} ${isConfused && "border-yellow-500 dark:border-yellow-400"}
+                    `}
                   {...field}
                 />
               </FormControl>
+
+              {/* mood icon */}
+              <div className=" absolute bottom-3 right-3">{mood.icon}</div>
               {/* <FormDescription>
                 You can <span>@mention</span> other users and organizations.
               </FormDescription> */}
@@ -112,6 +135,34 @@ export function PostForm() {
             </FormItem>
           )}
         />
+
+        {/* mood buttons */}
+        <div className="flex items-center gap-3 flex-wrap">
+          {postMoods.map((mood) => (
+            <Button
+              key={mood.id}
+              type="button"
+              className={`flex gap-2 rounded-3xl dark:bg-transparent border border-gray-700 dark:text-white text-black  text-sm text-center ${
+                isNeutral && mood.value === "neutral"
+                  ? "border-zinc-600 bg-gray-500"
+                  : isHappy && mood.value === "happy"
+                    ? "border-green-500 bg-green-400"
+                    : isSad && mood.value === "sad"
+                      ? "border-blue bg-blue"
+                      : isAngry && mood.value === "angry"
+                        ? "border-red-500 bg-red-400"
+                        : isConfused && mood.value === "confused"
+                          ? "border-yellow-500 bg-yellow-400"
+                          : "border-zinc-400 bg-zinc-100"
+              }`}
+              onClick={() => {
+                setMood(mood);
+              }}
+            >
+              {` ${mood.icon} ${mood.label}`}
+            </Button>
+          ))}
+        </div>
 
         <div className=" flex justify-between items-center">
           <Button
