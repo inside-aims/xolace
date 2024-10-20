@@ -17,7 +17,18 @@ import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import Image from "next/image";
 import PostDropdown from "../shared/PostDropdown";
 
+// Map mood to emoji and button style
+const moodMap: Record<string, { emoji: string; style: string }> = {
+  neutral: { emoji: "😐", style: "border-zinc-600 bg-gray-500" },
+  happy: { emoji: "😆", style: "border-green-500 bg-green-400" },
+  sad: { emoji: "🥹", style: "border-blue bg-blue-400" },
+  angry: { emoji: "😠", style: "border-red-500 bg-red-400" },
+  confused: { emoji: "🫤", style: "border-yellow-500 bg-yellow-400" },
+};
+
 export function DetailCard({ postId, post }: { postId: any; post: any }) {
+  const postMood = moodMap[post?.mood] || moodMap["neutral"];
+
   const {
     created_at,
     content,
@@ -50,6 +61,19 @@ export function DetailCard({ postId, post }: { postId: any; post: any }) {
         {/* {post.caption} */}
         {content}
       </CardContent>
+      <CardFooter>
+        <div>
+          <Button
+            type="button"
+            className={`flex gap-2 rounded-3xl dark:bg-transparent border border-gray-700 dark:text-white text-black  text-sm text-center ${
+              postMood.style
+            }`}
+          >
+            {postMood.emoji}
+            {mood.toUpperCase()}
+          </Button>
+        </div>
+      </CardFooter>
     </Card>
   );
 }

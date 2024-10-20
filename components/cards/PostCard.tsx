@@ -13,6 +13,7 @@ import Link from "next/link";
 import PostDropdown from "../shared/PostDropdown";
 import PostStats from "../shared/PostStats";
 import { useEffect } from "react";
+import { Button } from "../ui/button";
 
 type PostCardType = {
   className?: string;
@@ -20,7 +21,19 @@ type PostCardType = {
   section?: "profile";
 };
 
+// Map mood to emoji and button style
+const moodMap: Record<string, { emoji: string; style: string }> = {
+  neutral: { emoji: "😐", style: "border-zinc-600 bg-gray-500" },
+  happy: { emoji: "😆", style: "border-green-500 bg-green-400" },
+  sad: { emoji: "🥹", style: "border-blue bg-blue-400" },
+  angry: { emoji: "😠", style: "border-red-500 bg-red-400" },
+  confused: { emoji: "🫤", style: "border-yellow-500 bg-yellow-400" },
+};
+
 export function PostCard({ className, post, section }: PostCardType) {
+  // get mood from mood object
+  const mood = moodMap[post?.mood] || moodMap["neutral"];
+
   return (
     <Card
       className={`w-full  md:w-full mb-5 ${className} ring-1 ring-white/[0.05] transition duration-300 dark:ring-zinc-800 dark:hover:ring-zinc-700 dark:focus-visible:ring-[#FF2D20]`}
@@ -66,8 +79,19 @@ export function PostCard({ className, post, section }: PostCardType) {
           </span> */}
         </CardContent>
       </Link>
-      <CardFooter className="">
+      <CardFooter className="flex justify-between items-center">
         <PostStats post={post} />
+        <div>
+          <Button
+            type="button"
+            className={`flex gap-2 rounded-3xl dark:bg-transparent border border-gray-700 dark:text-white text-black  text-sm text-center ${
+              mood.style
+            }`}
+          >
+            {mood.emoji}
+            {post?.mood.toUpperCase()}
+          </Button>
+        </div>
       </CardFooter>
     </Card>
   );
