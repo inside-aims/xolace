@@ -68,7 +68,7 @@ export default function UpdateUsernameCardForm() {
       console.error("Error updating username:", updateError);
       toast({
         title: "Error updating username",
-        description: "Oops🫢!!, Something must have gone wrong",
+        description: "Oops🫢!!, Something must have gone wrong or you are probably an anonymous user🤔",
         variant: "destructive",
       });
       setIsLoading(false);
