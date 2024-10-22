@@ -61,6 +61,15 @@ const UpdatePasswordCardForm = () => {
       return;
     }
 
+    if (user.is_anonymous) {
+      console.log("anonymous-> ", user.is_anonymous);
+      toast({
+        title: "Error updating password",
+        description: "Anonymous users cannot update passwords",
+        variant: "destructive",
+      });
+    }
+
     if (user.email) {
       // Re-authenticate user with old password
       const { error: signInError } = await supabase.auth.signInWithPassword({
