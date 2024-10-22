@@ -152,7 +152,6 @@ INSERT INTO "public"."posts" ("id", "created_at", "created_by", "author_name", "
 	('d0cd2444-4039-43ad-bc74-3a5394b9ac8a', '2024-10-10 16:54:21.912643+00', 'ada43f4b-d555-4695-85fd-fabde447867f', '@tester', 'My second post', 'sad'),
 	('8c8d7735-d60e-423c-937d-c80160d91fe8', '2024-10-10 16:55:45.422931+00', 'ada43f4b-d555-4695-85fd-fabde447867f', '@tester', 'My third post', 'happy'),
 	('c9621430-1abd-4da2-b0af-7cb69cc317e5', '2024-10-10 23:42:49.119566+00', 'ada43f4b-d555-4695-85fd-fabde447867f', '@tester', 'My fourth post', 'neutral'),
-	('fd3f511b-8a11-4ee7-8b85-45bc61f38796', '2024-10-11 02:24:48.809695+00', 'ada43f4b-d555-4695-85fd-fabde447867f', '@tester', 'my fifth checks', 'funny'),
 	('e33fdd49-21f0-4ed4-aaf6-64364397d58d', '2024-10-11 02:39:45.179629+00', 'ada43f4b-d555-4695-85fd-fabde447867f', '@tester ', 'The sixth post from the post field 😁', 'neutral'),
 	('829a4ffc-311a-4844-9602-4c11a8d0dde7', '2024-10-11 02:44:55.95956+00', 'ada43f4b-d555-4695-85fd-fabde447867f', '@tester ', 'The seventh post from the post field 😒', 'neutral');
 
