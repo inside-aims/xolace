@@ -46,7 +46,7 @@ export const updateSession = async (request: NextRequest) => {
       "/post",
       "/channel",
       "/profile",
-      "/change-password"
+      "/change-password",
     ];
 
     // List of public routes
@@ -77,6 +77,7 @@ export const updateSession = async (request: NextRequest) => {
         request.nextUrl.pathname === "/sign-up") &&
       !user.error
     ) {
+      console.log("already authenticated");
       return NextResponse.redirect(new URL("/feed", request.url));
     }
 

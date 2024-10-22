@@ -17,7 +17,8 @@ export default async function ProtectedLayout({
   const supabase_user_id: string | null =
     (await supabase.auth.getUser()).data?.user?.id ?? null;
   if (!supabase_user_id) {
-    throw new Error();
+    console.log("error in protected layout");
+    return <></>;
   }
 
   const { data: profileUser } = await supabase
