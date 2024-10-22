@@ -2,9 +2,19 @@ import { signInAction } from "@/app/actions";
 import Image from "next/image";
 import { FormMessage, Message } from "@/components/form-message";
 import SignInForm from "@/components/forms/SignInForm";
-import { SubmitButton } from "@/components/submit-button";
+import { FORM_TYPES } from "@/constants";
 
-export default function Login({ searchParams }: { searchParams: Message }) {
+export default function Login({ searchParams }: { searchParams: any }) {
+  const wantsMagicLink = searchParams.magicLink === "yes";
+  const wantsPasswordRecovery = searchParams.passwordRecovery === "yes";
+
+  let formType = FORM_TYPES.PASSWORD_LOGIN;
+  if (wantsMagicLink) {
+    formType = FORM_TYPES.MAGIC_LINK;
+  } else if (wantsPasswordRecovery) {
+    formType = FORM_TYPES.PASSWORD_RECOVERY;
+  }
+
   return (
     <div className=" main-container ">
       <div>
@@ -19,7 +29,7 @@ export default function Login({ searchParams }: { searchParams: Message }) {
         />
       </div>
       <div className=" max-sm:w-full md:w-[40%] flex flex-col justify-center py-2 md:px-12 mt-[85%] md:mt-[25%] items-center">
-        <SignInForm />
+        <SignInForm formType={formType} />
       </div>
     </div>
   );

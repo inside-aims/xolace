@@ -27,7 +27,7 @@ export default async function Index() {
             <span className="letter-mask">e</span>
           </div>
         </div>
-        <div className=" mt-96 z-10">
+        <div className=" mt-[370px] z-10">
           <p className="font-tiltNeon font-bold text-xl text-center px-6 mb-1 phone400:p-7">
             Welcome to Xolace, a platform where you can interact anonymously.
           </p>
