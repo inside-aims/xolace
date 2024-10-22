@@ -1,6 +1,6 @@
 "use client";
 
-import React from "react";
+import { useState } from "react";
 
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
@@ -24,10 +24,21 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
 import { UpdatePasswordSchema } from "@/validation";
+import { getSupabaseBrowserClient } from "@/utils/supabase/client";
+import { useToast } from "../ui/use-toast";
+import Loader from "../shared/Loader";
+import ToggleEyeIcon from "../ui/ToggleEyeIcon";
 
 const UpdatePasswordCardForm = () => {
+  const { toast } = useToast();
+  const supabase = getSupabaseBrowserClient();
+
+  // states
+  const [isLoading, setIsLoading] = useState<boolean>(false);
+  const [showPassword, setShowPassword] = useState<boolean>(false);
+  const [showNewPassword, setShowNewPassword] = useState<boolean>(false);
+
   const form = useForm<z.infer<typeof UpdatePasswordSchema>>({
     resolver: zodResolver(UpdatePasswordSchema),
     defaultValues: {
@@ -37,8 +48,62 @@ const UpdatePasswordCardForm = () => {
   });
 
   //
-  function onSubmit(data: z.infer<typeof UpdatePasswordSchema>) {
+  async function onSubmit(data: z.infer<typeof UpdatePasswordSchema>) {
+    setIsLoading(true);
     console.log(data);
+
+    const { password, newPassword } = data;
+
+    // Get user data
+    const user = (await supabase.auth.getUser()).data?.user;
+    if (!user) {
+      console.error("User not found");
+      return;
+    }
+
+    if (user.email) {
+      // Re-authenticate user with old password
+      const { error: signInError } = await supabase.auth.signInWithPassword({
+        email: user.email,
+        password: password,
+      });
+
+      if (signInError) {
+        console.error("Old password is incorrect:", signInError.message);
+        toast({
+          title: "Old password is incorrect",
+          variant: "destructive",
+        });
+        setIsLoading(false);
+        return;
+      }
+
+      // Old password is correct, now update to new password
+      const { error: updateError } = await supabase.auth.updateUser({
+        password: newPassword,
+      });
+
+      if (updateError) {
+        console.error("Error updating password:", updateError.message);
+        toast({
+          title: "Error updating password",
+          description: updateError.message,
+          variant: "destructive",
+        });
+        setIsLoading(false);
+        return;
+      }
+
+      toast({
+        title: "Password updated",
+        description: "Your password has been updated successfully",
+      });
+      // Clear form , Log out the user and redirect to login page
+      setIsLoading(false);
+      form.reset();
+
+      supabase.auth.signOut();
+    }
   }
 
   return (
@@ -59,11 +124,18 @@ const UpdatePasswordCardForm = () => {
               render={({ field }) => (
                 <FormItem>
                   <FormControl>
-                    <Input
-                      placeholder="Current Password"
-                      {...field}
-                      className=" md:w-1/2"
-                    />
+                    <div className="relative md:w-1/2">
+                      <Input
+                        type={showPassword ? "text" : "password"}
+                        placeholder="Current Password"
+                        {...field}
+                        className="w-full"
+                      />
+                      <ToggleEyeIcon
+                        showPassword={showPassword}
+                        setShowPassword={setShowPassword}
+                      />
+                    </div>
                   </FormControl>
                   <FormMessage />
                 </FormItem>
@@ -75,11 +147,18 @@ const UpdatePasswordCardForm = () => {
               render={({ field }) => (
                 <FormItem>
                   <FormControl>
-                    <Input
-                      placeholder="New Password"
-                      {...field}
-                      className=" md:w-1/2"
-                    />
+                    <div className="relative md:w-1/2">
+                      <Input
+                        type={showNewPassword ? "text" : "password"}
+                        placeholder="New Password"
+                        {...field}
+                        className="w-full"
+                      />
+                      <ToggleEyeIcon
+                        showPassword={showNewPassword}
+                        setShowPassword={setShowNewPassword}
+                      />
+                    </div>
                   </FormControl>
                   <FormMessage />
                 </FormItem>
@@ -87,7 +166,20 @@ const UpdatePasswordCardForm = () => {
             />
           </CardContent>
           <CardFooter>
-            <Button type="submit">Save</Button>
+            <Button
+              disabled={isLoading}
+              type="submit"
+              className="flex gap-2 dark:bg-sky-400 dark:hover:bg-sky-300"
+            >
+              {isLoading ? (
+                <div className="flex items-center justify-center gap-x-2">
+                  {" "}
+                  <Loader /> <span>Saving...</span>
+                </div>
+              ) : (
+                "Save"
+              )}
+            </Button>
           </CardFooter>
         </form>
       </Card>
