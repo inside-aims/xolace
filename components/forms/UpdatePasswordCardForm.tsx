@@ -68,6 +68,8 @@ const UpdatePasswordCardForm = () => {
         description: "Anonymous users cannot update passwords",
         variant: "destructive",
       });
+      setIsLoading(false);
+      return;
     }
 
     if (user.email) {
