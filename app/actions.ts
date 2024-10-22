@@ -4,6 +4,7 @@ import { encodedRedirect } from "@/utils/utils";
 import { createClient } from "@/utils/supabase/server";
 import { headers } from "next/headers";
 import { redirect } from "next/navigation";
+import { getSupabaseAdminClient } from "@/utils/supabase/adminClient";
 
 export const signUpAction = async (formData: FormData) => {
   const email = formData.get("email")?.toString();
@@ -119,4 +120,18 @@ export const signOutAction = async () => {
   const supabase = createClient();
   await supabase.auth.signOut();
   return redirect("/sign-in");
+};
+
+export const deleteUser = async (user: any) => {
+  console.log("Delete-> ", user);
+  const supabase = getSupabaseAdminClient();
+  const { error: deleteError } = await supabase.auth.admin.deleteUser(
+    user?.supabase_user
+  );
+
+  if (deleteError) {
+    console.log("Error deleting user ", deleteError);
+  }
+
+  await signOutAction();
 };
