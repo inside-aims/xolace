@@ -131,6 +131,7 @@ export const deleteUser = async (user: any) => {
 
   if (deleteError) {
     console.log("Error deleting user ", deleteError);
+    return;
   }
 
   await signOutAction();
