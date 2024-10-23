@@ -2,33 +2,37 @@ import React, { useEffect, useState } from "react";
 import { HeartIcon, HeartFilledIcon } from "@radix-ui/react-icons";
 import { getSupabaseBrowserClient } from "@/utils/supabase/client";
 import { toggleLikePost } from "@/utils/helpers/toggleLikePost";
-import { useUserState } from "@/lib/store/user";
+import { checkIsLiked } from "@/lib/utils";
 
 interface postStatProps {
   post: any;
   section?: string;
   commentLength?: number;
+  userId: string;
 }
 
 const PostStats = ({
   post,
   section = "post",
   commentLength,
+  userId,
 }: postStatProps) => {
   const supabase = getSupabaseBrowserClient();
-  const user = useUserState((state) => state.user);
 
+  const postLikesList = post.likes.map((like: any) => like.user_id);
+  console.log(postLikesList);
   // Set local state for likes
   const [likes, setLikes] = useState(post.likes || []);
-  const [isLiked, setIsLiked] = useState(false);
+  const [likesList, setLikesList] = useState(postLikesList || []);
+  const [isLiked, setIsLiked] = useState(checkIsLiked(likesList || [], userId));
 
   // Check if the current user has liked this post
   useEffect(() => {
-    if (user?.id) {
-      const likedByUser = likes.some((like: any) => like.user_id === user.id);
+    if (userId) {
+      const likedByUser = likes.some((like: any) => like.user_id === userId);
       setIsLiked(likedByUser);
     }
-  }, [likes, user?.id]);
+  }, [likes, userId]);
 
   // Real-time updates for likes
   useEffect((): any => {
@@ -59,22 +63,37 @@ const PostStats = ({
   }, [post.id]);
 
   // Handle like button click (with debounce)
-  const handleLike = async () => {
-    await toggleLikePost(post.id, isLiked, user?.id);
+  const handleLike = async (e: React.MouseEvent) => {
+    e.stopPropagation();
+
+    let newLikes = [...likesList];
+    const hasLiked = newLikes.includes(userId);
+
+    if (hasLiked) {
+      // newLikes.splice(newLikes.indexOf(userId), 1)
+      // setLikes(newLikes)
+      // setLike(false)
+      newLikes = newLikes.filter((id) => id !== userId);
+    } else {
+      newLikes.push(userId);
+    }
+
+    setLikesList(newLikes);
     setIsLiked(!isLiked);
+    await toggleLikePost(post.id, isLiked, userId);
   };
 
   return (
     <div className="flex gap-4 items-center">
       <div className="flex items-center">
-        <button onClick={handleLike}>
+        <button type="button" onClick={handleLike}>
           {isLiked ? (
             <HeartFilledIcon className="transition-all ease-in-out duration-300 w-[24px] h-[24px] dark:text-[#2e4ea7] text-[#b42d24]" />
           ) : (
-            <HeartIcon className="text-gray-500" />
+            <HeartIcon className="transition-all ease-in-out duration-300 w-[24px] h-[24px] text-gray-500" />
           )}
         </button>
-        <span>{likes.length}</span>
+        <span>{likesList.length}</span>
       </div>
       <div className="flex gap-1 items-center">
         <p className="font-semibold text-default-400 text-small">

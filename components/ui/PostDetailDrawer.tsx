@@ -40,11 +40,18 @@ import { useToast } from "../ui/use-toast";
 import Loader from "../shared/Loader";
 import { CommentSchema } from "@/validation";
 import { getSupabaseBrowserClient } from "@/utils/supabase/client";
+import { useUserState } from "@/lib/store/user";
 
 const PostDetailDrawer = ({ post }: any) => {
+  // get user data
+  const user = useUserState((state) => state.user);
+  // initialize supabase client
   const supabase = getSupabaseBrowserClient();
+
   const { toast } = useToast();
   const router = useRouter();
+
+  // states
   const [comments, setComments] = useState(post?.comments || []);
   const [isLoading, setIsLoading] = useState(false);
 
@@ -151,6 +158,7 @@ const PostDetailDrawer = ({ post }: any) => {
                 post={post}
                 section="details"
                 commentLength={comments.length}
+                userId={user?.id}
               />
             ) : (
               <div>Kindly refresh the page!!</div>

@@ -7,6 +7,8 @@ import { Button } from "@/components/ui/button";
 import PostDetailDrawer from "@/components/ui/PostDetailDrawer";
 import { createClient } from "@/utils/supabase/server";
 
+export const dynamic = "force-dynamic";
+
 const PostDetailPage = async ({ params }: { params: { postId: string } }) => {
   const supabase = createClient();
   const { postId } = params;

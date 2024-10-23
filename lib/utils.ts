@@ -6,13 +6,14 @@ export function cn(...inputs: ClassValue[]) {
 }
 
 export const checkIsLiked = (
-  likeList: { id: number; user_id: string }[],
+  likeList: string[],
   userId: string
 ) => {
-  return likeList.some((like) => {
-    console.log("Checks -> ", like.user_id, userId, like.id);
-    return like.user_id === userId;
-  });
+  // return likeList.some((like) => {
+  //   console.log("Checks -> ", like.user_id, userId, like.id);
+  //   return like.user_id === userId;
+  // });
+  return likeList.includes(userId);
 };
 
 export const generateRandomNumber = ({

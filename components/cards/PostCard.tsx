@@ -12,8 +12,9 @@ import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import Link from "next/link";
 import PostDropdown from "../shared/PostDropdown";
 import PostStats from "../shared/PostStats";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { Button } from "../ui/button";
+import { useUserState } from "@/lib/store/user";
 
 type PostCardType = {
   className?: string;
@@ -31,8 +32,19 @@ const moodMap: Record<string, { emoji: string; style: string }> = {
 };
 
 export function PostCard({ className, post, section }: PostCardType) {
+  // get user data
+  const user = useUserState((state) => state.user);
+
+  // states
+  const [timestamp, setTimestamp] = useState("");
+
   // get mood from mood object
   const mood = moodMap[post?.mood] || moodMap["neutral"];
+
+  //
+  useEffect(() => {
+    setTimestamp(format(post.created_at));
+  }, [post]);
 
   return (
     <Card
@@ -55,7 +67,7 @@ export function PostCard({ className, post, section }: PostCardType) {
             </h5>
           </div>
           <small className="ml-4 md:ml-10 text-sm dark:text-gray-400 text-zinc-500">
-            {format(post.created_at)}
+            {timestamp}
           </small>
         </div>
         <PostDropdown
@@ -80,7 +92,7 @@ export function PostCard({ className, post, section }: PostCardType) {
         </CardContent>
       </Link>
       <CardFooter className="flex justify-between items-center">
-        <PostStats post={post} />
+        <PostStats post={post} userId={user?.id} />
         <div>
           <Button
             type="button"

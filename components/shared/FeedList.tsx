@@ -34,12 +34,13 @@ const FeedList = () => {
       }
 
       setPosts(postsData);
+      setIsLoading(false);
     };
 
     fetchPost();
-    setIsLoading(false);
   }, []);
 
+  // real time events for post
   useEffect((): any => {
     const listener = (payload: any) => {
       const eventType = payload.eventType;
@@ -49,8 +50,8 @@ const FeedList = () => {
       if (eventType === "INSERT") {
         console.log("Inserting post");
       } else if (eventType === "DELETE") {
-        setPosts((prevComments: any) =>
-          prevComments.filter((comment: any) => comment.id !== payload.old.id)
+        setPosts((prevPosts: any) =>
+          prevPosts.filter((post: any) => post.id !== payload.old.id)
         );
       } else if (eventType === "UPDATE") {
         setPosts((prevPosts: any) =>
@@ -100,7 +101,7 @@ const FeedList = () => {
 
   console.log(
     "posts -> ",
-    posts?.map((test) => test.comments[0].count)
+    posts?.map((test) => test.likes)
   );
 
   return (
