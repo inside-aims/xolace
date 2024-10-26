@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import Link from "next/link";
 
 import {
@@ -25,6 +25,7 @@ type DropdownMenuProp = {
   postCreatedBy?: string | number;
   commentId?: string;
   commentCreatedBy?: string | number;
+  onOpenChange: React.Dispatch<React.SetStateAction<boolean>>;
 };
 
 const PostDropdown: React.FC<DropdownMenuProp> = ({
@@ -35,11 +36,17 @@ const PostDropdown: React.FC<DropdownMenuProp> = ({
   postCreatedBy,
   commentId,
   commentCreatedBy,
+  onOpenChange,
 }) => {
   const user = useUserState((state) => state.user);
   const supabase = getSupabaseBrowserClient();
   const { toast } = useToast();
   const [isLoading, setIsLoading] = useState(false);
+
+  // open sheet
+  const handleReportClick = () => {
+    onOpenChange(true);
+  };
 
   // check if user is author of the comment
   const isCommentAuthor = commentCreatedBy === user?.id;
@@ -104,7 +111,7 @@ const PostDropdown: React.FC<DropdownMenuProp> = ({
 
   return (
     <>
-      <DropdownMenu>
+      <DropdownMenu modal={false}>
         <DropdownMenuTrigger>
           <svg
             xmlns="http://www.w3.org/2000/svg"
@@ -120,7 +127,7 @@ const PostDropdown: React.FC<DropdownMenuProp> = ({
           <DropdownMenuSeparator />
           {isCommentAuthor && (
             <DropdownMenuItem
-              className="hover:cursor-pointer"
+              className="hover:cursor-pointer text-red-400"
               onClick={onCommentDelete}
             >
               {isLoading
@@ -134,7 +141,7 @@ const PostDropdown: React.FC<DropdownMenuProp> = ({
           {/* delete action for post */}
           {isPostAuthor && (
             <DropdownMenuItem
-              className="hover:cursor-pointer"
+              className="hover:cursor-pointer text-red-400 hover:text-red-500"
               onClick={onPostDelete}
             >
               {isLoading ? "Deleting..." : "Delete Post"}
@@ -147,8 +154,11 @@ const PostDropdown: React.FC<DropdownMenuProp> = ({
             </DropdownMenuItem>
           )}
 
-          <DropdownMenuItem className="hover:cursor-pointer">
-            <Link href={``}>Report</Link>
+          <DropdownMenuItem
+            className="hover:cursor-pointer"
+            onSelect={handleReportClick}
+          >
+            <p className="text-red-400">Report</p>
           </DropdownMenuItem>
         </DropdownMenuContent>
       </DropdownMenu>
