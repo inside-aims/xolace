@@ -13,9 +13,19 @@ import {
 } from "@/components/ui/card";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import PostDropdown from "../shared/PostDropdown";
-// import { IUser } from "@/types";
+import { useEffect, useState } from "react";
 
 const CommentCard = ({ comment }: any) => {
+  // states
+  const [isSheetOpen, setIsSheetOpen] = useState<boolean>(false);
+  const [timestamp, setTimestamp] = useState("");
+
+  //
+  //
+  useEffect(() => {
+    setTimestamp(format(comment.created_at));
+  }, [comment]);
+
   // if (!comment) {
   //   return (
   //     <>
@@ -45,6 +55,7 @@ const CommentCard = ({ comment }: any) => {
           postId={""}
           commentId={comment.id}
           commentCreatedBy={comment.created_by}
+          onOpenChange={setIsSheetOpen}
         />
       </CardHeader>
       <CardContent className=" ">{comment.comment_text}</CardContent>
