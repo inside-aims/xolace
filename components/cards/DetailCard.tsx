@@ -55,7 +55,7 @@ export function DetailCard({ postId, post }: { postId: any; post: any }) {
             {format(created_at)}
           </small>
         </div>
-        <PostDropdown postDetail={true} />
+        {/* <PostDropdown postDetail={true} onOpenChange={setIsSheetOpen} /> */}
       </CardHeader>
       <CardContent>
         {/* {post.caption} */}
