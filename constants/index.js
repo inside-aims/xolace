@@ -97,3 +97,44 @@ export const postMoods = [
   //   color: "blue",
   // },
 ];
+
+// faqs
+export const faqs = [
+  {
+    id: 1,
+    question: "What is Xolace?",
+    answer:
+      "Xolace is an AI-powered social media platform that connects users with like-minded individuals. Our mission is to help people discover new friends, share ideas, and stay connected.",
+  },
+  {
+    id: 2,
+    question: "How do I create a post?",
+    answer:
+      "To create a post, simply type in your thoughts, select a mood and click submit.",
+  },
+  {
+    id: 3,
+    question: "What can I do as an anonymous user?",
+    answer:
+      " Basically you can do almost everything a normal user can ( such as like a post, create a post, comment etc), except changing your username and password ",
+  },
+  {
+    id: 4,
+    question:
+      "Can I convert an anonymous user account to a permenant user account?",
+    answer:
+      "Currently no, but that is something the team is working really hard on",
+  },
+  {
+    id: 5,
+    question: "The post details page distorts when I try to comment, why?",
+    answer:
+      "Based the UI, there are some behaviours out of our control. So please pull the drawer up completely before commenting",
+  },
+  {
+    id: 6,
+    question: "Nothing seems touchable on the details page aside the drawer",
+    answer:
+      "Yes, since the drawer is meant to stay on the page , it ultimately affects the focus of the UI. Our team is working hard to find the best solution",
+  },
+];

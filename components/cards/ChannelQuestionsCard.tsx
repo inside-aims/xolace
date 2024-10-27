@@ -11,6 +11,13 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "@/components/ui/dialog";
+import {
+  Accordion,
+  AccordionContent,
+  AccordionItem,
+  AccordionTrigger,
+} from "@/components/ui/accordion";
+import { faqs } from "@/constants";
 
 const ChannelQuestionsCard = () => {
   return (
@@ -33,22 +40,36 @@ const ChannelQuestionsCard = () => {
               </div>
               <div className=" text-gray-900 dark:text-gray-100 flex flex-col items-start">
                 <h1 className="text-lg font-bold uppercase">Questions</h1>
-                <p className="text-gray-500">Ask</p>
+                <p className="text-gray-500">Ask, FAQs</p>
               </div>
             </div>
           </motion.div>
         </DialogTrigger>
-        <DialogContent className=" text-dark-2 dark:text-white w-[95%]">
+        <DialogContent className=" text-dark-2 dark:text-white w-[95%] h-[60%]">
           <DialogHeader>
             <DialogTitle>
               <p className=" text-2xl font-bold dark:text-gray-200 pb-2">
-                <span>&#128220; </span>About us
+                <span>&#128220; </span>Frequently Asked Questions
               </p>
             </DialogTitle>
           </DialogHeader>
-          <p className=" text-lg text-gray-500 p-2 pb-3">
-            Visit our social pages for more info on our development team
+          <p className=" text-lg text-gray-500 px-2">
+            Find the right question for you
           </p>
+
+          <Accordion
+            type="single"
+            collapsible
+            className="w-full px-3  min-h-[90%] max-h-[90%] overflow-auto"
+          >
+            {faqs.map((faq) => (
+              <AccordionItem key={faq.id} value={`item-${faq.id}`}>
+                <AccordionTrigger>{faq.question}</AccordionTrigger>
+                <AccordionContent>{faq.answer}</AccordionContent>
+              </AccordionItem>
+            ))}
+          </Accordion>
+
           {/* <div className=" flex justify-center items-center gap-5  py-3 px-2">
               <Link
                 target="_blank"
