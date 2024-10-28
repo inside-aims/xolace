@@ -75,15 +75,7 @@ const ReportForm = ({ postId }: ReportFormProps) => {
 
   //
   async function onSubmit(data: z.infer<typeof ReportSchema>) {
-    toast({
-      title: "You submitted the following values:",
-      description: (
-        <pre className="mt-2 w-[340px] rounded-md bg-slate-950 p-4">
-          <code className="text-white">{JSON.stringify(data, null, 2)}</code>
-          {reason}
-        </pre>
-      ),
-    });
+
 
     // extract severity
     const { description, severity, otherReason } = data;
@@ -211,7 +203,7 @@ const ReportForm = ({ postId }: ReportFormProps) => {
                 name="otherReason"
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel>Username</FormLabel>
+                    <FormLabel>Reason</FormLabel>
                     <FormControl>
                       <Input
                         placeholder="Please state your reason..."

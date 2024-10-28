@@ -11,6 +11,8 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "@/components/ui/dialog";
+import { KvngSheet } from "../shared/KvngSheet";
+import { MailPlus } from "lucide-react";
 
 const ChannelContributionCard = () => {
   return (
@@ -28,7 +30,6 @@ const ChannelContributionCard = () => {
           >
             <div className="bg-gray-200 dark:bg-gray-800 overflow-hidden shadow-sm rounded-lg flex gap-5 p-5 items-center h-[10px] min-h-[100px] max-h-[120px] sm:h-auto">
               <div className=" h-7 w-7">
-                {/* <FaQuestionCircle size={30} className="text-red-400" /> */}
                 <GearIcon className="text-red-500  w-full h-full" />
               </div>
               <div className=" text-gray-900 dark:text-gray-100 flex flex-col items-start">
@@ -52,8 +53,9 @@ const ChannelContributionCard = () => {
           <div>
             <p className=" text-lg text-gray-500 p-2">
               <span className="emoji">&#x1F4B0;</span> To sponser or donate to
-              the Pycode team{" "}
+              the Atlas Innovation  team (visit our FAQs to find out why we need donations)
             </p>
+            <p className="px-2">Sponsor Anonymously</p>
             <p className="p-2 dark:text-gray-300">
               <span className="emoji">&#x1F4F2;</span>Send to :{" "}
               <span>0558218741</span>
@@ -74,13 +76,17 @@ const ChannelContributionCard = () => {
                 ?
               </p>
             </div>
-            <div className=" flex justify-center items-center ">
+            <div className=" flex items-center gap-x-3 mb-2 px-2">
+              <p>Send us a Mail :</p>
               <a
                 href="mailto:lead@xolace.online?subject=Regarding%20your%20app"
                 target={"_blank"}
               >
-                {/* <FaGoogle size={30} className="text-red-500" /> */}G
+                <MailPlus />
               </a>
+            </div>
+            <div>
+              <KvngSheet />
             </div>
           </div>
         </DialogContent>
