@@ -10,7 +10,8 @@ const defaultUrl = process.env.VERCEL_URL
 export const metadata = {
   metadataBase: new URL(defaultUrl),
   title: "Xolace",
-  description: "",
+  description:
+    "Xolace is a social platform designed for users to share their thoughts, stories, and experiences freely, fostering both engagement and self-expression in a unique, user-centered space",
 };
 
 export default function RootLayout({
