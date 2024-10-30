@@ -1,11 +1,6 @@
-import DeployButton from "@/components/deploy-button";
-import { EnvVarWarning } from "@/components/env-var-warning";
-import HeaderAuth from "@/components/header-auth";
-import { ThemeSwitcher } from "@/components/theme-switcher";
-import { hasEnvVars } from "@/utils/supabase/check-env-vars";
 import { GeistSans } from "geist/font/sans";
 import { ThemeProvider } from "next-themes";
-import Link from "next/link";
+import { Toaster } from "@/components/ui/toaster";
 import "./globals.css";
 
 const defaultUrl = process.env.VERCEL_URL
@@ -14,8 +9,9 @@ const defaultUrl = process.env.VERCEL_URL
 
 export const metadata = {
   metadataBase: new URL(defaultUrl),
-  title: "Next.js and Supabase Starter Kit",
-  description: "The fastest way to build apps with Next.js and Supabase",
+  title: "Xolace",
+  description:
+    "Xolace is a social platform designed for users to share their thoughts, stories, and experiences freely, fostering both engagement and self-expression in a unique, user-centered space",
 };
 
 export default function RootLayout({
@@ -33,6 +29,7 @@ export default function RootLayout({
           disableTransitionOnChange
         >
           {children}
+          <Toaster />
         </ThemeProvider>
       </body>
     </html>
