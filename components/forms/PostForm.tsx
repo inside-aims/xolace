@@ -143,7 +143,6 @@ export function PostForm() {
                   checked={isChecked}
                   onCheckedChange={(value) => setIsChecked(value)}
                 />
-                {isChecked}
               </div>
 
               {/* <FormDescription>
