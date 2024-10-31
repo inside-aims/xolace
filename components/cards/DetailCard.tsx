@@ -39,7 +39,7 @@ export function DetailCard({ postId, post }: { postId: any; post: any }) {
   } = post;
 
   return (
-    <Card className="w-full md:w-full mb-5">
+    <Card className="w-full md:w-full mb-5 mt-5">
       <CardHeader className=" flex-row justify-between items-start px-4 py-2 ">
         <div className="flex gap-2 md:gap-4 items-center">
           <Avatar>
