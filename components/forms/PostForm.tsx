@@ -23,6 +23,7 @@ import { PostSchema } from "@/validation";
 import { getSupabaseBrowserClient } from "@/utils/supabase/client";
 import { urlPath } from "@/utils/url-helpers";
 import { postMoods } from "@/constants";
+import { Checkbox } from "../ui/checkbox";
 
 export function PostForm() {
   const supabase = getSupabaseBrowserClient();
@@ -30,6 +31,7 @@ export function PostForm() {
   const router = useRouter();
   const [isLoading, setIsLoading] = useState(false);
   const [mood, setMood] = useState(postMoods[0]);
+  const [isChecked, setIsChecked] = useState<"indeterminate" | boolean>(false);
 
   // get mood boolean value
   const isNeutral = mood.value === "neutral";
@@ -66,6 +68,7 @@ export function PostForm() {
         .insert({
           content,
           mood: mood.value,
+          expires_in_24hr: isChecked,
         })
         .select()
         .single();
@@ -104,6 +107,8 @@ export function PostForm() {
     router.prefetch(`post/[postId]`);
   }, []);
 
+  const Hours = () => <p className="text-[9px]">24h</p>;
+
   return (
     <Form {...form}>
       <form
@@ -127,7 +132,19 @@ export function PostForm() {
               </FormControl>
 
               {/* mood icon */}
-              <div className=" absolute bottom-3 right-3">{mood.icon}</div>
+              <div className=" absolute bottom-3 left-3">{mood.icon}</div>
+
+              {/* checkbox*/}
+
+              <div className="absolute bottom-3 right-3">
+                <Checkbox
+                  indicator={<Hours />}
+                  className=" transform duration-300 ease-in-out"
+                  checked={isChecked}
+                  onCheckedChange={(value) => setIsChecked(value)}
+                />
+              </div>
+
               {/* <FormDescription>
                 You can <span>@mention</span> other users and organizations.
               </FormDescription> */}

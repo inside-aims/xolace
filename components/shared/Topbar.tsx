@@ -47,7 +47,7 @@ function Topbar() {
             <p className="text-heading3-bold text-light-1 max-xs:hidden">Threads</p>
             </Link> */}
       <div className="shrink-0 flex items-center z-40 relative">
-        <Link href={"/"} className="md:hidden">
+        <Link href={"/feed"} className="md:hidden">
           <div className=" font-tiltNeon font-tilt z-50 absolute   left-10 -top-10 text-[52px]  text-center">
             <span className="letter-mask">X</span>
             <span className="letter-mask !text-amber-400">o</span>
