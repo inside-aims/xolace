@@ -60,8 +60,29 @@ const PostDetailDrawer = ({ post, type }: { post: any; type: Type }) => {
   //   counter for comment fields
   const counter: number = 200;
 
-  // initial height of the bottom drawer
+  // Define different snap points based on `type`
+  const defaultSnapPoints = ["180px", "355px", 1];
+  const expandedSnapPoints = [1]; // Fully expanded snap point
+
+  const [snapPoints, setSnapPoints] = useState(
+    type ? expandedSnapPoints : defaultSnapPoints
+  );
   const [snap, setSnap] = useState<number | string | null>(type ? 1 : "180px");
+
+  useEffect(() => {
+    if (type) {
+      // Initially set the snap points to the expanded state
+      setSnapPoints(expandedSnapPoints);
+      setSnap(1); // Fully expanded
+
+      // Revert back to the default snap points after a delay
+      const timer = setTimeout(() => {
+        setSnapPoints(defaultSnapPoints);
+      }, 1000); // Adjust the timeout as needed
+
+      return () => clearTimeout(timer);
+    }
+  }, [type]);
 
   // form validator
   const form = useForm<z.infer<typeof CommentSchema>>({
@@ -141,7 +162,7 @@ const PostDetailDrawer = ({ post, type }: { post: any; type: Type }) => {
     <>
       <Drawer
         open
-        snapPoints={["180px", "355px", 1]}
+        snapPoints={snapPoints}
         activeSnapPoint={snap}
         setActiveSnapPoint={setSnap}
         modal={false}
