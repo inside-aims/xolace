@@ -42,7 +42,9 @@ import { CommentSchema } from "@/validation";
 import { getSupabaseBrowserClient } from "@/utils/supabase/client";
 import { useUserState } from "@/lib/store/user";
 
-const PostDetailDrawer = ({ post }: any) => {
+type Type = string | string[] | undefined;
+
+const PostDetailDrawer = ({ post, type }: { post: any; type: Type }) => {
   // get user data
   const user = useUserState((state) => state.user);
   // initialize supabase client
@@ -58,8 +60,30 @@ const PostDetailDrawer = ({ post }: any) => {
   //   counter for comment fields
   const counter: number = 200;
 
-  // initial height of the bottom drawer
-  const [snap, setSnap] = useState<number | string | null>("180px");
+  // Define different snap points based on `type`
+  const defaultSnapPoints = ["180px", "355px", 1];
+  const expandedSnapPoints = [1]; // Fully expanded snap point
+
+  // set the initial snap points
+  const [snapPoints, setSnapPoints] = useState(
+    type ? expandedSnapPoints : defaultSnapPoints
+  );
+  const [snap, setSnap] = useState<number | string | null>(type ? 1 : "180px");
+
+  useEffect(() => {
+    if (type) {
+      // Initially set the snap points to the expanded state
+      setSnapPoints(expandedSnapPoints);
+      setSnap(1); // Fully expanded
+
+      // Revert back to the default snap points after a delay
+      const timer = setTimeout(() => {
+        setSnapPoints(defaultSnapPoints);
+      }, 1000); // Adjust the timeout as needed
+
+      return () => clearTimeout(timer);
+    }
+  }, [type]);
 
   // form validator
   const form = useForm<z.infer<typeof CommentSchema>>({
@@ -73,7 +97,7 @@ const PostDetailDrawer = ({ post }: any) => {
   const { watch } = form;
   const comment = watch("comment");
 
-  //
+  // submit comment form 
   async function onSubmit(data: z.infer<typeof CommentSchema>) {
     setIsLoading(true);
     const { comment } = data;
@@ -139,9 +163,11 @@ const PostDetailDrawer = ({ post }: any) => {
     <>
       <Drawer
         open
-        snapPoints={["180px", "355px", 1]}
+        snapPoints={snapPoints}
         activeSnapPoint={snap}
         setActiveSnapPoint={setSnap}
+        modal={false}
+        repositionInputs={false}
       >
         <DrawerContent className="h-full max-h-[97%]">
           <DrawerHeader className="flex flex-col items-center relative">
