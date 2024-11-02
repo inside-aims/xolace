@@ -42,7 +42,9 @@ import { CommentSchema } from "@/validation";
 import { getSupabaseBrowserClient } from "@/utils/supabase/client";
 import { useUserState } from "@/lib/store/user";
 
-const PostDetailDrawer = ({ post }: any) => {
+type Type = string | string[] | undefined;
+
+const PostDetailDrawer = ({ post, type }: { post: any; type: Type }) => {
   // get user data
   const user = useUserState((state) => state.user);
   // initialize supabase client
@@ -59,7 +61,7 @@ const PostDetailDrawer = ({ post }: any) => {
   const counter: number = 200;
 
   // initial height of the bottom drawer
-  const [snap, setSnap] = useState<number | string | null>("180px");
+  const [snap, setSnap] = useState<number | string | null>(type ? 1 : "180px");
 
   // form validator
   const form = useForm<z.infer<typeof CommentSchema>>({
@@ -142,6 +144,8 @@ const PostDetailDrawer = ({ post }: any) => {
         snapPoints={["180px", "355px", 1]}
         activeSnapPoint={snap}
         setActiveSnapPoint={setSnap}
+        modal={false}
+        repositionInputs={false}
       >
         <DrawerContent className="h-full max-h-[97%]">
           <DrawerHeader className="flex flex-col items-center relative">

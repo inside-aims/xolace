@@ -6,12 +6,22 @@ import Loader from "@/components/shared/Loader";
 import { Button } from "@/components/ui/button";
 import PostDetailDrawer from "@/components/ui/PostDetailDrawer";
 import { createClient } from "@/utils/supabase/server";
+import Link from "next/link";
 
 export const dynamic = "force-dynamic";
 
-const PostDetailPage = async ({ params }: { params: { postId: string } }) => {
+type Params = Promise<{ postId: string }>;
+type SearchParams = Promise<{ [key: string]: string | string[] | undefined }>;
+
+const PostDetailPage = async (props: {
+  params: Params;
+  searchParams: SearchParams;
+}) => {
+  const params = await props.params;
+  const searchParams = await props.searchParams;
   const supabase = createClient();
-  const { postId } = params;
+  const postId = params.postId;
+  const type = searchParams.type;
 
   // incase there is no post id
   if (!postId) {
@@ -43,7 +53,7 @@ const PostDetailPage = async ({ params }: { params: { postId: string } }) => {
 
   return (
     <>
-      {/* <Button
+      {/*<Button
         variant={"link"}
         className="dark:text-sky-500"
         onClick={() => router.back()}
@@ -54,7 +64,7 @@ const PostDetailPage = async ({ params }: { params: { postId: string } }) => {
       <DetailCard postId={postId} post={post} />
 
       {/* Drawer for comment form and comment cards */}
-      <PostDetailDrawer post={post} />
+      <PostDetailDrawer post={post} type={type} />
     </>
   );
 };
