@@ -64,6 +64,7 @@ const PostDetailDrawer = ({ post, type }: { post: any; type: Type }) => {
   const defaultSnapPoints = ["180px", "355px", 1];
   const expandedSnapPoints = [1]; // Fully expanded snap point
 
+  // set the initial snap points
   const [snapPoints, setSnapPoints] = useState(
     type ? expandedSnapPoints : defaultSnapPoints
   );
@@ -96,7 +97,7 @@ const PostDetailDrawer = ({ post, type }: { post: any; type: Type }) => {
   const { watch } = form;
   const comment = watch("comment");
 
-  //
+  // submit comment form 
   async function onSubmit(data: z.infer<typeof CommentSchema>) {
     setIsLoading(true);
     const { comment } = data;
