@@ -70,7 +70,10 @@ export function DetailCard({ postId, post }: { postId: any; post: any }) {
             }`}
           >
             {postMood.emoji}
-            {mood.toUpperCase()}
+            <span className=" animate-bounce duration-700 ease-in-out ">
+              {" "}
+              {post?.expires_in_24hr && "⏳"}
+            </span>
           </Button>
         </div>
       </CardFooter>

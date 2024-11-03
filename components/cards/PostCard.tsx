@@ -116,7 +116,6 @@ export function PostCard({ className, post, section }: PostCardType) {
             </Avatar>
             <div className="flex flex-col gap-1 items-start justify-center">
               <h5 className="text-small tracking-tight text-default-400">
-                {/* {section ? user.username : post.creator.username} */}
                 {post.author_name}
               </h5>
             </div>
@@ -151,12 +150,15 @@ export function PostCard({ className, post, section }: PostCardType) {
           <div>
             <Button
               type="button"
-              className={`flex gap-2 rounded-3xl dark:bg-transparent border border-gray-700 dark:text-white text-black  text-sm text-center ${
+              className={`flex gap-x-2 rounded-3xl dark:bg-transparent border border-gray-700 dark:text-white text-black  text-sm text-center ${
                 mood.style
               }`}
             >
               {mood.emoji}
-              {post?.mood.toUpperCase()}
+              <span className=" animate-bounce duration-700 ease-in-out ">
+                {" "}
+                {post?.expires_in_24hr && "⏳"}
+              </span>
             </Button>
           </div>
         </CardFooter>
