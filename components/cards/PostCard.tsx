@@ -1,5 +1,6 @@
 "use client";
 import * as React from "react";
+import { useEffect, useState } from "react";
 import { format } from "timeago.js";
 
 import {
@@ -8,34 +9,14 @@ import {
   CardFooter,
   CardHeader,
 } from "@/components/ui/card";
-import {
-  Dialog,
-  DialogContent,
-  DialogDescription,
-  DialogHeader,
-  DialogTitle,
-  DialogTrigger,
-} from "@/components/ui/dialog";
-import {
-  Drawer,
-  DrawerClose,
-  DrawerContent,
-  DrawerDescription,
-  DrawerFooter,
-  DrawerHeader,
-  DrawerTitle,
-  DrawerTrigger,
-} from "@/components/ui/drawer";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import Link from "next/link";
 import PostDropdown from "../shared/PostDropdown";
 import PostStats from "../shared/PostStats";
-import { useEffect, useState } from "react";
 import { Button } from "../ui/button";
 import { useUserState } from "@/lib/store/user";
-import { KvngSheet } from "../shared/KvngSheet";
-import { useMediaQuery } from "@/hooks/use-media-query";
 import ReportForm from "../forms/ReportForm";
+import KvngDialogDrawer from "../shared/KvngDialogDrawer";
 
 type PostCardType = {
   className?: string;
@@ -55,52 +36,30 @@ const moodMap: Record<string, { emoji: string; style: string }> = {
 export function PostCard({ className, post, section }: PostCardType) {
   // get user data
   const user = useUserState((state) => state.user);
-  const isDesktop = useMediaQuery("(min-width: 768px)");
 
   // states
   const [timestamp, setTimestamp] = useState("");
-  const [isSheetOpen, setIsSheetOpen] = useState<boolean>(false);
+  const [isOpen, setIsOpen] = useState<boolean>(false);
 
   // get mood from mood object
   const mood = moodMap[post?.mood] || moodMap["neutral"];
 
-  //
+  // convert created_at
   useEffect(() => {
     setTimestamp(format(post.created_at));
   }, [post]);
 
   return (
     <>
-      {isDesktop ? (
-        <Dialog open={isSheetOpen} onOpenChange={setIsSheetOpen}>
-          <DialogContent className="sm:max-w-[425px]">
-            <DialogHeader>
-              <DialogTitle>Report</DialogTitle>
-              <DialogDescription>
-                What area are you having problems with?
-              </DialogDescription>
-            </DialogHeader>
-            <ReportForm postId={post.id} />
-          </DialogContent>
-        </Dialog>
-      ) : (
-        <Drawer open={isSheetOpen} onOpenChange={setIsSheetOpen}>
-          <DrawerContent>
-            <DrawerHeader className="text-left">
-              <DrawerTitle>Report</DrawerTitle>
-              <DrawerDescription>
-                What area are you having problems with?
-              </DrawerDescription>
-            </DrawerHeader>
-            <ReportForm postId={post.id} />
-            <DrawerFooter className="pt-2">
-              <DrawerClose asChild>
-                <Button variant="outline">Cancel</Button>
-              </DrawerClose>
-            </DrawerFooter>
-          </DrawerContent>
-        </Drawer>
-      )}
+      {/* dialog or drawer to report post */}
+      <KvngDialogDrawer
+        title="Report Post"
+        isDialogDrawerOpen={isOpen}
+        setIsDialogDrawerOpen={setIsOpen}
+      >
+        <ReportForm postId={post.id} />
+      </KvngDialogDrawer>
+
       <Card
         className={`w-full  md:w-full mb-5 ${className} ring-1 ring-white/[0.05] transition duration-300 dark:ring-zinc-800 dark:hover:ring-zinc-700 dark:focus-visible:ring-[#FF2D20]`}
         id={post.id}
@@ -108,10 +67,7 @@ export function PostCard({ className, post, section }: PostCardType) {
         <CardHeader className=" flex-row justify-between items-start px-4 py-2 ">
           <div className="flex gap-2 md:gap-4 items-center">
             <Avatar>
-              <AvatarImage
-                //   src={section ? user?.avatarUrl : post.creator?.avatarUrl}
-                src={post.author_avatar_url}
-              />
+              <AvatarImage src={post.author_avatar_url} />
               <AvatarFallback>XO</AvatarFallback>
             </Avatar>
             <div className="flex flex-col gap-1 items-start justify-center">
@@ -127,23 +83,11 @@ export function PostCard({ className, post, section }: PostCardType) {
             postCard
             postId={post.id}
             postCreatedBy={post.created_by}
-            onOpenChange={setIsSheetOpen}
+            onOpenChange={setIsOpen}
           />
         </CardHeader>
         <Link href={`post/${post.id}`}>
-          <CardContent>
-            {post.content}
-            {/* <p>
-            Frontend developer and UI/UX enthusiast. Join me on this coding
-            adventure!
-          </p>
-          <span className="pt-2">
-            #FrontendWithZoey
-            <span className="py-2" aria-label="computer" role="img">
-              💻
-            </span>
-          </span> */}
-          </CardContent>
+          <CardContent>{post.content}</CardContent>
         </Link>
         <CardFooter className="flex justify-between items-center">
           <PostStats post={post} userId={user?.id} />

@@ -30,9 +30,10 @@ import { getSupabaseBrowserClient } from "@/utils/supabase/client";
 
 interface ReportFormProps {
   postId?: any;
+  commentId?: any;
 }
 
-const ReportForm = ({ postId }: ReportFormProps) => {
+const ReportForm = ({ postId, commentId }: ReportFormProps) => {
   const { toast } = useToast();
 
   // initialize supabase client
@@ -46,10 +47,10 @@ const ReportForm = ({ postId }: ReportFormProps) => {
     description: z
       .string()
       .min(10, {
-        message: "Report must be at least 10 characters.",
+        message: "Report Description must be at least 10 characters.",
       })
       .max(200, {
-        message: "Report must not be longer than 300 characters.",
+        message: "Report Description must not be longer than 300 characters.",
       }),
     severity: z.string(),
     otherReason: z
@@ -75,8 +76,6 @@ const ReportForm = ({ postId }: ReportFormProps) => {
 
   //
   async function onSubmit(data: z.infer<typeof ReportSchema>) {
-
-
     // extract severity
     const { description, severity, otherReason } = data;
     let getReason = "";
@@ -105,6 +104,7 @@ const ReportForm = ({ postId }: ReportFormProps) => {
       severity: numSeverity,
       reason: getReason,
       post_id: postId,
+      comment_id: commentId,
     };
 
     const { error: reportError } = await supabase
@@ -131,7 +131,7 @@ const ReportForm = ({ postId }: ReportFormProps) => {
     // show notification
     toast({
       variant: "default",
-      title: "Report received. Our Team investigate the issue soon!💢",
+      title: "Report received. Our Team will investigate the issue soon!💢",
     });
 
     setIsLoading(false);
