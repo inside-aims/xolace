@@ -120,23 +120,25 @@ export function PostForm() {
           name="content"
           render={({ field }) => (
             <FormItem className="relative">
-              <FormControl>
-                <Textarea
-                  placeholder="What's on your mind?"
-                  className={`resize-none h-[130px] text-dark-2 dark:text-white transition-all duration-300
+              <FormControl className="relative">
+                <>
+                  <Textarea
+                    placeholder="What's on your mind?"
+                    className={`resize-none h-[130px] text-dark-2 dark:text-white transition-all duration-300
                     ${isHappy && "border-green-500 dark:border-green-400"} ${isSad && "border-blue dark:border-sky-400"}
                     ${isAngry && "border-red-500 dark:border-red-400"} ${isConfused && "border-yellow-500 dark:border-yellow-400"}
                     `}
-                  {...field}
-                />
+                    {...field}
+                  />
+                </>
               </FormControl>
 
               {/* mood icon */}
-              <div className=" absolute bottom-3 left-3">{mood.icon}</div>
+              <div className=" absolute bottom-7 left-3">{mood.icon}</div>
 
               {/* checkbox*/}
 
-              <div className="absolute bottom-3 right-3">
+              <div className="absolute bottom-8 right-3 h-5 w-5">
                 <Checkbox
                   indicator={<Hours />}
                   className=" transform duration-300 ease-in-out"
@@ -148,13 +150,15 @@ export function PostForm() {
               {/* <FormDescription>
                 You can <span>@mention</span> other users and organizations.
               </FormDescription> */}
-              <FormMessage />
+              <div className="h-4">
+                <FormMessage />
+              </div>
             </FormItem>
           )}
         />
 
         {/* mood buttons */}
-        <div className="flex items-center gap-3 flex-wrap">
+        <div className="flex items-center gap-3 flex-wrap !mt-2">
           {postMoods.map((mood) => (
             <Button
               key={mood.id}
