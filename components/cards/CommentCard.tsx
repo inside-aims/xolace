@@ -1,5 +1,6 @@
 "use client";
 import * as React from "react";
+import { useEffect, useState } from "react";
 import { format } from "timeago.js";
 
 import { Button } from "@/components/ui/button";
@@ -11,11 +12,32 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from "@/components/ui/dialog";
+import {
+  Drawer,
+  DrawerClose,
+  DrawerContent,
+  DrawerDescription,
+  DrawerFooter,
+  DrawerHeader,
+  DrawerTitle,
+  DrawerTrigger,
+} from "@/components/ui/drawer";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import PostDropdown from "../shared/PostDropdown";
-import { useEffect, useState } from "react";
+
+import { useMediaQuery } from "@/hooks/use-media-query";
+import ReportForm from "../forms/ReportForm";
 
 const CommentCard = ({ comment }: any) => {
+  const isDesktop = useMediaQuery("(min-width: 768px)");
   // states
   const [isSheetOpen, setIsSheetOpen] = useState<boolean>(false);
   const [timestamp, setTimestamp] = useState("");
@@ -34,6 +56,38 @@ const CommentCard = ({ comment }: any) => {
   //   );
   // }
   return (
+    <>
+     {isDesktop ? (
+        <Dialog open={isSheetOpen} onOpenChange={setIsSheetOpen}>
+          <DialogContent className="sm:max-w-[425px]">
+            <DialogHeader>
+              <DialogTitle>Report</DialogTitle>
+              <DialogDescription>
+                What area are you having problems with?
+              </DialogDescription>
+            </DialogHeader>
+            <ReportForm commentId={comment.id} />
+          </DialogContent>
+        </Dialog>
+      ) : (
+        <Drawer open={isSheetOpen} onOpenChange={setIsSheetOpen}>
+          <DrawerContent>
+            <DrawerHeader className="text-left">
+              <DrawerTitle>Report</DrawerTitle>
+              <DrawerDescription>
+                What area are you having problems with?
+              </DrawerDescription>
+            </DrawerHeader>
+            <ReportForm commentId={comment.id} />
+            <DrawerFooter className="pt-2">
+              <DrawerClose asChild>
+                <Button variant="outline">Cancel</Button>
+              </DrawerClose>
+            </DrawerFooter>
+          </DrawerContent>
+        </Drawer>
+      )}
+    
     <Card className="w-[350px] md:w-full mb-5 dark:bg-dark-3">
       <CardHeader className=" flex-row justify-between items-start px-4 py-2 ">
         <div className="flex gap-2 items-center">
@@ -51,8 +105,8 @@ const CommentCard = ({ comment }: any) => {
           </small>
         </div>
         <PostDropdown
-          comment={true}
           postId={""}
+          comment={true}
           commentId={comment.id}
           commentCreatedBy={comment.created_by}
           onOpenChange={setIsSheetOpen}
@@ -60,6 +114,7 @@ const CommentCard = ({ comment }: any) => {
       </CardHeader>
       <CardContent className=" ">{comment.comment_text}</CardContent>
     </Card>
+    </>
   );
 };
 

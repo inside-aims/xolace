@@ -30,9 +30,10 @@ import { getSupabaseBrowserClient } from "@/utils/supabase/client";
 
 interface ReportFormProps {
   postId?: any;
+  commentId?: any;
 }
 
-const ReportForm = ({ postId }: ReportFormProps) => {
+const ReportForm = ({ postId, commentId }: ReportFormProps) => {
   const { toast } = useToast();
 
   // initialize supabase client
@@ -105,6 +106,7 @@ const ReportForm = ({ postId }: ReportFormProps) => {
       severity: numSeverity,
       reason: getReason,
       post_id: postId,
+      comment_id: commentId,
     };
 
     const { error: reportError } = await supabase
