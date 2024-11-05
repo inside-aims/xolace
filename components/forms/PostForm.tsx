@@ -103,10 +103,6 @@ export function PostForm() {
     }
   }
 
-  useEffect(() => {
-    router.prefetch(`post/[postId]`);
-  }, []);
-
   const Hours = () => <p className="text-[9px]">24h</p>;
 
   return (
