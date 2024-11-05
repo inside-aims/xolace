@@ -88,7 +88,6 @@ export function PostForm() {
           variant: "default",
           title: "Post created successfully🤭 !",
         });
-        router.push(urlPath(`/post/${postData.id}`));
       }
     } catch (error: any) {
       toast({
@@ -100,6 +99,7 @@ export function PostForm() {
     } finally {
       setIsLoading(false);
       form.reset();
+      setMood(postMoods[0]);
     }
   }
 
