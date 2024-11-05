@@ -13,6 +13,7 @@ import {
 } from "@/components/ui/dialog";
 import { KvngSheet } from "../shared/KvngSheet";
 import { MailPlus } from "lucide-react";
+import FeedbackForm from "../forms/FeedbackForm";
 
 const ChannelContributionCard = () => {
   return (
@@ -53,7 +54,8 @@ const ChannelContributionCard = () => {
           <div>
             <p className=" text-lg text-gray-500 p-2">
               <span className="emoji">&#x1F4B0;</span> To sponser or donate to
-              the Atlas Innovation  team (visit our FAQs to find out why we need donations)
+              the Atlas Innovation team (visit our FAQs to find out why we need
+              donations)
             </p>
             <p className="px-2">Sponsor Anonymously</p>
             <p className="p-2 dark:text-gray-300">
@@ -86,7 +88,12 @@ const ChannelContributionCard = () => {
               </a>
             </div>
             <div>
-              <KvngSheet />
+              <KvngSheet
+                title="Feedback"
+                description="Provide your valuable feedback to the team"
+              >
+                <FeedbackForm />
+              </KvngSheet>
             </div>
           </div>
         </DialogContent>
