@@ -2,6 +2,7 @@
 
 import { useState, useEffect } from "react";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 
 import {
   DropdownMenu,
@@ -11,11 +12,10 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-// import { handleDelete } from "@/hooks/useDelete";
 import { useToast } from "../ui/use-toast";
-import React from "react";
 import { useUserState } from "@/lib/store/user";
 import { getSupabaseBrowserClient } from "@/utils/supabase/client";
+
 
 type DropdownMenuProp = {
   comment?: boolean;
@@ -38,6 +38,7 @@ const PostDropdown: React.FC<DropdownMenuProp> = ({
   commentCreatedBy,
   onOpenChange,
 }) => {
+  const router = useRouter();
   const user = useUserState((state) => state.user);
   const supabase = getSupabaseBrowserClient();
   const { toast } = useToast();
@@ -91,6 +92,7 @@ const PostDropdown: React.FC<DropdownMenuProp> = ({
           title: "Error deleting post",
           description: "Oops! Something went wrong , please try again 👀 ",
         });
+        console.log(deleteError);
         throw new Error();
       }
 
@@ -98,6 +100,9 @@ const PostDropdown: React.FC<DropdownMenuProp> = ({
       toast({
         title: `Successfully Deleted Post.💯 `,
       });
+
+      // navigate to feed page if its the details page
+      postDetail && router.replace('/feed')
     } catch (error) {
       console.log(error);
       toast({
