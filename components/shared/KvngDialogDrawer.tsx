@@ -24,8 +24,6 @@ interface KvngDialogDrawerProps {
   isDialogDrawerOpen: boolean;
   setIsDialogDrawerOpen: React.Dispatch<React.SetStateAction<boolean>>;
   children: React.ReactNode;
-  postId?: any;
-  commentId?: any;
   title?: string;
 }
 
