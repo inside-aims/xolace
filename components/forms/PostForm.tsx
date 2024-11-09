@@ -24,6 +24,7 @@ import { getSupabaseBrowserClient } from "@/utils/supabase/client";
 import { urlPath } from "@/utils/url-helpers";
 import { postMoods } from "@/constants";
 import { Checkbox } from "../ui/checkbox";
+import { Send } from "lucide-react";
 
 export function PostForm() {
   const supabase = getSupabaseBrowserClient();
@@ -193,7 +194,7 @@ export function PostForm() {
                 <p>Loading...</p>
               </span>
             ) : (
-              "Submit"
+              <Send size={20} strokeWidth={1.75} absoluteStrokeWidth />
             )}
           </Button>
           <p
