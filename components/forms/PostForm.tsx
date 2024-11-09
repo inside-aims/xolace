@@ -138,7 +138,7 @@ export function PostForm() {
               <div className="absolute bottom-8 right-3 h-5 w-5">
                 <Checkbox
                   indicator={<Hours />}
-                  className=" transform duration-300 ease-in-out"
+                  className=" transform duration-300 ease-in-out data-[state=checked]:bg-amber-300 "
                   checked={isChecked}
                   onCheckedChange={(value) => setIsChecked(value)}
                 />
