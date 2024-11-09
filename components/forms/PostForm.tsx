@@ -183,7 +183,9 @@ export function PostForm() {
             </Button>
           ))}
         </div> */}
+        <div className="w-full max-sm:px-10">
         <MoodCarousel selectedMood={selectedMood} setSelectedMood={setSelectedMood}/>
+        </div>
 
         <div className=" flex justify-between items-center">
           <Button
