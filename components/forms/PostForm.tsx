@@ -183,7 +183,7 @@ export function PostForm() {
             </Button>
           ))}
         </div> */}
-        <div className="w-full max-sm:px-10">
+        <div className="w-full max-sm:px-10 !mt-1 ">
         <MoodCarousel selectedMood={selectedMood} setSelectedMood={setSelectedMood}/>
         </div>
 

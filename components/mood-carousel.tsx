@@ -59,7 +59,7 @@ export default function MoodCarousel({
       }}
       className="w-full  sm:max-w-md md:max-w-lg lg:max-w-xl xl:max-w-2xl mx-auto !mt-1"
     >
-      <CarouselContent className="-ml-2 md:-ml-4">
+      <CarouselContent className="ml-1 md:-ml-4">
         {postMoods.map((mood) => (
           <CarouselItem
             key={mood.id}
