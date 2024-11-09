@@ -41,6 +41,7 @@ import Loader from "../shared/Loader";
 import { CommentSchema } from "@/validation";
 import { getSupabaseBrowserClient } from "@/utils/supabase/client";
 import { useUserState } from "@/lib/store/user";
+import { Send } from "lucide-react";
 
 type Type = string | string[] | undefined;
 
@@ -224,7 +225,7 @@ const PostDetailDrawer = ({ post, type }: { post: any; type: Type }) => {
                         <Loader /> <span>Loading</span>
                       </div>
                     ) : (
-                      "Submit"
+                      <Send size={20} strokeWidth={1.75} absoluteStrokeWidth />
                     )}
                   </Button>
                   <p

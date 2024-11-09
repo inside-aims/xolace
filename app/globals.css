@@ -162,7 +162,7 @@ body {
   }
 
   .topbar {
-    @apply fixed top-0 z-30 flex w-full items-center justify-between bg-white dark:bg-black dark:opacity-100 opacity-[0.96]  border-b dark:border-gray-700/90 px-6 py-4;
+    @apply fixed top-0 z-30 flex w-full items-center justify-between bg-white dark:bg-black dark:opacity-100 opacity-[0.96]  border-b dark:border-gray-700/90 px-6 py-3 md:py-4 ;
   }
 
   .bottombar {

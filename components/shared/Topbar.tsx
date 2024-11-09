@@ -3,6 +3,7 @@
 import React, { useState, useEffect } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
+import Image from "next/image";
 
 import ThemeSwitch from "../ui/ThemeSwitch";
 import { MenuToggle } from "../ui/MenuToggle";
@@ -42,21 +43,27 @@ function Topbar() {
 
   return (
     <nav className=" topbar ">
-      {/* <Link href="/" className="flex items-center gap-4">
-            <Image src="/assets/logo.svg" alt="logo" width={28} height={28} />
-            <p className="text-heading3-bold text-light-1 max-xs:hidden">Threads</p>
-            </Link> */}
-      <div className="shrink-0 flex items-center z-40 relative">
-        <Link href={"/feed"} className="md:hidden">
-          <div className=" font-tiltNeon font-tilt z-50 absolute   left-10 -top-10 text-[52px]  text-center">
-            <span className="letter-mask">X</span>
-            <span className="letter-mask !text-amber-400">o</span>
-            <span className="letter-mask">l</span>
-            <span className="letter-mask">a</span>
-            <span className="letter-mask">c</span>
-            <span className="letter-mask">e</span>
-          </div>
+      <div className=" flex items-center gap-x-4">
+        <Link href="/" className="flex items-center gap-4">
+          <Image
+            src="/assets/images/anonymous-messenger.png"
+            alt="logo"
+            width={32}
+            height={32}
+          />
         </Link>
+        <div className="shrink-0 flex items-center z-40 relative">
+          <Link href={"/feed"} className="max-md:hidden">
+            <div className=" font-tiltNeon font-tilt z-50  text-[35px]  text-center">
+              <span className="letter-mask">X</span>
+              <span className="letter-mask !text-amber-400">o</span>
+              <span className="letter-mask">l</span>
+              <span className="letter-mask">a</span>
+              <span className="letter-mask">c</span>
+              <span className="letter-mask">e</span>
+            </div>
+          </Link>
+        </div>
       </div>
 
       <div className=" flex items-center gap-5">

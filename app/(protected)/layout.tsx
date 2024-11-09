@@ -32,7 +32,7 @@ export default async function ProtectedLayout({
       <Topbar />
       <main className="flex flex-row">
         <LeftSidebar />
-        <section className=" main-container pt-20">
+        <section className=" main-container pt-28">
           <div className=" w-full max-w-4xl px-1">{children}</div>
         </section>
       </main>
