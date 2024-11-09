@@ -25,21 +25,23 @@ import { urlPath } from "@/utils/url-helpers";
 import { postMoods } from "@/constants";
 import { Checkbox } from "../ui/checkbox";
 import { Send } from "lucide-react";
+import MoodCarousel from "../mood-carousel";
+import { Mood } from "@/types";
 
 export function PostForm() {
   const supabase = getSupabaseBrowserClient();
   const { toast } = useToast();
   const router = useRouter();
   const [isLoading, setIsLoading] = useState(false);
-  const [mood, setMood] = useState(postMoods[0]);
+  const [selectedMood, setSelectedMood] = useState<Mood | null>(postMoods[0])
   const [isChecked, setIsChecked] = useState<"indeterminate" | boolean>(false);
 
   // get mood boolean value
-  const isNeutral = mood.value === "neutral";
-  const isHappy = mood.value === "happy";
-  const isSad = mood.value === "sad";
-  const isAngry = mood.value === "angry";
-  const isConfused = mood.value === "confused";
+  const isNeutral = selectedMood?.value === "neutral";
+  const isHappy = selectedMood?.value === "happy";
+  const isSad = selectedMood?.value === "sad";
+  const isAngry = selectedMood?.value === "angry";
+  const isConfused = selectedMood?.value === "confused";
 
   //  counter for comment fields
   const counter: number = 300;
@@ -68,7 +70,7 @@ export function PostForm() {
         .from("posts")
         .insert({
           content,
-          mood: mood.value,
+          mood: selectedMood?.value,
           expires_in_24hr: isChecked,
         })
         .select()
@@ -100,7 +102,7 @@ export function PostForm() {
     } finally {
       setIsLoading(false);
       form.reset();
-      setMood(postMoods[0]);
+      setSelectedMood(postMoods[0]);
     }
   }
 
@@ -131,7 +133,7 @@ export function PostForm() {
               </FormControl>
 
               {/* mood icon */}
-              <div className=" absolute bottom-7 left-3">{mood.icon}</div>
+              <div className=" absolute bottom-7 left-3">{selectedMood?.icon}</div>
 
               {/* checkbox*/}
 
@@ -155,7 +157,7 @@ export function PostForm() {
         />
 
         {/* mood buttons */}
-        <div className="flex items-center gap-3 flex-wrap !mt-2">
+        {/* <div className="flex items-center gap-3 flex-wrap !mt-2">
           {postMoods.map((mood) => (
             <Button
               key={mood.id}
@@ -180,6 +182,9 @@ export function PostForm() {
               {` ${mood.icon} ${mood.label}`}
             </Button>
           ))}
+        </div> */}
+        <div className="w-full max-sm:px-10 !mt-1 ">
+        <MoodCarousel selectedMood={selectedMood} setSelectedMood={setSelectedMood}/>
         </div>
 
         <div className=" flex justify-between items-center">
