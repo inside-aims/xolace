@@ -122,7 +122,7 @@ const SignUpForm = () => {
                   placeholder="Email"
                   {...field}
                   type="email"
-                  className="w-full max-sm:py-6 md:h-12 mb-4 text-black dark:text-white"
+                  className="w-full max-sm:py-6 sm:py-5 md:h-12 mb-4 text-black dark:text-white"
                   required
                   autoComplete="off"
                 />
@@ -143,7 +143,7 @@ const SignUpForm = () => {
                   <Input
                     placeholder="********"
                     {...field}
-                    className="w-full max-sm:py-6 md:h-12"
+                    className="w-full max-sm:py-6 sm:py-5 md:h-12"
                     type={showPassword ? "text" : "password"}
                     required
                     autoComplete="off"

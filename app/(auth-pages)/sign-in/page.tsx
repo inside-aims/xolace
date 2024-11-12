@@ -28,7 +28,7 @@ export default function Login({ searchParams }: { searchParams: any }) {
           blurDataURL="iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mM8f+pUPQAHtwLkNZHWpAAAAABJRU5ErkJggg=="
         />
       </div>
-      <div className=" max-sm:w-full sm:w-[70%] lg:w-[40%]   flex flex-col justify-center py-2 md:px-12 mt-[270px] sm:mt-[41%] md:mt-[50%] lg:mt-[25%] items-center">
+      <div className=" max-sm:w-full sm:w-[70%] lg:w-[40%]   flex flex-col justify-center py-2 md:px-12 mt-[270px] sm:mt-[300px] md:mt-[320px] lg:mt-[330px] items-center">
         <SignInForm formType={formType} />
       </div>
     </div>

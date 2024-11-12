@@ -72,7 +72,7 @@ const AnonymousSignIn = () => {
   };
 
   return (
-    <div className="mt-2">
+    <div className=" mt-4 lg:mt-2">
       <AlertDialog>
         <AlertDialogTrigger asChild>
           <Button variant="secondary" className="w-full font-bold uppercase">

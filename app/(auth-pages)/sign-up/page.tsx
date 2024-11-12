@@ -21,7 +21,7 @@ export default function Signup({ searchParams }: { searchParams: Message }) {
             blurDataURL="iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mM8f+pUPQAHtwLkNZHWpAAAAABJRU5ErkJggg=="
           />
         </div>
-        <div className=" max-sm:w-full md:w-[40%] flex flex-col justify-center md:px-12 mt-[85%] md:mt-[25%] items-center ">
+        <div className=" max-sm:w-full sm:w-[70%] lg:w-[40%]  flex flex-col justify-center md:px-12 mt-[270px] sm:mt-[320px]  lg:mt-[330px] items-center ">
           <SignUpForm />
         </div>
       </div>
