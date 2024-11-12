@@ -27,6 +27,10 @@ export async function POST(request: any) {
     return NextResponse.redirect(builderUrl("/error", request), 302);
   }
 
+  if (username.length < 2 || password.length < 8) {
+    return NextResponse.redirect(builderUrl("/error", request), 302);
+  }
+
   const [, emailHost] = email.split("@");
 
   const supabaseAdmin = getSupabaseAdminClient();
