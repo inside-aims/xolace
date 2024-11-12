@@ -55,7 +55,7 @@ const AnonymousSignIn = () => {
       .insert({
         username: `Anonymous${generateRandomNumber({ min: 1, max: 10000 })}`,
         supabase_user: AnonUser.id,
-        avatar_url: "https://avatar.iran.liara.run/public",
+        avatar_url: `https://avatar.iran.liara.run/public/${generateRandomNumber({ min:1 , max : 100})}`,
       })
       .select()
       .single();
@@ -64,7 +64,7 @@ const AnonymousSignIn = () => {
     console.log(profileError);
 
     toast({
-      title: "��� Anonymous Sign-in Successful!",
+      title: " 🥷 Anonymous Sign-in Successful!",
       description: "You've been signed in anonymously.",
     });
     // Redirect to the feed page or your desired page after successful sign-in
