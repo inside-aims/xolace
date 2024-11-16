@@ -123,7 +123,7 @@ const SignInForm = ({ formType }: { formType: string }) => {
                     placeholder="Email"
                     {...field}
                     type="email"
-                    className="w-full max-sm:py-6 md:h-12 mb-4 text-black dark:text-white"
+                    className="w-full max-sm:py-6 sm:py-5 md:h-12 mb-4 text-black dark:text-white"
                     required
                     autoComplete="off"
                   />
@@ -142,11 +142,11 @@ const SignInForm = ({ formType }: { formType: string }) => {
             render={({ field }) => (
               <FormItem>
                 <FormControl>
-                  <div className=" relative mb-1">
+                  <div className=" relative max-sm:mb-2 mb-1">
                     <Input
                       placeholder="********"
                       {...field}
-                      className="w-full max-sm:py-6 md:h-12 text-black dark:text-white"
+                      className="w-full max-sm:py-6 sm:py-5 md:h-12 text-black dark:text-white"
                       type={showPassword ? "text" : "password"}
                       required
                       autoComplete="off"
@@ -167,7 +167,7 @@ const SignInForm = ({ formType }: { formType: string }) => {
             control={form.control}
             name="remember"
             render={({ field }) => (
-              <FormItem className="flex justify-between items-start px-2 mb-5  relative">
+              <FormItem className="flex justify-between items-start px-2 max-sm:mb-8 mb-5  relative">
                 <div className=" flex flex-row items-center space-x-2  ">
                   <FormControl>
                     <Checkbox

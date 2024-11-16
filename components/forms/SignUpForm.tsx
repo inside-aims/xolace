@@ -30,6 +30,7 @@ import { urlPath } from "@/utils/url-helpers";
 
 const male: "male" = "male";
 const female: string = "female";
+const emailRegex = /^\S+@\S+$/;
 const SignUpForm = () => {
   const router = useRouter();
 
@@ -74,11 +75,14 @@ const SignUpForm = () => {
 
   //
   const handleClick = () => {
-    setLoading(true);
-    toast({
-      variant: "default",
-      title: " ➰ Creating account and profile in a moment 🧐",
-    });
+    if(username.length >= 2 && password.length >= 8 && emailRegex.test(email)){
+      setLoading(true);
+      toast({
+        variant: "default",
+        title: " ➰ Creating account and profile in a moment 🧐",
+      });
+    }
+   
   };
 
   return (
@@ -122,7 +126,7 @@ const SignUpForm = () => {
                   placeholder="Email"
                   {...field}
                   type="email"
-                  className="w-full max-sm:py-6 md:h-12 mb-4 text-black dark:text-white"
+                  className="w-full max-sm:py-6 sm:py-5 md:h-12 mb-4 text-black dark:text-white"
                   required
                   autoComplete="off"
                 />
@@ -143,7 +147,7 @@ const SignUpForm = () => {
                   <Input
                     placeholder="********"
                     {...field}
-                    className="w-full max-sm:py-6 md:h-12"
+                    className="w-full max-sm:py-6 sm:py-5 md:h-12"
                     type={showPassword ? "text" : "password"}
                     required
                     autoComplete="off"
@@ -161,7 +165,7 @@ const SignUpForm = () => {
 
         {/* gender radio field */}
 
-        {username.length >= 5 && password.length >= 8 && (
+        {username.length >= 2 && password.length >= 8 && (
           <FormField
             control={form.control}
             name="type"
