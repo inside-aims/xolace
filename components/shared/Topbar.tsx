@@ -50,6 +50,15 @@ function Topbar() {
             alt="logo"
             width={32}
             height={32}
+            className="hidden dark:block"
+          />
+
+<Image
+            src="/assets/images/anonymous-messenger_light.png"
+            alt="logo"
+            width={32}
+            height={32}
+            className="dark:hidden block"
           />
         </Link>
         <div className="shrink-0 flex items-center z-40 relative">
