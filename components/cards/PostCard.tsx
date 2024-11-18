@@ -2,6 +2,7 @@
 import * as React from "react";
 import { useEffect, useState } from "react";
 import { format } from "timeago.js";
+import Image from "next/image";
 
 import {
   Card,
@@ -17,6 +18,7 @@ import { Button } from "../ui/button";
 import { useUserState } from "@/lib/store/user";
 import ReportForm from "../forms/ReportForm";
 import KvngDialogDrawer from "../shared/KvngDialogDrawer";
+import { moodMap } from "@/types";
 
 type PostCardType = {
   className?: string;
@@ -24,14 +26,7 @@ type PostCardType = {
   section?: "profile";
 };
 
-// Map mood to emoji and button style
-const moodMap: Record<string, { emoji: string; style: string }> = {
-  neutral: { emoji: "😐", style: "border-zinc-600 bg-gray-500" },
-  happy: { emoji: "😆", style: "border-green-500 bg-green-400" },
-  sad: { emoji: "🥹", style: "border-blue bg-blue-400" },
-  angry: { emoji: "😠", style: "border-red-500 bg-red-400" },
-  confused: { emoji: "🫤", style: "border-yellow-500 bg-yellow-400" },
-};
+
 
 export function PostCard({ className, post, section }: PostCardType) {
   // get user data
@@ -98,7 +93,20 @@ export function PostCard({ className, post, section }: PostCardType) {
                 mood.style
               }`}
             >
-              {mood.emoji}
+              <span>
+                {mood.gif ? (
+                  <Image
+                    src={mood.gif}
+                    alt="Sad Emoji"
+                    width={24}
+                    height={24}
+                    className="h-6 "
+                  />
+                ) : (
+                  mood.emoji
+                )}
+              </span>
+
               <span className=" animate-bounce duration-700 ease-in-out ">
                 {" "}
                 {post?.expires_in_24hr && "⏳"}

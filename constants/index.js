@@ -74,6 +74,7 @@ export const postMoods = [
     value: "sad",
     icon: "🥹",
     color: "yellow",
+    gif: "/assets/gifs/post-moods/sad-deactivate.gif"
   },
   {
     id: 4,

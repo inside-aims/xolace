@@ -1,5 +1,6 @@
 "use client";
 import { useState } from "react";
+import Image from "next/image";
 import { format } from "timeago.js";
 
 import { Button } from "@/components/ui/button";
@@ -15,15 +16,9 @@ import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import PostDropdown from "../shared/PostDropdown";
 import ReportForm from "../forms/ReportForm";
 import { KvngSheet } from "../shared/KvngSheet";
+import { moodMap } from "@/types";
 
-// Map mood to emoji and button style
-const moodMap: Record<string, { emoji: string; style: string }> = {
-  neutral: { emoji: "😐", style: "border-zinc-600 bg-gray-500" },
-  happy: { emoji: "😆", style: "border-green-500 bg-green-400" },
-  sad: { emoji: "🥹", style: "border-blue bg-blue-400" },
-  angry: { emoji: "😠", style: "border-red-500 bg-red-400" },
-  confused: { emoji: "🫤", style: "border-yellow-500 bg-yellow-400" },
-};
+
 
 export function DetailCard({ postId, post }: { postId: any; post: any }) {
   const [isSheetOpen, setIsSheetOpen] = useState<boolean>(false);
@@ -66,7 +61,20 @@ export function DetailCard({ postId, post }: { postId: any; post: any }) {
                 postMood.style
               }`}
             >
-              {postMood.emoji}
+
+              <span>
+                {postMood.gif ? (
+                  <Image
+                    src={postMood.gif}
+                    alt="Sad Emoji"
+                    width={24}
+                    height={24}
+                    className="h-6 "
+                  />
+                ) : (
+                  postMood.emoji
+                )}
+              </span>
               <span className=" animate-bounce duration-700 ease-in-out ">
                 {" "}
                 {post?.expires_in_24hr && "⏳"}

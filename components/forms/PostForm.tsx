@@ -1,6 +1,7 @@
 "use client";
 
 import React, { useState, useEffect } from "react";
+import Image from "next/image";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
@@ -133,7 +134,23 @@ export function PostForm() {
               </FormControl>
 
               {/* mood icon */}
-              <div className=" absolute bottom-7 left-3">{selectedMood?.icon}</div>
+              <div className=" absolute bottom-7 left-3">{selectedMood?.value === "sad" ? (
+                <span>
+                  {selectedMood.gif ? (
+                    <Image
+                      src={selectedMood.gif}
+                      alt="Sad Emoji"
+                      width={24}
+                      height={24}
+                      className="h-6 sm:h-7 sm:w-7"
+                    />
+                  ) : (
+                    selectedMood.icon
+                  )}
+                </span>
+              ) : (
+                <span className="text-sm sm:text-lg">{selectedMood?.icon}</span>
+              )}</div>
 
               {/* checkbox*/}
 

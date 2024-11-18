@@ -12,6 +12,7 @@ import {
 import useEmblaCarousel from "embla-carousel-react";
 import { postMoods } from "@/constants";
 import { Mood } from "@/types";
+import Image from "next/image";
 
 type MoodCarouselProps = {
   selectedMood: Mood | null;
@@ -70,7 +71,19 @@ export default function MoodCarousel({
               className={`w-full py-1 flex flex-col items-center justify-center rounded-3xl border dark:bg-transparent ${getMoodStyle(mood)}`}
               onClick={() => setSelectedMood(mood)}
             >
-              <span className="text-sm sm:text-lg">{mood.icon}</span>
+              {mood.gif ? (
+                <span>
+                  <Image
+                    src={mood.gif}
+                    alt="Sad Emoji"
+                    width={24}
+                    height={24}
+                    className="h-6 sm:h-7 sm:w-7"
+                  />
+                </span>
+              ) : (
+                <span className="text-sm sm:text-lg">{mood.icon}</span>
+              )}
             </Button>
           </CarouselItem>
         ))}
