@@ -4,4 +4,5 @@ export type Mood = {
     value: string
     icon: string
     color: string
+    gif?: string
   }
