@@ -4,17 +4,6 @@ import React, { useEffect, useState } from "react";
 
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Separator } from "@/components/ui/separator";
-import { Button } from "@/components/ui/button";
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardFooter,
-  CardHeader,
-  CardTitle,
-} from "@/components/ui/card";
-import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 
 import { PostCard } from "@/components/cards/PostCard";
@@ -25,6 +14,7 @@ import { ScrollArea } from "@/components/ui/scroll-area";
 import Loader from "@/components/shared/Loader";
 import { useUserState } from "@/lib/store/user";
 import { getSupabaseBrowserClient } from "@/utils/supabase/client";
+import BlurFade from "@/components/ui/blur-fade";
 
 const Profile = () => {
   // get user profile data
@@ -33,7 +23,7 @@ const Profile = () => {
   // initialize supabase client
   const supabase = getSupabaseBrowserClient();
 
-  const [isLoadingPosts, setIsLoadingPosts] = useState(false);
+  const [isLoadingPosts, setIsLoadingPosts] = useState(true);
   const [posts, setPosts] = useState<any>([]);
 
   // fetch user posts
@@ -58,12 +48,12 @@ const Profile = () => {
         console.error(error);
       } else {
         setPosts(postData);
+        setIsLoadingPosts(false);
       }
     };
 
-    setIsLoadingPosts(true);
     fetchUserPosts();
-    setIsLoadingPosts(false);
+    
   }, []);
 
   return (
@@ -77,7 +67,7 @@ const Profile = () => {
           <h5 className="text-small tracking-tight text-default-400 text-dark-2 dark:text-white">
             {user?.username}
           </h5>
-          <h4 className="text-dark-4/65 dark:text-gray-400">{posts.length}</h4>
+          <h4 className="text-dark-4/65 dark:text-gray-400">{posts?.length}</h4>
         </div>
       </div>
       <Separator className=" my-4" />
@@ -93,16 +83,19 @@ const Profile = () => {
               {isLoadingPosts ? (
                 <Loader />
               ) : (
+              posts?.length > 0 ?
+              (
                 <ul className="flex flex-col flex-1 gap-3 w-full ">
-                  {posts.map((post: any) => (
-                    <li key={post.id} className="flex justify-center w-full">
-                      <PostCard post={post} section="profile" />
-                    </li>
-                  ))}
-                </ul>
+                {posts?.map((post: any, idx : number) => (
+                  <BlurFade key={post.id} className="flex justify-center w-full" delay={0.15 + idx * 0.05} duration={0.3}>
+                    <PostCard post={post} section="profile" />
+                  </BlurFade>
+                ))}
+              </ul>
+              ) : (
+                <p>You have no posts🤔</p>
+              )
               )}
-
-              {posts.length === 0 && <p>You have no posts🤔</p>}
             </div>
           </ScrollArea>
         </TabsContent>

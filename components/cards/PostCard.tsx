@@ -26,8 +26,6 @@ type PostCardType = {
   section?: "profile";
 };
 
-
-
 export function PostCard({ className, post, section }: PostCardType) {
   // get user data
   const user = useUserState((state) => state.user);
@@ -56,7 +54,7 @@ export function PostCard({ className, post, section }: PostCardType) {
       </KvngDialogDrawer>
 
       <Card
-        className={`w-full  md:w-full mb-5 ${className} ring-1 ring-white/[0.05] transition duration-300 dark:ring-zinc-800 dark:hover:ring-zinc-700 dark:focus-visible:ring-[#FF2D20]`}
+        className={`w-full  md:w-full mb-5 ${className} ring-1 ring-white/[0.05] transition duration-300 dark:ring-zinc-800 dark:hover:ring-zinc-700 dark:focus-visible:ring-[#193a47]`}
         id={post.id}
       >
         <CardHeader className=" flex-row justify-between items-start px-4 py-2 ">
@@ -89,7 +87,7 @@ export function PostCard({ className, post, section }: PostCardType) {
           <div>
             <Button
               type="button"
-              className={`flex gap-x-2 rounded-3xl dark:bg-transparent border border-gray-700 dark:text-white text-black  text-sm text-center ${
+              className={`flex justify-center items-center rounded-3xl dark:bg-transparent border border-gray-700 dark:text-white text-black ${
                 mood.style
               }`}
             >
@@ -97,7 +95,7 @@ export function PostCard({ className, post, section }: PostCardType) {
                 {mood.gif ? (
                   <Image
                     src={mood.gif}
-                    alt="Sad Emoji"
+                    alt="Gif Emoji"
                     width={24}
                     height={24}
                     className="h-6 "
@@ -107,10 +105,12 @@ export function PostCard({ className, post, section }: PostCardType) {
                 )}
               </span>
 
-              <span className=" animate-bounce duration-700 ease-in-out ">
-                {" "}
-                {post?.expires_in_24hr && "⏳"}
-              </span>
+              {post?.expires_in_24hr && (
+                <span className=" animate-bounce duration-700 ease-in-out ">
+                  {" "}
+                  ⏳
+                </span>
+              )}
             </Button>
           </div>
         </CardFooter>

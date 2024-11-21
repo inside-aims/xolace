@@ -3,9 +3,9 @@
 import React, { useState, useEffect } from "react";
 
 import { PostCard } from "@/components/cards/PostCard";
-import { createClient } from "@/utils/supabase/server";
 import { getSupabaseBrowserClient } from "@/utils/supabase/client";
 import Loader from "./Loader";
+import BlurFade from "../ui/blur-fade";
 
 const FeedList = () => {
   const [posts, setPosts] = useState<any[]>([]);
@@ -112,10 +112,10 @@ const FeedList = () => {
         </div>
       )}
       <ul className="flex flex-col flex-1 gap-3 w-full ">
-        {(posts || []).map((post) => (
-          <li key={`${post.id}`} className="flex justify-center w-full ">
+        {(posts || []).map((post,idx) => (
+          <BlurFade key={`${post.id}`} className="flex justify-center w-full " delay={0.15 + idx * 0.05} duration={0.3} inView>
             <PostCard post={post} />
-          </li>
+          </BlurFade>
         ))}
       </ul>
     </>
