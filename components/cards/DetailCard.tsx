@@ -57,7 +57,7 @@ export function DetailCard({ postId, post }: { postId: any; post: any }) {
           <div>
             <Button
               type="button"
-              className={`flex gap-2 rounded-3xl dark:bg-transparent border border-gray-700 dark:text-white text-black  text-sm text-center ${
+              className={`flex justify-center items-center rounded-3xl dark:bg-transparent border border-gray-700 dark:text-white text-black ${
                 postMood.style
               }`}
             >
@@ -66,7 +66,7 @@ export function DetailCard({ postId, post }: { postId: any; post: any }) {
                 {postMood.gif ? (
                   <Image
                     src={postMood.gif}
-                    alt="Sad Emoji"
+                    alt="Gif Emoji"
                     width={24}
                     height={24}
                     className="h-6 "
@@ -75,10 +75,12 @@ export function DetailCard({ postId, post }: { postId: any; post: any }) {
                   postMood.emoji
                 )}
               </span>
-              <span className=" animate-bounce duration-700 ease-in-out ">
+
+              {post?.expires_in_24hr &&  <span className=" animate-bounce duration-700 ease-in-out ">
                 {" "}
-                {post?.expires_in_24hr && "⏳"}
-              </span>
+                 ⏳
+              </span> }
+             
             </Button>
           </div>
         </CardFooter>
