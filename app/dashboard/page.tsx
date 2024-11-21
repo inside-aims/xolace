@@ -1,3 +1,5 @@
+import RippleButton from "@/components/magicui/ripple-button";
+import ShinyButton from "@/components/ui/shiny-button";
 import { AppSidebar } from "@/components/app-sidebar"
 import {
   Breadcrumb,
@@ -40,6 +42,8 @@ export default function Page() {
             </BreadcrumbList>
           </Breadcrumb>
         </header>
+        <RippleButton rippleColor="#ADD8E6">Click me</RippleButton>
+        <ShinyButton>Shiny Button</ShinyButton>
         <div className="flex flex-1 flex-col gap-4 p-4">
           {Array.from({ length: 24 }).map((_, index) => (
             <div

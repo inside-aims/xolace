@@ -28,6 +28,7 @@ import { Checkbox } from "../ui/checkbox";
 import { Send } from "lucide-react";
 import MoodCarousel from "../mood-carousel";
 import { Mood } from "@/types";
+import ShinyButton from "../ui/shiny-button";
 
 export function PostForm() {
   const supabase = getSupabaseBrowserClient();
@@ -205,7 +206,7 @@ export function PostForm() {
         </div>
 
         <div className=" flex justify-between items-center">
-          <Button
+          <ShinyButton
             disabled={content.length > 300 || isLoading}
             type="submit"
             className=" rounded-full"
@@ -216,9 +217,11 @@ export function PostForm() {
                 <p>Loading...</p>
               </span>
             ) : (
+              <>
               <Send size={20} strokeWidth={1.75} absoluteStrokeWidth />
+              </>
             )}
-          </Button>
+          </ShinyButton>
           <p
             className={` dark:text-white text-slate-900/90 border ${
               counter - content.length < 0
