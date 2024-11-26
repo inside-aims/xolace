@@ -56,6 +56,7 @@ const AnonymousSignIn = () => {
         username: `Anonymous${generateRandomNumber({ min: 1, max: 10000 })}`,
         supabase_user: AnonUser.id,
         avatar_url: `https://avatar.iran.liara.run/public/${generateRandomNumber({ min:1 , max : 100})}`,
+        is_anonymous: true
       })
       .select()
       .single();
