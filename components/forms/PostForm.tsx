@@ -135,23 +135,23 @@ export function PostForm() {
               </FormControl>
 
               {/* mood icon */}
-              <div className=" absolute bottom-7 left-3">{selectedMood?.value === "sad" ? (
+              <div className=" absolute bottom-7 left-3">
+               
                 <span>
-                  {selectedMood.gif ? (
+                  {selectedMood?.gif ? (
                     <Image
-                      src={selectedMood.gif}
+                      src={selectedMood?.gif}
                       alt="Sad Emoji"
                       width={24}
                       height={24}
                       className="h-6 sm:h-7 sm:w-7"
                     />
                   ) : (
-                    selectedMood.icon
+                   selectedMood?.icon
                   )}
+                  
                 </span>
-              ) : (
-                <span className="text-sm sm:text-lg">{selectedMood?.icon}</span>
-              )}</div>
+              </div>
 
               {/* checkbox*/}
 

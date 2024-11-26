@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { sidebarLinks } from "@/constants";
 import Link from "next/link";
 import { useRouter, usePathname } from "next/navigation";
@@ -11,6 +11,7 @@ import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Button } from "../ui/button";
 import { getSupabaseBrowserClient } from "@/utils/supabase/client";
 import { useUserState } from "@/lib/store/user";
+import SignoutAlert from "./SignoutAlert";
 
 function LeftSidebar() {
   // get user profile data
@@ -19,10 +20,17 @@ function LeftSidebar() {
   const pathName = usePathname();
   const supabase = getSupabaseBrowserClient();
 
+  const [isOpen, setIsOpen] = useState(false);
+
   const handleSignOut = async (
     e: React.MouseEvent<HTMLButtonElement, MouseEvent>
   ) => {
     e.preventDefault();
+
+    if(user.is_anonymous){
+      setIsOpen(true);
+      return;
+    }
     supabase.auth.signOut();
   };
 
@@ -43,6 +51,7 @@ function LeftSidebar() {
   }, []);
 
   return (
+    <>
     <section className=" custom-scrollbar leftsidebar ">
       <div className=" flex flex-1 flex-col w-full gap-6 px-6  ">
         <div className=" flex flex-row items-center  gap-x-2 py-2 mb-10">
@@ -86,6 +95,9 @@ function LeftSidebar() {
         </Button>
       </div>
     </section>
+
+    <SignoutAlert isOpen={isOpen} setIsOpen={setIsOpen}/>
+    </>
   );
 }
 
