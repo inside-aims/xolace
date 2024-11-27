@@ -1,6 +1,6 @@
-import CreateIcon from "@/components/icons/CreateIcon";
+
 import HomeIcon from "@/components/icons/HomeIcon";
-import { Rss, UserPen } from "lucide-react";
+import { Rss, UserPen, MessageSquareDiff } from "lucide-react";
 
 export const sidebarLinks = [
   {
@@ -15,7 +15,7 @@ export const sidebarLinks = [
   //   label: "Activity",
   // },
   {
-    imgURL: <CreateIcon />,
+    imgURL: <MessageSquareDiff />,
     route: "/create-post",
     label: "Create Post",
   },
