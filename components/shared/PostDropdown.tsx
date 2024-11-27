@@ -15,7 +15,7 @@ import {
 import { useToast } from "../ui/use-toast";
 import { useUserState } from "@/lib/store/user";
 import { getSupabaseBrowserClient } from "@/utils/supabase/client";
-
+import { Trash2,Telescope , Flag } from "lucide-react";
 
 type DropdownMenuProp = {
   comment?: boolean;
@@ -102,7 +102,7 @@ const PostDropdown: React.FC<DropdownMenuProp> = ({
       });
 
       // navigate to feed page if its the details page
-      postDetail && router.replace('/feed')
+      postDetail && router.replace("/feed");
     } catch (error) {
       console.log(error);
       toast({
@@ -135,6 +135,8 @@ const PostDropdown: React.FC<DropdownMenuProp> = ({
               className="hover:cursor-pointer text-red-400"
               onClick={onCommentDelete}
             >
+              <Trash2 />
+
               {isLoading
                 ? "Deleting..."
                 : comment
@@ -146,15 +148,19 @@ const PostDropdown: React.FC<DropdownMenuProp> = ({
           {/* delete action for post */}
           {isPostAuthor && (
             <DropdownMenuItem
-              className="hover:cursor-pointer text-red-400 hover:text-red-500"
+              className="hover:cursor-pointer text-red-400 hover:text-red-500 "
               onClick={onPostDelete}
             >
+              <Trash2 size={"17px"} />
+              <span>
               {isLoading ? "Deleting..." : "Delete Post"}
+              </span>
             </DropdownMenuItem>
           )}
 
           {postCard && (
             <DropdownMenuItem className="hover:cursor-pointer">
+              <Telescope size={16} strokeWidth={1.5} />
               <Link href={`post/${postId}`}>View</Link>
             </DropdownMenuItem>
           )}
@@ -163,6 +169,7 @@ const PostDropdown: React.FC<DropdownMenuProp> = ({
             className="hover:cursor-pointer"
             onSelect={handleReportClick}
           >
+            <Flag size={16} strokeWidth={1.5} />
             <p className="text-red-400">Report</p>
           </DropdownMenuItem>
         </DropdownMenuContent>
