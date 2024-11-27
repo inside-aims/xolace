@@ -101,7 +101,7 @@ export function PostCard({ className, post, section }: PostCardType) {
                     className="h-6 "
                   />
                 ) : (
-                  mood.emoji
+                  mood?.emoji
                 )}
               </span>
 

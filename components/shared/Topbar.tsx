@@ -12,8 +12,12 @@ import { Button } from "../ui/button";
 import LogoutIcon from "../icons/LogoutIcon";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { getSupabaseBrowserClient } from "@/utils/supabase/client";
+import SignoutAlert from "./SignoutAlert";
+import { useUserState } from "@/lib/store/user";
 
 function Topbar() {
+  // get user profile data
+  const user = useUserState((state) => state.user);
   const [isOpen, setIsOpen] = useState(false);
   const router = useRouter();
   const supabase = getSupabaseBrowserClient();
@@ -22,6 +26,12 @@ function Topbar() {
     e: React.MouseEvent<HTMLButtonElement, MouseEvent>
   ) => {
     e.preventDefault();
+
+    if(user.is_anonymous){
+      setIsOpen(true);
+      return;
+    }
+
     supabase.auth.signOut();
   };
 
@@ -42,6 +52,8 @@ function Topbar() {
   }, []);
 
   return (
+    <>
+    
     <nav className=" topbar ">
       <div className=" flex items-center gap-x-4">
         <Link href="/" className="flex items-center gap-4">
@@ -92,6 +104,9 @@ function Topbar() {
         <ThemeSwitch />
       </div>
     </nav>
+
+    <SignoutAlert isOpen={isOpen} setIsOpen={setIsOpen}/>
+    </>
   );
 }
 

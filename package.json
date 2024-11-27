@@ -4,6 +4,7 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
+    "supabase:update": "npm update supabase --save-dev",
     "supabase:start": "npx supabase start",
     "supabase:stop": "npx supabase stop",
     "supabase:status": "npx supabase status",
@@ -15,7 +16,8 @@
     "supabase:generate-seed": "npx supabase db dump --data-only -f supabase/seed.sql",
     "supabase:push": "npx supabase db push",
     "supabase:pull": "npx supabase db pull",
-    "supabase:migration-up": "npx supabase migration up"
+    "supabase:migration-up": "npx supabase migration up",
+    "supabase:migration-list": "npx supabase migration list"
   },
   "dependencies": {
     "@hookform/resolvers": "^3.9.0",
@@ -29,6 +31,7 @@
     "@radix-ui/react-dropdown-menu": "^2.1.2",
     "@radix-ui/react-icons": "^1.3.0",
     "@radix-ui/react-label": "^2.1.0",
+    "@radix-ui/react-popover": "^1.1.2",
     "@radix-ui/react-radio-group": "^1.2.0",
     "@radix-ui/react-scroll-area": "^1.2.0",
     "@radix-ui/react-select": "^2.1.2",
@@ -45,6 +48,7 @@
     "class-variance-authority": "^0.7.0",
     "clsx": "^2.1.1",
     "embla-carousel-react": "^8.3.1",
+    "emoji-picker-react": "^4.12.0",
     "framer-motion": "^11.11.17",
     "geist": "^1.2.1",
     "lodash": "^4.17.21",
