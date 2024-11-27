@@ -260,20 +260,6 @@ const PostDetailDrawer = ({ post, type }: { post: any; type: Type }) => {
               </div>
             )}
           </div>
-
-          <DrawerFooter>
-            <div className=" flex justify-between items-center text-blue dark:text-sky-500 px-4">
-              <Link href={"/feed"}>Home</Link>
-              <Link href={"/profile"}>Profile</Link>
-
-              <Link href={"https://www.instagram.com/"}>
-                <InstagramLogoIcon color="red" className="h-6 w-6" />
-              </Link>
-              <Link href={"https://www.instagram.com/"}>
-                <LinkedInLogoIcon color="blue" className="h-6 w-6" />
-              </Link>
-            </div>
-          </DrawerFooter>
         </DrawerContent>
       </Drawer>
     </>

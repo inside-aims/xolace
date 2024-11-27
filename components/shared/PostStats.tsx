@@ -99,25 +99,44 @@ const PostStats = ({
         <span>{likesList.length}</span>
       </div>
       <div className="flex gap-1 items-center">
-        <Link
-          href={`post/${post.id}?type=comment`}
-          className="font-semibold text-default-400 text-small"
-        >
-          <svg
-            xmlns="http://www.w3.org/2000/svg"
-            className="h-7 w-7 text-gray-600 -scale-x-100"
-            fill="none"
-            viewBox="0 0 24 24"
-            stroke="currentColor"
-            strokeWidth="2"
+        {section === "details" ? (
+          <div>
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              className="h-7 w-7 text-gray-600 -scale-x-100"
+              fill="none"
+              viewBox="0 0 24 24"
+              stroke="currentColor"
+              strokeWidth="2"
+            >
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z"
+              />
+            </svg>
+          </div>
+        ) : (
+          <Link
+            href={`post/${post.id}?type=comment`}
+            className="font-semibold text-default-400 text-small"
           >
-            <path
-              strokeLinecap="round"
-              strokeLinejoin="round"
-              d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z"
-            />
-          </svg>
-        </Link>
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              className="h-7 w-7 text-gray-600 -scale-x-100"
+              fill="none"
+              viewBox="0 0 24 24"
+              stroke="currentColor"
+              strokeWidth="2"
+            >
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z"
+              />
+            </svg>
+          </Link>
+        )}
         <p className="text-default-400 text-small">
           {section === "details" ? commentLength : post?.comments[0].count}
         </p>
