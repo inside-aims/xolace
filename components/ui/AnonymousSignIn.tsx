@@ -21,6 +21,7 @@ const AnonymousSignIn = () => {
   const supabase = getSupabaseBrowserClient();
   const { toast } = useToast();
   const router = useRouter();
+  const is_anonymous_user : boolean = true;
 
   const handleSignIn = async () => {
     // Implement your anonymous sign-in logic here
@@ -56,7 +57,7 @@ const AnonymousSignIn = () => {
         username: `Anonymous${generateRandomNumber({ min: 1, max: 10000 })}`,
         supabase_user: AnonUser.id,
         avatar_url: `https://avatar.iran.liara.run/public/${generateRandomNumber({ min:1 , max : 100})}`,
-        is_anonymous: true
+        is_anonymous: is_anonymous_user
       })
       .select()
       .single();

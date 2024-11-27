@@ -4,6 +4,7 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
+    "supabase:update": "npm update supabase --save-dev",
     "supabase:start": "npx supabase start",
     "supabase:stop": "npx supabase stop",
     "supabase:status": "npx supabase status",
@@ -15,7 +16,8 @@
     "supabase:generate-seed": "npx supabase db dump --data-only -f supabase/seed.sql",
     "supabase:push": "npx supabase db push",
     "supabase:pull": "npx supabase db pull",
-    "supabase:migration-up": "npx supabase migration up"
+    "supabase:migration-up": "npx supabase migration up",
+    "supabase:migration-list": "npx supabase migration list"
   },
   "dependencies": {
     "@hookform/resolvers": "^3.9.0",
