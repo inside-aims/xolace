@@ -19,6 +19,7 @@ import { useUserState } from "@/lib/store/user";
 import ReportForm from "../forms/ReportForm";
 import KvngDialogDrawer from "../shared/KvngDialogDrawer";
 import { moodMap } from "@/types";
+import { truncateText } from "@/lib/utils";
 
 type PostCardType = {
   className?: string;
@@ -80,7 +81,7 @@ export function PostCard({ className, post, section }: PostCardType) {
           />
         </CardHeader>
         <Link href={`post/${post.id}`}>
-          <CardContent>{post.content}</CardContent>
+          <CardContent>{truncateText(post.content, 50)}</CardContent>
         </Link>
         <CardFooter className="flex justify-between items-center">
           <PostStats post={post} userId={user?.id} />

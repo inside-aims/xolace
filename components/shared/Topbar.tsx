@@ -86,6 +86,10 @@ function Topbar() {
             </div>
           </Link>
         </div>
+
+        <div className="md:hidden">
+          <ProgressBetaBadge/>
+        </div>
       </div>
 
       <div className=" flex items-center gap-5">
