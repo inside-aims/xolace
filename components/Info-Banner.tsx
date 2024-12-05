@@ -9,11 +9,15 @@ export function InfoBanner() {
 
   return (
     <motion.div
-      className="fixed top-20 left-0 right-0 bg-primary text-primary-foreground z-40"
+      className="fixed top-20 left-0 right-0 text-primary-foreground z-40"
       style={{ opacity, y }}
     >
-      <div className="container mx-auto px-4 text-center max-sm:text-sm">
-        Xolace Beta - Your feedback helps us improve the app
+      <div className="container mx-auto px-4">
+        <div className="backdrop-blur-md bg-gradient-to-r from-purple-400/30 via-sky-500/30 to-red-500/30 rounded-lg shadow-lg">
+          <div className="px-4 text-center dark:text-white text-black font-semibold">
+            Xolace Beta - Your feedback shapes our future! 🌟
+          </div>
+        </div>
       </div>
     </motion.div>
   )
