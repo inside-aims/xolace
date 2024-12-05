@@ -1,0 +1,1 @@
+export type PostDuration = 24;

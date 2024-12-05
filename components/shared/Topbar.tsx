@@ -14,6 +14,7 @@ import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { getSupabaseBrowserClient } from "@/utils/supabase/client";
 import SignoutAlert from "./SignoutAlert";
 import { useUserState } from "@/lib/store/user";
+import { ProgressBetaBadge } from "./ProgressBetaBadge";
 
 function Topbar() {
   // get user profile data
@@ -85,6 +86,10 @@ function Topbar() {
             </div>
           </Link>
         </div>
+
+        <div className="md:hidden">
+          <ProgressBetaBadge/>
+        </div>
       </div>
 
       <div className=" flex items-center gap-5">
@@ -100,8 +105,11 @@ function Topbar() {
         <MobileNav />
       </div>
 
-      <div className=" hidden md:block">
+      <div className=" hidden md:flex gap-x-5">
         <ThemeSwitch />
+        <div>
+          <ProgressBetaBadge/>
+        </div>
       </div>
     </nav>
 

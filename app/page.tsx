@@ -3,6 +3,7 @@ import { Button } from "@/components/ui/button";
 import { RocketIcon } from "@radix-ui/react-icons";
 import Link from "next/link";
 import React from "react";
+import XolaceBetaBadge from "@/components/shared/XolaceBetaBadge";
 
 export default async function Index() {
   return (
@@ -31,6 +32,9 @@ export default async function Index() {
           <p className="font-tiltNeon font-bold text-xl text-center px-6 mb-1 phone400:p-7">
             Welcome to Xolace, a platform where you can interact anonymously.
           </p>
+          <div className=" absolute top-10 right-10 md:right-28">
+          <XolaceBetaBadge/>
+          </div>
         </div>
         <div>
           <Button title="Welcome" asChild>

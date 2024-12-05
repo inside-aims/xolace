@@ -6,6 +6,7 @@ import Topbar from "@/components/shared/Topbar";
 import Loader from "@/components/shared/Loader";
 import { createClient } from "@/utils/supabase/server";
 import InitUser from "@/lib/store/initUser";
+import { InfoBanner } from "@/components/Info-Banner";
 
 export default async function ProtectedLayout({
   children,
@@ -30,6 +31,7 @@ export default async function ProtectedLayout({
   return (
     <>
       <Topbar />
+      <InfoBanner/>
       <main className="flex flex-row">
         <LeftSidebar />
         <section className=" main-container pt-28">

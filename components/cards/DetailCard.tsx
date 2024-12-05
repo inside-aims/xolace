@@ -52,7 +52,7 @@ export function DetailCard({ postId, post }: { postId: any; post: any }) {
             postCreatedBy={created_by}
           />
         </CardHeader>
-        <CardContent>{content}</CardContent>
+        <CardContent className=" !text-wrap overflow-x-hidden">{content}</CardContent>
         <CardFooter>
           <div>
             <Button
