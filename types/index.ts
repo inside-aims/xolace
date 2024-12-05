@@ -1,3 +1,5 @@
+export * from "./post"
+
 export type Mood = {
     id: number
     label: string

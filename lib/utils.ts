@@ -1,5 +1,6 @@
 import { type ClassValue, clsx } from "clsx";
 import { twMerge } from "tailwind-merge";
+import { PostDuration } from "@/types";
 
 export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs));
@@ -24,9 +25,17 @@ export const generateRandomNumber = ({
   return generatedNumber;
 };
 
+
+// post related utilities
 export const truncateText = (text: string, limit: number) => {
   if (text.length > limit) {
     return text.substring(0, limit) + " ...";
   }
   return text;
+};
+
+export const calculateExpiryDate = (duration: PostDuration): string => {
+  const expiryDate = new Date();
+  expiryDate.setHours(expiryDate.getHours() + duration);
+  return expiryDate.toISOString();
 };
