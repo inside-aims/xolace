@@ -28,8 +28,13 @@ export async function sendOTPLink(email, type, request) {
 
   // initialize the mailing transport
   const transporter = nodemailer.createTransport({
-    host: "localhost",
-    port: 54325,
+    host: process.env.RESEND_MAIL_HOST,
+    secure: true,
+    port: process.env.RESEND_MAIL_PORT,
+    auth:{
+      user: process.env.RESEND_USERNAME,
+      pass: process.env.RESEND_API_KEY,
+    }
   });
 
   let mailSubject = "";
