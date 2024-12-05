@@ -12,7 +12,7 @@ export function InfoBanner() {
       className="fixed top-20 left-0 right-0 bg-primary text-primary-foreground z-40"
       style={{ opacity, y }}
     >
-      <div className="container mx-auto px-4 text-center">
+      <div className="container mx-auto px-4 text-center max-sm:text-sm">
         Xolace Beta - Your feedback helps us improve the app
       </div>
     </motion.div>
