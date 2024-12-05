@@ -10,7 +10,7 @@ import {
 } from "@/components/ui/tooltip";
 
 interface BetaBadgeProps {
-  progress: number;
+  progress?: number;
 }
 
 export function ProgressBetaBadge({ progress }: BetaBadgeProps) {
