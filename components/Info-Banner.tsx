@@ -14,7 +14,7 @@ export function InfoBanner() {
     >
       <div className="container mx-auto px-4">
         <div className="backdrop-blur-md bg-gradient-to-r from-purple-400/30 via-sky-500/30 to-red-500/30 rounded-lg shadow-lg">
-          <div className="px-4 text-center dark:text-white text-black font-semibold">
+          <div className="px-4 text-center dark:text-white text-black font-semibold text-sm">
             Xolace Beta - Your feedback shapes our future! 🌟
           </div>
         </div>
