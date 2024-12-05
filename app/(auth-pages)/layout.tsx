@@ -9,7 +9,8 @@ export default async function Layout({
   return (
     <main className=" overflow-y-auto overflow-x-hidden relative">
       {children}
-      <footer className="w-full flex items-center justify-center border-t mx-auto text-center text-xs gap-8 py-10">
+      <footer className="w-full flex items-center justify-center flex-col border-t mx-auto text-center text-xs py-10">
+        <div className="flex items-center justify-center gap-8">
         <p>
           Powered by{" "}
           <Link
@@ -22,6 +23,10 @@ export default async function Layout({
           </Link>
         </p>
         <ThemeSwitcher />
+        </div>
+        <div className=" text-lg text-amber-500 font-bold">
+          BETA
+        </div>
       </footer>
     </main>
   );
