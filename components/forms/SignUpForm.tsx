@@ -75,14 +75,17 @@ const SignUpForm = () => {
 
   //
   const handleClick = () => {
-    if(username.length >= 2 && password.length >= 8 && emailRegex.test(email)){
+    if (
+      username.length >= 2 &&
+      password.length >= 8 &&
+      emailRegex.test(email)
+    ) {
       setLoading(true);
       toast({
         variant: "default",
         title: " ➰ Creating account and profile in a moment 🧐",
       });
     }
-   
   };
 
   return (
@@ -102,14 +105,15 @@ const SignUpForm = () => {
                   placeholder="username"
                   {...field}
                   type="text"
-                  className="w-full max-sm:py-6 md:h-12 mb-4 text-black dark:text-white"
+                  className="w-full max-sm:py-6 md:h-12  text-black dark:text-white"
                   required
                   autoComplete="off"
                 />
               </FormControl>
-              {/* <FormDescription >
-              This is your public display name.
-            </FormDescription> */}
+              <FormDescription>
+                <span className=" text-amber-400 font-semibold"> NB: </span>{" "}
+                Avoid using an identifiable username
+              </FormDescription>
               <FormMessage />
             </FormItem>
           )}
@@ -126,7 +130,7 @@ const SignUpForm = () => {
                   placeholder="Email"
                   {...field}
                   type="email"
-                  className="w-full max-sm:py-6 sm:py-5 md:h-12 mb-4 text-black dark:text-white"
+                  className="w-full max-sm:py-6 sm:py-5 md:h-12 mb-4 mt-2 text-black dark:text-white"
                   required
                   autoComplete="off"
                 />

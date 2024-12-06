@@ -1,7 +1,8 @@
 import { getSupabaseAdminClient } from "@/utils/supabase/adminClient";
 import { sendOTPLink } from "@/utils/sendOTPLink";
 import { builderUrl } from "@/utils/url-helpers";
-import { NextResponse, userAgent } from "next/server";
+import { NextResponse } from "next/server";
+import { signUpSchema } from "@/validation";
 
 export async function POST(request: any) {
   const formData = await request.formData();
