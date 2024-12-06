@@ -56,7 +56,7 @@ export async function sendOTPLink(email, type, request) {
   }
 
   await transporter.sendMail({
-    from: "Xolace <no-reply@xolace.app>",
+    from: "Xolace <no-reply@mail.xolace.app>",
     to: email,
     subject: mailSubject,
     html: `
