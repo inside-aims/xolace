@@ -110,7 +110,7 @@ const SignUpForm = () => {
                   autoComplete="off"
                 />
               </FormControl>
-              <FormDescription>
+              <FormDescription className="text-[12px]">
                 <span className=" text-amber-400 font-semibold"> NB: </span>{" "}
                 Avoid using an identifiable username
               </FormDescription>
@@ -147,7 +147,7 @@ const SignUpForm = () => {
           render={({ field }) => (
             <FormItem>
               <FormControl>
-                <div className=" relative mb-3 text-black dark:text-white">
+                <div className=" relative text-black dark:text-white">
                   <Input
                     placeholder="********"
                     {...field}
@@ -162,6 +162,10 @@ const SignUpForm = () => {
                   />
                 </div>
               </FormControl>
+              <FormDescription className="text-[12px]">
+                <span className="">Tip: </span>
+                Minimum 8 characters, atleast 1 uppercase, 1 number 
+              </FormDescription>
               <FormMessage />
             </FormItem>
           )}
@@ -174,7 +178,7 @@ const SignUpForm = () => {
             control={form.control}
             name="type"
             render={({ field }) => (
-              <FormItem className=" space-y-2 mb-2">
+              <FormItem className=" space-y-2 mb-2 mt-2">
                 <FormLabel>Select your gender...</FormLabel>
                 <FormControl>
                   <RadioGroup
@@ -213,7 +217,7 @@ const SignUpForm = () => {
         )}
 
         {/* Terms & conditions */}
-        <div className=" flex flex-col  items-start md:flex-row md:justify-between md:items-center mb-7">
+        <div className=" flex flex-col  items-start md:flex-row md:justify-between md:items-center mb-7 mt-2">
           <TermsConditions />
 
           {/* checkbox*/}
