@@ -24,9 +24,6 @@ export default async function Layout({
         </p>
         <ThemeSwitcher />
         </div>
-        <div className=" text-lg text-amber-500 font-bold">
-          BETA
-        </div>
       </footer>
     </main>
   );
