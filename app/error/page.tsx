@@ -1,7 +1,7 @@
 import { urlPath } from "@/utils/url-helpers";
 import Link from "next/link";
 
-export default function ErrorPage({ searchParams }: any) {
+export default function ErrorPage({ searchParams }:{ searchParams: { type: string , email? : string} }) {
   const { type } = searchParams;
 
   const knownRegistrationErrors = [
