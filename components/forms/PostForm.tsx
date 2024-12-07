@@ -54,7 +54,7 @@ export function PostForm() {
   const isConfused = selectedMood?.value === "confused";
 
   //  counter for comment fields
-  const counter: number = 300;
+  const counter: number = 500;
 
   //  form
   const form = useForm<z.infer<typeof PostSchema>>({
@@ -68,7 +68,7 @@ export function PostForm() {
   const { watch } = form;
   const content = watch("content");
 
-  // function to handle mood selection add to post field
+  // function to handle emoji selection add to post field
   const handleEmojiClick = (emojiData: EmojiClickData) => {
     const emoji = emojiData.emoji;
     const textarea = textareaRef.current;
@@ -92,7 +92,7 @@ export function PostForm() {
 
   // function to handle submit
   async function onSubmit(data: z.infer<typeof PostSchema>) {
-    // Do something with the form values.
+    // save post values to db
     setIsLoading(true);
     console.log(data);
     const { content } = data;
@@ -241,7 +241,7 @@ export function PostForm() {
 
         <div className=" flex justify-between items-center">
           <ShinyButton
-            disabled={content.length > 300 || isLoading}
+            disabled={content.length > 500 || isLoading}
             type="submit"
             className=" rounded-full"
           >

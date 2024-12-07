@@ -56,8 +56,8 @@ export const PostSchema = z.object({
     .min(10, {
       message: "Post must be at least 10 characters.",
     })
-    .max(300, {
-      message: "Post must not be longer than 300 characters.",
+    .max(500, {
+      message: "Post must not be longer than 500 characters.",
     }),
 });
 
