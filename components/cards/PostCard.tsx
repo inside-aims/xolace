@@ -81,7 +81,7 @@ export function PostCard({ className, post, section }: PostCardType) {
           />
         </CardHeader>
         <Link href={`post/${post.id}`}>
-          <CardContent>{truncateText(post.content, 50)}</CardContent>
+          <CardContent>{truncateText(post.content, 70)}</CardContent>
         </Link>
         <CardFooter className="flex justify-between items-center">
           <PostStats post={post} userId={user?.id} />
