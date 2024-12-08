@@ -12,7 +12,7 @@ export type Mood = {
   // Map mood to emoji and button style
 export const moodMap: Record<string, { emoji: string; style: string; gif?: string }> =
 {
-  neutral: { emoji: "😐", style: "border-pink-600 bg-transparent" },
+  neutral: { emoji: "😐", style: "border-pink-500 bg-transparent" },
   happy: { emoji: "😆", style: "border-green-500 bg-green-400" },
   sad: {
     emoji: "🥹",

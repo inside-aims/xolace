@@ -88,7 +88,7 @@ export function PostCard({ className, post, section }: PostCardType) {
           <div>
             <Button
               type="button"
-              className={`flex justify-center items-center rounded-3xl dark:bg-transparent border border-gray-700 dark:text-white text-black ${
+              className={`flex justify-center items-center rounded-3xl dark:bg-transparent border  ${
                 mood.style
               }`}
             >
