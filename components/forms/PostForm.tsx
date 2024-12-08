@@ -30,7 +30,7 @@ import Loader from "../shared/Loader";
 import { PostSchema } from "@/validation";
 import { getSupabaseBrowserClient } from "@/utils/supabase/client";
 import { urlPath } from "@/utils/url-helpers";
-import { postMoods } from "@/constants";
+import { getMoodLabelStyle, postMoods } from "@/constants";
 import { Checkbox } from "../ui/checkbox";
 import { Send } from "lucide-react";
 import MoodCarousel from "../mood-carousel";
@@ -161,14 +161,15 @@ export function PostForm() {
                       textareaRef.current = e;
                     }}
                     placeholder="What's on your mind?"
-                    className={`resize-none h-[150px] !pb-6 !pr-10 text-dark-2 dark:text-white transition-all duration-300
+                    className={`resize-none h-[150px] !pb-6 !pr-10 text-dark-2 dark:text-white transition-all duration-300 ${isNeutral && "border-pink-500 dark:border-pink-400"}
                     ${isHappy && "border-green-500 dark:border-green-400"} ${isSad && "border-blue dark:border-sky-400"}
                     ${isAngry && "border-red-500 dark:border-red-400"} ${isConfused && "border-yellow-500 dark:border-yellow-400"}
                     `}
                   />
 
                   {/* mood icon */}
-                  <div className=" absolute bottom-3 left-3">
+                  <div className=" absolute bottom-3 left-3 flex items-center gap-x-1">
+                    
                     <span>
                       {selectedMood?.gif ? (
                         <Image
@@ -182,6 +183,11 @@ export function PostForm() {
                         selectedMood?.icon
                       )}
                     </span>
+                    <p className="dark:text-gray-500 text-gray-900 text-[12px]">
+                      Mood: <span className={`${isNeutral && "text-pink-500 dark:text-pink-400"}
+                    ${isHappy && "text-green-500 dark:text-green-400"} ${isSad && "text-blue dark:text-sky-400"}
+                    ${isAngry && "text-red-500 dark:text-red-400"} ${isConfused && "text-yellow-500 dark:text-yellow-400"}`}>{selectedMood?.label}</span>
+                    </p>
                   </div>
 
                   {/* checkbox*/}
