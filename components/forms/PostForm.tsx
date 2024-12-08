@@ -169,6 +169,9 @@ export function PostForm() {
 
                   {/* mood icon */}
                   <div className=" absolute bottom-3 left-3">
+                    <span className="mr-2">
+                      Mood: 
+                    </span>
                     <span>
                       {selectedMood?.gif ? (
                         <Image
