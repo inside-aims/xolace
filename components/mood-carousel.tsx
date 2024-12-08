@@ -36,7 +36,7 @@ export default function MoodCarousel({
     if (selectedMood?.value === mood.value) {
       switch (mood.value) {
         case "neutral":
-          return "border-zinc-600 bg-gray-500 text-white";
+          return "border-pink-500 bg-transparent text-white";
         case "happy":
           return "border-green-500 bg-green-400 text-white";
         case "sad":

@@ -1,4 +1,3 @@
-
 import HomeIcon from "@/components/icons/HomeIcon";
 import { Rss, UserPen, MessageSquareDiff } from "lucide-react";
 
@@ -74,7 +73,7 @@ export const postMoods = [
     value: "sad",
     icon: "🥹",
     color: "yellow",
-    gif: "/assets/gifs/post-moods/sad-deactivate.gif"
+    gif: "/assets/gifs/post-moods/sad-deactivate.gif",
   },
   {
     id: 4,
@@ -139,3 +138,21 @@ export const faqs = [
       "Yes, since the drawer is meant to stay on the page , it ultimately affects the focus of the UI. Our team is working hard to find the best solution",
   },
 ];
+
+export const getMoodLabelStyle = (mood) => {
+  console.log(mood)
+  switch (mood) {
+    case "neutral":
+      return " !text-pink-500 !dark:text-pink-400 ";
+    case "happy":
+      return "text-green-500 dark:text-green-400";
+    case "sad":
+      return "text-blue";
+    case "angry":
+      return "text-red-500 dark:text-red-400 ";
+    case "confused":
+      return "text-yellow-500 dark:text-yellow-400";
+    default:
+      return "text-zinc-500 dark:text-zinc-100";
+  }
+};
