@@ -85,34 +85,31 @@ export function PostCard({ className, post, section }: PostCardType) {
         </Link>
         <CardFooter className="flex justify-between items-center">
           <PostStats post={post} userId={user?.id} />
-          <div>
-            <Button
-              type="button"
-              className={`flex justify-center items-center rounded-3xl dark:bg-transparent border  ${
-                mood.style
-              }`}
-            >
-              <span>
-                {mood.gif ? (
-                  <Image
-                    src={mood.gif}
-                    alt="Gif Emoji"
-                    width={24}
-                    height={24}
-                    className="h-6 "
-                  />
-                ) : (
-                  mood?.emoji
-                )}
-              </span>
-
-              {post?.expires_in_24hr && (
-                <span className=" animate-bounce duration-700 ease-in-out ">
-                  {" "}
-                  ⏳
-                </span>
+          <div
+            className={`flex justify-center items-center rounded-3xl dark:bg-transparent border p-1  ${
+              mood.style
+            }`}
+          >
+            <span>
+              {mood.gif ? (
+                <Image
+                  src={mood.gif}
+                  alt="Gif Emoji"
+                  width={24}
+                  height={24}
+                  className="h-6 "
+                />
+              ) : (
+                mood?.emoji
               )}
-            </Button>
+            </span>
+
+            {post?.expires_in_24hr && (
+              <span className=" animate-bounce duration-700 ease-in-out ">
+                {" "}
+                ⏳
+              </span>
+            )}
           </div>
         </CardFooter>
       </Card>

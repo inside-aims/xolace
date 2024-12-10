@@ -18,8 +18,6 @@ import ReportForm from "../forms/ReportForm";
 import { KvngSheet } from "../shared/KvngSheet";
 import { moodMap } from "@/types";
 
-
-
 export function DetailCard({ postId, post }: { postId: any; post: any }) {
   const [isSheetOpen, setIsSheetOpen] = useState<boolean>(false);
   const postMood = moodMap[post?.mood] || moodMap["neutral"];
@@ -52,36 +50,35 @@ export function DetailCard({ postId, post }: { postId: any; post: any }) {
             postCreatedBy={created_by}
           />
         </CardHeader>
-        <CardContent className=" !text-wrap overflow-x-hidden">{content}</CardContent>
+        <CardContent className=" !text-wrap overflow-x-hidden">
+          {content}
+        </CardContent>
         <CardFooter>
-          <div>
-            <Button
-              type="button"
-              className={`flex justify-center items-center rounded-3xl dark:bg-transparent border border-gray-700 dark:text-white text-black ${
-                postMood.style
-              }`}
-            >
+          <div
+            className={`flex justify-center items-center rounded-3xl dark:bg-transparent border p-1  ${
+              postMood.style
+            }`}
+          >
+            <span>
+              {postMood.gif ? (
+                <Image
+                  src={postMood.gif}
+                  alt="Gif Emoji"
+                  width={24}
+                  height={24}
+                  className="h-6 "
+                />
+              ) : (
+                postMood.emoji
+              )}
+            </span>
 
-              <span>
-                {postMood.gif ? (
-                  <Image
-                    src={postMood.gif}
-                    alt="Gif Emoji"
-                    width={24}
-                    height={24}
-                    className="h-6 "
-                  />
-                ) : (
-                  postMood.emoji
-                )}
-              </span>
-
-              {post?.expires_in_24hr &&  <span className=" animate-bounce duration-700 ease-in-out ">
+            {post?.expires_in_24hr && (
+              <span className=" animate-bounce duration-700 ease-in-out ">
                 {" "}
-                 ⏳
-              </span> }
-             
-            </Button>
+                ⏳
+              </span>
+            )}
           </div>
         </CardFooter>
       </Card>
