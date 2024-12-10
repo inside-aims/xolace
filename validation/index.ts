@@ -59,6 +59,7 @@ export const PostSchema = z.object({
     .max(500, {
       message: "Post must not be longer than 500 characters.",
     }),
+    is24HourPost: z.boolean()
 });
 
 // Validation schema for comment form
