@@ -6,7 +6,7 @@ import Link from "next/link";
 import { useRouter, usePathname } from "next/navigation";
 
 import Image from "next/image";
-import LogoutIcon from "../icons/LogoutIcon";
+import { LogoutIcon } from "../animated/Icons/LogoutIcon";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Button } from "../ui/button";
 import { getSupabaseBrowserClient } from "@/utils/supabase/client";
@@ -60,7 +60,7 @@ function LeftSidebar() {
             <AvatarFallback>XO🦸</AvatarFallback>
           </Avatar>
           <div className=" flex flex-col">
-            <h5 className="text-small tracking-tight text-default-400 text-dark-2 dark:text-light-3">
+            <h5 className="text-small tracking-tight text-default-400 text-dark-2 dark:text-light-3 max-md:hidden">
               {user?.username}
             </h5>
           </div>

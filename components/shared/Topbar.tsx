@@ -88,7 +88,7 @@ function Topbar() {
         </div>
 
         <div className="md:hidden">
-          <ProgressBetaBadge/>
+          <ProgressBetaBadge progress={30}/>
         </div>
       </div>
 
@@ -108,7 +108,7 @@ function Topbar() {
       <div className=" hidden md:flex gap-x-5">
         <ThemeSwitch />
         <div>
-          <ProgressBetaBadge/>
+          <ProgressBetaBadge progress={30}/>
         </div>
       </div>
     </nav>
