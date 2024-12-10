@@ -60,7 +60,7 @@ function LeftSidebar() {
             <AvatarFallback>XO🦸</AvatarFallback>
           </Avatar>
           <div className=" flex flex-col">
-            <h5 className="text-small tracking-tight text-default-400 text-dark-2 dark:text-light-3 max-md:hidden">
+            <h5 className="text-small tracking-tight text-default-400 text-dark-2 dark:text-light-3 max-lg:hidden">
               {user?.username}
             </h5>
           </div>

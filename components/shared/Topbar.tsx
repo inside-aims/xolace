@@ -91,14 +91,14 @@ function Topbar() {
         </div>
       </div>
 
-      <div className=" flex items-center gap-5">
-        <div className=" block md:hidden">
+      <div className=" flex justify-center items-center gap-3 ">
+        <div className=" block md:hidden ">
           <Button
             variant={"ghost"}
             className="  shad-button_ghost"
             onClick={(e) => handleSignOut(e)}
           >
-            <LogoutIcon />
+            <LogoutIcon height="23" />
           </Button>
         </div>
         <MobileNav />

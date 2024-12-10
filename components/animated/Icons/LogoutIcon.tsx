@@ -3,6 +3,13 @@
 import type { Variants } from 'framer-motion';
 import { motion, useAnimation } from 'framer-motion';
 
+interface LogoutIconProps{
+    className?: string;
+    height? : string;
+    width?: string;
+}
+
+
 const pathVariants: Variants = {
   animate: {
     x: 2,
@@ -13,20 +20,20 @@ const pathVariants: Variants = {
   },
 };
 
-const LogoutIcon = () => {
+const LogoutIcon = ({className , height="25" , width="25" } : LogoutIconProps) => {
   const controls = useAnimation();
 
   return (
     <div
-      className="cursor-pointer select-none p-2 hover:bg-accent rounded-md transition-colors duration-200 flex items-center justify-center"
+      className={`cursor-pointer select-none hover:bg-accent rounded-md transition-colors duration-200 flex items-center justify-center ${className}`}
       onMouseEnter={() => controls.start('animate')}
       onMouseLeave={() => controls.start('normal')}
       onClick={() => controls.start('animate')}
     >
       <svg
         xmlns="http://www.w3.org/2000/svg"
-        width="28"
-        height="28"
+        width={width}
+        height={height}
         viewBox="0 0 24 24"
         fill="none"
         stroke="currentColor"
