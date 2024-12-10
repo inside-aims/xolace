@@ -61,7 +61,7 @@ export default function MobileNav() {
   const scope = useMenuAnimation(isOpen);
 
   return (
-    <div ref={scope} className=" sm:hidden">
+    <div ref={scope} className=" sm:hidden  flex items-center">
       {isOpen && <Menu setIsOpen={setIsOpen} />}
       <MenuToggle toggle={() => setIsOpen(!isOpen)} />
     </div>

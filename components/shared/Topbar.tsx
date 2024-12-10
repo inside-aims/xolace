@@ -9,8 +9,7 @@ import ThemeSwitch from "../ui/ThemeSwitch";
 import { MenuToggle } from "../ui/MenuToggle";
 import MobileNav from "./MobileNav";
 import { Button } from "../ui/button";
-import LogoutIcon from "../icons/LogoutIcon";
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import { LogoutIcon } from "../animated/Icons/LogoutIcon";
 import { getSupabaseBrowserClient } from "@/utils/supabase/client";
 import SignoutAlert from "./SignoutAlert";
 import { useUserState } from "@/lib/store/user";
@@ -88,18 +87,18 @@ function Topbar() {
         </div>
 
         <div className="md:hidden">
-          <ProgressBetaBadge/>
+          <ProgressBetaBadge progress={30}/>
         </div>
       </div>
 
-      <div className=" flex items-center gap-5">
-        <div className=" block md:hidden">
+      <div className=" flex justify-center items-center gap-3 ">
+        <div className=" block md:hidden ">
           <Button
             variant={"ghost"}
             className="  shad-button_ghost"
             onClick={(e) => handleSignOut(e)}
           >
-            <LogoutIcon />
+            <LogoutIcon height="23" />
           </Button>
         </div>
         <MobileNav />
@@ -108,7 +107,7 @@ function Topbar() {
       <div className=" hidden md:flex gap-x-5">
         <ThemeSwitch />
         <div>
-          <ProgressBetaBadge/>
+          <ProgressBetaBadge progress={30}/>
         </div>
       </div>
     </nav>
