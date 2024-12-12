@@ -37,7 +37,7 @@ const CommentCard = ({ comment }: any) => {
         <ReportForm commentId={comment.id} />
       </KvngDialogDrawer>
 
-      <Card className="w-[350px] md:w-full mb-5 dark:bg-dark-3">
+      <Card className="w-full md:w-full mb-5 dark:bg-dark-3">
         <CardHeader className=" flex-row justify-between items-start px-4 py-2 ">
           <div className="flex gap-2 items-center">
             <Avatar>
