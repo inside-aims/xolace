@@ -66,10 +66,10 @@ export const PostSchema = z.object({
 export const CommentSchema = z.object({
   comment: z
     .string()
-    .min(10, {
-      message: "Reply must be at least 10 characters.",
+    .min(1, {
+      message: "Reply must be at least 1 characters.",
     })
-    .max(200, {
+    .max(300, {
       message: "Reply must not be longer than 200 characters.",
     }),
 });

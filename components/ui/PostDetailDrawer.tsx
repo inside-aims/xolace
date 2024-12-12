@@ -59,7 +59,7 @@ const PostDetailDrawer = ({ post, type }: { post: any; type: Type }) => {
   const [isLoading, setIsLoading] = useState(false);
 
   //   counter for comment fields
-  const counter: number = 200;
+  const counter: number = 300;
 
   // Define different snap points based on `type`
   const defaultSnapPoints = ["180px", "355px", 1];
@@ -204,7 +204,7 @@ const PostDetailDrawer = ({ post, type }: { post: any; type: Type }) => {
                       <FormControl>
                         <Textarea
                           placeholder="Post your reply"
-                          className="resize-none mb-2 h-[42px] rounded-full text-dark-1 dark:text-white"
+                          className="resize-none mb-2 h-[42px] rounded-full text-dark-1 dark:text-white outline-none no-focus"
                           {...field}
                         />
                       </FormControl>
@@ -212,7 +212,7 @@ const PostDetailDrawer = ({ post, type }: { post: any; type: Type }) => {
                     </FormItem>
                   )}
                 />
-                <div className="flex justify-between items-center">
+                <div className="flex flex-row-reverse justify-between items-center">
                   <Button
                     size={"sm"}
                     disabled={comment.length > 300 || false}
