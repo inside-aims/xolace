@@ -30,7 +30,7 @@ export function Menu({
       animate={{ scale: 1, opacity: 1 }}
       transition={{
         ease: "easeInOut",
-        duration: 1,
+        duration: 0.5,
       }}
       className="w-[70vw] flex flex-col items-center justify-center gap-5 fixed bg-gray-900/90 dark:bg-gray-200 rounded-xl backdrop-blur-md left-[50%] top-[50%] z-30 py-12"
     >

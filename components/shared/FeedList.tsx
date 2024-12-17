@@ -5,6 +5,7 @@ import React, { useState, useEffect } from "react";
 import { PostCard } from "@/components/cards/PostCard";
 import { getSupabaseBrowserClient } from "@/utils/supabase/client";
 import Loader from "./Loader";
+import FeedSkeletonLoader from "./FeedSkeletonLoader";
 import BlurFade from "../ui/blur-fade";
 
 const FeedList = () => {
@@ -107,9 +108,9 @@ const FeedList = () => {
   return (
     <>
       {isLoading && (
-        <div>
-          <Loader />
-        </div>
+        <>
+          <FeedSkeletonLoader />
+        </>
       )}
       <ul className="flex flex-col flex-1 gap-3 w-full ">
         {(posts || []).map((post,idx) => (
