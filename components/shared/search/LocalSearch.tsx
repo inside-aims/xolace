@@ -60,13 +60,13 @@ const LocalSearch = ({
   }, [searchQuery, router, route, searchParams, pathname]);
 
   return (
-    <div className={`relative w-full max-w-md ${otherClasses}`}>
+    <div className={`relative w-full max-w-md mx-auto ${otherClasses}`}>
     <Input
       type="text"
       placeholder={placeholder}
       value={searchQuery}
       onChange={(e) => setSearchQuery(e.target.value)}
-      className="pl-10 pr-4 py-2 w-full outline-none"
+      className="pl-10 pr-4 py-2 w-full outline-none no-focus"
     />
     <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400" size={20} />
   </div>
