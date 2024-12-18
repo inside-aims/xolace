@@ -1,5 +1,5 @@
 import HomeIcon from "@/components/icons/HomeIcon";
-import { Rss, UserPen, MessageSquareDiff } from "lucide-react";
+import { Rss, UserPen, MessageSquareDiff, Zap, ThumbsUp, Flame, Clock } from "lucide-react";
 
 export const sidebarLinks = [
   {
@@ -44,6 +44,10 @@ export const navLinks = [
     route: "/channel",
     label: "Channel",
   },
+{
+  route: "/explore",
+  label: "Explore"
+}
 ];
 
 export const FORM_TYPES = {
@@ -156,3 +160,10 @@ export const getMoodLabelStyle = (mood) => {
       return "text-zinc-500 dark:text-zinc-100";
   }
 };
+
+export const filters = [
+  { name: 'trending', label: 'Trending', icon: <Zap size={16} /> },
+  { name: 'popular', label: 'Popular', icon: <ThumbsUp size={16} /> },
+  { name: 'controversial', label: 'Spicy', icon: <Flame size={16} /> },
+  { name: 'recent', label: 'Fresh', icon: <Clock size={16} /> },
+];
