@@ -76,7 +76,7 @@ const PostCard: React.FC<PostCardProps> = ({ post, className }) => {
 
   return (
     <Card
-      className={`w-full mb-5 overflow-hidden transition-colors duration-300 dark:bg-green-900 ${className}`}
+      className={`w-full mb-5 overflow-hidden transition-colors duration-300 bg-yellow-500 dark:bg-yellow-900 ${className}`}
     >
       <CardHeader className="flex flex-row justify-between items-start p-4">
         <div className="flex gap-4 items-center">
