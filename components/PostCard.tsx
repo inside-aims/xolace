@@ -14,6 +14,7 @@ import { Avatar, AvatarImage, AvatarFallback } from "@/components/ui/avatar";
 import { UpvoteIcon } from "./animated/Icons/UpvoteIcon";
 import { DownvoteIcon } from "./animated/Icons/DownvoteIcon";
 import { MoreHorizontal, MessageCircle } from "lucide-react";
+import { cn } from "@/lib/utils";
 
 interface PostCardProps {
   post: {
@@ -76,7 +77,10 @@ const PostCard: React.FC<PostCardProps> = ({ post, className }) => {
 
   return (
     <Card
-      className={`w-full mb-5 overflow-hidden transition-colors duration-300 ${className}`}
+      className={cn(
+        "w-full mb-5 overflow-hidden transition-colors duration-300",
+        className
+      )}
     >
       <CardHeader className="flex flex-row justify-between items-start p-4">
         <div className="flex gap-4 items-center">
