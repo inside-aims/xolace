@@ -1,6 +1,6 @@
-'use client';
+"use client";
 
-import { motion, useAnimation } from 'framer-motion';
+import { motion, useAnimation } from "framer-motion";
 
 interface UpvoteIconProps {
   filled: boolean;
@@ -12,9 +12,9 @@ const UpvoteIcon: React.FC<UpvoteIconProps> = ({ filled, onClick }) => {
 
   return (
     <div
-      className="cursor-pointer select-none p-2 hover:bg-accent rounded-md transition-colors duration-200 flex items-center justify-center"
-      onMouseEnter={() => controls.start('animate')}
-      onMouseLeave={() => controls.start('normal')}
+      className="cursor-pointer select-none p-2 rounded-md transition-colors duration-200 flex items-center justify-center"
+      onMouseEnter={() => controls.start("animate")}
+      onMouseLeave={() => controls.start("normal")}
       onClick={onClick}
     >
       <motion.svg
@@ -23,25 +23,25 @@ const UpvoteIcon: React.FC<UpvoteIconProps> = ({ filled, onClick }) => {
         height="28"
         viewBox="0 0 24 24"
         fill={filled ? "currentColor" : "none"}
-        stroke="currentColor"
+        stroke={filled ? "text-gray-500" : "currentColor"}
         strokeWidth="2"
         strokeLinecap="round"
         strokeLinejoin="round"
         variants={{
           normal: {
-            translateX: '0px',
-            translateY: '0px',
-            rotate: '0deg',
+            translateX: "0px",
+            translateY: "0px",
+            rotate: "0deg",
           },
           animate: {
-            translateX: '-1px',
-            translateY: '-2px',
-            rotate: '-12deg',
+            translateX: "-1px",
+            translateY: "-2px",
+            rotate: "-12deg",
           },
         }}
         animate={controls}
-        transition={{ type: 'spring', stiffness: 250, damping: 25 }}
-        className={`transition-colors duration-300 ${filled ? 'text-blue-500' : 'text-gray-500'}`}
+        transition={{ type: "spring", stiffness: 250, damping: 25 }}
+        className={`transition-colors duration-300 ${filled ? "text-[#2a1178]" : "text-gray-500"}`}
       >
         <path d="M7 10v12" />
         <path d="M15 5.88 14 10h5.83a2 2 0 0 1 1.92 2.56l-2.33 8A2 2 0 0 1 17.5 22H4a2 2 0 0 1-2-2v-8a2 2 0 0 1 2-2h2.76a2 2 0 0 0 1.79-1.11L12 2a3.13 3.13 0 0 1 3 3.88Z" />
@@ -51,4 +51,3 @@ const UpvoteIcon: React.FC<UpvoteIconProps> = ({ filled, onClick }) => {
 };
 
 export { UpvoteIcon };
-

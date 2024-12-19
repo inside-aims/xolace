@@ -55,7 +55,7 @@ export function PostCard({ className, post, section }: PostCardType) {
       </KvngDialogDrawer>
 
       <Card
-        className={`w-full  md:w-full mb-5 ${className} ring-1 ring-white/[0.05] transition duration-300 dark:ring-zinc-800 dark:hover:ring-zinc-700 dark:focus-visible:ring-[#193a47]`}
+        className={`w-full  md:w-full mb-5  ring-1 ring-white/[0.05] transition duration-300 dark:ring-zinc-800 dark:hover:ring-zinc-700 dark:focus-visible:ring-[#193a47] ${className}`}
         id={post.id}
       >
         <CardHeader className=" flex-row justify-between items-start px-4 py-2 ">
