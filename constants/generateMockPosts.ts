@@ -1,11 +1,11 @@
 export const generateMockPosts = (count: number) => {
   const moods = [
-    { emoji: "😊", style: "happy-card_color", name: "happy" },
+    { emoji: "😊", style: " border-pink-500 dark:border-pink-500 dark:bg-pink-500", name: "happy" },
     { emoji: "😢", style: "bg-blue dark:bg-blue", name: "sad" },
     { emoji: "😠", style: "bg-red-500 dark:bg-red-900", name: "angry" },
     {
       emoji: "🤔",
-      style: "bg-yellow-500 dark:bg-yellow-900",
+      style: "bg-secondary-500 dark:bg-secondary-500",
       name: "confused",
     },
     { emoji: "😐", style: "bg-gray-200 dark:bg-gray-800", name: "neutral" },
