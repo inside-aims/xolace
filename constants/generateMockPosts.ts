@@ -1,6 +1,6 @@
 export const generateMockPosts = (count: number) => {
   const moods = [
-    { emoji: "😊", style: "bg-green-400 dark:bg-green-900", name: "happy" },
+    { emoji: "😊", style: "happy-card_color", name: "happy" },
     { emoji: "😢", style: "bg-blue dark:bg-blue", name: "sad" },
     { emoji: "😠", style: "bg-red-500 dark:bg-red-900", name: "angry" },
     {

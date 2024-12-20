@@ -78,7 +78,7 @@ const PostCard: React.FC<PostCardProps> = ({ post, className }) => {
   return (
     <Card
       className={cn(
-        "w-full mb-5 overflow-hidden transition-colors duration-300",
+        "w-full mb-5 overflow-hidden transition-colors duration-300 ",
         className
       )}
     >

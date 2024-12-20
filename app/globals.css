@@ -153,6 +153,11 @@ body {
     @apply h-auto min-w-[74px] rounded-lg bg-primary-500 text-[12px] text-light-1 !important;
   }
 
+  /* explore page cards colors */
+  .happy-card_color {
+    @apply bg-green-400 dark:bg-green-900 !important;
+  }
+
   .searchbar {
     @apply flex gap-1 rounded-lg bg-dark-3 px-4 py-2;
   }
@@ -162,7 +167,7 @@ body {
   }
 
   .topbar {
-    @apply fixed top-0 z-50 flex w-full items-center justify-between bg-white dark:bg-black dark:opacity-100 opacity-[0.96]  border-b dark:border-gray-700/90 px-6 h-20 ;
+    @apply fixed top-0 z-50 flex w-full items-center justify-between bg-white dark:bg-black dark:opacity-100 opacity-[0.96]  border-b dark:border-gray-700/90 px-6 h-20;
   }
 
   .bottombar {
