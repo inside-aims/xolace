@@ -3,6 +3,8 @@ import * as React from "react";
 import { useEffect, useState } from "react";
 import { format } from "timeago.js";
 import Image from "next/image";
+import { formatDistanceToNow } from "date-fns";
+import { Clock } from "lucide-react";
 
 import {
   Card,
@@ -42,6 +44,12 @@ export function PostCard({ className, post, section }: PostCardType) {
   useEffect(() => {
     setTimestamp(format(post.created_at));
   }, [post]);
+
+  const timeLeft = post.expires_at
+    ? formatDistanceToNow(new Date(post.expires_at), {
+        addSuffix: true,
+      })
+    : null;
 
   return (
     <>
@@ -85,6 +93,14 @@ export function PostCard({ className, post, section }: PostCardType) {
         </Link>
         <CardFooter className="flex justify-between items-center">
           <PostStats post={post} userId={user?.id} />
+
+          {timeLeft && (
+            <div className="flex items-center space-x-2">
+              <Clock size={16} />
+              <span className="text-sm text-muted-foreground">{timeLeft}</span>
+            </div>
+          )}
+
           <div
             className={`flex justify-center items-center rounded-3xl dark:bg-transparent border p-1  ${
               mood.style
