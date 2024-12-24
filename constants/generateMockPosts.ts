@@ -1,14 +1,14 @@
 export const generateMockPosts = (count: number) => {
   const moods = [
-    { emoji: "😊", style: " border-pink-500 dark:border-pink-500 dark:bg-pink-500", name: "happy" },
+    { emoji: "😊", style: " bg-green-500 dark:bg-green-900", name: "happy" },
     { emoji: "😢", style: "bg-blue dark:bg-blue", name: "sad" },
     { emoji: "😠", style: "bg-red-500 dark:bg-red-900", name: "angry" },
     {
       emoji: "🤔",
-      style: "bg-secondary-500 dark:bg-secondary-500",
+      style: "bg-secondary-500 dark:bg-yellow-900",
       name: "confused",
     },
-    { emoji: "😐", style: "bg-gray-200 dark:bg-gray-800", name: "neutral" },
+    { emoji: "😐", style: "bg-gray-200 dark:bg-gray-9gi00", name: "neutral" },
   ];
 
   return Array.from({ length: count }, (_, i) => ({

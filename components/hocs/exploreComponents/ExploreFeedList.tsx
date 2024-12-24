@@ -4,6 +4,7 @@ import React from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import PostCard from "@/components/PostCard";
 
+const key = "mood-"
 interface Props {
   filteredPosts: {
     id: string;
@@ -40,7 +41,7 @@ const ExploreFeedList = ({ filteredPosts }: Props) => {
                 exit={{ opacity: 0, scale: 0.9 }}
                 transition={{ duration: 0.3 }}
               >
-                <PostCard post={post} className={post.mood.style} />
+                <PostCard post={post} className={``} />
               </motion.div>
             ))
           ) : (

@@ -154,8 +154,20 @@ body {
   }
 
   /* explore page cards colors */
-  .happy-card_color {
-    @apply bg-green-400 dark:bg-green-900 !important;
+  .mood-happy {
+    @apply bg-green-500 dark:bg-green-900;
+  }
+  .mood-sad {
+    @apply bg-blue dark:bg-sky-900;
+  }
+  .mood-angry {
+    @apply bg-red-500 dark:bg-red-900;
+  }
+  .mood-confused {
+    @apply bg-secondary-500 dark:bg-yellow-900;
+  }
+  .mood-neutral {
+    @apply bg-gray-200 dark:bg-gray-900;
   }
 
   .searchbar {

@@ -9,6 +9,11 @@ const config = {
     "./app/**/*.{ts,tsx}",
     "./src/**/*.{ts,tsx}",
   ],
+  safelist: [
+    {
+      pattern: /^mood-.*/, // Include all classes starting with "mood-"
+    },
+  ],
   prefix: "",
   theme: {
   	container: {
