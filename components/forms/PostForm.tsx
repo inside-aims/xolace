@@ -41,6 +41,7 @@ import MoodCarousel from "../mood-carousel";
 import { Mood } from "@/types";
 import ShinyButton from "../ui/shiny-button";
 import { FloatingCheckbox } from "../create-postComponents/floating-checkbox";
+import { calculateExpiryDate } from "@/lib/utils";
 
 export function PostForm() {
   const supabase = getSupabaseBrowserClient();
@@ -102,6 +103,8 @@ export function PostForm() {
     setIsLoading(true);
     console.log(data);
     const { content, is24HourPost } = data;
+    const duration = is24HourPost ? 24 : null
+    const expires_at = duration ? calculateExpiryDate(duration) : null;
 
     try {
       const { data: postData, error: postError } = await supabase
@@ -110,6 +113,8 @@ export function PostForm() {
           content,
           mood: selectedMood?.value,
           expires_in_24hr: is24HourPost,
+          duration,
+          expires_at
         })
         .select()
         .single();
