@@ -22,6 +22,7 @@ import ReportForm from "../forms/ReportForm";
 import KvngDialogDrawer from "../shared/KvngDialogDrawer";
 import { moodMap } from "@/types";
 import { truncateText } from "@/lib/utils";
+import TagCard from "./TagCard";
 
 type PostCardType = {
   className?: string;
@@ -67,7 +68,7 @@ export function PostCard({ className, post, section }: PostCardType) {
         id={post.id}
       >
         <CardHeader className=" flex-row justify-between items-start px-4 py-2 ">
-          <div className="flex gap-2 md:gap-4 items-center">
+          <div className="flex gap-4 md:gap-7 items-center">
             <Avatar>
               <AvatarImage src={post.author_avatar_url} />
               <AvatarFallback>XO</AvatarFallback>
@@ -76,10 +77,18 @@ export function PostCard({ className, post, section }: PostCardType) {
               <h5 className="text-small tracking-tight text-default-400">
                 {post.author_name}
               </h5>
+              <small className=" text-[13px] dark:text-gray-400 text-zinc-500">
+                {timestamp}
+              </small>
             </div>
-            <small className="ml-4 md:ml-10 text-sm dark:text-gray-400 text-zinc-500">
-              {timestamp}
-            </small>
+            {timeLeft && (
+              <div className="flex items-center space-x-2">
+                <Clock size={14} />
+                <span className="text-[12px] text-muted-foreground">
+                  {timeLeft}
+                </span>
+              </div>
+            )}
           </div>
           <PostDropdown
             postCard
@@ -88,18 +97,18 @@ export function PostCard({ className, post, section }: PostCardType) {
             onOpenChange={setIsOpen}
           />
         </CardHeader>
-        <Link href={`post/${post.id}`}>
-          <CardContent>{truncateText(post.content, 70)}</CardContent>
+       
+          <CardContent>
+          <Link href={`post/${post.id}`} className="mb-2">
+            {truncateText(post.content, 70)}
         </Link>
+        <div className="flex flex-wrap gap-2 mt-2">
+        <TagCard name="Home" _id="id"/>
+        <TagCard name="Temp" _id="2"/>
+        </div>
+          </CardContent>
         <CardFooter className="flex justify-between items-center">
           <PostStats post={post} userId={user?.id} />
-
-          {timeLeft && (
-            <div className="flex items-center space-x-2">
-              <Clock size={16} />
-              <span className="text-sm text-muted-foreground">{timeLeft}</span>
-            </div>
-          )}
 
           <div
             className={`flex justify-center items-center rounded-3xl dark:bg-transparent border p-1  ${
