@@ -5,13 +5,13 @@ import Image from "next/image";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
-import { useRouter } from "next/navigation";
 import EmojiPicker, {
   EmojiClickData,
   Theme,
   EmojiStyle,
 } from "emoji-picker-react";
 import { Smile } from "lucide-react";
+import { motion } from "framer-motion";
 
 import { Button } from "@/components/ui/button";
 import {
@@ -42,12 +42,16 @@ import { Mood } from "@/types";
 import ShinyButton from "../ui/shiny-button";
 import { FloatingCheckbox } from "../create-postComponents/floating-checkbox";
 import { calculateExpiryDate } from "@/lib/utils";
+import { removeHashtags } from "@/lib/utils";
 
 export function PostForm() {
   const supabase = getSupabaseBrowserClient();
   const { toast } = useToast();
+
+  // states
   const [isLoading, setIsLoading] = useState(false);
   const [selectedMood, setSelectedMood] = useState<Mood | null>(postMoods[0]);
+  const [tags, setTags] = useState<string[]>([]);
 
   const [isEmojiPickerOpen, setIsEmojiPickerOpen] = useState(false);
   const textareaRef = useRef<HTMLTextAreaElement>(null);
@@ -97,27 +101,66 @@ export function PostForm() {
     setIsEmojiPickerOpen(false);
   };
 
+  // retrieve tags from content
+  const handleInput = (value: string) => {
+    // Extract tags
+    const newTags = value.match(/#\w+/g) || [];
+    const cleanTags = newTags.map((tag) =>
+      tag
+        .slice(1)
+        .replace(/[^a-zA-Z0-9_]/g, "")
+        .toLowerCase()
+    );
+    setTags([...new Set(cleanTags)]); // Remove # from tags
+  };
+
   // function to handle submit
   async function onSubmit(data: z.infer<typeof PostSchema>) {
     // save post values to db
     setIsLoading(true);
     console.log(data);
     const { content, is24HourPost } = data;
-    const duration = is24HourPost ? 24 : null
+    // remove tags from post content
+    const contentWithoutTags = removeHashtags(content);
+    const duration = is24HourPost ? 24 : null;
     const expires_at = duration ? calculateExpiryDate(duration) : null;
 
     try {
-      const { data: postData, error: postError } = await supabase
-        .from("posts")
-        .insert({
-          content,
-          mood: selectedMood?.value,
+      // const { data: postData, error: postError } = await supabase
+      //   .from("posts")
+      //   .insert({
+      //     content: contentWithoutTags,
+      //     mood: selectedMood?.value,
+      //     expires_in_24hr: is24HourPost,
+      //     duration,
+      //     expires_at
+      //   })
+      //   .select()
+      //   .single();
+
+      console.log(
+        "data -> ",
+        tags,
+        " ",
+        contentWithoutTags,
+        " ",
+        expires_at,
+        " ",
+        is24HourPost
+      );
+
+      const { error: postError } = await supabase.rpc(
+        "create_post_with_tags",
+        {
+          content: contentWithoutTags,
+          duration: duration ? `${duration}` : duration,
+          expires_at,
           expires_in_24hr: is24HourPost,
-          duration,
-          expires_at
-        })
-        .select()
-        .single();
+          mood: selectedMood?.value,
+          tag_names: tags,
+        }
+      );
+
 
       if (postError) {
         toast({
@@ -128,13 +171,13 @@ export function PostForm() {
         return;
       }
 
-      if (postData) {
+
         // show notification
         toast({
           variant: "default",
           title: "Post created successfully🤭 !",
         });
-      }
+
     } catch (error: any) {
       toast({
         title: "Error!",
@@ -146,6 +189,7 @@ export function PostForm() {
       setIsLoading(false);
       form.reset();
       setSelectedMood(postMoods[0]);
+      setTags([]);
     }
   }
 
@@ -169,8 +213,12 @@ export function PostForm() {
                       // @ts-expect-error current is read-only
                       textareaRef.current = e;
                     }}
+                    onChange={(e: React.ChangeEvent<HTMLTextAreaElement>) => {
+                      field.onChange(e);
+                      handleInput(e.target.value);
+                    }}
                     placeholder="What's on your mind?"
-                    className={`resize-none h-[150px] !pr-10 !pt-8 text-dark-2 dark:text-white transition-all duration-300 ${isNeutral && "border-pink-500 dark:border-pink-400"}
+                    className={`resize-none h-[150px] !pr-10 !pt-8 text-dark-2 dark:text-white transition-all duration-300 no-focus ${isNeutral && "border-pink-500 dark:border-pink-400"}
                     ${isHappy && "border-green-500 dark:border-green-400"} ${isSad && "border-blue dark:border-sky-400"}
                     ${isAngry && "border-red-500 dark:border-red-400"} ${isConfused && "border-yellow-500 dark:border-yellow-400"}
                     `}
@@ -244,6 +292,22 @@ export function PostForm() {
                   />
                 )}
               />
+
+              {/* tags */}
+              {tags.length > 0 && (
+                <div className="flex flex-wrap gap-2">
+                  {tags.map((tag, index) => (
+                    <motion.span
+                      key={index}
+                      initial={{ opacity: 0, scale: 0.8 }}
+                      animate={{ opacity: 1, scale: 1 }}
+                      className="bg-primary text-primary-foreground px-2 py-1 rounded-full text-sm"
+                    >
+                      #{tag}
+                    </motion.span>
+                  ))}
+                </div>
+              )}
 
               <div className="h-4">
                 <FormMessage />

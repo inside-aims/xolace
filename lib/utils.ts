@@ -40,6 +40,10 @@ export const calculateExpiryDate = (duration: PostDuration): string => {
   return expiryDate.toISOString();
 };
 
+export const removeHashtags = (text: string): string => {
+  return text.replace(/#\w+\s?/g, '').trim();
+}
+
 // Fisher-Yates shuffle algorithm
 export const shuffleArray = (array: any[]) => {
   for (let i = array.length - 1; i > 0; i--) {
