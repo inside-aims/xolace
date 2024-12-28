@@ -217,7 +217,7 @@ export function PostForm() {
                       field.onChange(e);
                       handleInput(e.target.value);
                     }}
-                    placeholder="What's on your mind?"
+                    placeholder="What's on your mind? Use # for tags!"
                     className={`resize-none h-[150px] !pr-10 !pt-8 text-dark-2 dark:text-white transition-all duration-300 no-focus ${isNeutral && "border-pink-500 dark:border-pink-400"}
                     ${isHappy && "border-green-500 dark:border-green-400"} ${isSad && "border-blue dark:border-sky-400"}
                     ${isAngry && "border-red-500 dark:border-red-400"} ${isConfused && "border-yellow-500 dark:border-yellow-400"}

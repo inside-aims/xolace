@@ -68,12 +68,12 @@ export function PostCard({ className, post, section }: PostCardType) {
         id={post.id}
       >
         <CardHeader className=" flex-row justify-between items-start px-4 py-2 ">
-          <div className="flex gap-4 md:gap-7 items-center">
+          <div className="flex gap-3 md:gap-7 items-center">
             <Avatar>
               <AvatarImage src={post.author_avatar_url} />
               <AvatarFallback>XO</AvatarFallback>
             </Avatar>
-            <div className="flex flex-col gap-1 items-start justify-center">
+            <div className="flex flex-col items-start justify-center">
               <h5 className="text-small tracking-tight text-default-400">
                 {post.author_name}
               </h5>
@@ -103,8 +103,12 @@ export function PostCard({ className, post, section }: PostCardType) {
             {truncateText(post.content, 70)}
         </Link>
         <div className="flex flex-wrap gap-2 mt-2">
-        <TagCard name="Home" _id="id"/>
-        <TagCard name="Temp" _id="2"/>
+        {
+          post.posttags &&  // check if post has tags
+          post.posttags.map((tag: any , index: number)=>(
+            <TagCard name={tag.tags.name} _id={`${tag.name}_${index}`}/>
+          ))
+        }
         </div>
           </CardContent>
         <CardFooter className="flex justify-between items-center">
@@ -123,6 +127,7 @@ export function PostCard({ className, post, section }: PostCardType) {
                   width={24}
                   height={24}
                   className="h-6 "
+                  unoptimized
                 />
               ) : (
                 mood?.emoji

@@ -20,6 +20,11 @@ const FeedList = () => {
         .select(
           `
      *,
+     posttags (
+        tags (
+          name
+        )
+      ),
         likes(
         *
         ),
@@ -102,7 +107,7 @@ const FeedList = () => {
 
   console.log(
     "posts -> ",
-    posts?.map((test) => test.likes)
+    posts?.map((test) => test)
   );
 
   return (
