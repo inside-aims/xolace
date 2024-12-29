@@ -1,10 +1,12 @@
-"use client"
+"use client";
+import { use } from "react";
 
 import { urlPath } from "@/utils/url-helpers";
 import Link from "next/link";
 import { motion } from "framer-motion";
 
-export default function RegistrationSuccessPage({ searchParams }: { searchParams: { email: string } }) {
+export default function RegistrationSuccessPage(props: { searchParams: Promise<{ email: string }> }) {
+  const searchParams = use(props.searchParams);
   const { email } = searchParams;
 
   return (

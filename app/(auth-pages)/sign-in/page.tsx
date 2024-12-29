@@ -4,7 +4,8 @@ import { FormMessage, Message } from "@/components/form-message";
 import SignInForm from "@/components/forms/SignInForm";
 import { FORM_TYPES } from "@/constants";
 
-export default function Login({ searchParams }: { searchParams: any }) {
+export default async function Login(props: { searchParams: Promise<any> }) {
+  const searchParams = await props.searchParams;
   const wantsMagicLink = searchParams.magicLink === "yes";
   const wantsPasswordRecovery = searchParams.passwordRecovery === "yes";
 

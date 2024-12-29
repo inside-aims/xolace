@@ -14,8 +14,8 @@ type Params = Promise<{ postId: string }>;
 type SearchParams = Promise<{ [key: string]: string | string[] | undefined }>;
 
 const PostDetailPage = async (props: {
-  params: Params;
-  searchParams: SearchParams;
+  params: Promise<Params>;
+  searchParams: Promise<SearchParams>;
 }) => {
   const params = await props.params;
   const searchParams = await props.searchParams;

@@ -4,7 +4,7 @@ import LeftSidebar from "@/components/shared/LeftSideBar";
 import Bottombar from "@/components/shared/Bottombar";
 import Topbar from "@/components/shared/Topbar";
 import Loader from "@/components/shared/Loader";
-import { createClient } from "@/utils/supabase/server";
+import { createClient, getServerSupabase } from "@/utils/supabase/server";
 import InitUser from "@/lib/store/initUser";
 import { InfoBanner } from "@/components/Info-Banner";
 
@@ -13,7 +13,7 @@ export default async function ProtectedLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
-  const supabase = createClient();
+  const supabase = await createClient();
 
   const supabase_user_id: string | null =
     (await supabase.auth.getUser()).data?.user?.id ?? null;

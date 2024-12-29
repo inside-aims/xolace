@@ -7,11 +7,12 @@ import Link from "next/link";
 import { SmtpMessage } from "../smtp-message";
 import { builderUrl, urlPath } from "@/utils/url-helpers";
 
-export default function ForgotPassword({
-  searchParams,
-}: {
-  searchParams: Message;
-}) {
+export default async function ForgotPassword(
+  props: {
+    searchParams: Promise<Message>;
+  }
+) {
+  const searchParams = await props.searchParams;
   return (
     <div className="min-h-[100vh] flex justify-center items-center overflow-hidden">
       <div className="max-sm:w-full md:w-[40%]  md:px-12">

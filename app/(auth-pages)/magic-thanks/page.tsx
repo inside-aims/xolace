@@ -2,13 +2,14 @@
 
 import Link from "next/link";
 import { motion } from "framer-motion";
-import { useEffect, useState } from "react";
+import { useEffect, useState, use } from "react";
 
 import { FORM_TYPES } from "@/constants";
 import { urlPath } from "@/utils/url-helpers";
 
 
-const MagicLinkSuccessPage = ({ searchParams }: { searchParams: { type: string } }) => {
+const MagicLinkSuccessPage = (props: { searchParams: Promise<{ type: string }> }) => {
+  const searchParams = use(props.searchParams);
   const { type } = searchParams;
   const isPasswordRecovery = type === FORM_TYPES.PASSWORD_RECOVERY;
 

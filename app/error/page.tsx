@@ -1,7 +1,8 @@
 import { urlPath } from "@/utils/url-helpers";
 import Link from "next/link";
 
-export default function ErrorPage({ searchParams }:{ searchParams: { type: string , email? : string} }) {
+export default async function ErrorPage(props:{ searchParams: Promise<{ type: string , email? : string}> }) {
+  const searchParams = await props.searchParams;
   const { type } = searchParams;
 
   const knownRegistrationErrors = [
