@@ -35,7 +35,7 @@ export default async function ProtectedLayout({
       <main className="flex flex-row">
         <LeftSidebar />
         <section className=" main-container pt-28">
-          <div className=" w-full max-w-4xl px-1">{children}</div>
+          <div className=" w-full  px-1">{children}</div>
         </section>
       </main>
       <Bottombar />

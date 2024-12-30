@@ -25,7 +25,10 @@ const config = {
   	},
   	extend: {
   		fontFamily: {
-  			tiltNeon: ["TiltNeon", "sans-serif"]
+  			tiltNeon: [
+  				'TiltNeon',
+  				'sans-serif'
+  			]
   		},
   		colors: {
   			border: 'hsl(var(--border))',
@@ -120,12 +123,18 @@ const config = {
   					transform: 'scale(2)',
   					opacity: '0'
   				}
+  			},
+  			gradient: {
+  				to: {
+  					backgroundPosition: 'var(--bg-size) 0'
+  				}
   			}
   		},
   		animation: {
   			'accordion-down': 'accordion-down 0.2s ease-out',
   			'accordion-up': 'accordion-up 0.2s ease-out',
-  			rippling: 'rippling var(--duration) ease-out'
+  			rippling: 'rippling var(--duration) ease-out',
+  			gradient: 'gradient 8s linear infinite'
   		}
   	},
   	screens: {

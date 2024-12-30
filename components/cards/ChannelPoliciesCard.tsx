@@ -4,31 +4,22 @@ import React from "react";
 import { motion } from "framer-motion";
 import { FileTextIcon } from "@radix-ui/react-icons";
 import Link from "next/link";
+import { ShieldIcon } from 'lucide-react';
 
 const ChannelPoliciesCard = () => {
   return (
     <>
+       <Link href="/policy">
       <motion.div
-        className="max-w-7xl mx-auto px-5 sm:px-6 lg:px-8 py-10 "
-        initial={{ y: 500 }}
-        animate={{
-          y: 0,
-          transition: { duration: 0.5 },
-        }}
-        viewport={{ once: true }}
+        className="bg-white dark:bg-gray-800 rounded-lg shadow-md p-6 cursor-pointer hover:shadow-lg transition-shadow duration-200 text-center"
+        whileHover={{ scale: 1.03 }}
+        whileTap={{ scale: 0.98 }}
       >
-        <Link href={"/policy"}>
-          <div className="bg-gray-200 dark:bg-gray-800 overflow-hidden shadow-sm rounded-lg flex gap-5 p-5 items-center h-[10px] min-h-[100px] max-h-[120px] sm:h-auto">
-            <div className="h-7 w-7">
-              <FileTextIcon className=" dark:text-red-500 text-blue w-full h-full" />
-            </div>
-            <div className=" text-gray-900 dark:text-gray-100">
-              <h1 className="text-lg font-bold uppercase">Policies</h1>
-              <p className="text-gray-500">Security, Terms & Conditions </p>
-            </div>
-          </div>
-        </Link>
+        <ShieldIcon className="w-12 h-12 mb-4 text-green-500 dark:text-green-400" />
+        <h2 className="text-xl font-semibold mb-2 text-gray-800 dark:text-gray-100">Policies</h2>
+        <p className="text-gray-600 dark:text-gray-300">Learn about our security and terms</p>
       </motion.div>
+    </Link>
     </>
   );
 };
