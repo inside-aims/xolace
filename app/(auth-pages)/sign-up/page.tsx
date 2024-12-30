@@ -1,12 +1,8 @@
 import React from "react";
 import Image from "next/image";
-
-import { signUpAction } from "@/app/actions";
-import { FormMessage, Message } from "@/components/form-message";
-import { SubmitButton } from "@/components/submit-button";
 import SignUpForm from "@/components/forms/SignUpForm";
 
-export default function Signup({ searchParams }: { searchParams: Message }) {
+export default function Signup() {
   return (
     <>
       <div className=" main-container ">
