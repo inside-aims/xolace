@@ -2,11 +2,8 @@ import { DoubleArrowLeftIcon } from "@radix-ui/react-icons";
 import { notFound } from "next/navigation";
 
 import { DetailCard } from "@/components/cards/DetailCard";
-import Loader from "@/components/shared/Loader";
-import { Button } from "@/components/ui/button";
 import PostDetailDrawer from "@/components/ui/PostDetailDrawer";
 import { createClient } from "@/utils/supabase/server";
-import Link from "next/link";
 
 export const dynamic = "force-dynamic";
 
@@ -19,7 +16,7 @@ const PostDetailPage = async (props: {
 }) => {
   const params = await props.params;
   const searchParams = await props.searchParams;
-  const supabase = createClient();
+  const supabase = await createClient();
   const postId = params.postId;
   const type = searchParams.type;
 
