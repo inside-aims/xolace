@@ -5,17 +5,16 @@ import { builderUrl } from "./url-helpers";
 export async function sendOTPLink(email, type, request) {
   const supabaseAdmin = getSupabaseAdminClient();
 
-  const { data: linkData, error } = await supabaseAdmin.auth.admin.generateLink(
-    {
+  const { data: linkData, error: glError } =
+    await supabaseAdmin.auth.admin.generateLink({
       email,
       type,
-    }
-  );
+    });
 
-  console.log("generated link");
-
-  const user = linkData.user;
-  console.log(user);
+  if (glError) {
+    console.error("Error generating link", glError);
+    return false;
+  }
 
   // extracting the hashed_token from the link
   const { hashed_token } = linkData.properties;
@@ -31,10 +30,10 @@ export async function sendOTPLink(email, type, request) {
     host: process.env.RESEND_MAIL_HOST,
     secure: true,
     port: process.env.RESEND_MAIL_PORT,
-    auth:{
+    auth: {
       user: process.env.RESEND_USERNAME,
       pass: process.env.RESEND_API_KEY,
-    }
+    },
   });
 
   let mailSubject = "";

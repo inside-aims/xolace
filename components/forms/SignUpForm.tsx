@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useState, useActionState } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -24,20 +24,23 @@ import ToggleEyeIcon from "../ui/ToggleEyeIcon";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { useToast } from "@/components/ui/use-toast";
 import { signUpSchema } from "@/validation";
+import { signUpAction } from "@/app/actions";
+import { ActionState } from "@/lib/auth/middleware";
 
 import Loader from "../shared/Loader";
-import { urlPath } from "@/utils/url-helpers";
+import { FormMessage as SubmitFormMessage } from "../form-message";
 
 const male: "male" = "male";
 const female: string = "female";
 const emailRegex = /^\S+@\S+$/;
-const SignUpForm = () => {
-  const router = useRouter();
 
+const SignUpForm = () => {
   const { toast } = useToast();
   const [showPassword, setShowPassword] = useState(false);
-  const [gender, setGender] = useState("");
-  const [loading, setLoading] = useState(false);
+  const [state, formAction, pending] = useActionState<ActionState, FormData>(
+    signUpAction,
+    { success: false, message: "" }
+  );
 
   // 1. Define your form.
   const form = useForm<z.infer<typeof signUpSchema>>({
@@ -59,20 +62,6 @@ const SignUpForm = () => {
     "email",
   ]);
 
-  // 2. Define a submit handler.
-  async function onSubmit(values: z.infer<typeof signUpSchema>) {
-    // Do something with the form values.
-    // ✅ This will be type-safe and validated.
-
-    console.log(values);
-    const { username, email, password, type } = values;
-    toast({
-      variant: "default",
-      title: "�� Creating account and profile",
-    });
-  }
-  // onSubmit={form.handleSubmit(onSubmit)}
-
   //
   const handleClick = () => {
     if (
@@ -80,7 +69,6 @@ const SignUpForm = () => {
       password.length >= 8 &&
       emailRegex.test(email)
     ) {
-      setLoading(true);
       toast({
         variant: "default",
         title: " ➰ Creating account and profile in a moment 🧐",
@@ -88,13 +76,14 @@ const SignUpForm = () => {
     }
   };
 
+  // error message
+  const errorMessage = {
+    error: state?.message || "",
+  };
+
   return (
     <Form {...form}>
-      <form
-        method="POST"
-        action={urlPath(`/auth/register?type=${gender}`)}
-        className=" z-10  w-full max-sm:p-2 "
-      >
+      <form action={formAction} className=" z-10  w-full max-sm:p-2 ">
         <FormField
           control={form.control}
           name="username"
@@ -107,6 +96,8 @@ const SignUpForm = () => {
                   type="text"
                   className="w-full max-sm:py-6 md:h-12  text-black dark:text-white"
                   required
+                  min={2}
+                  max={12}
                   autoComplete="off"
                 />
               </FormControl>
@@ -114,7 +105,11 @@ const SignUpForm = () => {
                 <span className=" text-amber-400 font-semibold"> NB: </span>{" "}
                 Avoid using an identifiable username
               </FormDescription>
-              <FormMessage />
+              {state?.errors?.username && (
+                <div className="text-red-500 text-sm">
+                  {state.errors.username[0]}
+                </div>
+              )}
             </FormItem>
           )}
         />
@@ -135,7 +130,11 @@ const SignUpForm = () => {
                   autoComplete="off"
                 />
               </FormControl>
-              <FormMessage />
+              {state?.errors?.email && (
+                <div className="text-red-500 text-sm">
+                  {state.errors.email[0]}
+                </div>
+              )}
             </FormItem>
           )}
         />
@@ -164,9 +163,13 @@ const SignUpForm = () => {
               </FormControl>
               <FormDescription className="text-[12px]">
                 <span className="">Tip: </span>
-                Minimum 8 characters, atleast 1 uppercase, 1 number 
+                Minimum 8 characters, atleast 1 uppercase, 1 number
               </FormDescription>
-              <FormMessage />
+              {state?.errors?.password && (
+                <div className="text-red-500 text-sm">
+                  {state.errors.password[0]}
+                </div>
+              )}
             </FormItem>
           )}
         />
@@ -182,8 +185,9 @@ const SignUpForm = () => {
                 <FormLabel>Select your gender...</FormLabel>
                 <FormControl>
                   <RadioGroup
-                    onValueChange={(value) => setGender(value)}
-                    defaultValue={gender}
+                    {...field}
+                    value={field.value} // Bind value from React Hook Form
+                    onValueChange={field.onChange} // Update value in React Hook Form
                     className="flex justify-around items-center"
                   >
                     <FormItem className="flex items-center space-x-3 space-y-0">
@@ -210,22 +214,24 @@ const SignUpForm = () => {
                     </FormItem>
                   </RadioGroup>
                 </FormControl>
-                <FormMessage />
+                {state?.errors?.type && (
+                  <div className="text-red-500 text-sm">
+                    {state.errors.type[0]}
+                  </div>
+                )}
               </FormItem>
             )}
           />
         )}
 
         {/* Terms & conditions */}
-        <div className=" flex flex-col  items-start md:flex-row md:justify-between md:items-center mb-7 mt-2">
-          <TermsConditions />
-
+        <div className=" flex items-start  mb-2 mt-3">
           {/* checkbox*/}
           <FormField
             control={form.control}
             name="terms"
             render={({ field }) => (
-              <FormItem className="flex flex-row items-start space-x-2 space-y-0">
+              <FormItem className="flex flex-row items-center space-x-2 space-y-0">
                 <FormControl>
                   <Checkbox
                     checked={field.value}
@@ -234,7 +240,7 @@ const SignUpForm = () => {
                 </FormControl>
                 <div className=" space-x-4 space-y-1 leading-none">
                   <FormLabel className="text-dark-3 dark:text-white">
-                    Agree Terms and Conditions
+                    I agree <TermsConditions />
                   </FormLabel>
                 </div>
               </FormItem>
@@ -242,15 +248,17 @@ const SignUpForm = () => {
           />
         </div>
 
+        {state?.message && <SubmitFormMessage message={errorMessage} />}
+
         {/* submit button */}
-        <div className=" px-8">
+        <div className=" px-8 mt-5">
           <Button
-            disabled={!terms}
-            className=" w-full dark:bg-sky-600 hover:dark:bg-sky-500"
+            disabled={!terms || pending}
+            className=" w-full bg-gradient-to-r from-sky-600 to-sky-400 font-semibold hover:from-sky-500 hover:to-sky-300"
             type="submit"
             onClick={handleClick}
           >
-            {loading ? (
+            {pending ? (
               <div className="flex items-center justify-center gap-x-2">
                 {" "}
                 <Loader /> <span>Loading...</span>

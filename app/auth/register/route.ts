@@ -100,7 +100,7 @@ export async function POST(request: any) {
     );
   }
 
-  const { data: profileUser } = await supabaseAdmin
+  const { data: profileUser, error: puError } = await supabaseAdmin
     .from("profiles")
     .insert({
       username: username,
@@ -119,10 +119,10 @@ export async function POST(request: any) {
   //       service_user: serviceUser?.id,
   //     });
 
-  //   if (tpError) {
-  //     await supabaseAdmin.auth.admin.deleteUser(userData.user.id);
-  //     return NextResponse.redirect(buildUrl("/error", tenant, request), 302);
-  //   }
+  if (puError) {
+    await supabaseAdmin.auth.admin.deleteUser(userData.user.id);
+    return NextResponse.redirect(builderUrl("/error", request), 302);
+  }
 
   await sendOTPLink(email, "signup", request);
 

@@ -5,36 +5,97 @@ import { createClient } from "@/utils/supabase/server";
 import { headers } from "next/headers";
 import { redirect } from "next/navigation";
 import { getSupabaseAdminClient } from "@/utils/supabase/adminClient";
+import { signUpSchema } from "@/validation";
+import { validatedAction } from "@/lib/auth/middleware";
+import { sendOTPLink } from "@/utils/sendOTPLink";
 
-export const signUpAction = async (formData: FormData) => {
-  const email = formData.get("email")?.toString();
-  const password = formData.get("password")?.toString();
-  const supabase = await createClient();
-  const origin = (await headers()).get("origin");
+export const signUpAction = validatedAction(signUpSchema, async (data, formData) => {
+  const supabaseAdmin = getSupabaseAdminClient();
+  const { username, email, password, type } = data;
+  const safeEmailString = encodeURIComponent(email);
 
-  if (!email || !password) {
-    return { error: "Email and password are required" };
+  const { data: userData, error: userError } =
+    await supabaseAdmin.auth.admin.createUser({
+      email,
+      password,
+    });
+
+  if (userError) {
+    const userExists = userError.message.includes("already been registered");
+    if (userExists) {
+      return {
+        success: false,
+        message: "Failed to create user, User already exists!",
+        email,
+        password,
+      };
+    } else {
+      return {
+        success: false,
+        message: "Failed to create user. Please try again.",
+        email,
+        password,
+      };
+    }
   }
 
-  const { error } = await supabase.auth.signUp({
-    email,
-    password,
-    options: {
-      emailRedirectTo: `${origin}/auth/callback`,
-    },
-  });
-
-  if (error) {
-    console.error(error.code + " " + error.message);
-    return encodedRedirect("error", "/sign-up", error.message);
+  //   get avatar
+  let gender: string = "";
+  let avatarUrl: URL;
+  if (type === "male") {
+    gender = "boy";
+    avatarUrl = new URL(
+      `https://avatar.iran.liara.run/public/boy?username=${username}`
+    );
   } else {
-    return encodedRedirect(
-      "success",
-      "/sign-up",
-      "Thanks for signing up! Please check your email for a verification link."
+    gender = "girl";
+    avatarUrl = new URL(
+      `https://avatar.iran.liara.run/public/girl?username=${username}`
     );
   }
-};
+
+  // create user profile
+  const { data: profileUser, error: puError } = await supabaseAdmin
+    .from("profiles")
+    .insert({
+      username: username,
+      supabase_user: userData.user.id,
+      avatar_url: avatarUrl,
+    })
+    .select()
+    .single();
+
+  console.log("Profile -> ", profileUser);
+
+  if (puError) {
+    await supabaseAdmin.auth.admin.deleteUser(userData.user.id);
+    return {
+      success: false,
+      message: "Failed to create profile. Please try again.",
+      email,
+      password,
+    };
+  }
+
+  const request = {
+    url: process.env.NEXT_PUBLIC_BASE_APP_URL,
+  };
+
+  const res = await sendOTPLink(email, "signup", request);
+
+  if (!res) {
+    await supabaseAdmin.auth.admin.deleteUser(userData.user.id);
+
+    return {
+      success: false,
+      message: "Ooops!! Failed to send email. Please try again.",
+      email,
+      password,
+    };
+  }
+
+  redirect(`/registration-success?email=${safeEmailString}`);
+});
 
 export const signInAction = async (formData: FormData) => {
   const email = formData.get("email") as string;

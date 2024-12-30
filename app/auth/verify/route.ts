@@ -17,7 +17,7 @@ export async function GET(request: Request) {
   const UserUrl = (path: any) => builderUrl(path, request);
   const getRedirect = (path: any) => NextResponse.redirect(UserUrl(path));
 
-  const supabase = createClient();
+  const supabase = await createClient();
   const { error } = await supabase.auth.verifyOtp({
     type: verifyType,
     token_hash: hashed_token,
