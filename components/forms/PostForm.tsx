@@ -210,7 +210,6 @@ export function PostForm() {
                     {...field}
                     ref={(e) => {
                       field.ref(e);
-                      // @ts-expect-error current is read-only
                       textareaRef.current = e;
                     }}
                     onChange={(e: React.ChangeEvent<HTMLTextAreaElement>) => {
