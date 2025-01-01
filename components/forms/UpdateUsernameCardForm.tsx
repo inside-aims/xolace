@@ -26,7 +26,7 @@ import { UpdateUsernameSchema } from "@/validation";
 import { getSupabaseBrowserClient } from "@/utils/supabase/client";
 import { useUserState } from "@/lib/store/user";
 import { useToast } from "../ui/use-toast";
-import Loader from "../shared/Loader";
+import Loader from "../shared/loaders/Loader";
 
 export default function UpdateUsernameCardForm() {
   // get user profile data
@@ -68,7 +68,8 @@ export default function UpdateUsernameCardForm() {
       console.error("Error updating username:", updateError);
       toast({
         title: "Error updating username",
-        description: "Oops🫢!!, Something must have gone wrong or you are probably an anonymous user🤔",
+        description:
+          "Oops🫢!!, Something must have gone wrong or you are probably an anonymous user🤔",
         variant: "destructive",
       });
       setIsLoading(false);

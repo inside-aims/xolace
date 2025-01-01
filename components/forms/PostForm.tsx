@@ -30,14 +30,14 @@ import {
 } from "@/components/ui/popover";
 import { Textarea } from "@/components/ui/textarea";
 import { useToast } from "../ui/use-toast";
-import Loader from "../shared/Loader";
+import Loader from "../shared/loaders/Loader";
 import { PostSchema } from "@/validation";
 import { getSupabaseBrowserClient } from "@/utils/supabase/client";
 import { urlPath } from "@/utils/url-helpers";
 import { getMoodLabelStyle, postMoods } from "@/constants";
 import { Checkbox } from "../ui/checkbox";
 import { Send } from "lucide-react";
-import MoodCarousel from "../mood-carousel";
+import MoodCarousel from "../hocs/createPostComponent/mood-carousel";
 import { Mood } from "@/types";
 import ShinyButton from "../ui/shiny-button";
 import { FloatingCheckbox } from "../create-postComponents/floating-checkbox";
@@ -149,18 +149,14 @@ export function PostForm() {
         is24HourPost
       );
 
-      const { error: postError } = await supabase.rpc(
-        "create_post_with_tags",
-        {
-          content: contentWithoutTags,
-          duration: duration ? `${duration}` : duration,
-          expires_at,
-          expires_in_24hr: is24HourPost,
-          mood: selectedMood?.value,
-          tag_names: tags,
-        }
-      );
-
+      const { error: postError } = await supabase.rpc("create_post_with_tags", {
+        content: contentWithoutTags,
+        duration: duration ? `${duration}` : duration,
+        expires_at,
+        expires_in_24hr: is24HourPost,
+        mood: selectedMood?.value,
+        tag_names: tags,
+      });
 
       if (postError) {
         toast({
@@ -171,13 +167,11 @@ export function PostForm() {
         return;
       }
 
-
-        // show notification
-        toast({
-          variant: "default",
-          title: "Post created successfully🤭 !",
-        });
-
+      // show notification
+      toast({
+        variant: "default",
+        title: "Post created successfully🤭 !",
+      });
     } catch (error: any) {
       toast({
         title: "Error!",

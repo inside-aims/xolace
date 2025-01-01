@@ -37,7 +37,7 @@ import CommentCard from "../cards/CommentCard";
 
 import PostStats from "../shared/PostStats";
 import { useToast } from "../ui/use-toast";
-import Loader from "../shared/Loader";
+import Loader from "../shared/loaders/Loader";
 import { CommentSchema } from "@/validation";
 import { getSupabaseBrowserClient } from "@/utils/supabase/client";
 import { useUserState } from "@/lib/store/user";
@@ -98,7 +98,7 @@ const PostDetailDrawer = ({ post, type }: { post: any; type: Type }) => {
   const { watch } = form;
   const comment = watch("comment");
 
-  // submit comment form 
+  // submit comment form
   async function onSubmit(data: z.infer<typeof CommentSchema>) {
     setIsLoading(true);
     const { comment } = data;

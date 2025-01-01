@@ -24,7 +24,7 @@ import {
 import { Textarea } from "../ui/textarea";
 import { getSupabaseBrowserClient } from "@/utils/supabase/client";
 import { useToast } from "../ui/use-toast";
-import Loader from "../shared/Loader";
+import Loader from "../shared/loaders/Loader";
 
 const formSchema = z.object({
   area: z.string().min(2).max(100),

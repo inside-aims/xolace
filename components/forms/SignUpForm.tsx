@@ -27,8 +27,8 @@ import { signUpSchema } from "@/validation";
 import { signUpAction } from "@/app/actions";
 import { ActionState } from "@/lib/auth/middleware";
 
-import Loader from "../shared/Loader";
-import { FormMessage as SubmitFormMessage } from "../form-message";
+import Loader from "../shared/loaders/Loader";
+import { FormMessage as SubmitFormMessage } from "../shared/form-message";
 
 const male: "male" = "male";
 const female: string = "female";

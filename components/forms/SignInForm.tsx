@@ -23,7 +23,7 @@ import { Input } from "@/components/ui/input";
 import { Checkbox } from "@/components/ui/checkbox";
 import ToggleEyeIcon from "../ui/ToggleEyeIcon";
 import { signinSchema } from "@/validation";
-import Loader from "../shared/Loader";
+import Loader from "../shared/loaders/Loader";
 import { getSupabaseBrowserClient } from "@/utils/supabase/client";
 import { format } from "path";
 import { Separator } from "@/components/ui/separator";

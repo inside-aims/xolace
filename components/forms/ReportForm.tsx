@@ -24,7 +24,7 @@ import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { Button } from "../ui/button";
-import Loader from "../shared/Loader";
+import Loader from "../shared/loaders/Loader";
 import { useToast } from "../ui/use-toast";
 import { getSupabaseBrowserClient } from "@/utils/supabase/client";
 

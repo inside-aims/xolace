@@ -1,17 +1,15 @@
 import { forgotPasswordAction } from "@/app/actions";
-import { FormMessage, Message } from "@/components/form-message";
-import { SubmitButton } from "@/components/submit-button";
+import { FormMessage, Message } from "@/components/shared/form-message";
+import { SubmitButton } from "@/components/extras/submit-button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import Link from "next/link";
 import { SmtpMessage } from "../smtp-message";
 import { builderUrl, urlPath } from "@/utils/url-helpers";
 
-export default async function ForgotPassword(
-  props: {
-    searchParams: Promise<Message>;
-  }
-) {
+export default async function ForgotPassword(props: {
+  searchParams: Promise<Message>;
+}) {
   const searchParams = await props.searchParams;
   return (
     <div className="min-h-[100vh] flex justify-center items-center overflow-hidden">

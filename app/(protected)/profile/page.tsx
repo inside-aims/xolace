@@ -11,7 +11,7 @@ import UpdatePasswordCardForm from "@/components/forms/UpdatePasswordCardForm";
 import UpdateUsernameCardForm from "@/components/forms/UpdateUsernameCardForm";
 import DeleteUserAccountCard from "@/components/cards/DeleteUserAccountCard";
 import { ScrollArea } from "@/components/ui/scroll-area";
-import Loader from "@/components/shared/Loader";
+import Loader from "@/components/shared/loaders/Loader";
 import { useUserState } from "@/lib/store/user";
 import { getSupabaseBrowserClient } from "@/utils/supabase/client";
 import BlurFade from "@/components/ui/blur-fade";
@@ -53,7 +53,6 @@ const Profile = () => {
     };
 
     fetchUserPosts();
-    
   }, []);
 
   return (
@@ -82,19 +81,21 @@ const Profile = () => {
             <div className=" p-4">
               {isLoadingPosts ? (
                 <Loader />
-              ) : (
-              posts?.length > 0 ?
-              (
+              ) : posts?.length > 0 ? (
                 <ul className="flex flex-col flex-1 gap-3 w-full ">
-                {posts?.map((post: any, idx : number) => (
-                  <BlurFade key={post.id} className="flex justify-center w-full" delay={0.15 + idx * 0.05} duration={0.3}>
-                    <PostCard post={post} section="profile" />
-                  </BlurFade>
-                ))}
-              </ul>
+                  {posts?.map((post: any, idx: number) => (
+                    <BlurFade
+                      key={post.id}
+                      className="flex justify-center w-full"
+                      delay={0.15 + idx * 0.05}
+                      duration={0.3}
+                    >
+                      <PostCard post={post} section="profile" />
+                    </BlurFade>
+                  ))}
+                </ul>
               ) : (
                 <p>You have no posts🤔</p>
-              )
               )}
             </div>
           </ScrollArea>

@@ -27,7 +27,7 @@ import { Input } from "@/components/ui/input";
 import { UpdatePasswordSchema } from "@/validation";
 import { getSupabaseBrowserClient } from "@/utils/supabase/client";
 import { useToast } from "../ui/use-toast";
-import Loader from "../shared/Loader";
+import Loader from "../shared/loaders/Loader";
 import ToggleEyeIcon from "../ui/ToggleEyeIcon";
 
 const UpdatePasswordCardForm = () => {

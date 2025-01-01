@@ -1,6 +1,6 @@
 import { signInAction } from "@/app/actions";
 import Image from "next/image";
-import { FormMessage, Message } from "@/components/form-message";
+import { FormMessage, Message } from "@/components/shared/form-message";
 import SignInForm from "@/components/forms/SignInForm";
 import { FORM_TYPES } from "@/constants";
 

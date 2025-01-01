@@ -115,7 +115,7 @@ export const UpdatePasswordSchema = z.object({
 export const UpdateUsernameSchema = z.object({
   username: z
     .string()
-    .min(5, {
+    .min(2, {
       message: "Username must be at least 2 characters.",
     })
     .max(16, {
