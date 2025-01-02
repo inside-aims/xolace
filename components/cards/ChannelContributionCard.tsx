@@ -19,7 +19,6 @@ import {
 } from "@/components/ui/dialog";
 import { Button } from "../ui/button";
 import { KvngSheet } from "../shared/KvngSheet";
-import { MailPlus } from "lucide-react";
 import FeedbackForm from "../forms/FeedbackForm";
 
 const ChannelContributionCard = () => {
@@ -41,7 +40,7 @@ const ChannelContributionCard = () => {
             </p>
           </motion.div>
         </DialogTrigger>
-        <DialogContent className="max-w-md w-full">
+        <DialogContent className=" max-w-[27rem] sm:max-w-md w-full">
           <DialogHeader>
             <DialogTitle className="text-2xl font-bold mb-4">
               🤝🏽 Support Xolace

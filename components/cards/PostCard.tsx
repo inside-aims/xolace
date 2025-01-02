@@ -16,7 +16,6 @@ import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import Link from "next/link";
 import PostDropdown from "../shared/PostDropdown";
 import PostStats from "../shared/PostStats";
-import { Button } from "../ui/button";
 import { useUserState } from "@/lib/store/user";
 import ReportForm from "../forms/ReportForm";
 import KvngDialogDrawer from "../shared/KvngDialogDrawer";

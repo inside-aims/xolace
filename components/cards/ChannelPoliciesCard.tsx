@@ -2,7 +2,6 @@
 
 import React from "react";
 import { motion } from "framer-motion";
-import { FileTextIcon } from "@radix-ui/react-icons";
 import Link from "next/link";
 import { ShieldIcon } from 'lucide-react';
 

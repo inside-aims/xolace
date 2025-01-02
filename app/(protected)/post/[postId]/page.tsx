@@ -1,11 +1,8 @@
-import { DoubleArrowLeftIcon } from "@radix-ui/react-icons";
 import { notFound } from "next/navigation";
 
 import { DetailCard } from "@/components/cards/DetailCard";
 import PostDetailDrawer from "@/components/ui/PostDetailDrawer";
 import { createClient } from "@/utils/supabase/server";
-
-export const dynamic = "force-dynamic";
 
 type Params = Promise<{ postId: string }>;
 type SearchParams = Promise<{ [key: string]: string | string[] | undefined }>;
@@ -50,14 +47,6 @@ const PostDetailPage = async (props: {
 
   return (
     <>
-      {/*<Button
-        variant={"link"}
-        className="dark:text-sky-500"
-        onClick={() => router.back()}
-      >
-        <DoubleArrowLeftIcon className="dark:text-sky-500 text-sky-500 mr-1" />
-        back
-      </Button> */}
       <DetailCard postId={postId} post={post} />
 
       {/* Drawer for comment form and comment cards */}

@@ -1,29 +1,20 @@
 "use client";
 
 import React, { useState, useEffect } from "react";
-import Image from "next/image";
-import Link from "next/link";
 import { useRouter } from "next/navigation";
 
 import {
   Drawer,
   DrawerContent,
   DrawerHeader,
-  DrawerTrigger,
-  DrawerFooter,
+  DrawerTitle,
 } from "@/components/ui/drawer";
 import clsx from "clsx";
 import { Textarea } from "./textarea";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
-import {
-  HeartFilledIcon,
-  HeartIcon,
-  DoubleArrowLeftIcon,
-  InstagramLogoIcon,
-  LinkedInLogoIcon,
-} from "@radix-ui/react-icons";
+import { DoubleArrowLeftIcon } from "@radix-ui/react-icons";
 
 import { Button } from "@/components/ui/button";
 import {
@@ -42,6 +33,7 @@ import { CommentSchema } from "@/validation";
 import { getSupabaseBrowserClient } from "@/utils/supabase/client";
 import { useUserState } from "@/lib/store/user";
 import { Send } from "lucide-react";
+import { VisuallyHidden } from "@radix-ui/react-visually-hidden";
 
 type Type = string | string[] | undefined;
 
@@ -170,7 +162,13 @@ const PostDetailDrawer = ({ post, type }: { post: any; type: Type }) => {
         modal={false}
         repositionInputs={false}
       >
-        <DrawerContent className="h-full max-h-[97%]">
+        <DrawerContent
+          aria-describedby={undefined}
+          className="h-full max-h-[97%]"
+        >
+          <VisuallyHidden>
+            <DrawerTitle>Post Detail Drawer</DrawerTitle>
+          </VisuallyHidden>
           <DrawerHeader className="flex flex-col items-center relative">
             <Button
               variant={"link"}

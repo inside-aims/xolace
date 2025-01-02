@@ -2,7 +2,6 @@
 
 import React from "react";
 import { motion } from "framer-motion";
-import { QuestionMarkCircledIcon } from "@radix-ui/react-icons";
 import {
   Dialog,
   DialogContent,
@@ -39,7 +38,7 @@ const ChannelQuestionsCard = () => {
             </p>
           </motion.div>
         </DialogTrigger>
-        <DialogContent className="max-w-md w-full h-[60%]">
+        <DialogContent className=" max-w-[27rem] sm:max-w-md w-full h-[60%]">
           <DialogHeader>
             <DialogTitle className="text-2xl font-bold mb-6">
               <span>&#128220; </span>Frequently Asked Questions

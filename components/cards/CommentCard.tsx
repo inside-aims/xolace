@@ -6,10 +6,7 @@ import { format } from "timeago.js";
 import {
   Card,
   CardContent,
-  CardDescription,
-  CardFooter,
   CardHeader,
-  CardTitle,
 } from "@/components/ui/card";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import PostDropdown from "../shared/PostDropdown";

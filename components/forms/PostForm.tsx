@@ -105,7 +105,7 @@ export function PostForm() {
   const handleInput = (value: string) => {
     // Extract tags
     const newTags = value.match(/#\w+/g) || [];
-    const cleanTags = newTags.map((tag) =>
+    const cleanTags = newTags.filter((_, index)=> index < 3).map((tag) =>
       tag
         .slice(1)
         .replace(/[^a-zA-Z0-9_]/g, "")

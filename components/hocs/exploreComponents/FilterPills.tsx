@@ -5,7 +5,6 @@ import React, {useState} from 'react';
 import { motion } from 'framer-motion';
 
 import { formUrlQuery, removeKeyFromQuery } from "@/lib/url";
-import { cn } from "@/lib/utils";
 import { filters } from '@/constants';
 
 const FilterPills: React.FC = () => {

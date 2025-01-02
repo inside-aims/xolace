@@ -33,7 +33,7 @@ const ChannelAboutCard = () => {
             </p>
           </motion.div>
         </DialogTrigger>
-        <DialogContent className="max-w-md w-full">
+        <DialogContent className=" max-w-[27rem] sm:max-w-md w-full">
           <DialogHeader>
             <DialogTitle className="text-2xl font-bold mb-4">
               💡 About Xolace | Beta

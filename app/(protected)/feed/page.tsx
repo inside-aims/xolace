@@ -1,10 +1,8 @@
 import React, { Suspense } from "react";
 
-import Loader from "@/components/shared/loaders/Loader";
 import FeedSkeletonLoader from "@/components/shared/loaders/FeedSkeletonLoader";
 import FeedList from "@/components/shared/FeedList";
 
-export const dynamic = "force-dynamic";
 
 const Feed = () => {
   return (

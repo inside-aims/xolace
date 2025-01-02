@@ -3,7 +3,6 @@ import { useAnimate, stagger } from "framer-motion";
 
 import { Menu } from "./Menu";
 import { MenuToggle } from "../ui/MenuToggle";
-import { OpacityIcon } from "@radix-ui/react-icons";
 
 function useMenuAnimation(isOpen: boolean) {
   const [scope, animate] = useAnimate();

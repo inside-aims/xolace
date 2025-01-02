@@ -1,10 +1,9 @@
 import React from "react";
 
 import LeftSidebar from "@/components/shared/layoutUIs/LeftSideBar";
-import Bottombar from "@/components/shared/Bottombar";
-import Topbar from "@/components/shared/Topbar";
-import Loader from "@/components/shared/loaders/Loader";
-import { createClient, getServerSupabase } from "@/utils/supabase/server";
+import Bottombar from "@/components/shared/layoutUIs/Bottombar";
+import Topbar from "@/components/shared/layoutUIs/Topbar";
+import { createClient } from "@/utils/supabase/server";
 import InitUser from "@/lib/store/initUser";
 import { InfoBanner } from "@/components/extras/Info-Banner";
 

@@ -1,6 +1,5 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import { HeartIcon, HeartFilledIcon } from "@radix-ui/react-icons";
-import { getSupabaseBrowserClient } from "@/utils/supabase/client";
 import { toggleLikePost } from "@/utils/helpers/toggleLikePost";
 import { checkIsLiked } from "@/lib/utils";
 import Link from "next/link";
@@ -23,50 +22,6 @@ const PostStats = ({
   // Set local state for likes
   const [likesList, setLikesList] = useState(postLikesList || []);
   const [isLiked, setIsLiked] = useState(checkIsLiked(likesList || [], userId));
-
-  // Check if the current user has liked this post
-  // useEffect(() => {
-  //   if (userId) {
-  //     const likedByUser = likes.some((like: any) => like.user_id === userId);
-  //     setIsLiked(likedByUser);
-  //   }
-  // }, [likes, userId]);
-
-  // Real-time updates for likes
-  // useEffect((): any => {
-  //   const subscription = supabase
-  //     .channel("public:likes")
-  //     .on(
-  //       "postgres_changes",
-  //       {
-  //         event: "*",
-  //         schema: "public",
-  //         table: "likes",
-  //         filter: `post_id=eq.${post.id}`,
-  //       },
-  //       (payload) => {
-  //         console.log(payload);
-  //         const eventType = payload.eventType;
-  //         if (eventType === "INSERT") {
-  //           console.log("Inside realtime");
-  //           console.log("Likes -> ", likesList, " ", payload.new.user_id);
-  //           setLikesList((prevLikes: any) => [
-  //             ...prevLikes,
-  //             payload.new.user_id,
-  //           ]);
-  //         } else if (eventType === "DELETE") {
-  //           console.log("inside delete");
-  //           console.log("Likes -> ", likesList, " ", payload.old.user_id);
-  //           setLikesList((prevLikes: any) =>
-  //             prevLikes.filter((like: any) => like !== payload.old.user_id)
-  //           );
-  //         }
-  //       }
-  //     )
-  //     .subscribe();
-
-  //   return () => subscription.unsubscribe();
-  // }, [post.id]);
 
   // Handle like button click (with debounce)
   const handleLike = async (e: React.MouseEvent) => {

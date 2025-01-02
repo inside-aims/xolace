@@ -5,7 +5,6 @@ import { sidebarLinks } from "@/constants";
 import Link from "next/link";
 import { useRouter, usePathname } from "next/navigation";
 
-import Image from "next/image";
 import { LogoutIcon } from "../../animated/Icons/LogoutIcon";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Button } from "../../ui/button";

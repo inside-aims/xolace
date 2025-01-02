@@ -5,15 +5,14 @@ import Link from "next/link";
 import { useRouter } from "next/navigation";
 import Image from "next/image";
 
-import ThemeSwitch from "../ui/ThemeSwitch";
-import { MenuToggle } from "../ui/MenuToggle";
-import MobileNav from "./MobileNav";
-import { Button } from "../ui/button";
-import { LogoutIcon } from "../animated/Icons/LogoutIcon";
+import ThemeSwitch from "../../ui/ThemeSwitch";
+import MobileNav from "../MobileNav";
+import { Button } from "../../ui/button";
+import { LogoutIcon } from "../../animated/Icons/LogoutIcon";
 import { getSupabaseBrowserClient } from "@/utils/supabase/client";
-import SignoutAlert from "./SignoutAlert";
+import SignoutAlert from "../SignoutAlert";
 import { useUserState } from "@/lib/store/user";
-import { ProgressBetaBadge } from "./ProgressBetaBadge";
+import { ProgressBetaBadge } from "../ProgressBetaBadge";
 
 function Topbar() {
   // get user profile data

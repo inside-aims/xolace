@@ -170,7 +170,7 @@ const PostDropdown: React.FC<DropdownMenuProp> = ({
             onSelect={handleReportClick}
           >
             <Flag size={16} strokeWidth={1.5} />
-            <p className="text-red-400">Report</p>
+            <p className="">Report</p>
           </DropdownMenuItem>
         </DropdownMenuContent>
       </DropdownMenu>

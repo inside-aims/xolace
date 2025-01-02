@@ -4,7 +4,6 @@ import React, { useState, useEffect } from "react";
 import { HeartFilledIcon, HeartIcon } from "@radix-ui/react-icons";
 import { checkIsLiked } from "@/lib/utils";
 import { toggleLikePost } from "@/utils/helpers/toggleLikePost";
-import { getSupabaseBrowserClient } from "@/utils/supabase/client";
 import { useUserState } from "@/lib/store/user";
 
 const LikeButton = ({ postId, likes, setLikes }: any) => {

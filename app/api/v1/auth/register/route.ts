@@ -2,7 +2,6 @@ import { getSupabaseAdminClient } from "@/utils/supabase/adminClient";
 import { sendOTPLink } from "@/utils/sendOTPLink";
 import { builderUrl } from "@/utils/url-helpers";
 import { NextResponse } from "next/server";
-import { signUpSchema } from "@/validation";
 
 export async function POST(request: any) {
   const formData = await request.formData();
@@ -32,37 +31,15 @@ export async function POST(request: any) {
     return NextResponse.redirect(builderUrl("/error", request), 302);
   }
 
-  const [, emailHost] = email.split("@");
-
   const supabaseAdmin = getSupabaseAdminClient();
-  //   const { error } = await supabaseAdmin
-  //     .from("tenants")
-  //     .select("*")
-  //     .eq("id", tenant)
-  //     .eq("domain", emailHost)
-  //     .single();
 
   const safeEmailString = encodeURIComponent(email);
-  //   if (error) {
-  //     return NextResponse.redirect(
-  //       buildUrl(
-  //         `/error?type=register_mail_mismatch&email=${safeEmailString}`,
-  //         tenant,
-  //         request,
-  //       ),
-  //       302,
-  //     );
-  //   }
 
   console.log("Creating account");
   const { data: userData, error: userError } =
     await supabaseAdmin.auth.admin.createUser({
       email,
       password,
-
-      //   app_metadata: {
-      //     tenants: [tenant],
-      //   },
     });
 
   console.log("User data -> ", userData);
@@ -111,13 +88,6 @@ export async function POST(request: any) {
     .single();
 
   console.log("Profile -> ", profileUser);
-
-  //   const { error: tpError } = await supabaseAdmin
-  //     .from("tenant_permissions")
-  //     .insert({
-  //       tenant,
-  //       service_user: serviceUser?.id,
-  //     });
 
   if (puError) {
     await supabaseAdmin.auth.admin.deleteUser(userData.user.id);

@@ -7,10 +7,6 @@ export function cn(...inputs: ClassValue[]) {
 }
 
 export const checkIsLiked = (likeList: string[], userId: string) => {
-  // return likeList.some((like) => {
-  //   console.log("Checks -> ", like.user_id, userId, like.id);
-  //   return like.user_id === userId;
-  // });
   return likeList.includes(userId);
 };
 
