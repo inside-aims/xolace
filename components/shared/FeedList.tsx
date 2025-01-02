@@ -8,8 +8,10 @@ import Loader from "./loaders/Loader";
 import FeedSkeletonLoader from "./loaders/FeedSkeletonLoader";
 import BlurFade from "../ui/blur-fade";
 
+
+
 const FeedList = () => {
-  const [posts, setPosts] = useState<any[]>([]);
+  const [posts, setPosts] = useState<Post[]>([]);
   const [isLoading, setIsLoading] = useState(true);
   const supabase = getSupabaseBrowserClient();
 

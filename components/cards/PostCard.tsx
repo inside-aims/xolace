@@ -25,7 +25,7 @@ import TagCard from "./TagCard";
 
 type PostCardType = {
   className?: string;
-  post: any;
+  post: Post;
   section?: "profile";
 };
 

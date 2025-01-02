@@ -15,6 +15,7 @@ import Loader from "@/components/shared/loaders/Loader";
 import { useUserState } from "@/lib/store/user";
 import { getSupabaseBrowserClient } from "@/utils/supabase/client";
 import BlurFade from "@/components/ui/blur-fade";
+import { Post } from "@/types/global";
 
 const Profile = () => {
   // get user profile data
@@ -24,7 +25,7 @@ const Profile = () => {
   const supabase = getSupabaseBrowserClient();
 
   const [isLoadingPosts, setIsLoadingPosts] = useState(true);
-  const [posts, setPosts] = useState<any>([]);
+  const [posts, setPosts] = useState<Post[]>([]);
 
   // fetch user posts
   useEffect(() => {
@@ -34,6 +35,11 @@ const Profile = () => {
         .select(
           `
        *,
+        posttags (
+        tags (
+          name
+        )
+      ),
           likes(
           *
           ),
