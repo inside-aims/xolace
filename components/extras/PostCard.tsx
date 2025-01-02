@@ -11,8 +11,8 @@ import {
   CardFooter,
 } from "@/components/ui/card";
 import { Avatar, AvatarImage, AvatarFallback } from "@/components/ui/avatar";
-import { UpvoteIcon } from "./animated/Icons/UpvoteIcon";
-import { DownvoteIcon } from "./animated/Icons/DownvoteIcon";
+import { UpvoteIcon } from "../animated/Icons/UpvoteIcon";
+import { DownvoteIcon } from "../animated/Icons/DownvoteIcon";
 import { MoreHorizontal, MessageCircle } from "lucide-react";
 import { cn } from "@/lib/utils";
 

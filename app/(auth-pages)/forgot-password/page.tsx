@@ -17,7 +17,7 @@ export default async function ForgotPassword(props: {
         <form
           className=" flex flex-col w-full gap-2 text-foreground [&>input]:mb-6  mx-auto  text-center max-sm:p-2"
           method="POST"
-          action={urlPath("/auth/magic-link")}
+          action={urlPath("/api/v1/auth/magic-link")}
         >
           <div>
             <h1 className="text-2xl font-medium">Reset Password</h1>

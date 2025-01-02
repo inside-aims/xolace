@@ -21,19 +21,16 @@ export async function sendOTPLink(email, type, request) {
 
   // construct a custom link with the hashed_token
   const constructedLink = builderUrl(
-    `/auth/verify?hashed_token=${hashed_token}&type=${type}`,
+    `api/v1/auth/verify?hashed_token=${hashed_token}&type=${type}`,
     request
   );
 
   // initialize the mailing transport
   const transporter = nodemailer.createTransport({
     host: process.env.RESEND_MAIL_HOST,
-    secure: true,
+   
     port: process.env.RESEND_MAIL_PORT,
-    auth: {
-      user: process.env.RESEND_USERNAME,
-      pass: process.env.RESEND_API_KEY,
-    },
+  
   });
 
   let mailSubject = "";
