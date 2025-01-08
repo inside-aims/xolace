@@ -3,12 +3,11 @@
 import type { Variants } from 'framer-motion';
 import { motion, useAnimation } from 'framer-motion';
 
-interface LogoutIconProps{
-    className?: string;
-    height? : string;
-    width?: string;
+interface LogoutIconProps {
+  className?: string;
+  height?: string;
+  width?: string;
 }
-
 
 const pathVariants: Variants = {
   animate: {
@@ -20,12 +19,16 @@ const pathVariants: Variants = {
   },
 };
 
-const LogoutIcon = ({className , height="25" , width="25" } : LogoutIconProps) => {
+const LogoutIcon = ({
+  className,
+  height = '25',
+  width = '25',
+}: LogoutIconProps) => {
   const controls = useAnimation();
 
   return (
     <div
-      className={`cursor-pointer select-none hover:bg-accent rounded-md transition-colors duration-200 flex items-center justify-center ${className}`}
+      className={`flex cursor-pointer select-none items-center justify-center rounded-md transition-colors duration-200 hover:bg-accent ${className}`}
       onMouseEnter={() => controls.start('animate')}
       onMouseLeave={() => controls.start('normal')}
       onClick={() => controls.start('animate')}

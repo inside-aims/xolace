@@ -1,4 +1,4 @@
-import { Button } from "@/components/ui/button";
+import { Button } from '@/components/ui/button';
 import {
   Sheet,
   SheetContent,
@@ -6,8 +6,8 @@ import {
   SheetHeader,
   SheetTitle,
   SheetTrigger,
-} from "@/components/ui/sheet";
-import { BellRing } from "lucide-react";
+} from '@/components/ui/sheet';
+import { BellRing } from 'lucide-react';
 
 interface KvngSheetProps {
   open?: boolean;
@@ -30,11 +30,11 @@ export function KvngSheet({
       {trigger && (
         <SheetTrigger asChild>
           <Button variant="outline" className="flex items-center gap-x-2">
-            Send us a Feedback <BellRing />{" "}
+            Send us a Feedback <BellRing />{' '}
           </Button>
         </SheetTrigger>
       )}
-      <SheetContent className=" z-50">
+      <SheetContent className="z-50">
         <SheetHeader>
           <SheetTitle>{title}</SheetTitle>
           <SheetDescription>{description}</SheetDescription>

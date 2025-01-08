@@ -1,10 +1,9 @@
-import { User } from "@supabase/supabase-js";
-import { create } from "zustand";
+import { create } from 'zustand';
 
 interface UserState {
   user: Profile | undefined;
 }
 
-export const useUserState = create<UserState>((set) => ({
+export const useUserState = create<UserState>(set => ({
   user: undefined,
 }));

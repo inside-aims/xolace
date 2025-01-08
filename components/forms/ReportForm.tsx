@@ -1,13 +1,13 @@
-"use client";
+'use client';
 
-import React, { useState } from "react";
+import React, { useState } from 'react';
 import {
   Select,
   SelectContent,
   SelectItem,
   SelectTrigger,
   SelectValue,
-} from "../ui/select";
+} from '../ui/select';
 import {
   Form,
   FormControl,
@@ -16,21 +16,21 @@ import {
   FormItem,
   FormLabel,
   FormMessage,
-} from "@/components/ui/form";
-import { Textarea } from "../ui/textarea";
-import { Label } from "@/components/ui/label";
-import { Input } from "@/components/ui/input";
-import { z } from "zod";
-import { zodResolver } from "@hookform/resolvers/zod";
-import { useForm } from "react-hook-form";
-import { Button } from "../ui/button";
-import Loader from "../shared/loaders/Loader";
-import { useToast } from "../ui/use-toast";
-import { getSupabaseBrowserClient } from "@/utils/supabase/client";
+} from '@/components/ui/form';
+import { Textarea } from '../ui/textarea';
+import { Label } from '@/components/ui/label';
+import { Input } from '@/components/ui/input';
+import { z } from 'zod';
+import { zodResolver } from '@hookform/resolvers/zod';
+import { useForm } from 'react-hook-form';
+import { Button } from '../ui/button';
+import Loader from '../shared/loaders/Loader';
+import { useToast } from '../ui/use-toast';
+import { getSupabaseBrowserClient } from '@/utils/supabase/client';
 
 interface ReportFormProps {
-  postId?: any;
-  commentId?: any;
+  postId?: string;
+  commentId?: number;
 }
 
 const ReportForm = ({ postId, commentId }: ReportFormProps) => {
@@ -40,23 +40,23 @@ const ReportForm = ({ postId, commentId }: ReportFormProps) => {
   const supabase = getSupabaseBrowserClient();
 
   //states
-  const [reason, setReason] = useState("");
+  const [reason, setReason] = useState('');
   const [isLoading, setIsLoading] = useState(false);
 
   const ReportSchema = z.object({
     description: z
       .string()
       .min(10, {
-        message: "Report Description must be at least 10 characters.",
+        message: 'Report Description must be at least 10 characters.',
       })
       .max(200, {
-        message: "Report Description must not be longer than 300 characters.",
+        message: 'Report Description must not be longer than 300 characters.',
       }),
     severity: z.string(),
     otherReason: z
       .string()
       .max(100, {
-        message: "Report must not be longer than 300 characters.",
+        message: 'Report must not be longer than 300 characters.',
       })
       .optional(),
   });
@@ -64,30 +64,30 @@ const ReportForm = ({ postId, commentId }: ReportFormProps) => {
   const form = useForm<z.infer<typeof ReportSchema>>({
     resolver: zodResolver(ReportSchema),
     defaultValues: {
-      description: "",
-      severity: "",
-      otherReason: "",
+      description: '',
+      severity: '',
+      otherReason: '',
     },
   });
 
   // watch post realtime updates
   const { watch } = form;
-  const description = watch("description");
+  const description = watch('description');
 
   //
   async function onSubmit(data: z.infer<typeof ReportSchema>) {
     // extract severity
     const { description, severity, otherReason } = data;
-    let getReason = "";
+    let getReason = '';
     setIsLoading(true);
 
     // convert severity to number
     const numSeverity = Number(severity);
     if (isNaN(numSeverity) || numSeverity < 1 || numSeverity > 5) {
       toast({
-        title: "Severity Error",
-        description: "Please enter a valid severity number between 1 and 5.",
-        variant: "destructive",
+        title: 'Severity Error',
+        description: 'Please enter a valid severity number between 1 and 5.',
+        variant: 'destructive',
       });
       setIsLoading(false);
       return;
@@ -108,19 +108,19 @@ const ReportForm = ({ postId, commentId }: ReportFormProps) => {
     };
 
     const { error: reportError } = await supabase
-      .from("reports")
+      .from('reports')
       .insert(report);
 
     if (reportError) {
-      if (reportError.message.startsWith("duplicate key value")) {
+      if (reportError.message.startsWith('duplicate key value')) {
         toast({
-          variant: "destructive",
+          variant: 'destructive',
           title: "Oops, You can't report on the same post twice 😵‍💫!",
         });
       } else {
         toast({
-          variant: "destructive",
-          title: "Oops, something must have gone wrong 😵‍💫!",
+          variant: 'destructive',
+          title: 'Oops, something must have gone wrong 😵‍💫!',
         });
       }
       console.log(reportError);
@@ -130,13 +130,13 @@ const ReportForm = ({ postId, commentId }: ReportFormProps) => {
 
     // show notification
     toast({
-      variant: "default",
-      title: "Report received. Our Team will investigate the issue soon!💢",
+      variant: 'default',
+      title: 'Report received. Our Team will investigate the issue soon!💢',
     });
 
     setIsLoading(false);
     form.reset();
-    setReason("");
+    setReason('');
   }
 
   return (
@@ -178,10 +178,10 @@ const ReportForm = ({ postId, commentId }: ReportFormProps) => {
           />
 
           {/* reasons options */}
-          <div className="grid gap-2 mt-2">
+          <div className="mt-2 grid gap-2">
             <Label htmlFor="report-reasons">Reason</Label>
             <Select onValueChange={setReason} defaultValue={reason}>
-              <SelectTrigger id="report-reasons" className=" truncate">
+              <SelectTrigger id="report-reasons" className="truncate">
                 <SelectValue placeholder="Select Reason" />
               </SelectTrigger>
               <SelectContent>
@@ -196,7 +196,7 @@ const ReportForm = ({ postId, commentId }: ReportFormProps) => {
           </div>
         </div>
         <div>
-          {reason === "other" && (
+          {reason === 'other' && (
             <div className="grid gap-2">
               <FormField
                 control={form.control}
@@ -243,15 +243,15 @@ const ReportForm = ({ postId, commentId }: ReportFormProps) => {
         <Button
           disabled={description.length > 200 || isLoading}
           type="submit"
-          className=" rounded-full"
+          className="rounded-full"
         >
           {isLoading ? (
-            <span className=" flex gap-2">
+            <span className="flex gap-2">
               <Loader />
               <p>Loading...</p>
             </span>
           ) : (
-            "Submit"
+            'Submit'
           )}
         </Button>
       </form>

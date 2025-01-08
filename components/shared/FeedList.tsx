@@ -1,14 +1,13 @@
-"use client";
+/* eslint-disable @typescript-eslint/no-explicit-any */
+'use client';
 
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect } from 'react';
 
-import { PostCard } from "@/components/cards/PostCard";
-import { getSupabaseBrowserClient } from "@/utils/supabase/client";
-import Loader from "./loaders/Loader";
-import FeedSkeletonLoader from "./loaders/FeedSkeletonLoader";
-import BlurFade from "../ui/blur-fade";
-
-
+import { PostCard } from '@/components/cards/PostCard';
+import { getSupabaseBrowserClient } from '@/utils/supabase/client';
+import FeedSkeletonLoader from './loaders/FeedSkeletonLoader';
+import BlurFade from '../ui/blur-fade';
+import { Post } from '@/types/global';
 
 const FeedList = () => {
   const [posts, setPosts] = useState<Post[]>([]);
@@ -17,8 +16,8 @@ const FeedList = () => {
 
   useEffect(() => {
     const fetchPost = async () => {
-      let postStatement = supabase
-        .from("posts")
+      const postStatement = supabase
+        .from('posts')
         .select(
           `
      *,
@@ -31,13 +30,13 @@ const FeedList = () => {
         *
         ),
         comments:comments(count)
-  `
+  `,
         )
-        .order("created_at", { ascending: false });
+        .order('created_at', { ascending: false });
       const { data: postsData, error } = await postStatement;
 
       if (error) {
-        console.error("Error fetching posts:", error.message);
+        console.error('Error fetching posts:', error.message);
         return;
       }
 
@@ -46,46 +45,46 @@ const FeedList = () => {
     };
 
     fetchPost();
-  }, []);
+  }, [supabase]);
 
   // real time events for post
   useEffect((): any => {
     const listener = (payload: any) => {
       const eventType = payload.eventType;
 
-      console.log("eventType", payload);
+      console.log('eventType', payload);
 
-      if (eventType === "INSERT") {
-        console.log("Inserting post");
-      } else if (eventType === "DELETE") {
+      if (eventType === 'INSERT') {
+        console.log('Inserting post');
+      } else if (eventType === 'DELETE') {
         setPosts((prevPosts: any) =>
-          prevPosts.filter((post: any) => post.id !== payload.old.id)
+          prevPosts.filter((post: any) => post.id !== payload.old.id),
         );
-      } else if (eventType === "UPDATE") {
+      } else if (eventType === 'UPDATE') {
         setPosts((prevPosts: any) =>
           prevPosts.map((post: any) =>
-            post.id === payload.new.id ? payload.new : post
-          )
+            post.id === payload.new.id ? payload.new : post,
+          ),
         );
       }
     };
 
     const subscription = supabase
-      .channel("public:posts")
+      .channel('public:posts')
       .on(
-        "postgres_changes",
+        'postgres_changes',
         {
-          event: "*",
-          schema: "public",
-          table: "posts",
+          event: '*',
+          schema: 'public',
+          table: 'posts',
           // filter: `ticket=eq.${ticket}`,
         },
-        listener
+        listener,
       )
       .subscribe();
 
     return () => subscription.unsubscribe();
-  }, []);
+  }, [supabase]);
 
   // const supabase_user_id: string | null =
   //   (await supabase.auth.getUser()).data?.user?.id ?? null;
@@ -108,8 +107,8 @@ const FeedList = () => {
   //     `);
 
   console.log(
-    "posts -> ",
-    posts?.map((test) => test)
+    'posts -> ',
+    posts?.map(test => test),
   );
 
   return (
@@ -119,11 +118,11 @@ const FeedList = () => {
           <FeedSkeletonLoader />
         </>
       )}
-      <ul className="flex flex-col flex-1 gap-3 w-full ">
+      <ul className="flex w-full flex-1 flex-col gap-3">
         {(posts || []).map((post, idx) => (
           <BlurFade
             key={`${post.id}`}
-            className="flex justify-center w-full "
+            className="flex w-full justify-center"
             delay={0.15 + idx * 0.05}
             duration={0.3}
             inView

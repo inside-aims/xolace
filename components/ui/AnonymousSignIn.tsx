@@ -1,5 +1,5 @@
-import React from "react";
-import { useRouter } from "next/navigation";
+import React from 'react';
+import { useRouter } from 'next/navigation';
 
 import {
   AlertDialog,
@@ -11,17 +11,17 @@ import {
   AlertDialogHeader,
   AlertDialogTitle,
   AlertDialogTrigger,
-} from "@/components/ui/alert-dialog";
-import { Button } from "@/components/ui/button";
-import { useToast } from "./use-toast";
-import { getSupabaseBrowserClient } from "@/utils/supabase/client";
-import { generateRandomNumber } from "@/lib/utils";
+} from '@/components/ui/alert-dialog';
+import { Button } from '@/components/ui/button';
+import { useToast } from './use-toast';
+import { getSupabaseBrowserClient } from '@/utils/supabase/client';
+import { generateRandomNumber } from '@/lib/utils';
 
 const AnonymousSignIn = () => {
   const supabase = getSupabaseBrowserClient();
   const { toast } = useToast();
   const router = useRouter();
-  const is_anonymous_user : boolean = true;
+  const is_anonymous_user: boolean = true;
 
   const handleSignIn = async () => {
     // Implement your anonymous sign-in logic here
@@ -29,35 +29,35 @@ const AnonymousSignIn = () => {
     const { data, error } = await supabase.auth.signInAnonymously();
     if (error) {
       toast({
-        title: "Error signing in anonymously:",
+        title: 'Error signing in anonymously:',
         description: error.message,
       });
-      console.error("Error signing in anonymously:", error);
+      console.error('Error signing in anonymously:', error);
       return;
     }
 
     if (!data.user) {
       toast({
-        title: "Error signing in anonymously:",
-        description: "There is no user data",
+        title: 'Error signing in anonymously:',
+        description: 'There is no user data',
       });
-      console.error("Error signing in anonymously:", error);
+      console.error('Error signing in anonymously:', error);
       return;
     }
 
-    console.log("Data -> ", data);
+    console.log('Data -> ', data);
 
     // extract user
     const AnonUser = data.user;
 
     //
     const { data: profileUser, error: profileError } = await supabase
-      .from("profiles")
+      .from('profiles')
       .insert({
         username: `Anonymous${generateRandomNumber({ min: 1, max: 10000 })}`,
         supabase_user: AnonUser.id,
-        avatar_url: `https://avatar.iran.liara.run/public/${generateRandomNumber({ min:1 , max : 100})}`,
-        is_anonymous: is_anonymous_user
+        avatar_url: `https://avatar.iran.liara.run/public/${generateRandomNumber({ min: 1, max: 100 })}`,
+        is_anonymous: is_anonymous_user,
       })
       .select()
       .single();
@@ -66,15 +66,15 @@ const AnonymousSignIn = () => {
     console.log(profileError);
 
     toast({
-      title: " 🥷 Anonymous Sign-in Successful!",
+      title: ' 🥷 Anonymous Sign-in Successful!',
       description: "You've been signed in anonymously.",
     });
     // Redirect to the feed page or your desired page after successful sign-in
-    router.push("/feed");
+    router.push('/feed');
   };
 
   return (
-    <div className=" mt-4 lg:mt-2">
+    <div className="mt-4 lg:mt-2">
       <AlertDialog>
         <AlertDialogTrigger asChild>
           <Button variant="secondary" className="w-full font-bold uppercase">
@@ -87,7 +87,7 @@ const AnonymousSignIn = () => {
             <AlertDialogDescription>
               By signing in anonymously, you'll be able to:
               <p className="mb-2">
-                {" "}
+                {' '}
                 ✅ Add posts, like, and comment just like any other user.
               </p>
               However, keep in mind:
@@ -103,7 +103,7 @@ const AnonymousSignIn = () => {
             <AlertDialogCancel>Cancel</AlertDialogCancel>
             <AlertDialogAction
               onClick={handleSignIn}
-              className=" font-semibold bg-red-500 text-slate-50 shadow-sm hover:bg-red-500/90 dark:bg-red-900 dark:text-slate-50 dark:hover:bg-red-900/90"
+              className="bg-red-500 font-semibold text-slate-50 shadow-sm hover:bg-red-500/90 dark:bg-red-900 dark:text-slate-50 dark:hover:bg-red-900/90"
             >
               SignIn Anonymously
             </AlertDialogAction>

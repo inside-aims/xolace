@@ -1,4 +1,4 @@
-import { Button } from "@/components/ui/button";
+import { Button } from '@/components/ui/button';
 import {
   Dialog,
   DialogContent,
@@ -6,18 +6,18 @@ import {
   DialogHeader,
   DialogTitle,
   DialogTrigger,
-} from "@/components/ui/dialog";
-import { CheckCircledIcon } from "@radix-ui/react-icons";
+} from '@/components/ui/dialog';
+import { CheckCircledIcon } from '@radix-ui/react-icons';
 
 export function TermsConditions() {
   return (
     <Dialog>
       <DialogTrigger asChild>
-        <Button className=" text-sky-600" variant="link" size="link">
+        <Button className="text-sky-600" variant="link" size="link">
           Terms & Conditions
         </Button>
       </DialogTrigger>
-      <DialogContent className="max-w-[95%] md:max-w-[50%] max-h-[50%] overflow-auto text-black dark:text-white">
+      <DialogContent className="max-h-[50%] max-w-[95%] overflow-auto text-black dark:text-white md:max-w-[50%]">
         <DialogHeader>
           <DialogTitle>User Anonymity</DialogTitle>
           <DialogDescription>
@@ -29,36 +29,36 @@ export function TermsConditions() {
           </DialogDescription>
         </DialogHeader>
         <div className="">
-          <h3 className="text-lg font-semibold py-2">Prohibited Activities</h3>
+          <h3 className="py-2 text-lg font-semibold">Prohibited Activities</h3>
           <p>
-            {" "}
+            {' '}
             Explicitly state the activities that are strictly prohibited on the
             website, such as:
           </p>
-          <ol className=" my-2">
+          <ol className="my-2">
             <li>
-              {" "}
+              {' '}
               <span>
-                <CheckCircledIcon className="inline mr-2 text-red-500" />
-              </span>{" "}
+                <CheckCircledIcon className="mr-2 inline text-red-500" />
+              </span>{' '}
               Harassment, bullying, or threats towards other users.
             </li>
             <li>
-              <CheckCircledIcon className="inline mr-2 text-red-500" /> Illegal
+              <CheckCircledIcon className="mr-2 inline text-red-500" /> Illegal
               activities, including but not limited to hacking, fraud, or
               sharing copyrighted material without permission.
             </li>
             <li>
-              <CheckCircledIcon className="inline mr-2 text-red-500" /> Hate
+              <CheckCircledIcon className="mr-2 inline text-red-500" /> Hate
               speech, discrimination, or promoting violence.
             </li>
             <li>
-              <CheckCircledIcon className="inline mr-2 text-red-500" /> Sharing
+              <CheckCircledIcon className="mr-2 inline text-red-500" /> Sharing
               personal information or engaging in doxing (revealing others&apos;
               private information).
             </li>
             <li>
-              <CheckCircledIcon className="inline mr-2 text-red-500" />{" "}
+              <CheckCircledIcon className="mr-2 inline text-red-500" />{' '}
               Spreading misinformation or engaging in malicious activities that
               could harm individuals or society.
             </li>

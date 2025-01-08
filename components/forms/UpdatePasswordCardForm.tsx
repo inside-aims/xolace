@@ -1,11 +1,11 @@
-"use client";
+'use client';
 
-import { useState } from "react";
+import { useState } from 'react';
 
-import { zodResolver } from "@hookform/resolvers/zod";
-import { useForm } from "react-hook-form";
-import { z } from "zod";
-import { Button } from "@/components/ui/button";
+import { zodResolver } from '@hookform/resolvers/zod';
+import { useForm } from 'react-hook-form';
+import { z } from 'zod';
+import { Button } from '@/components/ui/button';
 import {
   Card,
   CardContent,
@@ -13,7 +13,7 @@ import {
   CardFooter,
   CardHeader,
   CardTitle,
-} from "@/components/ui/card";
+} from '@/components/ui/card';
 import {
   Form,
   FormControl,
@@ -21,13 +21,13 @@ import {
   FormItem,
   FormLabel,
   FormMessage,
-} from "@/components/ui/form";
-import { Input } from "@/components/ui/input";
-import { UpdatePasswordSchema } from "@/validation";
-import { getSupabaseBrowserClient } from "@/utils/supabase/client";
-import { useToast } from "../ui/use-toast";
-import Loader from "../shared/loaders/Loader";
-import ToggleEyeIcon from "../ui/ToggleEyeIcon";
+} from '@/components/ui/form';
+import { Input } from '@/components/ui/input';
+import { UpdatePasswordSchema } from '@/validation';
+import { getSupabaseBrowserClient } from '@/utils/supabase/client';
+import { useToast } from '../ui/use-toast';
+import Loader from '../shared/loaders/Loader';
+import ToggleEyeIcon from '../ui/ToggleEyeIcon';
 
 const UpdatePasswordCardForm = () => {
   const { toast } = useToast();
@@ -41,8 +41,8 @@ const UpdatePasswordCardForm = () => {
   const form = useForm<z.infer<typeof UpdatePasswordSchema>>({
     resolver: zodResolver(UpdatePasswordSchema),
     defaultValues: {
-      password: "",
-      newPassword: "",
+      password: '',
+      newPassword: '',
     },
   });
 
@@ -56,16 +56,16 @@ const UpdatePasswordCardForm = () => {
     // Get user data
     const user = (await supabase.auth.getUser()).data?.user;
     if (!user) {
-      console.error("User not found");
+      console.error('User not found');
       return;
     }
 
     if (user.is_anonymous) {
-      console.log("anonymous-> ", user.is_anonymous);
+      console.log('anonymous-> ', user.is_anonymous);
       toast({
-        title: "Error updating password",
-        description: "Anonymous users cannot update passwords",
-        variant: "destructive",
+        title: 'Error updating password',
+        description: 'Anonymous users cannot update passwords',
+        variant: 'destructive',
       });
       setIsLoading(false);
       return;
@@ -79,10 +79,10 @@ const UpdatePasswordCardForm = () => {
       });
 
       if (signInError) {
-        console.error("Old password is incorrect:", signInError.message);
+        console.error('Old password is incorrect:', signInError.message);
         toast({
-          title: "Old password is incorrect",
-          variant: "destructive",
+          title: 'Old password is incorrect',
+          variant: 'destructive',
         });
         setIsLoading(false);
         return;
@@ -94,19 +94,19 @@ const UpdatePasswordCardForm = () => {
       });
 
       if (updateError) {
-        console.error("Error updating password:", updateError.message);
+        console.error('Error updating password:', updateError.message);
         toast({
-          title: "Error updating password",
+          title: 'Error updating password',
           description: updateError.message,
-          variant: "destructive",
+          variant: 'destructive',
         });
         setIsLoading(false);
         return;
       }
 
       toast({
-        title: "Password updated",
-        description: "Your password has been updated successfully",
+        title: 'Password updated',
+        description: 'Your password has been updated successfully',
       });
       // Clear form , Log out the user and redirect to login page
       setIsLoading(false);
@@ -136,7 +136,7 @@ const UpdatePasswordCardForm = () => {
                   <FormControl>
                     <div className="relative md:w-1/2">
                       <Input
-                        type={showPassword ? "text" : "password"}
+                        type={showPassword ? 'text' : 'password'}
                         placeholder="Current Password"
                         {...field}
                         className="w-full"
@@ -159,7 +159,7 @@ const UpdatePasswordCardForm = () => {
                   <FormControl>
                     <div className="relative md:w-1/2">
                       <Input
-                        type={showNewPassword ? "text" : "password"}
+                        type={showNewPassword ? 'text' : 'password'}
                         placeholder="New Password"
                         {...field}
                         className="w-full"
@@ -183,11 +183,11 @@ const UpdatePasswordCardForm = () => {
             >
               {isLoading ? (
                 <div className="flex items-center justify-center gap-x-2">
-                  {" "}
+                  {' '}
                   <Loader /> <span>Saving...</span>
                 </div>
               ) : (
-                "Save"
+                'Save'
               )}
             </Button>
           </CardFooter>

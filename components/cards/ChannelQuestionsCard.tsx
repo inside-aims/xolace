@@ -1,7 +1,7 @@
-"use client";
+'use client';
 
-import React from "react";
-import { motion } from "framer-motion";
+import React from 'react';
+import { motion } from 'framer-motion';
 import {
   Dialog,
   DialogContent,
@@ -9,15 +9,15 @@ import {
   DialogHeader,
   DialogTitle,
   DialogTrigger,
-} from "@/components/ui/dialog";
+} from '@/components/ui/dialog';
 import {
   Accordion,
   AccordionContent,
   AccordionItem,
   AccordionTrigger,
-} from "@/components/ui/accordion";
-import { faqs } from "@/constants";
-import { HelpCircleIcon } from "lucide-react";
+} from '@/components/ui/accordion';
+import { faqs } from '@/constants';
+import { HelpCircleIcon } from 'lucide-react';
 
 const ChannelQuestionsCard = () => {
   return (
@@ -25,12 +25,12 @@ const ChannelQuestionsCard = () => {
       <Dialog>
         <DialogTrigger className="w-full">
           <motion.div
-            className="bg-white dark:bg-gray-800 rounded-lg shadow-md p-6 cursor-pointer hover:shadow-lg transition-shadow duration-200"
+            className="cursor-pointer rounded-lg bg-white p-6 shadow-md transition-shadow duration-200 hover:shadow-lg dark:bg-gray-800"
             whileHover={{ scale: 1.03 }}
             whileTap={{ scale: 0.98 }}
           >
-            <HelpCircleIcon className="w-12 h-12 mb-4 text-purple-500 dark:text-purple-400" />
-            <h2 className="text-xl font-semibold mb-2 text-gray-800 dark:text-gray-100">
+            <HelpCircleIcon className="mb-4 h-12 w-12 text-purple-500 dark:text-purple-400" />
+            <h2 className="mb-2 text-xl font-semibold text-gray-800 dark:text-gray-100">
               Questions
             </h2>
             <p className="text-gray-600 dark:text-gray-300">
@@ -38,9 +38,9 @@ const ChannelQuestionsCard = () => {
             </p>
           </motion.div>
         </DialogTrigger>
-        <DialogContent className=" max-w-[27rem] sm:max-w-md w-full h-[60%]">
+        <DialogContent className="h-[60%] w-full max-w-[27rem] sm:max-w-md">
           <DialogHeader>
-            <DialogTitle className="text-2xl font-bold mb-6">
+            <DialogTitle className="mb-6 text-2xl font-bold">
               <span>&#128220; </span>Frequently Asked Questions
             </DialogTitle>
             <DialogDescription className="hidden">
@@ -50,9 +50,9 @@ const ChannelQuestionsCard = () => {
           <Accordion
             type="single"
             collapsible
-            className="w-full px-3 min-h-[90%] max-h-[90%] overflow-auto"
+            className="max-h-[90%] min-h-[90%] w-full overflow-auto px-3"
           >
-            {faqs.map((faq) => (
+            {faqs.map(faq => (
               <AccordionItem key={faq.id} value={`item-${faq.id}`}>
                 <AccordionTrigger>{faq.question}</AccordionTrigger>
                 <AccordionContent>{faq.answer}</AccordionContent>

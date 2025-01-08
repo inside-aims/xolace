@@ -1,13 +1,12 @@
-import React, { Suspense } from "react";
+import React, { Suspense } from 'react';
 
-import FeedSkeletonLoader from "@/components/shared/loaders/FeedSkeletonLoader";
-import FeedList from "@/components/shared/FeedList";
-
+import FeedSkeletonLoader from '@/components/shared/loaders/FeedSkeletonLoader';
+import FeedList from '@/components/shared/FeedList';
 
 const Feed = () => {
   return (
     <>
-      {" "}
+      {' '}
       <Suspense fallback={<FeedSkeletonLoader />}>
         <FeedList />
       </Suspense>

@@ -1,8 +1,8 @@
-"use client";
+'use client';
 
-import { useState, useEffect } from "react";
-import Link from "next/link";
-import { useRouter } from "next/navigation";
+import { useState} from 'react';
+import Link from 'next/link';
+import { useRouter } from 'next/navigation';
 
 import {
   DropdownMenu,
@@ -11,11 +11,11 @@ import {
   DropdownMenuLabel,
   DropdownMenuSeparator,
   DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu";
-import { useToast } from "../ui/use-toast";
-import { useUserState } from "@/lib/store/user";
-import { getSupabaseBrowserClient } from "@/utils/supabase/client";
-import { Trash2,Telescope , Flag } from "lucide-react";
+} from '@/components/ui/dropdown-menu';
+import { useToast } from '../ui/use-toast';
+import { useUserState } from '@/lib/store/user';
+import { getSupabaseBrowserClient } from '@/utils/supabase/client';
+import { Trash2, Telescope, Flag } from 'lucide-react';
 
 type DropdownMenuProp = {
   comment?: boolean;
@@ -23,7 +23,7 @@ type DropdownMenuProp = {
   postCard?: boolean;
   postId?: string;
   postCreatedBy?: string | number;
-  commentId?: string;
+  commentId?: number;
   commentCreatedBy?: string | number;
   onOpenChange: React.Dispatch<React.SetStateAction<boolean>>;
 };
@@ -39,7 +39,7 @@ const PostDropdown: React.FC<DropdownMenuProp> = ({
   onOpenChange,
 }) => {
   const router = useRouter();
-  const user = useUserState((state) => state.user);
+  const user = useUserState(state => state.user);
   const supabase = getSupabaseBrowserClient();
   const { toast } = useToast();
   const [isLoading, setIsLoading] = useState(false);
@@ -60,17 +60,17 @@ const PostDropdown: React.FC<DropdownMenuProp> = ({
     setIsLoading(true);
     try {
       // await handleDelete({ comment, postCard, postId });
-      const response = await supabase
-        .from("comments")
+       await supabase
+        .from('comments')
         .delete()
-        .eq("id", commentId);
+        .eq('id', commentId);
       toast({
         title: `Successfully Deleted Comment.💯 `,
       });
     } catch (error) {
       console.log(error);
       toast({
-        title: "Error deleting comment:",
+        title: 'Error deleting comment:',
       });
     } finally {
       setIsLoading(false);
@@ -83,14 +83,14 @@ const PostDropdown: React.FC<DropdownMenuProp> = ({
     try {
       // await handleDelete({ comment, postCard, postId });
       const { error: deleteError } = await supabase
-        .from("posts")
+        .from('posts')
         .delete()
-        .eq("id", postId);
+        .eq('id', postId);
 
       if (deleteError) {
         toast({
-          title: "Error deleting post",
-          description: "Oops! Something went wrong , please try again 👀 ",
+          title: 'Error deleting post',
+          description: 'Oops! Something went wrong , please try again 👀 ',
         });
         console.log(deleteError);
         throw new Error();
@@ -102,11 +102,12 @@ const PostDropdown: React.FC<DropdownMenuProp> = ({
       });
 
       // navigate to feed page if its the details page
-      postDetail && router.replace("/feed");
+      // eslint-disable-next-line @typescript-eslint/no-unused-expressions
+      postDetail && router.replace('/feed');
     } catch (error) {
       console.log(error);
       toast({
-        title: "Error deleting post:",
+        title: 'Error deleting post:',
       });
       throw new Error();
     } finally {
@@ -132,29 +133,27 @@ const PostDropdown: React.FC<DropdownMenuProp> = ({
           <DropdownMenuSeparator />
           {isCommentAuthor && (
             <DropdownMenuItem
-              className="hover:cursor-pointer text-red-400"
+              className="text-red-400 hover:cursor-pointer"
               onClick={onCommentDelete}
             >
               <Trash2 />
 
               {isLoading
-                ? "Deleting..."
+                ? 'Deleting...'
                 : comment
-                  ? "Delete Comment"
-                  : "Delete Post"}
+                  ? 'Delete Comment'
+                  : 'Delete Post'}
             </DropdownMenuItem>
           )}
 
           {/* delete action for post */}
           {isPostAuthor && (
             <DropdownMenuItem
-              className="hover:cursor-pointer text-red-400 hover:text-red-500 "
+              className="text-red-400 hover:cursor-pointer hover:text-red-500"
               onClick={onPostDelete}
             >
-              <Trash2 size={"17px"} />
-              <span>
-              {isLoading ? "Deleting..." : "Delete Post"}
-              </span>
+              <Trash2 size={'17px'} />
+              <span>{isLoading ? 'Deleting...' : 'Delete Post'}</span>
             </DropdownMenuItem>
           )}
 

@@ -1,32 +1,32 @@
-"use client";
+'use client';
 
-import React, { useState, useEffect } from "react";
-import Link from "next/link";
-import { useRouter } from "next/navigation";
-import Image from "next/image";
+import React, { useState, useEffect } from 'react';
+import Link from 'next/link';
+import { useRouter } from 'next/navigation';
+import Image from 'next/image';
 
-import ThemeSwitch from "../../ui/ThemeSwitch";
-import MobileNav from "../MobileNav";
-import { Button } from "../../ui/button";
-import { LogoutIcon } from "../../animated/Icons/LogoutIcon";
-import { getSupabaseBrowserClient } from "@/utils/supabase/client";
-import SignoutAlert from "../SignoutAlert";
-import { useUserState } from "@/lib/store/user";
-import { ProgressBetaBadge } from "../ProgressBetaBadge";
+import ThemeSwitch from '../../ui/ThemeSwitch';
+import MobileNav from '../MobileNav';
+import { Button } from '../../ui/button';
+import { LogoutIcon } from '../../animated/Icons/LogoutIcon';
+import { getSupabaseBrowserClient } from '@/utils/supabase/client';
+import SignoutAlert from '../SignoutAlert';
+import { useUserState } from '@/lib/store/user';
+import { ProgressBetaBadge } from '../ProgressBetaBadge';
 
 function Topbar() {
   // get user profile data
-  const user = useUserState((state) => state.user);
+  const user = useUserState(state => state.user);
   const [isOpen, setIsOpen] = useState(false);
   const router = useRouter();
   const supabase = getSupabaseBrowserClient();
 
   const handleSignOut = async (
-    e: React.MouseEvent<HTMLButtonElement, MouseEvent>
+    e: React.MouseEvent<HTMLButtonElement, MouseEvent>,
   ) => {
     e.preventDefault();
 
-    if(user.is_anonymous){
+    if (user.is_anonymous) {
       setIsOpen(true);
       return;
     }
@@ -39,7 +39,7 @@ function Topbar() {
     const {
       data: { subscription },
     } = supabase.auth.onAuthStateChange((event, session) => {
-      if (event === "SIGNED_OUT") {
+      if (event === 'SIGNED_OUT') {
         router.push(`/sign-in`);
       }
     });
@@ -52,66 +52,65 @@ function Topbar() {
 
   return (
     <>
-    
-    <nav className=" topbar ">
-      <div className=" flex items-center gap-x-4">
-        <Link href="/" className="flex items-center gap-4">
-          <Image
-            src="/assets/images/anonymous-messenger.png"
-            alt="logo"
-            width={32}
-            height={32}
-            className="hidden dark:block"
-          />
+      <nav className="topbar">
+        <div className="flex items-center gap-x-4">
+          <Link href="/" className="flex items-center gap-4">
+            <Image
+              src="/assets/images/anonymous-messenger.png"
+              alt="logo"
+              width={32}
+              height={32}
+              className="hidden dark:block"
+            />
 
-<Image
-            src="/assets/images/anonymous-messenger_light.png"
-            alt="logo"
-            width={32}
-            height={32}
-            className="dark:hidden block"
-          />
-        </Link>
-        <div className="shrink-0 flex items-center z-40 relative">
-          <Link href={"/feed"} className="max-md:hidden">
-            <div className=" font-tiltNeon font-tilt z-50  text-[35px]  text-center">
-              <span className="letter-mask">X</span>
-              <span className="letter-mask !text-amber-400">o</span>
-              <span className="letter-mask">l</span>
-              <span className="letter-mask">a</span>
-              <span className="letter-mask">c</span>
-              <span className="letter-mask">e</span>
-            </div>
+            <Image
+              src="/assets/images/anonymous-messenger_light.png"
+              alt="logo"
+              width={32}
+              height={32}
+              className="block dark:hidden"
+            />
           </Link>
+          <div className="relative z-40 flex shrink-0 items-center">
+            <Link href={'/feed'} className="max-md:hidden">
+              <div className="font-tilt z-50 text-center font-tiltNeon text-[35px]">
+                <span className="letter-mask">X</span>
+                <span className="letter-mask !text-amber-400">o</span>
+                <span className="letter-mask">l</span>
+                <span className="letter-mask">a</span>
+                <span className="letter-mask">c</span>
+                <span className="letter-mask">e</span>
+              </div>
+            </Link>
+          </div>
+
+          <div className="md:hidden">
+            <ProgressBetaBadge progress={30} />
+          </div>
         </div>
 
-        <div className="md:hidden">
-          <ProgressBetaBadge progress={30}/>
+        <div className="flex items-center justify-center gap-3">
+          <div className="block md:hidden">
+            <Button
+              variant={'ghost'}
+              className="shad-button_ghost"
+              onClick={e => handleSignOut(e)}
+            >
+              <LogoutIcon height="23" />
+            </Button>
+          </div>
+          <MobileNav />
         </div>
-      </div>
 
-      <div className=" flex justify-center items-center gap-3 ">
-        <div className=" block md:hidden ">
-          <Button
-            variant={"ghost"}
-            className="  shad-button_ghost"
-            onClick={(e) => handleSignOut(e)}
-          >
-            <LogoutIcon height="23" />
-          </Button>
+        <div className="hidden gap-x-5 md:flex">
+          <ThemeSwitch />
+          <div>
+            <ProgressBetaBadge progress={30} />
+          </div>
         </div>
-        <MobileNav />
-      </div>
+      </nav>
 
-      <div className=" hidden md:flex gap-x-5">
-        <ThemeSwitch />
-        <div>
-          <ProgressBetaBadge progress={30}/>
-        </div>
-      </div>
-    </nav>
-
-    <SignoutAlert isOpen={isOpen} setIsOpen={setIsOpen}/>
+      <SignoutAlert isOpen={isOpen} setIsOpen={setIsOpen} />
     </>
   );
 }

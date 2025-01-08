@@ -1,9 +1,8 @@
-import { createServerClient } from "@supabase/ssr";
-import { cookies } from "next/headers";
-
+import { createServerClient } from '@supabase/ssr';
+import { cookies } from 'next/headers';
 
 export const createClient = async () => {
-  const cookieStore = (await cookies());
+  const cookieStore = await cookies();
 
   return createServerClient(
     process.env.NEXT_PUBLIC_SUPABASE_URL!,
@@ -22,15 +21,15 @@ export const createClient = async () => {
             // The `set` method was called from a Server Component.
             // This can be ignored if you have middleware refreshing
             // user sessions.
-            console.error("Error setting cookies:", error);
+            console.error('Error setting cookies:', error);
           }
         },
       },
-    }
+    },
   );
 };
 
-export const getServerSupabase = async () =>{
-  const supabase = await createClient()
-  return supabase
-}
+export const getServerSupabase = async () => {
+  const supabase = await createClient();
+  return supabase;
+};

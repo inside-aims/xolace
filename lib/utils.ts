@@ -1,6 +1,6 @@
-import { type ClassValue, clsx } from "clsx";
-import { twMerge } from "tailwind-merge";
-import { PostDuration } from "@/types";
+import { type ClassValue, clsx } from 'clsx';
+import { twMerge } from 'tailwind-merge';
+import { PostDuration } from '@/types';
 
 export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs));
@@ -21,11 +21,10 @@ export const generateRandomNumber = ({
   return generatedNumber;
 };
 
-
 // post related utilities
 export const truncateText = (text: string, limit: number) => {
   if (text.length > limit) {
-    return text.substring(0, limit) + " ...";
+    return text.substring(0, limit) + ' ...';
   }
   return text;
 };
@@ -38,7 +37,7 @@ export const calculateExpiryDate = (duration: PostDuration): string => {
 
 export const removeHashtags = (text: string): string => {
   return text.replace(/#\w+\s?/g, '').trim();
-}
+};
 
 // Fisher-Yates shuffle algorithm
 export const shuffleArray = (array: any[]) => {

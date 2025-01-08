@@ -14,7 +14,7 @@ const MoonIcon = ({ className }: { className: string }) => (
     viewBox="0 0 24 24"
     fill="black"
     //   {...rest}
-    className={`w-[24px] max-w-[24px] h-[24px] max-h-[24px] ${className} text-black`}
+    className={`h-[24px] max-h-[24px] w-[24px] max-w-[24px] ${className} text-black`}
   >
     <rect x="0" y="0" width="10" height="24" fill="rgba(255, 255, 255, 0)" />
     <g

@@ -1,8 +1,8 @@
-"use client";
+'use client';
 
-import React from "react";
-import { motion } from "framer-motion";
-import { ImageOffIcon as MaskOffIcon } from "lucide-react";
+import React from 'react';
+import { motion } from 'framer-motion';
+import { ImageOffIcon as MaskOffIcon } from 'lucide-react';
 import {
   Dialog,
   DialogContent,
@@ -10,9 +10,9 @@ import {
   DialogHeader,
   DialogTitle,
   DialogTrigger,
-  DialogFooter
-} from "@/components/ui/dialog";
-import GradientTextLink from "../shared/GradientText/GradientTextLink";
+  DialogFooter,
+} from '@/components/ui/dialog';
+import GradientTextLink from '../shared/GradientText/GradientTextLink';
 
 const ChannelAboutCard = () => {
   return (
@@ -20,12 +20,12 @@ const ChannelAboutCard = () => {
       <Dialog>
         <DialogTrigger className="w-full">
           <motion.div
-            className="bg-white dark:bg-gray-800 rounded-lg shadow-md p-6 cursor-pointer hover:shadow-lg transition-shadow duration-200"
+            className="cursor-pointer rounded-lg bg-white p-6 shadow-md transition-shadow duration-200 hover:shadow-lg dark:bg-gray-800"
             whileHover={{ scale: 1.03 }}
             whileTap={{ scale: 0.98 }}
           >
-            <MaskOffIcon className="w-12 h-12 mb-4 text-blue-500 dark:text-blue-400" />
-            <h2 className="text-xl font-semibold mb-2 text-gray-800 dark:text-gray-100">
+            <MaskOffIcon className="text-blue-500 dark:text-blue-400 mb-4 h-12 w-12" />
+            <h2 className="mb-2 text-xl font-semibold text-gray-800 dark:text-gray-100">
               About Xolace
             </h2>
             <p className="text-gray-600 dark:text-gray-300">
@@ -33,16 +33,16 @@ const ChannelAboutCard = () => {
             </p>
           </motion.div>
         </DialogTrigger>
-        <DialogContent className=" max-w-[27rem] sm:max-w-md w-full">
+        <DialogContent className="w-full max-w-[27rem] sm:max-w-md">
           <DialogHeader>
-            <DialogTitle className="text-2xl font-bold mb-4">
+            <DialogTitle className="mb-4 text-2xl font-bold">
               💡 About Xolace | Beta
             </DialogTitle>
             <DialogDescription className="hidden">
               Everything you need to know about Xolace
             </DialogDescription>
           </DialogHeader>
-          <div className="text-gray-700 dark:text-gray-300 space-y-4">
+          <div className="space-y-4 text-gray-700 dark:text-gray-300">
             <p>
               Welcome to Xolace, where anonymity meets authenticity. Share your
               deepest thoughts and connect with others in a judgment-free zone.
@@ -55,11 +55,9 @@ const ChannelAboutCard = () => {
           </div>
 
           <DialogFooter className="">
-          <GradientTextLink text="Explore more" link="/about"/>
-        </DialogFooter>
+            <GradientTextLink text="Explore more" link="/about" />
+          </DialogFooter>
         </DialogContent>
-
-       
       </Dialog>
     </>
   );

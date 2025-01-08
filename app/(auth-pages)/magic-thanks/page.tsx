@@ -1,14 +1,15 @@
-"use client"
+'use client';
 
-import Link from "next/link";
-import { motion } from "framer-motion";
-import { useEffect, useState, use } from "react";
+import Link from 'next/link';
+import { motion } from 'framer-motion';
+import { useEffect, useState, use } from 'react';
 
-import { FORM_TYPES } from "@/constants";
-import { urlPath } from "@/utils/url-helpers";
+import { FORM_TYPES } from '@/constants';
+import { urlPath } from '@/utils/url-helpers';
 
-
-const MagicLinkSuccessPage = (props: { searchParams: Promise<{ type: string }> }) => {
+const MagicLinkSuccessPage = (props: {
+  searchParams: Promise<{ type: string }>;
+}) => {
   const searchParams = use(props.searchParams);
   const { type } = searchParams;
   const isPasswordRecovery = type === FORM_TYPES.PASSWORD_RECOVERY;
@@ -18,27 +19,27 @@ const MagicLinkSuccessPage = (props: { searchParams: Promise<{ type: string }> }
 
   useEffect(() => {
     const timer = setInterval(() => {
-      setTimeLeft((prevTime) => (prevTime > 0 ? prevTime - 1 : 0));
+      setTimeLeft(prevTime => (prevTime > 0 ? prevTime - 1 : 0));
     }, 1000);
 
     return () => clearInterval(timer);
   }, []);
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-gray-900 to-bg-background flex items-center justify-center p-4">
-      <motion.div 
+    <div className="to-bg-background flex min-h-screen items-center justify-center bg-gradient-to-br from-gray-900 p-4">
+      <motion.div
         initial={{ opacity: 0, scale: 0.9 }}
         animate={{ opacity: 1, scale: 1 }}
         transition={{ duration: 0.5 }}
-        className="max-w-md w-full backdrop-blur-lg bg-white bg-opacity-10 p-8 rounded-xl shadow-2xl text-center"
+        className="w-full max-w-md rounded-xl bg-white bg-opacity-10 p-8 text-center shadow-2xl backdrop-blur-lg"
       >
         <motion.div
-          className="w-24 h-24 mx-auto mb-6 relative"
+          className="relative mx-auto mb-6 h-24 w-24"
           initial={{ rotate: 0 }}
           animate={{ rotate: 360 }}
-          transition={{ duration: 2, repeat: Infinity, ease: "linear" }}
+          transition={{ duration: 2, repeat: Infinity, ease: 'linear' }}
         >
-          <svg className="w-full h-full" viewBox="0 0 100 100">
+          <svg className="h-full w-full" viewBox="0 0 100 100">
             <circle
               cx="50"
               cy="50"
@@ -60,21 +61,22 @@ const MagicLinkSuccessPage = (props: { searchParams: Promise<{ type: string }> }
           </motion.div>
         </motion.div>
 
-        <h1 className="text-3xl font-bold mb-4 dark:text-white text-black">
-          {isPasswordRecovery ? "Password Reset" : "Magic Link"} Conjured!
+        <h1 className="mb-4 text-3xl font-bold text-black dark:text-white">
+          {isPasswordRecovery ? 'Password Reset' : 'Magic Link'} Conjured!
         </h1>
-        <p className="dark:text-gray-300 text-blackA11 mb-6">
+        <p className="mb-6 text-blackA11 dark:text-gray-300">
           {isPasswordRecovery
-            ? "A mystical link to reset your password has been dispatched to your inbox."
-            : "A clandestine link for secure access has been whispered into the digital ether."}
+            ? 'A mystical link to reset your password has been dispatched to your inbox.'
+            : 'A clandestine link for secure access has been whispered into the digital ether.'}
         </p>
-        <p className="text-sm mb-6 dark:text-gray-500 text-gray-700">
-          Check your email and follow the secret path within. The portal closes in {timeLeft} seconds...
+        <p className="mb-6 text-sm text-gray-700 dark:text-gray-500">
+          Check your email and follow the secret path within. The portal closes
+          in {timeLeft} seconds...
         </p>
 
-        <Link 
-          href={urlPath("/sign-in")}
-          className="inline-block bg-indigo-600 text-white px-6 py-3 rounded-full font-semibold transition-all duration-300 hover:bg-indigo-700 hover:shadow-lg hover:scale-105"
+        <Link
+          href={urlPath('/sign-in')}
+          className="inline-block rounded-full bg-indigo-600 px-6 py-3 font-semibold text-white transition-all duration-300 hover:scale-105 hover:bg-indigo-700 hover:shadow-lg"
         >
           Return to Xolace
         </Link>

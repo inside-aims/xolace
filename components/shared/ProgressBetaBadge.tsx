@@ -1,13 +1,13 @@
-"use client";
+'use client';
 
-import React from "react";
-import { motion } from "framer-motion";
+import React from 'react';
+import { motion } from 'framer-motion';
 import {
   Tooltip,
   TooltipContent,
   TooltipProvider,
   TooltipTrigger,
-} from "@/components/ui/tooltip";
+} from '@/components/ui/tooltip';
 
 interface BetaBadgeProps {
   progress?: number;
@@ -59,9 +59,9 @@ export function ProgressBetaBadge({ progress }: BetaBadgeProps) {
               className="absolute inset-0 flex items-center justify-center"
               initial={{ rotate: 0 }}
               animate={{ rotate: 360 }}
-              transition={{ duration: 20, repeat: Infinity, ease: "linear" }}
+              transition={{ duration: 20, repeat: Infinity, ease: 'linear' }}
             >
-              <div className="dark:text-white text-black font-bold text-xs backdrop-blur-sm dark:bg-sky-400/10 bg-sky-500/60 px-2 py-1 rounded">
+              <div className="rounded bg-sky-500/60 px-2 py-1 text-xs font-bold text-black backdrop-blur-sm dark:bg-sky-400/10 dark:text-white">
                 β {Math.round(progress || 20)}%
               </div>
             </motion.div>
@@ -69,8 +69,9 @@ export function ProgressBetaBadge({ progress }: BetaBadgeProps) {
         </TooltipTrigger>
         <TooltipContent side="bottom" className="max-w-xs">
           <p>
-            Xolace is in beta <span className="text-sky-400">@{progress || 20}%</span> to full release. Your feedback
-            helps the team improve the app! ⚗️{" "}
+            Xolace is in beta{' '}
+            <span className="text-sky-400">@{progress || 20}%</span> to full
+            release. Your feedback helps the team improve the app! ⚗️{' '}
           </p>
         </TooltipContent>
       </Tooltip>

@@ -1,8 +1,8 @@
-import Link from "next/link";
-import React from "react";
+import Link from 'next/link';
+import React from 'react';
 
-import { Badge } from "../ui/badge";
-import { Tag } from "lucide-react";
+import { Badge } from '../ui/badge';
+import { Tag } from 'lucide-react';
 
 interface TagCardProps {
   _id: string;
@@ -14,9 +14,9 @@ interface TagCardProps {
 
 const TagCard = ({ _id, name, posts, showCount }: TagCardProps) => {
   return (
-    <Link href={`/tag/${_id}`} className=" flex justify-between gap-2">
+    <Link href={`/tag/${_id}`} className="flex justify-between gap-2">
       <Badge variant="outline">
-        <Tag className="w-3 h-3 mr-1" />
+        <Tag className="mr-1 h-3 w-3" />
         {name}
       </Badge>
 
