@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { EyeOpenIcon, EyeClosedIcon } from '@radix-ui/react-icons';
 
 interface Props {

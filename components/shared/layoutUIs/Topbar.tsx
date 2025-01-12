@@ -38,7 +38,7 @@ function Topbar() {
   useEffect(() => {
     const {
       data: { subscription },
-    } = supabase.auth.onAuthStateChange((event, session) => {
+    } = supabase.auth.onAuthStateChange((event) => {
       if (event === 'SIGNED_OUT') {
         router.push(`/sign-in`);
       }
@@ -48,7 +48,7 @@ function Topbar() {
     return () => {
       subscription.unsubscribe();
     };
-  }, []);
+  }, [router , supabase.auth]);
 
   return (
     <>

@@ -37,7 +37,7 @@ type DetailPost = Database['public']['Tables']['posts']['Row'] & {
     };
   }[];
   likes: Database['public']['Tables']['likes']['Row'][];
-  comments: Database['public']['Tables']['comments']['Row'];
+  comments: Database['public']['Tables']['comments']['Row'][];
 };
 
 type User = Database['public']['Tables']['profiles']['Row']

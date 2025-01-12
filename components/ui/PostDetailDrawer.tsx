@@ -34,10 +34,11 @@ import { getSupabaseBrowserClient } from '@/utils/supabase/client';
 import { useUserState } from '@/lib/store/user';
 import { Send } from 'lucide-react';
 import { VisuallyHidden } from '@radix-ui/react-visually-hidden';
+import { Comment, DetailPost } from '@/types/global';
 
 type Type = string | string[] | undefined;
 
-const PostDetailDrawer = ({ post, type }: { post: any; type: Type }) => {
+const PostDetailDrawer = ({ post, type }: { post: DetailPost; type: Type }) => {
   // get user data
   const user = useUserState(state => state.user);
   // initialize supabase client
@@ -47,7 +48,7 @@ const PostDetailDrawer = ({ post, type }: { post: any; type: Type }) => {
   const router = useRouter();
 
   // states
-  const [comments, setComments] = useState(post?.comments || []);
+  const [comments, setComments] = useState<Comment[]>(post?.comments || []);
   const [isLoading, setIsLoading] = useState(false);
 
   //   counter for comment fields
@@ -76,6 +77,7 @@ const PostDetailDrawer = ({ post, type }: { post: any; type: Type }) => {
 
       return () => clearTimeout(timer);
     }
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [type]);
 
   // form validator
@@ -114,21 +116,23 @@ const PostDetailDrawer = ({ post, type }: { post: any; type: Type }) => {
       });
   }
 
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   useEffect((): any => {
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     const listener = (payload: any) => {
       const eventType = payload.eventType;
 
       console.log('eventType', payload);
 
       if (eventType === 'INSERT') {
-        setComments((prevComments: any) => [...prevComments, payload.new]);
+        setComments((prevComments: Comment[]) => [...prevComments, payload.new]);
       } else if (eventType === 'DELETE') {
-        setComments((prevComments: any) =>
-          prevComments.filter((comment: any) => comment.id !== payload.old.id),
+        setComments((prevComments: Comment[]) =>
+          prevComments.filter((comment: Comment) => comment.id !== payload.old.id),
         );
       } else if (eventType === 'UPDATE') {
-        setComments((prevComments: any) =>
-          prevComments.map((comment: any) =>
+        setComments((prevComments: Comment[]) =>
+          prevComments.map((comment: Comment) =>
             comment.id === payload.new.id ? payload.new : comment,
           ),
         );
@@ -150,7 +154,7 @@ const PostDetailDrawer = ({ post, type }: { post: any; type: Type }) => {
       .subscribe();
 
     return () => subscription.unsubscribe();
-  }, []);
+  }, [supabase]);
 
   return (
     <>
@@ -250,7 +254,7 @@ const PostDetailDrawer = ({ post, type }: { post: any; type: Type }) => {
             )}
           >
             {comments
-              .map((comment: any) => <CommentCard comment={comment} />)
+              .map((comment: Comment) => <CommentCard key={comment.id} comment={comment} />)
               .reverse()}
             {comments.length == 0 && (
               <div>

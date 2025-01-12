@@ -17,7 +17,6 @@ interface LocalSearchPropsInterface {
 
 const LocalSearch = ({
   route,
-  imgSrc,
   placeholder,
   otherClasses,
 }: LocalSearchPropsInterface) => {

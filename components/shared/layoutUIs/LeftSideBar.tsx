@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect, useState } from 'react';
+import React,{ useEffect, useState } from 'react';
 import { sidebarLinks } from '@/constants';
 import Link from 'next/link';
 import { useRouter, usePathname } from 'next/navigation';
@@ -11,6 +11,12 @@ import { Button } from '../../ui/button';
 import { getSupabaseBrowserClient } from '@/utils/supabase/client';
 import { useUserState } from '@/lib/store/user';
 import SignoutAlert from '../SignoutAlert';
+
+interface SidebarLinkInterface{
+  imgURL: React.JSX.Element,
+  route: string;
+  label: string;
+}
 
 function LeftSidebar() {
   // get user profile data
@@ -37,7 +43,7 @@ function LeftSidebar() {
   useEffect(() => {
     const {
       data: { subscription },
-    } = supabase.auth.onAuthStateChange((event, session) => {
+    } = supabase.auth.onAuthStateChange((event) => {
       if (event === 'SIGNED_OUT') {
         router.push(`/sign-in`);
       }
@@ -47,7 +53,7 @@ function LeftSidebar() {
     return () => {
       subscription.unsubscribe();
     };
-  }, []);
+  }, [router , supabase.auth]);
 
   return (
     <>
@@ -64,7 +70,7 @@ function LeftSidebar() {
               </h5>
             </div>
           </div>
-          {sidebarLinks.map((link: any) => {
+          {sidebarLinks.map((link: SidebarLinkInterface) => {
             const isActive =
               (pathName.includes(link.route) && link.route.length > 1) ||
               pathName == link.route;

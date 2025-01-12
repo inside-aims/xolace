@@ -6,7 +6,8 @@ import { checkIsLiked } from '@/lib/utils';
 import { toggleLikePost } from '@/utils/helpers/toggleLikePost';
 import { useUserState } from '@/lib/store/user';
 
-const LikeButton = ({ postId, likes, setLikes }: any) => {
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+const LikeButton = ({ postId, likes }: any) => {
   const user = useUserState(state => state.user);
   console.log('State user ', user);
 

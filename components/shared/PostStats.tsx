@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import React, { useState } from 'react';
 import { HeartIcon, HeartFilledIcon } from '@radix-ui/react-icons';
 import { toggleLikePost } from '@/utils/helpers/toggleLikePost';

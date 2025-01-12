@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { useAnimate, stagger } from 'framer-motion';
+import { useAnimate } from 'framer-motion';
 
 import { Menu } from './Menu';
 import { MenuToggle } from '../ui/MenuToggle';
@@ -49,7 +49,7 @@ function useMenuAnimation(isOpen: boolean) {
         { at: '<' },
       ],
     ]);
-  }, [isOpen]);
+  }, [isOpen, animate]);
 
   return scope;
 }

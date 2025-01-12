@@ -4,7 +4,6 @@ import React from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import PostCard from '@/components/extras/PostCard';
 
-const key = 'mood-';
 interface Props {
   filteredPosts: {
     id: string;

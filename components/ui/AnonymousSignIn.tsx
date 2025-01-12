@@ -85,7 +85,7 @@ const AnonymousSignIn = () => {
           <AlertDialogHeader>
             <AlertDialogTitle>About Signing in Anonymously </AlertDialogTitle>
             <AlertDialogDescription>
-              By signing in anonymously, you'll be able to:
+              By signing in anonymously, you&apos;ll be able to:
               <p className="mb-2">
                 {' '}
                 ✅ Add posts, like, and comment just like any other user.

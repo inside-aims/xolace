@@ -1,4 +1,14 @@
-const Path = (props: any) => (
+interface PathPropsInterface{
+  d? : string;
+  className?: string
+  variants?: {
+    closed: { d: string },
+    open: { d: string },
+  }
+  opacity?: string;
+}
+
+const Path = (props: PathPropsInterface) => (
   <path
     fill="transparent"
     strokeWidth="3"
@@ -8,6 +18,7 @@ const Path = (props: any) => (
   />
 );
 
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
 export const MenuToggle = ({ toggle }: any) => (
   <button onClick={toggle}>
     <svg

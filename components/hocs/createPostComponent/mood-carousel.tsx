@@ -9,7 +9,7 @@ import {
   CarouselNext,
   CarouselPrevious,
 } from '@/components/ui/carousel';
-import useEmblaCarousel from 'embla-carousel-react';
+//import useEmblaCarousel from 'embla-carousel-react';
 import { postMoods } from '@/constants';
 import { Mood } from '@/types';
 import Image from 'next/image';
@@ -23,14 +23,14 @@ export default function MoodCarousel({
   selectedMood,
   setSelectedMood,
 }: MoodCarouselProps) {
-  const [emblaRef] = useEmblaCarousel({
-    align: 'start',
-    slidesToScroll: 1,
-    breakpoints: {
-      '(min-width: 640px)': { slidesToScroll: 2 },
-      '(min-width: 1024px)': { slidesToScroll: 3 },
-    },
-  });
+  // const [emblaRef] = useEmblaCarousel({
+  //   align: 'start',
+  //   slidesToScroll: 1,
+  //   breakpoints: {
+  //     '(min-width: 640px)': { slidesToScroll: 2 },
+  //     '(min-width: 1024px)': { slidesToScroll: 3 },
+  //   },
+  // });
 
   const getMoodStyle = (mood: Mood) => {
     if (selectedMood?.value === mood.value) {

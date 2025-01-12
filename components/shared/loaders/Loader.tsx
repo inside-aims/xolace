@@ -1,6 +1,7 @@
+import Image from "next/image";
 const Loader = () => (
   <div className="">
-    <img
+    <Image
       src="/assets/loader.svg"
       alt="loader"
       width={24}
