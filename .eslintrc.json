@@ -4,7 +4,8 @@
       "plugin:unicorn/recommended",
       "plugin:import/recommended",
       "plugin:playwright/recommended",
-      "plugin:prettier/recommended"
+      "plugin:prettier/recommended",
+      "plugin:tailwindcss/recommended"
     ],
     "plugins": ["simple-import-sort"],
     "rules": {
@@ -27,6 +28,7 @@
         }
       ]
     },
+    "ignorePatterns": ["components/ui/**"],
     "overrides": [
       {
         "files": ["*.js","*.ts", "*.tsx"],

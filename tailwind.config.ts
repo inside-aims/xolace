@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-require-imports */
 import type { Config } from 'tailwindcss';
 const { blackA, crimson, blue } = require('@radix-ui/colors');
 

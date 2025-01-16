@@ -65,7 +65,7 @@ const Profile = () => {
     <>
       <div className="flex items-center justify-center gap-3 md:gap-4">
         <Avatar>
-          <AvatarImage src={user?.avatar_url} />
+          <AvatarImage src={user?.avatar_url ?? undefined} />
           <AvatarFallback>CN</AvatarFallback>
         </Avatar>
         <div className="flex flex-col items-start justify-center gap-1">
