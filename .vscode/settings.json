@@ -11,5 +11,11 @@
         "**/dist": true,
         "**/.next": true,
         "next-env.d.ts": true
-      }
+      },
+
+    "cSpell.words": [
+        "supabase",
+        "turbopack"
+    ]
 }
+
