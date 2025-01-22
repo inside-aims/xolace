@@ -49,10 +49,20 @@ export default function UpdateUsernameCardForm() {
     },
   });
 
-  // funtion to update username
+  // function to update username
   async function onSubmit(data: z.infer<typeof UpdateUsernameSchema>) {
     setIsLoading(true);
     const { username } = data;
+
+    if (!user) {
+      toast({
+        title: 'Error updating username',
+        description: 'User is not logged in.',
+        variant: 'destructive',
+      });
+      setIsLoading(false);
+      return;
+    }
 
     // update username in profiles table
     const { data: newUser, error: updateError } = await supabase
