@@ -120,8 +120,7 @@ export function PostCard({ className, post }: PostCardType) {
           </div>
         </CardContent>
         <CardFooter className="flex items-center justify-between">
-          <PostStats post={post} userId={user?.id} />
-
+          <PostStats post={post} userId={user?.id || ''} />
           <div
             className={`flex items-center justify-center rounded-3xl border p-1 dark:bg-transparent ${
               mood.style
