@@ -37,7 +37,11 @@ const DeleteUserAccountCard = () => {
             <AlertDialogCancel>Cancel</AlertDialogCancel>
             <AlertDialogAction
               className="bg-red-500 font-semibold text-slate-50 shadow-sm hover:bg-red-500/90 dark:bg-red-900 dark:text-slate-50 dark:hover:bg-red-900/90"
-              onClick={() => deleteUser(user)}
+              onClick={() => {
+                if (user) {
+                  deleteUser(user);
+                }
+              }}
             >
               Delete
             </AlertDialogAction>
