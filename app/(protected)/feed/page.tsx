@@ -1,15 +1,12 @@
-import React, { Suspense } from "react";
+import React, { Suspense } from 'react';
 
-import Loader from "@/components/shared/Loader";
-import FeedSkeletonLoader from "@/components/shared/FeedSkeletonLoader";
-import FeedList from "@/components/shared/FeedList";
-
-export const dynamic = "force-dynamic";
+import FeedSkeletonLoader from '@/components/shared/loaders/FeedSkeletonLoader';
+import FeedList from '@/components/shared/FeedList';
 
 const Feed = () => {
   return (
     <>
-      {" "}
+      {' '}
       <Suspense fallback={<FeedSkeletonLoader />}>
         <FeedList />
       </Suspense>

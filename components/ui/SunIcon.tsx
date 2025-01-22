@@ -1,4 +1,5 @@
 declare global {
+  // eslint-disable-next-line @typescript-eslint/no-namespace
   namespace JSX {
     interface IntrinsicElements {
       set: React.SVGProps<SVGElement>;
@@ -13,7 +14,7 @@ const SunIcon = ({ className }: { className: string }) => (
     height="24"
     viewBox="0 0 24 24"
     //   {...rest}
-    className={`w-[24px] max-w-[24px] h-[24px] max-h-[24px]  ${className} `}
+    className={`h-[24px] max-h-[24px] w-[24px] max-w-[24px] ${className} `}
   >
     <g
       fill="none"

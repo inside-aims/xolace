@@ -1,10 +1,9 @@
-"use client";
+'use client';
 
-import React from "react";
-import { motion, AnimatePresence } from "framer-motion";
-import PostCard from "@/components/PostCard";
+import React from 'react';
+import { motion, AnimatePresence } from 'framer-motion';
+import PostCard from '@/components/extras/PostCard';
 
-const key = "mood-"
 interface Props {
   filteredPosts: {
     id: string;
@@ -27,13 +26,10 @@ interface Props {
 const ExploreFeedList = ({ filteredPosts }: Props) => {
   return (
     <>
-      <motion.div
-        layout
-        className="grid grid-cols-1  gap-6 mt-10"
-      >
+      <motion.div layout className="mt-10 grid grid-cols-1 gap-6">
         <AnimatePresence>
           {filteredPosts.length > 0 ? (
-            filteredPosts?.map((post) => (
+            filteredPosts?.map(post => (
               <motion.div
                 key={post.id}
                 initial={{ opacity: 0, scale: 0.9 }}

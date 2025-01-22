@@ -1,12 +1,11 @@
-import React from "react";
+import React from 'react';
 import {
   Dialog,
   DialogContent,
   DialogDescription,
   DialogHeader,
   DialogTitle,
-  DialogTrigger,
-} from "@/components/ui/dialog";
+} from '@/components/ui/dialog';
 import {
   Drawer,
   DrawerClose,
@@ -15,10 +14,9 @@ import {
   DrawerFooter,
   DrawerHeader,
   DrawerTitle,
-  DrawerTrigger,
-} from "@/components/ui/drawer";
-import { useMediaQuery } from "@/hooks/use-media-query";
-import { Button } from "../ui/button";
+} from '@/components/ui/drawer';
+import { useMediaQuery } from '@/hooks/use-media-query';
+import { Button } from '../ui/button';
 
 interface KvngDialogDrawerProps {
   isDialogDrawerOpen: boolean;
@@ -33,7 +31,7 @@ const KvngDialogDrawer = ({
   children,
   title,
 }: KvngDialogDrawerProps) => {
-  const isDesktop = useMediaQuery("(min-width: 768px)");
+  const isDesktop = useMediaQuery('(min-width: 768px)');
 
   return (
     <>
@@ -41,7 +39,7 @@ const KvngDialogDrawer = ({
         <Dialog open={isDialogDrawerOpen} onOpenChange={setIsDialogDrawerOpen}>
           <DialogContent className="sm:max-w-[425px]">
             <DialogHeader>
-              <DialogTitle>{title || "Report"}</DialogTitle>
+              <DialogTitle>{title || 'Report'}</DialogTitle>
               <DialogDescription>
                 What area are you having problems with?
               </DialogDescription>

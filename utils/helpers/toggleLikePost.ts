@@ -1,9 +1,9 @@
-import { getSupabaseBrowserClient } from "../supabase/client";
+import { getSupabaseBrowserClient } from '../supabase/client';
 
 export const toggleLikePost = async (
   postId: any,
   isLiked: boolean,
-  userId: any
+  userId: any,
 ) => {
   const supabase = getSupabaseBrowserClient();
 
@@ -12,13 +12,13 @@ export const toggleLikePost = async (
     // If already liked, remove the like
     result = // If already liked, remove the like
       await supabase
-        .from("likes")
+        .from('likes')
         .delete()
-        .eq("post_id", postId)
-        .eq("user_id", userId);
+        .eq('post_id', postId)
+        .eq('user_id', userId);
   } else {
     // If not liked, insert a new like
-    result = await supabase.from("likes").insert({ post_id: postId });
+    result = await supabase.from('likes').insert({ post_id: postId });
   }
 
   if (result.error) {

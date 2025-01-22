@@ -1,11 +1,9 @@
-import React, { useState } from "react";
-import { EyeOpenIcon, EyeClosedIcon } from '@radix-ui/react-icons'
-
-
+import React from 'react';
+import { EyeOpenIcon, EyeClosedIcon } from '@radix-ui/react-icons';
 
 interface Props {
-  showPassword : boolean;
-  setShowPassword : React.Dispatch<React.SetStateAction<boolean>>;
+  showPassword: boolean;
+  setShowPassword: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
 const ToggleEyeIcon = ({ showPassword, setShowPassword }: Props) => {
@@ -17,10 +15,17 @@ const ToggleEyeIcon = ({ showPassword, setShowPassword }: Props) => {
 
   return (
     <div
-      className="absolute top-4 md:top-4 right-6 text-dark dark:text-gray-300 cursor-pointer "
+      className="text-dark absolute right-6 top-4 cursor-pointer dark:text-gray-300 md:top-4"
       onClick={handleTogglePassword}
     >
-      {showPassword ? <EyeClosedIcon className="text-dark-3 dark:text-gray-300 h-5 w-5" /> : <EyeOpenIcon className="text-dark-3 dark:text-gray-300 w-5 h-5"  style={{ fontSize: 100 }} /> }
+      {showPassword ? (
+        <EyeClosedIcon className="h-5 w-5 text-dark-3 dark:text-gray-300" />
+      ) : (
+        <EyeOpenIcon
+          className="h-5 w-5 text-dark-3 dark:text-gray-300"
+          style={{ fontSize: 100 }}
+        />
+      )}
     </div>
   );
 };

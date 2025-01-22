@@ -3,8 +3,8 @@
 @tailwind utilities;
 
 @font-face {
-  font-family: "TiltNeon";
-  src: url("../fonts/TiltNeon-Regular.ttf") format("truetype");
+  font-family: 'TiltNeon';
+  src: url('../fonts/TiltNeon-Regular.ttf') format('truetype');
 }
 
 @layer base {
@@ -108,7 +108,7 @@ body {
 @layer components {
   /* main */
   .main-container {
-    @apply flex min-h-screen overflow-hidden lg:overflow-hidden flex-1 flex-col items-center dark:bg-dark-1 bg-white px-6 pb-2 pt-5 max-md:pb-10 sm:px-10;
+    @apply flex min-h-screen flex-1 flex-col items-center overflow-hidden bg-white px-6 pb-2 pt-5 dark:bg-dark-1 max-md:pb-10 sm:px-10 lg:overflow-hidden;
   }
 
   /* Head Text */
@@ -123,7 +123,7 @@ body {
 
   /* No Result */
   .no-result {
-    @apply text-center !text-base-regular text-light-3;
+    @apply !text-base-regular text-center text-light-3;
   }
 
   /* Community Card */
@@ -132,7 +132,7 @@ body {
   }
 
   .community-card_btn {
-    @apply rounded-lg bg-primary-500 px-5 py-1.5 text-small-regular !text-light-1 !important;
+    @apply text-small-regular rounded-lg bg-primary-500 px-5 py-1.5 !text-light-1 !important;
   }
 
   /* thread card  */
@@ -175,19 +175,19 @@ body {
   }
 
   .searchbar_input {
-    @apply border-none bg-dark-3 text-base-regular text-light-4 outline-none !important;
+    @apply text-base-regular border-none bg-dark-3 text-light-4 outline-none !important;
   }
 
   .topbar {
-    @apply fixed top-0 z-50 flex w-full items-center justify-between bg-white dark:bg-black dark:opacity-100 opacity-[0.96]  border-b dark:border-gray-700/90 px-6 h-20;
+    @apply fixed top-0 z-50 flex h-20 w-full items-center justify-between border-b bg-white px-6 opacity-[0.96] dark:border-gray-700/90 dark:bg-black dark:opacity-100;
   }
 
   .bottombar {
-    @apply fixed bottom-0 z-10 w-full bg-transparent dark:bg-black opacity-[0.96] backdrop-blur-lg xs:px-7 md:hidden flex justify-center;
+    @apply fixed bottom-0 z-10 flex w-full justify-center bg-transparent opacity-[0.96] backdrop-blur-lg dark:bg-black xs:px-7 md:hidden;
   }
 
   .bottombar_container {
-    @apply flex items-center justify-between gap-3 xs:gap-5 bg-slate-200 dark:bg-glassmorphism opacity-[0.98]   w-[50%] sm:w-[70%] z-40 rounded-full p-3;
+    @apply z-40 flex w-[50%] items-center justify-between gap-3 rounded-full bg-slate-200 p-3 opacity-[0.98] dark:bg-glassmorphism xs:gap-5 sm:w-[70%];
   }
 
   .bottombar_link {
@@ -195,7 +195,7 @@ body {
   }
 
   .leftsidebar {
-    @apply sticky left-0 top-0 z-20 flex h-screen w-fit flex-col justify-between overflow-auto border-r dark:border-r-dark-4 dark:bg-dark-2 border-r-gray-200 bg-gray-100 pb-5 pt-28 max-md:hidden;
+    @apply sticky left-0 top-0 z-20 flex h-screen w-fit flex-col justify-between overflow-auto border-r border-r-gray-200 bg-gray-100 pb-5 pt-28 dark:border-r-dark-4 dark:bg-dark-2 max-md:hidden;
   }
 
   .leftsidebar_link {
@@ -207,11 +207,11 @@ body {
   }
 
   .rightsidebar {
-    @apply sticky right-0 top-0 z-20 flex h-screen w-fit flex-col justify-between gap-12 overflow-auto border-l border-l-dark-4 bg-dark-2 px-10 pb-6 pt-28 max-xl:hidden;
+    @apply max-xl:hidden sticky right-0 top-0 z-20 flex h-screen w-fit flex-col justify-between gap-12 overflow-auto border-l border-l-dark-4 bg-dark-2 px-10 pb-6 pt-28;
   }
 
   .shad-button_ghost {
-    @apply flex gap-4 items-center justify-center hover:bg-transparent hover:text-white !important;
+    @apply flex items-center justify-center gap-4 hover:bg-transparent hover:text-white !important;
   }
 }
 
@@ -223,7 +223,7 @@ body {
   }
 
   .css-invert {
-    @apply invert-[50%] brightness-200;
+    @apply brightness-200 invert-[50%];
   }
 
   .no-focus {

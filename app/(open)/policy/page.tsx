@@ -1,42 +1,45 @@
-"use client";
+'use client';
 
-import { useState } from "react";
-import { motion } from "framer-motion";
-import { ChevronLeft } from "lucide-react";
-import { Button } from "@/components/ui/button";
+import { useState } from 'react';
+import { motion } from 'framer-motion';
+import { ChevronLeft } from 'lucide-react';
+import { Button } from '@/components/ui/button';
 
 export default function PolicyPage() {
-  const [activeSection, setActiveSection] = useState("privacy");
+  const [activeSection, setActiveSection] = useState('privacy');
 
   const sections = [
-    { id: "privacy", title: "Privacy Policy" },
-    { id: "community", title: "Community Guidelines" },
-    { id: "safety", title: "Safety and Support" },
-    { id: "data", title: "Data Retention and Account Termination" },
-    { id: "disclaimer", title: "Disclaimer" },
-    { id: "contact", title: "Contact Us" },
+    { id: 'privacy', title: 'Privacy Policy' },
+    { id: 'community', title: 'Community Guidelines' },
+    { id: 'safety', title: 'Safety and Support' },
+    { id: 'data', title: 'Data Retention and Account Termination' },
+    { id: 'disclaimer', title: 'Disclaimer' },
+    { id: 'contact', title: 'Contact Us' },
   ];
 
   const policyContent = {
     privacy: (
       <>
-        <h2 className="text-2xl font-bold mb-4">
+        <h2 className="mb-4 text-2xl font-bold">
           1. Anonymity and Personal Information
         </h2>
         <p className="mb-4">
-          At Xolace, we prioritize user privacy and anonymity. We don't require
+          At Xolace, we prioritize user privacy and anonymity. We don&apos;t require
           users to provide identifiable information such as their real names,
           phone numbers. We use unique identifiers (like usernames or encrypted
           identifiers) to maintain a safe, anonymous environment. Your privacy
           is our top priority, and no personally identifiable information is
           stored or shared with others. Users are strongly urged not to provide
           a real identity information about themselves when entering their
-          username.<span className=" font-semibold text-amber-600">NB: We will not be held responsible for carelessness</span>
+          username.
+          <span className="font-semibold text-amber-600">
+            NB: We will not be held responsible for carelessness
+          </span>
         </p>
 
-        <h2 className="text-2xl font-bold mb-4">2. Data Collection and Use</h2>
+        <h2 className="mb-4 text-2xl font-bold">2. Data Collection and Use</h2>
         <p className="mb-4">
-          We collect only limited information to ensure the app's functionality,
+          We collect only limited information to ensure the app&apos;s functionality,
           such as device data (for troubleshooting) and anonymous usage data
           (for improving features). This data is never shared with third parties
           or used for marketing purposes.
@@ -47,7 +50,7 @@ export default function PolicyPage() {
           when forgotten.
         </p>
 
-        <h2 className="text-2xl font-bold mb-4">3. Cookies and Tracking</h2>
+        <h2 className="mb-4 text-2xl font-bold">3. Cookies and Tracking</h2>
         <p className="mb-4">
           Xolace may use cookies or similar technologies to improve user
           experience, but these are strictly for app performance and
@@ -55,7 +58,7 @@ export default function PolicyPage() {
           individual users.
         </p>
 
-        <h2 className="text-2xl font-bold mb-4">4. Data Security</h2>
+        <h2 className="mb-4 text-2xl font-bold">4. Data Security</h2>
         <p className="mb-4">
           We employ industry-standard security measures to protect all data,
           ensuring it is safely encrypted and inaccessible to unauthorized
@@ -66,7 +69,7 @@ export default function PolicyPage() {
     ),
     community: (
       <>
-        <h2 className="text-2xl font-bold mb-4">1. Respect and Empathy</h2>
+        <h2 className="mb-4 text-2xl font-bold">1. Respect and Empathy</h2>
         <p className="mb-4">
           Xolace is a supportive space where users can share openly and find
           encouragement from others. We ask all users to engage respectfully and
@@ -74,11 +77,11 @@ export default function PolicyPage() {
           of judgment.
         </p>
 
-        <h2 className="text-2xl font-bold mb-4">2. Prohibited Content</h2>
+        <h2 className="mb-4 text-2xl font-bold">2. Prohibited Content</h2>
         <p className="mb-4">
           To maintain a safe space, we prohibit content that includes:
         </p>
-        <ul className="list-disc list-inside mb-4">
+        <ul className="mb-4 list-inside list-disc">
           <li>Hate speech or abusive language</li>
           <li>Harassment, bullying, or intimidation</li>
           <li>Self-harm or suicide promotion</li>
@@ -86,7 +89,7 @@ export default function PolicyPage() {
           <li>Misinformation or false claims</li>
         </ul>
 
-        <h2 className="text-2xl font-bold mb-4">3. Reporting Violations</h2>
+        <h2 className="mb-4 text-2xl font-bold">3. Reporting Violations</h2>
         <p className="mb-4">
           Users can report posts or comments that violate these guidelines.
           Reported content will be reviewed promptly, and appropriate actions,
@@ -97,18 +100,18 @@ export default function PolicyPage() {
     ),
     safety: (
       <>
-        <h2 className="text-2xl font-bold mb-4">
+        <h2 className="mb-4 text-2xl font-bold">
           1. Mental Health and Well-being
         </h2>
         <p className="mb-4">
           Xolace is a peer-support space but not a replacement for professional
-          advice or therapy. If you're in crisis, we encourage seeking
+          advice or therapy. If you&apos;re in crisis, we encourage seeking
           professional help. For users interested in further guidance, Xolace
-          offers a "Help Section" where you can connect with professionals for
+          offers a &quot;Help Section&quot; where you can connect with professionals for
           counseling or business advice via subscription.
         </p>
 
-        <h2 className="text-2xl font-bold mb-4">
+        <h2 className="mb-4 text-2xl font-bold">
           2. Content Moderation and Review
         </h2>
         <p className="mb-4">
@@ -121,14 +124,14 @@ export default function PolicyPage() {
     ),
     data: (
       <>
-        <h2 className="text-2xl font-bold mb-4">1. Data Retention</h2>
+        <h2 className="mb-4 text-2xl font-bold">1. Data Retention</h2>
         <p className="mb-4">
           Xolace stores data only as long as necessary for operational purposes.
           Anonymous posts and comments may remain visible on the platform but
           will have no association with personal identifiers.
         </p>
 
-        <h2 className="text-2xl font-bold mb-4">2. Account Termination</h2>
+        <h2 className="mb-4 text-2xl font-bold">2. Account Termination</h2>
         <p className="mb-4">
           Users can delete their accounts at any time. When an account is
           deleted, all data associated with it (including posts and comments)
@@ -138,7 +141,7 @@ export default function PolicyPage() {
     ),
     disclaimer: (
       <>
-        <h2 className="text-2xl font-bold mb-4">1. Content Responsibility</h2>
+        <h2 className="mb-4 text-2xl font-bold">1. Content Responsibility</h2>
         <p className="mb-4">
           Users are solely responsible for the content they share on Xolace.
           While we strive to provide a safe space, we cannot guarantee that all
@@ -147,7 +150,7 @@ export default function PolicyPage() {
           professional advice.
         </p>
 
-        <h2 className="text-2xl font-bold mb-4">2. Limitation of Liability</h2>
+        <h2 className="mb-4 text-2xl font-bold">2. Limitation of Liability</h2>
         <p className="mb-4">
           Xolace is not liable for any emotional distress or damages resulting
           from interactions within the platform. Users are encouraged to engage
@@ -157,7 +160,7 @@ export default function PolicyPage() {
     ),
     contact: (
       <>
-        <h2 className="text-2xl font-bold mb-4">Contact Us</h2>
+        <h2 className="mb-4 text-2xl font-bold">Contact Us</h2>
         <p className="mb-4">
           If you have any questions or concerns about this policy, please
           contact us through our support channels within the app.
@@ -167,27 +170,27 @@ export default function PolicyPage() {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-purple-100/10 to-indigo-200/10 py-8 px-5">
+    <div className="min-h-screen bg-gradient-to-br from-purple-100/10 to-indigo-200/10 px-5 py-8">
       <Button
         variant="outline"
         size="icon"
-        className="fixed top-4 left-4 z-50 dark:bg-white bg-blackA11 shadow-md hover:bg-gray-100"
+        className="fixed left-4 top-4 z-50 bg-blackA11 shadow-md hover:bg-gray-100 dark:bg-white"
         onClick={() => window.history.back()}
       >
-        <ChevronLeft className="h-4 w-4 dark:text-black text-white" />
+        <ChevronLeft className="h-4 w-4 text-white dark:text-black" />
       </Button>
 
-      <div className=" max-sm:max-w-5xl max-w-4xl  mx-auto dark:bg-black bg-gray-200 rounded-lg shadow-xl overflow-hidden">
+      <div className="mx-auto max-w-4xl overflow-hidden rounded-lg bg-gray-200 shadow-xl dark:bg-black max-sm:max-w-5xl">
         <div className="p-8">
-          <h1 className="text-4xl font-bold mb-8 text-center text-indigo-600">
-            Xolace's Policies
+          <h1 className="mb-8 text-center text-4xl font-bold text-indigo-600">
+            Xolace&quot;s Policies
           </h1>
 
-          <div className="flex mb-8 overflow-x-auto">
-            {sections.map((section) => (
+          <div className="mb-8 flex overflow-x-auto">
+            {sections.map(section => (
               <Button
                 key={section.id}
-                variant={activeSection === section.id ? "default" : "outline"}
+                variant={activeSection === section.id ? 'default' : 'outline'}
                 className="mr-2 whitespace-nowrap"
                 onClick={() => setActiveSection(section.id)}
               >

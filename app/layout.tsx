@@ -1,17 +1,20 @@
-import { GeistSans } from "geist/font/sans";
-import { ThemeProvider } from "next-themes";
-import { Toaster } from "@/components/ui/toaster";
-import "./globals.css";
+// eslint-disable-next-line @typescript-eslint/triple-slash-reference
+/// <reference path="../types/global.d.ts" />
+
+import { GeistSans } from 'geist/font/sans';
+import { ThemeProvider } from 'next-themes';
+import { Toaster } from '@/components/ui/toaster';
+import './globals.css';
 
 const defaultUrl = process.env.VERCEL_URL
   ? `https://${process.env.VERCEL_URL}`
-  : "http://localhost:3000";
+  : 'http://localhost:3000';
 
 export const metadata = {
   metadataBase: new URL(defaultUrl),
-  title: "Xolace",
+  title: 'Xolace',
   description:
-    "Xolace is a social platform designed for users to share their thoughts, stories, and experiences freely, fostering both engagement and self-expression in a unique, user-centered space",
+    'Xolace is a social platform designed for users to share their thoughts, stories, and experiences freely, fostering both engagement and self-expression in a unique, user-centered space',
 };
 
 export default function RootLayout({

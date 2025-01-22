@@ -1,14 +1,14 @@
-"use client";
+'use client';
 
-import React from "react";
-import { motion } from "framer-motion";
+import React from 'react';
+import { motion } from 'framer-motion';
 import {
   HeartIcon,
   MailPlusIcon,
   HandCoins,
   MessageSquareReply,
   Contact,
-} from "lucide-react";
+} from 'lucide-react';
 import {
   Dialog,
   DialogContent,
@@ -16,11 +16,10 @@ import {
   DialogHeader,
   DialogTitle,
   DialogTrigger,
-} from "@/components/ui/dialog";
-import { Button } from "../ui/button";
-import { KvngSheet } from "../shared/KvngSheet";
-import { MailPlus } from "lucide-react";
-import FeedbackForm from "../forms/FeedbackForm";
+} from '@/components/ui/dialog';
+import { Button } from '../ui/button';
+import { KvngSheet } from '../shared/KvngSheet';
+import FeedbackForm from '../forms/FeedbackForm';
 
 const ChannelContributionCard = () => {
   return (
@@ -28,12 +27,12 @@ const ChannelContributionCard = () => {
       <Dialog>
         <DialogTrigger className="w-full">
           <motion.div
-            className="bg-white dark:bg-gray-800 rounded-lg shadow-md p-6 cursor-pointer hover:shadow-lg transition-shadow duration-200"
+            className="cursor-pointer rounded-lg bg-white p-6 shadow-md transition-shadow duration-200 hover:shadow-lg dark:bg-gray-800"
             whileHover={{ scale: 1.03 }}
             whileTap={{ scale: 0.98 }}
           >
-            <HeartIcon className="w-12 h-12 mb-4 text-red-500 dark:text-red-400" />
-            <h2 className="text-xl font-semibold mb-2 text-gray-800 dark:text-gray-100">
+            <HeartIcon className="mb-4 h-12 w-12 text-red-500 dark:text-red-400" />
+            <h2 className="mb-2 text-xl font-semibold text-gray-800 dark:text-gray-100">
               Contribution
             </h2>
             <p className="text-gray-600 dark:text-gray-300">
@@ -41,9 +40,9 @@ const ChannelContributionCard = () => {
             </p>
           </motion.div>
         </DialogTrigger>
-        <DialogContent className="max-w-md w-full">
+        <DialogContent className="w-full max-w-[27rem] sm:max-w-md">
           <DialogHeader>
-            <DialogTitle className="text-2xl font-bold mb-4">
+            <DialogTitle className="mb-4 text-2xl font-bold">
               🤝🏽 Support Xolace
             </DialogTitle>
             <DialogDescription className="hidden">
@@ -52,17 +51,17 @@ const ChannelContributionCard = () => {
           </DialogHeader>
           <div className="space-y-6">
             <div>
-              <h3 className="text-lg font-semibold mb-2 flex items-center">
+              <h3 className="mb-2 flex items-center text-lg font-semibold">
                 <HandCoins size={18} strokeWidth={1.25} className="mr-2" />
                 Donate
               </h3>
-              <p className="text-gray-600 dark:text-gray-300 mb-2">
+              <p className="mb-2 text-gray-600 dark:text-gray-300">
                 Help us keep Xolace running and improving.
               </p>
               <Button variant="outline">Make a Donation</Button>
             </div>
             <div>
-              <h3 className="text-lg font-semibold mb-2 flex items-center">
+              <h3 className="mb-2 flex items-center text-lg font-semibold">
                 <MessageSquareReply
                   size={18}
                   strokeWidth={1.25}
@@ -70,7 +69,7 @@ const ChannelContributionCard = () => {
                 />
                 Feedback
               </h3>
-              <p className="text-gray-600 dark:text-gray-300 mb-2">
+              <p className="mb-2 text-gray-600 dark:text-gray-300">
                 Share your thoughts and ideas with us.
               </p>
               <KvngSheet
@@ -81,18 +80,18 @@ const ChannelContributionCard = () => {
               </KvngSheet>
             </div>
             <div>
-              <h3 className="text-lg font-semibold mb-2 flex items-center">
+              <h3 className="mb-2 flex items-center text-lg font-semibold">
                 <Contact size={18} strokeWidth={1.25} className="mr-2" />
                 Contact Us
               </h3>
-              <p className="text-gray-600 dark:text-gray-300 mb-2">
+              <p className="mb-2 text-gray-600 dark:text-gray-300">
                 Get in touch with our team.
               </p>
               <a
                 href="mailto:support@xolace.com"
-                className="flex items-center text-blue-500 hover:underline"
+                className="text-blue-500 flex items-center hover:underline"
               >
-                <MailPlusIcon className="w-5 h-5 mr-2" />
+                <MailPlusIcon className="mr-2 h-5 w-5" />
                 Email Us
               </a>
             </div>

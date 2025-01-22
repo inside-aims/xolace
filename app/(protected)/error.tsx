@@ -1,7 +1,7 @@
-"use client";
+'use client';
 
-import { useEffect } from "react";
-import { useRouter } from "next/navigation";
+import { useEffect } from 'react';
+import { useRouter } from 'next/navigation';
 import {
   AlertCircle,
   ArrowLeft,
@@ -9,15 +9,15 @@ import {
   Users,
   Wifi,
   WifiOff,
-} from "lucide-react";
-import { Button } from "@/components/ui/button";
+} from 'lucide-react';
+import { Button } from '@/components/ui/button';
 import {
   Card,
   CardContent,
   CardFooter,
   CardHeader,
   CardTitle,
-} from "@/components/ui/card";
+} from '@/components/ui/card';
 
 export default function Error({
   error,
@@ -33,17 +33,17 @@ export default function Error({
   }, [error]);
 
   const getErrorDetails = () => {
-    if (error.message.includes("Failed to fetch")) {
+    if (error.message.includes('Failed to fetch')) {
       return {
-        title: "Connection Error",
+        title: 'Connection Error',
         message:
-          "Oops! It seems your connection to the anonymous realm is lost.",
+          'Oops! It seems your connection to the anonymous realm is lost.',
         icon: <WifiOff className="h-12 w-12 text-muted-foreground" />,
       };
     }
-    if (error.message.includes("Not found")) {
+    if (error.message.includes('Not found')) {
       return {
-        title: "Page Not Found",
+        title: 'Page Not Found',
         message:
           "The anonymous view you're looking for seems to have vanished into thin air.",
         icon: <Eye className="h-12 w-12 text-muted-foreground" />,
@@ -51,7 +51,7 @@ export default function Error({
     }
     // Default error
     return {
-      title: "Unexpected Error",
+      title: 'Unexpected Error',
       message:
         "An unexpected error occurred in the anonymous realm. Don't worry, your identity is still safe!",
       icon: <AlertCircle className="h-12 w-12 text-muted-foreground" />,
@@ -61,10 +61,10 @@ export default function Error({
   const { title, message, icon } = getErrorDetails();
 
   return (
-    <div className="min-h-screen bg-background flex items-center justify-center p-4">
-      <Card className="max-w-md w-full">
+    <div className="flex min-h-screen items-center justify-center bg-background p-4">
+      <Card className="w-full max-w-md">
         <CardHeader className="text-center">
-          <div className="mx-auto mb-4 bg-muted rounded-full p-3 w-fit">
+          <div className="mx-auto mb-4 w-fit rounded-full bg-muted p-3">
             {icon}
           </div>
           <CardTitle className="text-2xl font-bold">{title}</CardTitle>
@@ -82,7 +82,7 @@ export default function Error({
           </Button>
           <Button
             variant="outline"
-            onClick={() => router.push("/feed")}
+            onClick={() => router.push('/feed')}
             className="w-full"
           >
             <ArrowLeft className="mr-2 h-4 w-4" /> Return to Home

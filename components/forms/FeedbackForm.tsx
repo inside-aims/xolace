@@ -1,10 +1,10 @@
-"use client";
+'use client';
 
-import React, { useState } from "react";
-import { z } from "zod";
-import { zodResolver } from "@hookform/resolvers/zod";
-import { useForm } from "react-hook-form";
-import { Button } from "@/components/ui/button";
+import React, { useState } from 'react';
+import { z } from 'zod';
+import { zodResolver } from '@hookform/resolvers/zod';
+import { useForm } from 'react-hook-form';
+import { Button } from '@/components/ui/button';
 import {
   Form,
   FormControl,
@@ -13,18 +13,18 @@ import {
   FormItem,
   FormLabel,
   FormMessage,
-} from "@/components/ui/form";
+} from '@/components/ui/form';
 import {
   Select,
   SelectContent,
   SelectItem,
   SelectTrigger,
   SelectValue,
-} from "../ui/select";
-import { Textarea } from "../ui/textarea";
-import { getSupabaseBrowserClient } from "@/utils/supabase/client";
-import { useToast } from "../ui/use-toast";
-import Loader from "../shared/Loader";
+} from '../ui/select';
+import { Textarea } from '../ui/textarea';
+import { getSupabaseBrowserClient } from '@/utils/supabase/client';
+import { useToast } from '../ui/use-toast';
+import Loader from '../shared/loaders/Loader';
 
 const formSchema = z.object({
   area: z.string().min(2).max(100),
@@ -44,8 +44,8 @@ const FeedbackForm = () => {
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
-      area: "",
-      description: "",
+      area: '',
+      description: '',
     },
   });
 
@@ -64,13 +64,13 @@ const FeedbackForm = () => {
 
     //
     const { error: feedbackError } = await supabase
-      .from("feedbacks")
+      .from('feedbacks')
       .insert(feedback);
 
     if (feedbackError) {
       toast({
-        variant: "destructive",
-        title: "Oops, something must have gone wrong 😵‍💫!",
+        variant: 'destructive',
+        title: 'Oops, something must have gone wrong 😵‍💫!',
       });
       console.log(feedbackError);
       setIsLoading(false);
@@ -79,8 +79,8 @@ const FeedbackForm = () => {
 
     // show notification
     toast({
-      variant: "default",
-      title: "The Team appreciates your valuable feedback💯",
+      variant: 'default',
+      title: 'The Team appreciates your valuable feedback💯',
     });
 
     setIsLoading(false);
@@ -156,12 +156,12 @@ const FeedbackForm = () => {
           className="dark:bg-sky-500 dark:hover:bg-sky-400"
         >
           {isLoading ? (
-            <span className=" flex gap-2">
+            <span className="flex gap-2">
               <Loader />
               <p>Loading...</p>
             </span>
           ) : (
-            "Submit"
+            'Submit'
           )}
         </Button>
       </form>

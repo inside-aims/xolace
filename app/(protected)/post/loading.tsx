@@ -1,5 +1,5 @@
-import React from "react";
-import SkeletonCard from "@/components/shared/SkeletonCard";
+import React from 'react';
+import SkeletonCard from '@/components/cards/SkeletonCard';
 
 const Loading = () => <SkeletonCard />;
 

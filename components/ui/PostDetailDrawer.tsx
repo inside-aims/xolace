@@ -1,53 +1,46 @@
-"use client";
+'use client';
 
-import React, { useState, useEffect } from "react";
-import Image from "next/image";
-import Link from "next/link";
-import { useRouter } from "next/navigation";
+import React, { useState, useEffect } from 'react';
+import { useRouter } from 'next/navigation';
 
 import {
   Drawer,
   DrawerContent,
   DrawerHeader,
-  DrawerTrigger,
-  DrawerFooter,
-} from "@/components/ui/drawer";
-import clsx from "clsx";
-import { Textarea } from "./textarea";
-import { zodResolver } from "@hookform/resolvers/zod";
-import { useForm } from "react-hook-form";
-import { z } from "zod";
-import {
-  HeartFilledIcon,
-  HeartIcon,
-  DoubleArrowLeftIcon,
-  InstagramLogoIcon,
-  LinkedInLogoIcon,
-} from "@radix-ui/react-icons";
+  DrawerTitle,
+} from '@/components/ui/drawer';
+import clsx from 'clsx';
+import { Textarea } from './textarea';
+import { zodResolver } from '@hookform/resolvers/zod';
+import { useForm } from 'react-hook-form';
+import { z } from 'zod';
+import { DoubleArrowLeftIcon } from '@radix-ui/react-icons';
 
-import { Button } from "@/components/ui/button";
+import { Button } from '@/components/ui/button';
 import {
   Form,
   FormControl,
   FormField,
   FormItem,
   FormMessage,
-} from "@/components/ui/form";
-import CommentCard from "../cards/CommentCard";
+} from '@/components/ui/form';
+import CommentCard from '../cards/CommentCard';
 
-import PostStats from "../shared/PostStats";
-import { useToast } from "../ui/use-toast";
-import Loader from "../shared/Loader";
-import { CommentSchema } from "@/validation";
-import { getSupabaseBrowserClient } from "@/utils/supabase/client";
-import { useUserState } from "@/lib/store/user";
-import { Send } from "lucide-react";
+import PostStats from '../shared/PostStats';
+import { useToast } from '../ui/use-toast';
+import Loader from '../shared/loaders/Loader';
+import { CommentSchema } from '@/validation';
+import { getSupabaseBrowserClient } from '@/utils/supabase/client';
+import { useUserState } from '@/lib/store/user';
+import { Send } from 'lucide-react';
+import { VisuallyHidden } from '@radix-ui/react-visually-hidden';
+import { Comment, DetailPost } from '@/types/global';
 
 type Type = string | string[] | undefined;
 
-const PostDetailDrawer = ({ post, type }: { post: any; type: Type }) => {
+const PostDetailDrawer = ({ post, type }: { post: DetailPost; type: Type }) => {
   // get user data
-  const user = useUserState((state) => state.user);
+  const user = useUserState(state => state.user);
   // initialize supabase client
   const supabase = getSupabaseBrowserClient();
 
@@ -55,21 +48,21 @@ const PostDetailDrawer = ({ post, type }: { post: any; type: Type }) => {
   const router = useRouter();
 
   // states
-  const [comments, setComments] = useState(post?.comments || []);
+  const [comments, setComments] = useState<Comment[]>(post?.comments || []);
   const [isLoading, setIsLoading] = useState(false);
 
   //   counter for comment fields
   const counter: number = 300;
 
   // Define different snap points based on `type`
-  const defaultSnapPoints = ["180px", "355px", 1];
+  const defaultSnapPoints = ['180px', '355px', 1];
   const expandedSnapPoints = [1]; // Fully expanded snap point
 
   // set the initial snap points
   const [snapPoints, setSnapPoints] = useState(
-    type ? expandedSnapPoints : defaultSnapPoints
+    type ? expandedSnapPoints : defaultSnapPoints,
   );
-  const [snap, setSnap] = useState<number | string | null>(type ? 1 : "180px");
+  const [snap, setSnap] = useState<number | string | null>(type ? 1 : '180px');
 
   useEffect(() => {
     if (type) {
@@ -84,21 +77,22 @@ const PostDetailDrawer = ({ post, type }: { post: any; type: Type }) => {
 
       return () => clearTimeout(timer);
     }
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [type]);
 
   // form validator
   const form = useForm<z.infer<typeof CommentSchema>>({
     resolver: zodResolver(CommentSchema),
     defaultValues: {
-      comment: "",
+      comment: '',
     },
   });
 
   // get for changes in the comment field
   const { watch } = form;
-  const comment = watch("comment");
+  const comment = watch('comment');
 
-  // submit comment form 
+  // submit comment form
   async function onSubmit(data: z.infer<typeof CommentSchema>) {
     setIsLoading(true);
     const { comment } = data;
@@ -106,59 +100,61 @@ const PostDetailDrawer = ({ post, type }: { post: any; type: Type }) => {
 
     // inserting into the database table in supabase
     supabase
-      .from("comments")
+      .from('comments')
       .insert({
         post: post.id,
         comment_text: comment,
       })
       .then(() => {
         toast({
-          title: "Comment Created 🖌️",
-          description: "Your comment has been successfully created! 😆",
-          variant: "default",
+          title: 'Comment Created 🖌️',
+          description: 'Your comment has been successfully created! 😆',
+          variant: 'default',
         });
         form.reset();
         setIsLoading(false);
       });
   }
 
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   useEffect((): any => {
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     const listener = (payload: any) => {
       const eventType = payload.eventType;
 
-      console.log("eventType", payload);
+      console.log('eventType', payload);
 
-      if (eventType === "INSERT") {
-        setComments((prevComments: any) => [...prevComments, payload.new]);
-      } else if (eventType === "DELETE") {
-        setComments((prevComments: any) =>
-          prevComments.filter((comment: any) => comment.id !== payload.old.id)
+      if (eventType === 'INSERT') {
+        setComments((prevComments: Comment[]) => [...prevComments, payload.new]);
+      } else if (eventType === 'DELETE') {
+        setComments((prevComments: Comment[]) =>
+          prevComments.filter((comment: Comment) => comment.id !== payload.old.id),
         );
-      } else if (eventType === "UPDATE") {
-        setComments((prevComments: any) =>
-          prevComments.map((comment: any) =>
-            comment.id === payload.new.id ? payload.new : comment
-          )
+      } else if (eventType === 'UPDATE') {
+        setComments((prevComments: Comment[]) =>
+          prevComments.map((comment: Comment) =>
+            comment.id === payload.new.id ? payload.new : comment,
+          ),
         );
       }
     };
 
     const subscription = supabase
-      .channel("my-channel")
+      .channel('my-channel')
       .on(
-        "postgres_changes",
+        'postgres_changes',
         {
-          event: "*",
-          schema: "public",
-          table: "comments",
+          event: '*',
+          schema: 'public',
+          table: 'comments',
           // filter: `ticket=eq.${ticket}`,
         },
-        listener
+        listener,
       )
       .subscribe();
 
     return () => subscription.unsubscribe();
-  }, []);
+  }, [supabase]);
 
   return (
     <>
@@ -170,22 +166,28 @@ const PostDetailDrawer = ({ post, type }: { post: any; type: Type }) => {
         modal={false}
         repositionInputs={false}
       >
-        <DrawerContent className="h-full max-h-[97%]">
-          <DrawerHeader className="flex flex-col items-center relative">
+        <DrawerContent
+          aria-describedby={undefined}
+          className="h-full max-h-[97%]"
+        >
+          <VisuallyHidden>
+            <DrawerTitle>Post Detail Drawer</DrawerTitle>
+          </VisuallyHidden>
+          <DrawerHeader className="relative flex flex-col items-center">
             <Button
-              variant={"link"}
-              className="absolute left-5 max-sm:top-3 md:left-10 dark:text-sky-500 text-blue"
+              variant={'link'}
+              className="absolute left-5 text-blue dark:text-sky-500 max-sm:top-3 md:left-10"
               onClick={() => router.back()}
             >
-              <DoubleArrowLeftIcon className="dark:text-sky-500 text-blue mr-1" />
+              <DoubleArrowLeftIcon className="mr-1 text-blue dark:text-sky-500" />
               back
             </Button>
-            {true ? (
+            {user ? (
               <PostStats
                 post={post}
                 section="details"
                 commentLength={comments.length}
-                userId={user?.id}
+                userId={user.id}
               />
             ) : (
               <div>Kindly refresh the page!!</div>
@@ -194,7 +196,7 @@ const PostDetailDrawer = ({ post, type }: { post: any; type: Type }) => {
             <Form {...form}>
               <form
                 onSubmit={form.handleSubmit(onSubmit)}
-                className="w-full md:w-1/2 "
+                className="w-full md:w-1/2"
               >
                 <FormField
                   control={form.control}
@@ -204,7 +206,7 @@ const PostDetailDrawer = ({ post, type }: { post: any; type: Type }) => {
                       <FormControl>
                         <Textarea
                           placeholder="Post your reply"
-                          className="resize-none mb-2 h-[42px] rounded-full text-dark-1 dark:text-white outline-none no-focus"
+                          className="no-focus mb-2 h-[42px] resize-none rounded-full text-dark-1 outline-none dark:text-white"
                           {...field}
                         />
                       </FormControl>
@@ -212,16 +214,16 @@ const PostDetailDrawer = ({ post, type }: { post: any; type: Type }) => {
                     </FormItem>
                   )}
                 />
-                <div className="flex flex-row-reverse justify-between items-center">
+                <div className="flex flex-row-reverse items-center justify-between">
                   <Button
-                    size={"sm"}
+                    size={'sm'}
                     disabled={comment.length > 300 || false}
                     type="submit"
-                    className=" rounded-full"
+                    className="rounded-full"
                   >
                     {isLoading ? (
                       <div className="flex items-center justify-center gap-x-2">
-                        {" "}
+                        {' '}
                         <Loader /> <span>Loading</span>
                       </div>
                     ) : (
@@ -229,11 +231,11 @@ const PostDetailDrawer = ({ post, type }: { post: any; type: Type }) => {
                     )}
                   </Button>
                   <p
-                    className={` dark:text-white text-slate-900/90 border ${
+                    className={`border text-slate-900/90 dark:text-white ${
                       counter - comment.length < 0
-                        ? "border-red-500 bg-red-400"
-                        : "border-blue bg-blue"
-                    } h-9 min-h-9 max-h-9 w-9 min-w-9 max-w-9 flex justify-center items-center p-3 rounded-full shadow-sm`}
+                        ? 'border-red-500 bg-red-400'
+                        : 'border-blue bg-blue'
+                    } flex h-9 max-h-9 min-h-9 w-9 min-w-9 max-w-9 items-center justify-center rounded-full p-3 shadow-sm`}
                   >
                     {counter - comment.length}
                   </p>
@@ -244,15 +246,15 @@ const PostDetailDrawer = ({ post, type }: { post: any; type: Type }) => {
 
           <div
             className={clsx(
-              "flex flex-col max-sm:max-w-md mx-auto w-full md:w-1/2 p-4 pt-5",
+              'mx-auto flex w-full flex-col p-4 pt-5 max-sm:max-w-md md:w-1/2',
               {
-                "overflow-y-auto": snap === 1,
-                "overflow-hidden": snap !== 1,
-              }
+                'overflow-y-auto': snap === 1,
+                'overflow-hidden': snap !== 1,
+              },
             )}
           >
             {comments
-              .map((comment: any) => <CommentCard comment={comment} />)
+              .map((comment: Comment) => <CommentCard key={comment.id} comment={comment} />)
               .reverse()}
             {comments.length == 0 && (
               <div>

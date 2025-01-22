@@ -1,4 +1,3 @@
-import { useState } from "react";
 import {
   AlertDialog,
   AlertDialogAction,
@@ -9,14 +8,14 @@ import {
   AlertDialogHeader,
   AlertDialogTitle,
   AlertDialogTrigger,
-} from "@/components/ui/alert-dialog";
-import { Button } from "@/components/ui/button";
-import { useUserState } from "@/lib/store/user";
-import { deleteUser } from "@/app/actions";
+} from '@/components/ui/alert-dialog';
+import { Button } from '@/components/ui/button';
+import { useUserState } from '@/lib/store/user';
+import { deleteUser } from '@/app/actions';
 
 const DeleteUserAccountCard = () => {
   // get user data
-  const user = useUserState((state) => state.user);
+  const user = useUserState(state => state.user);
 
   return (
     <div>
@@ -37,8 +36,12 @@ const DeleteUserAccountCard = () => {
           <AlertDialogFooter>
             <AlertDialogCancel>Cancel</AlertDialogCancel>
             <AlertDialogAction
-              className=" font-semibold bg-red-500 text-slate-50 shadow-sm hover:bg-red-500/90 dark:bg-red-900 dark:text-slate-50 dark:hover:bg-red-900/90"
-              onClick={() => deleteUser(user)}
+              className="bg-red-500 font-semibold text-slate-50 shadow-sm hover:bg-red-500/90 dark:bg-red-900 dark:text-slate-50 dark:hover:bg-red-900/90"
+              onClick={() => {
+                if (user) {
+                  deleteUser(user);
+                }
+              }}
             >
               Delete
             </AlertDialogAction>
