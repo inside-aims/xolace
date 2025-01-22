@@ -1,20 +1,8 @@
 import Image from 'next/image';
 import SignInForm from '@/components/forms/SignInForm';
-import { FORM_TYPES } from '@/constants';
 
-type SearchParams = Promise<{ [key: string]: string | string[] | undefined }>
+export default async function Login() {
 
-export default async function Login(props: { searchParams: Promise<SearchParams> }) {
-  const searchParams = await props.searchParams;
-  const wantsMagicLink = searchParams.magicLink === 'yes';
-  const wantsPasswordRecovery = searchParams.passwordRecovery === 'yes';
-
-  let formType = FORM_TYPES.PASSWORD_LOGIN;
-  if (wantsMagicLink) {
-    formType = FORM_TYPES.MAGIC_LINK;
-  } else if (wantsPasswordRecovery) {
-    formType = FORM_TYPES.PASSWORD_RECOVERY;
-  }
 
   return (
     <div className="main-container">
@@ -30,7 +18,7 @@ export default async function Login(props: { searchParams: Promise<SearchParams>
         />
       </div>
       <div className="mt-[270px] flex flex-col items-center justify-center py-2 max-sm:w-full sm:mt-[300px] sm:w-[70%] md:mt-[320px] md:px-12 lg:mt-[330px] lg:w-[40%]">
-        <SignInForm formType={formType} />
+        <SignInForm />
       </div>
     </div>
   );
