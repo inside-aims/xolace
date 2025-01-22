@@ -182,12 +182,12 @@ const PostDetailDrawer = ({ post, type }: { post: DetailPost; type: Type }) => {
               <DoubleArrowLeftIcon className="mr-1 text-blue dark:text-sky-500" />
               back
             </Button>
-            {true ? (
+            {user ? (
               <PostStats
                 post={post}
                 section="details"
                 commentLength={comments.length}
-                userId={user?.id}
+                userId={user.id}
               />
             ) : (
               <div>Kindly refresh the page!!</div>
