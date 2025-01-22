@@ -32,7 +32,7 @@ function LeftSidebar() {
   ) => {
     e.preventDefault();
 
-    if (user.is_anonymous) {
+    if (user?.is_anonymous) {
       setIsOpen(true);
       return;
     }
@@ -61,7 +61,7 @@ function LeftSidebar() {
         <div className="flex w-full flex-1 flex-col gap-6 px-6">
           <div className="mb-10 flex flex-row items-center gap-x-2 py-2">
             <Avatar>
-              <AvatarImage src={user?.avatar_url} />
+              <AvatarImage src={user?.avatar_url ?? undefined} />
               <AvatarFallback>XO🦸</AvatarFallback>
             </Avatar>
             <div className="flex flex-col">

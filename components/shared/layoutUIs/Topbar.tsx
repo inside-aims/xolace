@@ -26,7 +26,7 @@ function Topbar() {
   ) => {
     e.preventDefault();
 
-    if (user.is_anonymous) {
+    if (user?.is_anonymous) {
       setIsOpen(true);
       return;
     }
