@@ -40,7 +40,7 @@ const ChannelContributionCard = () => {
             </p>
           </motion.div>
         </DialogTrigger>
-        <DialogContent className="w-full max-w-[27rem] sm:max-w-md">
+        <DialogContent className="w-full max-w-[26rem] sm:max-w-md">
           <DialogHeader>
             <DialogTitle className="mb-4 text-2xl font-bold">
               🤝🏽 Support Xolace
