@@ -25,9 +25,12 @@ type Post = Database['public']['Tables']['posts']['Row'] & {
     };
   }[];
   likes: Database['public']['Tables']['likes']['Row'][];
-  comments: {
+  comments: [{
     count: number;
-  };
+  }];
+  views:[{
+    count:number
+  }]
 };
 
 type DetailPost = Database['public']['Tables']['posts']['Row'] & {

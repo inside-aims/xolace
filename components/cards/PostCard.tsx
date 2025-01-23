@@ -4,7 +4,7 @@ import { useEffect, useState } from 'react';
 import { format } from 'timeago.js';
 import Image from 'next/image';
 import { formatDistanceToNow } from 'date-fns';
-import { Clock } from 'lucide-react';
+import { Clock, EyeIcon } from 'lucide-react';
 
 import {
   Card,
@@ -121,6 +121,10 @@ export function PostCard({ className, post }: PostCardType) {
         </CardContent>
         <CardFooter className="flex items-center justify-between">
           <PostStats post={post} userId={user?.id || ''} />
+          <div className="flex gap-1.5 items-center">
+            <EyeIcon className=" size-4 sm:size-6 text-red-200" />
+            <span className=" text-sm sm:text-[15px]">{post.views[0].count}</span>
+          </div>
           <div
             className={`flex items-center justify-center rounded-3xl border p-1 dark:bg-transparent ${
               mood.style
