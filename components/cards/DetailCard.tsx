@@ -78,6 +78,7 @@ export function DetailCard({ postId, post }: { postId: string; post: DetailPost 
               </span>
             )}
           </div>
+          
         </CardFooter>
       </Card>
       <KvngSheet
