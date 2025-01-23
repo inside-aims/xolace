@@ -30,7 +30,7 @@ type PostCardType = {
   section?: 'profile';
 };
 
-interface TagProps {
+export interface TagProps {
   tags: {
     name: string;
   };
