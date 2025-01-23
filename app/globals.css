@@ -228,7 +228,7 @@ body {
   }
 
   .view-text {
-    @apply font-medium text-[16px] bg-primary dark:text-dark-1 text-white px-4 py-2 rounded-lg capitalize;
+    @apply font-medium text-[16px] bg-dark-2 dark:bg-slate-400 dark:text-dark-1 text-white px-4 py-2 rounded-lg capitalize;
   }
 
   .view_skeleton {

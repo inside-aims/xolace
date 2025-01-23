@@ -15,12 +15,14 @@ import ReportForm from '../forms/ReportForm';
 import { KvngSheet } from '../shared/KvngSheet';
 import { moodMap } from '@/types';
 import { DetailPost } from '@/types/global';
+import TagCard from './TagCard';
+import { TagProps } from './PostCard';
 
 export function DetailCard({ postId, post }: { postId: string; post: DetailPost }) {
   const [isSheetOpen, setIsSheetOpen] = useState<boolean>(false);
   const postMood = moodMap[post?.mood] || moodMap['neutral'];
 
-  const { created_at, content, author_name, author_avatar_url, created_by } =
+  const { created_at, content, author_name, author_avatar_url, created_by, posttags } =
     post;
 
   return (
@@ -50,6 +52,17 @@ export function DetailCard({ postId, post }: { postId: string; post: DetailPost 
         </CardHeader>
         <CardContent className="overflow-x-hidden !text-wrap">
           {content}
+
+          <div className="mt-2 flex flex-wrap gap-2">
+            {posttags && // check if post has tags
+              posttags.map((tag: TagProps, index: number) => (
+                <TagCard
+                  key={`${tag.tags.name}_${index}`}
+                  name={tag.tags.name}
+                  _id={`${tag.tags.name}_${index}`}
+                />
+              ))}
+          </div>
         </CardContent>
         <CardFooter>
           <div
