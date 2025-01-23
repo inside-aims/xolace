@@ -43,7 +43,8 @@ const Profile = () => {
           likes(
           *
           ),
-          comments:comments(count)
+          comments:comments(count),
+          views:views(count)
     `,
         )
         .eq('created_by', user?.id)

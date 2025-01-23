@@ -29,7 +29,8 @@ const FeedList = () => {
         likes(
         *
         ),
-        comments:comments(count)
+        comments:comments(count),
+        views:views(count)
   `,
         )
         .order('created_at', { ascending: false });
