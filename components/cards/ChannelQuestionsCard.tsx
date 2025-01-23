@@ -38,7 +38,7 @@ const ChannelQuestionsCard = () => {
             </p>
           </motion.div>
         </DialogTrigger>
-        <DialogContent className="h-[60%] w-full max-w-[27rem] sm:max-w-md">
+        <DialogContent className="h-[60%] w-full max-w-[26rem] sm:max-w-md">
           <DialogHeader>
             <DialogTitle className="mb-6 text-2xl font-bold">
               <span>&#128220; </span>Frequently Asked Questions

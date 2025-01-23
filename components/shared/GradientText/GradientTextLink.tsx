@@ -27,7 +27,7 @@ const GradientTextLink = ({
           🎉 <hr className="mx-2 h-4 w-px shrink-0 bg-gray-300" />{' '}
           <span
             className={cn(
-              `inline animate-gradient bg-gradient-to-r from-[${fromColor}] via-[${viaColor}] to-[${toColor}] bg-[length:var(--bg-size)_100%] bg-clip-text text-white`,
+              `inline animate-gradient bg-gradient-to-r from-[${fromColor}] via-[${viaColor}] to-[${toColor}] bg-[length:var(--bg-size)_100%] bg-clip-text dark:text-white text-black`,
             )}
           >
             {text}
