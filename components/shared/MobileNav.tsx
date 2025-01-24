@@ -59,10 +59,29 @@ export default function MobileNav() {
 
   const scope = useMenuAnimation(isOpen);
 
+  useEffect(() => {
+    if (isOpen) {
+      document.body.style.overflow = 'hidden';
+    } else {
+      document.body.style.overflow = 'unset';
+    }
+    return () => {
+      document.body.style.overflow = 'unset';
+    };
+  }, [isOpen]);
+
   return (
-    <div ref={scope} className="flex items-center sm:hidden">
-      {isOpen && <Menu setIsOpen={setIsOpen} />}
-      <MenuToggle toggle={() => setIsOpen(!isOpen)} />
-    </div>
+    <>
+      {isOpen && (
+        <div
+          className="fixed inset-0 z-20 bg-black/50"
+          onClick={() => setIsOpen(false)}
+        />
+      )}
+      <div ref={scope} className="flex items-center sm:hidden">
+        {isOpen && <Menu setIsOpen={setIsOpen} />}
+        <MenuToggle toggle={() => setIsOpen(!isOpen)} />
+      </div>
+    </>
   );
 }
