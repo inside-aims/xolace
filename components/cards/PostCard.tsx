@@ -104,8 +104,8 @@ export function PostCard({ className, post, onClick }: PostCardType) {
           />
         </CardHeader>
 
-        <CardContent>
-          <div className="mb-2 cursor-pointer" onClick={onClick}>
+        <CardContent className="cursor-pointer" onClick={onClick}>
+          <div className="mb-2">
             {truncateText(post.content, 70)}
           </div>
           <div className="mt-2 flex flex-wrap gap-2">
