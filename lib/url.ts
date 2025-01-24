@@ -20,7 +20,7 @@ export const formUrlQuery = ({ params, key, value }: UrlQueryParams) => {
 
   // converting back to string and returning
   return qs.stringifyUrl({
-    url: window.location.href,
+    url: window.location.pathname,
     query: paramsString,
   });
 };
@@ -33,7 +33,6 @@ export const removeKeyFromQuery = ({
   const paramsString = qs.parse(params);
 
   if (typeof paramsString === 'object' && paramsString !== null) {
-    console.log('working-> ', paramsString);
 
     keysToRemove.forEach(key => {
       delete paramsString[key];
@@ -43,7 +42,7 @@ export const removeKeyFromQuery = ({
   // converting back to string and returning
   return qs.stringifyUrl(
     {
-      url: window.location.href,
+      url: window.location.pathname,
       query: paramsString,
     },
     {

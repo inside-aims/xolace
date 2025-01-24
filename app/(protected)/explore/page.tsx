@@ -1,10 +1,10 @@
 import React from 'react';
 
 import FilterPills from '@/components/hocs/exploreComponents/FilterPills';
-import { generateMockPosts } from '@/constants/generateMockPosts';
 import { shuffleArray } from '@/lib/utils';
 import LocalSearch from '@/components/shared/search/LocalSearch';
 import ExploreFeedList from '@/components/hocs/exploreComponents/ExploreFeedList';
+import { createClient } from '@/utils/supabase/server';
 
 interface SearchParams {
   searchParams: Promise<{ [key: string]: string }>;
@@ -61,10 +61,38 @@ const filterPosts = (filteredPosts: Post[], filter: string) => {
 };
 
 const ExplorePage = async ({ searchParams }: SearchParams) => {
-  const posts = generateMockPosts(50);
+  const supabase = await createClient();
+  const postStatement = supabase
+  .from('posts')
+  .select(
+    `
+*,
+posttags (
+  tags (
+    name
+  )
+),
+  likes(
+  *
+  ),
+  comments:comments(count),
+  views:views(count)
+`,
+  )
+  .order('created_at', { ascending: false });
+const { data: postsData} = await postStatement;
+
+if(!postsData) {
+  return (
+    <div className="text-center">
+      <h2>No posts found.</h2>
+    </div>
+  );
+}
+// get searchParams
   const { query = '', filter = '' } = await searchParams;
 
-  let filteredPosts = posts.filter(post => {
+  let filteredPosts = postsData.filter(post => {
     const matchQuery =
       query?.toLowerCase() === '' ||
       post.author_name.toLowerCase().includes(query?.toLowerCase()) ||

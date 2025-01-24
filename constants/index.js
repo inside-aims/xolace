@@ -7,6 +7,7 @@ import {
   ThumbsUp,
   Flame,
   Clock,
+  Bomb
 } from 'lucide-react';
 
 export const sidebarLinks = [
@@ -30,6 +31,11 @@ export const sidebarLinks = [
     imgURL: <UserPen />,
     route: '/profile',
     label: 'Profile',
+  },
+  {
+    imgURL: <Bomb size={22} strokeWidth={1.75} />,
+    route: '/explore',
+    label: 'Explore',
   },
   {
     imgURL: <Rss />,

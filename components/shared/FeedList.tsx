@@ -128,7 +128,7 @@ const FeedList = () => {
             duration={0.3}
             inView
           >
-            <PostCard post={post} />
+            <PostCard post={post} className={"mb-5 w-full ring-1 ring-white/[0.05] transition duration-300 dark:ring-zinc-800 dark:hover:ring-zinc-700 dark:focus-visible:ring-[#193a47] md:w-full "} />
           </BlurFade>
         ))}
       </ul>

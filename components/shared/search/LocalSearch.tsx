@@ -40,13 +40,15 @@ const LocalSearch = ({
           scroll: false,
         });
       } else {
-        console.log('empty');
+        console.log('empty ', searchQuery);
         if (pathname === route) {
+          console.log("route ")
           // if searchQuery is totally empty
           const newUrl = removeKeyFromQuery({
             params: searchParams.toString(),
             keysToRemove: ['query'],
           });
+          console.log("removing query", newUrl);
           router.push(newUrl, {
             scroll: false,
           });

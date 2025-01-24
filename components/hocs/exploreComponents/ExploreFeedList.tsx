@@ -2,25 +2,12 @@
 
 import React from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import PostCard from '@/components/extras/PostCard';
+import { PostCard } from '@/components/cards/PostCard';
+import { cn } from '@/lib/utils';
+import { Post } from '@/types/global';
 
 interface Props {
-  filteredPosts: {
-    id: string;
-    author_name: string;
-    author_avatar_url: string;
-    content: string;
-    timestamp: string;
-    mood: {
-      emoji: string;
-      style: string;
-      name: string;
-    };
-    expires_in_24hr: boolean;
-    upvotes: number;
-    downvotes: number;
-    comments: number;
-  }[];
+  filteredPosts: Post[];
 }
 
 const ExploreFeedList = ({ filteredPosts }: Props) => {
@@ -37,7 +24,13 @@ const ExploreFeedList = ({ filteredPosts }: Props) => {
                 exit={{ opacity: 0, scale: 0.9 }}
                 transition={{ duration: 0.3 }}
               >
-                <PostCard post={post} className={``} />
+                <PostCard
+                  post={post}
+                  className={cn(
+                    `mood-${post.mood}`,
+                    'mb-5 w-full overflow-hidden transition-colors duration-300',
+                  )}
+                />
               </motion.div>
             ))
           ) : (

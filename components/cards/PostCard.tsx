@@ -70,14 +70,14 @@ export function PostCard({ className, post }: PostCardType) {
       </KvngDialogDrawer>
 
       <Card
-        className={`mb-5 w-full ring-1 ring-white/[0.05] transition duration-300 dark:ring-zinc-800 dark:hover:ring-zinc-700 dark:focus-visible:ring-[#193a47] md:w-full ${className}`}
+        className={className}
         id={post.id}
       >
         <CardHeader className="flex-row items-start justify-between px-4 py-2">
           <div className="flex items-center gap-3 md:gap-7">
             <Avatar>
               <AvatarImage src={post.author_avatar_url || undefined} />
-              <AvatarFallback>XO</AvatarFallback>
+              <AvatarFallback>{post.author_name.charAt(0)}</AvatarFallback>
             </Avatar>
             <div className="flex flex-col items-start justify-center">
               <h5 className="text-small text-default-400 tracking-tight">
