@@ -2,6 +2,7 @@
 'use client';
 
 import React, { useState, useEffect } from 'react';
+import { useRouter, usePathname } from 'next/navigation';
 
 import { PostCard } from '@/components/cards/PostCard';
 import { getSupabaseBrowserClient } from '@/utils/supabase/client';
@@ -12,7 +13,10 @@ import { Post } from '@/types/global';
 const FeedList = () => {
   const [posts, setPosts] = useState<Post[]>([]);
   const [isLoading, setIsLoading] = useState(true);
+  const [shouldRestoreScroll, setShouldRestoreScroll] = useState(false);
   const supabase = getSupabaseBrowserClient();
+  const router = useRouter();
+  const pathname = usePathname();
 
   useEffect(() => {
     const fetchPost = async () => {
@@ -43,10 +47,42 @@ const FeedList = () => {
 
       setPosts(postsData);
       setIsLoading(false);
+      
+      // After posts are loaded, check if we need to restore scroll
+      if (shouldRestoreScroll) {
+        const scrollPosition = sessionStorage.getItem('scrollPosition');
+        if (scrollPosition) {
+          // Wait for animations to complete (500ms) plus a small buffer
+          setTimeout(() => {
+            window.scrollTo({
+              top: parseInt(scrollPosition),
+              behavior: 'instant'
+            });
+            sessionStorage.removeItem('scrollPosition');
+            setShouldRestoreScroll(false);
+          }, 600);
+        }
+      }
     };
 
     fetchPost();
-  }, [supabase]);
+  }, [supabase, shouldRestoreScroll]);
+
+  useEffect(() => {
+    if (pathname === '/feed') {
+      const hasScrollPosition = sessionStorage.getItem('scrollPosition') !== null;
+      if (hasScrollPosition) {
+        setShouldRestoreScroll(true);
+      }
+    }
+  }, [pathname]);
+
+  const handlePostClick = (postId: string) => {
+    const currentScroll = window.scrollY.toString();
+    console.log('Saving scroll position:', currentScroll);
+    sessionStorage.setItem('scrollPosition', currentScroll);
+    router.push(`/post/${postId}`);
+  };
 
   // real time events for post
   useEffect((): any => {
@@ -87,52 +123,35 @@ const FeedList = () => {
     return () => subscription.unsubscribe();
   }, [supabase]);
 
-  // const supabase_user_id: string | null =
-  //   (await supabase.auth.getUser()).data?.user?.id ?? null;
-  // if (!supabase_user_id) {
-  //   throw new Error();
-  // }
-
-  // const { data: profileUser } = await supabase
-  //   .from("profiles")
-  //   .select("id")
-  //   .eq("supabase_user", supabase_user_id)
-  //   .single();
-
-  //   const { data: testData, error: postError } = await supabase.from("posts")
-  //     .select(`
-  //        *,
-  //           likes(
-  //           *
-  //           )
-  //     `);
-
   console.log(
     'posts -> ',
     posts?.map(test => test),
   );
 
   return (
-    <>
-      {isLoading && (
-        <>
+    <div className="flex flex-col gap-4">
+      <BlurFade>
+        {isLoading ? (
           <FeedSkeletonLoader />
-        </>
-      )}
-      <ul className="flex w-full flex-1 flex-col gap-3">
-        {(posts || []).map((post, idx) => (
-          <BlurFade
-            key={`${post.id}`}
-            className="flex w-full justify-center"
-            delay={0.15 + idx * 0.05}
-            duration={0.3}
-            inView
-          >
-            <PostCard post={post} className={"mb-5 w-full ring-1 ring-white/[0.05] transition duration-300 dark:ring-zinc-800 dark:hover:ring-zinc-700 dark:focus-visible:ring-[#193a47] md:w-full "} />
-          </BlurFade>
-        ))}
-      </ul>
-    </>
+        ) : (
+          <div className="flex w-full flex-1 flex-col gap-3">
+            {posts.map((post) => (
+              <BlurFade
+                key={post.id}
+                duration={0.3}
+                inView
+              >
+                <PostCard
+                  post={post}
+                  onClick={() => handlePostClick(post.id)}
+                  className="mb-5 w-full ring-1 ring-white/[0.05] transition duration-300 dark:ring-zinc-800 dark:hover:ring-zinc-700 dark:focus-visible:ring-[#193a47] md:w-full"
+                />
+              </BlurFade>
+            ))}
+          </div>
+        )}
+      </BlurFade>
+    </div>
   );
 };
 
