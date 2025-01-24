@@ -155,7 +155,7 @@ body {
 
   /* explore page cards colors */
   .mood-happy {
-    @apply bg-green-500 dark:bg-green-900;
+    @apply !bg-green-500 dark:!bg-green-900;
   }
   .mood-sad {
     @apply bg-blue dark:bg-sky-900;
