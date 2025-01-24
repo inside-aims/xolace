@@ -1,6 +1,6 @@
 'use client';
 
-import React, { Dispatch, SetStateAction } from 'react';
+import React, { Dispatch, SetStateAction, useEffect, useRef } from 'react';
 import { navLinks } from '@/constants';
 import ResponsiveNavLink from './ResponsiveNavLinks';
 import { motion } from 'framer-motion';
@@ -13,14 +13,29 @@ export function Menu({
   setIsOpen: Dispatch<SetStateAction<boolean>>;
 }) {
   const path = usePathname();
-  console.log(path);
+  const menuRef = useRef<HTMLDivElement>(null);
   const user = useUserState(state => state.user);
+  
+  useEffect(() => {
+    const handleClickOutside = (event: MouseEvent) => {
+      if (menuRef.current && !menuRef.current.contains(event.target as Node)) {
+        setIsOpen(false);
+      }
+    };
+
+    document.addEventListener('mousedown', handleClickOutside);
+    return () => {
+      document.removeEventListener('mousedown', handleClickOutside);
+    };
+  }, [setIsOpen]);
+
   const handleClick = () => {
     setIsOpen(false);
   };
 
   return (
     <motion.div
+      ref={menuRef}
       initial={{
         scale: 0,
         opacity: 0,
@@ -32,6 +47,7 @@ export function Menu({
         ease: 'easeInOut',
         duration: 0.5,
       }}
+      onClick={(e) => e.stopPropagation()}
       className="fixed left-[50%] top-[50%] z-30 flex w-[70vw] flex-col items-center justify-center gap-5 rounded-xl bg-gray-900/90 py-12 backdrop-blur-md dark:bg-gray-200"
     >
       <div className="flex flex-col items-center justify-center gap-5 text-white dark:text-dark-3">
