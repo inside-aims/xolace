@@ -18,7 +18,6 @@ export function Menu({
   
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
-      console.log('click');
       if (menuRef.current && !menuRef.current.contains(event.target as Node)) {
         setIsOpen(false);
       }
