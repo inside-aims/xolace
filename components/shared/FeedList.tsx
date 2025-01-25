@@ -14,6 +14,12 @@ interface FeedListProps {
   initialPosts: Post[];
 }
 
+  /**
+   * A component that displays a list of posts, with real-time updates and scroll restoration.
+   *
+   * @param initialPosts - The initial list of posts to display.
+   * @returns A component that displays a list of posts.
+   */
 const FeedList = ({ initialPosts }: FeedListProps) => {
   const [posts, setPosts] = useState<Post[]>(initialPosts);
   const supabase = getSupabaseBrowserClient();
@@ -59,23 +65,51 @@ const FeedList = ({ initialPosts }: FeedListProps) => {
   // Handle scroll restoration
   useEffect(() => {
     if (pathname === '/feed') {
-      const scrollPosition = sessionStorage.getItem('scrollPosition');
-      if (scrollPosition) {
-        // Wait for animations to complete (500ms) plus a small buffer
-        setTimeout(() => {
-          window.scrollTo({
-            top: parseInt(scrollPosition),
-            behavior: 'instant'
-          });
-          sessionStorage.removeItem('scrollPosition');
-        }, 600);
+      const savedContext = sessionStorage.getItem('feedViewContext');
+      if (savedContext) {
+        try {
+          const viewContext = JSON.parse(savedContext);
+          // Wait for animations to complete (500ms) plus a small buffer
+          setTimeout(() => {
+            window.scrollTo({
+              top: viewContext.scrollY,
+              behavior: 'instant'
+            });
+            
+            // Highlight last visible post if it exists
+            const lastPost = document.getElementById(viewContext.lastVisiblePost);
+            if (lastPost) {
+              lastPost.classList.add('briefly-highlight');
+              setTimeout(() => lastPost.classList.remove('briefly-highlight'), 1500);
+            }
+            
+            sessionStorage.removeItem('feedViewContext');
+          }, 600);
+        } catch (error) {
+          console.error('Error restoring feed position:', error);
+          sessionStorage.removeItem('feedViewContext');
+        }
       }
     }
   }, [pathname]);
 
+  /**
+   * Handles the click event on a post, saving the current scroll position 
+   * and other view context information to session storage before navigating 
+   * to the post's detail page.
+   * 
+   * @param postId - The ID of the post to navigate to.
+   */
   const handlePostClick = (postId: string) => {
-    const currentScroll = window.scrollY.toString();
-    sessionStorage.setItem('scrollPosition', currentScroll);
+    const viewContext = {
+      scrollY: window.scrollY,
+      timestamp: Date.now(),
+      viewportHeight: window.innerHeight,
+      lastVisiblePost: document.elementFromPoint(0, window.innerHeight - 10)?.id || postId,
+      section: 'feed'
+    };
+
+    sessionStorage.setItem('feedViewContext', JSON.stringify(viewContext));
     router.push(`/post/${postId}`);
   };
 
