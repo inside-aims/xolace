@@ -96,7 +96,7 @@ const Profile = () => {
               {isLoadingPosts ? (
                 <Loader />
               ) : posts?.length > 0 ? (
-                <div className="flex w-full flex-1 flex-col">
+                <div className="flex w-full flex-1 flex-col px-4">
                   {posts?.map((post: Post, idx: number) => (
                     <BlurFade
                       key={post.id}
@@ -108,7 +108,7 @@ const Profile = () => {
                         post={post} 
                         section="profile" 
                         onClick={() => handlePostClick(post.id)}
-                        className="mb-4 w-full ring-1 ring-white/[0.05] transition duration-300 dark:ring-zinc-800 dark:hover:ring-zinc-700 dark:focus-visible:ring-[#193a47]" 
+                        className="mb-4 w-full bg-gradient-to-br from-[hsl(228_85%_4%)] to-[hsl(228_85%_8%)] ring-1 ring-white/[0.05] transition duration-300 dark:ring-zinc-800 dark:hover:ring-zinc-700 dark:focus-visible:ring-[#193a47]" 
                       />
                     </BlurFade>
                   ))}
