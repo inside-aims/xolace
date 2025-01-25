@@ -126,7 +126,7 @@ const FeedList = ({ initialPosts }: FeedListProps) => {
               <PostCard
                 post={post}
                 onClick={() => handlePostClick(post.id)}
-                className="mb-5 w-full dark:bg-[radial-gradient(ellipse_at_top,hsl(228_85%_8%),transparent),linear-gradient(to_bottom_right,hsl(228_85%_7%),hsl(228_85%_3%))] ring-1 ring-white/[0.05] transition duration-300 dark:hover:bg-[radial-gradient(ellipse_at_top,hsl(228_85%_6%),transparent),linear-gradient(to_bottom_right,hsl(228_85%_8%),hsl(228_85%_4%))] dark:ring-zinc-800 dark:hover:ring-zinc-700 dark:focus-visible:ring-[#193a47] md:w-full"
+                className="mb-5 w-full bg-[radial-gradient(ellipse_at_top,hsl(0_0%_100%),hsl(0_0%_95%)_70%),linear-gradient(to_bottom_right,hsl(0_0%_98%),hsl(0_0%_96%))] hover:bg-[radial-gradient(ellipse_at_top,hsl(0_0%_100%),hsl(0_0%_99%)_70%),linear-gradient(to_bottom_right,hsl(0_0%_99%),hsl(0_0%_97%))] dark:bg-[radial-gradient(ellipse_at_top,hsl(228_85%_8%),transparent),linear-gradient(to_bottom_right,hsl(228_85%_7%),hsl(228_85%_3%))] ring-1 ring-black/[0.03] transition duration-300 hover:ring-black/[0.05] dark:hover:bg-[radial-gradient(ellipse_at_top,hsl(228_85%_6%),transparent),linear-gradient(to_bottom_right,hsl(228_85%_8%),hsl(228_85%_4%))] dark:ring-zinc-800 dark:hover:ring-zinc-700 dark:focus-visible:ring-[#193a47] md:w-full"
               />
             </BlurFade>
           ))}
