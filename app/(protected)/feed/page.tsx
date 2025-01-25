@@ -53,7 +53,7 @@ export default async function FeedPage() {
   const initialPosts = await getCachedPosts(supabase);
   
   return (
-    <div className="container mx-auto">
+    <div className="sm:container">
       <FeedList initialPosts={initialPosts} />
     </div>
   );
