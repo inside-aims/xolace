@@ -155,19 +155,29 @@ body {
 
   /* explore page cards colors */
   .mood-happy {
-    @apply bg-green-500 dark:bg-green-900;
+    @apply bg-gradient-to-br from-green-400 to-green-600 dark:from-green-800 dark:to-green-950;
+    transition: all 0.3s ease;
+    box-shadow: 0 0 15px rgba(34, 197, 94, 0.2);
   }
   .mood-sad {
-    @apply bg-blue dark:bg-sky-900;
+    @apply bg-gradient-to-br from-blue/50 to-blue dark:from-sky-800 dark:to-sky-950;
+    transition: all 0.3s ease;
+    box-shadow: 0 0 15px rgba(59, 130, 246, 0.2);
   }
   .mood-angry {
-    @apply bg-red-500 dark:bg-red-900;
+    @apply bg-gradient-to-br from-red-400 to-red-600 dark:from-red-800 dark:to-red-950;
+    transition: all 0.3s ease;
+    box-shadow: 0 0 15px rgba(239, 68, 68, 0.2);
   }
   .mood-confused {
-    @apply bg-secondary-500 dark:bg-yellow-900;
+    @apply bg-gradient-to-br from-yellow-400 to-secondary-500 dark:from-yellow-800 dark:to-yellow-950;
+    transition: all 0.3s ease;
+    box-shadow: 0 0 15px rgba(234, 179, 8, 0.2);
   }
   .mood-neutral {
-    @apply bg-gray-200 dark:bg-gray-900;
+    @apply bg-gradient-to-br from-gray-100 to-gray-300 dark:from-gray-800 dark:to-gray-950;
+    transition: all 0.3s ease;
+    box-shadow: 0 0 15px rgba(107, 114, 128, 0.2);
   }
 
   .searchbar {
