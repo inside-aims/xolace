@@ -82,7 +82,7 @@ const FeedList = ({ initialPosts }: FeedListProps) => {
   return (
     <div className="flex flex-col gap-4">
       <BlurFade>
-        <div className="flex w-full flex-1 flex-col gap-3">
+        <div className="flex w-full flex-1 flex-col gap-3 pt-3">
           {Array.isArray(posts) && posts.map((post) => (
             <BlurFade
               key={post.id}
