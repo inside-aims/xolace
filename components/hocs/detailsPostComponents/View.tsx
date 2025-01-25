@@ -27,7 +27,7 @@ const View = ({ id, viewsCount }: { id: string; viewsCount: number }) => {
 
     const timer = setTimeout(()=>{
         updateViews();
-    },5000)
+    },3000)
 
     return () => clearTimeout(timer);
   }, [id, supabase, user?.id]);
