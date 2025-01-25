@@ -261,6 +261,25 @@ body {
   .custom-scrollbar::-webkit-scrollbar-thumb:hover {
     background: #7878a3;
   }
+
+  @keyframes briefly-highlight {
+    0% {
+      transform: scale(1);
+      box-shadow: 0 0 0 0 rgba(59, 130, 246, 0);
+    }
+    20% {
+      transform: scale(1.01);
+      box-shadow: 0 0 20px 0 rgba(59, 130, 246, 0.3);
+    }
+    100% {
+      transform: scale(1);
+      box-shadow: 0 0 0 0 rgba(59, 130, 246, 0);
+    }
+  }
+
+  .briefly-highlight {
+    animation: briefly-highlight 1.5s ease-out forwards;
+  }
 }
 
 ::-webkit-scrollbar {

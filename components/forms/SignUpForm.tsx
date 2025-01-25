@@ -101,7 +101,7 @@ const SignUpForm = () => {
               </FormControl>
               <FormDescription className="text-[12px]">
                 <span className="font-semibold text-amber-400"> NB: </span>{' '}
-                Avoid using an identifiable username
+                Definitely not the name your mum gave you ❗
               </FormDescription>
               {state?.errors?.username && (
                 <div className="text-sm text-red-500">
@@ -153,10 +153,13 @@ const SignUpForm = () => {
                     required
                     autoComplete="off"
                   />
-                  <ToggleEyeIcon
-                    showPassword={showPassword}
-                    setShowPassword={setShowPassword}
-                  />
+                  <button
+                      type="button"
+                      onClick={() => setShowPassword(!showPassword)}
+                      className="absolute right-3 top-4 md:top-[-3] transform"
+                    >
+                      <ToggleEyeIcon showPassword={showPassword} />
+                    </button>
                 </div>
               </FormControl>
               <FormDescription className="text-[12px]">

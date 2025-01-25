@@ -1,6 +1,6 @@
 import React from 'react';
 
-import LeftSidebar from '@/components/shared/layoutUIs/LeftSideBar';
+import ConditionalLeftSidebar from '@/components/shared/layoutUIs/ConditionalLeftSidebar';
 import Bottombar from '@/components/shared/layoutUIs/Bottombar';
 import Topbar from '@/components/shared/layoutUIs/Topbar';
 import { createClient } from '@/utils/supabase/server';
@@ -32,7 +32,7 @@ export default async function ProtectedLayout({
       <Topbar />
       <InfoBanner />
       <main className="flex flex-row">
-        <LeftSidebar />
+        <ConditionalLeftSidebar />
         <section className="main-container pt-28">
           <div className="w-full px-1">{children}</div>
         </section>

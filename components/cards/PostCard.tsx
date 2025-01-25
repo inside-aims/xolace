@@ -13,7 +13,6 @@ import {
   CardHeader,
 } from '@/components/ui/card';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
-import Link from 'next/link';
 import PostDropdown from '../shared/PostDropdown';
 import PostStats from '../shared/PostStats';
 import { useUserState } from '@/lib/store/user';
@@ -28,6 +27,7 @@ type PostCardType = {
   className?: string;
   post: Post;
   section?: 'profile';
+  onClick?: () => void;
 };
 
 export interface TagProps {
@@ -36,7 +36,7 @@ export interface TagProps {
   };
 }
 
-export function PostCard({ className, post }: PostCardType) {
+export function PostCard({ className, post, onClick }: PostCardType) {
   // get user data
   const user = useUserState(state => state.user);
 
@@ -104,10 +104,10 @@ export function PostCard({ className, post }: PostCardType) {
           />
         </CardHeader>
 
-        <CardContent>
-          <Link href={`post/${post.id}`} className="mb-2">
+        <CardContent className="cursor-pointer" onClick={onClick}>
+          <div className="mb-2">
             {truncateText(post.content, 70)}
-          </Link>
+          </div>
           <div className="mt-2 flex flex-wrap gap-2">
             {post.posttags && // check if post has tags
               post.posttags.map((tag: TagProps, index: number) => (

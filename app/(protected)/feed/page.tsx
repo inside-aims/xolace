@@ -1,20 +1,63 @@
-import React, { Suspense } from 'react';
-
-import FeedSkeletonLoader from '@/components/shared/loaders/FeedSkeletonLoader';
+import { createClient } from '@/utils/supabase/server';
 import FeedList from '@/components/shared/FeedList';
+import { unstable_cache } from 'next/cache';
 
-const Feed = () => {
+// Function to fetch posts with a Supabase client
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+async function fetchPosts(supabase: any) {
+  const { data: postsData, error } = await supabase
+    .from('posts')
+    .select(
+      `
+       *,
+       posttags (
+          tags (
+            name
+          )
+        ),
+          likes(
+          *
+          ),
+          comments:comments(count),
+          views:views(count)
+    `,
+    )
+    .order('created_at', { ascending: false });
+
+  if (error) {
+    console.error('Error fetching posts:', error.message);
+    return [];
+  }
+
+  return postsData;
+}
+
+// Cache the posts fetching function
+const getCachedPosts = unstable_cache(
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  async (supabase: any) => {
+    return fetchPosts(supabase);
+  },
+  ['posts-list'],
+  {
+    revalidate: 60, // Cache for 1 minute
+    tags: ['posts']
+  }
+);
+
+export default async function FeedPage() {
+  // Create Supabase client with cookies outside the cached function
+  const supabase = await createClient();
+  
+  // Pass the Supabase client to the cached function
+  const initialPosts = await getCachedPosts(supabase);
+  
   return (
-    <>
-      {' '}
-      <Suspense fallback={<FeedSkeletonLoader />}>
-        <FeedList />
-      </Suspense>
-    </>
+    <div className="container mx-auto">
+      <FeedList initialPosts={initialPosts} />
+    </div>
   );
-};
-
-export default Feed;
+}
 
 {
   /* <RadioGroup defaultValue="comfortable" className=' flex' >

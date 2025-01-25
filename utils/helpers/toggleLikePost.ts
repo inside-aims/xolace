@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { getSupabaseBrowserClient } from '../supabase/client';
 
 export const toggleLikePost = async (

@@ -1,6 +1,7 @@
 'use client';
 
 import React, { useEffect, useState } from 'react';
+import { useRouter } from 'next/navigation';
 
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { Separator } from '@/components/ui/separator';
@@ -18,6 +19,7 @@ import BlurFade from '@/components/ui/blur-fade';
 import { Post } from '@/types/global';
 
 const Profile = () => {
+  const router = useRouter();
   // get user profile data
   const user = useUserState(state => state.user);
 
@@ -62,6 +64,11 @@ const Profile = () => {
     fetchUserPosts();
   }, [supabase, user?.id]);
 
+  // handle post click
+  const handlePostClick = (postId: string) => {
+    router.push(`/post/${postId}`);
+  };
+
   return (
     <>
       <div className="flex items-center justify-center gap-3 md:gap-4">
@@ -78,18 +85,18 @@ const Profile = () => {
       </div>
       <Separator className="my-4" />
 
-      <Tabs defaultValue="account" className="w-[100%]">
-        <TabsList className="sticky top-16 grid w-full grid-cols-2">
+      <Tabs defaultValue="account" className="w-full">
+        <TabsList className="sticky top-16 z-10 grid w-full grid-cols-2 ">
           <TabsTrigger value="account">Posts</TabsTrigger>
           <TabsTrigger value="password">Edit profile</TabsTrigger>
         </TabsList>
-        <TabsContent value="account" className="p-2">
-          <ScrollArea className="h-[58vh] w-full rounded-md md:h-80">
-            <div className="p-4">
+        <TabsContent value="account" className="px-2">
+          <ScrollArea className="h-[calc(100vh-20rem)] w-full rounded-md md:h-[calc(100vh-22rem)]">
+            <div className="space-y-4 py-2">
               {isLoadingPosts ? (
                 <Loader />
               ) : posts?.length > 0 ? (
-                <ul className="flex w-full flex-1 flex-col gap-3">
+                <div className="flex w-full flex-1 flex-col px-4">
                   {posts?.map((post: Post, idx: number) => (
                     <BlurFade
                       key={post.id}
@@ -97,12 +104,17 @@ const Profile = () => {
                       delay={0.15 + idx * 0.05}
                       duration={0.3}
                     >
-                      <PostCard post={post} section="profile" />
+                      <PostCard 
+                        post={post} 
+                        section="profile" 
+                        onClick={() => handlePostClick(post.id)}
+                        className="mb-4 w-full bg-gradient-to-br from-[hsl(228_85%_4%)] to-[hsl(228_85%_8%)] ring-1 ring-white/[0.05] transition duration-300 dark:ring-zinc-800 dark:hover:ring-zinc-700 dark:focus-visible:ring-[#193a47]" 
+                      />
                     </BlurFade>
                   ))}
-                </ul>
+                </div>
               ) : (
-                <p>You have no posts🤔</p>
+                <p className="text-center text-muted-foreground">You have no posts🤔</p>
               )}
             </div>
           </ScrollArea>

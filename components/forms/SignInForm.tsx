@@ -145,10 +145,13 @@ const SignInForm = () => {
                       required
                       autoComplete="off"
                     />
-                    <ToggleEyeIcon
-                      showPassword={showPassword}
-                      setShowPassword={setShowPassword}
-                    />
+                    <button
+                      type="button"
+                      onClick={() => setShowPassword(!showPassword)}
+                      className="absolute right-3 top-4 md:top-[-3] transform"
+                    >
+                      <ToggleEyeIcon showPassword={showPassword} />
+                    </button>
                   </div>
                 </FormControl>
                 <FormMessage />
