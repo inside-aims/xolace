@@ -118,7 +118,7 @@ const UpdatePasswordCardForm = () => {
   return (
     <Form {...form}>
       <Card className="relative overflow-hidden bg-gradient-to-br from-white to-gray-50 p-1 shadow-xl dark:from-[hsl(228_85%_5%)] dark:to-[hsl(228_85%_3%)]">
-        <div className="absolute inset-0 bg-[linear-gradient(to_right,transparent_0%,rgba(255,255,255,0.1)_50%,transparent_100%)] dark:bg-[linear-gradient(to_right,transparent_0%,rgba(255,255,255,0.03)_50%,transparent_100%)]" />
+        {/* <div className="absolute inset-0 bg-[linear-gradient(to_right,transparent_0%,rgba(255,255,255,0.1)_50%,transparent_100%)] dark:bg-[linear-gradient(to_right,transparent_0%,rgba(255,255,255,0.03)_50%,transparent_100%)]" /> */}
         <CardHeader className="space-y-1">
           <CardTitle className="text-2xl font-semibold tracking-tight">
             Change Password
