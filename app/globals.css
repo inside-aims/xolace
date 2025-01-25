@@ -108,7 +108,7 @@ body {
 @layer components {
   /* main */
   .main-container {
-    @apply flex min-h-screen flex-1 flex-col items-center overflow-hidden bg-white px-6 pb-2 pt-5 dark:bg-dark-1 max-md:pb-10 sm:px-10 lg:overflow-hidden;
+    @apply flex min-h-screen flex-1 flex-col items-center overflow-hidden bg-white px-3 pb-2 pt-5 dark:bg-dark-1 max-md:pb-10 sm:px-10 lg:overflow-hidden;
   }
 
   /* Head Text */
