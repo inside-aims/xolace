@@ -1,0 +1,185 @@
+'use client';
+
+import React, { useState, useEffect } from 'react';
+import { ArrowUpIcon, ArrowDownIcon } from '@radix-ui/react-icons';
+import Link from 'next/link';
+import { cn } from '@/lib/utils';
+import { voteAction } from '@/app/actions';
+import { Comment } from '@/types/global';
+
+interface PostMetricsProps {
+  post: {
+    id: string;
+    upvotes: number;
+    downvotes: number;
+    comments: { count: number }[] | Comment[];
+  };
+  section?: string;
+  commentLength?: number;
+  userId: string;
+  votes?: { user_id: string; vote_type: string }[];
+}
+
+const PostMetrics = ({
+  post,
+  section = 'post',
+  commentLength,
+  userId,
+  votes = [],
+}: PostMetricsProps) => {
+  // Get the current user's vote if it exists
+  const userVote = votes.find(vote => vote.user_id === userId)?.vote_type || null;
+  
+  const [currentVote, setCurrentVote] = useState<string | null>(userVote);
+  const [upvoteCount, setUpvoteCount] = useState(post.upvotes);
+  const [downvoteCount, setDownvoteCount] = useState(post.downvotes);
+  const [isVoting, setIsVoting] = useState(false);
+
+  useEffect(() => {
+    setCurrentVote(userVote);
+    setUpvoteCount(post.upvotes);
+    setDownvoteCount(post.downvotes);
+  }, [post.upvotes, post.downvotes, userVote]);
+
+  const handleVote = async (voteType: 'upvote' | 'downvote') => {
+    if (isVoting) return;
+    setIsVoting(true);
+
+    try {
+      // Optimistically update UI
+      const previousVote = currentVote;
+      const isRemovingVote = currentVote === voteType;
+
+      // Update vote counts based on the action
+      if (isRemovingVote) {
+        // Removing vote
+        if (voteType === 'upvote') setUpvoteCount(prev => prev - 1);
+        else setDownvoteCount(prev => prev - 1);
+        setCurrentVote(null);
+      } else {
+        // Adding or changing vote
+        if (voteType === 'upvote') {
+          setUpvoteCount(prev => prev + 1);
+          if (currentVote === 'downvote') setDownvoteCount(prev => prev - 1);
+        } else {
+          setDownvoteCount(prev => prev + 1);
+          if (currentVote === 'upvote') setUpvoteCount(prev => prev - 1);
+        }
+        setCurrentVote(voteType);
+      }
+
+      // Make server request
+      const result = await voteAction(post.id, voteType, previousVote, userId);
+
+      if (!result.success) {
+        // Revert changes if server request fails
+        setCurrentVote(previousVote);
+        setUpvoteCount(post.upvotes);
+        setDownvoteCount(post.downvotes);
+
+        console.log(result.error);
+      }
+   
+    } catch (error) {
+      console.log(error);
+      // Revert changes on error
+      setCurrentVote(userVote);
+      setUpvoteCount(post.upvotes);
+      setDownvoteCount(post.downvotes);
+    } finally {
+      setIsVoting(false);
+    }
+  };
+
+  return (
+    <div className="flex items-center gap-4">
+      <div className="flex items-center gap-1">
+        <button
+          type="button"
+          onClick={() => handleVote('upvote')}
+          disabled={isVoting}
+          className="focus:outline-none"
+        >
+          <ArrowUpIcon
+            className={cn(
+              'h-6 w-6 transition-all duration-200',
+              currentVote === 'upvote'
+                ? 'text-green-500 dark:text-green-400'
+                : 'text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-300'
+            )}
+          />
+        </button>
+        <span className="min-w-[2ch] text-center font-medium">
+          {upvoteCount - downvoteCount}
+        </span>
+        <button
+          type="button"
+          onClick={() => handleVote('downvote')}
+          disabled={isVoting}
+          className="focus:outline-none"
+        >
+          <ArrowDownIcon
+            className={cn(
+              'h-6 w-6 transition-all duration-200',
+              currentVote === 'downvote'
+                ? 'text-red-800 dark:text-red-400'
+                : 'text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-300'
+            )}
+          />
+        </button>
+      </div>
+
+      <div className="flex items-center gap-1">
+        {section === 'details' ? (
+          <div>
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              className="h-7 w-7 -scale-x-100 text-gray-600"
+              fill="none"
+              viewBox="0 0 24 24"
+              stroke="currentColor"
+              strokeWidth="2"
+            >
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z"
+              />
+            </svg>
+          </div>
+        ) : (
+          <Link
+            href={`post/${post.id}?type=comment`}
+            className="text-default-400 text-small font-semibold"
+          >
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              className="h-7 w-7 -scale-x-100 text-gray-600"
+              fill="none"
+              viewBox="0 0 24 24"
+              stroke="currentColor"
+              strokeWidth="2"
+            >
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z"
+              />
+            </svg>
+          </Link>
+        )}
+        <p className="text-default-400 text-small">
+          {section === 'details' 
+            ? commentLength 
+            : Array.isArray(post?.comments) 
+              ? post.comments[0] && 'count' in post.comments[0]
+                ? post.comments[0].count
+                : post.comments.length
+              : 0}
+        </p>
+      </div>
+    </div>
+  );
+};
+
+export default PostMetrics;

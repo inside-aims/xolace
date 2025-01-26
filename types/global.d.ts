@@ -24,7 +24,7 @@ type Post = Database['public']['Tables']['posts']['Row'] & {
       name: string;
     };
   }[];
-  likes: Database['public']['Tables']['likes']['Row'][];
+  votes: Database['public']['Tables']['votes']['Row'][];
   comments: [{
     count: number;
   }];
@@ -39,7 +39,7 @@ type DetailPost = Database['public']['Tables']['posts']['Row'] & {
       name: string;
     };
   }[];
-  likes: Database['public']['Tables']['likes']['Row'][];
+  votes: Database['public']['Tables']['votes']['Row'][];
   comments: Database['public']['Tables']['comments']['Row'][];
 };
 

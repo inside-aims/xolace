@@ -17,8 +17,6 @@ function Bottombar() {
             (pathName.includes(link.route) && link.route.length > 1) ||
             pathName == link.route;
 
-          console.log(pathName);
-
           return (
             <Link
               href={link.route}

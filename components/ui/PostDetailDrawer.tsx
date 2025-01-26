@@ -26,7 +26,7 @@ import {
 } from '@/components/ui/form';
 import CommentCard from '../cards/CommentCard';
 
-import PostStats from '../shared/PostStats';
+import PostMetrics from '../shared/PostMetrics';
 import { useToast } from '../ui/use-toast';
 import Loader from '../shared/loaders/Loader';
 import { CommentSchema } from '@/validation';
@@ -183,12 +183,14 @@ const PostDetailDrawer = ({ post, type }: { post: DetailPost; type: Type }) => {
               back
             </Button>
             {user ? (
-              <PostStats
-                post={post}
-                section="details"
-                commentLength={comments.length}
-                userId={user.id}
-              />
+                <PostMetrics
+                  post={post}
+                  userId={user?.id || ''}
+                  votes={post.votes}
+                  section="details"
+                  commentLength={post.comments.length}
+                />
+
             ) : (
               <div>Kindly refresh the page!!</div>
             )}
