@@ -207,3 +207,33 @@ export async function updateViewsAction(postId: string, userId: string) {
     return { success: false, error: 'Failed to update views' };
   }
 }
+
+export async function voteAction(postId: string, voteType: 'upvote' | 'downvote', currentVote: string | null, user_id:string) {
+  
+  const supabase = await createClient();
+  
+  try {
+    // Start a transaction by using supabase's RPC call
+    const { data: voteResult, error: voteError } = await supabase
+      .rpc('handle_vote', {
+        p_current_vote: currentVote,
+        p_post_id: postId,
+        p_user_id: user_id,
+        p_vote_type: voteType,
+      });
+
+    if (voteError) {
+      return { success: false, error: voteError.message };
+    }
+
+    // Revalidate paths that show posts
+    revalidatePath('/feed');
+    revalidatePath('/explore');
+    revalidatePath(`/post/${postId}`);
+    
+    return { success: true, data: voteResult };
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  } catch (error) {
+    return { success: false, error: 'Failed to process vote' };
+  }
+}

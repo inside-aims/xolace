@@ -36,8 +36,9 @@ const PostDetailPage = async (props: {
           name
         )
       ),
-         likes(
-         *
+         votes(
+         user_id,
+         vote_type
          ),
          comments(*),
          views:views(count)

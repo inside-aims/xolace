@@ -14,7 +14,7 @@ import {
 } from '@/components/ui/card';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import PostDropdown from '../shared/PostDropdown';
-import PostStats from '../shared/PostStats';
+import PostMetrics from '../shared/PostMetrics';
 import { useUserState } from '@/lib/store/user';
 import ReportForm from '../forms/ReportForm';
 import KvngDialogDrawer from '../shared/KvngDialogDrawer';
@@ -119,9 +119,13 @@ export function PostCard({ className, post, onClick }: PostCardType) {
               ))}
           </div>
         </CardContent>
-        <CardFooter className="flex items-center justify-between">
-          <PostStats post={post} userId={user?.id || ''} />
-          <div className="flex gap-1.5 items-center">
+        <CardFooter className="flex w-full items-center justify-between">
+          <PostMetrics
+            post={post}
+            userId={user?.id || ''}
+            votes={post.votes}
+          />
+          <div className="flex items-center gap-2">
             <EyeIcon className=" size-4 sm:size-6 text-red-200" />
             <span className=" text-sm sm:text-[15px]">{post.views[0].count}</span>
           </div>
