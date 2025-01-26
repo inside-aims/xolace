@@ -1,7 +1,7 @@
 import React from 'react';
 
 import FilterPills from '@/components/hocs/exploreComponents/FilterPills';
-import { shuffleArray } from '@/lib/utils';
+import { seededShuffleArray } from '@/lib/utils';
 import LocalSearch from '@/components/shared/search/LocalSearch';
 import ExploreFeedList from '@/components/hocs/exploreComponents/ExploreFeedList';
 import { createClient } from '@/utils/supabase/server';
@@ -30,6 +30,10 @@ interface Post {
 }
 
 const filterPosts = (filteredPosts: Post[], filter: string) => {
+  // Get today's date and use it as a seed
+  const today = new Date();
+  const seed = today.getFullYear() * 10000 + (today.getMonth() + 1) * 100 + today.getDate();
+
   switch (filter) {
     case 'popular':
       filteredPosts.sort((a, b) => b.upvotes - a.upvotes);
@@ -53,8 +57,8 @@ const filterPosts = (filteredPosts: Post[], filter: string) => {
       });
       break;
     default:
-      // If no filter is selected, randomize the posts
-      filteredPosts = shuffleArray(filteredPosts);
+      // If no filter is selected, use seeded shuffle for stable randomization
+      return seededShuffleArray(filteredPosts, seed);
   }
 
   return filteredPosts;

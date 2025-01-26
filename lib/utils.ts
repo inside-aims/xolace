@@ -48,3 +48,29 @@ export const shuffleArray = (array: any[]) => {
   }
   return array;
 };
+
+// Seeded random number generator
+export const seededRandom = (seed: number) => {
+  const x = Math.sin(seed++) * 10000;
+  return x - Math.floor(x);
+};
+
+// Seeded shuffle that produces the same order for the same seed
+export const seededShuffleArray = <T>(array: T[], seed: number): T[] => {
+  const arrayCopy = [...array];
+  let currentIndex = arrayCopy.length;
+  let randomIndex;
+
+  // Generate a seed based on the current day to keep the order stable for 24 hours
+  while (currentIndex !== 0) {
+    randomIndex = Math.floor(seededRandom(seed + currentIndex) * currentIndex);
+    currentIndex--;
+
+    [arrayCopy[currentIndex], arrayCopy[randomIndex]] = [
+      arrayCopy[randomIndex],
+      arrayCopy[currentIndex],
+    ];
+  }
+
+  return arrayCopy;
+};
