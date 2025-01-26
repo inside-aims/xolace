@@ -42,8 +42,9 @@ const Profile = () => {
           name
         )
       ),
-          likes(
-          *
+          votes(
+          user_id,
+          vote_type
           ),
           comments:comments(count),
           views:views(count)
