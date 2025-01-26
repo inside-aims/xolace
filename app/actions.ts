@@ -227,9 +227,9 @@ export async function voteAction(postId: string, voteType: 'upvote' | 'downvote'
     }
 
     // Revalidate paths that show posts
-    revalidatePath('/feed');
-    revalidatePath('/explore');
-    revalidatePath(`/post/${postId}`);
+    revalidatePath('/feed', 'page');
+    revalidatePath('/explore', 'page');
+    // revalidatePath(`/post/${postId}`);
     
     return { success: true, data: voteResult };
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
