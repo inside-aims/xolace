@@ -15,22 +15,32 @@ const ExploreFeedList = ({ filteredPosts }: Props) => {
   const router = useRouter();
   const pathname = usePathname();
 
-    // Handle scroll restoration
-    useEffect(() => {
-      if (pathname === '/explore') {
-        const scrollPosition = sessionStorage.getItem('scrollPosition');
-        if (scrollPosition) {
-          // Wait for animations to complete (500ms) plus a small buffer
-          setTimeout(() => {
-            window.scrollTo({
-              top: parseInt(scrollPosition),
-              behavior: 'instant'
-            });
-            sessionStorage.removeItem('scrollPosition');
-          }, 600);
-        }
+  // Store post order in session storage when component mounts or posts change
+  useEffect(() => {
+    if (filteredPosts.length > 0) {
+      const postOrder = filteredPosts.map(post => post.id);
+      sessionStorage.setItem('explorePostOrder', JSON.stringify(postOrder));
+    }
+  }, [filteredPosts]);
+
+  // Handle scroll restoration and post order
+  useEffect(() => {
+    if (pathname === '/explore') {
+      const scrollPosition = sessionStorage.getItem('scrollPosition');
+      //const storedPostOrder = sessionStorage.getItem('explorePostOrder');
+
+      if (scrollPosition) {
+        // Wait for animations to complete (500ms) plus a small buffer
+        setTimeout(() => {
+          window.scrollTo({
+            top: parseInt(scrollPosition),
+            behavior: 'instant'
+          });
+          sessionStorage.removeItem('scrollPosition');
+        }, 600);
       }
-    }, [pathname]);
+    }
+  }, [pathname]);
 
   const handlePostClick = (postId: string) => {
     const currentScroll = window.scrollY.toString();
