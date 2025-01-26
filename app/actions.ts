@@ -9,6 +9,7 @@ import { signUpSchema } from '@/validation';
 import { validatedAction } from '@/lib/auth/middleware';
 import { sendOTPLink } from '@/utils/sendOTPLink';
 import { User } from '@/types/global';
+import { revalidatePath } from 'next/cache';
 
 export const signUpAction = validatedAction(
   signUpSchema,
@@ -181,3 +182,28 @@ export const deleteUser = async (user: User) => {
 
   await signOutAction();
 };
+
+export async function updateViewsAction(postId: string, userId: string) {
+  
+  const supabase = await createClient();
+  
+  try {
+    const { data, error } = await supabase
+      .from('views')
+      .insert([{ user_id: userId || '', post_id: postId }])
+      .select();
+
+    if (error) {
+      return { success: false, error: error.message };
+    }
+
+    // Revalidate both feed and explore paths since they both show post data
+    revalidatePath('/feed');
+    revalidatePath('/explore');
+    
+    return { success: true, data };
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  } catch (error) {
+    return { success: false, error: 'Failed to update views' };
+  }
+}
