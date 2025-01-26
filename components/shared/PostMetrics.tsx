@@ -122,7 +122,7 @@ const PostMetrics = ({
             className={cn(
               'h-6 w-6 transition-all duration-200',
               currentVote === 'downvote'
-                ? 'text-red-500 dark:text-red-400'
+                ? 'text-red-800 dark:text-red-400'
                 : 'text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-300'
             )}
           />
