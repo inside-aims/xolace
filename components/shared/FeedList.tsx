@@ -37,13 +37,15 @@ const FeedList = ({ initialPosts }: FeedListProps) => {
         setPosts(prevPosts =>
           prevPosts.filter(post => post.id !== payload.old.id),
         );
-      } else if (eventType === 'UPDATE') {
-        setPosts(prevPosts =>
-          prevPosts.map(post =>
-            post.id === payload.new.id ? payload.new : post,
-          ),
-        );
       }
+      // else if (eventType === 'UPDATE') {
+      //   setPosts(prevPosts =>
+      //     prevPosts.map(post =>
+      //       post.id === payload.new.id ? payload.new : post,
+      //     ),
+      //   );
+      //   console.log(payload.new)
+      // }
     };
 
     const subscription = supabase
