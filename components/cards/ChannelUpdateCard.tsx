@@ -1,33 +1,27 @@
-"use client";
+'use client';
 
-import React from "react";
-import { motion } from "framer-motion";
-import { LapTimerIcon } from "@radix-ui/react-icons";
+import React from 'react';
+import { motion } from 'framer-motion';
+import { LapTimerIcon } from '@radix-ui/react-icons';
 
 const ChannelUpdateCard = () => {
   return (
     <>
       <motion.div
-        className="max-w-7xl mx-auto px-5 sm:px-6 lg:px-8 mb-16 pb-5"
-        initial={{ y: 900 }}
-        animate={{
-          y: 0,
-          transition: { duration: 0.5 },
-        }}
-        viewport={{ once: true }}
+        className="relative cursor-pointer rounded-lg bg-white p-6 text-center shadow-md transition-shadow duration-200 hover:shadow-lg dark:bg-gray-800"
+        whileHover={{ scale: 1.03 }}
+        whileTap={{ scale: 0.98 }}
       >
-        <div className="relative bg-gray-200 dark:bg-gray-800 overflow-hidden shadow-sm rounded-lg flex gap-5 p-5 items-center h-[10px] min-h-[100px] max-h-[120px] sm:h-auto">
-          <div className=" h-7 w-7">
-            <LapTimerIcon className="text-blue dark:text-red-500 w-full h-full" />
-          </div>
-          <div className=" text-gray-900 dark:text-gray-100">
-            <h1 className="text-lg font-bold uppercase">Updates</h1>
-            <p className="text-gray-500">Follow all our latest updates</p>
-          </div>
-          <span className=" absolute right-2 top-2 inline-block whitespace-nowrap rounded-[0.27rem] bg-sky-300 px-[0.65em] pb-[0.25em] pt-[0.35em] text-center align-baseline text-[0.75em] font-bold leading-none text-gray-900">
-            New
-          </span>
-        </div>
+        <LapTimerIcon className="h-12 w-12 text-blue dark:text-red-500" />
+        <h2 className="mb-2 text-xl font-semibold text-gray-800 dark:text-gray-100">
+          Updates
+        </h2>
+        <p className="text-gray-600 dark:text-gray-300">
+          Stay informed about new features
+        </p>
+        <span className="absolute right-2 top-2 rounded bg-sky-100 px-2.5 py-0.5 text-xs font-semibold text-sky-800 dark:bg-sky-200 dark:text-sky-800">
+          New
+        </span>
       </motion.div>
     </>
   );

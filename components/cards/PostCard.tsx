@@ -1,47 +1,62 @@
-"use client";
-import * as React from "react";
-import { useEffect, useState } from "react";
-import { format } from "timeago.js";
-import Image from "next/image";
+'use client';
+import * as React from 'react';
+import { useEffect, useState } from 'react';
+import { format } from 'timeago.js';
+import Image from 'next/image';
+import { formatDistanceToNow } from 'date-fns';
+import { Clock, EyeIcon } from 'lucide-react';
 
 import {
   Card,
   CardContent,
   CardFooter,
   CardHeader,
-} from "@/components/ui/card";
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-import Link from "next/link";
-import PostDropdown from "../shared/PostDropdown";
-import PostStats from "../shared/PostStats";
-import { Button } from "../ui/button";
-import { useUserState } from "@/lib/store/user";
-import ReportForm from "../forms/ReportForm";
-import KvngDialogDrawer from "../shared/KvngDialogDrawer";
-import { moodMap } from "@/types";
-import { truncateText } from "@/lib/utils";
+} from '@/components/ui/card';
+import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
+import PostDropdown from '../shared/PostDropdown';
+import PostMetrics from '../shared/PostMetrics';
+import { useUserState } from '@/lib/store/user';
+import ReportForm from '../forms/ReportForm';
+import KvngDialogDrawer from '../shared/KvngDialogDrawer';
+import { moodMap } from '@/types';
+import { truncateText } from '@/lib/utils';
+import TagCard from './TagCard';
+import { Post } from '@/types/global';
 
 type PostCardType = {
   className?: string;
-  post: any;
-  section?: "profile";
+  post: Post;
+  section?: 'profile';
+  onClick?: () => void;
 };
 
-export function PostCard({ className, post, section }: PostCardType) {
+export interface TagProps {
+  tags: {
+    name: string;
+  };
+}
+
+export function PostCard({ className, post, onClick }: PostCardType) {
   // get user data
-  const user = useUserState((state) => state.user);
+  const user = useUserState(state => state.user);
 
   // states
-  const [timestamp, setTimestamp] = useState("");
+  const [timestamp, setTimestamp] = useState('');
   const [isOpen, setIsOpen] = useState<boolean>(false);
 
   // get mood from mood object
-  const mood = moodMap[post?.mood] || moodMap["neutral"];
+  const mood = moodMap[post?.mood] || moodMap['neutral'];
 
   // convert created_at
   useEffect(() => {
     setTimestamp(format(post.created_at));
   }, [post]);
+
+  const timeLeft = post.expires_at
+    ? formatDistanceToNow(new Date(post.expires_at), {
+        addSuffix: true,
+      })
+    : null;
 
   return (
     <>
@@ -55,23 +70,31 @@ export function PostCard({ className, post, section }: PostCardType) {
       </KvngDialogDrawer>
 
       <Card
-        className={`w-full  md:w-full mb-5 ${className} ring-1 ring-white/[0.05] transition duration-300 dark:ring-zinc-800 dark:hover:ring-zinc-700 dark:focus-visible:ring-[#193a47]`}
+        className={className}
         id={post.id}
       >
-        <CardHeader className=" flex-row justify-between items-start px-4 py-2 ">
-          <div className="flex gap-2 md:gap-4 items-center">
+        <CardHeader className="flex-row items-start justify-between px-4 py-2">
+          <div className="flex items-center gap-3 md:gap-7">
             <Avatar>
-              <AvatarImage src={post.author_avatar_url} />
-              <AvatarFallback>XO</AvatarFallback>
+              <AvatarImage src={post.author_avatar_url || undefined} />
+              <AvatarFallback>{post.author_name.charAt(0)}</AvatarFallback>
             </Avatar>
-            <div className="flex flex-col gap-1 items-start justify-center">
-              <h5 className="text-small tracking-tight text-default-400">
+            <div className="flex flex-col items-start justify-center">
+              <h5 className="text-small text-default-400 tracking-tight">
                 {post.author_name}
               </h5>
+              <small className="text-[13px] text-zinc-500 dark:text-gray-400">
+                {timestamp}
+              </small>
             </div>
-            <small className="ml-4 md:ml-10 text-sm dark:text-gray-400 text-zinc-500">
-              {timestamp}
-            </small>
+            {timeLeft && (
+              <div className="flex items-center space-x-2">
+                <Clock size={14} />
+                <span className="text-[12px] text-muted-foreground">
+                  {timeLeft}
+                </span>
+              </div>
+            )}
           </div>
           <PostDropdown
             postCard
@@ -80,13 +103,34 @@ export function PostCard({ className, post, section }: PostCardType) {
             onOpenChange={setIsOpen}
           />
         </CardHeader>
-        <Link href={`post/${post.id}`}>
-          <CardContent>{truncateText(post.content, 70)}</CardContent>
-        </Link>
-        <CardFooter className="flex justify-between items-center">
-          <PostStats post={post} userId={user?.id} />
+
+        <CardContent className="cursor-pointer" onClick={onClick}>
+          <div className="mb-2">
+            {truncateText(post.content, 70)}
+          </div>
+          <div className="mt-2 flex flex-wrap gap-2">
+            {post.posttags && // check if post has tags
+              post.posttags.map((tag: TagProps, index: number) => (
+                <TagCard
+                  key={`${tag.tags.name}_${index}`}
+                  name={tag.tags.name}
+                  _id={`${tag.tags.name}_${index}`}
+                />
+              ))}
+          </div>
+        </CardContent>
+        <CardFooter className="flex w-full items-center justify-between">
+          <PostMetrics
+            post={post}
+            userId={user?.id || ''}
+            votes={post.votes}
+          />
+          <div className="flex items-center gap-2">
+            <EyeIcon className=" size-4 sm:size-6 text-red-200" />
+            <span className=" text-sm sm:text-[15px]">{post.views[0].count}</span>
+          </div>
           <div
-            className={`flex justify-center items-center rounded-3xl dark:bg-transparent border p-1  ${
+            className={`flex items-center justify-center rounded-3xl border p-1 dark:bg-transparent ${
               mood.style
             }`}
           >
@@ -97,7 +141,8 @@ export function PostCard({ className, post, section }: PostCardType) {
                   alt="Gif Emoji"
                   width={24}
                   height={24}
-                  className="h-6 "
+                  className="h-6"
+                  unoptimized
                 />
               ) : (
                 mood?.emoji
@@ -105,8 +150,8 @@ export function PostCard({ className, post, section }: PostCardType) {
             </span>
 
             {post?.expires_in_24hr && (
-              <span className=" animate-bounce duration-700 ease-in-out ">
-                {" "}
+              <span className="animate-bounce duration-700 ease-in-out">
+                {' '}
                 ⏳
               </span>
             )}

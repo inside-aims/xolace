@@ -1,23 +1,64 @@
-import React, { Suspense } from "react";
+import { createClient } from '@/utils/supabase/server';
+import FeedList from '@/components/shared/FeedList';
+import { unstable_cache } from 'next/cache';
 
-import Loader from "@/components/shared/Loader";
-import FeedSkeletonLoader from "@/components/shared/FeedSkeletonLoader";
-import FeedList from "@/components/shared/FeedList";
+// Function to fetch posts with a Supabase client
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+async function fetchPosts(supabase: any) {
+  const { data: postsData, error } = await supabase
+    .from('posts')
+    .select(
+      `
+       *,
+       posttags (
+          tags (
+            name
+          )
+        ),
+          votes(
+          user_id,
+          vote_type
+          ),
+          comments:comments(count),
+          views:views(count)
+    `,
+    )
+    .order('created_at', { ascending: false });
 
-export const dynamic = "force-dynamic";
+  if (error) {
+    console.error('Error fetching posts:', error.message);
+    return [];
+  }
 
-const Feed = () => {
+  return postsData;
+}
+
+// Cache the posts fetching function
+const getCachedPosts = unstable_cache(
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  async (supabase: any) => {
+    return fetchPosts(supabase);
+  },
+  ['posts-list'],
+  {
+    revalidate: 60, // Cache for 1 minute
+    tags: ['posts']
+  }
+);
+
+export default async function FeedPage() {
+  // Create Supabase client with cookies outside the cached function
+  const supabase = await createClient();
+  
+  // Pass the Supabase client to the cached function
+  const initialPosts = await getCachedPosts(supabase);
+  
   return (
-    <>
-      {" "}
-      <Suspense fallback={<FeedSkeletonLoader />}>
-        <FeedList />
-      </Suspense>
-    </>
+    <div className="sm:container">
+      <FeedList initialPosts={initialPosts} />
+    </div>
   );
-};
-
-export default Feed;
+}
 
 {
   /* <RadioGroup defaultValue="comfortable" className=' flex' >

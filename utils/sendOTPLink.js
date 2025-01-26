@@ -1,62 +1,57 @@
-import { getSupabaseAdminClient } from "./supabase/adminClient";
-import nodemailer from "nodemailer";
-import { builderUrl } from "./url-helpers";
+import { getSupabaseAdminClient } from './supabase/adminClient';
+import nodemailer from 'nodemailer';
+import { builderUrl } from './url-helpers';
 
 export async function sendOTPLink(email, type, request) {
   const supabaseAdmin = getSupabaseAdminClient();
 
-  const { data: linkData, error } = await supabaseAdmin.auth.admin.generateLink(
-    {
+  const { data: linkData, error: glError } =
+    await supabaseAdmin.auth.admin.generateLink({
       email,
       type,
-    }
-  );
+    });
 
-  console.log("generated link");
-
-  const user = linkData.user;
-  console.log(user);
+  if (glError) {
+    console.error('Error generating link', glError);
+    return false;
+  }
 
   // extracting the hashed_token from the link
   const { hashed_token } = linkData.properties;
 
   // construct a custom link with the hashed_token
   const constructedLink = builderUrl(
-    `/auth/verify?hashed_token=${hashed_token}&type=${type}`,
-    request
+    `api/v1/auth/verify?hashed_token=${hashed_token}&type=${type}`,
+    request,
   );
 
   // initialize the mailing transport
   const transporter = nodemailer.createTransport({
     host: process.env.RESEND_MAIL_HOST,
-    secure: true,
+
     port: process.env.RESEND_MAIL_PORT,
-    auth:{
-      user: process.env.RESEND_USERNAME,
-      pass: process.env.RESEND_API_KEY,
-    }
   });
 
-  let mailSubject = "";
-  let initialSentence = "";
-  let sentenceEnding = "";
+  let mailSubject = '';
+  let initialSentence = '';
+  let sentenceEnding = '';
 
-  if (type === "signup") {
-    mailSubject = "Activate your account";
-    initialSentence = "Hi there, you successfully signed up!";
-    sentenceEnding = "activate your account";
-  } else if (type === "recovery") {
-    mailSubject = "New password requested";
-    initialSentence = "Hi there, you requested a password change!";
-    sentenceEnding = "change it";
+  if (type === 'signup') {
+    mailSubject = 'Activate your account';
+    initialSentence = 'Hi there, you successfully signed up!';
+    sentenceEnding = 'activate your account';
+  } else if (type === 'recovery') {
+    mailSubject = 'New password requested';
+    initialSentence = 'Hi there, you requested a password change!';
+    sentenceEnding = 'change it';
   } else {
-    mailSubject = "Magic Link requested";
-    initialSentence = "Hey, you requested a magic login link!";
-    sentenceEnding = "log in";
+    mailSubject = 'Magic Link requested';
+    initialSentence = 'Hey, you requested a magic login link!';
+    sentenceEnding = 'log in';
   }
 
   await transporter.sendMail({
-    from: "Xolace <no-reply@mail.xolace.app>",
+    from: 'Xolace <no-reply@mail.xolace.app>',
     to: email,
     subject: mailSubject,
     html: `

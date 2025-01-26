@@ -1,5 +1,5 @@
-import { ThemeSwitcher } from "@/components/theme-switcher";
-import Link from "next/link";
+import { ThemeSwitcher } from '@/components/theme-switcher';
+import Link from 'next/link';
 
 export default async function Layout({
   children,
@@ -7,22 +7,22 @@ export default async function Layout({
   children: React.ReactNode;
 }) {
   return (
-    <main className=" overflow-y-auto overflow-x-hidden relative">
+    <main className="relative overflow-y-auto overflow-x-hidden">
       {children}
-      <footer className="w-full flex items-center justify-center flex-col border-t mx-auto text-center text-xs py-10">
+      <footer className="mx-auto flex w-full flex-col items-center justify-center border-t py-10 text-center text-xs">
         <div className="flex items-center justify-center gap-8">
-        <p>
-          Powered by{" "}
-          <Link
-            href="https://supabase.com/?utm_source=create-next-app&utm_medium=template&utm_term=nextjs"
-            target="_blank"
-            className="font-bold hover:underline"
-            rel="noreferrer"
-          >
-            AIMS
-          </Link>
-        </p>
-        <ThemeSwitcher />
+          <p>
+            Powered by{' '}
+            <Link
+              href="https://supabase.com/?utm_source=create-next-app&utm_medium=template&utm_term=nextjs"
+              target="_blank"
+              className="font-bold hover:underline"
+              rel="noreferrer"
+            >
+              AIMS
+            </Link>
+          </p>
+          <ThemeSwitcher />
         </div>
       </footer>
     </main>

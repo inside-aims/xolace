@@ -1,25 +1,19 @@
-"use client";
-import * as React from "react";
-import { useEffect, useState } from "react";
-import { format } from "timeago.js";
+'use client';
+import * as React from 'react';
+import { useEffect, useState } from 'react';
+import { format } from 'timeago.js';
 
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardFooter,
-  CardHeader,
-  CardTitle,
-} from "@/components/ui/card";
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-import PostDropdown from "../shared/PostDropdown";
-import ReportForm from "../forms/ReportForm";
-import KvngDialogDrawer from "../shared/KvngDialogDrawer";
+import { Card, CardContent, CardHeader } from '@/components/ui/card';
+import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
+import PostDropdown from '../shared/PostDropdown';
+import ReportForm from '../forms/ReportForm';
+import KvngDialogDrawer from '../shared/KvngDialogDrawer';
+import { Comment } from '@/types/global';
 
-const CommentCard = ({ comment }: any) => {
+const CommentCard = ({ comment }: {comment : Comment}) => {
   // states
   const [isOpen, setIsOpen] = useState<boolean>(false);
-  const [timestamp, setTimestamp] = useState("");
+  const [timestamp, setTimestamp] = useState('');
 
   //
   useEffect(() => {
@@ -37,24 +31,24 @@ const CommentCard = ({ comment }: any) => {
         <ReportForm commentId={comment.id} />
       </KvngDialogDrawer>
 
-      <Card className="w-full md:w-full mb-5 dark:bg-dark-3">
-        <CardHeader className=" flex-row justify-between items-start px-4 py-2 ">
-          <div className="flex gap-2 items-center">
+      <Card className="mb-5 w-full dark:bg-dark-3 md:w-full">
+        <CardHeader className="flex-row items-start justify-between px-4 py-2">
+          <div className="flex items-center gap-2">
             <Avatar>
-              <AvatarImage src={comment?.author_avatar_url} />
+              <AvatarImage src={comment.author_avatar_url || undefined} />
               <AvatarFallback>XO</AvatarFallback>
             </Avatar>
-            <div className="flex flex-col gap-1 items-start justify-center">
-              <h5 className="text-small tracking-tight text-default-400">
+            <div className="flex flex-col items-start justify-center gap-1">
+              <h5 className="text-small text-default-400 tracking-tight">
                 {comment.author_name}
               </h5>
             </div>
-            <small className="ml-4 text-sm dark:text-gray-400 text-zinc-500">
+            <small className="ml-4 text-sm text-zinc-500 dark:text-gray-400">
               {timestamp}
             </small>
           </div>
           <PostDropdown
-            postId={""}
+            postId={''}
             comment={true}
             commentId={comment.id}
             commentCreatedBy={comment.created_by}

@@ -1,5 +1,5 @@
-import { createServerClient } from "@supabase/ssr";
-import { type NextRequest, NextResponse } from "next/server";
+import { createServerClient } from '@supabase/ssr';
+import { type NextRequest, NextResponse } from 'next/server';
 
 export const updateSession = async (request: NextRequest) => {
   // This `try/catch` block is only here for the interactive tutorial.
@@ -22,17 +22,17 @@ export const updateSession = async (request: NextRequest) => {
           },
           setAll(cookiesToSet) {
             cookiesToSet.forEach(({ name, value }) =>
-              request.cookies.set(name, value)
+              request.cookies.set(name, value),
             );
             response = NextResponse.next({
               request,
             });
             cookiesToSet.forEach(({ name, value, options }) =>
-              response.cookies.set(name, value, options)
+              response.cookies.set(name, value, options),
             );
           },
         },
-      }
+      },
     );
 
     // This will refresh session if expired - required for Server Components
@@ -41,44 +41,44 @@ export const updateSession = async (request: NextRequest) => {
 
     // List of protected routes
     const protectedRoutes = [
-      "/feed",
-      "/create-post",
-      "/post",
-      "/channel",
-      "/profile",
-      "/change-password",
+      '/feed',
+      '/create-post',
+      '/post',
+      '/channel',
+      '/profile',
+      '/change-password',
     ];
 
     // List of public routes
-    const publicRoutes = ["/", "/sign-in", "/sign-up"];
+    const publicRoutes = ['/', '/sign-in', '/sign-up'];
 
     // Check if the request path matches any public route
-    const isPublicRoute = publicRoutes.some((route) =>
-      request.nextUrl.pathname.startsWith(route)
+    const isPublicRoute = publicRoutes.some(route =>
+      request.nextUrl.pathname.startsWith(route),
     );
 
     // Check if the request path matches any protected route
-    const isProtectedRoute = protectedRoutes.some((route) =>
-      request.nextUrl.pathname.startsWith(route)
+    const isProtectedRoute = protectedRoutes.some(route =>
+      request.nextUrl.pathname.startsWith(route),
     );
 
     // If user is not authenticated and trying to access a protected route, redirect to sign-in
     if (isProtectedRoute && user.error) {
       console.log(
-        `Unauthenticated user attempting to access: ${request.nextUrl.pathname}`
+        `Unauthenticated user attempting to access: ${request.nextUrl.pathname}`,
       );
-      return NextResponse.redirect(new URL("/sign-in", request.url));
+      return NextResponse.redirect(new URL('/sign-in', request.url));
     }
 
     // Redirect authenticated user from home page to '/feed' (or any default page)
     if (
-      (request.nextUrl.pathname === "/" ||
-        request.nextUrl.pathname === "/sign-in" ||
-        request.nextUrl.pathname === "/sign-up") &&
+      (request.nextUrl.pathname === '/' ||
+        request.nextUrl.pathname === '/sign-in' ||
+        request.nextUrl.pathname === '/sign-up') &&
       !user.error
     ) {
-      console.log("already authenticated");
-      return NextResponse.redirect(new URL("/feed", request.url));
+      console.log('already authenticated');
+      return NextResponse.redirect(new URL('/feed', request.url));
     }
 
     return response;

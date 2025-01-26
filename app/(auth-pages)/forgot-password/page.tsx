@@ -1,35 +1,32 @@
-import { forgotPasswordAction } from "@/app/actions";
-import { FormMessage, Message } from "@/components/form-message";
-import { SubmitButton } from "@/components/submit-button";
-import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
-import Link from "next/link";
-import { SmtpMessage } from "../smtp-message";
-import { builderUrl, urlPath } from "@/utils/url-helpers";
+import { FormMessage, Message } from '@/components/shared/form-message';
+import { SubmitButton } from '@/components/extras/submit-button';
+import { Input } from '@/components/ui/input';
+import { Label } from '@/components/ui/label';
+import Link from 'next/link';
+import { urlPath } from '@/utils/url-helpers';
 
-export default function ForgotPassword({
-  searchParams,
-}: {
-  searchParams: Message;
+export default async function ForgotPassword(props: {
+  searchParams: Promise<Message>;
 }) {
+  const searchParams = await props.searchParams;
   return (
-    <div className="min-h-[100vh] flex justify-center items-center overflow-hidden">
-      <div className="max-sm:w-full md:w-[40%]  md:px-12">
+    <div className="flex min-h-[100vh] items-center justify-center overflow-hidden">
+      <div className="max-sm:w-full md:w-[40%] md:px-12">
         <form
-          className=" flex flex-col w-full gap-2 text-foreground [&>input]:mb-6  mx-auto  text-center max-sm:p-2"
+          className="mx-auto flex w-full flex-col gap-2 text-center text-foreground max-sm:p-2 [&>input]:mb-6"
           method="POST"
-          action={urlPath("/auth/magic-link")}
+          action={urlPath('/api/v1/auth/magic-link')}
         >
           <div>
             <h1 className="text-2xl font-medium">Reset Password</h1>
             <p className="text-sm text-secondary-foreground">
-              Already have an account?{" "}
+              Already have an account?{' '}
               <Link className="text-primary underline" href="/sign-in">
                 Sign in
               </Link>
             </p>
           </div>
-          <div className="flex flex-col gap-2 [&>input]:mb-3 mt-8">
+          <div className="mt-8 flex flex-col gap-2 [&>input]:mb-3">
             <input type="hidden" name="type" value="recovery" />
             <Label htmlFor="email" className="text-start">
               Email

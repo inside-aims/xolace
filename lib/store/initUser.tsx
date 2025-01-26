@@ -1,10 +1,10 @@
-"use client";
+'use client';
 
-import { User } from "@supabase/supabase-js";
-import { useEffect, useRef } from "react";
-import { useUserState } from "./user";
+import { useEffect, useRef } from 'react';
+import { useUserState } from './user';
+import { Profile } from '@/types/global';
 
-export default function InitUser({ user }: { user: any | undefined }) {
+export default function InitUser({ user }: { user: Profile | undefined }) {
   const initState = useRef(false);
 
   useEffect(() => {
@@ -12,6 +12,7 @@ export default function InitUser({ user }: { user: any | undefined }) {
       useUserState.setState({ user });
     }
     initState.current = true;
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   return <></>;

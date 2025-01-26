@@ -1,62 +1,63 @@
-"use client";
+'use client';
 
-import React, { useState, useRef } from "react";
-import Image from "next/image";
-import { zodResolver } from "@hookform/resolvers/zod";
-import { useForm } from "react-hook-form";
-import { z } from "zod";
-import { useRouter } from "next/navigation";
+import React, { useState, useRef } from 'react';
+import Image from 'next/image';
+import { zodResolver } from '@hookform/resolvers/zod';
+import { useForm } from 'react-hook-form';
+import { z } from 'zod';
 import EmojiPicker, {
   EmojiClickData,
   Theme,
   EmojiStyle,
-} from "emoji-picker-react";
-import { Smile } from "lucide-react";
+} from 'emoji-picker-react';
+import { Smile } from 'lucide-react';
+import { motion } from 'framer-motion';
 
-import { Button } from "@/components/ui/button";
+import { Button } from '@/components/ui/button';
 import {
   Form,
   FormControl,
-  FormDescription,
   FormField,
   FormItem,
-  FormLabel,
   FormMessage,
-} from "@/components/ui/form";
+} from '@/components/ui/form';
 import {
   Popover,
   PopoverContent,
   PopoverTrigger,
-} from "@/components/ui/popover";
-import { Textarea } from "@/components/ui/textarea";
-import { useToast } from "../ui/use-toast";
-import Loader from "../shared/Loader";
-import { PostSchema } from "@/validation";
-import { getSupabaseBrowserClient } from "@/utils/supabase/client";
-import { urlPath } from "@/utils/url-helpers";
-import { getMoodLabelStyle, postMoods } from "@/constants";
-import { Checkbox } from "../ui/checkbox";
-import { Send } from "lucide-react";
-import MoodCarousel from "../mood-carousel";
-import { Mood } from "@/types";
-import ShinyButton from "../ui/shiny-button";
-import { FloatingCheckbox } from "../create-postComponents/floating-checkbox";
+} from '@/components/ui/popover';
+import { Textarea } from '@/components/ui/textarea';
+import { useToast } from '../ui/use-toast';
+import Loader from '../shared/loaders/Loader';
+import { PostSchema } from '@/validation';
+import { getSupabaseBrowserClient } from '@/utils/supabase/client';
+import { postMoods } from '@/constants';
+import { Send } from 'lucide-react';
+import MoodCarousel from '../hocs/createPostComponent/mood-carousel';
+import { Mood } from '@/types';
+import ShinyButton from '../ui/shiny-button';
+import { FloatingCheckbox } from '../create-postComponents/floating-checkbox';
+import { calculateExpiryDate } from '@/lib/utils';
+import { removeHashtags } from '@/lib/utils';
 
 export function PostForm() {
   const supabase = getSupabaseBrowserClient();
   const { toast } = useToast();
+
+  // states
   const [isLoading, setIsLoading] = useState(false);
   const [selectedMood, setSelectedMood] = useState<Mood | null>(postMoods[0]);
+  const [tags, setTags] = useState<string[]>([]);
 
   const [isEmojiPickerOpen, setIsEmojiPickerOpen] = useState(false);
   const textareaRef = useRef<HTMLTextAreaElement>(null);
 
   // get mood boolean value
-  const isNeutral = selectedMood?.value === "neutral";
-  const isHappy = selectedMood?.value === "happy";
-  const isSad = selectedMood?.value === "sad";
-  const isAngry = selectedMood?.value === "angry";
-  const isConfused = selectedMood?.value === "confused";
+  const isNeutral = selectedMood?.value === 'neutral';
+  const isHappy = selectedMood?.value === 'happy';
+  const isSad = selectedMood?.value === 'sad';
+  const isAngry = selectedMood?.value === 'angry';
+  const isConfused = selectedMood?.value === 'confused';
 
   //  counter for comment fields
   const counter: number = 500;
@@ -65,14 +66,14 @@ export function PostForm() {
   const form = useForm<z.infer<typeof PostSchema>>({
     resolver: zodResolver(PostSchema),
     defaultValues: {
-      content: "",
+      content: '',
       is24HourPost: false,
     },
   });
 
   // watch post realtime updates
   const { watch } = form;
-  const content = watch("content");
+  const content = watch('content');
 
   // function to handle emoji selection add to post field
   const handleEmojiClick = (emojiData: EmojiClickData) => {
@@ -82,10 +83,10 @@ export function PostForm() {
       const start = textarea.selectionStart;
       const end = textarea.selectionEnd;
       const newContent =
-        form.getValues("content").substring(0, start) +
+        form.getValues('content').substring(0, start) +
         emoji +
-        form.getValues("content").substring(end);
-      form.setValue("content", newContent, { shouldValidate: true });
+        form.getValues('content').substring(end);
+      form.setValue('content', newContent, { shouldValidate: true });
 
       // Set cursor position after the inserted emoji
       setTimeout(() => {
@@ -96,51 +97,92 @@ export function PostForm() {
     setIsEmojiPickerOpen(false);
   };
 
+  // retrieve tags from content
+  const handleInput = (value: string) => {
+    // Extract tags
+    const newTags = value.match(/#\w+/g) || [];
+    const cleanTags = newTags
+      .filter((_, index) => index < 3)
+      .map(tag =>
+        tag
+          .slice(1)
+          .replace(/[^a-zA-Z0-9_]/g, '')
+          .toLowerCase(),
+      );
+    setTags([...new Set(cleanTags)]); // Remove # from tags
+  };
+
   // function to handle submit
   async function onSubmit(data: z.infer<typeof PostSchema>) {
     // save post values to db
     setIsLoading(true);
     console.log(data);
     const { content, is24HourPost } = data;
+    // remove tags from post content
+    const contentWithoutTags = removeHashtags(content);
+    const duration = is24HourPost ? 24 : null;
+    const expires_at = duration ? calculateExpiryDate(duration) : null;
 
     try {
-      const { data: postData, error: postError } = await supabase
-        .from("posts")
-        .insert({
-          content,
-          mood: selectedMood?.value,
-          expires_in_24hr: is24HourPost,
-        })
-        .select()
-        .single();
+      // const { data: postData, error: postError } = await supabase
+      //   .from("posts")
+      //   .insert({
+      //     content: contentWithoutTags,
+      //     mood: selectedMood?.value,
+      //     expires_in_24hr: is24HourPost,
+      //     duration,
+      //     expires_at
+      //   })
+      //   .select()
+      //   .single();
+
+      console.log(
+        'data -> ',
+        tags,
+        ' ',
+        contentWithoutTags,
+        ' ',
+        expires_at,
+        ' ',
+        is24HourPost,
+      );
+
+      const { error: postError } = await supabase.rpc('create_post_with_tags', {
+        content: contentWithoutTags,
+        duration: duration ? `${duration}` : duration,
+        expires_at,
+        expires_in_24hr: is24HourPost,
+        mood: selectedMood?.value,
+        tag_names: tags,
+      });
 
       if (postError) {
         toast({
-          variant: "destructive",
-          title: "Oops, something must have gone wrong 😵‍💫!",
+          variant: 'destructive',
+          title: 'Oops, something must have gone wrong 😵‍💫!',
         });
         console.log(postError);
         return;
       }
 
-      if (postData) {
-        // show notification
-        toast({
-          variant: "default",
-          title: "Post created successfully🤭 !",
-        });
-      }
+      // show notification
+      toast({
+        variant: 'default',
+        title: 'Post created successfully🤭 !',
+      });
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     } catch (error: any) {
       toast({
-        title: "Error!",
-        description: "Ooops🫢 !! Could not create post, Please try again",
-        variant: "destructive",
+        title: 'Error!',
+        description: 'Ooops🫢 !! Could not create post, Please try again',
+        variant: 'destructive',
       });
       console.error(error);
     } finally {
       setIsLoading(false);
       form.reset();
       setSelectedMood(postMoods[0]);
+      setTags([]);
     }
   }
 
@@ -148,7 +190,7 @@ export function PostForm() {
     <Form {...form}>
       <form
         onSubmit={form.handleSubmit(onSubmit)}
-        className=" w-full md:w-2/3 space-y-6"
+        className="w-full space-y-6 md:w-2/3"
       >
         <FormField
           control={form.control}
@@ -159,20 +201,20 @@ export function PostForm() {
                 <div className="relative">
                   <Textarea
                     {...field}
-                    ref={(e) => {
+                    ref={e => {
                       field.ref(e);
-                      // @ts-expect-error current is read-only
                       textareaRef.current = e;
                     }}
-                    placeholder="What's on your mind?"
-                    className={`resize-none h-[150px] !pr-10 !pt-8 text-dark-2 dark:text-white transition-all duration-300 ${isNeutral && "border-pink-500 dark:border-pink-400"}
-                    ${isHappy && "border-green-500 dark:border-green-400"} ${isSad && "border-blue dark:border-sky-400"}
-                    ${isAngry && "border-red-500 dark:border-red-400"} ${isConfused && "border-yellow-500 dark:border-yellow-400"}
-                    `}
+                    onChange={(e: React.ChangeEvent<HTMLTextAreaElement>) => {
+                      field.onChange(e);
+                      handleInput(e.target.value);
+                    }}
+                    placeholder="What's on your mind? Use # for tags! At most 3"
+                    className={`no-focus h-[150px] resize-none !pr-10 !pt-8 text-dark-2 transition-all duration-300 dark:text-white ${isNeutral && 'border-pink-500 dark:border-pink-400'} ${isHappy && 'border-green-500 dark:border-green-400'} ${isSad && 'border-blue dark:border-sky-400'} ${isAngry && 'border-red-500 dark:border-red-400'} ${isConfused && 'border-yellow-500 dark:border-yellow-400'} `}
                   />
 
                   {/* mood icon */}
-                  <div className=" absolute bottom-3 left-3 flex items-center gap-x-1">
+                  <div className="absolute bottom-3 left-3 flex items-center gap-x-1">
                     <span>
                       {selectedMood?.gif ? (
                         <Image
@@ -186,12 +228,10 @@ export function PostForm() {
                         selectedMood?.icon
                       )}
                     </span>
-                    <p className="dark:text-gray-500 text-gray-900 text-[12px]">
-                      Mood:{" "}
+                    <p className="text-[12px] text-gray-900 dark:text-gray-500">
+                      Mood:{' '}
                       <span
-                        className={`${isNeutral && "text-pink-500 dark:text-pink-400"}
-                    ${isHappy && "text-green-500 dark:text-green-400"} ${isSad && "text-blue dark:text-sky-400"}
-                    ${isAngry && "text-red-500 dark:text-red-400"} ${isConfused && "text-yellow-500 dark:text-yellow-400"}`}
+                        className={`${isNeutral && 'text-pink-500 dark:text-pink-400'} ${isHappy && 'text-green-500 dark:text-green-400'} ${isSad && 'text-blue dark:text-sky-400'} ${isAngry && 'text-red-500 dark:text-red-400'} ${isConfused && 'text-yellow-500 dark:text-yellow-400'}`}
                       >
                         {selectedMood?.label}
                       </span>
@@ -240,6 +280,22 @@ export function PostForm() {
                 )}
               />
 
+              {/* tags */}
+              {tags.length > 0 && (
+                <div className="flex flex-wrap gap-2">
+                  {tags.map((tag, index) => (
+                    <motion.span
+                      key={index}
+                      initial={{ opacity: 0, scale: 0.8 }}
+                      animate={{ opacity: 1, scale: 1 }}
+                      className="rounded-full bg-primary px-2 py-1 text-sm text-primary-foreground"
+                    >
+                      #{tag}
+                    </motion.span>
+                  ))}
+                </div>
+              )}
+
               <div className="h-4">
                 <FormMessage />
               </div>
@@ -247,21 +303,21 @@ export function PostForm() {
           )}
         />
 
-        <div className="w-full max-sm:px-10 !mt-1 ">
+        <div className="!mt-1 w-full max-sm:px-10">
           <MoodCarousel
             selectedMood={selectedMood}
             setSelectedMood={setSelectedMood}
           />
         </div>
 
-        <div className=" flex flex-row-reverse justify-between items-center">
+        <div className="flex flex-row-reverse items-center justify-between">
           <ShinyButton
             disabled={content.length > 500 || isLoading}
             type="submit"
-            className=" rounded-full"
+            className="rounded-full"
           >
             {isLoading ? (
-              <span className=" flex gap-2">
+              <span className="flex gap-2">
                 <Loader />
                 <p>Loading...</p>
               </span>
@@ -272,18 +328,18 @@ export function PostForm() {
             )}
           </ShinyButton>
           <p
-            className={` dark:text-white text-slate-900/90 border ${
+            className={`border text-slate-900/90 dark:text-white ${
               counter - content.length < 0
-                ? "border-red-500 bg-red-400"
-                : "border-blue bg-blue"
-            } h-9 min-h-9 max-h-9 w-9 min-w-9 max-w-9 flex justify-center items-center p-3 rounded-full shadow-sm`}
+                ? 'border-red-500 bg-red-400'
+                : 'border-blue bg-blue'
+            } flex h-9 max-h-9 min-h-9 w-9 min-w-9 max-w-9 items-center justify-center rounded-full p-3 shadow-sm`}
           >
             {counter - content.length}
           </p>
         </div>
       </form>
 
-      <div className=" text-sm text-zinc-600 container mx-auto text-center pt-20  px-3">
+      <div className="container mx-auto px-3 pt-20 text-center text-sm text-zinc-600">
         Tip : Platform made to share your thought without holding back..
       </div>
     </Form>

@@ -1,11 +1,11 @@
-"use client";
+'use client';
 
-import { useState } from "react";
+import { useState } from 'react';
 
-import { zodResolver } from "@hookform/resolvers/zod";
-import { useForm } from "react-hook-form";
-import { z } from "zod";
-import { Button } from "@/components/ui/button";
+import { zodResolver } from '@hookform/resolvers/zod';
+import { useForm } from 'react-hook-form';
+import { z } from 'zod';
+import { Button } from '@/components/ui/button';
 import {
   Card,
   CardContent,
@@ -13,22 +13,20 @@ import {
   CardFooter,
   CardHeader,
   CardTitle,
-} from "@/components/ui/card";
+} from '@/components/ui/card';
 import {
   Form,
   FormControl,
-  FormDescription,
   FormField,
   FormItem,
-  FormLabel,
   FormMessage,
-} from "@/components/ui/form";
-import { Input } from "@/components/ui/input";
-import { UpdatePasswordSchema } from "@/validation";
-import { getSupabaseBrowserClient } from "@/utils/supabase/client";
-import { useToast } from "../ui/use-toast";
-import Loader from "../shared/Loader";
-import ToggleEyeIcon from "../ui/ToggleEyeIcon";
+} from '@/components/ui/form';
+import { Input } from '@/components/ui/input';
+import { UpdatePasswordSchema } from '@/validation';
+import { getSupabaseBrowserClient } from '@/utils/supabase/client';
+import { useToast } from '../ui/use-toast';
+import Loader from '../shared/loaders/Loader';
+import ToggleEyeIcon from '../ui/ToggleEyeIcon';
 
 const UpdatePasswordCardForm = () => {
   const { toast } = useToast();
@@ -42,8 +40,8 @@ const UpdatePasswordCardForm = () => {
   const form = useForm<z.infer<typeof UpdatePasswordSchema>>({
     resolver: zodResolver(UpdatePasswordSchema),
     defaultValues: {
-      password: "",
-      newPassword: "",
+      password: '',
+      newPassword: '',
     },
   });
 
@@ -57,16 +55,16 @@ const UpdatePasswordCardForm = () => {
     // Get user data
     const user = (await supabase.auth.getUser()).data?.user;
     if (!user) {
-      console.error("User not found");
+      console.error('User not found');
       return;
     }
 
     if (user.is_anonymous) {
-      console.log("anonymous-> ", user.is_anonymous);
+      console.log('anonymous-> ', user.is_anonymous);
       toast({
-        title: "Error updating password",
-        description: "Anonymous users cannot update passwords",
-        variant: "destructive",
+        title: 'Error updating password',
+        description: 'Anonymous users cannot update passwords',
+        variant: 'destructive',
       });
       setIsLoading(false);
       return;
@@ -80,10 +78,10 @@ const UpdatePasswordCardForm = () => {
       });
 
       if (signInError) {
-        console.error("Old password is incorrect:", signInError.message);
+        console.error('Old password is incorrect:', signInError.message);
         toast({
-          title: "Old password is incorrect",
-          variant: "destructive",
+          title: 'Old password is incorrect',
+          variant: 'destructive',
         });
         setIsLoading(false);
         return;
@@ -95,19 +93,19 @@ const UpdatePasswordCardForm = () => {
       });
 
       if (updateError) {
-        console.error("Error updating password:", updateError.message);
+        console.error('Error updating password:', updateError.message);
         toast({
-          title: "Error updating password",
+          title: 'Error updating password',
           description: updateError.message,
-          variant: "destructive",
+          variant: 'destructive',
         });
         setIsLoading(false);
         return;
       }
 
       toast({
-        title: "Password updated",
-        description: "Your password has been updated successfully",
+        title: 'Password updated',
+        description: 'Your password has been updated successfully',
       });
       // Clear form , Log out the user and redirect to login page
       setIsLoading(false);
@@ -119,35 +117,41 @@ const UpdatePasswordCardForm = () => {
 
   return (
     <Form {...form}>
-      <Card>
-        <form onSubmit={form.handleSubmit(onSubmit)} className="">
-          <CardHeader>
-            <CardTitle>Password</CardTitle>
-            <CardDescription>
-              Change your password here. After saving, you&apos;ll be logged
-              out.
-            </CardDescription>
-          </CardHeader>
-          <CardContent className="space-y-4">
+      <Card className="relative overflow-hidden bg-gradient-to-br from-white to-gray-50 p-1 shadow-xl dark:from-[hsl(228_85%_5%)] dark:to-[hsl(228_85%_3%)]">
+        {/* <div className="absolute inset-0 bg-[linear-gradient(to_right,transparent_0%,rgba(255,255,255,0.1)_50%,transparent_100%)] dark:bg-[linear-gradient(to_right,transparent_0%,rgba(255,255,255,0.03)_50%,transparent_100%)]" /> */}
+        <CardHeader className="space-y-1">
+          <CardTitle className="text-2xl font-semibold tracking-tight">
+            Change Password
+          </CardTitle>
+          <CardDescription className="text-sm text-muted-foreground">
+            Enter your current password and choose a new one
+          </CardDescription>
+        </CardHeader>
+        <CardContent className="space-y-4 pt-4">
+          <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
             <FormField
               control={form.control}
               name="password"
               render={({ field }) => (
                 <FormItem>
-                  <FormControl>
-                    <div className="relative md:w-1/2">
+                  <div className="relative">
+                    <FormControl>
                       <Input
-                        type={showPassword ? "text" : "password"}
-                        placeholder="Current Password"
+                        type={showPassword ? 'text' : 'password'}
+                        placeholder="Current password"
+                        className="pr-10 backdrop-blur-sm"
                         {...field}
-                        className="w-full"
                       />
-                      <ToggleEyeIcon
-                        showPassword={showPassword}
-                        setShowPassword={setShowPassword}
-                      />
-                    </div>
-                  </FormControl>
+                    </FormControl>
+                    <button
+                      type="button"
+                      onClick={() => setShowPassword(!showPassword)}
+                      className="absolute right-3 top-3 md:top-[-3] transform"
+                    >
+                      <ToggleEyeIcon showPassword={showPassword}
+                        />
+                    </button>
+                  </div>
                   <FormMessage />
                 </FormItem>
               )}
@@ -157,42 +161,39 @@ const UpdatePasswordCardForm = () => {
               name="newPassword"
               render={({ field }) => (
                 <FormItem>
-                  <FormControl>
-                    <div className="relative md:w-1/2">
+                  <div className="relative">
+                    <FormControl>
                       <Input
-                        type={showNewPassword ? "text" : "password"}
-                        placeholder="New Password"
+                        type={showNewPassword ? 'text' : 'password'}
+                        placeholder="New password"
+                        className="pr-10 backdrop-blur-sm"
                         {...field}
-                        className="w-full"
                       />
-                      <ToggleEyeIcon
-                        showPassword={showNewPassword}
-                        setShowPassword={setShowNewPassword}
-                      />
-                    </div>
-                  </FormControl>
+                    </FormControl>
+                    <button
+                      type="button"
+                      onClick={() => setShowNewPassword(!showNewPassword)}
+                      className="absolute right-3 top-3 md:top-[-3] transform"
+                    >
+                      <ToggleEyeIcon showPassword={showNewPassword}
+                         />
+                    </button>
+                  </div>
                   <FormMessage />
                 </FormItem>
               )}
             />
-          </CardContent>
-          <CardFooter>
-            <Button
-              disabled={isLoading}
-              type="submit"
-              className="flex gap-2 dark:bg-sky-400 dark:hover:bg-sky-300"
-            >
-              {isLoading ? (
-                <div className="flex items-center justify-center gap-x-2">
-                  {" "}
-                  <Loader /> <span>Saving...</span>
-                </div>
-              ) : (
-                "Save"
-              )}
-            </Button>
-          </CardFooter>
-        </form>
+            <CardFooter className="-mx-6 -mb-6 mt-4 bg-gray-50/50 px-6 py-4 dark:bg-[hsl(228_85%_4%)]">
+              <Button
+                type="submit"
+                className="w-full bg-gradient-to-r from-blue to-indigo-600 text-white shadow-lg transition-all hover:from-blue-700 hover:to-indigo-700 dark:from-blue-500 dark:to-indigo-500 dark:hover:from-blue-600 dark:hover:to-indigo-600"
+                disabled={isLoading}
+              >
+                {isLoading ? <Loader /> : 'Update Password'}
+              </Button>
+            </CardFooter>
+          </form>
+        </CardContent>
       </Card>
     </Form>
   );

@@ -1,9 +1,8 @@
-import { useState, useEffect } from "react";
-import { useAnimate, stagger } from "framer-motion";
+import { useState, useEffect } from 'react';
+import { useAnimate } from 'framer-motion';
 
-import { Menu } from "./Menu";
-import { MenuToggle } from "../ui/MenuToggle";
-import { OpacityIcon } from "@radix-ui/react-icons";
+import { Menu } from './Menu';
+import { MenuToggle } from '../ui/MenuToggle';
 
 function useMenuAnimation(isOpen: boolean) {
   const [scope, animate] = useAnimate();
@@ -39,18 +38,18 @@ function useMenuAnimation(isOpen: boolean) {
 
     animate([
       [
-        "path.top",
-        { d: isOpen ? "M 3 16.5 L 17 2.5" : "M 2 2.5 L 20 2.5" },
-        { at: "<" },
+        'path.top',
+        { d: isOpen ? 'M 3 16.5 L 17 2.5' : 'M 2 2.5 L 20 2.5' },
+        { at: '<' },
       ],
-      ["path.middle", { opacity: isOpen ? 0 : 1 }, { at: "<" }],
+      ['path.middle', { opacity: isOpen ? 0 : 1 }, { at: '<' }],
       [
-        "path.bottom",
-        { d: isOpen ? "M 3 2.5 L 17 16.346" : "M 2 16.346 L 20 16.346" },
-        { at: "<" },
+        'path.bottom',
+        { d: isOpen ? 'M 3 2.5 L 17 16.346' : 'M 2 16.346 L 20 16.346' },
+        { at: '<' },
       ],
     ]);
-  }, [isOpen]);
+  }, [isOpen, animate]);
 
   return scope;
 }
@@ -60,10 +59,29 @@ export default function MobileNav() {
 
   const scope = useMenuAnimation(isOpen);
 
+  useEffect(() => {
+    if (isOpen) {
+      document.body.style.overflow = 'hidden';
+    } else {
+      document.body.style.overflow = 'unset';
+    }
+    return () => {
+      document.body.style.overflow = 'unset';
+    };
+  }, [isOpen]);
+
   return (
-    <div ref={scope} className=" sm:hidden  flex items-center">
-      {isOpen && <Menu setIsOpen={setIsOpen} />}
-      <MenuToggle toggle={() => setIsOpen(!isOpen)} />
-    </div>
+    <>
+      {isOpen && (
+        <div
+          className="fixed inset-0 z-20 bg-black/50"
+          onClick={() => setIsOpen(false)}
+        />
+      )}
+      <div ref={scope} className="flex items-center sm:hidden">
+        {isOpen && <Menu setIsOpen={setIsOpen} />}
+        <MenuToggle toggle={() => setIsOpen(!isOpen)} />
+      </div>
+    </>
   );
 }

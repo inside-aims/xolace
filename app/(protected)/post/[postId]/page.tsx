@@ -1,67 +1,66 @@
-import { DoubleArrowLeftIcon } from "@radix-ui/react-icons";
-import { notFound } from "next/navigation";
+import { notFound } from 'next/navigation';
+import { Suspense } from 'react';
 
-import { DetailCard } from "@/components/cards/DetailCard";
-import Loader from "@/components/shared/Loader";
-import { Button } from "@/components/ui/button";
-import PostDetailDrawer from "@/components/ui/PostDetailDrawer";
-import { createClient } from "@/utils/supabase/server";
-import Link from "next/link";
-
-export const dynamic = "force-dynamic";
+import { DetailCard } from '@/components/cards/DetailCard';
+import PostDetailDrawer from '@/components/ui/PostDetailDrawer';
+import { createClient } from '@/utils/supabase/server';
+import View from '@/components/hocs/detailsPostComponents/View';
+import { Skeleton } from '@/components/ui/skeleton';
 
 type Params = Promise<{ postId: string }>;
 type SearchParams = Promise<{ [key: string]: string | string[] | undefined }>;
 
 const PostDetailPage = async (props: {
-  params: Params;
-  searchParams: SearchParams;
+  params: Promise<Params>;
+  searchParams: Promise<SearchParams>;
 }) => {
   const params = await props.params;
   const searchParams = await props.searchParams;
-  const supabase = createClient();
+  const supabase = await createClient();
   const postId = params.postId;
   const type = searchParams.type;
 
   // incase there is no post id
   if (!postId) {
-    console.error("postId is missing from params.");
+    console.error('postId is missing from params.');
     return notFound();
   }
 
   const { data: post, error } = await supabase
-    .from("posts")
+    .from('posts')
     .select(
       `
       *,
-         likes(
-         *
+       posttags (
+        tags (
+          name
+        )
+      ),
+         votes(
+         user_id,
+         vote_type
          ),
-         comments(*)
-   `
+         comments(*),
+         views:views(count)
+   `,
     )
-    .eq("id", postId)
-    .order("created_at", { ascending: true, referencedTable: "comments" })
+    .eq('id', postId)
+    .order('created_at', { ascending: true, referencedTable: 'comments' })
     .single();
 
   console.log(error);
   //  check for error
   if (error) {
-    console.error("Error fetching post:", error.message);
+    console.error('Error fetching post:', error.message);
     return notFound();
   }
 
   return (
     <>
-      {/*<Button
-        variant={"link"}
-        className="dark:text-sky-500"
-        onClick={() => router.back()}
-      >
-        <DoubleArrowLeftIcon className="dark:text-sky-500 text-sky-500 mr-1" />
-        back
-      </Button> */}
       <DetailCard postId={postId} post={post} />
+      <Suspense fallback={<Skeleton className="view_skeleton" />}>
+        <View id={postId} viewsCount={post.views[0].count} />
+      </Suspense>
 
       {/* Drawer for comment form and comment cards */}
       <PostDetailDrawer post={post} type={type} />

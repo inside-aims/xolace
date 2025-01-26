@@ -1,8 +1,14 @@
-"use client";
+'use client';
 
-import React from "react";
-import { motion } from "framer-motion";
-import { GearIcon } from "@radix-ui/react-icons";
+import React from 'react';
+import { motion } from 'framer-motion';
+import {
+  HeartIcon,
+  MailPlusIcon,
+  HandCoins,
+  MessageSquareReply,
+  Contact,
+} from 'lucide-react';
 import {
   Dialog,
   DialogContent,
@@ -10,10 +16,10 @@ import {
   DialogHeader,
   DialogTitle,
   DialogTrigger,
-} from "@/components/ui/dialog";
-import { KvngSheet } from "../shared/KvngSheet";
-import { MailPlus } from "lucide-react";
-import FeedbackForm from "../forms/FeedbackForm";
+} from '@/components/ui/dialog';
+import { Button } from '../ui/button';
+import { KvngSheet } from '../shared/KvngSheet';
+import FeedbackForm from '../forms/FeedbackForm';
 
 const ChannelContributionCard = () => {
   return (
@@ -21,79 +27,73 @@ const ChannelContributionCard = () => {
       <Dialog>
         <DialogTrigger className="w-full">
           <motion.div
-            className="max-w-7xl mx-auto px-5 sm:px-6 lg:px-8 mb-10"
-            initial={{ y: 700 }}
-            animate={{
-              y: 0,
-              transition: { duration: 0.5 },
-            }}
-            viewport={{ once: true }}
+            className="cursor-pointer rounded-lg bg-white p-6 shadow-md transition-shadow duration-200 hover:shadow-lg dark:bg-gray-800"
+            whileHover={{ scale: 1.03 }}
+            whileTap={{ scale: 0.98 }}
           >
-            <div className="bg-gray-200 dark:bg-gray-800 overflow-hidden shadow-sm rounded-lg flex gap-5 p-5 items-center h-[10px] min-h-[100px] max-h-[120px] sm:h-auto">
-              <div className=" h-7 w-7">
-                <GearIcon className="text-red-500  w-full h-full" />
-              </div>
-              <div className=" text-gray-900 dark:text-gray-100 flex flex-col items-start">
-                <h1 className="text-lg font-bold uppercase">Contribution</h1>
-                <p className="text-gray-500">
-                  <span className=" max-sm:hidden">Want to sponser? ,</span>{" "}
-                  Want to Donate ?
-                </p>
-              </div>
-            </div>
+            <HeartIcon className="mb-4 h-12 w-12 text-red-500 dark:text-red-400" />
+            <h2 className="mb-2 text-xl font-semibold text-gray-800 dark:text-gray-100">
+              Contribution
+            </h2>
+            <p className="text-gray-600 dark:text-gray-300">
+              Support our mission
+            </p>
           </motion.div>
         </DialogTrigger>
-        <DialogContent className="text-dark-2 dark:text-white w-[95%]">
+        <DialogContent className="w-full max-w-[26rem] sm:max-w-md">
           <DialogHeader>
-            <DialogTitle>
-              <p className=" text-2xl font-bold dark:text-gray-200 pb-2 text-center uppercase">
-                <span>&#128220; </span>Contribution
-              </p>
+            <DialogTitle className="mb-4 text-2xl font-bold">
+              🤝🏽 Support Xolace
             </DialogTitle>
+            <DialogDescription className="hidden">
+              Everything you need to know about Xolace
+            </DialogDescription>
           </DialogHeader>
-          <div>
-            <p className=" text-lg text-gray-500 p-2">
-              <span className="emoji">&#x1F4B0;</span> To sponser or donate to
-              the Atlas Innovation team (visit our FAQs to find out why we need
-              donations)
-            </p>
-            <p className="px-2">Sponsor Anonymously</p>
-            <p className="p-2 dark:text-gray-300">
-              <span className="emoji">&#x1F4F2;</span>Send to :{" "}
-              <span>0558218741</span>
-            </p>
-          </div>
-
-          <div className="py-2">
-            <div className="font-bold uppercase text-lg dark:text-gray-200 py-2">
-              <span>&#x1F468;&#x200D;&#x1F4BB; </span>
-              Technical Support
-            </div>
-            <div className="px-2 mb-4">
-              <p className="dark:text-gray-400 mb-2">
-                <span className="emoji">&#x1F9A0;</span>Found a bug ?
+          <div className="space-y-6">
+            <div>
+              <h3 className="mb-2 flex items-center text-lg font-semibold">
+                <HandCoins size={18} strokeWidth={1.25} className="mr-2" />
+                Donate
+              </h3>
+              <p className="mb-2 text-gray-600 dark:text-gray-300">
+                Help us keep Xolace running and improving.
               </p>
-              <p className=" dark:text-gray-400">
-                <span>&#x1F680;</span>Want to contribute to adding a new feature
-                ?
-              </p>
-            </div>
-            <div className=" flex items-center gap-x-3 mb-2 px-2">
-              <p>Send us a Mail :</p>
-              <a
-                href="mailto:lead@xolace.online?subject=Regarding%20your%20app"
-                target={"_blank"}
-              >
-                <MailPlus />
-              </a>
+              <Button variant="outline">Make a Donation</Button>
             </div>
             <div>
+              <h3 className="mb-2 flex items-center text-lg font-semibold">
+                <MessageSquareReply
+                  size={18}
+                  strokeWidth={1.25}
+                  className="mr-2"
+                />
+                Feedback
+              </h3>
+              <p className="mb-2 text-gray-600 dark:text-gray-300">
+                Share your thoughts and ideas with us.
+              </p>
               <KvngSheet
                 title="Feedback"
                 description="Provide your valuable feedback to the team"
               >
                 <FeedbackForm />
               </KvngSheet>
+            </div>
+            <div>
+              <h3 className="mb-2 flex items-center text-lg font-semibold">
+                <Contact size={18} strokeWidth={1.25} className="mr-2" />
+                Contact Us
+              </h3>
+              <p className="mb-2 text-gray-600 dark:text-gray-300">
+                Get in touch with our team.
+              </p>
+              <a
+                href="mailto:support@xolace.com"
+                className="text-blue-500 flex items-center hover:underline"
+              >
+                <MailPlusIcon className="mr-2 h-5 w-5" />
+                Email Us
+              </a>
             </div>
           </div>
         </DialogContent>
