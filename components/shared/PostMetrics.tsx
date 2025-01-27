@@ -1,7 +1,7 @@
 'use client';
 
 import React, { useState, useEffect } from 'react';
-import { ArrowUpIcon, ArrowDownIcon } from '@radix-ui/react-icons';
+import { ThumbsUp, ThumbsDown } from 'lucide-react';
 import Link from 'next/link';
 import { cn } from '@/lib/utils';
 import { voteAction } from '@/app/actions';
@@ -100,12 +100,12 @@ const PostMetrics = ({
           disabled={isVoting}
           className="focus:outline-none"
         >
-          <ArrowUpIcon
+          <ThumbsUp
             className={cn(
-              'h-6 w-6 transition-all duration-200',
+              'h-6 w-6 transition-all duration-200 hover:scale-110',
               currentVote === 'upvote'
-                ? 'text-green-500 dark:text-green-400'
-                : 'text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-300'
+                ? 'fill-green-500 stroke-green-500 dark:fill-green-400 dark:stroke-green-400'
+                : 'stroke-gray-500 hover:stroke-gray-700 dark:stroke-gray-400 dark:hover:stroke-gray-300'
             )}
           />
         </button>
@@ -118,12 +118,12 @@ const PostMetrics = ({
           disabled={isVoting}
           className="focus:outline-none"
         >
-          <ArrowDownIcon
+          <ThumbsDown
             className={cn(
-              'h-6 w-6 transition-all duration-200',
+              'h-6 w-6 transition-all duration-200 hover:scale-110',
               currentVote === 'downvote'
-                ? 'text-red-800 dark:text-red-400'
-                : 'text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-300'
+                ? 'fill-red-500 stroke-red-500 dark:fill-red-400 dark:stroke-red-400'
+                : 'stroke-gray-500 hover:stroke-gray-700 dark:stroke-gray-400 dark:hover:stroke-gray-300'
             )}
           />
         </button>
