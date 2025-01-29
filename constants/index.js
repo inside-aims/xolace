@@ -7,7 +7,7 @@ import {
   ThumbsUp,
   Flame,
   Clock,
-  Bomb
+  Bomb, Eclipse, Key , GlobeLock, Copyright
 } from 'lucide-react';
 
 export const sidebarLinks = [
@@ -48,6 +48,29 @@ export const sidebarLinks = [
   //   label: "Communities",
   // },
 ];
+
+export const aboutLeftSideLinks = [
+  {
+    imgURL: <Eclipse />,
+    route: '/about/general',
+    label: 'About Xolace',
+  },
+  {
+    imgURL: <Key />,
+    route: '/about/terms',
+    label: 'Terms',
+  },
+  {
+    imgURL: <GlobeLock />,
+    route: '/about/privacy',
+    label: 'Privacy',
+  },
+  {
+    imgURL: <Copyright />,
+    route: '/about/credits',
+    label: 'Credits & Licenses',
+  },
+]
 
 export const navLinks = [
   {
