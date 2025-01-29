@@ -21,8 +21,8 @@ const CreditsPage = () => {
 
       <div className="lg:px-10">
         <p className="mb-5">
-          Welcome to Sail! While terms and conditions aren’t the most exciting
-          reading, we’ve tried to keep ours clear and straightforward. Here’s
+          Welcome to Sail! While terms and conditions aren&apos;t the most exciting
+          reading, we&apos;ve tried to keep ours clear and straightforward. Here&apos;s
           what you need to know about using our service.
         </p>
 
@@ -36,7 +36,7 @@ const CreditsPage = () => {
         </div>
 
         <p className="mb-5">
-          While we work hard to provide helpful information, remember that we’re
+          While we work hard to provide helpful information, remember that we&apos;re
           a research tool - final arrangements should be made directly with
           transportation providers.
         </p>
@@ -57,8 +57,8 @@ const CreditsPage = () => {
 
         <h1 className="mb-3">Important Notes</h1>
         <p>
-          We want to be upfront about what Sail can and can’t do. We’re here to
-          help you research and plan, but can’t guarantee:
+          We want to be upfront about what Sail can and can&apos;t do. We&apos;re here to
+          help you research and plan, but can&apos;t guarantee:
         </p>
 
         <ul className="mb-3 list-disc pl-8">

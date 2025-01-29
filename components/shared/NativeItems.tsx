@@ -1,20 +1,28 @@
 "use client"
 
-import { ChevronRight } from 'lucide-react'
+import { ChevronRight, Key, GlobeLock, Copyright, Eclipse } from 'lucide-react'
 import React from 'react';
 
-import * as Icons from "lucide-react"
-import { Badge } from "@/components/ui/badge"
 import Link from 'next/link'
+import { Badge } from "@/components/ui/badge"
 
-//const DefaultIcon = () => <div style={{ width: '24px', height: '24px', backgroundColor: 'gray', borderRadius: '50%' }} />;
+const Icons = {
+  chevronRight: ChevronRight,
+  Key,
+  GlobeLock,
+  Copyright,
+  Eclipse
+  // Add more icons as needed
+} as const;
+
+type IconKeys = keyof typeof Icons;
 
 interface NativeItemsProps {
   items: {
-    icon: keyof typeof Icons
-    label: string
-    badge?: string
-    href: string
+    icon: IconKeys;
+    label: string;
+    badge?: string;
+    href: string;
   }[]
 }
 
@@ -22,7 +30,7 @@ export function NativeItems({ items }: NativeItemsProps) {
   return (
     <div>
       {items.map((item, index) => {
-        const Icon = Icons[item.icon] // || DefaultIcon; // Use a default icon if not found
+        const Icon = Icons[item.icon] 
         return (
           <Link
             key={item.label}
