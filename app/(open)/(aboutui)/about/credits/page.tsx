@@ -7,7 +7,7 @@ import { useRouter } from 'next/navigation';
 const CreditsPage = () => {
   const router = useRouter();
   return (
-    <div className="relative px-3 pt-10">
+    <div className="relative px-3 pt-14">
       <div className="fixed top-0 flex h-10 w-full items-center justify-center bg-black md:hidden">
         <div
           className="absolute left-4 hover:cursor-pointer"
