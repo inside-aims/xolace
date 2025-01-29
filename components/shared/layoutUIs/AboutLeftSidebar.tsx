@@ -2,8 +2,9 @@
 
 import React from 'react'
 import { aboutLeftSideLinks } from '@/constants';
+import { ArrowLeft } from 'lucide-react'
 import Link from 'next/link';
-import { usePathname } from 'next/navigation';
+import { usePathname, useRouter } from 'next/navigation';
 
 interface AboutSidebarLinkInterface{
     imgURL: React.JSX.Element,
@@ -12,10 +13,19 @@ interface AboutSidebarLinkInterface{
   }
 
 const AboutLeftSidebar = () => {
+    const router = useRouter();
     const pathName = usePathname();
   return (
     <section className='hidden md:min-w-28 lg:min-w-72 md:block h-screen overflow-auto'>
-        <p className=' text-2xl font-bold p-5'>About</p>
+        <div className='relative flex items-center gap-x-10 p-5'>
+        <div
+          className=" hover:cursor-pointer"
+          onClick={() => router.back()}
+        >
+          <ArrowLeft />
+        </div>
+        <p className=' text-2xl font-bold max-lg:hidden'>About</p>
+        </div>
 
         <div className="flex w-full flex-1 flex-col gap-6 px-6">
         {aboutLeftSideLinks.map((link: AboutSidebarLinkInterface) => {
