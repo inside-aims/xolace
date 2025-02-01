@@ -26,7 +26,7 @@ const UpdatesPage = () => {
               <div className="rounded-md bg-primary-500 px-3 py-1">
                 {log.version}
               </div>
-              <p className="text-sm text-muted">{log.date} </p>
+              <p className="text-sm text-gray-400">{log.date} </p>
             </div>
             <p className="mb-2 text-xl font-bold">{log.title}</p>
             <div className="pl-10">

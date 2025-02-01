@@ -7,8 +7,8 @@ import { useRouter } from 'next/navigation';
 const PrivacyPage = () => {
   const router = useRouter();
   return (
-    <div className="relative px-3 pt-14">
-      <div className="fixed top-0 flex h-10 w-full items-center justify-center bg-black md:hidden">
+    <div className="relative pt-14">
+      <div className="fixed top-0 flex h-10 w-full items-center justify-center bg-white dark:bg-black md:hidden">
         <div
           className="absolute left-4 hover:cursor-pointer"
           onClick={() => router.back()}
@@ -19,7 +19,7 @@ const PrivacyPage = () => {
         <p className="text-center">Privacy</p>
       </div>
 
-      <div className="lg:px-10">
+      <div className="px-3 lg:px-10">
         <p className="mb-5">
           Welcome to Sail! While terms and conditions aren&apos;t the most exciting
           reading, we&apos;ve tried to keep ours clear and straightforward. Here&apos;s
