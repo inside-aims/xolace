@@ -122,6 +122,7 @@ export const postMoods = [
     value: 'angry',
     icon: '😠',
     color: 'red',
+    gif: '/assets/gifs/post-moods/angry-unscreen.gif',
   },
   {
     id: 5,

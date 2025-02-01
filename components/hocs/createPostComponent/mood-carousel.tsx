@@ -75,7 +75,7 @@ export default function MoodCarousel({
                 <span>
                   <Image
                     src={mood.gif}
-                    alt="Sad Emoji"
+                    alt={`${mood.label} gif`}
                     width={24}
                     height={24}
                     className="h-6 sm:h-7 sm:w-7"

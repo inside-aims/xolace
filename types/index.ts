@@ -21,6 +21,6 @@ export const moodMap: Record<
     style: 'border-blue bg-blue-400',
     gif: '/assets/gifs/post-moods/sad-deactivate.gif',
   },
-  angry: { emoji: '😠', style: 'border-red-500 bg-red-400' },
+  angry: { emoji: '😠', style: 'border-red-500 bg-red-400',gif: '/assets/gifs/post-moods/angry-unscreen.gif' },
   confused: { emoji: '🫤', style: 'border-yellow-500 bg-yellow-400' },
 };
