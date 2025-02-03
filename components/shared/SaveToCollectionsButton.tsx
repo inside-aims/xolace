@@ -1,7 +1,7 @@
 // components/SaveToCollectionButton.tsx
 
 import { Bookmark } from 'lucide-react';
-import { useState, useTransition } from 'react';
+import { useState, useTransition, useEffect } from 'react';
 import { saveToCollectionAction, removeFromCollection } from '@/app/actions';
 import { useToast } from '../ui/use-toast';
 
@@ -11,6 +11,10 @@ export default function SaveToCollectionsButton({ userId, postId, postCollection
   const [isPending, startTransition] = useTransition();
   const { toast } = useToast();
   
+useEffect(() => {
+  setIsSaved(saved)
+}, [saved]);
+
   const handleClick = async () => {
     if (!userId) {
       toast({
