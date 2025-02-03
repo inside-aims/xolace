@@ -33,7 +33,6 @@ async function fetchPosts(supabase: any) {
     return [];
   }
 
-  console.log(postsData);
   return postsData;
 }
 

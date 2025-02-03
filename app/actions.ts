@@ -246,7 +246,6 @@ export async function saveToCollectionAction(
   collectionName: string = 'favorites',
 ) {
   const supabase = await createClient();
-  console.log("saving to collection -> ", userId, postId, collectionName);
 
   try {
     const { data, error } = await supabase
@@ -269,7 +268,6 @@ export async function saveToCollectionAction(
 
 export async function removeFromCollection(userId: string, postId: string, collectionName: string = 'favorites') {
   const supabase = await createClient();
-  console.log("removing from collection -> ", userId, postId, collectionName);
 
   try {
     const { error } = await supabase
