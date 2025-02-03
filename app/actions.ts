@@ -258,6 +258,8 @@ export async function saveToCollectionAction(
 
     if (error) return { success: false, error: error.message };
 
+    revalidatePath('/feed', 'page');
+    revalidatePath('/explore', 'page');
     return { success: true, data };
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
   } catch (error) {
@@ -278,6 +280,10 @@ export async function removeFromCollection(userId: string, postId: string, colle
       .eq('collection_name', collectionName)
 
     if (error) return { success: false, error: error.message }; 
+
+    // revalidate cached data
+    revalidatePath('/feed', 'page');
+    revalidatePath('/explore', 'page');
 
     return { success: true };
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
