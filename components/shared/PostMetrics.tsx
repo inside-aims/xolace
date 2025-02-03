@@ -18,7 +18,7 @@ interface PostMetricsProps {
   section?: string;
   commentLength?: number;
   userId: string;
-  votes?: { user_id: string; vote_type: string }[];
+  votes?: { user_id: string | null; vote_type: string }[];
 }
 
 const PostMetrics = ({

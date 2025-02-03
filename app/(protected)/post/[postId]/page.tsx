@@ -41,7 +41,10 @@ const PostDetailPage = async (props: {
          vote_type
          ),
          comments(*),
-         views:views(count)
+         views:views(count),
+         collections(
+           user_id
+         )
    `,
     )
     .eq('id', postId)
