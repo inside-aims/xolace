@@ -38,6 +38,7 @@ const AboutLeftSidebar = () => {
                 href={link.route}
                 key={link.label}
                 className={`leftsidebar_link ${isActive && 'bg-primary-500'} hover:bg-primary-500`}
+                replace
               >
                 {link.imgURL}
                 <p className="text-dark-2 dark:text-light-1 max-lg:hidden">
