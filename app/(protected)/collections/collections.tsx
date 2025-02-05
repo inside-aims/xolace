@@ -12,6 +12,7 @@ const Collections = () => {
     const [posts, setPosts] = useState<Post[]>([]);
     const [page, setPage] = useState(1);
     const [hasMore, setHasMore ] = useState(false)
+    const [isLoading, setIsLoading] = useState(true)
     const pageSize = 10;
 
     if(!user){
@@ -21,6 +22,7 @@ const Collections = () => {
     // eslint-disable-next-line react-hooks/rules-of-hooks
     useEffect(() => {
         const loadPosts = async () => {
+            setIsLoading(true);
           const data = await fetchCollectionPostsAction(user?.id, 'favorites', page, 10);
           const flatPosts = data.flat()
           if (page === 1) {
@@ -29,13 +31,14 @@ const Collections = () => {
             setPosts(prevPosts => [...prevPosts, ...flatPosts]);
           }
           setHasMore(flatPosts.length === pageSize);
+          setIsLoading(false);
         };
         loadPosts();
       }, [page, user]);
 
   return (
     <>
-        <CollectionsFeedList postsData={posts}  />
+        <CollectionsFeedList postsData={posts} isLoading={isLoading} />
 
       {hasMore && (
         <button

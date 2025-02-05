@@ -4,12 +4,14 @@ import React, { useEffect } from 'react';
 import { PostCard } from '@/components/cards/PostCard';
 import { Post } from '@/types/global';
 import { useRouter, usePathname } from 'next/navigation';
+import NothingInVoid from '@/components/shared/NotFound/NothingInVoid';
 
 interface CollectionsFeedListProps {
   postsData: Post[];
+  isLoading: boolean;
 }
 
-const CollectionsFeedList = ({ postsData }: CollectionsFeedListProps) => {
+const CollectionsFeedList = ({ postsData, isLoading }: CollectionsFeedListProps) => {
   const router = useRouter();
   const pathname = usePathname();
   //   const loadPosts = async (currentPage: number) => {
@@ -92,14 +94,25 @@ const CollectionsFeedList = ({ postsData }: CollectionsFeedListProps) => {
 
   return (
     <div className="flex w-full flex-1 flex-col gap-3">
-      {postsData.map(post => (
+      {!isLoading && postsData.length > 0 &&
+      postsData.map(post => (
         <PostCard
           key={post.id}
           post={post}
           onClick={() => handlePostClick(post.id)}
           className={`mb-5 w-full bg-[radial-gradient(ellipse_at_top,hsl(0_0%_100%),hsl(0_0%_90%)_90%),linear-gradient(to_bottom_right,hsl(0_0%_98%),hsl(0_0%_96%))] hover:bg-[radial-gradient(ellipse_at_top,hsl(0_0%_95%),hsl(0_0%_98%)_90%),linear-gradient(to_bottom_right,hsl(0_0%_99%),hsl(0_0%_97%))] dark:bg-[radial-gradient(ellipse_at_top,hsl(228_85%_15%),transparent),linear-gradient(to_bottom_right,hsl(228_85%_7%),hsl(228_65%_3%))] ring-1 ring-black/[0.03] transition duration-300 hover:ring-black/[0.05] dark:hover:bg-[radial-gradient(ellipse_at_top,hsl(228_80%_10%),transparent),linear-gradient(to_bottom_right,hsl(228_85%_18%),hsl(228_85%_10%))] dark:ring-zinc-800 dark:hover:ring-zinc-700 dark:focus-visible:ring-[#193a47] md:w-full`}
         />
-      ))}
+      ))
+      }
+
+      {
+        !isLoading && postsData.length === 0 && (
+            <div className="flex w-full flex-1 flex-col justify-center items-center gap-5 py-10">
+            <NothingInVoid/>
+            <p className=' text-gray-400 text-sm'>Nothing found in the Void </p>
+          </div>
+        )
+      }
     </div>
   );
 };
