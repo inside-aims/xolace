@@ -81,7 +81,10 @@ posttags (
   vote_type
   ),
   comments:comments(count),
-  views:views(count)
+  views:views(count),
+  collections(
+          user_id
+        )  
 `,
   )
   .order('created_at', { ascending: false });

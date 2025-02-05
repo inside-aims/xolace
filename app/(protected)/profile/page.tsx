@@ -47,7 +47,10 @@ const Profile = () => {
           vote_type
           ),
           comments:comments(count),
-          views:views(count)
+          views:views(count),
+          collections(
+          user_id
+          )
     `,
         )
         .eq('created_by', user?.id)

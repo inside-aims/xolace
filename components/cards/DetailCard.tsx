@@ -17,8 +17,14 @@ import { moodMap } from '@/types';
 import { DetailPost } from '@/types/global';
 import TagCard from './TagCard';
 import { TagProps } from './PostCard';
+import SaveToCollectionsButton from '../shared/SaveToCollectionsButton';
+import { useUserState } from '@/lib/store/user';
 
 export function DetailCard({ postId, post }: { postId: string; post: DetailPost }) {
+
+  // get user data
+  const user = useUserState(state => state.user);
+
   const [isSheetOpen, setIsSheetOpen] = useState<boolean>(false);
   const postMood = moodMap[post?.mood] || moodMap['neutral'];
 
@@ -64,7 +70,7 @@ export function DetailCard({ postId, post }: { postId: string; post: DetailPost 
               ))}
           </div>
         </CardContent>
-        <CardFooter>
+        <CardFooter className='flex justify-between items-center'>
           <div
             className={`flex items-center justify-center rounded-3xl border p-1 dark:bg-transparent ${
               postMood.style
@@ -92,6 +98,9 @@ export function DetailCard({ postId, post }: { postId: string; post: DetailPost 
             )}
           </div>
           
+          <div>
+            <SaveToCollectionsButton userId={user?.id || ''} postId={post.id} postCollections={post.collections} />
+          </div>
         </CardFooter>
       </Card>
       <KvngSheet
