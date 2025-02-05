@@ -3,6 +3,7 @@
 import React from 'react';
 import { ArrowLeft } from 'lucide-react';
 import { useRouter } from 'next/navigation';
+import Link from 'next/link';
 
 const PrivacyPage = () => {
   const router = useRouter();
@@ -20,55 +21,58 @@ const PrivacyPage = () => {
       </div>
 
       <div className="px-3 lg:px-10">
+        <h1 className="mb-3 font-bold">Privacy Policy</h1>
         <p className="mb-5">
-          Welcome to Sail! While terms and conditions aren&apos;t the most exciting
-          reading, we&apos;ve tried to keep ours clear and straightforward. Here&apos;s
-          what you need to know about using our service.
+          At Xolace, user privacy is our top priority. We are committed to
+          protecting your personal information and ensuring anonymity for those
+          who choose to remain unidentified
         </p>
 
         <div className="mb-5">
-          <h1 className="mb-3 font-bold">How Xolace Works</h1>
-          <p>
-            Think of Sail as your travel research buddy! We help you explore
-            transportation options and make informed decisions about your
-            journeys.
+          <h1 className="mb-2 font-bold">
+            Data Collection & How We Handle Data ⛓️
+          </h1>
+          <p className="mb-3">
+            We keep data collection minimal and straightforward. Here&apos;s
+            what we use to make Xolace work for you:
+          </p>
+
+          <ul className="mb-3 list-disc pl-8">
+            <li>
+              Anonymous Posting: If you sign in anonymously, no personally
+              identifiable information (PII) is stored or linked to your posts.
+            </li>
+            <li>
+              mail Sign-in: If you choose to sign in with an email, your
+              credentials are securely stored and used solely for authentication
+              purposes. Your identity remains private from other users.
+            </li>
+            <li>
+              Data Encryption: All data transmitted through Xolace is encrypted
+              to prevent unauthorized access.
+            </li>
+            <li>
+              No Third-Party Sharing: We do not sell, share, or distribute user
+              data to third parties.
+            </li>
+            <li>
+              Cookies & Tracking: We may use cookies for site functionality but
+              do not track user activity beyond Xolace.
+            </li>
+          </ul>
+
+          <p className="mt-2">
+            Whenever possible, we process and store your information locally in
+            your browser or in a secure manner. Simple, private, and secure—just
+            the way you like it on Xolace!
           </p>
         </div>
 
         <p className="mb-5">
-          While we work hard to provide helpful information, remember that we&apos;re
-          a research tool - final arrangements should be made directly with
-          transportation providers.
+          For further details, please review our full Privacy Policy on our
+          <Link href="/policy" className='ml-2 hover:underline text-sky-400'>Policy page</Link>.
         </p>
 
-        <div className="mb-5">
-          <h1 className="mb-3 font-bold">Working Together</h1>
-          <p>To make Sail great for everyone, we ask that you:</p>
-
-          <ul className="mb-3 list-disc pl-8">
-            <li>Share accurate information</li>
-            <li>Keep your account secure</li>
-            <li>Use the service thoughtfully</li>
-            <li>Follow your local transportation rules</li>
-          </ul>
-
-          <p>Together, we can make Sail a fantastic resource for everyone!</p>
-        </div>
-
-        <h1 className="mb-3">Important Notes</h1>
-        <p>
-          We want to be upfront about what Sail can and can&apos;t do. We&apos;re here to
-          help you research and plan, but can&apos;t guarantee:
-        </p>
-
-        <ul className="mb-3 list-disc pl-8">
-          <li>Specific transportation availability</li>
-          <li>Price accuracy over time</li>
-          <li>Service quality or timeliness</li>
-          <li>Provider availability</li>
-        </ul>
-
-        <p>Think of us as a helpful guide rather than a booking service!</p>
       </div>
     </div>
   );
