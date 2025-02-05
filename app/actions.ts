@@ -8,8 +8,9 @@ import { getSupabaseAdminClient } from '@/utils/supabase/adminClient';
 import { signUpSchema } from '@/validation';
 import { validatedAction } from '@/lib/auth/middleware';
 import { sendOTPLink } from '@/utils/sendOTPLink';
-import { User } from '@/types/global';
+import { Post, User } from '@/types/global';
 import { revalidatePath } from 'next/cache';
+import { PostgrestError } from '@supabase/supabase-js';
 
 export const signUpAction = validatedAction(signUpSchema, async data => {
   const supabaseAdmin = getSupabaseAdminClient();
@@ -289,3 +290,52 @@ export async function removeFromCollection(userId: string, postId: string, colle
     return { success: false, error: 'Failed to remove from collection' };
   }
 }
+
+// Fetch all posts in a user's collection (with pagination)
+export const fetchCollectionPostsAction = async (
+  userId: string,
+  collectionName: string = 'favorites',
+  page: number = 1,
+  pageSize: number = 10
+) => {
+
+  const supabase = await createClient();
+
+  const { data, error }: {data: {post_id: string, posts: Post[]}[] | null, error: PostgrestError | null}  = await supabase
+    .from('collections')
+    .select(
+      `
+      post_id,
+      posts (
+        *,
+        posttags (
+          tags (
+            name
+          )
+        ),
+        votes (
+          user_id,
+          vote_type
+        ),
+        comments:comments (
+          count
+        ),
+        views:views (
+          count
+        ),
+        collections (
+          user_id
+        )
+      )
+    `
+    )
+    .eq('user_id', userId)
+    .eq('collection_name', collectionName)
+    .range((page - 1) * pageSize, page * pageSize - 1)
+    .order('created_at', { ascending: false });
+
+  if (error) throw error;
+
+  // Extract and return the nested posts data
+  return data?.map((entry) => entry.posts) || [];
+};

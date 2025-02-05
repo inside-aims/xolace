@@ -42,6 +42,11 @@ export const sidebarLinks = [
     route: '/channel',
     label: 'Channel',
   },
+  {
+    imgURL: <Rss />,
+    route: '/collections',
+    label: 'Collections',
+  },
   // {
   //   imgURL: "/assets/community.svg",
   //   route: "/communities",
