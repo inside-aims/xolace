@@ -35,7 +35,7 @@ const AnonymousSignIn = () => {
     if (error) {
       toast({
         title: 'Error signing in anonymously:',
-        description: error.message,
+        description: "Oops, looks like you couldn't get in right now, please try again 🤔",
       });
       console.error('Error signing in anonymously:', error);
       return;
@@ -49,8 +49,6 @@ const AnonymousSignIn = () => {
       console.error('Error signing in anonymously:', error);
       return;
     }
-
-    console.log('Data -> ', data);
 
     // extract user
     const AnonUser = data.user;
@@ -104,7 +102,7 @@ const AnonymousSignIn = () => {
             className="bg-gradient-to-b from-gray-500/70 to-gray-200/30 dark:from-black/70 dark:to-gray-600/40 border border-black/10 dark:border-white/30 rounded-lg backdrop-blur-md text-black dark:text-white px-5 py-2 text-base transition duration-500 hover:from-gray-300/80 hover:to-gray-200/40 dark:hover:from-gray-600/80 dark:hover:to-black/40"
             disabled={isLoading}
           >
-            {isLoading ? 'Masking up...' : 'Ghost Mode: Activated 👻'}
+            {isLoading ? 'Masking up...' : 'Activate Ghost Mode 👻'}
           </button>
         </AlertDialogTrigger>
         <AlertDialogContent>
