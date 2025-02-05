@@ -1,6 +1,6 @@
 "use client"
 
-import React, {useEffect, useState} from 'react'
+import React, { useEffect, useState} from 'react'
 import CollectionsFeedList from '@/components/hocs/collectionComponents/CollectionsFeedList'
 import { useUserState } from '@/lib/store/user'
 import { fetchCollectionPostsAction } from '@/app/actions'
@@ -11,7 +11,7 @@ const Collections = () => {
     const user = useUserState(state => state.user);
     const [posts, setPosts] = useState<Post[]>([]);
     const [page, setPage] = useState(1);
-    const [hasMore, setHasMore ] = useState(true)
+    const [hasMore, setHasMore ] = useState(false)
     const pageSize = 10;
 
     if(!user){
@@ -34,10 +34,8 @@ const Collections = () => {
       }, [page, user]);
 
   return (
-    <div className="container mx-auto py-6">
-      <h1 className="text-2xl font-bold mb-6">Your Collections</h1>
-      <div className="space-y-4">
-      <CollectionsFeedList postsData={posts}  />
+    <>
+        <CollectionsFeedList postsData={posts}  />
 
       {hasMore && (
         <button
@@ -47,8 +45,7 @@ const Collections = () => {
           Load More
         </button>
       )}
-      </div>
-    </div>
+    </>
   )
 }
 

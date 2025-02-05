@@ -7,7 +7,7 @@ import {
   ThumbsUp,
   Flame,
   Clock,
-  Bomb, Eclipse, Key , GlobeLock, Copyright
+  Bomb, Eclipse, Key , GlobeLock, Copyright, LibraryBig
 } from 'lucide-react';
 
 export const sidebarLinks = [
@@ -43,7 +43,7 @@ export const sidebarLinks = [
     label: 'Channel',
   },
   {
-    imgURL: <Rss />,
+    imgURL: <LibraryBig />,
     route: '/collections',
     label: 'Collections',
   },
@@ -89,6 +89,10 @@ export const navLinks = [
   {
     route: '/explore',
     label: 'Explore',
+  },
+  {
+    route: '/collections',
+    label: 'Collections',
   },
 ];
 
