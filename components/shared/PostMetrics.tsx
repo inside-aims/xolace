@@ -115,6 +115,7 @@ const PostMetrics = ({
           onClick={() => handleVote('upvote')}
           disabled={isVoting}
           className="focus:outline-none"
+          id='upvote-btn'
         >
           <ThumbsUp
             className={cn(
@@ -133,6 +134,7 @@ const PostMetrics = ({
           onClick={() => handleVote('downvote')}
           disabled={isVoting}
           className="focus:outline-none"
+          id='downvote-btn'
         >
           <ThumbsDown
             className={cn(
@@ -145,7 +147,7 @@ const PostMetrics = ({
         </button>
       </div>
 
-      <div className="flex items-center gap-1">
+      <div className="flex items-center gap-1" id='comment-btn'>
         {section === 'details' ? (
           <div>
             <svg

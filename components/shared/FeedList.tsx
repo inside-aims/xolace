@@ -116,15 +116,15 @@ const FeedList = ({ initialPosts }: FeedListProps) => {
   };
 
   return (
-    <div className="flex flex-col gap-4">
+    <div className="flex flex-col gap-4" >
       <BlurFade>
-        <div className="flex w-full flex-1 flex-col gap-3 pt-3">
-          {Array.isArray(posts) && posts.map((post) => (
+        <div className="flex w-full flex-1 flex-col gap-3 pt-3" id='feedList' >
+          {Array.isArray(posts) && posts.map((post, index) => (
             <BlurFade
               key={post.id}
+              postId={`post-${index + 1}`}
               duration={0.3}
               inView
-            
             >
               <PostCard
                 post={post}

@@ -24,6 +24,7 @@ interface BlurFadeProps {
   inView?: boolean;
   inViewMargin?: MarginType;
   blur?: string;
+  postId?: string;
 }
 
 export default function BlurFade({
@@ -36,6 +37,7 @@ export default function BlurFade({
   inView = false,
   inViewMargin = '-50px',
   blur = '6px',
+  postId,
 }: BlurFadeProps) {
   const ref = useRef(null);
   const inViewResult = useInView(ref, { once: true, margin: inViewMargin });
@@ -59,6 +61,7 @@ export default function BlurFade({
           ease: 'easeOut',
         }}
         className={className}
+        id={postId}
       >
         {children}
       </motion.div>
