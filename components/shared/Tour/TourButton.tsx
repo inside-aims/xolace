@@ -11,7 +11,7 @@ export default function TourButton({ onStartTour }: TourButtonProps) {
   return (
     <> 
     <Button variant="outline" onClick={onStartTour} className=" block md:hidden fixed bottom-10 right-5 z-50 rounded-full">
-      <Binoculars size={20} strokeWidth={2.25} />
+      <Binoculars size={20} strokeWidth={2.25} color="#342adb" />
     </Button>
 
     <button

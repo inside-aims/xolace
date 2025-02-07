@@ -46,8 +46,36 @@ export const createPostSteps = (): Step[] =>{
     return [
         {
             target: "#postTextArea",
-            content: "This is our Feed page.",
+            content: "Enter your thoughts , memories , experiences to share ",
             disableBeacon: true,
           },
+          {
+            target: "#postTextArea #tags-guide",
+            content: "You can add up to three tags(max). After posting, tags are seperated into their own cards "
+          },
+          {
+            target: "#postTextArea #mood-display",
+            content: "This displays mood chosen for post"
+          },
+          {
+            target: "#toggle24hr",
+            content: "Toggle whether to display post for only 24hr or for as long as you want  "
+          },
+          {
+            target: "#postTextArea #emoji-btn",
+            content: "Click to add emojis to your content 😉 "
+          },
+          {
+            target: "#mood-carousel",
+            content: "Pick from the moods displayed( such as sad , happy , angry , etc...) to describe your kind of post "
+          },
+          {
+            target: "#submit-btn",
+            content: "Click this button to submit your post  "
+          },
+          {
+            target: "#counter",
+            content: "Displays amount of characters entered into the content box, red indicates you have exceeded your limits "
+          }
     ]
 }
