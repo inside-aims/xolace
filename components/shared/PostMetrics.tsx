@@ -126,7 +126,7 @@ const PostMetrics = ({
             )}
           />
         </button>
-        <span className="min-w-[2ch] text-center font-medium">
+        <span className="min-w-[2ch] text-center font-medium" id='vote-count'>
           {upvoteCount - downvoteCount}
         </span>
         <button

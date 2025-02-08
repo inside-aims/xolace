@@ -1,14 +1,16 @@
 import { PostForm } from '@/components/forms/PostForm';
-import TourWrapper from '@/components/shared/Tour/TourWrapper';
+import TourButton from '@/components/shared/Tour/TourButton';
+import TourProvider from '@/components/shared/Tour/TourProvider';
 import { createPostSteps } from '@/constants/tourSteps';
 import React from 'react';
 
 const CreatePost = () => {
   const steps = createPostSteps()
   return (
-    <TourWrapper steps={steps} >
+    <TourProvider steps={steps} >
       <PostForm />
-    </TourWrapper>
+      <TourButton />
+    </TourProvider>
   );
 };
 

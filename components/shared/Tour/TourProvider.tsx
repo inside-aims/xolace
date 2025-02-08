@@ -1,59 +1,52 @@
 'use client';
 
-import { useState, useEffect } from 'react';
-import Joyride, { type Step, type CallBackProps, STATUS } from 'react-joyride';
-import type React from 'react'; // Added import for React
+import type React from 'react';
+import { TourProvider as ReactourProvider } from '@reactour/tour';
+import { TourButton, TourNavigation, TourProgress } from '@/styles/tourStyles';
 
 interface TourProviderProps {
   children: React.ReactNode;
-  steps: Step[];
-  startTour: boolean;
-  onTourEnd: () => void;
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  steps: any[];
 }
 
-export default function TourProvider({
-  children,
-  steps,
-  startTour,
-  onTourEnd,
-}: TourProviderProps) {
-  const [run, setRun] = useState(false);
-
-  useEffect(() => {
-    if (startTour) {
-      const timer = setTimeout(() => {
-        setRun(true);
-      }, 500);
-      return () => clearTimeout(timer);
-    } else {
-      setRun(false);
-    }
-  }, [startTour]);
-
-  const handleJoyrideCallback = (data: CallBackProps) => {
-    const { status } = data;
-    // Use explicit checks to narrow the type
-    if (status === STATUS.FINISHED || status === STATUS.SKIPPED) {
-      onTourEnd();
-    }
-  };
-
+export default function TourProvider({ children, steps }: TourProviderProps) {
   return (
-    <>
-      <Joyride
-        steps={steps}
-        run={run}
-        continuous
-        showProgress
-        showSkipButton
-        callback={handleJoyrideCallback}
-        styles={{
-          options: {
-            zIndex: 10000,
-          },
-        }}
-      />
+    <ReactourProvider
+      steps={steps}
+      styles={{
+        popover: base => ({
+          ...base,
+          background: 'none',
+          padding: 0,
+          boxShadow: 'none',
+        }),
+      }}
+      components={{
+        Badge: () => null,
+        Navigation: ({ currentStep, steps, setCurrentStep, setIsOpen }) => (
+          <TourNavigation>
+            <TourButton
+              onClick={() => setCurrentStep(s => s - 1)}
+              disabled={currentStep === 0}
+            >
+              Previous
+            </TourButton>
+            <TourProgress>
+              {currentStep + 1} / {steps.length}
+            </TourProgress>
+            {currentStep === steps.length - 1 ? (
+              <TourButton onClick={() => setIsOpen(false)}>Finish</TourButton>
+            ) : (
+              <TourButton onClick={() => setCurrentStep(s => s + 1)}>
+                Next
+              </TourButton>
+            )}
+          </TourNavigation>
+        ),
+      }}
+    >
       {children}
-    </>
+    </ReactourProvider>
   );
 }

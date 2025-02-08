@@ -1,8 +1,9 @@
 import { createClient } from '@/utils/supabase/server';
 import FeedList from '@/components/shared/FeedList';
 import { unstable_cache } from 'next/cache';
-import TourWrapper from '@/components/shared/Tour/TourWrapper';
+import TourProvider from '@/components/shared/Tour/TourProvider';
 import { FeedSteps } from '@/constants/tourSteps';
+import TourButton from '@/components/shared/Tour/TourButton';
 
 // Function to fetch posts with a Supabase client
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -59,11 +60,12 @@ export default async function FeedPage() {
   const initialPosts = await getCachedPosts(supabase);
   
   return (
-    <TourWrapper steps={FeedSteps}>
+    <TourProvider steps={FeedSteps}>
     <div className="sm:container">
       <FeedList initialPosts={initialPosts} />
     </div>
-    </TourWrapper>
+    <TourButton />
+    </TourProvider>
   );
 }
 

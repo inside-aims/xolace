@@ -30,7 +30,10 @@ function Bottombar() {
             </Link>
           );
         })}
+        <div id="theme-btn">
+
         <ThemeSwitch />
+        </div>
       </div>
     </section>
   );
