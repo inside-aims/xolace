@@ -79,7 +79,7 @@ function Topbar() {
         </div>
 
         <div className="flex items-center justify-center gap-3">
-          <div className="block md:hidden">
+          <div className="block md:hidden" id="sign-out">
             <Button
               variant={'ghost'}
               className="shad-button_ghost"

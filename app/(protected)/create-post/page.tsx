@@ -5,9 +5,8 @@ import { createPostSteps } from '@/constants/tourSteps';
 import React from 'react';
 
 const CreatePost = () => {
-  const steps = createPostSteps()
   return (
-    <TourProvider steps={steps} >
+    <TourProvider steps={createPostSteps} >
       <PostForm />
       <TourButton />
     </TourProvider>

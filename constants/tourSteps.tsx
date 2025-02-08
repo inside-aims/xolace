@@ -103,7 +103,7 @@ export const FeedSteps: Step[] = [
         <TourContent>
           {' '}
           Curious about the mood of this post? Take a peek and see if it&apos;s
-          chill, fiery, or somewhere in between—it&apos;s like reading the room,
+          happy, sad, angry , or somewhere in between—it&apos;s like reading the room,
           but for posts!{' '}
         </TourContent>{' '}
       </TourWrapper>
@@ -135,45 +135,114 @@ export const FeedSteps: Step[] = [
       </TourWrapper>
     ),
   },
+  {
+    selector: '#sign-out',
+    content: () => (
+      <TourWrapper>
+        <TourTitle>Sign Out</TourTitle>
+        <TourContent>
+          Are you sure you want to leave us? 😢 If you must go, click here to
+          sign out—but we’ll be waiting when you come back!
+        </TourContent>
+      </TourWrapper>
+    ),
+  },
 ];
 
-export const createPostSteps = (): Step[] => {
-  return [
-    {
-      selector: '#postTextArea',
-      content: 'Enter your thoughts , memories , experiences to share ',
-    },
-    {
-      selector: '#postTextArea #tags-guide',
-      content:
-        'You can add up to three tags(max). After posting, tags are seperated into their own cards ',
-    },
-    {
-      selector: '#postTextArea #mood-display',
-      content: 'This displays mood chosen for post',
-    },
-    {
-      selector: '#toggle24hr',
-      content:
-        'Toggle whether to display post for only 24hr or for as long as you want  ',
-    },
-    {
-      selector: '#postTextArea #emoji-btn',
-      content: 'Click to add emojis to your content 😉 ',
-    },
-    {
-      selector: '#mood-carousel',
-      content:
-        'Pick from the moods displayed( such as sad , happy , angry , etc...) to describe your kind of post ',
-    },
-    {
-      selector: '#submit-btn',
-      content: 'Click this button to submit your post  ',
-    },
-    {
-      selector: '#counter',
-      content:
-        'Displays amount of characters entered into the content box, red indicates you have exceeded your limits ',
-    },
-  ];
-};
+export const createPostSteps: Step[] = [
+  {
+    selector: '#postTextArea',
+    content: () => (
+      <TourWrapper>
+        <TourTitle>Share Your Story</TourTitle>
+        <TourContent>
+          Got thoughts, memories, or experiences to share? Let them flow right
+          here!
+        </TourContent>
+      </TourWrapper>
+    ),
+  },
+  {
+    selector: '#postTextArea #tags-guide',
+    content: () => (
+      <TourWrapper>
+        <TourTitle>Tag Your Post</TourTitle>
+        <TourContent>
+          Keep it relevant! Add up to three tags (max) to your post. Once
+          posted, each tag gets its own shiny little card!
+        </TourContent>
+      </TourWrapper>
+    ),
+  },
+  {
+    selector: '#postTextArea #mood-display',
+    content: () => (
+      <TourWrapper>
+        <TourTitle>Post Mood</TourTitle>
+        <TourContent>
+          This reveals the mood chosen for the post—because every post has a
+          vibe!
+        </TourContent>
+      </TourWrapper>
+    ),
+  },
+  {
+    selector: '#toggle24hr',
+    content: () => (
+      <TourWrapper>
+        <TourTitle>Post Duration</TourTitle>
+        <TourContent>
+          Set the clock! Choose whether your post vanishes in 24 hours or stays
+          up for the long haul.
+        </TourContent>
+      </TourWrapper>
+    ),
+  },
+  {
+    selector: '#postTextArea #emoji-btn',
+    content: () => (
+      <TourWrapper>
+        <TourTitle>Add Emojis</TourTitle>
+        <TourContent>
+          A picture&apos;s worth a thousand words—so why not add some emojis?
+          Click to sprinkle some extra flair! 😉
+        </TourContent>
+      </TourWrapper>
+    ),
+  },
+  {
+    selector: '#mood-carousel',
+    content: () => (
+      <TourWrapper>
+        <TourTitle>Choose a Mood</TourTitle>
+        <TourContent>
+          Set the tone! Pick a mood—happy, sad, angry, or anything in between—to
+          match your post&apos;s vibe.
+        </TourContent>
+      </TourWrapper>
+    ),
+  },
+  {
+    selector: '#submit-btn',
+    content: () => (
+      <TourWrapper>
+        <TourTitle>Submit Your Post</TourTitle>
+        <TourContent>
+          All set? Click this button to send your post out into the world!
+        </TourContent>
+      </TourWrapper>
+    ),
+  },
+  {
+    selector: '#counter',
+    content: () => (
+      <TourWrapper>
+        <TourTitle>Character Count</TourTitle>
+        <TourContent>
+          Keep an eye on your words! This shows how many characters you&apos;ve
+          typed—if it turns red, you&apos;ve gone over the limit!
+        </TourContent>
+      </TourWrapper>
+    ),
+  },
+];
