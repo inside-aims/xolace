@@ -123,7 +123,7 @@ if(!postsData) {
 
       <section className="mt-12">
         <LocalSearch
-          placeholder="Search questions..."
+          placeholder="Search posts..."
           otherClasses="flex-1"
           route="/explore"
         />

@@ -126,7 +126,7 @@ export function PostCard({ className, post, onClick }: PostCardType) {
             userId={user?.id || ''}
             votes={post.votes}
           />
-          <div className="flex items-center gap-2">
+          <div className="flex items-center gap-2" id='view-btn'>
             <EyeIcon className=" size-4 sm:size-6 text-red-200" />
             <span className=" text-sm sm:text-[15px]">{post.views[0].count}</span>
           </div>
@@ -136,6 +136,7 @@ export function PostCard({ className, post, onClick }: PostCardType) {
             className={`flex items-center justify-center rounded-3xl border p-1 dark:bg-transparent ${
               mood.style
             }`}
+            id='mood-btn'
           >
             <span>
               {mood.gif ? (
@@ -160,7 +161,7 @@ export function PostCard({ className, post, onClick }: PostCardType) {
             )}
           </div>
 
-          <div>
+          <div id='collection-btn'>
             <SaveToCollectionsButton userId={user?.id || ''} postId={post.id} postCollections={post.collections} />
           </div>
           </div>
