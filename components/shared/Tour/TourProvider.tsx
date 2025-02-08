@@ -1,36 +1,42 @@
-"use client"
+'use client';
 
-import { useState, useEffect } from "react"
-import Joyride, { type Step, type CallBackProps, STATUS } from "react-joyride"
-import type React from "react" // Added import for React
+import { useState, useEffect } from 'react';
+import Joyride, { type Step, type CallBackProps, STATUS } from 'react-joyride';
+import type React from 'react'; // Added import for React
 
 interface TourProviderProps {
-  children: React.ReactNode
-  steps: Step[]
-  startTour: boolean
-  onTourEnd: () => void
+  children: React.ReactNode;
+  steps: Step[];
+  startTour: boolean;
+  onTourEnd: () => void;
 }
 
-export default function TourProvider({ children, steps, startTour, onTourEnd }: TourProviderProps) {
-  const [run, setRun] = useState(false)
+export default function TourProvider({
+  children,
+  steps,
+  startTour,
+  onTourEnd,
+}: TourProviderProps) {
+  const [run, setRun] = useState(false);
 
   useEffect(() => {
     if (startTour) {
       const timer = setTimeout(() => {
-        setRun(true)
-      }, 500)
-      return () => clearTimeout(timer)
+        setRun(true);
+      }, 500);
+      return () => clearTimeout(timer);
     } else {
-      setRun(false)
+      setRun(false);
     }
-  }, [startTour])
+  }, [startTour]);
 
   const handleJoyrideCallback = (data: CallBackProps) => {
-    const { status } = data
-    if ([STATUS.FINISHED, STATUS.SKIPPED].includes(status)) {
-      onTourEnd()
+    const { status } = data;
+    // Use explicit checks to narrow the type
+    if (status === STATUS.FINISHED || status === STATUS.SKIPPED) {
+      onTourEnd();
     }
-  }
+  };
 
   return (
     <>
@@ -49,6 +55,5 @@ export default function TourProvider({ children, steps, startTour, onTourEnd }: 
       />
       {children}
     </>
-  )
+  );
 }
-
