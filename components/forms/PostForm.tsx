@@ -145,9 +145,9 @@ export function PostForm() {
         variant: 'default',
         title: 'Post created successfully🤭 !',
       });
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    } catch (error: any) {
+  
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars 
+    } catch (error) {
       toast({
         title: 'Error!',
         description: 'Ooops🫢 !! Could not create post, Please try again',
