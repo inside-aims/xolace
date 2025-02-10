@@ -1,6 +1,9 @@
 import { createClient } from '@/utils/supabase/server';
 import FeedList from '@/components/shared/FeedList';
 import { unstable_cache } from 'next/cache';
+import TourProvider from '@/components/shared/Tour/TourProvider';
+import { FeedSteps } from '@/constants/tourSteps';
+import TourButton from '@/components/shared/Tour/TourButton';
 
 // Function to fetch posts with a Supabase client
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -20,13 +23,15 @@ async function fetchPosts(supabase: any) {
           vote_type
           ),
           comments:comments(count),
-          views:views(count)
+          views:views(count),
+        collections(
+          user_id
+        )  
     `,
     )
     .order('created_at', { ascending: false });
 
   if (error) {
-    console.error('Error fetching posts:', error.message);
     return [];
   }
 
@@ -54,9 +59,12 @@ export default async function FeedPage() {
   const initialPosts = await getCachedPosts(supabase);
   
   return (
+    <TourProvider steps={FeedSteps}>
     <div className="sm:container">
       <FeedList initialPosts={initialPosts} />
     </div>
+    <TourButton />
+    </TourProvider>
   );
 }
 

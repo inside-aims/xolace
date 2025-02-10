@@ -116,7 +116,6 @@ export function PostForm() {
   async function onSubmit(data: z.infer<typeof PostSchema>) {
     // save post values to db
     setIsLoading(true);
-    console.log(data);
     const { content, is24HourPost } = data;
     // remove tags from post content
     const contentWithoutTags = removeHashtags(content);
@@ -124,29 +123,6 @@ export function PostForm() {
     const expires_at = duration ? calculateExpiryDate(duration) : null;
 
     try {
-      // const { data: postData, error: postError } = await supabase
-      //   .from("posts")
-      //   .insert({
-      //     content: contentWithoutTags,
-      //     mood: selectedMood?.value,
-      //     expires_in_24hr: is24HourPost,
-      //     duration,
-      //     expires_at
-      //   })
-      //   .select()
-      //   .single();
-
-      console.log(
-        'data -> ',
-        tags,
-        ' ',
-        contentWithoutTags,
-        ' ',
-        expires_at,
-        ' ',
-        is24HourPost,
-      );
-
       const { error: postError } = await supabase.rpc('create_post_with_tags', {
         content: contentWithoutTags,
         duration: duration ? `${duration}` : duration,
@@ -159,9 +135,8 @@ export function PostForm() {
       if (postError) {
         toast({
           variant: 'destructive',
-          title: 'Oops, something must have gone wrong 😵‍💫!',
+          title: 'Oops, something must have gone wrong 😵‍💫! try again',
         });
-        console.log(postError);
         return;
       }
 
@@ -170,14 +145,14 @@ export function PostForm() {
         variant: 'default',
         title: 'Post created successfully🤭 !',
       });
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    } catch (error: any) {
+  
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars 
+    } catch (error) {
       toast({
         title: 'Error!',
         description: 'Ooops🫢 !! Could not create post, Please try again',
         variant: 'destructive',
       });
-      console.error(error);
     } finally {
       setIsLoading(false);
       form.reset();
@@ -198,7 +173,7 @@ export function PostForm() {
           render={({ field }) => (
             <FormItem className="relative">
               <FormControl>
-                <div className="relative">
+                <div className="relative" id='postTextArea'>
                   <Textarea
                     {...field}
                     ref={e => {
@@ -211,10 +186,11 @@ export function PostForm() {
                     }}
                     placeholder="What's on your mind? Use # for tags! At most 3"
                     className={`no-focus h-[150px] resize-none !pr-10 !pt-8 text-dark-2 transition-all duration-300 dark:text-white ${isNeutral && 'border-pink-500 dark:border-pink-400'} ${isHappy && 'border-green-500 dark:border-green-400'} ${isSad && 'border-blue dark:border-sky-400'} ${isAngry && 'border-red-500 dark:border-red-400'} ${isConfused && 'border-yellow-500 dark:border-yellow-400'} `}
+                    id='tags-guide'
                   />
 
                   {/* mood icon */}
-                  <div className="absolute bottom-3 left-3 flex items-center gap-x-1">
+                  <div className="absolute bottom-3 left-3 flex items-center gap-x-1" id="mood-display">
                     <span>
                       {selectedMood?.gif ? (
                         <Image
@@ -250,6 +226,7 @@ export function PostForm() {
                         size="icon"
                         className="absolute bottom-2 right-2"
                         aria-label="Open emoji picker"
+                        id='emoji-btn'
                       >
                         <Smile className="h-4 w-4" />
                       </Button>
@@ -276,6 +253,7 @@ export function PostForm() {
                   <FloatingCheckbox
                     checked={field.value}
                     onCheckedChange={field.onChange}
+                    id="toggle24hr"
                   />
                 )}
               />
@@ -303,7 +281,7 @@ export function PostForm() {
           )}
         />
 
-        <div className="!mt-1 w-full max-sm:px-10">
+        <div className="!mt-1 w-full max-sm:px-10" id="mood-carousel">
           <MoodCarousel
             selectedMood={selectedMood}
             setSelectedMood={setSelectedMood}
@@ -315,6 +293,7 @@ export function PostForm() {
             disabled={content.length > 500 || isLoading}
             type="submit"
             className="rounded-full"
+            id="submit-btn"
           >
             {isLoading ? (
               <span className="flex gap-2">
@@ -333,6 +312,7 @@ export function PostForm() {
                 ? 'border-red-500 bg-red-400'
                 : 'border-blue bg-blue'
             } flex h-9 max-h-9 min-h-9 w-9 min-w-9 max-w-9 items-center justify-center rounded-full p-3 shadow-sm`}
+             id='counter'
           >
             {counter - content.length}
           </p>

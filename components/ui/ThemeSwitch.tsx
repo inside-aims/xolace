@@ -24,6 +24,7 @@ const ThemeSwitch = () => {
           theme === 'dark' || resolvedTheme === 'dark' ? 'light' : 'dark',
         )
       }
+      
     >
       {mounted && (theme === 'dark' || resolvedTheme === 'dark') ? (
         <SunIcon className="fill-gray-700/10" />

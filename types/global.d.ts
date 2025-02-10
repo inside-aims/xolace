@@ -1,4 +1,4 @@
-import { Database } from './types_db';
+import { Database } from "./types_db";
 // export interface Post extends Database['public']['Tables']['posts']['Row'] {
 //   posttags: Array<{
 //     tags: {
@@ -30,7 +30,8 @@ type Post = Database['public']['Tables']['posts']['Row'] & {
   }];
   views:[{
     count:number
-  }]
+  }];
+  collections: Database['public']['Tables']['collections']['Row'][]
 };
 
 type DetailPost = Database['public']['Tables']['posts']['Row'] & {
@@ -41,6 +42,7 @@ type DetailPost = Database['public']['Tables']['posts']['Row'] & {
   }[];
   votes: Database['public']['Tables']['votes']['Row'][];
   comments: Database['public']['Tables']['comments']['Row'][];
+  collections: Database['public']['Tables']['collections']['Row'][]
 };
 
 type User = Database['public']['Tables']['profiles']['Row']

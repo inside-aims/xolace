@@ -7,7 +7,7 @@ import {
   ThumbsUp,
   Flame,
   Clock,
-  Bomb
+  Bomb, Eclipse, Key , GlobeLock, Copyright, LibraryBig
 } from 'lucide-react';
 
 export const sidebarLinks = [
@@ -42,12 +42,40 @@ export const sidebarLinks = [
     route: '/channel',
     label: 'Channel',
   },
+  {
+    imgURL: <LibraryBig />,
+    route: '/collections',
+    label: 'Collections',
+  },
   // {
   //   imgURL: "/assets/community.svg",
   //   route: "/communities",
   //   label: "Communities",
   // },
 ];
+
+export const aboutLeftSideLinks = [
+  {
+    imgURL: <Eclipse />,
+    route: '/about/general',
+    label: 'About Xolace',
+  },
+  {
+    imgURL: <Key />,
+    route: '/about/terms',
+    label: 'Terms',
+  },
+  {
+    imgURL: <GlobeLock />,
+    route: '/about/privacy',
+    label: 'Privacy',
+  },
+  {
+    imgURL: <Copyright />,
+    route: '/about/credits',
+    label: 'Credits & Licenses',
+  },
+]
 
 export const navLinks = [
   {
@@ -61,6 +89,10 @@ export const navLinks = [
   {
     route: '/explore',
     label: 'Explore',
+  },
+  {
+    route: '/collections',
+    label: 'Collections',
   },
 ];
 
@@ -99,6 +131,7 @@ export const postMoods = [
     value: 'angry',
     icon: '😠',
     color: 'red',
+    gif: '/assets/gifs/post-moods/angry-unscreen.gif',
   },
   {
     id: 5,

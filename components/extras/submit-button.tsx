@@ -14,7 +14,6 @@ export function SubmitButton({
   ...props
 }: Props) {
   const { pending } = useFormStatus();
-  console.log(pending);
 
   return (
     <Button type="submit" aria-disabled={pending} {...props}>

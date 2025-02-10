@@ -81,7 +81,10 @@ posttags (
   vote_type
   ),
   comments:comments(count),
-  views:views(count)
+  views:views(count),
+  collections(
+          user_id
+        )  
 `,
   )
   .order('created_at', { ascending: false });
@@ -120,7 +123,7 @@ if(!postsData) {
 
       <section className="mt-12">
         <LocalSearch
-          placeholder="Search questions..."
+          placeholder="Search posts..."
           otherClasses="flex-1"
           route="/explore"
         />

@@ -8,6 +8,7 @@ import { Clock } from 'lucide-react';
 interface FloatingCheckboxProps {
   checked: boolean;
   onCheckedChange: (checked: boolean) => void;
+  id?: string
 }
 
 const Hours = () => <p className="text-[9px]">24h</p>;
@@ -15,6 +16,7 @@ const Hours = () => <p className="text-[9px]">24h</p>;
 export const FloatingCheckbox = React.memo(function FloatingCheckbox({
   checked,
   onCheckedChange,
+  id
 }: FloatingCheckboxProps) {
   const [isHovered, setIsHovered] = useState(false);
 
@@ -28,6 +30,7 @@ export const FloatingCheckbox = React.memo(function FloatingCheckbox({
       whileTap={{ scale: 0.95 }}
       onHoverStart={handleHoverStart}
       onHoverEnd={handleHoverEnd}
+      id={id}
     >
       <Checkbox
         id="24-hour-mode"

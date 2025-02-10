@@ -17,6 +17,7 @@ import { useUserState } from '@/lib/store/user';
 import { getSupabaseBrowserClient } from '@/utils/supabase/client';
 import BlurFade from '@/components/ui/blur-fade';
 import { Post } from '@/types/global';
+import { useToast } from '@/components/ui/use-toast';
 
 const Profile = () => {
   const router = useRouter();
@@ -25,6 +26,9 @@ const Profile = () => {
 
   // initialize supabase client
   const supabase = getSupabaseBrowserClient();
+
+  // destructure toast function
+  const { toast } = useToast();
 
   const [isLoadingPosts, setIsLoadingPosts] = useState(true);
   const [posts, setPosts] = useState<Post[]>([]);
@@ -47,7 +51,10 @@ const Profile = () => {
           vote_type
           ),
           comments:comments(count),
-          views:views(count)
+          views:views(count),
+          collections(
+          user_id
+          )
     `,
         )
         .eq('created_by', user?.id)
@@ -55,7 +62,11 @@ const Profile = () => {
       const { data: postData, error } = await postStatement;
 
       if (error) {
-        console.error(error);
+        toast({
+          title: 'Error fetching posts',
+          description: 'Something must have gone wrong. Kindly refresh the page',
+          variant: 'destructive',
+        });
       } else {
         setPosts(postData);
         setIsLoadingPosts(false);

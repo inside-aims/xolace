@@ -1,8 +1,9 @@
 'use client';
 
 import React, { useState, useEffect } from 'react';
+import { useRouter } from 'next/navigation';
 import { ThumbsUp, ThumbsDown } from 'lucide-react';
-import Link from 'next/link';
+//import Link from 'next/link';
 import { cn } from '@/lib/utils';
 import { voteAction } from '@/app/actions';
 import { Comment } from '@/types/global';
@@ -17,7 +18,7 @@ interface PostMetricsProps {
   section?: string;
   commentLength?: number;
   userId: string;
-  votes?: { user_id: string; vote_type: string }[];
+  votes?: { user_id: string | null; vote_type: string }[];
 }
 
 const PostMetrics = ({
@@ -27,6 +28,8 @@ const PostMetrics = ({
   userId,
   votes = [],
 }: PostMetricsProps) => {
+  const router = useRouter()
+
   // Get the current user's vote if it exists
   const userVote = votes.find(vote => vote.user_id === userId)?.vote_type || null;
   
@@ -77,11 +80,9 @@ const PostMetrics = ({
         setUpvoteCount(post.upvotes);
         setDownvoteCount(post.downvotes);
 
-        console.log(result.error);
       }
-   
+   // eslint-disable-next-line @typescript-eslint/no-unused-vars
     } catch (error) {
-      console.log(error);
       // Revert changes on error
       setCurrentVote(userVote);
       setUpvoteCount(post.upvotes);
@@ -89,6 +90,19 @@ const PostMetrics = ({
     } finally {
       setIsVoting(false);
     }
+  };
+
+  const handlePostClick = (postId: string) => {
+    const viewContext = {
+      scrollY: window.scrollY,
+      timestamp: Date.now(),
+      viewportHeight: window.innerHeight,
+      lastVisiblePost: document.elementFromPoint(0, window.innerHeight - 10)?.id || postId,
+      section: 'feed'
+    };
+
+    sessionStorage.setItem('feedViewContext', JSON.stringify(viewContext));
+    router.push(`post/${post.id}?type=comment`);
   };
 
   return (
@@ -99,6 +113,7 @@ const PostMetrics = ({
           onClick={() => handleVote('upvote')}
           disabled={isVoting}
           className="focus:outline-none"
+          id='upvote-btn'
         >
           <ThumbsUp
             className={cn(
@@ -109,7 +124,7 @@ const PostMetrics = ({
             )}
           />
         </button>
-        <span className="min-w-[2ch] text-center font-medium">
+        <span className="min-w-[2ch] text-center font-medium" id='vote-count'>
           {upvoteCount - downvoteCount}
         </span>
         <button
@@ -117,6 +132,7 @@ const PostMetrics = ({
           onClick={() => handleVote('downvote')}
           disabled={isVoting}
           className="focus:outline-none"
+          id='downvote-btn'
         >
           <ThumbsDown
             className={cn(
@@ -129,7 +145,7 @@ const PostMetrics = ({
         </button>
       </div>
 
-      <div className="flex items-center gap-1">
+      <div className="flex items-center gap-1" id='comment-btn'>
         {section === 'details' ? (
           <div>
             <svg
@@ -148,9 +164,9 @@ const PostMetrics = ({
             </svg>
           </div>
         ) : (
-          <Link
-            href={`post/${post.id}?type=comment`}
-            className="text-default-400 text-small font-semibold"
+          <div
+            className="text-default-400 text-small font-semibold cursor-pointer"
+            onClick={()=>handlePostClick(post.id)}
           >
             <svg
               xmlns="http://www.w3.org/2000/svg"
@@ -166,7 +182,7 @@ const PostMetrics = ({
                 d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z"
               />
             </svg>
-          </Link>
+          </div>
         )}
         <p className="text-default-400 text-small">
           {section === 'details' 

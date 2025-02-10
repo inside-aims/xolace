@@ -54,11 +54,11 @@ function Topbar() {
     <>
       <nav className="topbar">
         <div className="flex items-center gap-x-4">
-          <Link href="/" className="flex items-center gap-4">
+          <Link href="/feed" className="flex items-center gap-4">
             <Image
               src="/assets/images/anonymous-messenger.png"
               alt="logo"
-              width={32}
+              width={40}
               height={32}
               className="hidden dark:block"
             />
@@ -66,23 +66,12 @@ function Topbar() {
             <Image
               src="/assets/images/anonymous-messenger_light.png"
               alt="logo"
-              width={32}
+              width={40}
               height={32}
               className="block dark:hidden"
             />
           </Link>
-          <div className="relative z-40 flex shrink-0 items-center">
-            <Link href={'/feed'} className="max-md:hidden">
-              <div className="font-tilt z-50 text-center font-tiltNeon text-[35px]">
-                <span className="letter-mask">X</span>
-                <span className="letter-mask !text-amber-400">o</span>
-                <span className="letter-mask">l</span>
-                <span className="letter-mask">a</span>
-                <span className="letter-mask">c</span>
-                <span className="letter-mask">e</span>
-              </div>
-            </Link>
-          </div>
+
 
           <div className="md:hidden">
             <ProgressBetaBadge progress={30} />
@@ -90,7 +79,7 @@ function Topbar() {
         </div>
 
         <div className="flex items-center justify-center gap-3">
-          <div className="block md:hidden">
+          <div className="block md:hidden" id="sign-out">
             <Button
               variant={'ghost'}
               className="shad-button_ghost"
