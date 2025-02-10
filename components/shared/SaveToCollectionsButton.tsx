@@ -52,8 +52,9 @@ useEffect(() => {
           });
         }
       });
+
+      // eslint-disable-next-line @typescript-eslint/no-unused-vars
     } catch (error) {
-      console.error('Error updating collection:', error);
       toast({
         variant: 'destructive',
         title: 'An unexpected error occurred',

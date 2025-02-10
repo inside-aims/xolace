@@ -22,7 +22,6 @@ const PostDetailPage = async (props: {
 
   // incase there is no post id
   if (!postId) {
-    console.error('postId is missing from params.');
     return notFound();
   }
 
@@ -51,10 +50,8 @@ const PostDetailPage = async (props: {
     .order('created_at', { ascending: true, referencedTable: 'comments' })
     .single();
 
-  console.log(error);
   //  check for error
   if (error) {
-    console.error('Error fetching post:', error.message);
     return notFound();
   }
 

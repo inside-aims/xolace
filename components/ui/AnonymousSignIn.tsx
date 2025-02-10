@@ -112,10 +112,10 @@ const AnonymousSignIn = () => {
               By signing in anonymously, you&apos;ll be able to:
               <span className="mb-2 block">
                 {' '}
-                ✅ Add posts, like, and comment just like any other user.
+                ✅ Add posts, vote, and comment just like any other user.
               </span>
               However, keep in mind:
-              <span className="block"> 📛 You cannot delete posts after they’re created.</span>
+              <span className="block"> 📛 You cannot delete anonymous accounts.</span>
               <span className="block">
                 📛 If you log out, clear your browser, or switch devices, you
                 will lose access to your account            </span>

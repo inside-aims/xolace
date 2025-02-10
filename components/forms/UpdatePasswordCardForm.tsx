@@ -27,6 +27,7 @@ import { getSupabaseBrowserClient } from '@/utils/supabase/client';
 import { useToast } from '../ui/use-toast';
 import Loader from '../shared/loaders/Loader';
 import ToggleEyeIcon from '../ui/ToggleEyeIcon';
+import { notFound } from 'next/navigation';
 
 const UpdatePasswordCardForm = () => {
   const { toast } = useToast();
@@ -48,19 +49,16 @@ const UpdatePasswordCardForm = () => {
   //
   async function onSubmit(data: z.infer<typeof UpdatePasswordSchema>) {
     setIsLoading(true);
-    console.log(data);
 
     const { password, newPassword } = data;
 
     // Get user data
     const user = (await supabase.auth.getUser()).data?.user;
     if (!user) {
-      console.error('User not found');
-      return;
+      return notFound() ;
     }
 
     if (user.is_anonymous) {
-      console.log('anonymous-> ', user.is_anonymous);
       toast({
         title: 'Error updating password',
         description: 'Anonymous users cannot update passwords',
@@ -78,7 +76,6 @@ const UpdatePasswordCardForm = () => {
       });
 
       if (signInError) {
-        console.error('Old password is incorrect:', signInError.message);
         toast({
           title: 'Old password is incorrect',
           variant: 'destructive',
@@ -93,7 +90,6 @@ const UpdatePasswordCardForm = () => {
       });
 
       if (updateError) {
-        console.error('Error updating password:', updateError.message);
         toast({
           title: 'Error updating password',
           description: updateError.message,

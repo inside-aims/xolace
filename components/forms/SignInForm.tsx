@@ -49,7 +49,6 @@ const SignInForm = () => {
     // Do something with the form values.
     // ✅ This will be type-safe and validated.
     setIsLoading(true);
-    console.log(values);
     const { email, password } = values;
 
     try {
@@ -72,8 +71,13 @@ const SignInForm = () => {
           setIsLoading(false);
           form.reset();
         });
+
+      // eslint-disable-next-line @typescript-eslint/no-unused-vars
     } catch (error) {
-      console.log(error);
+      toast({
+        variant: 'destructive',
+        title: ' 😿 Something must have gone wrong, Please try again',
+      });
     }
 
     return;

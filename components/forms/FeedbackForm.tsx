@@ -53,7 +53,6 @@ const FeedbackForm = () => {
   async function onSubmit(values: z.infer<typeof formSchema>) {
     // Do something with the form values.
     // ✅ This will be type-safe and validated.
-    console.log(values);
     setIsLoading(true);
     const { area, description } = values;
 
@@ -72,7 +71,6 @@ const FeedbackForm = () => {
         variant: 'destructive',
         title: 'Oops, something must have gone wrong 😵‍💫!',
       });
-      console.log(feedbackError);
       setIsLoading(false);
       return;
     }

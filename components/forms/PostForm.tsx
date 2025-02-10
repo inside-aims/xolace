@@ -116,7 +116,6 @@ export function PostForm() {
   async function onSubmit(data: z.infer<typeof PostSchema>) {
     // save post values to db
     setIsLoading(true);
-    console.log(data);
     const { content, is24HourPost } = data;
     // remove tags from post content
     const contentWithoutTags = removeHashtags(content);
@@ -124,29 +123,6 @@ export function PostForm() {
     const expires_at = duration ? calculateExpiryDate(duration) : null;
 
     try {
-      // const { data: postData, error: postError } = await supabase
-      //   .from("posts")
-      //   .insert({
-      //     content: contentWithoutTags,
-      //     mood: selectedMood?.value,
-      //     expires_in_24hr: is24HourPost,
-      //     duration,
-      //     expires_at
-      //   })
-      //   .select()
-      //   .single();
-
-      console.log(
-        'data -> ',
-        tags,
-        ' ',
-        contentWithoutTags,
-        ' ',
-        expires_at,
-        ' ',
-        is24HourPost,
-      );
-
       const { error: postError } = await supabase.rpc('create_post_with_tags', {
         content: contentWithoutTags,
         duration: duration ? `${duration}` : duration,
@@ -159,9 +135,8 @@ export function PostForm() {
       if (postError) {
         toast({
           variant: 'destructive',
-          title: 'Oops, something must have gone wrong 😵‍💫!',
+          title: 'Oops, something must have gone wrong 😵‍💫! try again',
         });
-        console.log(postError);
         return;
       }
 
@@ -170,14 +145,14 @@ export function PostForm() {
         variant: 'default',
         title: 'Post created successfully🤭 !',
       });
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    } catch (error: any) {
+  
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars 
+    } catch (error) {
       toast({
         title: 'Error!',
         description: 'Ooops🫢 !! Could not create post, Please try again',
         variant: 'destructive',
       });
-      console.error(error);
     } finally {
       setIsLoading(false);
       form.reset();

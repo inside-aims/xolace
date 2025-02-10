@@ -16,7 +16,6 @@ const FilterPills: React.FC = () => {
   const handleTypeClick = (filter: string) => {
     let newUrl = '';
     if (filter === active) {
-      console.log('damn');
       setActive('');
       newUrl = removeKeyFromQuery({
         params: searchParams.toString(),

@@ -67,8 +67,9 @@ const PostDropdown: React.FC<DropdownMenuProp> = ({
       toast({
         title: `Successfully Deleted Comment.💯 `,
       });
+
+      // eslint-disable-next-line @typescript-eslint/no-unused-vars
     } catch (error) {
-      console.log(error);
       toast({
         title: 'Error deleting comment:',
       });
@@ -81,7 +82,6 @@ const PostDropdown: React.FC<DropdownMenuProp> = ({
   const onPostDelete = async () => {
     setIsLoading(true);
     try {
-      // await handleDelete({ comment, postCard, postId });
       const { error: deleteError } = await supabase
         .from('posts')
         .delete()
@@ -92,8 +92,7 @@ const PostDropdown: React.FC<DropdownMenuProp> = ({
           title: 'Error deleting post',
           description: 'Oops! Something went wrong , please try again 👀 ',
         });
-        console.log(deleteError);
-        throw new Error();
+        return;
       }
 
       // display success toast
@@ -104,12 +103,13 @@ const PostDropdown: React.FC<DropdownMenuProp> = ({
       // navigate to feed page if its the details page
       // eslint-disable-next-line @typescript-eslint/no-unused-expressions
       postDetail && router.replace('/feed');
+
+      // eslint-disable-next-line @typescript-eslint/no-unused-vars
     } catch (error) {
-      console.log(error);
       toast({
         title: 'Error deleting post:',
       });
-      throw new Error();
+      return;
     } finally {
       setIsLoading(false);
     }
