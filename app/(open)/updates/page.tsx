@@ -31,9 +31,10 @@ const UpdatesPage = () => {
             <p className="mb-2 text-xl font-bold">{log.title}</p>
             <div className="pl-10">
               <ul className="list-disc">
-                {log.changes.map((change, index) => (
-                  <li key={index}>{change}</li>
-                ))}
+                {log.changes.map((change, index) => {
+
+                  return change.startsWith("**") ?  <li key={index} className="text-primary-500 list-none pt-2 pb-1 font-bold">{change}</li> : <li key={index}>{change}</li>
+                })}
               </ul>
             </div>
           </div>
