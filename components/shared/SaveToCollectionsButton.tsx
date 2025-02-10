@@ -52,6 +52,8 @@ useEffect(() => {
           });
         }
       });
+
+      // eslint-disable-next-line @typescript-eslint/no-unused-vars
     } catch (error) {
       toast({
         variant: 'destructive',

@@ -87,6 +87,7 @@ const FeedList = ({ initialPosts }: FeedListProps) => {
             
             sessionStorage.removeItem('feedViewContext');
           }, 600);
+          // eslint-disable-next-line @typescript-eslint/no-unused-vars
         } catch (error) {
           sessionStorage.removeItem('feedViewContext');
         }

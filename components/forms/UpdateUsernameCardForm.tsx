@@ -65,7 +65,7 @@ export default function UpdateUsernameCardForm() {
     }
 
     // update username in profiles table
-    const { data: newUser, error: updateError } = await supabase
+    const { error: updateError } = await supabase
       .from('profiles')
       .update({
         username,

@@ -71,6 +71,8 @@ const SignInForm = () => {
           setIsLoading(false);
           form.reset();
         });
+
+      // eslint-disable-next-line @typescript-eslint/no-unused-vars
     } catch (error) {
       toast({
         variant: 'destructive',

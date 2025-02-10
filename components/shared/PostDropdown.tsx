@@ -67,6 +67,8 @@ const PostDropdown: React.FC<DropdownMenuProp> = ({
       toast({
         title: `Successfully Deleted Comment.💯 `,
       });
+
+      // eslint-disable-next-line @typescript-eslint/no-unused-vars
     } catch (error) {
       toast({
         title: 'Error deleting comment:',
@@ -101,6 +103,8 @@ const PostDropdown: React.FC<DropdownMenuProp> = ({
       // navigate to feed page if its the details page
       // eslint-disable-next-line @typescript-eslint/no-unused-expressions
       postDetail && router.replace('/feed');
+
+      // eslint-disable-next-line @typescript-eslint/no-unused-vars
     } catch (error) {
       toast({
         title: 'Error deleting post:',

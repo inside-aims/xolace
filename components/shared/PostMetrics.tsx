@@ -81,7 +81,7 @@ const PostMetrics = ({
         setDownvoteCount(post.downvotes);
 
       }
-   
+   // eslint-disable-next-line @typescript-eslint/no-unused-vars
     } catch (error) {
       // Revert changes on error
       setCurrentVote(userVote);

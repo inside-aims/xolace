@@ -146,6 +146,7 @@ export function PostForm() {
         title: 'Post created successfully🤭 !',
       });
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     } catch (error: any) {
       toast({
         title: 'Error!',

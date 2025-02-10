@@ -55,7 +55,7 @@ export const signUpAction = validatedAction(signUpSchema, async data => {
   }
 
   // create user profile
-  const { data: profileUser, error: puError } = await supabaseAdmin
+  const { error: puError } = await supabaseAdmin
     .from('profiles')
     .insert({
       username: username,

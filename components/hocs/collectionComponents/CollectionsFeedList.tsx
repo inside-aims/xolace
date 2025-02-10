@@ -60,6 +60,8 @@ const CollectionsFeedList = ({ postsData, isLoading }: CollectionsFeedListProps)
 
           sessionStorage.removeItem('CollectionFeedViewContext');
         }, 500);
+
+        // eslint-disable-next-line @typescript-eslint/no-unused-vars
         } catch (error) {
           sessionStorage.removeItem('CollectionFeedViewContext');
         }
