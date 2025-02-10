@@ -88,7 +88,6 @@ const FeedList = ({ initialPosts }: FeedListProps) => {
             sessionStorage.removeItem('feedViewContext');
           }, 600);
         } catch (error) {
-          console.error('Error restoring feed position:', error);
           sessionStorage.removeItem('feedViewContext');
         }
       }

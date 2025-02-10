@@ -19,7 +19,6 @@ const PostStats = ({
   userId,
 }: postStatProps) => {
   const postLikesList = post.likes.map((like: any) => like.user_id);
-  console.log(postLikesList);
   // Set local state for likes
   const [likesList, setLikesList] = useState(postLikesList || []);
   const [isLiked, setIsLiked] = useState(checkIsLiked(likesList || [], userId));

@@ -32,7 +32,6 @@ async function fetchPosts(supabase: any) {
     .order('created_at', { ascending: false });
 
   if (error) {
-    console.error('Error fetching posts:', error.message);
     return [];
   }
 

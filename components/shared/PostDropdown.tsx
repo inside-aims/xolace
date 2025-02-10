@@ -68,7 +68,6 @@ const PostDropdown: React.FC<DropdownMenuProp> = ({
         title: `Successfully Deleted Comment.💯 `,
       });
     } catch (error) {
-      console.log(error);
       toast({
         title: 'Error deleting comment:',
       });
@@ -81,7 +80,6 @@ const PostDropdown: React.FC<DropdownMenuProp> = ({
   const onPostDelete = async () => {
     setIsLoading(true);
     try {
-      // await handleDelete({ comment, postCard, postId });
       const { error: deleteError } = await supabase
         .from('posts')
         .delete()
@@ -92,8 +90,7 @@ const PostDropdown: React.FC<DropdownMenuProp> = ({
           title: 'Error deleting post',
           description: 'Oops! Something went wrong , please try again 👀 ',
         });
-        console.log(deleteError);
-        throw new Error();
+        return;
       }
 
       // display success toast
@@ -105,11 +102,10 @@ const PostDropdown: React.FC<DropdownMenuProp> = ({
       // eslint-disable-next-line @typescript-eslint/no-unused-expressions
       postDetail && router.replace('/feed');
     } catch (error) {
-      console.log(error);
       toast({
         title: 'Error deleting post:',
       });
-      throw new Error();
+      return;
     } finally {
       setIsLoading(false);
     }

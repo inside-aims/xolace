@@ -65,7 +65,6 @@ export const signUpAction = validatedAction(signUpSchema, async data => {
     .select()
     .single();
 
-  console.log('Profile -> ', profileUser);
 
   if (puError) {
     await supabaseAdmin.auth.admin.deleteUser(userData.user.id);
@@ -112,7 +111,6 @@ export const forgotPasswordAction = async (formData: FormData) => {
   });
 
   if (error) {
-    console.error(error.message);
     return encodedRedirect(
       'error',
       '/forgot-password',
@@ -167,15 +165,16 @@ export const signOutAction = async () => {
 };
 
 export const deleteUser = async (user: User) => {
-  console.log('Delete-> ', user);
   const supabase = getSupabaseAdminClient();
   const { error: deleteError } = await supabase.auth.admin.deleteUser(
     user.supabase_user ?? '',
   );
 
   if (deleteError) {
-    console.log('Error deleting user ', deleteError);
-    return;
+    return  {
+      success: false,
+      message: 'Ooops!! Failed to delete your account. Please try again.',
+    };
   }
 
   await signOutAction();

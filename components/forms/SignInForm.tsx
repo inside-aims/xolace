@@ -49,7 +49,6 @@ const SignInForm = () => {
     // Do something with the form values.
     // ✅ This will be type-safe and validated.
     setIsLoading(true);
-    console.log(values);
     const { email, password } = values;
 
     try {
@@ -73,7 +72,10 @@ const SignInForm = () => {
           form.reset();
         });
     } catch (error) {
-      console.log(error);
+      toast({
+        variant: 'destructive',
+        title: ' 😿 Something must have gone wrong, Please try again',
+      });
     }
 
     return;

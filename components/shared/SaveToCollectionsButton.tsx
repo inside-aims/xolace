@@ -53,7 +53,6 @@ useEffect(() => {
         }
       });
     } catch (error) {
-      console.error('Error updating collection:', error);
       toast({
         variant: 'destructive',
         title: 'An unexpected error occurred',

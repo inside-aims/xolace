@@ -61,7 +61,6 @@ const CollectionsFeedList = ({ postsData, isLoading }: CollectionsFeedListProps)
           sessionStorage.removeItem('CollectionFeedViewContext');
         }, 500);
         } catch (error) {
-          console.error('Error restoring feed position:', error);
           sessionStorage.removeItem('CollectionFeedViewContext');
         }
       }

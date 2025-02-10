@@ -120,10 +120,9 @@ const ReportForm = ({ postId, commentId }: ReportFormProps) => {
       } else {
         toast({
           variant: 'destructive',
-          title: 'Oops, something must have gone wrong 😵‍💫!',
+          title: "Oops, somehow your report did not reach us 😵‍💫! We know it's important so please try again",
         });
       }
-      console.log(reportError);
       setIsLoading(false);
       return;
     }
