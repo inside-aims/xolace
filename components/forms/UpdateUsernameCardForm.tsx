@@ -51,7 +51,6 @@ export default function UpdateUsernameCardForm() {
 
   // function to update username
   async function onSubmit(data: z.infer<typeof UpdateUsernameSchema>) {
-    console.log(data);
     setIsLoading(true);
     const { username } = data;
 
@@ -76,7 +75,6 @@ export default function UpdateUsernameCardForm() {
       .single();
 
     if (updateError) {
-      console.error('Error updating username:', updateError);
       toast({
         title: 'Error updating username',
         description:
@@ -86,8 +84,6 @@ export default function UpdateUsernameCardForm() {
       setIsLoading(false);
       return;
     }
-
-    console.log('new ->' + JSON.stringify(newUser, null, 2));
 
     toast({
       title: 'Username updated successfully',
