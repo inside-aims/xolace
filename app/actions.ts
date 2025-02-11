@@ -42,6 +42,7 @@ export const signUpAction = validatedAction(signUpSchema, async data => {
     }
   }
 
+
   //   get avatar
   let avatarUrl: URL;
   if (type === 'male') {
@@ -79,6 +80,7 @@ export const signUpAction = validatedAction(signUpSchema, async data => {
   const request = {
     url: process.env.NEXT_PUBLIC_BASE_APP_URL,
   };
+
 
   const res = await sendOTPLink(email, 'signup', request);
 
