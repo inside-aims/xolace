@@ -257,6 +257,7 @@ export type Database = {
         Row: {
           avatar_url: string | null
           created_at: string
+          has_seen_welcome: boolean
           id: string
           is_anonymous: boolean
           supabase_user: string
@@ -265,6 +266,7 @@ export type Database = {
         Insert: {
           avatar_url?: string | null
           created_at?: string
+          has_seen_welcome?: boolean
           id?: string
           is_anonymous?: boolean
           supabase_user: string
@@ -273,6 +275,7 @@ export type Database = {
         Update: {
           avatar_url?: string | null
           created_at?: string
+          has_seen_welcome?: boolean
           id?: string
           is_anonymous?: boolean
           supabase_user?: string
