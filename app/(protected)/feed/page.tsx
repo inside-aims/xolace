@@ -4,6 +4,7 @@ import { unstable_cache } from 'next/cache';
 import TourProvider from '@/components/shared/Tour/TourProvider';
 import { FeedSteps } from '@/constants/tourSteps';
 import TourButton from '@/components/shared/Tour/TourButton';
+import WelcomeModalCard from '@/components/cards/WecomeModalCard';
 
 // Function to fetch posts with a Supabase client
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -67,6 +68,7 @@ export default async function FeedPage() {
       <div className="fixed bottom-10 right-6  md:bottom-10 md:right-20 z-50 block rounded-full">
         <TourButton />
       </div>
+      <WelcomeModalCard/>
     </TourProvider>
   );
 }
