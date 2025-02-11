@@ -23,6 +23,8 @@ export async function GET(request: Request) {
     token_hash: hashed_token,
   });
 
+  
+
   if (error) {
     return getRedirect('/error?type=invalid_magiclink');
   } else {
