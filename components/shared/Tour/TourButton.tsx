@@ -51,7 +51,7 @@ export default function TourButton() {
           transition={{
             duration: 1.5,
             repeat: Infinity,
-            ease: 'easeInOut',
+            ease: 'easeIn',
           }}
         />
       </motion.button>
