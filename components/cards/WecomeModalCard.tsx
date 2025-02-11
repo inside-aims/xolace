@@ -64,7 +64,7 @@ export default function WelcomeModalCard() {
             Welcome to Xolace! 🎉
           </AlertDialogTitle>
           <AlertDialogDescription className="text-center text-gray-300">
-            We're excited to have you as an early adopter.
+            We&apos;re excited to have you as an early adopter.
           </AlertDialogDescription>
         </AlertDialogHeader>
         <div className="py-4">
@@ -79,7 +79,7 @@ export default function WelcomeModalCard() {
             onClick={handleDismiss}
             className="w-full bg-indigo-600 text-white hover:bg-indigo-700"
           >
-            Got it, let's go!
+            Got it, let&apos;s go!
           </Button>
         </AlertDialogFooter>
       </AlertDialogContent>
