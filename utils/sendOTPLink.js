@@ -12,9 +12,9 @@ export async function sendOTPLink(email, type, request) {
     });
 
   if (glError) {
-    console.error('Error generating link', glError);
     return false;
   }
+
 
   // extracting the hashed_token from the link
   const { hashed_token } = linkData.properties;
@@ -28,8 +28,12 @@ export async function sendOTPLink(email, type, request) {
   // initialize the mailing transport
   const transporter = nodemailer.createTransport({
     host: process.env.RESEND_MAIL_HOST,
-
+    secure: true,
     port: process.env.RESEND_MAIL_PORT,
+    auth:{
+      user: process.env.RESEND_USERNAME,
+      pass: process.env.RESEND_API_KEY,
+    }
   });
 
   let mailSubject = '';
