@@ -12,11 +12,9 @@ export async function sendOTPLink(email, type, request) {
     });
 
   if (glError) {
-    console.log('Error generating link', glError);
     return false;
   }
 
-  console.log('generated link', linkData);
 
   // extracting the hashed_token from the link
   const { hashed_token } = linkData.properties;
@@ -26,8 +24,6 @@ export async function sendOTPLink(email, type, request) {
     `api/v1/auth/verify?hashed_token=${hashed_token}&type=${type}`,
     request,
   );
-
-  console.log('constructed link', constructedLink);
 
   // initialize the mailing transport
   const transporter = nodemailer.createTransport({

@@ -42,7 +42,6 @@ export const signUpAction = validatedAction(signUpSchema, async data => {
     }
   }
 
-  console.log('created user');
 
   //   get avatar
   let avatarUrl: URL;
@@ -78,13 +77,10 @@ export const signUpAction = validatedAction(signUpSchema, async data => {
     };
   }
 
-  console.log('created profile');
-
   const request = {
     url: process.env.NEXT_PUBLIC_BASE_APP_URL,
   };
 
-  console.log('sending email ->', request);
 
   const res = await sendOTPLink(email, 'signup', request);
 
