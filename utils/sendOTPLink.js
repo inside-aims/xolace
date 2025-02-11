@@ -15,9 +15,18 @@ export async function sendOTPLink(email, type, request) {
     return false;
   }
 
-
   // extracting the hashed_token from the link
   const { hashed_token } = linkData.properties;
+
+  // let extractedRequest;
+
+  // if (type !== 'signup') {
+  //   extractedRequest = {
+  //     url: request.origin,
+  //   };
+  // } else {
+  //   extractedRequest = request;
+  // }
 
   // construct a custom link with the hashed_token
   const constructedLink = builderUrl(

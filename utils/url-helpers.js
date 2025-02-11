@@ -1,5 +1,5 @@
 export function urlPath(applicationPath) {
-  return `${applicationPath}`;
+  return applicationPath.startsWith("/") ? applicationPath : `/${applicationPath}`;
 }
 
 export function builderUrl(applicationPath, request) {
