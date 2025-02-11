@@ -22,13 +22,14 @@ export default function TourButton() {
         <motion.span
           className="bg-sky-500 absolute h-full w-full rounded-full opacity-60"
           animate={{
-            scale: [1, 1.5],
+            scale: [1, 1.5, 1],
             opacity: [0.5, 0],
           }}
           transition={{
             duration: 1.5,
             repeat: Infinity,
             ease: 'easeInOut',
+            repeatType: 'reverse',
           }}
         />
       </motion.button>
@@ -45,13 +46,13 @@ export default function TourButton() {
         <motion.span
           className="bg-sky-500 absolute h-full w-full rounded-full opacity-50"
           animate={{
-            scale: [1, 1.5],
+            scale: [1, 1.5 , 1],
             opacity: [0.5, 0],
           }}
           transition={{
             duration: 1.5,
             repeat: Infinity,
-            ease: 'easeIn',
+            repeatType: 'reverse',
           }}
         />
       </motion.button>
