@@ -43,7 +43,7 @@ export default function TourButton() {
         Start Tour
 
         <motion.span
-          className="bg-sky-500 absolute h-full w-full rounded-full opacity-60"
+          className="bg-sky-500 absolute h-full w-full rounded-full opacity-50"
           animate={{
             scale: [1, 1.5],
             opacity: [0.5, 0],
@@ -51,7 +51,7 @@ export default function TourButton() {
           transition={{
             duration: 1.5,
             repeat: Infinity,
-            ease: 'easeInOut',
+            ease: 'easeIn',
           }}
         />
       </motion.button>
