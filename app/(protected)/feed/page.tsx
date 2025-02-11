@@ -47,23 +47,26 @@ const getCachedPosts = unstable_cache(
   ['posts-list'],
   {
     revalidate: 60, // Cache for 1 minute
-    tags: ['posts']
-  }
+    tags: ['posts'],
+  },
 );
 
 export default async function FeedPage() {
   // Create Supabase client with cookies outside the cached function
   const supabase = await createClient();
-  
+
   // Pass the Supabase client to the cached function
   const initialPosts = await getCachedPosts(supabase);
-  
+
   return (
     <TourProvider steps={FeedSteps}>
-    <div className="sm:container">
-      <FeedList initialPosts={initialPosts} />
-    </div>
-    <TourButton />
+      <div className="sm:container">
+        <FeedList initialPosts={initialPosts} />
+      </div>
+
+      <div className="fixed bottom-10 right-6  md:bottom-10 md:right-20 z-50 block rounded-full">
+        <TourButton />
+      </div>
     </TourProvider>
   );
 }

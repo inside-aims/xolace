@@ -6,9 +6,12 @@ import React from 'react';
 
 const CreatePost = () => {
   return (
-    <TourProvider steps={createPostSteps} >
+    <TourProvider steps={createPostSteps}>
       <PostForm />
-      <TourButton />
+
+      <div className="fixed bottom-10 right-6 z-50 block rounded-full md:hidden">
+        <TourButton />
+      </div>
     </TourProvider>
   );
 };
