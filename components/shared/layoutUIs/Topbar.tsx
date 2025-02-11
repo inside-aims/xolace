@@ -31,6 +31,7 @@ function Topbar() {
       return;
     }
 
+    localStorage.removeItem('welcomePopupDismissed');
     supabase.auth.signOut();
   };
 
