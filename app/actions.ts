@@ -149,6 +149,16 @@ export const resetPasswordAction = async (formData: FormData) => {
     encodedRedirect('error', '/change-password', 'Passwords do not match');
   }
 
+  // Validate password strength
+  const passwordRegex = /^(?=.*[A-Z])(?=.*\d).{8,}$/;
+  if (!passwordRegex.test(password)) {
+    return encodedRedirect(
+      'error',
+      '/change-password',
+      'Password must be at least 8 characters long, contain at least 1 uppercase letter, and 1 number'
+    );
+  }
+
   const { error } = await supabase.auth.updateUser({
     password: password,
   });
