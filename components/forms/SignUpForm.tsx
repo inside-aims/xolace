@@ -89,7 +89,7 @@ const SignUpForm = () => {
             <FormItem>
               <FormControl>
                 <Input
-                  placeholder="username"
+                  placeholder="username eg.T-bones🦴"
                   {...field}
                   type="text"
                   className="w-full text-black dark:text-white max-sm:py-6 md:h-12"
@@ -146,7 +146,7 @@ const SignUpForm = () => {
               <FormControl>
                 <div className="relative text-black dark:text-white">
                   <Input
-                    placeholder="********"
+                    placeholder="******** eg. Example123"
                     {...field}
                     className="w-full max-sm:py-6 sm:py-5 md:h-12"
                     type={showPassword ? 'text' : 'password'}
