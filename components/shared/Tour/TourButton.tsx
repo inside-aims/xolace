@@ -11,12 +11,12 @@ export default function TourButton() {
     <>
       <motion.button
         onClick={() => setIsOpen(true)}
-        className="bg-blue relative flex h-12 w-12 items-center justify-center rounded-full text-white shadow-lg transition-transform hover:scale-110 md:hidden"
+        className="bg-blue relative flex h-10 w-10 items-center justify-center rounded-full text-white shadow-lg transition-transform hover:scale-110 md:hidden"
         whileHover={{ scale: 1.1 }}
         whileTap={{ scale: 0.9 }}
       >
         {/* Icon inside the button */}
-        <HelpCircle className="h-7 w-7" />
+        <HelpCircle className="h-6 w-6" />
         {/* <Binoculars size={20} strokeWidth={2.25} color="#342adb" /> */}
         {/* Pulsating Effect */}
         <motion.span

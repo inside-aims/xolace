@@ -117,14 +117,14 @@ const PostMetrics = ({
         >
           <ThumbsUp
             className={cn(
-              'h-6 w-6 transition-all duration-200 hover:scale-110',
+              'h-5 w-5 transition-all duration-200 md:hover:scale-110',
               currentVote === 'upvote'
                 ? 'fill-green-500 stroke-green-500 dark:fill-green-400 dark:stroke-green-400'
                 : 'stroke-gray-500 hover:stroke-gray-700 dark:stroke-gray-400 dark:hover:stroke-gray-300'
             )}
           />
         </button>
-        <span className="min-w-[2ch] text-center font-medium" id='vote-count'>
+        <span className="min-w-[2ch] text-center font-medium text-sm" id='vote-count'>
           {upvoteCount - downvoteCount}
         </span>
         <button
@@ -136,7 +136,7 @@ const PostMetrics = ({
         >
           <ThumbsDown
             className={cn(
-              'h-6 w-6 transition-all duration-200 hover:scale-110',
+              'h-5 w-5 transition-all duration-200 md:hover:scale-110',
               currentVote === 'downvote'
                 ? 'fill-red-500 stroke-red-500 dark:fill-red-400 dark:stroke-red-400'
                 : 'stroke-gray-500 hover:stroke-gray-700 dark:stroke-gray-400 dark:hover:stroke-gray-300'
@@ -150,7 +150,7 @@ const PostMetrics = ({
           <div>
             <svg
               xmlns="http://www.w3.org/2000/svg"
-              className="h-7 w-7 -scale-x-100 text-gray-600"
+              className="h-6 w-6 -scale-x-100 text-gray-600"
               fill="none"
               viewBox="0 0 24 24"
               stroke="currentColor"
