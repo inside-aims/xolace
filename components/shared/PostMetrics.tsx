@@ -117,7 +117,7 @@ const PostMetrics = ({
         >
           <ThumbsUp
             className={cn(
-              'h-5 w-5 transition-all duration-200 hover:scale-110',
+              'h-5 w-5 transition-all duration-200 md:hover:scale-110',
               currentVote === 'upvote'
                 ? 'fill-green-500 stroke-green-500 dark:fill-green-400 dark:stroke-green-400'
                 : 'stroke-gray-500 hover:stroke-gray-700 dark:stroke-gray-400 dark:hover:stroke-gray-300'
@@ -136,7 +136,7 @@ const PostMetrics = ({
         >
           <ThumbsDown
             className={cn(
-              'h-5 w-5 transition-all duration-200 hover:scale-110',
+              'h-5 w-5 transition-all duration-200 md:hover:scale-110',
               currentVote === 'downvote'
                 ? 'fill-red-500 stroke-red-500 dark:fill-red-400 dark:stroke-red-400'
                 : 'stroke-gray-500 hover:stroke-gray-700 dark:stroke-gray-400 dark:hover:stroke-gray-300'
