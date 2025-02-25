@@ -40,6 +40,10 @@ const PostDropdown: React.FC<DropdownMenuProp> = ({
 }) => {
   const router = useRouter();
   const user = useUserState(state => state.user);
+
+  const roles = useUserState((state) => state.roles);
+  const isModerator = roles.includes('blue_team');
+  
   const supabase = getSupabaseBrowserClient();
   const { toast } = useToast();
   const [isLoading, setIsLoading] = useState(false);
@@ -131,7 +135,7 @@ const PostDropdown: React.FC<DropdownMenuProp> = ({
         <DropdownMenuContent align="end">
           <DropdownMenuLabel>Actions</DropdownMenuLabel>
           <DropdownMenuSeparator />
-          {isCommentAuthor && (
+          {((isCommentAuthor || isModerator) && comment) && (
             <DropdownMenuItem
               className="text-red-400 hover:cursor-pointer"
               onClick={onCommentDelete}
@@ -147,7 +151,7 @@ const PostDropdown: React.FC<DropdownMenuProp> = ({
           )}
 
           {/* delete action for post */}
-          {isPostAuthor && (
+          {((isPostAuthor || isModerator) && !comment) && (
             <DropdownMenuItem
               className="text-red-400 hover:cursor-pointer hover:text-red-500"
               onClick={onPostDelete}
