@@ -50,7 +50,7 @@ export function NavUser({
 
   // signout func
   const handleSignOut = async (
-    e: React.MouseEvent<HTMLButtonElement, MouseEvent>,
+    e: React.MouseEvent<HTMLElement, MouseEvent>,
   ) => {
     e.preventDefault();
 
