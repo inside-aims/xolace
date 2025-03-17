@@ -67,8 +67,8 @@ export function SiteHeader() {
             onClick={toggleSidebar}
           >
             <Avatar className='h-8 w-8'>
-              <AvatarImage src={'post.author_avatar_url'} />
-              <AvatarFallback className=' bg-indigo-500'>🦸</AvatarFallback>
+              <AvatarImage src={user?.avatar_url ?? undefined} />
+              <AvatarFallback className=' bg-indigo-500'>{user?.username?.charAt(0)}</AvatarFallback>
             </Avatar>
           </Button>
 

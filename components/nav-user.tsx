@@ -32,6 +32,7 @@ import {
 import { Profile } from "@/types/global"
 import { getSupabaseBrowserClient } from '@/utils/supabase/client';
 import SignoutAlert from "./shared/SignoutAlert"
+import { format } from 'timeago.js';
 
 
 export function NavUser({
@@ -45,6 +46,7 @@ export function NavUser({
   // states
   const { isMobile } = useSidebar()
   const [isOpen, setIsOpen] = useState(false);
+  const [timestamp, setTimestamp] = useState("")
 
   // signout func
   const handleSignOut = async (
@@ -58,6 +60,16 @@ export function NavUser({
     }
     supabase.auth.signOut();
   };
+
+    // convert created_at
+    useEffect(() => {
+      if(user){
+        setTimestamp(format(user.created_at));
+      }else{
+        setTimestamp("Long ago")
+      }
+      
+    }, [user]);
 
    // Subscribe to sign out event
    useEffect(() => {
@@ -90,7 +102,7 @@ export function NavUser({
               </Avatar>
               <div className="grid flex-1 text-left text-sm leading-tight">
                 <span className="truncate font-semibold">{user?.username}</span>
-                <span className="truncate text-xs">{"email"}</span>
+                <span className="truncate text-xs">{timestamp}</span>
               </div>
               <ChevronsUpDown className="ml-auto size-4" />
             </SidebarMenuButton>
