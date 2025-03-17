@@ -3,7 +3,7 @@ import { Plus } from "lucide-react"
 
 import { Calendars } from "@/components/calendars"
 import { DatePicker } from "@/components/date-picker"
-import { NavUser } from "@/components/nav-user"
+//import { NavUser } from "@/components/nav-user"
 import {
   Sidebar,
   SidebarContent,
@@ -12,7 +12,6 @@ import {
   SidebarMenu,
   SidebarMenuButton,
   SidebarMenuItem,
-  SidebarRail,
   SidebarSeparator,
 } from "@/components/ui/sidebar"
 
@@ -49,7 +48,7 @@ export function SidebarRight({
       {...props}
     >
       <SidebarHeader className="h-16 border-b border-sidebar-border">
-        <NavUser user={data.user} />
+        {/* <NavUser user={data.user} /> */}
       </SidebarHeader>
       <SidebarContent>
         <DatePicker />
