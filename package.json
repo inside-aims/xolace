@@ -89,7 +89,7 @@
     "eslint-plugin-unicorn": "^56.0.1",
     "postcss": "8.4.33",
     "prettier-plugin-tailwindcss": "^0.6.10",
-    "supabase": "latest",
+    "supabase": "^2.19.7",
     "tailwind-merge": "^2.6.0",
     "tailwindcss": "3.4.1",
     "tailwindcss-animate": "^1.0.7",
