@@ -12,7 +12,7 @@ import {
 
 export const sidebarLinks = [
   {
-    imgURL: <HomeIcon />,
+    icon: <HomeIcon />,
     route: '/feed',
     label: 'Home',
   },
@@ -23,27 +23,27 @@ export const sidebarLinks = [
   //   label: "Activity",
   // },
   {
-    imgURL: <MessageSquareDiff />,
+    icon: <MessageSquareDiff />,
     route: '/create-post',
     label: 'Create Post',
   },
   {
-    imgURL: <UserPen />,
+    icon: <UserPen />,
     route: '/profile',
     label: 'Profile',
   },
   {
-    imgURL: <Bomb size={22} strokeWidth={1.75} />,
+    icon: <Bomb size={22} strokeWidth={1.75} />,
     route: '/explore',
     label: 'Explore',
   },
   {
-    imgURL: <Rss />,
+    icon: <Rss />,
     route: '/channel',
     label: 'Channel',
   },
   {
-    imgURL: <LibraryBig />,
+    icon: <LibraryBig />,
     route: '/collections',
     label: 'Collections',
   },

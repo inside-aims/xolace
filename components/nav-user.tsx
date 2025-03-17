@@ -30,6 +30,7 @@ import {
   useSidebar,
 } from "@/components/ui/sidebar"
 
+
 export function NavUser({
   user,
 }: {

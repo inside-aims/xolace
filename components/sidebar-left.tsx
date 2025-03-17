@@ -17,17 +17,17 @@ import {
 
 //import { NavFavorites } from "@/components/nav-favorites"
 import { NavMain } from "@/components/nav-main"
-import { NavSecondary } from "@/components/nav-secondary"
-import { NavWorkspaces } from "@/components/nav-workspaces"
-import { TeamSwitcher } from "@/components/team-switcher"
+// import { NavSecondary } from "@/components/nav-secondary"
+// import { NavWorkspaces } from "@/components/nav-workspaces"
+//import { TeamSwitcher } from "@/components/team-switcher"
 import {
   Sidebar,
   SidebarContent,
   SidebarHeader,
-  SidebarRail,
   SidebarFooter,
 } from "@/components/ui/sidebar"
 import { NavUser } from "./nav-user"
+import UserInfo from "./user-info"
 
 // This is sample data.
 const data = {
@@ -271,18 +271,18 @@ export function SidebarLeft({
   return (
     <Sidebar  className="top-[--header-height] !h-[calc(100svh-var(--header-height))] border-r-0" {...props}>
       <SidebarHeader>
-        <TeamSwitcher teams={data.teams} />
-        <NavMain items={data.navMain} />
+       <UserInfo/>
+        <NavMain />
       </SidebarHeader>
       <SidebarContent>
         {/* <NavFavorites favorites={data.favorites} /> */}
-        <NavWorkspaces workspaces={data.workspaces} />
-        <NavSecondary items={data.navSecondary} className="mt-auto" />
+        {/* <NavWorkspaces workspaces={data.workspaces} /> */}
+        {/* <NavSecondary items={data.navSecondary} className="mt-auto" /> */}
       </SidebarContent>
       <SidebarFooter>
         <NavUser user={data.user} />
       </SidebarFooter>
-      <SidebarRail />
+      {/* <SidebarRail /> */}
     </Sidebar>
   )
 }

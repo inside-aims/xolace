@@ -1,6 +1,9 @@
 "use client"
 
-import { type LucideIcon } from "lucide-react"
+import { usePathname } from "next/navigation"
+//import { type LucideIcon } from "lucide-react"
+
+import { sidebarLinks } from "@/constants"
 
 import {
   SidebarMenu,
@@ -8,28 +11,33 @@ import {
   SidebarMenuItem,
 } from "@/components/ui/sidebar"
 
-export function NavMain({
-  items,
-}: {
-  items: {
-    title: string
-    url: string
-    icon: LucideIcon
-    isActive?: boolean
-  }[]
-}) {
+
+interface SidebarLinkInterface{
+  icon: React.JSX.Element,
+  route: string;
+  label: string;
+}
+
+export function NavMain() {
+  const pathName = usePathname();
   return (
-    <SidebarMenu>
-      {items.map((item) => (
-        <SidebarMenuItem key={item.title}>
-          <SidebarMenuButton asChild isActive={item.isActive}>
-            <a href={item.url}>
-              <item.icon />
-              <span>{item.title}</span>
-            </a>
-          </SidebarMenuButton>
-        </SidebarMenuItem>
-      ))}
+    <SidebarMenu className="gap-6">
+      {sidebarLinks.map((item : SidebarLinkInterface) => {
+        const isActive =
+        (pathName.includes(item.route) && item.route.length > 1) ||
+        pathName == item.route;
+
+        return (
+          <SidebarMenuItem key={item.label}>
+            <SidebarMenuButton asChild isActive={isActive} className={`${isActive && '!bg-primary-500'} hover:bg-primary-500`}>
+              <a href={item.route}>
+                {item.icon}
+                <span className="text-lg">{item.label}</span>
+              </a>
+            </SidebarMenuButton>
+          </SidebarMenuItem>
+        )
+      })}
     </SidebarMenu>
   )
 }
