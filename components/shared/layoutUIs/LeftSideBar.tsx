@@ -13,7 +13,7 @@ import { useUserState } from '@/lib/store/user';
 import SignoutAlert from '../SignoutAlert';
 
 interface SidebarLinkInterface{
-  imgURL: React.JSX.Element,
+  icon: React.JSX.Element,
   route: string;
   label: string;
 }
@@ -81,7 +81,7 @@ function LeftSidebar() {
                 key={link.label}
                 className={`leftsidebar_link ${isActive && 'bg-primary-500'} hover:bg-primary-500`}
               >
-                {link.imgURL}
+                {link.icon}
                 <p className="text-dark-2 dark:text-light-1 max-lg:hidden">
                   {link.label}
                 </p>
