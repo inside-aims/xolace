@@ -68,7 +68,7 @@ export function SiteHeader() {
           >
             <Avatar className='h-8 w-8'>
               <AvatarImage src={'post.author_avatar_url'} />
-              <AvatarFallback>{'A'}</AvatarFallback>
+              <AvatarFallback className=' bg-indigo-500'>🦸</AvatarFallback>
             </Avatar>
           </Button>
 
