@@ -8,7 +8,7 @@ import InitUser from '@/lib/store/initUser';
 // import { InfoBanner } from '@/components/extras/Info-Banner';
 
 import { SidebarLeft } from "@/components/sidebar-left"
-import { SidebarRight } from "@/components/sidebar-right"
+// import { SidebarRight } from "@/components/sidebar-right"
 // import {
 //   Breadcrumb,
 //   BreadcrumbItem,
@@ -19,7 +19,6 @@ import { SidebarRight } from "@/components/sidebar-right"
 import {
   SidebarInset,
   SidebarProvider,
-  SidebarTrigger,
 } from "@/components/ui/sidebar"
 import { SiteHeader } from '@/components/site-header';
 
@@ -69,7 +68,7 @@ export default async function ProtectedLayout({
       </section>
       <Bottombar />
     </SidebarInset>
-    <SidebarRight />
+    {/* <SidebarRight /> */}
     </div>
     <InitUser user={profileUser} />
   </SidebarProvider>
