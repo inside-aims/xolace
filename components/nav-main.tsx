@@ -1,6 +1,7 @@
 "use client"
 
 import { usePathname } from "next/navigation"
+import Link from "next/link";
 //import { type LucideIcon } from "lucide-react"
 
 import { sidebarLinks } from "@/constants"
@@ -30,10 +31,11 @@ export function NavMain() {
         return (
           <SidebarMenuItem key={item.label}>
             <SidebarMenuButton asChild isActive={isActive} className={`${isActive && '!bg-primary-500'} hover:bg-primary-500`}>
-              <a href={item.route}>
+              <Link href={item.route}
+                key={item.label}>
                 {item.icon}
                 <span className="text-lg">{item.label}</span>
-              </a>
+              </Link>
             </SidebarMenuButton>
           </SidebarMenuItem>
         )
