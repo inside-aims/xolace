@@ -9,18 +9,19 @@ import InitUser from '@/lib/store/initUser';
 
 import { SidebarLeft } from "@/components/sidebar-left"
 import { SidebarRight } from "@/components/sidebar-right"
-import {
-  Breadcrumb,
-  BreadcrumbItem,
-  BreadcrumbList,
-  BreadcrumbPage,
-} from "@/components/ui/breadcrumb"
-import { Separator } from "@/components/ui/separator"
+// import {
+//   Breadcrumb,
+//   BreadcrumbItem,
+//   BreadcrumbList,
+//   BreadcrumbPage,
+// } from "@/components/ui/breadcrumb"
+//import { Separator } from "@/components/ui/separator"
 import {
   SidebarInset,
   SidebarProvider,
   SidebarTrigger,
 } from "@/components/ui/sidebar"
+import { SiteHeader } from '@/components/site-header';
 
 export default async function ProtectedLayout({
   children,
@@ -42,11 +43,14 @@ export default async function ProtectedLayout({
     .single();
 
   return (
-    <SidebarProvider>
-    <SidebarLeft />
-    <SidebarInset>
-      <header className="sticky top-0 flex h-14 shrink-0 items-center gap-2 bg-background">
-        <div className="flex flex-1 items-center gap-2 px-3">
+    <div className="[--header-height:calc(theme(spacing.14))]">
+    <SidebarProvider className="flex flex-col">
+      <SiteHeader />
+       <div className="flex flex-1">
+        <SidebarLeft />
+        <SidebarInset>
+          {/* <header className="sticky top-0 flex h-14 shrink-0 items-center gap-2 bg-background">
+            <div className="flex flex-1 items-center gap-2 px-3">
           <SidebarTrigger />
           <Separator orientation="vertical" className="mr-2 h-4" />
           <Breadcrumb>
@@ -59,15 +63,17 @@ export default async function ProtectedLayout({
             </BreadcrumbList>
           </Breadcrumb>
         </div>
-      </header>
+      </header> */}
       <section className="main-container">
         {children}
       </section>
       <Bottombar />
     </SidebarInset>
     <SidebarRight />
+    </div>
     <InitUser user={profileUser} />
   </SidebarProvider>
+    </div>
   );
 }
 
