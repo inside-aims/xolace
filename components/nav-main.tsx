@@ -22,7 +22,7 @@ interface SidebarLinkInterface{
 
 export function NavMain() {
   const pathName = usePathname();
-  const { toggleSidebar, setOpenMobile } = useSidebar();
+  const { setOpenMobile } = useSidebar();
   return (
     <SidebarMenu className="gap-6">
       {sidebarLinks.map((item : SidebarLinkInterface) => {
