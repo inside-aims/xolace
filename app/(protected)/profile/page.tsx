@@ -35,6 +35,11 @@ const Profile = () => {
 
   // fetch user posts
   useEffect(() => {
+
+    if(!user){
+      return;
+    }
+
     const fetchUserPosts = async () => {
       const postStatement = supabase
         .from('posts')
@@ -86,7 +91,7 @@ const Profile = () => {
       <div className="flex items-center justify-center gap-3 md:gap-4">
         <Avatar>
           <AvatarImage src={user?.avatar_url ?? undefined} />
-          <AvatarFallback>CN</AvatarFallback>
+          <AvatarFallback>{user?.username?.charAt(0)}</AvatarFallback>
         </Avatar>
         <div className="flex flex-col items-start justify-center gap-1">
           <h5 className="text-small text-default-400 tracking-tight text-dark-2 dark:text-white">
