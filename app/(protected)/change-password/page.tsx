@@ -35,3 +35,5 @@ export default async function ChangePasswordPage(props: {
     </form>
   );
 }
+
+export const dynamic = "force-static";
