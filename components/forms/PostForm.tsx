@@ -199,6 +199,7 @@ export function PostForm() {
                           width={24}
                           height={24}
                           className="h-6 sm:h-7 sm:w-7"
+                          unoptimized
                         />
                       ) : (
                         selectedMood?.icon

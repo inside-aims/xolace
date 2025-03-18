@@ -65,9 +65,10 @@ export function SiteHeader() {
             variant="ghost"
             size="icon"
             onClick={toggleSidebar}
+            aria-label="Toggle Sidebar"
           >
             <Avatar className='h-8 w-8'>
-              <AvatarImage src={user?.avatar_url ?? undefined} />
+              <AvatarImage src={user?.avatar_url ?? undefined} alt={user?.username ?? "avatar"} />
               <AvatarFallback className=' bg-indigo-500'>{user?.username?.charAt(0)}</AvatarFallback>
             </Avatar>
           </Button>
@@ -81,6 +82,8 @@ export function SiteHeader() {
                 width={40}
                 height={32}
                 className="hidden dark:block"
+                priority={true}
+                loading="eager"
               />
 
               <Image
@@ -89,6 +92,8 @@ export function SiteHeader() {
                 width={40}
                 height={32}
                 className="block dark:hidden"
+                 priority={true}
+                loading="eager"
               />
             </Link>
 
@@ -102,6 +107,7 @@ export function SiteHeader() {
               variant={'ghost'}
               className="shad-button_ghost"
               onClick={e => handleSignOut(e)}
+              aria-label="Sign out"
             >
               <LogoutIcon height="23" />
             </Button>
