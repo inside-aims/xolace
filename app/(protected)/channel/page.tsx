@@ -39,7 +39,7 @@ const Channel = () => {
   ];
 
   return (
-    <div className="bg-green-400 w-full p-5 md:p-8">
+    <div className=" w-full p-5 md:p-8">
       <div>
         <h1 className="mb-8 text-center text-4xl font-bold text-gray-800 dark:text-gray-100">
           Channel
