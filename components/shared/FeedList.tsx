@@ -9,6 +9,7 @@ import { getSupabaseBrowserClient } from '@/utils/supabase/client';
 //import FeedSkeletonLoader from './loaders/FeedSkeletonLoader';
 import BlurFade from '../ui/blur-fade';
 import { Post } from '@/types/global';
+import { LazyMotion, domAnimation } from 'framer-motion';
 
 interface FeedListProps {
   initialPosts: Post[];
@@ -116,6 +117,7 @@ const FeedList = ({ initialPosts }: FeedListProps) => {
   };
 
   return (
+    <LazyMotion features={domAnimation}>
     <div className="flex flex-col gap-4" >
       <BlurFade>
         <div className="flex w-full flex-1 flex-col gap-3 pt-3" id='feedList' data-tour="feedList" >
@@ -135,7 +137,8 @@ const FeedList = ({ initialPosts }: FeedListProps) => {
           ))}
         </div>
       </BlurFade>
-    </div>
+    </div> 
+    </LazyMotion>
   );
 };
 

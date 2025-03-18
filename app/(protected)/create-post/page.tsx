@@ -17,3 +17,6 @@ const CreatePost = () => {
 };
 
 export default CreatePost;
+
+
+export const dynamic = "force-static";

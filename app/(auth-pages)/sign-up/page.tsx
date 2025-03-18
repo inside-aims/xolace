@@ -16,6 +16,7 @@ export default function Signup() {
             blurDataURL="iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mM8f+pUPQAHtwLkNZHWpAAAAABJRU5ErkJggg=="
             priority={true}
             fetchPriority="high"
+            loading='eager'
           />
         </div>
         <div className="mt-[270px] flex flex-col items-center justify-center max-sm:w-full sm:mt-[320px] sm:w-[70%] md:px-12 lg:mt-[330px] lg:w-[40%]">
