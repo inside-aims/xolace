@@ -5,6 +5,7 @@ import Link from "next/link";
 //import { type LucideIcon } from "lucide-react"
 
 import { sidebarLinks } from "@/constants"
+import { useSidebar } from "@/components/ui/sidebar";
 
 import {
   SidebarMenu,
@@ -21,6 +22,7 @@ interface SidebarLinkInterface{
 
 export function NavMain() {
   const pathName = usePathname();
+  const { setOpenMobile } = useSidebar();
   return (
     <SidebarMenu className="gap-6">
       {sidebarLinks.map((item : SidebarLinkInterface) => {
@@ -30,7 +32,7 @@ export function NavMain() {
 
         return (
           <SidebarMenuItem key={item.label}>
-            <SidebarMenuButton asChild isActive={isActive} className={`${isActive && '!bg-primary-500'} hover:bg-primary-500`}>
+            <SidebarMenuButton asChild isActive={isActive} className={`${isActive && '!bg-primary-500'} hover:bg-primary-500`} onClick={()=> setOpenMobile(false)}>
               <Link href={item.route}
                 key={item.label}>
                 {item.icon}

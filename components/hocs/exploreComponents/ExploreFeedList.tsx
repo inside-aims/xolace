@@ -50,7 +50,7 @@ const ExploreFeedList = ({ filteredPosts }: Props) => {
 
   return (
     <>
-      <motion.div layout className="mt-10 grid grid-cols-1 gap-6">
+      <motion.div layout className="mt-10 grid grid-cols-1 gap-6 w-full px-8">
         <AnimatePresence>
           {filteredPosts.length > 0 ? (
             filteredPosts?.map(post => (

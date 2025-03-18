@@ -35,7 +35,7 @@ const FilterPills: React.FC = () => {
     });
   };
   return (
-    <div className="mt-6 flex flex-wrap justify-center gap-3">
+    <div className="mt-6 flex flex-wrap justify-center gap-3 w-full">
       {filters.map(filter => (
         <motion.button
           key={filter.name}

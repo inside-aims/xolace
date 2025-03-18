@@ -121,7 +121,7 @@ if(!postsData) {
         </h1>
       </section>
 
-      <section className="mt-12">
+      <section className="mt-12 w-full">
         <LocalSearch
           placeholder="Search posts..."
           otherClasses="flex-1"
