@@ -1,8 +1,14 @@
+import type { Metadata } from 'next';
+
 import { resetPasswordAction } from '@/app/actions';
 import { FormMessage, Message } from '@/components/shared/form-message';
 import { SubmitButton } from '@/components/extras/submit-button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
+
+export const metadata: Metadata = {
+  title: 'Explore',
+}
 
 export default async function ChangePasswordPage(props: {
   searchParams: Promise<Message>;

@@ -1,10 +1,15 @@
 import React from 'react';
+import type { Metadata } from 'next';
 
 import FilterPills from '@/components/hocs/exploreComponents/FilterPills';
 import { seededShuffleArray } from '@/lib/utils';
 import LocalSearch from '@/components/shared/search/LocalSearch';
 import ExploreFeedList from '@/components/hocs/exploreComponents/ExploreFeedList';
 import { createClient } from '@/utils/supabase/server';
+
+export const metadata: Metadata = {
+  title: 'Explore',
+}
 
 interface SearchParams {
   searchParams: Promise<{ [key: string]: string }>;

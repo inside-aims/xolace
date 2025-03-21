@@ -1,5 +1,6 @@
 import { notFound } from 'next/navigation';
 import { Suspense } from 'react';
+import type { Metadata } from 'next';
 
 import { DetailCard } from '@/components/cards/DetailCard';
 import PostDetailDrawer from '@/components/ui/PostDetailDrawer';
@@ -9,6 +10,10 @@ import { Skeleton } from '@/components/ui/skeleton';
 
 type Params = Promise<{ postId: string }>;
 type SearchParams = Promise<{ [key: string]: string | string[] | undefined }>;
+
+export const metadata: Metadata = {
+  title: 'Post',
+}
 
 const PostDetailPage = async (props: {
   params: Promise<Params>;

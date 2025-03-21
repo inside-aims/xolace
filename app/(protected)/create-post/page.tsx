@@ -1,8 +1,15 @@
+import type { Metadata } from 'next';
+
 import { PostForm } from '@/components/forms/PostForm';
 import TourButton from '@/components/shared/Tour/TourButton';
 import TourProvider from '@/components/shared/Tour/TourProvider';
 import { createPostSteps } from '@/constants/tourSteps';
 import React from 'react';
+
+
+export const metadata: Metadata = {
+  title: 'Create Post',
+}
 
 const CreatePost = () => {
   return (

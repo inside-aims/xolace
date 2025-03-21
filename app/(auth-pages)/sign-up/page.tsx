@@ -1,7 +1,12 @@
 import React from 'react';
+import type { Metadata } from 'next';
 import Image from 'next/image';
 import SignUpForm from '@/components/forms/SignUpForm';
 import xolaceImage from "../../../public/assets/images/xolace-1.png"
+
+export const metadata: Metadata = {
+  title: 'Sign-up',
+}
 
 export default function Signup() {
   return (

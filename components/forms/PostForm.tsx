@@ -240,6 +240,7 @@ export function PostForm() {
                         height={370}
                         searchDisabled
                         emojiStyle={EmojiStyle.APPLE}
+                        lazyLoadEmojis
                       />
                     </PopoverContent>
                   </Popover>
