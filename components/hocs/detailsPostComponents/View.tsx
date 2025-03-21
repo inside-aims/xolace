@@ -27,11 +27,11 @@ const View = ({ id, viewsCount }: { id: string; viewsCount: number }) => {
 
   return (
     <div className="view-container">
-      <div className="absolute -right-2 -top-2 lg:z-[9999]">
+      <div className="absolute -right-2 -top-2 lg:z-[50]">
         <Ping />
       </div>
 
-      <p className="view-text lg:z-[9998]">
+      <p className="view-text lg:z-[49]">
         <span className="font-black"> 👀 : {totalViews}</span>
       </p>
     </div>

@@ -1,7 +1,8 @@
 'use client';
-import { useState } from 'react';
+import { useState , useEffect} from 'react';
 import Image from 'next/image';
 import { format } from 'timeago.js';
+import dynamic from 'next/dynamic';
 
 import {
   Card,
@@ -10,17 +11,40 @@ import {
   CardHeader,
 } from '@/components/ui/card';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
-import PostDropdown from '../shared/PostDropdown';
-import ReportForm from '../forms/ReportForm';
-import { KvngSheet } from '../shared/KvngSheet';
+//import PostDropdown from '../shared/PostDropdown';
+//import ReportForm from '../forms/ReportForm';
+//import { KvngSheet } from '../shared/KvngSheet';
 import { moodMap } from '@/types';
 import { DetailPost } from '@/types/global';
 import TagCard from './TagCard';
 import { TagProps } from './PostCard';
 import SaveToCollectionsButton from '../shared/SaveToCollectionsButton';
 import { useUserState } from '@/lib/store/user';
+import { useMediaQuery } from '@/hooks/use-media-query';
+import { useSidebar } from '../ui/sidebar';
+
+// Dynamically import non-critical components
+const PostDropdown = dynamic(() => import('../shared/PostDropdown'), {
+  ssr: false,
+});
+
+const ReportForm = dynamic(() => import('../forms/ReportForm'), {
+  ssr: false,
+});
+
+const KvngSheet = dynamic(() => import('../shared/KvngSheet').then((mod => mod.KvngSheet)), {
+  ssr: false,
+});
 
 export function DetailCard({ postId, post }: { postId: string; post: DetailPost }) {
+  const isDesktop = useMediaQuery('(min-width: 768px)');
+  const {setOpen } = useSidebar();
+
+  useEffect(() => {
+    if (isDesktop) {
+      setOpen(false);
+    }
+  }, [isDesktop, setOpen]); // Runs when `isDesktop` changes
 
   // get user data
   const user = useUserState(state => state.user);
@@ -84,6 +108,7 @@ export function DetailCard({ postId, post }: { postId: string; post: DetailPost 
                   width={24}
                   height={24}
                   className="h-6"
+                  unoptimized
                 />
               ) : (
                 postMood.emoji
