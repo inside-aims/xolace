@@ -1,6 +1,7 @@
 'use client';
 
 import React from 'react';
+import dynamic from 'next/dynamic';
 import { motion } from 'framer-motion';
 import { ImageOffIcon as MaskOffIcon } from 'lucide-react';
 import {
@@ -12,7 +13,11 @@ import {
   DialogTrigger,
   DialogFooter,
 } from '@/components/ui/dialog';
-import GradientTextLink from '../shared/GradientText/GradientTextLink';
+//import GradientTextLink from '../shared/GradientText/GradientTextLink';
+
+const GradientTextLink = dynamic(() => import('../shared/GradientText/GradientTextLink'), {
+  ssr: false,
+});
 
 const ChannelAboutCard = () => {
   return (
