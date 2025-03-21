@@ -1,5 +1,6 @@
 import React from 'react';
 import type { Metadata } from 'next';
+import dynamic from 'next/dynamic';
 
 import FilterPills from '@/components/hocs/exploreComponents/FilterPills';
 import { seededShuffleArray } from '@/lib/utils';
@@ -34,39 +35,50 @@ interface Post {
   comments: number;
 }
 
-const filterPosts = (filteredPosts: Post[], filter: string) => {
+const filterPosts = (posts: Post[], filter: string) => {
   // Get today's date and use it as a seed
   const today = new Date();
   const seed = today.getFullYear() * 10000 + (today.getMonth() + 1) * 100 + today.getDate();
 
+  // switch (filter) {
+  //   case 'popular':
+  //     posts.sort((a, b) => b.upvotes - a.upvotes);
+  //     break;
+  //   case 'controversial':
+  //     posts.sort(
+  //       (a, b) => b.upvotes + b.downvotes - (a.upvotes + a.downvotes),
+  //     );
+  //     break;
+  //   case 'recent':
+  //     posts.sort(
+  //       (a, b) =>
+  //         new Date(b.timestamp).getTime() - new Date(a.timestamp).getTime(),
+  //     );
+  //     break;
+  //   case 'trending':
+  //     posts.sort((a, b) => {
+  //       const scoreA = a.upvotes / Math.max(new Date(a.timestamp).getTime(), 1);
+  //       const scoreB = b.upvotes / Math.max(new Date(b.timestamp).getTime(), 1);
+  //       return scoreB - scoreA;
+  //     });
+  //     break;
+  //   default:
+  //     // If no filter is selected, use seeded shuffle for stable randomization
+  //     return seededShuffleArray(posts, seed);
+  // }
+
   switch (filter) {
     case 'popular':
-      filteredPosts.sort((a, b) => b.upvotes - a.upvotes);
-      break;
+      return [...posts].sort((a, b) => b.upvotes - a.upvotes);
     case 'controversial':
-      filteredPosts.sort(
-        (a, b) => b.upvotes + b.downvotes - (a.upvotes + a.downvotes),
-      );
-      break;
+      return [...posts].sort((a, b) => (b.upvotes + b.downvotes) - (a.upvotes + a.downvotes));
     case 'recent':
-      filteredPosts.sort(
-        (a, b) =>
-          new Date(b.timestamp).getTime() - new Date(a.timestamp).getTime(),
-      );
-      break;
+      return [...posts].sort((a, b) => new Date(b.timestamp).getTime() - new Date(a.timestamp).getTime());
     case 'trending':
-      filteredPosts.sort((a, b) => {
-        const scoreA = a.upvotes / Math.max(new Date(a.timestamp).getTime(), 1);
-        const scoreB = b.upvotes / Math.max(new Date(b.timestamp).getTime(), 1);
-        return scoreB - scoreA;
-      });
-      break;
+      return [...posts].sort((a, b) => (b.upvotes / Math.max(new Date(b.timestamp).getTime(), 1)) - (a.upvotes / Math.max(new Date(a.timestamp).getTime(), 1)));
     default:
-      // If no filter is selected, use seeded shuffle for stable randomization
-      return seededShuffleArray(filteredPosts, seed);
+      return seededShuffleArray(posts, seed);
   }
-
-  return filteredPosts;
 };
 
 const ExplorePage = async ({ searchParams }: SearchParams) => {
