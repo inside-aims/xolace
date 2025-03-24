@@ -9,7 +9,7 @@ import { signUpSchema } from '@/validation';
 import { validatedAction } from '@/lib/auth/middleware';
 import { sendOTPLink } from '@/utils/sendOTPLink';
 import { Post, User } from '@/types/global';
-import { revalidatePath } from 'next/cache';
+import { revalidatePath , revalidateTag} from 'next/cache';
 import { PostgrestError } from '@supabase/supabase-js';
 
 export const signUpAction = validatedAction(signUpSchema, async data => {
@@ -240,8 +240,10 @@ export async function voteAction(
       return { success: false, error: voteError.message };
     }
 
+    console.log("revalidating")
     // Revalidate paths that show posts
     revalidatePath('/feed', 'page');
+    revalidateTag('posts')
     revalidatePath('/explore', 'page');
     // revalidatePath(`/post/${postId}`);
 
