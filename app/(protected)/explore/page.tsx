@@ -1,6 +1,5 @@
 import React from 'react';
 import type { Metadata } from 'next';
-import dynamic from 'next/dynamic';
 
 import FilterPills from '@/components/hocs/exploreComponents/FilterPills';
 import { seededShuffleArray } from '@/lib/utils';

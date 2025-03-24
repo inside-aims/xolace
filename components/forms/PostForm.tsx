@@ -267,9 +267,11 @@ export function PostForm() {
                       <EmojiPicker
                         onEmojiClick={handleEmojiClick}
                         width="100%"
+                        // eslint-disable-next-line @typescript-eslint/no-explicit-any
                         theme={"auto" as any}
                         height={370}
                         searchDisabled
+                        // eslint-disable-next-line @typescript-eslint/no-explicit-any
                         emojiStyle={"apple" as any}
                         lazyLoadEmojis
                       />

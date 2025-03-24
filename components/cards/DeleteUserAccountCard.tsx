@@ -39,6 +39,7 @@ const DeleteUserAccountCard = () => {
         title: 'Account deleted',
         description: 'Your account has been successfully deleted.',
       });
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
     } catch (error: any) {
       toast({
         title: 'Error deleting account',
