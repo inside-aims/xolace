@@ -2,6 +2,12 @@ import React, { Suspense } from 'react'
 import Collections from './collections'
 import FeedSkeletonLoader from '@/components/shared/loaders/FeedSkeletonLoader'
 
+import type { Metadata } from 'next'
+
+export const metadata: Metadata = {
+  title: 'Collections',
+}
+
 const CollectionPage = () => {
   return (
     <div className="md:container md:mx-auto py-6">

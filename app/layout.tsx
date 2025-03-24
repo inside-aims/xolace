@@ -13,9 +13,16 @@ const defaultUrl = process.env.VERCEL_URL
 
 export const metadata = {
   metadataBase: new URL(defaultUrl),
-  title: 'Xolace',
+  title: {
+    template: '%s | Xolace',
+    default: 'Xolace', // a default is required when creating a template
+  },
+  applicationName: 'Xolace',
   description:
     'Xolace is a social platform designed for users to share their thoughts, stories, and experiences freely, fostering both engagement and self-expression in a unique, user-centered space',
+  keywords: ['Xolace', 'Social', 'Platform', 'Thoughts', 'Stories', 'Experiences', 'Fostering', 'Engagement', 'Self-Expression', 'Unique', 'User-Centered', 'Space'],
+  creator: 'Atlas Innovations Meta Solutions',
+  publisher: 'Atlas Innovations Meta Solutions',
 };
 
 export default function RootLayout({

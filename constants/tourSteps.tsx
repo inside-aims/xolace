@@ -10,6 +10,28 @@ interface Step {
 
 export const FeedSteps: Step[] = [
   {
+    selector: '#navbar',
+    content: () => (
+      <TourWrapper>
+        <TourTitle>Navigation Bar</TourTitle>
+        <TourContent>
+          This is the navigation bar.
+        </TourContent>
+      </TourWrapper>
+    ),
+  },
+  {
+    selector: '#sidebar-btn',
+    content: () => (
+      <TourWrapper>
+        <TourTitle>Sidebar Button</TourTitle>
+        <TourContent>
+          This is the avatar sidebar button. Helps navigate between different sections of the app.
+        </TourContent>
+      </TourWrapper>
+    ),
+  },
+  {
     selector: '[data-tour="welcome-header"]',
     content: () => (
       <TourWrapper>

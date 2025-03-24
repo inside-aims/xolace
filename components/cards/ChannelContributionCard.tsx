@@ -1,6 +1,7 @@
 'use client';
 
 import React from 'react';
+import dynamic from 'next/dynamic';
 import { motion } from 'framer-motion';
 import {
   HeartIcon,
@@ -18,8 +19,16 @@ import {
   DialogTrigger,
 } from '@/components/ui/dialog';
 import { Button } from '../ui/button';
-import { KvngSheet } from '../shared/KvngSheet';
-import FeedbackForm from '../forms/FeedbackForm';
+//import { KvngSheet } from '../shared/KvngSheet';
+//import FeedbackForm from '../forms/FeedbackForm';
+
+const KvngSheet = dynamic(() => import('../shared/KvngSheet').then((mod => mod.KvngSheet)), {
+  ssr: false,
+});
+
+const FeedbackForm = dynamic(() => import('../forms/FeedbackForm'), {
+  ssr: false,
+});
 
 const ChannelContributionCard = () => {
   return (

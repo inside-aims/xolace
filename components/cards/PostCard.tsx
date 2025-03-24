@@ -77,7 +77,7 @@ export function PostCard({ className, post, onClick }: PostCardType) {
         <CardHeader className="flex-row items-start justify-between px-4 py-2">
           <div className="flex items-center gap-3 md:gap-7">
             <Avatar>
-              <AvatarImage src={post.author_avatar_url || undefined} />
+              <AvatarImage src={post.author_avatar_url || undefined} alt={post.author_name} />
               <AvatarFallback>{post.author_name.charAt(0)}</AvatarFallback>
             </Avatar>
             <div className="flex flex-col items-start justify-center">

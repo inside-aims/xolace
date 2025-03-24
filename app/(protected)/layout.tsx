@@ -43,7 +43,7 @@ export default async function ProtectedLayout({
 
   return (
     <div className="[--header-height:calc(theme(spacing.14))]">
-    <SidebarProvider className="flex flex-col">
+    <SidebarProvider className="flex flex-col" style={{ '--header-height': '90px' } as React.CSSProperties}>
       <SiteHeader />
        <div className="flex flex-1">
         <SidebarLeft />

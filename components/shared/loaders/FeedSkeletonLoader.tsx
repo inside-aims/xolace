@@ -1,7 +1,7 @@
 import React from 'react';
 import { Skeleton } from '@/components/ui/skeleton';
 
-function FeedSkeletonCard() {
+export function FeedSkeletonCard() {
   return (
     <div className="mb-5 w-full space-y-4 rounded-lg border border-gray-200 p-4 shadow-sm dark:border-gray-800 md:w-full">
       <div className="flex items-start justify-between">

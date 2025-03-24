@@ -1,6 +1,11 @@
+import type { Metadata } from 'next';
 import Image from 'next/image';
 import SignInForm from '@/components/forms/SignInForm';
 import xolaceImage from "../../../public/assets/images/xolace-1.png"
+
+export const metadata: Metadata = {
+  title: 'Sign-in',
+}
 
 export default async function Login() {
 
