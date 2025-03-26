@@ -1,5 +1,5 @@
 import { formatDistanceToNow } from "date-fns";
-import { ActivityLog } from "@/types/activity";
+import { DbActivityLog } from "@/types/activity";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
@@ -13,11 +13,12 @@ import {
   Settings,
   Trash,
   Edit,
-  Flag
+  Flag,
+  View
 } from "lucide-react";
 
 interface ActivityItemProps {
-  log: ActivityLog;
+  log: DbActivityLog;
   viewType: "my-activities" | "related-to-me";
 }
 
@@ -26,11 +27,11 @@ export function ActivityItem({ log, viewType }: ActivityItemProps) {
     switch (log.action) {
       case "created":
         return log.entity_type === "post" ? <FileText className="h-5 w-5 text-blue-500" /> : <MessageSquare className="h-5 w-5 text-green-500" />;
-      case "liked":
+      case "upvoted":
         return <ThumbsUp className="h-5 w-5 text-red-500" />;
       case "commented":
         return <MessageSquare className="h-5 w-5 text-green-500" />;
-      case "voted":
+      case "downvoted":
         return <Vote className="h-5 w-5 text-purple-500" />;
       case "reported":
         return <Flag className="h-5 w-5 text-orange-500" />;
@@ -38,24 +39,26 @@ export function ActivityItem({ log, viewType }: ActivityItemProps) {
         return <Edit className="h-5 w-5 text-yellow-500" />;
       case "deleted":
         return <Trash className="h-5 w-5 text-red-500" />;
+      case "viewed":
+        return <View className="h-5 w-5 text-blue-500" />;
       default:
         return <Settings className="h-5 w-5 text-gray-500" />;
     }
   };
 
   const getActionText = () => {
-    const userName = viewType === "my-activities" ? "You" : log.user.name;
+    const userName = viewType === "my-activities" ? "You" : log.profiles?.username;
     
     switch (log.action) {
       case "created":
         return log.entity_type === "post" 
           ? `${userName} created a new post` 
           : `${userName} created a ${log.entity_type}`;
-      case "liked":
+      case "upvoted":
         return `${userName} liked a ${log.entity_type}`;
       case "commented":
         return `${userName} commented on a ${log.entity_type}`;
-      case "voted":
+      case "downvoted":
         return `${userName} voted on a ${log.entity_type}`;
       case "reported":
         return `${userName} reported a ${log.entity_type}`;
@@ -63,14 +66,16 @@ export function ActivityItem({ log, viewType }: ActivityItemProps) {
         return `${userName} updated a ${log.entity_type}`;
       case "deleted":
         return `${userName} deleted a ${log.entity_type}`;
+      case "viewed":
+        return `${userName} viewed a post`;
       default:
         return `${userName} performed an action on a ${log.entity_type}`;
     }
   };
 
   const getRelatedText = () => {
-    if (viewType === "my-activities" && log.related_user) {
-      return `Related to ${log.related_user.name}'s content`;
+    if (viewType === "my-activities" && log.related_profiles?.username) {
+      return `Related to ${log.related_profiles.username}'s content`;
     } else if (viewType === "related-to-me") {
       return "On your content";
     }
@@ -107,8 +112,8 @@ export function ActivityItem({ log, viewType }: ActivityItemProps) {
             <div className="flex items-center justify-between">
               <div className="flex items-center gap-2">
                 <Avatar className="h-6 w-6">
-                  <AvatarImage src={log.user.avatar_url} alt={log.user.name} />
-                  <AvatarFallback>{log.user.name.substring(0, 2)}</AvatarFallback>
+                  <AvatarImage src={log.profiles?.avatar_url} alt={log.profiles?.username} />
+                  <AvatarFallback>{log.profiles?.username.substring(0, 2)}</AvatarFallback>
                 </Avatar>
                 <span className="font-medium">{getActionText()}</span>
               </div>
@@ -123,11 +128,11 @@ export function ActivityItem({ log, viewType }: ActivityItemProps) {
             
             {relatedText && (
               <div className="flex items-center gap-2">
-                {viewType === "my-activities" && log.related_user ? (
+                {viewType === "my-activities" && log.related_profiles ? (
                   <>
                     <Avatar className="h-5 w-5">
-                      <AvatarImage src={log.related_user.avatar_url} alt={log.related_user.name} />
-                      <AvatarFallback>{log.related_user.name.substring(0, 2)}</AvatarFallback>
+                      <AvatarImage src={log.related_profiles.avatar_url} alt={log.related_profiles.username} />
+                      <AvatarFallback>{log.related_profiles.username.substring(0, 2)}</AvatarFallback>
                     </Avatar>
                     <Badge variant="outline" className="text-xs font-normal">
                       {relatedText}

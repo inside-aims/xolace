@@ -1,9 +1,10 @@
 import { create } from 'zustand';
-import { ActivityLog } from '@/types/activity';
-import { generateDummyActivityLogs } from '@/constants/dummy-data';
+import { DbActivityLog } from '@/types/activity';
+import { getSupabaseBrowserClient } from '@/utils/supabase/client';
+import { useUserState } from '@/lib/store/user';
 
 interface ActivityState {
-  logs: ActivityLog[];
+  logs: DbActivityLog[];
   isLoading: boolean;
   hasMore: boolean;
   error: string | null;
@@ -21,23 +22,102 @@ export const useActivityStore = create<ActivityState>((set, get) => ({
   
   fetchLogs: async (filter = 'all', viewType = 'my-activities') => {
     const { page, logs } = get();
+    const supabase = getSupabaseBrowserClient();
+    const user = useUserState.getState().user;
+
+    console.log("user ", user)
+    
+    if (!user) {
+      set({ error: 'User not authenticated', isLoading: false });
+      return;
+    }
     
     set({ isLoading: true });
     
     try {
-      // Simulate API call with dummy data
-      await new Promise(resolve => setTimeout(resolve, 1000));
+      const pageSize = 10;
+      const startIndex = (page - 1) * pageSize;
       
-      const newLogs = generateDummyActivityLogs(10, filter, viewType);
-      const hasMore = page < 5; // Limit to 5 pages for demo
+      let query = supabase
+      .from('activity_logs')
+      .select(`
+        id,
+        user_id,
+        related_user_id,
+        entity_type,
+        post_id,
+        comment_id,
+        vote_id,
+        report_id,
+        profile_id,
+        action,
+        metadata,
+        created_at,
+        ip_address,
+        user:profiles!activity_logs_user_id_fkey(id, avatar_url, username),
+        related_user:profiles!activity_logs_related_user_id_fkey(id, avatar_url, username)
+      `)
+      .order('created_at', { ascending: false })
+      .range(startIndex, startIndex + pageSize - 1);
+    
+      
+      // Apply viewType filter
+      if (viewType === 'my-activities') {
+        query = query.eq('user_id', user.id);
+      } else if (viewType === 'related-to-me') {
+        query = query.eq('related_user_id', user.id);
+      }
+      
+      // Apply action/entity type filter
+      if (filter !== 'all') {
+        switch (filter) {
+          case 'posts':
+            query = query.eq('entity_type', 'post');
+            break;
+          case 'comments':
+            query = query.eq('entity_type', 'comment');
+            break;
+          case 'votes':
+            query = query.or(`action.eq.upvoted,action.eq.downvoted`);
+            break;
+          case 'views':
+            query = query.eq('action', 'viewed');
+            break;
+        }
+      }
+      
+      const { data: activityData, error, count } = await query;
+      
+      if (error) {
+        console.log("Error: ", error)
+        throw new Error(error.message);
+      }
+      
+      // Transform the data to match ActivityLog type
+      const transformedLogs = activityData.map((log: any) => ({
+        id: log.id,
+        user_id: log.user_id,
+        user: log.profiles,
+        related_user_id: log.related_user_id,
+        related_user: log.related_profiles,
+        entity_type: log.entity_type,
+        entity_id: log[`${log.entity_type}_id`] || null,
+        action: log.action,
+        metadata: log.metadata,
+        created_at: log.created_at,
+        ip_address: log.ip_address,
+      }));
+      
+      const hasMore = activityData.length === pageSize;
       
       set({
-        logs: page === 1 ? newLogs : [...logs, ...newLogs],
+        logs: page === 1 ? transformedLogs : [...logs, ...transformedLogs],
         page: page + 1,
         hasMore,
         isLoading: false,
       });
     } catch (error) {
+      console.error('Error fetching activity logs:', error);
       set({ 
         error: 'Failed to fetch activity logs', 
         isLoading: false 

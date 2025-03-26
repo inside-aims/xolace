@@ -34,6 +34,13 @@ export enum ActivityType{
   VIEW = 'view'
 }
 
+//
+export interface DbUser{
+  id: string;
+  username: string;
+  avatar_url: string;
+}
+
 // New interface based on the activity_logs database schema
 export interface DbActivityLog {
   id: string;
@@ -54,6 +61,6 @@ export interface DbActivityLog {
   ip_address?: string;
   
   // Join relationships
-  profiles?: User;
-  related_profiles?: User;
+  profiles?: DbUser;
+  related_profiles?: DbUser;
 }

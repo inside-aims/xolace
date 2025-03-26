@@ -194,7 +194,7 @@ export const deleteUser = async (user: User) => {
   await signOutAction();
 };
 
-export async function updateViewsAction(postId: string, userId: string, relatedUserId: string | undefined, totalViews: number) {
+export async function updateViewsAction(postId: string, userId: string, relatedUserId: string | undefined, totalViews: number, content: string) {
   const supabase = await createClient();
 
   try {
@@ -214,7 +214,7 @@ export async function updateViewsAction(postId: string, userId: string, relatedU
       entityType: ActivityType.VIEW,
       action: 'viewed',
       postId,
-      metadata: { view_timestamp: new Date().toISOString(), views : totalViews + 1 }
+      metadata: { view_timestamp: new Date().toISOString(), views : totalViews + 1, content }
     });
 
     revalidatePath('/feed');
