@@ -11,6 +11,7 @@ import { Comment } from '@/types/global';
 interface PostMetricsProps {
   post: {
     id: string;
+    created_by: string;
     upvotes: number;
     downvotes: number;
     comments: { count: number }[] | Comment[];
@@ -72,7 +73,7 @@ const PostMetrics = ({
       }
 
       // Make server request
-      const result = await voteAction(post.id, voteType, previousVote, userId);
+      const result = await voteAction(post.id, voteType, previousVote, userId, post.created_by);
 
       if (!result.success) {
         // Revert changes if server request fails

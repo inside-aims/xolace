@@ -35,6 +35,9 @@ import { Mood } from '@/types';
 import { FloatingCheckbox } from '../create-postComponents/floating-checkbox';
 import { calculateExpiryDate } from '@/lib/utils';
 import { removeHashtags } from '@/lib/utils';
+import { useUserState } from '@/lib/store/user';
+import { logActivity } from '@/lib/activity-logger';
+import { ActivityType } from '@/types/activity';
 
 // Dynamic Imports
 const Loader = dynamic(() => import('../shared/loaders/Loader'), { ssr: false });
@@ -62,6 +65,9 @@ const MoodCarousel = dynamic(
 export function PostForm() {
   const supabase = getSupabaseBrowserClient();
   const { toast } = useToast();
+
+  //get user profile 
+  const user = useUserState(state => state.user);
 
   // states
   const [isLoading, setIsLoading] = useState(false);
@@ -154,7 +160,7 @@ export function PostForm() {
     const expires_at = duration ? calculateExpiryDate(duration) : null;
 
     try {
-      const { error: postError } = await supabase.rpc('create_post_with_tags', {
+      const { data: post_id, error: postError } = await supabase.rpc('create_post_with_tags', {
         content: contentWithoutTags,
         duration: duration ? `${duration}` : duration,
         expires_at,
@@ -176,6 +182,17 @@ export function PostForm() {
         variant: 'default',
         title: 'Post created successfully🤭 !',
       });
+
+      // Log the post creation activity
+      if(user && post_id){
+        await logActivity({
+          userId: user.id,
+          entityType: ActivityType.POST,
+          action: 'created',
+          postId: post_id,
+          metadata: { expires_in_24: is24HourPost, mood: selectedMood?.value }
+        });
+      }
   
     // eslint-disable-next-line @typescript-eslint/no-unused-vars 
     } catch (error) {

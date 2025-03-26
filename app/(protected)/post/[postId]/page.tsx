@@ -64,7 +64,7 @@ const PostDetailPage = async (props: {
     <>
       <DetailCard postId={postId} post={post} />
       <Suspense fallback={<Skeleton className="view_skeleton" />}>
-        <View id={postId} viewsCount={post.views[0].count || 0} />
+        <View id={postId} createdBy={post.created_by} viewsCount={post.views[0].count || 0} />
       </Suspense>
 
       {/* Drawer for comment form and comment cards */}
