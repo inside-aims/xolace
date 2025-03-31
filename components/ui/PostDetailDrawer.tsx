@@ -35,6 +35,7 @@ import { useUserState } from '@/lib/store/user';
 import { Send } from 'lucide-react';
 import { VisuallyHidden } from '@radix-ui/react-visually-hidden';
 import { Comment, DetailPost } from '@/types/global';
+import { logActivity } from '@/lib/activity-logger';
 
 type Type = string | string[] | undefined;
 
@@ -112,6 +113,17 @@ const PostDetailDrawer = ({ post, type }: { post: DetailPost; type: Type }) => {
           variant: 'default',
         });
         form.reset();
+
+        // log comment activity
+        logActivity({
+          userId: user?.id || '',
+          relatedUserId: post.created_by,
+          entityType: 'comment',
+          action: 'created',
+          postId: post.id,
+          metadata: { content: comment, link : `/post/${post.id}` },
+        });
+  
         setIsLoading(false);
       });
   }

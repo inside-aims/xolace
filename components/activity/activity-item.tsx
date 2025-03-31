@@ -16,6 +16,8 @@ import {
   Flag,
   View
 } from "lucide-react";
+import { Button } from "../ui/button";
+import Link from "next/link";
 
 interface ActivityItemProps {
   log: DbActivityLog;
@@ -140,6 +142,13 @@ export function ActivityItem({ log, viewType }: ActivityItemProps) {
                     <Badge variant="outline" className="text-xs font-normal">
                       {relatedText}
                     </Badge>
+                    {
+                      log.metadata?.link && (
+                        <Link href={log.metadata.link} className="text-xs font-normal text-sky-400">
+                          Visit
+                        </Link>
+                      )
+                    }
                   </>
                 ) : (
                   <Badge variant="secondary" className="text-xs font-normal">
