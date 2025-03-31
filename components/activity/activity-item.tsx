@@ -66,7 +66,7 @@ export function ActivityItem({ log, viewType }: ActivityItemProps) {
       case "reported":
         return `${userName} reported ${entityPrefix} ${log.entity_type}`;
       case "updated":
-        return `${userName} updated ${entityPrefix} ${log.entity_type}`;
+        return `${userName} updated your ${log.entity_type} ${log.metadata.new_username ? `username to ${log.metadata.new_username}` : ''}`;
       case "deleted":
         return `${userName} deleted ${entityPrefix} ${log.entity_type}`;
       case "viewed":
