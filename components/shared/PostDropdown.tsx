@@ -16,13 +16,15 @@ import { useToast } from '../ui/use-toast';
 import { useUserState } from '@/lib/store/user';
 import { getSupabaseBrowserClient } from '@/utils/supabase/client';
 import { Trash2, Telescope, Flag } from 'lucide-react';
+import { logActivity } from '@/lib/activity-logger';
 
 type DropdownMenuProp = {
   comment?: boolean;
+  content?: string;
   postDetail?: boolean;
   postCard?: boolean;
   postId?: string;
-  postCreatedBy?: string | number;
+  postCreatedBy?: string ;
   commentId?: number;
   commentCreatedBy?: string | number;
   onOpenChange: React.Dispatch<React.SetStateAction<boolean>>;
@@ -37,6 +39,7 @@ const PostDropdown: React.FC<DropdownMenuProp> = ({
   commentId,
   commentCreatedBy,
   onOpenChange,
+  content
 }) => {
   const router = useRouter();
   const user = useUserState(state => state.user);
@@ -70,6 +73,17 @@ const PostDropdown: React.FC<DropdownMenuProp> = ({
         .eq('id', commentId);
       toast({
         title: `Successfully Deleted Comment.💯 `,
+      });
+
+      console.log("postid ", postId)
+      // log comment activity
+      await logActivity({
+        userId: user?.id || '',
+        relatedUserId: postCreatedBy,
+        entityType: 'comment',
+        action: 'deleted',
+        postId: postId,
+        metadata: { content: content , link : `post/${postId}`},
       });
 
       // eslint-disable-next-line @typescript-eslint/no-unused-vars

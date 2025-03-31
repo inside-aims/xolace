@@ -48,11 +48,12 @@ const CommentCard = ({ comment }: {comment : Comment}) => {
             </small>
           </div>
           <PostDropdown
-            postId={''}
+            postId={comment.post}
             comment={true}
             commentId={comment.id}
             commentCreatedBy={comment.created_by}
             onOpenChange={setIsOpen}
+            content={comment.comment_text}
           />
         </CardHeader>
         <CardContent className=" ">{comment.comment_text}</CardContent>
