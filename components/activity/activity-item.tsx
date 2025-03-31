@@ -47,7 +47,9 @@ export function ActivityItem({ log, viewType }: ActivityItemProps) {
   };
 
   const getActionText = () => {
-    const userName = viewType === "my-activities" ? "You" : log.profiles?.username;
+    // console.log("logs ", log)
+    const userName = viewType === "my-activities" ? "You" : log.user_id?.username;
+    console.log(" username -> ", userName)
     
     switch (log.action) {
       case "created":
@@ -74,8 +76,8 @@ export function ActivityItem({ log, viewType }: ActivityItemProps) {
   };
 
   const getRelatedText = () => {
-    if (viewType === "my-activities" && log.related_profiles?.username) {
-      return `Related to ${log.related_profiles.username}'s content`;
+    if (viewType === "my-activities" && log.related_user_id?.username) {
+      return `Related to ${log.related_user_id.username}'s content`;
     } else if (viewType === "related-to-me") {
       return "On your content";
     }
@@ -112,8 +114,8 @@ export function ActivityItem({ log, viewType }: ActivityItemProps) {
             <div className="flex items-center justify-between">
               <div className="flex items-center gap-2">
                 <Avatar className="h-6 w-6">
-                  <AvatarImage src={log.profiles?.avatar_url} alt={log.profiles?.username} />
-                  <AvatarFallback>{log.profiles?.username.substring(0, 2)}</AvatarFallback>
+                  <AvatarImage src={log.user_id?.avatar_url} alt={log.user_id?.username} />
+                  <AvatarFallback>{log.user_id?.username.substring(0, 2)}</AvatarFallback>
                 </Avatar>
                 <span className="font-medium">{getActionText()}</span>
               </div>
@@ -128,11 +130,11 @@ export function ActivityItem({ log, viewType }: ActivityItemProps) {
             
             {relatedText && (
               <div className="flex items-center gap-2">
-                {viewType === "my-activities" && log.related_profiles ? (
+                {viewType === "my-activities" && log.related_user_id ? (
                   <>
                     <Avatar className="h-5 w-5">
-                      <AvatarImage src={log.related_profiles.avatar_url} alt={log.related_profiles.username} />
-                      <AvatarFallback>{log.related_profiles.username.substring(0, 2)}</AvatarFallback>
+                      <AvatarImage src={log.related_user_id.avatar_url} alt={log.related_user_id.username} />
+                      <AvatarFallback>{log.related_user_id.username.substring(0, 2)}</AvatarFallback>
                     </Avatar>
                     <Badge variant="outline" className="text-xs font-normal">
                       {relatedText}

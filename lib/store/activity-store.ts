@@ -23,7 +23,11 @@ export const useActivityStore = create<ActivityState>((set, get) => ({
   fetchLogs: async (filter = 'all', viewType = 'my-activities') => {
     const { page, logs } = get();
     const supabase = getSupabaseBrowserClient();
+
+    // Wait for hydration and user initialization
+    await new Promise(resolve => setTimeout(resolve, 50));
     const user = useUserState.getState().user;
+    //const user = useUserState(state => state.user)
 
     console.log("user ", user)
     
@@ -42,8 +46,8 @@ export const useActivityStore = create<ActivityState>((set, get) => ({
       .from('activity_logs')
       .select(`
         id,
-        user_id,
-        related_user_id,
+        user_id(id, avatar_url, username),
+        related_user_id(id, avatar_url, username),
         entity_type,
         post_id,
         comment_id,
@@ -53,9 +57,7 @@ export const useActivityStore = create<ActivityState>((set, get) => ({
         action,
         metadata,
         created_at,
-        ip_address,
-        user:profiles!activity_logs_user_id_fkey(id, avatar_url, username),
-        related_user:profiles!activity_logs_related_user_id_fkey(id, avatar_url, username)
+        ip_address
       `)
       .order('created_at', { ascending: false })
       .range(startIndex, startIndex + pageSize - 1);
