@@ -1,17 +1,16 @@
 "use server"
 
 import { createClient } from '@/utils/supabase/server';
+import { ActionType } from '@/types/activity';
 //import { headers } from 'next/headers';
 
 type ActivityEntityType = 'post' | 'comment' | 'vote' | 'report' | 'profile' | 'system' | 'view';
-type ActivityAction = 'created' | 'deleted' | 'updated' | 'commented' | 'reported' | 'upvoted' | 'downvoted' | 'viewed';
-
 
 interface ActivityLogParams {
   userId: string;
   relatedUserId?: string;
   entityType: ActivityEntityType;
-  action: ActivityAction;
+  action: ActionType;
   postId?: string;
   commentId?: number;
   voteId?: number;

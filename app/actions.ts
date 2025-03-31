@@ -260,7 +260,7 @@ export async function voteAction(
       action: voteType === 'upvote' ? 'upvoted' : 'downvoted',
       postId,
       voteId: voteResult.vote,
-      metadata: { vote_type: voteType, action: voteResult.action }
+      metadata: { vote_type: voteType, action: voteResult.action , content_type: "post"}
     });
 
     revalidatePath('/feed', 'page');
@@ -296,9 +296,9 @@ export async function saveToCollectionAction(
       userId,
       relatedUserId,
       entityType: ActivityType.POST,
-      action: 'created',
+      action: 'added',
       postId,
-      metadata: { collection_name: collectionName }
+      metadata: { collection_name: collectionName, content_type: "post" }
     });
 
     revalidatePath('/feed', 'page');

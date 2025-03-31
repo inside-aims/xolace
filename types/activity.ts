@@ -1,5 +1,5 @@
-export type EntityType = 'post' | 'comment' | 'vote' | 'report' | 'profile' | 'system';
-export type ActionType = 'created' | 'deleted' | 'updated' | 'liked' | 'commented' | 'reported' | 'voted';
+export type EntityType = 'post' | 'comment' | 'vote' | 'report' | 'profile' | 'system' | 'view';
+export type ActionType = 'created' | 'deleted' | 'updated' | 'commented' | 'reported' | 'upvoted' | 'downvoted' | 'viewed' | 'added';
 
 export interface User {
   id: string;
@@ -55,7 +55,7 @@ export interface DbActivityLog {
   report_id?: number;
   profile_id?: string;
   
-  action: 'created' | 'deleted' | 'updated' | 'commented' | 'reported' | 'upvoted' | 'downvoted' | 'viewed';
+  action: ActionType;
   metadata: Record<string, any>;
   created_at: string;
   ip_address?: string;

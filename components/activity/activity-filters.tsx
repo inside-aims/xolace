@@ -19,7 +19,7 @@ export function ActivityFilters({ currentFilter, onFilterChange }: ActivityFilte
     { value: "all", label: "All Activities" },
     { value: "posts", label: "Posts" },
     { value: "comments", label: "Comments" },
-    { value: "likes", label: "Likes" },
+    { value: "views", label: "Views" },
     { value: "votes", label: "Votes" },
   ];
 

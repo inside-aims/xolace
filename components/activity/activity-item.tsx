@@ -47,31 +47,32 @@ export function ActivityItem({ log, viewType }: ActivityItemProps) {
   };
 
   const getActionText = () => {
-    // console.log("logs ", log)
     const userName = viewType === "my-activities" ? "You" : log.user_id?.username;
-    console.log(" username -> ", userName)
-    
+    const entityPrefix = viewType === "my-activities" ? "a" : "your";
+    console.log(log)
     switch (log.action) {
       case "created":
         return log.entity_type === "post" 
           ? `${userName} created a new post` 
-          : `${userName} created a ${log.entity_type}`;
+          : `${userName} created ${entityPrefix} ${log.entity_type}`;
+      case "added":
+        return `${userName} added ${entityPrefix} ${log.entity_type} to ${log.metadata.collection_name}`;
       case "upvoted":
-        return `${userName} liked a ${log.entity_type}`;
+        return `${userName} upvoted ${entityPrefix} post`;
       case "commented":
-        return `${userName} commented on a ${log.entity_type}`;
+        return `${userName} commented on ${entityPrefix} post`;
       case "downvoted":
-        return `${userName} voted on a ${log.entity_type}`;
+        return `${userName} downvoted ${entityPrefix} post`;
       case "reported":
-        return `${userName} reported a ${log.entity_type}`;
+        return `${userName} reported ${entityPrefix} ${log.entity_type}`;
       case "updated":
-        return `${userName} updated a ${log.entity_type}`;
+        return `${userName} updated ${entityPrefix} ${log.entity_type}`;
       case "deleted":
-        return `${userName} deleted a ${log.entity_type}`;
+        return `${userName} deleted ${entityPrefix} ${log.entity_type}`;
       case "viewed":
-        return `${userName} viewed a post`;
+        return `${userName} viewed ${entityPrefix} post`;
       default:
-        return `${userName} performed an action on a ${log.entity_type}`;
+        return `${userName} performed an action on ${entityPrefix} ${log.entity_type}`;
     }
   };
 
