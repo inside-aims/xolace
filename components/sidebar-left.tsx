@@ -274,16 +274,16 @@ const data = {
       url: "/activities",
       icon: Blocks,
     },
-        {
-          title: "Settings",
-          url: "#",
-          icon: Settings2,
-        },
-        {
-          title: "Help",
-          url: "#",
-          icon: MessageCircleQuestion,
-        },
+        // {
+        //   title: "Settings",
+        //   url: "#",
+        //   icon: Settings2,
+        // },
+        // {
+        //   title: "Help",
+        //   url: "#",
+        //   icon: MessageCircleQuestion,
+        // },
       ],
 }
 
