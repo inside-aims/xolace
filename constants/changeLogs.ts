@@ -19,4 +19,18 @@ export const logs = [
       "- ⚡ Real-time updates: Instant sync for comments",
     ],
   },
+  // log new ui update and activities feature and performance improvements
+  {
+    version: '1.1',
+    date: 'February 2, 2025',
+    title: 'New UI and Activities Feature',
+    changes: [
+      '**New UI**',
+      '- 🎨 New design: A fresh, modern look for a better user experience.',
+      '- 📚 Activities: View your activity history and manage your collections.',
+      '**Performance Improvements**',
+      '- 🚀 Faster loading: Optimize data fetching and caching.',
+      '- 🔄 Improved performance: Streamline operations for faster responses.',
+    ],
+  },
 ];
