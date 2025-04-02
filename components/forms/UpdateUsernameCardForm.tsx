@@ -100,7 +100,7 @@ export default function UpdateUsernameCardForm() {
       userId: user.id,
       entityType: ActivityType.PROFILE,
       action: 'updated',
-      metadata: { new_username: username }
+      metadata: { new_username: username, old_username: oldUsername }
     });
 
     useUserState.setState({user: {...user, username: username}});

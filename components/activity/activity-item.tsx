@@ -7,16 +7,13 @@ import {
   MessageSquare,
   ThumbsUp,
   Vote,
-  AlertTriangle,
   FileText,
-  User,
   Settings,
   Trash,
   Edit,
   Flag,
   View,
 } from 'lucide-react';
-import { Button } from '../ui/button';
 import Link from 'next/link';
 
 interface ActivityItemProps {

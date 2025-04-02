@@ -226,7 +226,7 @@ export async function updateViewsAction(postId: string, userId: string, relatedU
 
     return { success: true, data };
   } catch (error) {
-    return { success: false, error: 'Failed to update views' };
+    return error ? { success: false, error: 'Failed to update views' } : { success: false, error: 'Failed to update views, Try again!' };
   }
 }
 
@@ -273,7 +273,7 @@ export async function voteAction(
 
     return { success: true, data: voteResult };
   } catch (error) {
-    return { success: false, error: 'Failed to process vote' };
+    return error ? { success: false, error: 'Failed to process vote' } : { success: false, error: 'Failed to process vote, Try again' };
   }
 }
 
@@ -333,7 +333,7 @@ export async function removeFromCollection(userId: string, postId: string, colle
     return { success: true };
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
   } catch (error) {
-    return { success: false, error: 'Failed to remove from collection' };
+    return error ? { success: false, error: 'Failed to remove from collection' } : { success: false, error: 'Failed to remove from collection, Try again!' };
   }
 }
 

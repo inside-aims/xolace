@@ -4,15 +4,15 @@ import * as React from "react"
 import {
   // AudioWaveform,
   Blocks,
-  Calendar,
+  // Calendar,
   // Command,
   // Home,
   // Inbox,
-  MessageCircleQuestion,
+  // MessageCircleQuestion,
   // Search,
-  Settings2,
+  // Settings2,
   // Sparkles,
-  Trash2,
+  // Trash2,
 } from "lucide-react"
 
 //import { NavFavorites } from "@/components/nav-favorites"

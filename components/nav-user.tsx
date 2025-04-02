@@ -19,7 +19,6 @@ import {
   DropdownMenuContent,
   DropdownMenuGroup,
   DropdownMenuItem,
-  DropdownMenuLabel,
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu"
@@ -32,7 +31,6 @@ import {
 import { Profile } from "@/types/global"
 import { getSupabaseBrowserClient } from '@/utils/supabase/client';
 import SignoutAlert from "./shared/SignoutAlert"
-import { format } from 'timeago.js';
 
 
 export function NavUser({

@@ -29,7 +29,6 @@ export const useActivityStore = create<ActivityState>((set, get) => ({
     const user = useUserState.getState().user;
     //const user = useUserState(state => state.user)
 
-    console.log("user ", user)
     
     if (!user) {
       set({ error: 'User not authenticated', isLoading: false });
@@ -88,10 +87,10 @@ export const useActivityStore = create<ActivityState>((set, get) => ({
         }
       }
       
-      const { data: activityData, error, count } = await query;
+      // const { data: activityData, error, count } = await query; // for later
+      const { data: activityData, error } = await query;
       
       if (error) {
-        console.log("Error: ", error)
         throw new Error(error.message);
       }
       
@@ -118,7 +117,9 @@ export const useActivityStore = create<ActivityState>((set, get) => ({
         hasMore,
         isLoading: false,
       });
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
     } catch (error) {
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
       console.error('Error fetching activity logs:', error);
       set({ 
         error: 'Failed to fetch activity logs', 
