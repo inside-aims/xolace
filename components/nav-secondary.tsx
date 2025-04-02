@@ -3,6 +3,7 @@ import { type LucideIcon } from "lucide-react"
 import Link from "next/link"
 
 import {
+  useSidebar,
   SidebarGroup,
   SidebarGroupContent,
   SidebarMenu,
@@ -22,13 +23,14 @@ export function NavSecondary({
     badge?: React.ReactNode
   }[]
 } & React.ComponentPropsWithoutRef<typeof SidebarGroup>) {
+  const { setOpenMobile } = useSidebar();
   return (
     <SidebarGroup {...props}>
       <SidebarGroupContent>
         <SidebarMenu>
           {items.map((item) => (
             <SidebarMenuItem key={item.title}>
-              <SidebarMenuButton asChild>
+              <SidebarMenuButton asChild onClick={()=> setOpenMobile(false)}>
                 <Link href={item.url}>
                   <item.icon />
                   <span>{item.title}</span>
