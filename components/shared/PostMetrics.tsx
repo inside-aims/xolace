@@ -39,6 +39,8 @@ const PostMetrics = ({
   const [downvoteCount, setDownvoteCount] = useState(post.downvotes);
   const [isVoting, setIsVoting] = useState(false);
 
+ 
+
   useEffect(() => {
     setCurrentVote(userVote);
     setUpvoteCount(post.upvotes);
@@ -48,10 +50,10 @@ const PostMetrics = ({
   const handleVote = async (voteType: 'upvote' | 'downvote') => {
     if (isVoting) return;
     setIsVoting(true);
+    const previousVote = currentVote;
 
     try {
       // Optimistically update UI
-      const previousVote = currentVote;
       const isRemovingVote = currentVote === voteType;
 
       // Update vote counts based on the action
@@ -85,7 +87,7 @@ const PostMetrics = ({
    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     } catch (error) {
       // Revert changes on error
-      setCurrentVote(userVote);
+      setCurrentVote(previousVote);
       setUpvoteCount(post.upvotes);
       setDownvoteCount(post.downvotes);
     } finally {
@@ -125,8 +127,8 @@ const PostMetrics = ({
             )}
           />
         </button>
-        <span className="min-w-[2ch] text-center font-medium text-sm" id='vote-count'>
-          {upvoteCount - downvoteCount}
+        <span className="min-w-[2ch] text-center font-medium text-sm" id='upvote-count'>
+         {upvoteCount}
         </span>
         <button
           type="button"
@@ -144,6 +146,9 @@ const PostMetrics = ({
             )}
           />
         </button>
+        <span className="min-w-[2ch] text-center font-medium text-sm" id='downvote-count'>
+         {downvoteCount}
+        </span>
       </div>
 
       <div className="flex items-center gap-1" id='comment-btn'>

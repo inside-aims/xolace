@@ -75,7 +75,6 @@ const PostDropdown: React.FC<DropdownMenuProp> = ({
         title: `Successfully Deleted Comment.💯 `,
       });
 
-      console.log("postid ", postId)
       // log comment activity
       await logActivity({
         userId: user?.id || '',
@@ -116,6 +115,15 @@ const PostDropdown: React.FC<DropdownMenuProp> = ({
       // display success toast
       toast({
         title: `Successfully Deleted Post.💯 `,
+      });
+
+      // log post activity
+      await logActivity({
+        userId: postCreatedBy || '',
+        entityType: 'post',
+        action: 'deleted',
+        postId: postId,
+        metadata: { content: content },
       });
 
       // navigate to feed page if its the details page

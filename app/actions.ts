@@ -207,14 +207,17 @@ export async function updateViewsAction(postId: string, userId: string, relatedU
       return { success: false, error: error.message };
     }
 
+    // check if the user is the creator of the post
+    const relatedUser = relatedUserId === userId ? undefined : relatedUserId;
+
     // Log the view activity
     await logActivity({
       userId,
-      relatedUserId,
+      relatedUserId: relatedUser,
       entityType: ActivityType.VIEW,
       action: 'viewed',
       postId,
-      metadata: { view_timestamp: new Date().toISOString(), views : totalViews + 1, content }
+      metadata: { view_timestamp: new Date().toISOString(), views : totalViews + 1, content , link : `/post/${postId}` }
     });
 
     revalidatePath('/feed');
@@ -251,16 +254,17 @@ export async function voteAction(
       return { success: false, error: voteError.message };
     }
 
-    console.log("vote result -> ",voteResult)
+    const relatedUser = relatedUserId === user_id ? undefined : relatedUserId;
+
     // Log the vote activity
     await logActivity({
       userId: user_id,
-      relatedUserId,
+      relatedUserId: relatedUser,
       entityType: ActivityType.VOTE,
       action: voteType === 'upvote' ? 'upvoted' : 'downvoted',
       postId,
       voteId: voteResult.vote,
-      metadata: { vote_type: voteType, action: voteResult.action , content_type: "post"}
+      metadata: { vote_type: voteType, action: voteResult.action , content_type: "post", link : `/post/${postId}`}
     });
 
     revalidatePath('/feed', 'page');
@@ -298,7 +302,7 @@ export async function saveToCollectionAction(
       entityType: ActivityType.POST,
       action: 'added',
       postId,
-      metadata: { collection_name: collectionName, content_type: "post" }
+      metadata: { collection_name: collectionName, content_type: "post" , link : `/post/${postId}`}
     });
 
     revalidatePath('/feed', 'page');

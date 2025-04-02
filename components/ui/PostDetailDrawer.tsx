@@ -97,7 +97,6 @@ const PostDetailDrawer = ({ post, type }: { post: DetailPost; type: Type }) => {
   async function onSubmit(data: z.infer<typeof CommentSchema>) {
     setIsLoading(true);
     const { comment } = data;
-    console.log(comment);
 
     // inserting into the database table in supabase
     supabase
@@ -114,12 +113,14 @@ const PostDetailDrawer = ({ post, type }: { post: DetailPost; type: Type }) => {
         });
         form.reset();
 
+        // check if the user is the creator of the post
+        const relatedUser = post.created_by === user?.id ? undefined : post.created_by;
         // log comment activity
         logActivity({
           userId: user?.id || '',
-          relatedUserId: post.created_by,
+          relatedUserId: relatedUser,
           entityType: 'comment',
-          action: 'created',
+          action: 'commented',
           postId: post.id,
           metadata: { content: comment, link : `/post/${post.id}` },
         });
@@ -134,7 +135,6 @@ const PostDetailDrawer = ({ post, type }: { post: DetailPost; type: Type }) => {
     const listener = (payload: any) => {
       const eventType = payload.eventType;
 
-      console.log('eventType', payload);
 
       if (eventType === 'INSERT') {
         setComments((prevComments: Comment[]) => [...prevComments, payload.new]);
