@@ -309,7 +309,7 @@ export async function saveToCollectionAction(
     revalidatePath('/explore', 'page');
     return { success: true, data };
   } catch (error) {
-    return { success: false, error: 'Failed to save to collection' };
+    return error ? { success: false, error: 'Failed to save to collection' } : { success: false, error: 'Failed to save to collection, Try again' };
   }
 }
 
@@ -331,7 +331,6 @@ export async function removeFromCollection(userId: string, postId: string, colle
     revalidatePath('/explore', 'page');
 
     return { success: true };
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars
   } catch (error) {
     return error ? { success: false, error: 'Failed to remove from collection' } : { success: false, error: 'Failed to remove from collection, Try again!' };
   }

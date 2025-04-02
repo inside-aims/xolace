@@ -95,6 +95,7 @@ export const useActivityStore = create<ActivityState>((set, get) => ({
       }
       
       // Transform the data to match ActivityLog type
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
       const transformedLogs = activityData.map((log: any) => ({
         id: log.id,
         user_id: log.user_id,
