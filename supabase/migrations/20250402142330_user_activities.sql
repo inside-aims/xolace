@@ -3,6 +3,7 @@ create type "public"."action_type" as enum ('created', 'deleted', 'updated', 'co
 create type "public"."entity_types" as enum ('post', 'comment', 'vote', 'report', 'profile', 'system', 'view');
 
 drop function if exists "public"."handle_vote"(p_post_id uuid, p_user_id uuid, p_vote_type vote_types, p_current_vote text);
+drop function if exists "public"."create_post_with_tags"(content text, mood post_mood, expires_in_24hr boolean, duration post_duration, expires_at timestamp with time zone, tag_names text[]);
 
 create table "public"."activity_logs" (
     "id" uuid not null default gen_random_uuid(),
