@@ -5,14 +5,14 @@ import Ping from '@/components/animated/Ping';
 import { useUserState } from '@/lib/store/user';
 import { updateViewsAction } from '@/app/actions';
 
-const View = ({ id, viewsCount }: { id: string; viewsCount: number }) => {
+const View = ({ id, viewsCount, createdBy, content }: { id: string; viewsCount: number ; createdBy: string ; content: string}) => {
   // get user profile data
   const user = useUserState(state => state.user);
   const [totalViews, setTotalViews] = useState(viewsCount);
 
   useEffect(() => {
     const handleUpdateViews = async () => {
-      const result = await updateViewsAction(id, user?.id || '');
+      const result = await updateViewsAction(id, user?.id || '', createdBy, totalViews, content);
       if (result.success) {
         setTotalViews((prev) => prev + 1);
       }

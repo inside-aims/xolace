@@ -11,6 +11,8 @@ import { sendOTPLink } from '@/utils/sendOTPLink';
 import { Post, User } from '@/types/global';
 import { revalidatePath , revalidateTag} from 'next/cache';
 import { PostgrestError } from '@supabase/supabase-js';
+import { logActivity } from '@/lib/activity-logger';
+import { ActivityType } from '@/types/activity';
 
 export const signUpAction = validatedAction(signUpSchema, async data => {
   const supabaseAdmin = getSupabaseAdminClient();
@@ -192,7 +194,7 @@ export const deleteUser = async (user: User) => {
   await signOutAction();
 };
 
-export async function updateViewsAction(postId: string, userId: string) {
+export async function updateViewsAction(postId: string, userId: string, relatedUserId: string | undefined, totalViews: number, content: string) {
   const supabase = await createClient();
 
   try {
@@ -205,14 +207,26 @@ export async function updateViewsAction(postId: string, userId: string) {
       return { success: false, error: error.message };
     }
 
-    // Revalidate both feed and explore paths since they both show post data
+    // check if the user is the creator of the post
+    const relatedUser = relatedUserId === userId ? undefined : relatedUserId;
+
+    // Log the view activity
+    await logActivity({
+      userId,
+      relatedUserId: relatedUser,
+      entityType: ActivityType.VIEW,
+      action: 'viewed',
+      postId,
+      metadata: { view_timestamp: new Date().toISOString(), views : totalViews + 1, content , link : `/post/${postId}` }
+    });
+
     revalidatePath('/feed');
+    revalidateTag('posts')
     revalidatePath('/explore');
 
     return { success: true, data };
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars
   } catch (error) {
-    return { success: false, error: 'Failed to update views' };
+    return error ? { success: false, error: 'Failed to update views' } : { success: false, error: 'Failed to update views, Try again!' };
   }
 }
 
@@ -221,11 +235,11 @@ export async function voteAction(
   voteType: 'upvote' | 'downvote',
   currentVote: string | null,
   user_id: string,
+  relatedUserId: string
 ) {
   const supabase = await createClient();
 
   try {
-    // Start a transaction by using supabase's RPC call
     const { data: voteResult, error: voteError } = await supabase.rpc(
       'handle_vote',
       {
@@ -240,22 +254,32 @@ export async function voteAction(
       return { success: false, error: voteError.message };
     }
 
-    console.log("revalidating")
-    // Revalidate paths that show posts
+    const relatedUser = relatedUserId === user_id ? undefined : relatedUserId;
+
+    // Log the vote activity
+    await logActivity({
+      userId: user_id,
+      relatedUserId: relatedUser,
+      entityType: ActivityType.VOTE,
+      action: voteType === 'upvote' ? 'upvoted' : 'downvoted',
+      postId,
+      voteId: voteResult.vote,
+      metadata: { vote_type: voteType, action: voteResult.action , content_type: "post", link : `/post/${postId}`}
+    });
+
     revalidatePath('/feed', 'page');
     revalidateTag('posts')
     revalidatePath('/explore', 'page');
-    // revalidatePath(`/post/${postId}`);
 
     return { success: true, data: voteResult };
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars
   } catch (error) {
-    return { success: false, error: 'Failed to process vote' };
+    return error ? { success: false, error: 'Failed to process vote' } : { success: false, error: 'Failed to process vote, Try again' };
   }
 }
 
 export async function saveToCollectionAction(
   userId: string,
+  relatedUserId: string,
   postId: string,
   collectionName: string = 'favorites',
 ) {
@@ -271,12 +295,21 @@ export async function saveToCollectionAction(
 
     if (error) return { success: false, error: error.message };
 
+    // Log the collection activity
+    await logActivity({
+      userId,
+      relatedUserId,
+      entityType: ActivityType.POST,
+      action: 'added',
+      postId,
+      metadata: { collection_name: collectionName, content_type: "post" , link : `/post/${postId}`}
+    });
+
     revalidatePath('/feed', 'page');
     revalidatePath('/explore', 'page');
     return { success: true, data };
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars
   } catch (error) {
-    return { success: false, error: 'Failed to save to collection' };
+    return error ? { success: false, error: 'Failed to save to collection' } : { success: false, error: 'Failed to save to collection, Try again' };
   }
 }
 
@@ -298,9 +331,8 @@ export async function removeFromCollection(userId: string, postId: string, colle
     revalidatePath('/explore', 'page');
 
     return { success: true };
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars
   } catch (error) {
-    return { success: false, error: 'Failed to remove from collection' };
+    return error ? { success: false, error: 'Failed to remove from collection' } : { success: false, error: 'Failed to remove from collection, Try again!' };
   }
 }
 

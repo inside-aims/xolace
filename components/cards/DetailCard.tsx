@@ -124,7 +124,7 @@ export function DetailCard({ postId, post }: { postId: string; post: DetailPost 
           </div>
           
           <div>
-            <SaveToCollectionsButton userId={user?.id || ''} postId={post.id} postCollections={post.collections} />
+            <SaveToCollectionsButton userId={user?.id || ''} createdBy={post.created_by} postId={post.id} postCollections={post.collections} />
           </div>
         </CardFooter>
       </Card>

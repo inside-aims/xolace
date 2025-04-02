@@ -1,23 +1,23 @@
 "use client"
 
 import * as React from "react"
-// import {
-//   AudioWaveform,
-//   Blocks,
-//   Calendar,
-//   Command,
-//   Home,
-//   Inbox,
-//   MessageCircleQuestion,
-//   Search,
-//   Settings2,
-//   Sparkles,
-//   Trash2,
-// } from "lucide-react"
+import {
+  // AudioWaveform,
+  Blocks,
+  // Calendar,
+  // Command,
+  // Home,
+  // Inbox,
+  // MessageCircleQuestion,
+  // Search,
+  // Settings2,
+  // Sparkles,
+  // Trash2,
+} from "lucide-react"
 
 //import { NavFavorites } from "@/components/nav-favorites"
 import { NavMain } from "@/components/nav-main"
-// import { NavSecondary } from "@/components/nav-secondary"
+import { NavSecondary } from "@/components/nav-secondary"
 // import { NavWorkspaces } from "@/components/nav-workspaces"
 //import { TeamSwitcher } from "@/components/team-switcher"
 import {
@@ -267,6 +267,26 @@ import { useUserState } from "@/lib/store/user"
 //   ],
 // }
 
+const data = {
+  navSecondary: [
+    {
+      title: "Activity",
+      url: "/activities",
+      icon: Blocks,
+    },
+        // {
+        //   title: "Settings",
+        //   url: "#",
+        //   icon: Settings2,
+        // },
+        // {
+        //   title: "Help",
+        //   url: "#",
+        //   icon: MessageCircleQuestion,
+        // },
+      ],
+}
+
 export function SidebarLeft({
   ...props
 }: React.ComponentProps<typeof Sidebar>) {
@@ -282,7 +302,7 @@ export function SidebarLeft({
       <SidebarContent>
         {/* <NavFavorites favorites={data.favorites} /> */}
         {/* <NavWorkspaces workspaces={data.workspaces} /> */}
-        {/* <NavSecondary items={data.navSecondary} className="mt-auto" /> */}
+        <NavSecondary items={data.navSecondary} className="mt-auto" />
       </SidebarContent>
       <SidebarFooter>
         <NavUser user={user} />

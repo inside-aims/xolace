@@ -19,7 +19,6 @@ import {
   DropdownMenuContent,
   DropdownMenuGroup,
   DropdownMenuItem,
-  DropdownMenuLabel,
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu"
@@ -32,7 +31,6 @@ import {
 import { Profile } from "@/types/global"
 import { getSupabaseBrowserClient } from '@/utils/supabase/client';
 import SignoutAlert from "./shared/SignoutAlert"
-import { format } from 'timeago.js';
 
 
 export function NavUser({
@@ -63,9 +61,10 @@ export function NavUser({
 
     // convert created_at
     useEffect(() => {
-      if(user){
-        setTimestamp(format(user.created_at));
-      }else{
+      if (user) {
+        const date = new Date(user.created_at);
+        setTimestamp(`since ${date.toLocaleString('default', { month: 'short' })} ${date.getDate()}, ${date.getFullYear()}`);
+      } else {
         setTimestamp("Long ago")
       }
       
@@ -113,7 +112,7 @@ export function NavUser({
             align="start"
             sideOffset={4}
           >
-            <DropdownMenuLabel className="p-0 font-normal">
+            {/* <DropdownMenuLabel className="p-0 font-normal">
               <div className="flex items-center gap-2 px-1 py-1.5 text-left text-sm">
                 <Avatar className="h-8 w-8 rounded-lg">
                   <AvatarImage src={user?.avatar_url ?? undefined} alt={user?.username} />
@@ -124,7 +123,7 @@ export function NavUser({
                 </div>
               </div>
             </DropdownMenuLabel>
-            <DropdownMenuSeparator />
+            <DropdownMenuSeparator /> */}
             <DropdownMenuGroup>
               <DropdownMenuItem>
                 <Sparkles />
@@ -147,7 +146,7 @@ export function NavUser({
               </DropdownMenuItem>
             </DropdownMenuGroup> */}
             {/* <DropdownMenuSeparator /> */}
-            <DropdownMenuItem onClick={e => handleSignOut(e)}>
+            <DropdownMenuItem className=" cursor-pointer" onClick={e => handleSignOut(e)}>
               <LogOut />
               Log out
             </DropdownMenuItem>

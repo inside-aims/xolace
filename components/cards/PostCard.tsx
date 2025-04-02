@@ -162,7 +162,7 @@ export function PostCard({ className, post, onClick }: PostCardType) {
           </div>
 
           <div id='collection-btn'>
-            <SaveToCollectionsButton userId={user?.id || ''} postId={post.id} postCollections={post.collections} />
+            <SaveToCollectionsButton userId={user?.id || ''} createdBy={post.created_by} postId={post.id} postCollections={post.collections} />
           </div>
           </div>
         </CardFooter>
