@@ -13,7 +13,7 @@ const users = [
 const currentUser = users[0];
 
 const entityTypes: EntityType[] = ['post', 'comment', 'vote', 'report', 'profile', 'system'];
-const actions: ActionType[] = ['created', 'deleted', 'updated', 'liked', 'commented', 'reported', 'voted'];
+const actions: ActionType[] = ['created', 'deleted', 'updated', 'viewed', 'commented', 'reported', 'upvoted', 'downvoted'];
 
 const getRandomElement = <T>(array: T[]): T => {
   return array[Math.floor(Math.random() * array.length)];
@@ -50,7 +50,7 @@ export const generateDummyActivityLogs = (
     if (filter !== 'all') {
       if (filter === 'likes') {
         entityType = 'post';
-        action = 'liked';
+        action = 'viewed';
       } else if (filter === 'comments') {
         entityType = 'post';
         action = 'commented';
