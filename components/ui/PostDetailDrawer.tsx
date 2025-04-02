@@ -35,6 +35,7 @@ import { useUserState } from '@/lib/store/user';
 import { Send } from 'lucide-react';
 import { VisuallyHidden } from '@radix-ui/react-visually-hidden';
 import { Comment, DetailPost } from '@/types/global';
+import { logActivity } from '@/lib/activity-logger';
 
 type Type = string | string[] | undefined;
 
@@ -96,7 +97,6 @@ const PostDetailDrawer = ({ post, type }: { post: DetailPost; type: Type }) => {
   async function onSubmit(data: z.infer<typeof CommentSchema>) {
     setIsLoading(true);
     const { comment } = data;
-    console.log(comment);
 
     // inserting into the database table in supabase
     supabase
@@ -112,6 +112,19 @@ const PostDetailDrawer = ({ post, type }: { post: DetailPost; type: Type }) => {
           variant: 'default',
         });
         form.reset();
+
+        // check if the user is the creator of the post
+        const relatedUser = post.created_by === user?.id ? undefined : post.created_by;
+        // log comment activity
+        logActivity({
+          userId: user?.id || '',
+          relatedUserId: relatedUser,
+          entityType: 'comment',
+          action: 'commented',
+          postId: post.id,
+          metadata: { content: comment, link : `/post/${post.id}` },
+        });
+  
         setIsLoading(false);
       });
   }
@@ -122,7 +135,6 @@ const PostDetailDrawer = ({ post, type }: { post: DetailPost; type: Type }) => {
     const listener = (payload: any) => {
       const eventType = payload.eventType;
 
-      console.log('eventType', payload);
 
       if (eventType === 'INSERT') {
         setComments((prevComments: Comment[]) => [...prevComments, payload.new]);

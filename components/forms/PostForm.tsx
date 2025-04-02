@@ -1,15 +1,11 @@
 'use client';
 
-import React, { useState, useRef } from 'react';
+import React, { useState, useRef, useMemo } from 'react';
 import Image from 'next/image';
+import dynamic from 'next/dynamic';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useForm } from 'react-hook-form';
 import { z } from 'zod';
-import EmojiPicker, {
-  EmojiClickData,
-  Theme,
-  EmojiStyle,
-} from 'emoji-picker-react';
 import { Smile } from 'lucide-react';
 import { motion } from 'framer-motion';
 
@@ -28,21 +24,50 @@ import {
 } from '@/components/ui/popover';
 import { Textarea } from '@/components/ui/textarea';
 import { useToast } from '../ui/use-toast';
-import Loader from '../shared/loaders/Loader';
+//import Loader from '../shared/loaders/Loader';
 import { PostSchema } from '@/validation';
 import { getSupabaseBrowserClient } from '@/utils/supabase/client';
 import { postMoods } from '@/constants';
 import { Send } from 'lucide-react';
-import MoodCarousel from '../hocs/createPostComponent/mood-carousel';
+// import MoodCarousel from '../hocs/createPostComponent/mood-carousel';
 import { Mood } from '@/types';
-import ShinyButton from '../ui/shiny-button';
+// import ShinyButton from '../ui/shiny-button';
 import { FloatingCheckbox } from '../create-postComponents/floating-checkbox';
 import { calculateExpiryDate } from '@/lib/utils';
 import { removeHashtags } from '@/lib/utils';
+import { useUserState } from '@/lib/store/user';
+import { logActivity } from '@/lib/activity-logger';
+import { ActivityType } from '@/types/activity';
+
+// Dynamic Imports
+const Loader = dynamic(() => import('../shared/loaders/Loader'), { ssr: false });
+const EmojiPicker = dynamic(() => import('emoji-picker-react'), { ssr: false, loading: () => <p className="p-4">Loading emojis...</p> });
+const ShinyButton = dynamic(
+  () => import('../ui/shiny-button'),
+  { 
+    ssr: false,
+    loading: () => (
+      <Button disabled className="rounded-full disabled:bg-gray-900">
+        <Send size={20} strokeWidth={1.75} absoluteStrokeWidth />
+      </Button>
+    )
+  }
+);
+const MoodCarousel = dynamic(
+  () => import('../hocs/createPostComponent/mood-carousel'),
+  { 
+    ssr: false,
+    loading: () => <div className="h-[50px] w-full bg-gray-900 rounded-full" />
+  }
+);
+
 
 export function PostForm() {
   const supabase = getSupabaseBrowserClient();
   const { toast } = useToast();
+
+  //get user profile 
+  const user = useUserState(state => state.user);
 
   // states
   const [isLoading, setIsLoading] = useState(false);
@@ -53,11 +78,23 @@ export function PostForm() {
   const textareaRef = useRef<HTMLTextAreaElement>(null);
 
   // get mood boolean value
-  const isNeutral = selectedMood?.value === 'neutral';
-  const isHappy = selectedMood?.value === 'happy';
-  const isSad = selectedMood?.value === 'sad';
-  const isAngry = selectedMood?.value === 'angry';
-  const isConfused = selectedMood?.value === 'confused';
+  // const isNeutral = selectedMood?.value === 'neutral';
+  // const isHappy = selectedMood?.value === 'happy';
+  // const isSad = selectedMood?.value === 'sad';
+  // const isAngry = selectedMood?.value === 'angry';
+  // const isConfused = selectedMood?.value === 'confused';
+
+  // Memoized mood boolean values
+  const moodClasses = useMemo(() => {
+    const moodColors = {
+      neutral: 'border-pink-500 dark:border-pink-400',
+      happy: 'border-green-500 dark:border-green-400',
+      sad: 'border-blue dark:border-sky-400',
+      angry: 'border-red-500 dark:border-red-400',
+      confused: 'border-yellow-500 dark:border-yellow-400',
+    };
+    return selectedMood ? moodColors[selectedMood.value as keyof typeof moodColors] || '' : '';
+  }, [selectedMood]);
 
   //  counter for comment fields
   const counter: number = 500;
@@ -76,7 +113,7 @@ export function PostForm() {
   const content = watch('content');
 
   // function to handle emoji selection add to post field
-  const handleEmojiClick = (emojiData: EmojiClickData) => {
+  const handleEmojiClick = (emojiData: {emoji : string}) => {
     const emoji = emojiData.emoji;
     const textarea = textareaRef.current;
     if (textarea) {
@@ -123,7 +160,7 @@ export function PostForm() {
     const expires_at = duration ? calculateExpiryDate(duration) : null;
 
     try {
-      const { error: postError } = await supabase.rpc('create_post_with_tags', {
+      const { data: post_id, error: postError } = await supabase.rpc('create_post_with_tags', {
         content: contentWithoutTags,
         duration: duration ? `${duration}` : duration,
         expires_at,
@@ -145,6 +182,17 @@ export function PostForm() {
         variant: 'default',
         title: 'Post created successfully🤭 !',
       });
+
+      // Log the post creation activity
+      if(user && post_id){
+        await logActivity({
+          userId: user.id,
+          entityType: ActivityType.POST,
+          action: 'created',
+          postId: post_id,
+          metadata: { expires_in_24: is24HourPost, mood: selectedMood?.value }
+        });
+      }
   
     // eslint-disable-next-line @typescript-eslint/no-unused-vars 
     } catch (error) {
@@ -165,7 +213,7 @@ export function PostForm() {
     <Form {...form}>
       <form
         onSubmit={form.handleSubmit(onSubmit)}
-        className="w-full space-y-6 md:w-2/3"
+        className="w-full space-y-6 lg:w-2/3"
       >
         <FormField
           control={form.control}
@@ -185,7 +233,7 @@ export function PostForm() {
                       handleInput(e.target.value);
                     }}
                     placeholder="What's on your mind? Use # for tags! At most 3"
-                    className={`no-focus h-[150px] resize-none !pr-10 !pt-8 text-dark-2 transition-all duration-300 dark:text-white ${isNeutral && 'border-pink-500 dark:border-pink-400'} ${isHappy && 'border-green-500 dark:border-green-400'} ${isSad && 'border-blue dark:border-sky-400'} ${isAngry && 'border-red-500 dark:border-red-400'} ${isConfused && 'border-yellow-500 dark:border-yellow-400'} `}
+                    className={`no-focus h-[150px] resize-none !pr-10 !pt-8 text-dark-2 transition-all duration-300 dark:text-white ${moodClasses} `}
                     id='tags-guide'
                   />
 
@@ -199,6 +247,7 @@ export function PostForm() {
                           width={24}
                           height={24}
                           className="h-6 sm:h-7 sm:w-7"
+                          unoptimized
                         />
                       ) : (
                         selectedMood?.icon
@@ -207,7 +256,7 @@ export function PostForm() {
                     <p className="text-[12px] text-gray-900 dark:text-gray-500">
                       Mood:{' '}
                       <span
-                        className={`${isNeutral && 'text-pink-500 dark:text-pink-400'} ${isHappy && 'text-green-500 dark:text-green-400'} ${isSad && 'text-blue dark:text-sky-400'} ${isAngry && 'text-red-500 dark:text-red-400'} ${isConfused && 'text-yellow-500 dark:text-yellow-400'}`}
+                        className={`${moodClasses}`}
                       >
                         {selectedMood?.label}
                       </span>
@@ -235,10 +284,13 @@ export function PostForm() {
                       <EmojiPicker
                         onEmojiClick={handleEmojiClick}
                         width="100%"
-                        theme={Theme.AUTO}
+                        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+                        theme={"auto" as any}
                         height={370}
                         searchDisabled
-                        emojiStyle={EmojiStyle.APPLE}
+                        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+                        emojiStyle={"apple" as any}
+                        lazyLoadEmojis
                       />
                     </PopoverContent>
                   </Popover>

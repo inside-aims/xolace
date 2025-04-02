@@ -4,6 +4,7 @@ import { RocketIcon } from '@radix-ui/react-icons';
 import Link from 'next/link';
 import React from 'react';
 import XolaceBetaBadge from '@/components/shared/XolaceBetaBadge';
+import xolaceImage from "../public/assets/images/xolace-1.png"
 
 export default async function Index() {
   return (
@@ -11,13 +12,14 @@ export default async function Index() {
       <main className="relative flex min-h-screen flex-col items-center justify-between overflow-y-hidden p-14 md:px-16 md:py-4">
         <div className="">
           <Image
-            src={'/assets/images/xolace-1.png'}
-            width={600}
-            height={500}
+            src={xolaceImage}
             alt="welcome banner"
             className="phone400:top-[29%] absolute left-1/2 top-[26%] h-[30rem] w-[30rem] -translate-x-1/2 -translate-y-1/2 transform fill-current object-cover sm:top-[30%] md:top-[30%]"
             placeholder="blur"
             blurDataURL="iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mM8f+pUPQAHtwLkNZHWpAAAAABJRU5ErkJggg=="
+            priority={true}
+            fetchPriority="high"
+            loading='eager'
           />
           <div className="font-tilt phone400:top-[26rem] z-5 absolute left-1/2 top-[23rem] w-full -translate-x-1/2 -translate-y-1/2 transform text-center font-tiltNeon text-[5rem] sm:top-[60%] md:top-[63%]">
             <span className="letter-mask">X</span>

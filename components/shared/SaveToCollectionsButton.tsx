@@ -5,7 +5,7 @@ import { useState, useTransition, useEffect } from 'react';
 import { saveToCollectionAction, removeFromCollection } from '@/app/actions';
 import { useToast } from '../ui/use-toast';
 
-export default function SaveToCollectionsButton({ userId, postId, postCollections }: { userId: string; postId: string, postCollections: { user_id: string}[] }) {
+export default function SaveToCollectionsButton({ userId, postId, postCollections, createdBy }: { userId: string; postId: string, postCollections: { user_id: string}[] ; createdBy: string }) {
   const saved = postCollections?.some(collection => collection.user_id === userId) || false;
   const [isSaved, setIsSaved] = useState<boolean>(saved);
   const [isPending, startTransition] = useTransition();
@@ -37,7 +37,7 @@ useEffect(() => {
           }
           setIsSaved(false);
         } else {
-          const {success, error} = await saveToCollectionAction(userId, postId);
+          const {success, error} = await saveToCollectionAction(userId, createdBy, postId);
           if (!success) {
             toast({
               variant: 'destructive',

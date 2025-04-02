@@ -1,4 +1,9 @@
+import type { Metadata } from 'next';
 import AboutLeftSidebar from "@/components/shared/layoutUIs/AboutLeftSidebar";
+
+export const metadata: Metadata = {
+  title: 'About',
+}
 
 export default async function AboutUiLayout({
   children,

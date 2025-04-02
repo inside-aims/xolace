@@ -1,11 +1,26 @@
 import React from 'react';
 
-import ConditionalLeftSidebar from '@/components/shared/layoutUIs/ConditionalLeftSidebar';
+// import ConditionalLeftSidebar from '@/components/shared/layoutUIs/ConditionalLeftSidebar';
 import Bottombar from '@/components/shared/layoutUIs/Bottombar';
-import Topbar from '@/components/shared/layoutUIs/Topbar';
+// import Topbar from '@/components/shared/layoutUIs/Topbar';
 import { createClient } from '@/utils/supabase/server';
 import InitUser from '@/lib/store/initUser';
-import { InfoBanner } from '@/components/extras/Info-Banner';
+// import { InfoBanner } from '@/components/extras/Info-Banner';
+
+import { SidebarLeft } from "@/components/sidebar-left"
+// import { SidebarRight } from "@/components/sidebar-right"
+// import {
+//   Breadcrumb,
+//   BreadcrumbItem,
+//   BreadcrumbList,
+//   BreadcrumbPage,
+// } from "@/components/ui/breadcrumb"
+//import { Separator } from "@/components/ui/separator"
+import {
+  SidebarInset,
+  SidebarProvider,
+} from "@/components/ui/sidebar"
+import { SiteHeader } from '@/components/site-header';
 
 export default async function ProtectedLayout({
   children,
@@ -27,7 +42,44 @@ export default async function ProtectedLayout({
     .single();
 
   return (
-    <>
+    <div className="[--header-height:calc(theme(spacing.14))]">
+    <SidebarProvider className="flex flex-col" style={{ '--header-height': '90px' } as React.CSSProperties}>
+      <SiteHeader />
+       <div className="flex flex-1">
+        <SidebarLeft />
+        <SidebarInset>
+          {/* <header className="sticky top-0 flex h-14 shrink-0 items-center gap-2 bg-background">
+            <div className="flex flex-1 items-center gap-2 px-3">
+          <SidebarTrigger />
+          <Separator orientation="vertical" className="mr-2 h-4" />
+          <Breadcrumb>
+            <BreadcrumbList>
+              <BreadcrumbItem>
+                <BreadcrumbPage className="line-clamp-1">
+                  Project Management & Task Tracking
+                </BreadcrumbPage>
+              </BreadcrumbItem>
+            </BreadcrumbList>
+          </Breadcrumb>
+        </div>
+      </header> */}
+      <section className="main-container">
+        {children}
+      </section>
+      <Bottombar />
+    </SidebarInset>
+    {/* <SidebarRight /> */}
+    </div>
+    <InitUser user={profileUser} />
+  </SidebarProvider>
+    </div>
+  );
+}
+
+
+{
+/*
+<>
       <Topbar />
       <InfoBanner />
       <main className="flex flex-row">
@@ -39,8 +91,10 @@ export default async function ProtectedLayout({
       <Bottombar />
       <InitUser user={profileUser} />
     </>
-  );
+*/
+
 }
+
 
 {
   /* <Topbar />

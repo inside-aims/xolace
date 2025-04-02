@@ -21,18 +21,32 @@ const DeleteUserAccountCard = () => {
   // destructure toast function
   const { toast } = useToast();
 
-  const handleDeleteUser = () => {
-      if (user) {
-        if (!user.is_anonymous) {
-          deleteUser(user);
-        } else {
-          toast({
-            title: 'Error deleting account',
-            description: 'Anonymous users cannot delete accounts',
-            variant: 'destructive',
-          });
-        }
-    };
+  const handleDeleteUser = async () => {
+    if (!user) return;
+
+    if (user.is_anonymous) {
+      toast({
+        title: 'Error deleting account',
+        description: 'Anonymous users cannot delete accounts',
+        variant: 'destructive',
+      });
+      return;
+    }
+
+    try {
+      await deleteUser(user);
+      toast({
+        title: 'Account deleted',
+        description: 'Your account has been successfully deleted.',
+      });
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    } catch (error: any) {
+      toast({
+        title: 'Error deleting account',
+        description: error.message || 'An unexpected error occurred.',
+        variant: 'destructive',
+      });
+    }
   };
 
   return (

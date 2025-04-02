@@ -4,6 +4,8 @@ import { useState } from 'react';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useForm } from 'react-hook-form';
 import { z } from 'zod';
+import { logActivity } from '@/lib/activity-logger';
+import { ActivityType } from '@/types/activity';
 
 import { Button } from '@/components/ui/button';
 import {
@@ -64,6 +66,9 @@ export default function UpdateUsernameCardForm() {
       return;
     }
 
+    // save old username 
+    const oldUsername = user.username;
+
     // update username in profiles table
     const { error: updateError } = await supabase
       .from('profiles')
@@ -89,6 +94,15 @@ export default function UpdateUsernameCardForm() {
       title: 'Username updated successfully',
       description: 'Go showcase your new username by posting😃!!',
     });
+
+    // log profile update activity
+    await logActivity({
+      userId: user.id,
+      entityType: ActivityType.PROFILE,
+      action: 'updated',
+      metadata: { new_username: username, old_username: oldUsername }
+    });
+
     useUserState.setState({user: {...user, username: username}});
     setIsLoading(false);
     form.reset();
