@@ -14,9 +14,7 @@ export const FeedSteps: Step[] = [
     content: () => (
       <TourWrapper>
         <TourTitle>Navigation Bar</TourTitle>
-        <TourContent>
-          This is the navigation bar.
-        </TourContent>
+        <TourContent>This is the navigation bar.</TourContent>
       </TourWrapper>
     ),
   },
@@ -26,7 +24,8 @@ export const FeedSteps: Step[] = [
       <TourWrapper>
         <TourTitle>Sidebar Button</TourTitle>
         <TourContent>
-          This is the avatar sidebar button. Helps navigate between different sections of the app.
+          This is the avatar sidebar button. Helps navigate between different
+          sections of the app.
         </TourContent>
       </TourWrapper>
     ),
@@ -68,14 +67,13 @@ export const FeedSteps: Step[] = [
     ),
   },
   {
-    selector: '#post-1 #vote-count',
+    selector: '#post-1 #upvote-count',
     content: () => (
       <TourWrapper>
         <TourTitle>Vote Score</TourTitle>
         <TourContent>
-          This score is the showdown between upvotes and downvotes! You can only
-          pick one side at a time—upvote adds +1, downvote takes away -1. Choose
-          wisely!
+          This score shows the total upvotes on the post. Use it to show appreciation for content you find valuable
+          or interesting.
         </TourContent>
       </TourWrapper>
     ),
@@ -88,6 +86,18 @@ export const FeedSteps: Step[] = [
         <TourContent>
           Not your cup of tea? You can downvote posts. But remember,
           constructive feedback is always better!
+        </TourContent>
+      </TourWrapper>
+    ),
+  },
+  {
+    selector: '#post-1 #downvote-count',
+    content: () => (
+      <TourWrapper>
+        <TourTitle>Down Vote Score</TourTitle>
+        <TourContent>
+          This score shows the total downvotes on the post. Use it to express
+          disagreement or flag content that doesn't meet community standards.
         </TourContent>
       </TourWrapper>
     ),
@@ -125,8 +135,8 @@ export const FeedSteps: Step[] = [
         <TourContent>
           {' '}
           Curious about the mood of this post? Take a peek and see if it&apos;s
-          happy, sad, angry , or somewhere in between—it&apos;s like reading the room,
-          but for posts!{' '}
+          happy, sad, angry , or somewhere in between—it&apos;s like reading the
+          room, but for posts!{' '}
         </TourContent>{' '}
       </TourWrapper>
     ),
