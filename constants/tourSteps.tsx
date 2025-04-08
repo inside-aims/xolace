@@ -68,7 +68,7 @@ export const FeedSteps: Step[] = [
     ),
   },
   {
-    selector: '#post-1 #vote-count',
+    selector: '#post-1 #upvote-count',
     content: () => (
       <TourWrapper>
         <TourTitle>Vote Score</TourTitle>
@@ -88,6 +88,19 @@ export const FeedSteps: Step[] = [
         <TourContent>
           Not your cup of tea? You can downvote posts. But remember,
           constructive feedback is always better!
+        </TourContent>
+      </TourWrapper>
+    ),
+  },
+  {
+    selector: '#post-1 #downvote-count',
+    content: () => (
+      <TourWrapper>
+        <TourTitle>Down Vote Score</TourTitle>
+        <TourContent>
+          This score is the showdown between upvotes and downvotes! You can only
+          pick one side at a time—upvote adds +1, downvote takes away -1. Choose
+          wisely!
         </TourContent>
       </TourWrapper>
     ),
