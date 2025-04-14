@@ -4,6 +4,15 @@ import {MoveLeft} from "lucide-react";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
 
+export interface AccountInfoDetailsProps {
+  key: string,
+  label: string,
+  icon?: React.ReactNode,
+  response?: string,
+  href: string,
+  disabled?: boolean
+}
+
 export function SettingsNavigationWrapper({title, children}: {
   title?: string;
   children: React.ReactNode;
@@ -29,28 +38,31 @@ export function SettingsNavigationWrapper({title, children}: {
   )
 }
 
-export function AccountInformationCard ({key, label, icon, response, href}: {
-  key: string,
-  label: string,
-  icon?: React.ReactNode,
-  response?: string,
-  href: string
-}) {
-  return(
-    <Link
-      key={key}
-      href={href}
-      className={"w-full flex px-4 py-2 hover:bg-neutral-100 dark:hover:bg-neutral-900"}
-    >
-      <div className={"w-full flex flex-row items-center justify-between px-4 "}>
-        <div className={"flex flex-col"}>
-          <h5>{ label }</h5>
-          <p className={"text-neutral-400 text-sm"}>
-            { response }
-          </p>
-        </div>
-        {icon}
+export function AccountInformationCard (
+  {label, icon, response, href, disabled = false}: AccountInfoDetailsProps ) {
+  const commonClasses = "w-full flex px-4 py-2 rounded transition-colors";
+  const content = (
+    <div className="w-full flex flex-row items-center justify-between px-4">
+      <div className="flex flex-col">
+        <h5>{label}</h5>
+        <p className="text-neutral-400 text-sm">{response}</p>
       </div>
+      {icon}
+    </div>
+  );
+
+  return disabled ? (
+    <div
+      className={`${commonClasses} text-neutral-500 cursor-not-allowed opacity-50`}
+    >
+      {content}
+    </div>
+  ) : (
+    <Link
+      href={href}
+      className={`${commonClasses} hover:bg-neutral-100 dark:hover:bg-neutral-900`}
+    >
+      {content}
     </Link>
-  )
+  );
 }

@@ -4,14 +4,12 @@ import { MonitorCog, SlidersHorizontal } from "lucide-react";
 
 const notificationOptions: SettingsOptionProps[] = [
   {
-    settingsKey: 'filters',
     icon: <SlidersHorizontal/>,
     label: 'Filters',
     route: '/settings/notifications/filters',
     description: "Choose the notification you'd like to see - and those you don't",
   },
   {
-    settingsKey: 'preferences',
     icon: <MonitorCog/>,
     label: 'Preferences',
     route: '/settings/notifications/preferences',
@@ -37,7 +35,6 @@ export default function NotificationsPage() {
 function NotificationContent() {
   return(
     <SettingsCard
-      cardKey={'notifications'}
       name={'Notifications'}
       overview={'Select the kinds of notifications you get about your activities, interests, and recommendation.'}
       options={notificationOptions}

@@ -6,9 +6,9 @@ import { usePathname } from "next/navigation";
 import {Input} from "@/components/ui/input";
 
 // Settings categorization(options) with subOptions
-const settingsOption = [
+const settingsOption: {link: string, key: string, name: string, disabled?: boolean}[] = [
   { link: "/settings", key: "yourAccount", name: "Your Account" },
-  { link: "/settings/notifications", key: "notifications", name: "Notifications" },
+  { link: "/settings/notifications", key: "notifications", name: "Notifications", disabled: true },
   { link: "/settings/privacy-safety", key: "privacySafety", name: "Privacy & Safety" },
   { link: "/settings/security-access", key: "securityAccess", name: "Security Access" },
   { link: "/settings/help-center", key: "help-center", name: "Help Center" },
@@ -44,7 +44,7 @@ export default function SettingsWrapper({ children }: { children: React.ReactNod
               isActive = currentSection === optionSection;
             }
             return (
-              <Link key={option.key} href={option.link}>
+              <Link key={option.key} href={option.link} className={`${option.disabled ? "text-neutral-500 cursor-not-allowed opacity-50" : ""}`}>
                 <div
                   className={`p-4 flex items-center justify-between hover:bg-neutral-100 dark:hover:bg-neutral-900 ${
                     isActive
@@ -62,7 +62,7 @@ export default function SettingsWrapper({ children }: { children: React.ReactNod
 
         {/* Content */}
         <div className="hidden md:block col-span-8 border border-y-0 border-e-0 min-h-full">
-          {children}
+          { children }
         </div>
       </div>
     </>

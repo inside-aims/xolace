@@ -1,31 +1,26 @@
 import SettingsWrapper from "@/components/settings/settings-wrapper";
 import {Input} from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
-import {SettingsNavigationWrapper, AccountInformationCard} from "@/components/settings/settings-navigation";
+import {
+  SettingsNavigationWrapper,
+  AccountInformationCard,
+  AccountInfoDetailsProps
+} from "@/components/settings/settings-navigation";
 import { ChevronRight } from "lucide-react";
 
-interface AccountInfoDetailsProps {
-  key: string,
-  label: string,
-  icon?: React.ReactNode,
-  response?: string,
-  href: string
-}
 
 //Various settings options for account info details
 const  accountInfoDetails: AccountInfoDetailsProps[] = [
   {key: 'username', label: 'Username', icon: <ChevronRight/>, response: 'fedeJnr', href: '/settings/your-account/username'},
-  {key: 'phone', label: 'Phone', icon: <ChevronRight/>, href: '/settings/your-account/phone'},
   {key: 'email', label: 'Email', icon: <ChevronRight/>, href: '/settings/your-account/email', response: 'fedejnr08@gmail.com'},
   {key: 'verified', label: 'Verified', href: '', response: 'No'},
-  {key: 'protectedPost', label: 'Protected Post', icon: <ChevronRight/>, href: '', response: 'No'},
+  {key: 'protectedPost', label: 'Protected Post', icon: <ChevronRight/>, href: '/settings/your-account/protected-post', response: 'No'},
   {key: 'accountCreation', label: 'Account Creation', response: 'Aug 11, 2020, 10;30pm', href: ''},
-  {key: 'country', label: 'Country', response: 'Uruguay', href: '', icon: <ChevronRight/>},
-  {key: 'language', label: 'Language', response: 'German', href: '', icon: <ChevronRight/>},
-  {key: 'gender', label: 'Gender', response: 'Male', href: '', icon: <ChevronRight/>},
-  {key: 'birthDate', label: 'Birth Date', response: 'Age your date birth to your profile', href: '', icon: <ChevronRight/>},
-  {key: 'age', label: 'Age', response: '14-35', href: '', icon: <ChevronRight/>},
-  {key: 'automation', label: 'Automation', response: 'Manage your automated account', icon: <ChevronRight/>, href: ''}
+  {key: 'country', label: 'Country', response: 'unknown', href: '', icon: <ChevronRight/>,  disabled: true},
+  {key: 'language', label: 'Language', response: 'English', href: '', icon: <ChevronRight/>,  disabled: true },
+  {key: 'gender', label: 'Gender', response: 'unknown', href: '', icon: <ChevronRight/>, disabled: true },
+  {key: 'birthDate', label: 'Birth Date', response: 'unknown', href: '', icon: <ChevronRight/>, disabled: true },
+  {key: 'age', label: 'Age', response: 'unknown', href: '', icon: <ChevronRight/>, disabled: true},
 
 
 ]
@@ -79,52 +74,56 @@ function YourAccountContent() {
         <div className={"w-full flex flex-col items-start gap-4"}>
           <div className={"w-full flex flex-col items-start gap-2 border-b pb-2"}>
             {
-              accountInfoDetails.slice(0, 4).map(detail => (
+              accountInfoDetails.slice(0, 3).map(detail => (
                 <AccountInformationCard
                   key={detail.key}
                   label={detail.label}
                   icon={detail.icon}
                   href={detail.href}
                   response={detail.response}
+                  disabled={detail.disabled}
                 />
               ))
             }
           </div>
           <div className={"w-full flex flex-col items-start gap-2 border-b pb-2"}>
             {
-              accountInfoDetails.slice(4, 6).map(detail => (
+              accountInfoDetails.slice(3, 5).map(detail => (
                 <AccountInformationCard
                   key={detail.key}
                   label={detail.label}
                   icon={detail.icon}
                   href={detail.href}
                   response={detail.response}
+                  disabled={detail.disabled}
                 />
               ))
             }
           </div>
           <div className={"w-full flex flex-col items-start gap-2 border-b pb-2"}>
             {
-              accountInfoDetails.slice(6, 10).map(detail => (
+              accountInfoDetails.slice(5, 9).map(detail => (
                 <AccountInformationCard
                   key={detail.key}
                   label={detail.label}
                   icon={detail.icon}
                   href={detail.href}
                   response={detail.response}
+                  disabled={detail.disabled}
                 />
               ))
             }
           </div>
           <div className={"w-full flex flex-col items-start gap-2 border-b pb-2"}>
             {
-              accountInfoDetails.slice(10).map(detail => (
+              accountInfoDetails.slice(9).map(detail => (
                 <AccountInformationCard
                   key={detail.key}
                   label={detail.label}
                   icon={detail.icon}
                   href={detail.href}
                   response={detail.response}
+                  disabled={detail.disabled}
                 />
               ))
             }

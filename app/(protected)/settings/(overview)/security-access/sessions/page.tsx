@@ -1,6 +1,7 @@
 import SettingsWrapper from "@/components/settings/settings-wrapper";
-import {SettingsCard, SettingsOptionProps} from "@/components/settings/settings-card";
+import {SettingsOptionProps} from "@/components/settings/settings-card";
 import { Shield, Smartphone } from "lucide-react";
+import {SettingsNavigationWrapper} from "@/components/settings/settings-navigation";
 
 const securityAccessOptions: SettingsOptionProps[] = [
   {
@@ -17,26 +18,28 @@ const securityAccessOptions: SettingsOptionProps[] = [
   },
 ];
 
-export default function SecurityAccessPage() {
+export default function SessionsPage() {
   return(
     <>
       <div className="w-full flex items-start flex-col md:hidden">
-        <SecurityAccessContent/>
+        < SessionsContent/>
       </div>
       <div className="hidden md:flex items-center flex-col">
         <SettingsWrapper>
-          <SecurityAccessContent/>
+          < SessionsContent/>
         </SettingsWrapper>
       </div>
     </>
   )
 }
-function SecurityAccessContent() {
+function  SessionsContent() {
   return(
-    <SettingsCard
-      name={'Security Access'}
-      overview={'Manage what information you see and share on Xolace'}
-      options={securityAccessOptions}
-    />
+    <SettingsNavigationWrapper title="Sessions">
+      <div className={"px-4  w-full flex flex-col items-start gap-4"}>
+        <h4 className={"w-full flex items-center font-semibold text-lg"}>
+          Sessions
+        </h4>
+      </div>
+    </SettingsNavigationWrapper>
   )
 }

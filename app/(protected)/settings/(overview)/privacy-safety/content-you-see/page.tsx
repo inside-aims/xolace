@@ -51,8 +51,8 @@ function ContentYouSeeContent() {
                 <h4 className={"px-4 w-full flex items-center justify-between text-lg"}>
                   {item.label}
                   <span className={"justify-end ml-auto"}>
-              <ChevronRight/>
-           </span>
+                    <ChevronRight/>
+                  </span>
                 </h4>
               </Link>
             ))

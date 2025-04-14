@@ -2,39 +2,48 @@ import {ChevronRight} from "lucide-react";
 import Link from 'next/link';
 
 export interface SettingsOptionProps {
-  settingsKey: string;
   icon: React.ReactNode;
   label: string;
   route: string;
   description: string;
   children?: React.ReactNode;
+  disabled?: boolean;
 }
 
 interface SettingsCardProps {
-  cardKey: string;
   overview?: string;
   name: string;
   options?: SettingsOptionProps[];
 }
 
 export function SettingsOptionCard(settingsOption: SettingsOptionProps) {
-  return (
+  const content = (
+    <div className={"flex flex-row items-center gap-8"}>
+      {settingsOption.icon}
+      <div className={"flex flex-col"}>
+        <h5>{settingsOption.label}</h5>
+        <p className={"text-neutral-400 text-sm"}>
+          {settingsOption.description}
+        </p>
+      </div>
+    </div>
+  )
+
+  return settingsOption?.disabled ? (
+    <div
+      className={"flex flex-row items-center justify-between px-8 text-neutral-500 cursor-not-allowed opacity-50"}
+    >
+      {content}
+      <span><ChevronRight/></span>
+    </div>
+  ) : (
     <Link
-      key={settingsOption.settingsKey}
       href={settingsOption.route}
       className={"p-4 hover:bg-neutral-100 dark:hover:bg-neutral-900"}
     >
-      <div className={"flex flex-row items-center justify-between px-4 "}>
-        <div className={"flex flex-row items-center gap-8"}>
-          { settingsOption.icon }
-          <div className={"flex flex-col"}>
-            <h5>{ settingsOption.label }</h5>
-            <p className={"text-neutral-400 text-sm"}>
-              { settingsOption.description }
-            </p>
-          </div>
-        </div>
-        <ChevronRight/>
+      <div className={"flex flex-row items-center justify-between px-4"}>
+        {content}
+        <span><ChevronRight/></span>
       </div>
     </Link>
   )
@@ -42,7 +51,7 @@ export function SettingsOptionCard(settingsOption: SettingsOptionProps) {
 
 export function SettingsCard(props: SettingsCardProps) {
   return (
-    <div className={"md:flex w-full flex-col gap-4 leading-normal hidden"} key={props.cardKey}>
+    <div className={"md:flex w-full flex-col gap-4 leading-normal hidden"}>
       <div className={"font-semibold text-xl py-2 px-4"}>
         { props.name }
       </div>
@@ -53,11 +62,8 @@ export function SettingsCard(props: SettingsCardProps) {
         {
           props.options?.map(option => (
             <SettingsOptionCard
-              settingsKey={props.cardKey}
-              icon={option.icon}
-              label={option.label}
-              route={option.route}
-              description={option.description}
+              key={option.route}
+              {...option}
             />
           ))
         }

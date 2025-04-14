@@ -35,7 +35,7 @@ function YourPostsPageContent() {
            </span>
           </h4>
           <span className={'text-sm text-neutral-400'}>
-            {` When enabled, pictures and videos you post will be marked as sensitive for people who don’t want to see sensitive content. `}
+            {` When enabled, your post will be marked as sensitive for people who don’t want to see sensitive content. `}
             <span className={"hover:underline text-blue9 cursor-pointer"}> Learn more </span>
           </span>
         </div>
