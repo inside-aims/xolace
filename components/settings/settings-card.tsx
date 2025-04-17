@@ -18,7 +18,7 @@ interface SettingsCardProps {
 
 export function SettingsOptionCard(settingsOption: SettingsOptionProps) {
   const content = (
-    <div className={"flex flex-row items-center gap-8"}>
+    <div className={"flex flex-row items-center gap-4 md:gap-8"}>
       {settingsOption.icon}
       <div className={"flex flex-col"}>
         <h5>{settingsOption.label}</h5>
@@ -39,7 +39,7 @@ export function SettingsOptionCard(settingsOption: SettingsOptionProps) {
   ) : (
     <Link
       href={settingsOption.route}
-      className={"p-4 hover:bg-neutral-100 dark:hover:bg-neutral-900"}
+      className={"px-4 py-2 hover:bg-neutral-100 dark:hover:bg-neutral-900"}
     >
       <div className={"flex flex-row items-center justify-between px-4"}>
         {content}
@@ -58,7 +58,7 @@ export function SettingsCard(props: SettingsCardProps) {
       <div className={"text-neutral-400 px-4"}>
         { props.overview }
       </div>
-      <div className={"flex w-full flex-col"}>
+      <div className={"flex w-full flex-col gap-4"}>
         {
           props.options?.map(option => (
             <SettingsOptionCard

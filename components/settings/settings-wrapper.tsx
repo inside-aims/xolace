@@ -4,6 +4,7 @@ import Link from "next/link";
 import { ChevronRight, Search } from "lucide-react";
 import { usePathname } from "next/navigation";
 import {Input} from "@/components/ui/input";
+import {useState} from "react";
 
 // Settings categorization(options) with subOptions
 const settingsOption: {link: string, key: string, name: string, disabled?: boolean}[] = [
@@ -15,7 +16,16 @@ const settingsOption: {link: string, key: string, name: string, disabled?: boole
 ];
 
 export default function SettingsWrapper({ children }: { children: React.ReactNode }) {
+  const [ searchTerm, setSearchTerm ] = useState<string>('');
+
   const pathname = usePathname();
+
+  const filteredOptions = searchTerm.trim() ?
+    settingsOption.filter(
+      option =>
+        option.name.toLowerCase().includes(searchTerm.toLowerCase())
+    )
+    : settingsOption;
 
   return (
     <>
@@ -28,11 +38,17 @@ export default function SettingsWrapper({ children }: { children: React.ReactNod
               <span className="absolute inset-y-0 start-0 flex items-center ps-4">
                 <Search className="w-4 h-4 text-muted-foreground"/>
               </span>
-              <Input type="text" name="searchInput" placeholder="Search settings"
-                className="rounded-full py-4 ps-10"/>
+              <Input
+                type="text"
+                name="searchInput"
+                placeholder="Search settings"
+                className="rounded-full py-4 ps-10"
+                value={searchTerm}
+                onChange={(e) => setSearchTerm(e.target.value)}
+              />
             </div>
           </div>
-          {settingsOption.map((option) => {
+          {filteredOptions.map((option) => {
             const currentSection = pathname.split("/")[2] || "";
             const optionSection = option.link.split("/")[2] || "";
 
@@ -44,7 +60,8 @@ export default function SettingsWrapper({ children }: { children: React.ReactNod
               isActive = currentSection === optionSection;
             }
             return (
-              <Link key={option.key} href={option.link} className={`${option.disabled ? "text-neutral-500 cursor-not-allowed opacity-50" : ""}`}>
+              <Link key={option.key} href={option.link}
+                    className={`${option.disabled ? "text-neutral-500 cursor-not-allowed opacity-50" : ""}`}>
                 <div
                   className={`p-4 flex items-center justify-between hover:bg-neutral-100 dark:hover:bg-neutral-900 ${
                     isActive
@@ -61,7 +78,7 @@ export default function SettingsWrapper({ children }: { children: React.ReactNod
         </div>
 
         {/* Content */}
-        <div className="hidden md:block col-span-8 border border-y-0 border-e-0 min-h-full">
+        <div className="col-span-12 md:col-span-8 border border-y-0 border-e-0 min-h-full">
           { children }
         </div>
       </div>

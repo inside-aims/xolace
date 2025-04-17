@@ -39,10 +39,7 @@ const yourAccountSettings: SettingsOptionProps[] = [
 export default function SettingsPage() {
   return (
     <>
-      <div className="w-full flex items-start flex-col md:hidden">
-        <SettingsContent/>
-      </div>
-      <div className="hidden md:flex items-center flex-col">
+      <div className="w-full flex items-start flex-col">
         <SettingsWrapper>
           <SettingsContent/>
         </SettingsWrapper>

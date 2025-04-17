@@ -7,6 +7,7 @@ import {
   ChevronsUpDown,
   LogOut,
   Sparkles,
+  Settings,
 } from "lucide-react"
 
 import {
@@ -128,6 +129,15 @@ export function NavUser({
               <DropdownMenuItem>
                 <Sparkles />
                 Upgrade to Pro
+              </DropdownMenuItem>
+            </DropdownMenuGroup>
+            <DropdownMenuSeparator />
+            <DropdownMenuGroup>
+              <DropdownMenuItem
+                onClick={() => router.push('/settings')}
+              >
+                <Settings/>
+               Settings
               </DropdownMenuItem>
             </DropdownMenuGroup>
             <DropdownMenuSeparator />

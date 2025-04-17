@@ -7,7 +7,7 @@ import {
   ThumbsUp,
   Flame,
   Clock,
-  Bomb, Eclipse, Key , GlobeLock, Copyright, LibraryBig, Settings
+  Bomb, Eclipse, Key , GlobeLock, Copyright, LibraryBig,
 } from 'lucide-react';
 
 export const sidebarLinks = [
@@ -46,11 +46,6 @@ export const sidebarLinks = [
     icon: <LibraryBig />,
     route: '/collections',
     label: 'Collections',
-  },
-  {
-    icon: <Settings/>,
-    route: '/settings',
-    label: 'Settings',
   },
   // {
   //   imgURL: "/assets/community.svg",

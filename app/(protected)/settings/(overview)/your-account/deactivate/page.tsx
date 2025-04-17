@@ -22,7 +22,7 @@ export default function DeactivatePage() {
 function DeactivateContent() {
   return(
     <SettingsNavigationWrapper title={"Deactivate account"}>
-      <div className={"w-full flex flex-col items-start gap-8"}>
+      <div className={"w-full flex flex-col items-start gap-4"}>
         <div className={"w-full flex flex-col items-start px-4 gap-4 md:gap-8"}>
           <div className={"flex flex-row gap-8"}>
             <Image
@@ -52,7 +52,6 @@ function DeactivateContent() {
             </p>
           </div>
         </div>
-
         <div className={"w-full flex flex-col items-start gap-4"}>
           <div className={"w-full border-t"}>
             <p className={"text-neutral-400 px-4 pt-2 text-sm"}>
@@ -84,7 +83,7 @@ function DeactivateContent() {
             </p>
           </div>
           <div className={"w-full flex items-center justify-center border-t"}>
-            <Button variant={"ghost"} className={"py-6 text-red-500 w-full flex"}>
+            <Button variant={"ghost"} className={"py-6 text-red-500 w-full flex rounded-none"}>
               Deactivate account
             </Button>
           </div>

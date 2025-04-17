@@ -49,7 +49,7 @@ function TwoFactorAuthenticationContent() {
           {
             twoFactorAuthentication.map((item) => (
               <div className={"w-full flex flex-col items-start"} key={item.key}>
-                <h4 className={"w-full flex items-center justify-between text-lg"}>
+                <h4 className={"w-full flex items-center justify-between"}>
                   {item.label}
                   <span className={"justify-end ml-auto"}>
                     <Checkbox defaultChecked={item.status}/>
