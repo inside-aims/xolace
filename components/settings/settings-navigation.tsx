@@ -3,6 +3,7 @@
 import {MoveLeft} from "lucide-react";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
+import React from "react";
 
 export interface AccountInfoDetailsProps {
   key: string,
@@ -13,6 +14,11 @@ export interface AccountInfoDetailsProps {
   disabled?: boolean
 }
 
+/*
+# Settings sub-options navigation component
+# Takes in title(optional) and children.
+# To enhance easy navigation both mobile and desktop
+ */
 export function SettingsNavigationWrapper({title, children}: {
   title?: string;
   children: React.ReactNode;

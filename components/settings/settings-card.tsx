@@ -1,5 +1,9 @@
-import {ChevronRight} from "lucide-react";
+'use client';
+
+import {ChevronRight, MoveLeft} from "lucide-react";
 import Link from 'next/link';
+import { useRouter } from 'next/navigation';
+import React from "react";
 
 export interface SettingsOptionProps {
   icon: React.ReactNode;
@@ -41,7 +45,7 @@ export function SettingsOptionCard(settingsOption: SettingsOptionProps) {
       href={settingsOption.route}
       className={"px-4 py-2 hover:bg-neutral-100 dark:hover:bg-neutral-900"}
     >
-      <div className={"flex flex-row items-center justify-between px-4"}>
+      <div className={"flex flex-row items-center justify-between px-0 md:px-4"}>
         {content}
         <span><ChevronRight/></span>
       </div>
@@ -50,13 +54,22 @@ export function SettingsOptionCard(settingsOption: SettingsOptionProps) {
 }
 
 export function SettingsCard(props: SettingsCardProps) {
+  const router = useRouter();
   return (
-    <div className={"md:flex w-full flex-col gap-4 leading-normal"}>
-      <div className={"font-semibold text-xl py-2 px-4"}>
-        { props.name }
+    <div className={"flex w-full flex-col gap-4 leading-normal"}>
+      <div className={"flex flex-row gap-14 font-semibold text-xl py-2 px-4"}>
+        <button
+          className={"rounded-full hover:bg-neutral-100 dark:hover:bg-neutral-900"}
+          onClick={() => router.back()}
+        >
+          <MoveLeft size={20}/>
+        </button>
+        <span>
+          {props.name}
+        </span>
       </div>
       <div className={"text-neutral-400 px-4"}>
-        { props.overview }
+        {props.overview}
       </div>
       <div className={"flex w-full flex-col gap-4"}>
         {

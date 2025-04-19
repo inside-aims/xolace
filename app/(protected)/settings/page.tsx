@@ -1,10 +1,7 @@
 "use client"
 
-// import type { Metadata } from 'next'
 import { useEffect } from 'react';
 import { useRouter } from 'next/navigation';
-import { User, Lock, Archive, Power,} from 'lucide-react';
-import {SettingsCard, SettingsOptionProps} from "@/components/settings/settings-card";
 import SettingsWrapper from "@/components/settings/settings-wrapper";
 import { useMediaQuery } from '@/hooks/use-media-query';
 /*

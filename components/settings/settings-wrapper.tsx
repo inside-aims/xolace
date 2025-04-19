@@ -4,7 +4,7 @@ import Link from "next/link";
 import { ChevronRight, Search } from "lucide-react";
 import { usePathname } from "next/navigation";
 import {Input} from "@/components/ui/input";
-import {useState} from "react";
+import React, {useState} from "react";
 
 // Settings categorization(options) with subOptions
 const settingsOption: {link: string, key: string, name: string, disabled?: boolean}[] = [
@@ -15,6 +15,11 @@ const settingsOption: {link: string, key: string, name: string, disabled?: boole
   { link: "/settings/help-center", key: "help-center", name: "Help Center" },
 ];
 
+/*
+# Settings page main component with various options
+# Takes prop page(default: setting) and children
+# Gateway to access any sub-option or various categories options
+ */
 export default function SettingsWrapper({ children, page }: { children?: React.ReactNode, page?: "settings" }) {
   const [ searchTerm, setSearchTerm ] = useState<string>('');
 
@@ -52,7 +57,7 @@ export default function SettingsWrapper({ children, page }: { children?: React.R
             const currentSection = pathname.split("/")[2] || "";
             const optionSection = option.link.split("/")[2] || "";
 
-            let isActive = false;
+            let isActive;
 
             if (option.link === "/settings") {
               isActive = pathname === "/settings" || currentSection === "your-account";
