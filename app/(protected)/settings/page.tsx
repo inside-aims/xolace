@@ -1,59 +1,37 @@
-import type { Metadata } from 'next'
+"use client"
+
+// import type { Metadata } from 'next'
+import { useEffect } from 'react';
+import { useRouter } from 'next/navigation';
 import { User, Lock, Archive, Power,} from 'lucide-react';
 import {SettingsCard, SettingsOptionProps} from "@/components/settings/settings-card";
 import SettingsWrapper from "@/components/settings/settings-wrapper";
+import { useMediaQuery } from '@/hooks/use-media-query';
+/*
+We will find a way to get metadata for settings 😵‍💫
+*/
+// export const metadata: Metadata = {
+//   title: 'Settings',
+// }
 
-export const metadata: Metadata = {
-  title: 'Settings',
-}
-
-// Various settings option under the your(user) account
-const yourAccountSettings: SettingsOptionProps[] = [
-  {
-    icon: <User/>,
-    label: 'Account Information',
-    route: '/settings/your-account',
-    description: 'See your account information like your phone number and email',
-  },
-  {
-    icon: <Lock/>,
-    label: 'Change Password',
-    route: '/settings/your-account/password',
-    description: 'Change your password at any time',
-  },
-  {
-    icon: <Archive/>,
-    route: '/settings/your-account/archive-data',
-    label: 'Download an archive of your data',
-    description: 'Get insights into the type of information stored for your account ',
-    disabled: true,
-  },
-  {
-    icon: <Power/>,
-    route: '/settings/your-account/deactivate',
-    label: 'Deactivate your account',
-    description: 'Find out how you can deactivate your account'
-  }
-]
 
 export default function SettingsPage() {
+const isDesktop = useMediaQuery('(min-width: 768px)');
+    const router = useRouter()
+
+    // on desktop view navigate to "/settings/your-account" when settings route is hit
+    useEffect(() => {
+        if (isDesktop) {
+            router.replace('/settings/your-account')
+        }
+    }, [isDesktop, router])
+
+  
   return (
     <>
       <div className="w-full flex items-start flex-col">
-        <SettingsWrapper>
-          <SettingsContent/>
-        </SettingsWrapper>
+        <SettingsWrapper page="settings"/>
       </div>
     </>
-  )
-}
-
-function SettingsContent() {
-  return(
-    <SettingsCard
-      name={'Your Account'}
-      overview={'See information about your account, download an archive of your data, or learn about your account deactivation options'}
-      options={yourAccountSettings}
-    />
   )
 }

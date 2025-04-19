@@ -43,7 +43,7 @@ export function NavUser({
   const supabase = getSupabaseBrowserClient();
 
   // states
-  const { isMobile } = useSidebar()
+  const { isMobile , setOpenMobile } = useSidebar()
   const [isOpen, setIsOpen] = useState(false);
   const [timestamp, setTimestamp] = useState("")
 
@@ -86,6 +86,11 @@ export function NavUser({
       subscription.unsubscribe();
     };
   }, [router , supabase.auth]);
+
+  const handleOpenSettings = () =>{ 
+    setOpenMobile(false)
+    router.push('/settings')
+  }
 
   return (
     <SidebarMenu>
@@ -134,7 +139,7 @@ export function NavUser({
             <DropdownMenuSeparator />
             <DropdownMenuGroup>
               <DropdownMenuItem
-                onClick={() => router.push('/settings')}
+                onClick={handleOpenSettings}
               >
                 <Settings/>
                Settings

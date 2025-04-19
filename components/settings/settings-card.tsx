@@ -51,7 +51,7 @@ export function SettingsOptionCard(settingsOption: SettingsOptionProps) {
 
 export function SettingsCard(props: SettingsCardProps) {
   return (
-    <div className={"md:flex w-full flex-col gap-4 leading-normal hidden"}>
+    <div className={"md:flex w-full flex-col gap-4 leading-normal"}>
       <div className={"font-semibold text-xl py-2 px-4"}>
         { props.name }
       </div>

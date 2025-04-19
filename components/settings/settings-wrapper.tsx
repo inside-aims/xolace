@@ -8,14 +8,14 @@ import {useState} from "react";
 
 // Settings categorization(options) with subOptions
 const settingsOption: {link: string, key: string, name: string, disabled?: boolean}[] = [
-  { link: "/settings", key: "yourAccount", name: "Your Account" },
+  { link: "/settings/your-account", key: "yourAccount", name: "Your Account" },
   { link: "/settings/notifications", key: "notifications", name: "Notifications", disabled: true },
   { link: "/settings/privacy-safety", key: "privacySafety", name: "Privacy & Safety" },
   { link: "/settings/security-access", key: "securityAccess", name: "Security Access" },
   { link: "/settings/help-center", key: "help-center", name: "Help Center" },
 ];
 
-export default function SettingsWrapper({ children }: { children: React.ReactNode }) {
+export default function SettingsWrapper({ children, page }: { children?: React.ReactNode, page?: "settings" }) {
   const [ searchTerm, setSearchTerm ] = useState<string>('');
 
   const pathname = usePathname();
@@ -78,7 +78,7 @@ export default function SettingsWrapper({ children }: { children: React.ReactNod
         </div>
 
         {/* Content */}
-        <div className="col-span-12 md:col-span-8 border border-y-0 border-e-0 min-h-full">
+        <div className={`col-span-12 md:col-span-8 border border-y-0 border-e-0 min-h-full ${page&&"hidden"}`}>
           { children }
         </div>
       </div>
