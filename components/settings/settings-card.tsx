@@ -57,9 +57,9 @@ export function SettingsCard(props: SettingsCardProps) {
   const router = useRouter();
   return (
     <div className={"flex w-full flex-col gap-4 leading-normal"}>
-      <div className={"flex flex-row gap-14 font-semibold text-xl py-2 px-4"}>
+      <div className={"flex flex-row gap-8 font-semibold text-xl py-2 px-4"}>
         <button
-          className={"rounded-full hover:bg-neutral-100 dark:hover:bg-neutral-900"}
+          className={"flex items-center justify-center md:hidden rounded-full hover:bg-neutral-100 dark:hover:bg-neutral-900"}
           onClick={() => router.back()}
         >
           <MoveLeft size={20}/>

@@ -1,5 +1,5 @@
 import type { Metadata } from 'next'
-import { User, Lock, Archive, Power,} from 'lucide-react';
+import { User, Lock, Power,} from 'lucide-react';
 import {SettingsCard, SettingsOptionProps} from "@/components/settings/settings-card";
 import SettingsWrapper from "@/components/settings/settings-wrapper";
 
@@ -21,13 +21,13 @@ const yourAccountSettings: SettingsOptionProps[] = [
     route: '/settings/your-account/password',
     description: 'Change your password at any time',
   },
-  {
-    icon: <Archive/>,
-    route: '/settings/your-account/archive-data',
-    label: 'Download an archive of your data',
-    description: 'Get insights into the type of information stored for your account ',
-    disabled: true,
-  },
+  // {
+  //   icon: <Archive/>,
+  //   route: '',          //Note: Set the empty string to this route "/settings/your-account/archive-data"
+  //   label: 'Download an archive of your data',
+  //   description: 'Get insights into the type of information stored for your account ',
+  //   disabled: true,
+  // },
   {
     icon: <Power/>,
     route: '/settings/your-account/deactivate',

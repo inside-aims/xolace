@@ -1,19 +1,17 @@
 import SettingsWrapper from "@/components/settings/settings-wrapper";
 import {SettingsCard, SettingsOptionProps} from "@/components/settings/settings-card";
 import {
-  Users,
   FileText,
   Eye,
-  ShieldOff,
 } from "lucide-react";
 
 const privacySafetyOptions: SettingsOptionProps[] = [
-  {
-    icon: <Users />,
-    label: 'Audience, media, and tagging',
-    route: '/settings/privacy-safety/audience-tagging',
-    description: "Manage what information you allow other people on Xolace to see ",
-  },
+  // {
+  //   icon: <Users />,
+  //   label: 'Audience, media, and tagging',
+  //   route: '/settings/privacy-safety/audience-tagging',
+  //   description: "Manage what information you allow other people on Xolace to see ",
+  // },
   {
     icon: <FileText />,
     label: 'Your posts',
@@ -26,13 +24,13 @@ const privacySafetyOptions: SettingsOptionProps[] = [
     route: '/settings/privacy-safety/content-you-see',
     description: 'Decide what you see on Xolace, based on your preferences like Topic and interests',
   },
-  {
-    icon: <ShieldOff />,
-    label: 'Mute and block',
-    route: '/settings/privacy-safety/mute-block',
-    description: 'Manage the accounts, words, and notification that you have muted or blocked',
-    disabled: true
-  },
+  // {
+  //   icon: <ShieldOff />,
+  //   label: 'Mute and block',
+  //   route: '/settings/privacy-safety/mute-block',
+  //   description: 'Manage the accounts, words, and notification that you have muted or blocked',
+  //   disabled: true
+  // },
 ];
 
 

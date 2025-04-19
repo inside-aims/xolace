@@ -16,7 +16,7 @@ export interface AccountInfoDetailsProps {
 
 /*
 # Settings sub-options navigation component
-# Takes in title(optional) and children.
+# Takes props title(optional) and children.
 # To enhance easy navigation both mobile and desktop
  */
 export function SettingsNavigationWrapper({title, children}: {
@@ -44,6 +44,12 @@ export function SettingsNavigationWrapper({title, children}: {
   )
 }
 
+
+/*
+# Settings sub-options account information card component
+# Takes props label, icon, response, href, disabled(default false).
+# For easy code maintainable
+ */
 export function AccountInformationCard (
   {label, icon, response, href, disabled = false}: AccountInfoDetailsProps ) {
   const commonClasses = "w-full flex px-4 py-2 rounded transition-colors";

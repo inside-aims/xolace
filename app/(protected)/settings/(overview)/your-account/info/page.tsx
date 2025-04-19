@@ -1,29 +1,14 @@
+'use client';
+
 import SettingsWrapper from "@/components/settings/settings-wrapper";
-import {Input} from "@/components/ui/input";
-import { Button } from "@/components/ui/button";
 import {
   SettingsNavigationWrapper,
   AccountInformationCard,
   AccountInfoDetailsProps
 } from "@/components/settings/settings-navigation";
 import { ChevronRight } from "lucide-react";
+import {useUserState} from "@/lib/store/user";
 
-
-//Various settings options for account info details
-const  accountInfoDetails: AccountInfoDetailsProps[] = [
-  {key: 'username', label: 'Username', icon: <ChevronRight/>, response: 'fedeJnr', href: '/settings/your-account/username'},
-  {key: 'email', label: 'Email', icon: <ChevronRight/>, href: '/settings/your-account/email', response: 'fedejnr08@gmail.com'},
-  {key: 'verified', label: 'Verified', href: '', response: 'No'},
-  {key: 'protectedPost', label: 'Protected Post', icon: <ChevronRight/>, href: '/settings/your-account/protected-post', response: 'No'},
-  {key: 'accountCreation', label: 'Account Creation', response: 'Aug 11, 2020, 10;30pm', href: ''},
-  {key: 'country', label: 'Country', response: 'unknown', href: '', icon: <ChevronRight/>,  disabled: true},
-  {key: 'language', label: 'Language', response: 'English', href: '', icon: <ChevronRight/>,  disabled: true },
-  {key: 'gender', label: 'Gender', response: 'unknown', href: '', icon: <ChevronRight/>, disabled: true },
-  {key: 'birthDate', label: 'Birth Date', response: 'unknown', href: '', icon: <ChevronRight/>, disabled: true },
-  {key: 'age', label: 'Age', response: 'unknown', href: '', icon: <ChevronRight/>, disabled: true},
-
-
-]
 export default function YourAccountPage() {
   return(
     <>
@@ -40,6 +25,17 @@ export default function YourAccountPage() {
 }
 
 function YourAccountContent() {
+  const user = useUserState(state => state.user);
+
+  //Various settings options for account info details
+  const  accountInfoDetails: AccountInfoDetailsProps[] = [
+    {key: 'username', label: 'Username', icon: <ChevronRight/>, response: `@${user?.username}`, href: '/settings/your-account/info/username'},
+    {key: 'email', label: 'Email', icon: <ChevronRight/>, href: '/settings/your-account/info/email', response: 'fedejnr08@gmail.com'},
+    {key: 'verified', label: 'Verified', href: '', response: 'No'},
+    {key: 'protectedPost', label: 'Protected Post', icon: <ChevronRight/>, href: '/settings/your-account/info/protected-post', response: 'No'},
+    {key: 'accountCreation', label: 'Account Creation', response: 'Aug 11, 2020, 10;30pm', href: ''},
+  ]
+
   return(
     <>
       <SettingsNavigationWrapper title={"Account Information"}>
@@ -100,23 +96,9 @@ function YourAccountContent() {
               ))
             }
           </div>
-          <div className={"w-full flex flex-col items-start gap-2 border-b pb-2"}>
+          <div className={"w-full flex flex-col items-start gap-2 pb-2"}>
             {
-              accountInfoDetails.slice(5, 9).map(detail => (
-                <AccountInformationCard
-                  key={detail.key}
-                  label={detail.label}
-                  icon={detail.icon}
-                  href={detail.href}
-                  response={detail.response}
-                  disabled={detail.disabled}
-                />
-              ))
-            }
-          </div>
-          <div className={"w-full flex flex-col items-start gap-2 border-b pb-2"}>
-            {
-              accountInfoDetails.slice(9).map(detail => (
+              accountInfoDetails.slice(5).map(detail => (
                 <AccountInformationCard
                   key={detail.key}
                   label={detail.label}

@@ -1,41 +1,31 @@
 'use client';
 
-import {MoveLeft } from 'lucide-react';
-import { useRouter } from 'next/navigation';
 import SettingsWrapper from "@/components/settings/settings-wrapper";
+import {SettingsNavigationWrapper} from "@/components/settings/settings-navigation";
 
 export default function HelpCenterPage() {
-
-
   return (
-  <>
-  <div className='flex md:hidden'>
-    <HelpContent/>
-  </div>
- <div className='hidden md:flex'>
- <SettingsWrapper>
-      <HelpContent/>
-    </SettingsWrapper>
- </div>
-  </>
+    <>
+      <div className='w-full flex items-center flex-col md:hidden'>
+        <HelpCenterContent/>
+      </div>
+      <div className="w-full hidden md:flex items-center flex-col">
+        <SettingsWrapper>
+          <HelpCenterContent/>
+        </SettingsWrapper>
+      </div>
+    </>
   )
 }
 
-const HelpContent = () =>{
-  const router = useRouter();
+const HelpCenterContent = () =>{
   return(
-    <div>
-        <button
-          className={"flex flex-row items-center p-2 rounded-full hover:bg-neutral-100 dark:hover:bg-neutral-900"}
-          onClick={() => router.back()}
-        >
-          <MoveLeft size={20}/>
-        </button>
-        <div className={"min-h-screen flex items-center justify-center"}>
-          <h2 className={"text-xl  md:text-4xl  font-semibold"}>
-            Future coming soon
-          </h2>
-        </div>
+    <SettingsNavigationWrapper title={'Help Center'}>
+      <div className={"w-full flex flex-col items-center justify-center min-h-screen"}>
+        <h2 className={"text-xl  md:text-4xl  font-semibold"}>
+          Future coming soon
+        </h2>
       </div>
+    </SettingsNavigationWrapper>
   )
 }

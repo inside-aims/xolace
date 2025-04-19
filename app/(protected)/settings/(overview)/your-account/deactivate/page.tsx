@@ -1,7 +1,11 @@
+'use client';
+
 import SettingsWrapper from "@/components/settings/settings-wrapper";
 import {SettingsNavigationWrapper} from "@/components/settings/settings-navigation";
-import Image from 'next/image';
 import {Button} from "@/components/ui/button";
+import {Avatar, AvatarFallback, AvatarImage} from "@/components/ui/avatar";
+import React from "react";
+import {useUserState} from "@/lib/store/user";
 
 
 export default function DeactivatePage() {
@@ -20,19 +24,20 @@ export default function DeactivatePage() {
 }
 
 function DeactivateContent() {
+  const user = useUserState(state => state.user);
+
   return(
     <SettingsNavigationWrapper title={"Deactivate account"}>
       <div className={"w-full flex flex-col items-start gap-4"}>
         <div className={"w-full flex flex-col items-start px-4 gap-4 md:gap-8"}>
-          <div className={"flex flex-row gap-8"}>
-            <Image
-              src={''}
-              alt={'profile iamge'}
-              className="object-cover rounded-full w-8 h-8 "
-            />
+          <div className={"flex flex-row gap-4"}>
+            <Avatar>
+              <AvatarImage src={user?.avatar_url ?? undefined} />
+              <AvatarFallback>{user?.username?.charAt(0)}</AvatarFallback>
+            </Avatar>
             <p className={"flex flex-col"}>
-              <span className={"font-semibold"}>F E D E J N R</span>
-              <span className={"text-neutral-400"}>@fedejnr08</span>
+              <span className={"font-semibold"}>{user?.username}</span>
+              <span className={"text-sm text-neutral-400 lowercase"}>{`@${user?.username}`}</span>
             </p>
           </div>
           <div className={"leading-normal"}>

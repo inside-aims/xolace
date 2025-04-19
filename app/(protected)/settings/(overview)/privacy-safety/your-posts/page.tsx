@@ -1,9 +1,6 @@
 import {SettingsNavigationWrapper} from "@/components/settings/settings-navigation";
 import SettingsWrapper from "@/components/settings/settings-wrapper";
 import {Checkbox} from "@/components/ui/checkbox";
-import {ChevronRight} from "lucide-react";
-import Link from 'next/link'
-
 
 export default  function YourPostsPage() {
   return(
@@ -40,16 +37,16 @@ function YourPostsPageContent() {
           </span>
         </div>
 
-        <Link
-          href={'/settings/notifications/muted-notifications'}
-          className={"w-full flex flex-col items-start cursor-pointer py-4  hover:bg-neutral-100 dark:hover:bg-neutral-900"}>
-          <h4 className={"px-4 w-full flex items-center justify-between text-lg"}>
-            Add location information to your posts
-            <span className={"justify-end ml-auto"}>
-              <ChevronRight/>
-           </span>
-          </h4>
-        </Link>
+        {/*<Link*/}
+        {/*  href={''}*/}
+        {/*  className={"w-full flex flex-col items-start cursor-pointer py-4  hover:bg-neutral-100 dark:hover:bg-neutral-900"}>*/}
+        {/*  <h4 className={"px-4 w-full flex items-center justify-between text-lg"}>*/}
+        {/*    Add location information to your posts*/}
+        {/*    <span className={"justify-end ml-auto"}>*/}
+        {/*      <ChevronRight/>*/}
+        {/*   </span>*/}
+        {/*  </h4>*/}
+        {/*</Link>*/}
       </div>
     </SettingsNavigationWrapper>
   )
