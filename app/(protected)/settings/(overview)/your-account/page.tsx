@@ -1,5 +1,5 @@
 import type { Metadata } from 'next'
-import { User, Lock, Power,} from 'lucide-react';
+import {User, Lock, Power, MonitorCog,} from 'lucide-react';
 import {SettingsCard, SettingsOptionProps} from "@/components/settings/settings-card";
 import SettingsWrapper from "@/components/settings/settings-wrapper";
 
@@ -20,6 +20,12 @@ const yourAccountSettings: SettingsOptionProps[] = [
     label: 'Change Password',
     route: '/settings/your-account/password',
     description: 'Change your password at any time',
+  },
+  {
+    icon: <MonitorCog/>,
+    label: 'Preferences',
+    route: '/settings/your-account/preferences',
+    description: 'Customize your account experience',
   },
   // {
   //   icon: <Archive/>,
