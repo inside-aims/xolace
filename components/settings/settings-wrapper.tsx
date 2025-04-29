@@ -9,9 +9,9 @@ import React, {useState} from "react";
 // Settings categorization(options) with subOptions
 const settingsOption: {link: string, key: string, name: string, disabled?: boolean}[] = [
   { link: "/settings/your-account", key: "yourAccount", name: "Your Account" },
-  { link: "/settings/notifications", key: "notifications", name: "Notifications", disabled: true },
-  { link: "/settings/privacy-safety", key: "privacySafety", name: "Privacy & Safety" },
-  { link: "/settings/security-access", key: "securityAccess", name: "Security Access" },
+  //{ link: "/settings/notifications", key: "notifications", name: "Notifications", disabled: true },
+  { link: "/settings/privacy-safety", key: "privacySafety", name: "Privacy & Anonymity" },
+  { link: "/settings/security-access", key: "securityAccess", name: "Security & Trust" },
   { link: "/settings/help-center", key: "help-center", name: "Help Center" },
 ];
 
