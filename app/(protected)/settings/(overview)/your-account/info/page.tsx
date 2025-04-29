@@ -26,14 +26,16 @@ export default function YourAccountPage() {
 
 function YourAccountContent() {
   const user = useUserState(state => state.user);
+  const date = new Date(user?.created_at || '');
+  const timestamp = `since ${date.toLocaleString('default', { month: 'short' })} ${date.getDate()}, ${date.getFullYear()}`;
 
   //Various settings options for account info details
   const  accountInfoDetails: AccountInfoDetailsProps[] = [
     {key: 'username', label: 'Username', icon: <ChevronRight/>, response: `@${user?.username}`, href: '/settings/your-account/info/username'},
-    {key: 'email', label: 'Email', icon: <ChevronRight/>, href: '/settings/your-account/info/email', response: 'fedejnr08@gmail.com'},
-    {key: 'verified', label: 'Verified', href: '', response: 'No'},
+    {key: 'email', label: 'Email', icon: <ChevronRight/>, href: '/settings/your-account/info/email', response: `${user?.email || "anonymous@xolace.com"}`},
+    {key: 'verified', label: 'Verified', href: '', response: `${user?.is_verified ? 'Yes' : 'No'}`},
     {key: 'protectedPost', label: 'Protected Post', icon: <ChevronRight/>, href: '/settings/your-account/info/protected-post', response: 'No'},
-    {key: 'accountCreation', label: 'Account Creation', response: 'Aug 11, 2020, 10;30pm', href: ''},
+    {key: 'accountCreation', label: 'Account Creation', response: timestamp || "long ago", href: ''},
   ]
 
   return(
