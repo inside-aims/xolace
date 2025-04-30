@@ -4,14 +4,16 @@
 import { HelpCircle } from 'lucide-react';
 import { useTour } from '@reactour/tour';
 import { motion } from 'framer-motion';
+import { usePreferencesStore } from '@/lib/store/preferences-store';
 
 export default function TourButton() {
+  const {preferences} = usePreferencesStore();
   const { setIsOpen } = useTour();
   return (
     <>
       <motion.button
         onClick={() => setIsOpen(true)}
-        className="bg-blue relative flex h-10 w-10 items-center justify-center rounded-full text-white shadow-lg transition-transform hover:scale-110 md:hidden"
+        className={preferences?.guided_tour_enabled ? `bg-blue relative flex h-10 w-10 items-center justify-center rounded-full text-white shadow-lg transition-transform hover:scale-110 md:hidden` : `hidden`}
         whileHover={{ scale: 1.1 }}
         whileTap={{ scale: 0.9 }}
       >
@@ -36,7 +38,7 @@ export default function TourButton() {
 
       <motion.button
         onClick={() => setIsOpen(true)}
-        className="relative hidden items-center justify-center rounded-full bg-sky-500 h-12 w-32 font-bold text-white shadow-lg transition-colors duration-200 hover:bg-sky-600 md:flex"
+        className={preferences?.guided_tour_enabled ? `relative hidden items-center justify-center rounded-full bg-sky-500 h-12 w-32 font-bold text-white shadow-lg transition-colors duration-200 hover:bg-sky-600 md:flex` : `hidden`}
         whileHover={{ scale: 1.1 }}
         whileTap={{ scale: 0.9 }}
       >
