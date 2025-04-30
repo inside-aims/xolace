@@ -1,6 +1,9 @@
+"use client"
+
 import {SettingsNavigationWrapper} from "@/components/settings/settings-navigation";
 import SettingsWrapper from "@/components/settings/settings-wrapper";
 import {Checkbox} from "@/components/ui/checkbox";
+import { usePreferencesStore } from "@/lib/store/preferences-store";
 
 export default  function YourPostsPage() {
   return(
@@ -18,6 +21,28 @@ export default  function YourPostsPage() {
 }
 
 function YourPostsPageContent() {
+
+  const {preferences, isLoading, error, updatePreference} = usePreferencesStore();
+
+  if (isLoading &&!preferences) {
+    return (
+        <SettingsNavigationWrapper title={'Preferences'}>
+            <div className="p-4">Loading preferences...</div>
+        </SettingsNavigationWrapper>
+    );
+  }
+  if (error) {
+    return (
+        <SettingsNavigationWrapper title={'Preferences'}>
+            <div className="p-4 text-red-500">Error loading preferences: {error}</div>
+        </SettingsNavigationWrapper>
+    )
+  }
+
+  const handleToggleSensitiveByDefault = (checked: boolean) => {
+    updatePreference('mark_sensitive_by_default', checked);
+  };
+
   return(
     <SettingsNavigationWrapper title="Your posts">
       <div className={"w-full flex flex-col items-start gap-4"}>
@@ -28,7 +53,11 @@ function YourPostsPageContent() {
           <h4 className={"w-full flex items-center font-normal justify-between text-lg"}>
             Mark media you post as having material that may be sensitive
             <span className={"justify-end ml-auto"}>
-              <Checkbox defaultChecked={true}/>
+              <Checkbox 
+              checked={preferences ? preferences.mark_sensitive_by_default : false} 
+              onCheckedChange={handleToggleSensitiveByDefault}
+              disabled={isLoading}
+              />
            </span>
           </h4>
           <span className={'text-sm text-neutral-400'}>
