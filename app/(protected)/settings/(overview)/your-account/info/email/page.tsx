@@ -14,6 +14,7 @@ import { Input } from "@/components/ui/input";
 import { z } from "zod";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
+import { useUserState } from "@/lib/store/user";
 
 export default function EmailPage() {
   return (
@@ -31,6 +32,9 @@ export default function EmailPage() {
 }
 
 export function EmailContent() {
+// Get user profile data
+const user = useUserState(state => state.user);
+
   // Handle form validations
   const FormSchema = z.object({
     email: z.string().email({
@@ -42,7 +46,7 @@ export function EmailContent() {
   const form = useForm<z.infer<typeof FormSchema>>({
     resolver: zodResolver(FormSchema),
     defaultValues: {
-      email: "email@email.com",
+      email: user?.email || "",
     },
   });
 
