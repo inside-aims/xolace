@@ -1,3 +1,5 @@
+"use client"
+
 import {SettingsNavigationWrapper} from "@/components/settings/settings-navigation";
 import SettingsWrapper from "@/components/settings/settings-wrapper";
 import {Checkbox} from "@/components/ui/checkbox";
