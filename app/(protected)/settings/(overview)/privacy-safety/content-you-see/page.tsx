@@ -3,6 +3,7 @@ import SettingsWrapper from "@/components/settings/settings-wrapper";
 import {Checkbox} from "@/components/ui/checkbox";
 import {ChevronRight} from "lucide-react";
 import Link from 'next/link'
+import { usePreferencesStore } from "@/lib/store/preferences-store";
 
 const contentToSee: {contentKey: string, label: string, href: string}[] = [
   {contentKey: "topics", label: "Topics", href: ''},
@@ -27,6 +28,28 @@ export default  function ContentYouSeePage() {
 }
 
 function ContentYouSeeContent() {
+
+  const { preferences, isLoading , updatePreference, error } = usePreferencesStore();
+
+  const handleToggleShowSensitiveContent = (checked: boolean) => {
+    updatePreference('mark_sensitive_by_default', checked);
+  };
+
+  if(isLoading && !preferences){
+    return (
+      <SettingsNavigationWrapper title="Content you See">
+          <div className="p-4">Loading preferences...</div>
+      </SettingsNavigationWrapper>
+    )
+  }
+  if (error) {
+    return (
+        <SettingsNavigationWrapper title={'Preferences'}>
+            <div className="p-4 text-red-500">Error loading preferences: {error}</div>
+        </SettingsNavigationWrapper>
+    )
+  }
+
   return(
     <SettingsNavigationWrapper title="Content you see">
       <div className={"w-full flex flex-col items-start gap-4"}>
@@ -37,7 +60,11 @@ function ContentYouSeeContent() {
           <h4 className={"w-full flex items-center justify-between text-lg"}>
             Display media that may contain sensitive content
             <span className={"justify-end ml-auto"}>
-              <Checkbox defaultChecked={false}/>
+              <Checkbox 
+              checked={preferences ? preferences.show_sensitive_content : false}
+              onCheckedChange={handleToggleShowSensitiveContent}
+              disabled={isLoading}
+              />
            </span>
           </h4>
         </div>
