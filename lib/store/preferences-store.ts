@@ -28,15 +28,23 @@ interface PreferencesState {
   isLoading: boolean;
   error: string | null;
   fetchPreferences: () => Promise<void>;
-  updatePreference: <K extends keyof Omit<UserPreferences, 'id' | 'user_id' | 'created_at' | 'updated_at'>>(
+  updatePreference: <
+    K extends keyof Omit<
+      UserPreferences,
+      'id' | 'user_id' | 'created_at' | 'updated_at'
+    >,
+  >(
     key: K,
-    value: UserPreferences[K]
+    value: UserPreferences[K],
   ) => Promise<void>;
   resetPreferences: () => void;
 }
 
 // Default preferences (used if no record exists for the user yet)
-const defaultPreferences: Omit<UserPreferences, 'id' | 'user_id' | 'created_at' | 'updated_at'> = {
+const defaultPreferences: Omit<
+  UserPreferences,
+  'id' | 'user_id' | 'created_at' | 'updated_at'
+> = {
   theme: 'system',
   preferred_language: 'en',
   privacy: 'public',
@@ -56,8 +64,14 @@ export const usePreferencesStore = create<PreferencesState>((set, get) => ({
   fetchPreferences: async () => {
     const user = useUserState.getState().user;
     if (!user) {
-      console.warn('PreferencesStore: User not available for fetching preferences.');
-      set({ preferences: null, isLoading: false, error: 'User not authenticated' });
+      console.warn(
+        'PreferencesStore: User not available for fetching preferences.',
+      );
+      set({
+        preferences: null,
+        isLoading: false,
+        error: 'User not authenticated',
+      });
       return;
     }
 
@@ -71,7 +85,8 @@ export const usePreferencesStore = create<PreferencesState>((set, get) => ({
         .eq('user_id', user.id)
         .single();
 
-      if (error && error.code !== 'PGRST116') { // PGRST116: row not found
+      if (error && error.code !== 'PGRST116') {
+        // PGRST116: row not found
         throw error;
       }
 
@@ -79,7 +94,9 @@ export const usePreferencesStore = create<PreferencesState>((set, get) => ({
         set({ preferences: data as UserPreferences, isLoading: false });
       } else {
         // No preferences found, potentially set defaults
-        console.log('PreferencesStore: No preferences found for user, using defaults.');
+        console.log(
+          'PreferencesStore: No preferences found for user, using defaults.',
+        );
         set({
           preferences: {
             ...defaultPreferences,
@@ -88,12 +105,16 @@ export const usePreferencesStore = create<PreferencesState>((set, get) => ({
             created_at: new Date().toISOString(),
             updated_at: new Date().toISOString(),
           },
-          isLoading: false
+          isLoading: false,
         });
       }
     } catch (error: any) {
       console.error('Error fetching user preferences:', error);
-      set({ error: 'Failed to fetch preferences', isLoading: false, preferences: null });
+      set({
+        error: 'Failed to fetch preferences',
+        isLoading: false,
+        preferences: null,
+      });
     }
   },
 
@@ -102,41 +123,49 @@ export const usePreferencesStore = create<PreferencesState>((set, get) => ({
     const currentPreferences = get().preferences;
 
     if (!user) {
-      console.error('PreferencesStore: User not available for updating preference.');
+      console.error(
+        'PreferencesStore: User not available for updating preference.',
+      );
       set({ error: 'User not authenticated' });
       return;
     }
     if (!currentPreferences) {
-        console.error('PreferencesStore: Preferences not loaded yet.');
-        set({ error: 'Preferences not loaded' });
-        return;
+      console.error('PreferencesStore: Preferences not loaded yet.');
+      set({ error: 'Preferences not loaded' });
+      return;
     }
 
     set({ isLoading: true }); // Indicate loading state for the update
     const supabase = getSupabaseBrowserClient();
 
     try {
-        // Optimistic update locally first
-        const updatedPrefs = { ...currentPreferences, [key]: value, updated_at: new Date().toISOString() };
-        set({ preferences: updatedPrefs, isLoading: false }); // Set loading false after optimistic update
+      // Optimistic update locally first
+      const updatedPrefs = {
+        ...currentPreferences,
+        [key]: value,
+        updated_at: new Date().toISOString(),
+      };
+      set({ preferences: updatedPrefs, isLoading: false }); // Set loading false after optimistic update
 
-        const { error } = await supabase
-            .from('user_preferences')
-            .update({ [key]: value })
-            .eq('user_id', user.id);
+      const { error } = await supabase
+        .from('user_preferences')
+        .update({ [key]: value })
+        .eq('user_id', user.id);
 
-        if (error) {
-            // Revert optimistic update on error
-            set({ preferences: currentPreferences, error: `Failed to update ${key}` });
-            throw error;
-        }
+      if (error) {
+        // Revert optimistic update on error
+        set({
+          preferences: currentPreferences,
+          error: `Failed to update ${key}`,
+        });
+        throw error;
+      }
 
-        // No need to set state again if successful, optimistic update already applied
-        console.log(`Preference '${key}' updated successfully.`);
-
+      // No need to set state again if successful, optimistic update already applied
+      console.log(`Preference '${key}' updated successfully.`);
     } catch (error: any) {
-        console.error(`Error updating preference ${key}:`, error);
-        // State is already reverted in the catch block for the Supabase call
+      console.error(`Error updating preference ${key}:`, error);
+      // State is already reverted in the catch block for the Supabase call
     }
   },
 
@@ -147,10 +176,10 @@ export const usePreferencesStore = create<PreferencesState>((set, get) => ({
 
 // Function to initialize the store
 export const initializePreferences = async () => {
-    // Ensure user state is potentially loaded first
-    await new Promise(resolve => setTimeout(resolve, 100)); // Small delay for user state hydration
-    const user = useUserState.getState().user;
-    if (user && !usePreferencesStore.getState().preferences) {
-        await usePreferencesStore.getState().fetchPreferences();
-    }
+  // Ensure user state is potentially loaded first
+  await new Promise(resolve => setTimeout(resolve, 100)); // Small delay for user state hydration
+  const user = useUserState.getState().user;
+  if (user && !usePreferencesStore.getState().preferences) {
+    await usePreferencesStore.getState().fetchPreferences();
+  }
 };

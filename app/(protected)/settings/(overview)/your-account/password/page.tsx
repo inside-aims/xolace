@@ -1,5 +1,8 @@
 'use client';
 
+import { useState } from 'react'; // Import useState
+import { notFound } from 'next/navigation'; // Import notFound
+
 import SettingsWrapper from "@/components/settings/settings-wrapper";
 import { SettingsNavigationWrapper } from "@/components/settings/settings-navigation";
 import { Button } from "@/components/ui/button";
@@ -15,6 +18,11 @@ import { Input } from "@/components/ui/input";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from 'react-hook-form';
 import { z } from "zod";
+import { getSupabaseBrowserClient } from '@/utils/supabase/client';
+import { useToast } from '@/components/ui/use-toast'; 
+import Loader from '@/components/shared/loaders/Loader'; 
+import ToggleEyeIcon from '@/components/ui/ToggleEyeIcon'; 
+import { SettingsPasswordSchema } from '@/validation';
 
 export default function PasswordPage() {
   return (
@@ -32,22 +40,18 @@ export default function PasswordPage() {
 }
 
 function PasswordContent() {
-  // Form schema validations
-  const FormSchema = z.object({
-    currentPassword: z.string().min(5, {
-      message: "Current password must be at least 5 characters.",
-    }),
-    newPassword: z.string().min(5, {
-      message: "New password must be at least 5 characters.",
-    }),
-    confirmNewPassword: z.string().min(5, {
-      message: "Please confirm your new password with at least 5 characters.",
-    }),
-  });
+  const { toast } = useToast(); 
+  const supabase = getSupabaseBrowserClient();
 
-  // Form initial values
-  const form = useForm<z.infer<typeof FormSchema>>({
-    resolver: zodResolver(FormSchema),
+  // States
+  const [isLoading, setIsLoading] = useState<boolean>(false);
+  const [showCurrentPassword, setShowCurrentPassword] = useState<boolean>(false);
+  const [showNewPassword, setShowNewPassword] = useState<boolean>(false);
+  const [showConfirmPassword, setShowConfirmPassword] = useState<boolean>(false);
+
+  // Form initial values using the refined schema
+  const form = useForm<z.infer<typeof SettingsPasswordSchema>>({
+    resolver: zodResolver(SettingsPasswordSchema),
     defaultValues: {
       currentPassword: '',
       newPassword: '',
@@ -55,11 +59,78 @@ function PasswordContent() {
     },
   });
 
-  function onSubmit(data: z.infer<typeof FormSchema>) {
-    try {
-      console.log(data);
-    } catch (error) {
-      console.error(error);
+  
+  async function onSubmit(data: z.infer<typeof SettingsPasswordSchema>) {
+    setIsLoading(true);
+    const { currentPassword, newPassword } = data; // confirmNewPassword is validated by schema
+
+    // Get user data
+    const user = (await supabase.auth.getUser()).data?.user;
+    if (!user) {
+      setIsLoading(false);
+      return notFound(); 
+    }
+
+    if (user.is_anonymous) {
+      toast({
+        title: 'Error updating password',
+        description: 'Anonymous users cannot update passwords',
+        variant: 'destructive',
+      });
+      setIsLoading(false);
+      return;
+    }
+
+    if (user.email) {
+      // Re-authenticate user with old password
+      const { error: signInError } = await supabase.auth.signInWithPassword({
+        email: user.email,
+        password: currentPassword, 
+      });
+
+      if (signInError) {
+        toast({
+          title: 'Current password is incorrect',
+          variant: 'destructive',
+        });
+        setIsLoading(false);
+        return;
+      }
+
+      // Current password is correct, now update to new password
+      const { error: updateError } = await supabase.auth.updateUser({
+        password: newPassword,
+      });
+
+      if (updateError) {
+        toast({
+          title: 'Error updating password',
+          description: updateError.message,
+          variant: 'destructive',
+        });
+        setIsLoading(false);
+        return;
+      }
+
+      toast({
+        title: 'Password updated',
+        description: 'Your password has been updated successfully. You will be logged out.',
+      });
+      // Clear form, Log out the user
+      setIsLoading(false);
+      form.reset();
+
+      // Sign out after successful password change
+      await supabase.auth.signOut();
+      // Optionally redirect to login page after sign out
+      // window.location.href = '/sign-in';
+    } else {
+       toast({
+        title: 'Error updating password',
+        description: 'User email not found.',
+        variant: 'destructive',
+      });
+       setIsLoading(false);
     }
   }
 
@@ -76,13 +147,22 @@ function PasswordContent() {
                 <FormItem className="flex flex-col px-4 pb-4">
                   <FormLabel>Current password</FormLabel>
                   <FormControl>
-                    <Input
-                      type="password"
-                      placeholder="Enter current password"
-                      {...field}
-                      required
-                      className="py-6 w-full"
-                    />
+                    <div className="relative">
+                      <Input
+                        type={showCurrentPassword ? 'text' : 'password'}
+                        placeholder="Enter current password"
+                        {...field}
+                        required
+                        className="py-6 w-full pr-10"
+                      />
+                      <button
+                        type="button"
+                        onClick={() => setShowCurrentPassword(!showCurrentPassword)}
+                        className="absolute right-3 top-3 md:top-[-3] transform" 
+                      >
+                        <ToggleEyeIcon showPassword={showCurrentPassword} />
+                      </button>
+                    </div>
                   </FormControl>
                   <FormMessage />
                 </FormItem>
@@ -98,13 +178,22 @@ function PasswordContent() {
                   <FormItem className="flex flex-col pb-4 w-full">
                     <FormLabel>New password</FormLabel>
                     <FormControl>
-                      <Input
-                        type="password"
-                        placeholder="Enter new password"
-                        {...field}
-                        required
-                        className="py-6 w-full"
-                      />
+                      <div className="relative">
+                        <Input
+                          type={showNewPassword ? 'text' : 'password'}
+                          placeholder="Enter new password"
+                          {...field}
+                          required
+                          className="py-6 w-full pr-10" 
+                        />
+                        <button
+                          type="button"
+                          onClick={() => setShowNewPassword(!showNewPassword)}
+                          className="absolute right-3 top-3 md:top-[-3] transform" 
+                        >
+                          <ToggleEyeIcon showPassword={showNewPassword} />
+                        </button>
+                      </div>
                     </FormControl>
                     <FormMessage />
                   </FormItem>
@@ -119,15 +208,24 @@ function PasswordContent() {
                   <FormItem className="flex flex-col pb-4 w-full">
                     <FormLabel>Confirm new password</FormLabel>
                     <FormControl>
-                      <Input
-                        type="password"
-                        placeholder="Re-enter new password"
-                        {...field}
-                        required
-                        className="py-6 w-full"
-                      />
+                      <div className="relative bg-blue-400">
+                        <Input
+                          type={showConfirmPassword ? 'text' : 'password'}
+                          placeholder="Re-enter new password"
+                          {...field}
+                          required
+                          className="py-6 w-full pr-10" 
+                        />
+                        <button
+                          type="button"
+                          onClick={() => setShowConfirmPassword(!showConfirmPassword)}
+                          className="absolute right-3 top-3 md:top-[-3] transform  bg-red-400"
+                        >
+                          <ToggleEyeIcon showPassword={showConfirmPassword} />
+                        </button>
+                      </div>
                     </FormControl>
-                    <FormMessage />
+                    <FormMessage /> 
                   </FormItem>
                 )}
               />
@@ -135,15 +233,13 @@ function PasswordContent() {
 
             {/* Info Notice */}
             <div className="flex border-t px-4 py-6 text-neutral-500 text-sm">
-              Changing your password will log you out of all active sessions except the
-              one you’re using now. Applications connected to your account will remain
-              unaffected.
+              Changing your password will log you out of the session you are in now and probably all your other sessions.
             </div>
 
             {/* Submit Button */}
             <div className="flex justify-end border-t px-4 py-6">
-              <Button type="submit" className="rounded-full px-8">
-                Save
+              <Button type="submit" className="rounded-full bg-blue9 px-8 font-semibold text-white hover:bg-blue10" disabled={isLoading}>
+                {isLoading ? <Loader /> : 'Save'} {/* Show loader when loading */}
               </Button>
             </div>
           </form>
