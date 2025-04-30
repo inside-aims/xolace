@@ -28,7 +28,7 @@ function DeactivateContent() {
 
   return(
     <SettingsNavigationWrapper title={"Deactivate account"}>
-      <div className={"w-full flex flex-col items-start gap-4"}>
+      <div className={"w-full flex flex-col items-start gap-4 max-sm:pb-20"}>
         <div className={"w-full flex flex-col items-start px-4 gap-4 md:gap-8"}>
           <div className={"flex flex-row gap-4"}>
             <Avatar>
@@ -43,7 +43,7 @@ function DeactivateContent() {
           <div className={"leading-normal"}>
             <h4 className={"font-semibold text-xl"}>This will deactivate your account</h4>
             <p className={"text-neutral-400 pt-4 text-sm"}>
-              You’re about to start the process of deactivating your xolace account.
+              You are about to start the process of deactivating your xolace account.
               Your display name, @username, and public profile will no longer be viewable
               on xolace.com
             </p>
@@ -67,7 +67,7 @@ function DeactivateContent() {
           </div>
           <div className={"w-full border-t"}>
             <p className={"text-neutral-400 px-4 pt-2 text-sm"}>
-              If you just want to change your @username, you don’t need to deactivate your
+              If you just want to change your @username, you don&apos;t need to deactivate your
               account — edit it in your <span className={"font-semibold hover:underline text-blue9 cursor-pointer"}> settings </span>
             </p>
           </div>
@@ -82,13 +82,13 @@ function DeactivateContent() {
             <p className={"text-neutral-400 px-4 pt-2 text-sm"}>
               If you want to download your
               <span className={"font-semibold hover:underline text-blue9 cursor-pointer"}> xolace
-                data </span>, you’ll need to complete both the request and download process before
+                data </span>, you&apos;ll need to complete both the request and download process before
               deactivating your account. Links to download your data cannot be sent to
               deactivated accounts.
             </p>
           </div>
           <div className={"w-full flex items-center justify-center border-t"}>
-            <Button variant={"ghost"} className={"py-6 text-red-500 w-full flex rounded-none"}>
+            <Button variant={"ghost"} className={"py-6 text-red-500 w-full flex rounded-none"} disabled>
               Deactivate account
             </Button>
           </div>
