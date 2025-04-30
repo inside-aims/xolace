@@ -2,46 +2,42 @@
 
 import SettingsWrapper from "@/components/settings/settings-wrapper";
 import {SettingsNavigationWrapper} from "@/components/settings/settings-navigation";
-import {Switch} from "@/components/ui/switch";
-import {useState} from "react";
+import {Switch} from "@/components/ui/switch"; 
+import { usePreferencesStore, UserPreferences } from '@/lib/store/preferences-store';
 
 interface PreferenceOptionsInterface {
-  key: string;
+  key: keyof Omit<UserPreferences, 'id' | 'user_id' | 'created_at' | 'updated_at' | 'theme' | 'preferred_language' | 'privacy' | 'show_sensitive_content' | 'mark_sensitive_by_default'>; // Use specific keys
   label: string;
   description: string;
-  state: boolean;
 }
 
-//Customize experience option for user
-const customizeExperience: PreferenceOptionsInterface[] = [
+//Customize experience option for user - Map keys to store keys
+const customizeExperienceOptions: PreferenceOptionsInterface[] = [
   {
-    key: "guidedTour",
+    key: "guided_tour_enabled",
     label: "Guided Tour",
     description: "Enable a guided tour to help you understand how things work on the platform",
-    state: true,
   },
   {
-    key: "autoSaveDrafts",
+    key: "auto_save_drafts",
     label: "Save Drafts Automatically",
     description: "We'll save your thoughts while you type just in case.",
-    state: true,
   },
   {
-    key: "dailyPrompt",
+    key: "daily_prompt_enabled",
     label: "Daily Prompt",
     description: "A quiet nudge each day to help you express yourself.",
-    state: false,
   },
   {
-    key: "allowAnonymousReplies",
+    key: "allow_anonymous_replies",
     label: "Let People Reply Anonymously",
     description: "Responses won’t show who they're from, keeping the space safe.",
-    state: true,
   },
 ]
 
 
 export default function PreferencesPage() {
+
   return(
     <>
       <div className="w-full flex items-start flex-col md:hidden">
@@ -57,17 +53,32 @@ export default function PreferencesPage() {
 }
 
 function PreferencesContent() {
-  const [preference, setPreference] = useState<PreferenceOptionsInterface[]>(customizeExperience);
+  // Get state and actions from the store
+  const { preferences, updatePreference, isLoading, error } = usePreferencesStore();
 
-  const togglePreference = (optionKey: string) => {
-    setPreference((prev) =>
-      prev.map((option) =>
-        option.key === optionKey
-          ? { ...option, state: !option.state }
-          : option
-      )
-    );
+  // Handle toggle using the store's update function
+  const handleTogglePreference = (
+    optionKey: keyof Omit<UserPreferences, 'id' | 'user_id' | 'created_at' | 'updated_at' | 'theme' | 'preferred_language' | 'privacy' | 'show_sensitive_content' | 'mark_sensitive_by_default'>,
+    newValue: boolean
+  ) => {
+    updatePreference(optionKey, newValue);
   };
+
+  if (isLoading && !preferences) {
+      return (
+          <SettingsNavigationWrapper title={'Preferences'}>
+              <div className="p-4">Loading preferences...</div>
+          </SettingsNavigationWrapper>
+      );
+  }
+
+  if (error) {
+      return (
+          <SettingsNavigationWrapper title={'Preferences'}>
+              <div className="p-4 text-red-500">Error loading preferences: {error}</div>
+          </SettingsNavigationWrapper>
+      );
+  }
 
   return(
     <SettingsNavigationWrapper title={'Preferences'}>
@@ -82,19 +93,26 @@ function PreferencesContent() {
         {/*possible customize experience*/}
         <div className={"w-full flex flex-col items-start gap-4"}>
           {
-            preference.map((item) => (
-              <div className={"w-full flex flex-col items-start"} key={item.key}>
-                <h4 className={"w-full flex items-center justify-between"}>
-                  {item.label}
-                  <span className={"justify-end ml-auto"}>
-                    <Switch checked={item.state} onCheckedChange={() => togglePreference(item.key)}/>
-                  </span>
-                </h4>
-                <p className={"text-sm text-neutral-500"}>
-                  {item.description}
-                </p>
-              </div>
-            ))
+            customizeExperienceOptions.map((item) => {
+              const currentState = preferences ? preferences[item.key] : false;
+              return (
+                <div className={"w-full flex flex-col items-start"} key={item.key}>
+                  <h4 className={"w-full flex items-center justify-between"}>
+                    {item.label}
+                    <span className={"justify-end ml-auto"}>
+                      <Switch
+                        checked={currentState}
+                        onCheckedChange={(checked) => handleTogglePreference(item.key, checked)}
+                        disabled={isLoading} // Disable switch while updating
+                      />
+                    </span>
+                  </h4>
+                  <p className={"text-sm text-neutral-500"}>
+                    {item.description}
+                  </p>
+                </div>
+              );
+            })
           }
         </div>
       </div>
