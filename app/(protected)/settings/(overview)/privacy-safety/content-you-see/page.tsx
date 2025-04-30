@@ -34,7 +34,7 @@ function ContentYouSeeContent() {
   const { preferences, isLoading , updatePreference, error } = usePreferencesStore();
 
   const handleToggleShowSensitiveContent = (checked: boolean) => {
-    updatePreference('mark_sensitive_by_default', checked);
+    updatePreference('show_sensitive_content', checked);
   };
 
   if(isLoading && !preferences){
