@@ -21,7 +21,9 @@ import { useToast } from '@/components/ui/use-toast';
 import { logActivity } from '@/lib/activity-logger'; 
 import { ActivityType } from '@/types/activity';
 import { UpdateUsernameSchema } from '@/validation'; 
-import Loader from '@/components/shared/loaders/Loader'; 
+import Loader from '@/components/shared/loaders/Loader';
+import { Sparkles } from 'lucide-react'; // Import an icon for flair
+
 
 export default function UsernamePage() {
   return(
@@ -48,7 +50,6 @@ function UsernameContent() {
   // States
   const [isLoading, setIsLoading] = useState<boolean>(false);
 
-  // Destructure toast function
   const { toast } = useToast();
 
   // Use the correct schema from validation file
@@ -133,12 +134,88 @@ function UsernameContent() {
     setIsLoading(false);
   }
 
+  // Creative username suggestion generator - Level Up!
+  const generateSuggestions = (currentUsername: string): string[] => {
+    if (!currentUsername) return [];
+
+    const clean = currentUsername.replace(/[^a-zA-Z0-9_]/g, ''); // Allow underscore
+    const vowels = 'aeiouAEIOU';
+    //const consonants = 'bcdfghjklmnpqrstvwxyzBCDFGHJKLMNPQRSTVWXYZ';
+    const year = new Date().getFullYear().toString().slice(-2);
+    const randNum = (digits = 3) => Math.floor(Math.random() * (10 ** digits));
+    const pick = (arr: string[]) => arr[Math.floor(Math.random() * arr.length)];
+
+    const prefixes = ['The', 'Real', 'Captain', 'Agent', 'Just', 'Simply', ''];
+    const suffixes = ['Pro', 'X', 'Prime', 'Legend', 'Guru', 'Ninja', 'Bot', 'Verse', 'Hub', 'HQ', year, `_${randNum(2)}`];
+    const separators = ['_', '.', '']; // Add dot as separator
+
+    const suggestions: Set<string> = new Set();
+
+    // 1. Basic variations
+    suggestions.add(`${clean}${randNum()}`);
+    suggestions.add(`${clean}${pick(separators)}${year}`);
+
+    // 2. Prefix/Suffix combos
+    suggestions.add(`${pick(prefixes)}${clean}`);
+    suggestions.add(`${clean}${pick(suffixes)}`);
+    suggestions.add(`${pick(prefixes)}${clean}${pick(suffixes)}`);
+
+    // 3. Character play
+    if (clean.length > 3) {
+      suggestions.add(`${clean.slice(0, 3)}${clean.slice(-1)}${randNum(2)}`); // First 3 + last + num
+      suggestions.add(`${clean.split('').map(c => vowels.includes(c) ? pick(vowels.split('')) : c).join('')}${randNum(1)}`); // Vowel swap
+    }
+    suggestions.add(`${clean.split('').reverse().join('')}`); // Reversed
+
+    // 4. Techy/Gaming
+    suggestions.add(`${clean}.io`);
+    suggestions.add(`${clean}_dev`);
+    suggestions.add(`${clean}GG`);
+
+    // 5. Descriptive (if username is somewhat dictionary-like)
+    suggestions.add(`Awesome${clean}`);
+
+
+    // Filter, ensure uniqueness, remove original, limit
+    const finalSuggestions = Array.from(suggestions)
+      .filter(s => s.length > 3 && s.length < 20 && s.toLowerCase() !== currentUsername.toLowerCase()) // Basic sanity checks
+      .sort(() => Math.random() - 0.5) // Shuffle
+      .slice(0, 5); // Take top 5 unique ones
+
+    // Ensure at least 3 suggestions if possible
+    while (finalSuggestions.length < 3 && suggestions.size > finalSuggestions.length) {
+        const nextSuggestion = Array.from(suggestions).find(s => !finalSuggestions.includes(s) && s.toLowerCase() !== currentUsername.toLowerCase());
+        if (nextSuggestion) {
+            finalSuggestions.push(nextSuggestion);
+        } else {
+            break; 
+        }
+    }
+
+     // Fallback if still less than 3
+     if (finalSuggestions.length < 3) {
+        const fallback = [`${clean}123`, `${clean}_star`, `My${clean}Profile`];
+        fallback.forEach(fb => {
+            if (finalSuggestions.length < 3 && !finalSuggestions.includes(fb) && fb.toLowerCase() !== currentUsername.toLowerCase()) {
+                finalSuggestions.push(fb);
+            }
+        });
+     }
+
+
+    return finalSuggestions.slice(0, 5); // Return final list (max 5)
+  };
+
+
   return(
     <SettingsNavigationWrapper title={"Change username"}>
       <div className={"w-full flex flex-col items-start"}>
         <Form {...form}>
           <form onSubmit={form.handleSubmit(onSubmit)} className="w-full">
-            <FormField control={form.control} name="username"
+            {/* Username FormField */}
+            <FormField
+              control={form.control}
+              name="username"
               render={({ field }) => (
                 <FormItem className={'flex flex-col px-4 pb-4'}>
                   <FormLabel>Username</FormLabel>
@@ -156,13 +233,36 @@ function UsernameContent() {
                 </FormItem>
               )}
             />
-            {/* Remove or comment out the static suggestions */}
-            {/* <div className={"mt-4 flex flex-col items-start gap-4 border-t px-4 py-6"}>
-              <h5 className={"text-lg font-semibold"}>Suggestions</h5>
-              <span>Federico</span>
-              <span>Fede</span>
-              <span>FedeDeJnr</span>
-            </div> */}
+
+            {/* Creative Username Suggestions */}
+            {user?.username && !user?.is_anonymous && (
+              <div className="mt-2 px-4 py-6 border-t"> 
+                <h5 className="text-base font-semibold mb-3 flex items-center gap-1.5">
+                  <Sparkles className="w-4 h-4 text-yellow-500" />
+                  Need inspiration?
+                </h5>
+                <div className="flex flex-wrap gap-2">
+                  {generateSuggestions(user.username).map((suggestion, index) => (
+                    <button
+                      key={index}
+                      type="button" 
+                      className="px-3 py-1.5 text-sm rounded-full bg-neutral-100 hover:bg-neutral-200 dark:bg-neutral-800 dark:hover:bg-neutral-700 transition-colors cursor-pointer focus:outline-none focus:ring-2 focus:ring-blue focus:ring-opacity-50" 
+                      onClick={() => {
+                        form.setValue('username', suggestion, {
+                          shouldDirty: true,
+                          shouldValidate: true
+                        });
+                      }}
+                      title={`Use @${suggestion}`}
+                    >
+                      @{suggestion}
+                    </button>
+                  ))}
+                </div>
+              </div>
+            )}
+
+            {/* Save Button */}
             <div className={"flex justify-end border-t px-4 py-6"}>
               <Button type="submit" className={"bg-blue9 hover:bg-blue10 font-semibold text-white rounded-full px-8"} disabled={isLoading || !form.formState.isDirty}>
                 {isLoading ? <Loader /> : 'Save'}
