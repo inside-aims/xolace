@@ -23,7 +23,7 @@ const HelpCenterContent = () =>{
     <SettingsNavigationWrapper title={'Help Center'}>
       <div className={"w-full flex flex-col items-center justify-center min-h-screen"}>
         <h2 className={"text-xl  md:text-4xl  font-semibold"}>
-          Future coming soon
+          Feature coming soon
         </h2>
       </div>
     </SettingsNavigationWrapper>

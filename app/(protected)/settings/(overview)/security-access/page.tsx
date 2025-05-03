@@ -8,12 +8,14 @@ const securityAccessOptions: SettingsOptionProps[] = [
     label: 'Security',
     route: '/settings/security-access/security',
     description: "Manage your account's security",
+    disabled: true,
   },
   {
     icon: <Smartphone />,
     label: 'Apps and sessions',
     route: '/settings/security-access/apps-sessions',
     description: "See information about when you logged into your account, and apps you connected to your account.",
+    disabled: true,
   },
 ];
 
