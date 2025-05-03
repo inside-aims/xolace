@@ -296,7 +296,7 @@ export function SidebarLeft({
   return (
     <Sidebar  className="top-[--header-height] !h-[calc(100svh-var(--header-height))] border-r-0" {...props}>
       <SidebarHeader>
-       <UserInfo user={user}/>
+       {/* <UserInfo user={user}/> */}
         <NavMain />
       </SidebarHeader>
       <SidebarContent>
