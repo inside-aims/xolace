@@ -274,6 +274,7 @@ export type Database = {
           expires_at: string | null
           expires_in_24hr: boolean
           id: string
+          is_sensitive: boolean
           mood: Database["public"]["Enums"]["post_mood"]
           upvotes: number
         }
@@ -288,6 +289,7 @@ export type Database = {
           expires_at?: string | null
           expires_in_24hr?: boolean
           id?: string
+          is_sensitive?: boolean
           mood?: Database["public"]["Enums"]["post_mood"]
           upvotes?: number
         }
@@ -302,6 +304,7 @@ export type Database = {
           expires_at?: string | null
           expires_in_24hr?: boolean
           id?: string
+          is_sensitive?: boolean
           mood?: Database["public"]["Enums"]["post_mood"]
           upvotes?: number
         }
@@ -472,6 +475,62 @@ export type Database = {
         }
         Relationships: []
       }
+      user_preferences: {
+        Row: {
+          allow_anonymous_replies: boolean | null
+          auto_save_drafts: boolean | null
+          created_at: string | null
+          daily_prompt_enabled: boolean | null
+          guided_tour_enabled: boolean | null
+          id: string
+          mark_sensitive_by_default: boolean | null
+          preferred_language: string | null
+          privacy: Database["public"]["Enums"]["privacy_options"] | null
+          show_sensitive_content: boolean | null
+          theme: Database["public"]["Enums"]["theme_options"] | null
+          updated_at: string | null
+          user_id: string
+        }
+        Insert: {
+          allow_anonymous_replies?: boolean | null
+          auto_save_drafts?: boolean | null
+          created_at?: string | null
+          daily_prompt_enabled?: boolean | null
+          guided_tour_enabled?: boolean | null
+          id?: string
+          mark_sensitive_by_default?: boolean | null
+          preferred_language?: string | null
+          privacy?: Database["public"]["Enums"]["privacy_options"] | null
+          show_sensitive_content?: boolean | null
+          theme?: Database["public"]["Enums"]["theme_options"] | null
+          updated_at?: string | null
+          user_id: string
+        }
+        Update: {
+          allow_anonymous_replies?: boolean | null
+          auto_save_drafts?: boolean | null
+          created_at?: string | null
+          daily_prompt_enabled?: boolean | null
+          guided_tour_enabled?: boolean | null
+          id?: string
+          mark_sensitive_by_default?: boolean | null
+          preferred_language?: string | null
+          privacy?: Database["public"]["Enums"]["privacy_options"] | null
+          show_sensitive_content?: boolean | null
+          theme?: Database["public"]["Enums"]["theme_options"] | null
+          updated_at?: string | null
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "user_preferences_user_id_fkey"
+            columns: ["user_id"]
+            isOneToOne: true
+            referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       user_roles: {
         Row: {
           assigned_at: string | null
@@ -503,7 +562,7 @@ export type Database = {
       }
       user_verifications: {
         Row: {
-          created_at: string | null
+          created_at: string
           id: string
           method: Database["public"]["Enums"]["verification_method"]
           reason: string | null
@@ -513,7 +572,7 @@ export type Database = {
           verified_by: string | null
         }
         Insert: {
-          created_at?: string | null
+          created_at?: string
           id?: string
           method?: Database["public"]["Enums"]["verification_method"]
           reason?: string | null
@@ -523,7 +582,7 @@ export type Database = {
           verified_by?: string | null
         }
         Update: {
-          created_at?: string | null
+          created_at?: string
           id?: string
           method?: Database["public"]["Enums"]["verification_method"]
           reason?: string | null
@@ -637,6 +696,18 @@ export type Database = {
           duration: Database["public"]["Enums"]["post_duration"]
           expires_at: string
           tag_names: string[]
+          is_sensitive: boolean
+        }
+        Returns: string
+      }
+      create_post_with_tags_v1: {
+        Args: {
+          content: string
+          mood: Database["public"]["Enums"]["post_mood"]
+          expires_in_24hr: boolean
+          duration: Database["public"]["Enums"]["post_duration"]
+          expires_at: string
+          tag_names: string[]
         }
         Returns: string
       }
@@ -672,7 +743,9 @@ export type Database = {
       feedback_status: "open" | "closed"
       post_duration: "6" | "12" | "24"
       post_mood: "neutral" | "confused" | "sad" | "happy" | "angry"
+      privacy_options: "public" | "private" | "followers_only"
       report_status: "pending" | "reviewed" | "resolved"
+      theme_options: "system" | "light" | "dark"
       user_role: "normal_user" | "verified" | "blue_team" | "help_professional"
       verification_method: "manual" | "subscription" | "promo"
       vote_types: "upvote" | "downvote"

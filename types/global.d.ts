@@ -49,4 +49,6 @@ type User = Database['public']['Tables']['profiles']['Row']
 
 type Comment = Database['public']['Tables']['comments']['Row']
 
-type tag = Database['public']['Tables']['']['Row']
+type UserPreferences = Database['public']['Tables']['user_preferences']['Row']
+
+type Tag = Database['public']['Tables']['tags']['Row']
