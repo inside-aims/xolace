@@ -38,6 +38,7 @@ import { removeHashtags } from '@/lib/utils';
 import { useUserState } from '@/lib/store/user';
 import { logActivity } from '@/lib/activity-logger';
 import { ActivityType } from '@/types/activity';
+import { usePreferencesStore } from "@/lib/store/preferences-store";
 
 // Dynamic Imports
 const Loader = dynamic(() => import('../shared/loaders/Loader'), { ssr: false });
@@ -63,6 +64,7 @@ const MoodCarousel = dynamic(
 
 
 export function PostForm() {
+  const {preferences} = usePreferencesStore();
   const supabase = getSupabaseBrowserClient();
   const { toast } = useToast();
 
@@ -167,6 +169,7 @@ export function PostForm() {
         expires_in_24hr: is24HourPost,
         mood: selectedMood?.value,
         tag_names: tags,
+        is_sensitive: preferences?.mark_sensitive_by_default ?? false,
       });
 
       if (postError) {
