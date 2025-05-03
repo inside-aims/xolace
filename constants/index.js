@@ -7,7 +7,7 @@ import {
   ThumbsUp,
   Flame,
   Clock,
-  Bomb, Eclipse, Key , GlobeLock, Copyright, LibraryBig
+  Bomb, Eclipse, Key , GlobeLock, Copyright, LibraryBig,
 } from 'lucide-react';
 
 export const sidebarLinks = [

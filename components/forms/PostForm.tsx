@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useState, useRef, useMemo } from 'react';
+import React, { useState, useRef, useMemo, useEffect, useCallback } from 'react'; // Added useEffect, useCallback
 import Image from 'next/image';
 import dynamic from 'next/dynamic';
 import { zodResolver } from '@hookform/resolvers/zod';
@@ -8,6 +8,7 @@ import { useForm } from 'react-hook-form';
 import { z } from 'zod';
 import { Smile } from 'lucide-react';
 import { motion } from 'framer-motion';
+import debounce from 'lodash.debounce';
 
 import { Button } from '@/components/ui/button';
 import {
@@ -38,6 +39,7 @@ import { removeHashtags } from '@/lib/utils';
 import { useUserState } from '@/lib/store/user';
 import { logActivity } from '@/lib/activity-logger';
 import { ActivityType } from '@/types/activity';
+import { usePreferencesStore } from "@/lib/store/preferences-store";
 
 // Dynamic Imports
 const Loader = dynamic(() => import('../shared/loaders/Loader'), { ssr: false });
@@ -62,11 +64,15 @@ const MoodCarousel = dynamic(
 );
 
 
+// Define a key for local storage
+const POST_DRAFT_KEY = 'postFormDraft';
+
 export function PostForm() {
+  const {preferences} = usePreferencesStore();
   const supabase = getSupabaseBrowserClient();
   const { toast } = useToast();
 
-  //get user profile 
+  //get user profile
   const user = useUserState(state => state.user);
 
   // states
@@ -109,8 +115,49 @@ export function PostForm() {
   });
 
   // watch post realtime updates
-  const { watch } = form;
+  const { watch, setValue } = form;
   const content = watch('content');
+
+
+  // Debounced function to save draft to local storage
+  const debouncedSaveDraft = useCallback(
+    debounce((draftContent: string) => {
+      if (typeof window !== 'undefined' && preferences?.auto_save_drafts) {
+        localStorage.setItem(POST_DRAFT_KEY, draftContent);
+      }
+    }, 500), // Debounce time: 500ms
+    [preferences?.auto_save_drafts] // Recreate debounce function if preference changes
+  );
+
+  // Effect to save draft when content changes
+  useEffect(() => {
+    if (preferences?.auto_save_drafts) {
+      debouncedSaveDraft(content);
+    }
+    // Cleanup function to cancel any pending saves on unmount or preference change
+    return () => {
+      debouncedSaveDraft.cancel();
+    };
+  }, [content, preferences?.auto_save_drafts, debouncedSaveDraft]);
+
+  // Effect to load draft on component mount
+  useEffect(() => {
+    if (typeof window !== 'undefined' && preferences?.auto_save_drafts) {
+      const savedDraft = localStorage.getItem(POST_DRAFT_KEY);
+      if (savedDraft) {
+        setValue('content', savedDraft, { shouldValidate: true });
+        handleInput(savedDraft);
+      }
+    }
+  }, [preferences?.auto_save_drafts, setValue]); // Run only once on mount or when preference changes
+
+  // Function to clear the draft from local storage
+  const clearDraft = () => {
+    if (typeof window !== 'undefined') {
+      localStorage.removeItem(POST_DRAFT_KEY);
+    }
+  };
+
 
   // function to handle emoji selection add to post field
   const handleEmojiClick = (emojiData: {emoji : string}) => {
@@ -167,6 +214,7 @@ export function PostForm() {
         expires_in_24hr: is24HourPost,
         mood: selectedMood?.value,
         tag_names: tags,
+        is_sensitive: preferences?.mark_sensitive_by_default ?? false,
       });
 
       if (postError) {
@@ -213,7 +261,7 @@ export function PostForm() {
     <Form {...form}>
       <form
         onSubmit={form.handleSubmit(onSubmit)}
-        className="w-full space-y-6 lg:w-2/3"
+        className="w-full space-y-6 lg:w-2/3 lg:mx-auto"
       >
         <FormField
           control={form.control}
@@ -231,6 +279,9 @@ export function PostForm() {
                     onChange={(e: React.ChangeEvent<HTMLTextAreaElement>) => {
                       field.onChange(e);
                       handleInput(e.target.value);
+                      if (e.target.value === '' && preferences?.auto_save_drafts) {
+                         clearDraft();
+                      }
                     }}
                     placeholder="What's on your mind? Use # for tags! At most 3"
                     className={`no-focus h-[150px] resize-none !pr-10 !pt-8 text-dark-2 transition-all duration-300 dark:text-white ${moodClasses} `}

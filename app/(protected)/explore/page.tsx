@@ -130,7 +130,7 @@ if(!postsData) {
   filteredPosts = filterPosts(filteredPosts, filter);
 
   return (
-    <>
+    <div className="container-spacing w-full">
       <section className="w-full">
         <h1 className="mb-8 text-center text-4xl font-bold">
           Explore the Shadows
@@ -148,7 +148,7 @@ if(!postsData) {
       <FilterPills />
 
       <ExploreFeedList filteredPosts={filteredPosts} />
-    </>
+    </div>
   );
 };
 

@@ -9,6 +9,104 @@ export type Json =
 export type Database = {
   public: {
     Tables: {
+      activity_logs: {
+        Row: {
+          action: Database["public"]["Enums"]["action_type"]
+          comment_id: number | null
+          created_at: string | null
+          entity_type: Database["public"]["Enums"]["entity_types"]
+          id: string
+          ip_address: unknown | null
+          metadata: Json | null
+          post_id: string | null
+          profile_id: string | null
+          related_user_id: string | null
+          report_id: number | null
+          user_id: string
+          vote_id: number | null
+        }
+        Insert: {
+          action: Database["public"]["Enums"]["action_type"]
+          comment_id?: number | null
+          created_at?: string | null
+          entity_type: Database["public"]["Enums"]["entity_types"]
+          id?: string
+          ip_address?: unknown | null
+          metadata?: Json | null
+          post_id?: string | null
+          profile_id?: string | null
+          related_user_id?: string | null
+          report_id?: number | null
+          user_id: string
+          vote_id?: number | null
+        }
+        Update: {
+          action?: Database["public"]["Enums"]["action_type"]
+          comment_id?: number | null
+          created_at?: string | null
+          entity_type?: Database["public"]["Enums"]["entity_types"]
+          id?: string
+          ip_address?: unknown | null
+          metadata?: Json | null
+          post_id?: string | null
+          profile_id?: string | null
+          related_user_id?: string | null
+          report_id?: number | null
+          user_id?: string
+          vote_id?: number | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "activity_logs_comment_id_fkey"
+            columns: ["comment_id"]
+            isOneToOne: false
+            referencedRelation: "comments"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "activity_logs_post_id_fkey"
+            columns: ["post_id"]
+            isOneToOne: false
+            referencedRelation: "posts"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "activity_logs_profile_id_fkey"
+            columns: ["profile_id"]
+            isOneToOne: false
+            referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "activity_logs_related_user_id_fkey"
+            columns: ["related_user_id"]
+            isOneToOne: false
+            referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "activity_logs_report_id_fkey"
+            columns: ["report_id"]
+            isOneToOne: false
+            referencedRelation: "reports"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "activity_logs_user_id_fkey"
+            columns: ["user_id"]
+            isOneToOne: false
+            referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "activity_logs_vote_id_fkey"
+            columns: ["vote_id"]
+            isOneToOne: false
+            referencedRelation: "votes"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       collections: {
         Row: {
           collection_name: string | null
@@ -176,6 +274,7 @@ export type Database = {
           expires_at: string | null
           expires_in_24hr: boolean
           id: string
+          is_sensitive: boolean
           mood: Database["public"]["Enums"]["post_mood"]
           upvotes: number
         }
@@ -190,6 +289,7 @@ export type Database = {
           expires_at?: string | null
           expires_in_24hr?: boolean
           id?: string
+          is_sensitive?: boolean
           mood?: Database["public"]["Enums"]["post_mood"]
           upvotes?: number
         }
@@ -204,6 +304,7 @@ export type Database = {
           expires_at?: string | null
           expires_in_24hr?: boolean
           id?: string
+          is_sensitive?: boolean
           mood?: Database["public"]["Enums"]["post_mood"]
           upvotes?: number
         }
@@ -257,27 +358,36 @@ export type Database = {
         Row: {
           avatar_url: string | null
           created_at: string
+          email: string | null
           has_seen_welcome: boolean
           id: string
           is_anonymous: boolean
+          is_verified: boolean
+          role: Database["public"]["Enums"]["user_role"]
           supabase_user: string
           username: string
         }
         Insert: {
           avatar_url?: string | null
           created_at?: string
+          email?: string | null
           has_seen_welcome?: boolean
           id?: string
           is_anonymous?: boolean
+          is_verified?: boolean
+          role?: Database["public"]["Enums"]["user_role"]
           supabase_user: string
           username: string
         }
         Update: {
           avatar_url?: string | null
           created_at?: string
+          email?: string | null
           has_seen_welcome?: boolean
           id?: string
           is_anonymous?: boolean
+          is_verified?: boolean
+          role?: Database["public"]["Enums"]["user_role"]
           supabase_user?: string
           username?: string
         }
@@ -364,6 +474,139 @@ export type Database = {
           post?: number
         }
         Relationships: []
+      }
+      user_preferences: {
+        Row: {
+          allow_anonymous_replies: boolean | null
+          auto_save_drafts: boolean | null
+          created_at: string | null
+          daily_prompt_enabled: boolean | null
+          guided_tour_enabled: boolean | null
+          id: string
+          mark_sensitive_by_default: boolean | null
+          preferred_language: string | null
+          privacy: Database["public"]["Enums"]["privacy_options"] | null
+          show_sensitive_content: boolean | null
+          theme: Database["public"]["Enums"]["theme_options"] | null
+          updated_at: string | null
+          user_id: string
+        }
+        Insert: {
+          allow_anonymous_replies?: boolean | null
+          auto_save_drafts?: boolean | null
+          created_at?: string | null
+          daily_prompt_enabled?: boolean | null
+          guided_tour_enabled?: boolean | null
+          id?: string
+          mark_sensitive_by_default?: boolean | null
+          preferred_language?: string | null
+          privacy?: Database["public"]["Enums"]["privacy_options"] | null
+          show_sensitive_content?: boolean | null
+          theme?: Database["public"]["Enums"]["theme_options"] | null
+          updated_at?: string | null
+          user_id: string
+        }
+        Update: {
+          allow_anonymous_replies?: boolean | null
+          auto_save_drafts?: boolean | null
+          created_at?: string | null
+          daily_prompt_enabled?: boolean | null
+          guided_tour_enabled?: boolean | null
+          id?: string
+          mark_sensitive_by_default?: boolean | null
+          preferred_language?: string | null
+          privacy?: Database["public"]["Enums"]["privacy_options"] | null
+          show_sensitive_content?: boolean | null
+          theme?: Database["public"]["Enums"]["theme_options"] | null
+          updated_at?: string | null
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "user_preferences_user_id_fkey"
+            columns: ["user_id"]
+            isOneToOne: true
+            referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      user_roles: {
+        Row: {
+          assigned_at: string | null
+          id: string
+          role: Database["public"]["Enums"]["user_role"]
+          user_id: string
+        }
+        Insert: {
+          assigned_at?: string | null
+          id?: string
+          role?: Database["public"]["Enums"]["user_role"]
+          user_id: string
+        }
+        Update: {
+          assigned_at?: string | null
+          id?: string
+          role?: Database["public"]["Enums"]["user_role"]
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "user_roles_user_id_fkey"
+            columns: ["user_id"]
+            isOneToOne: false
+            referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      user_verifications: {
+        Row: {
+          created_at: string
+          id: string
+          method: Database["public"]["Enums"]["verification_method"]
+          reason: string | null
+          updated_at: string | null
+          user_id: string
+          verified: boolean
+          verified_by: string | null
+        }
+        Insert: {
+          created_at?: string
+          id?: string
+          method?: Database["public"]["Enums"]["verification_method"]
+          reason?: string | null
+          updated_at?: string | null
+          user_id: string
+          verified?: boolean
+          verified_by?: string | null
+        }
+        Update: {
+          created_at?: string
+          id?: string
+          method?: Database["public"]["Enums"]["verification_method"]
+          reason?: string | null
+          updated_at?: string | null
+          user_id?: string
+          verified?: boolean
+          verified_by?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "user_verifications_user_id_fkey"
+            columns: ["user_id"]
+            isOneToOne: false
+            referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "user_verifications_verified_by_fkey"
+            columns: ["verified_by"]
+            isOneToOne: false
+            referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+        ]
       }
       views: {
         Row: {
@@ -453,24 +696,58 @@ export type Database = {
           duration: Database["public"]["Enums"]["post_duration"]
           expires_at: string
           tag_names: string[]
+          is_sensitive: boolean
         }
-        Returns: undefined
+        Returns: string
+      }
+      create_post_with_tags_v1: {
+        Args: {
+          content: string
+          mood: Database["public"]["Enums"]["post_mood"]
+          expires_in_24hr: boolean
+          duration: Database["public"]["Enums"]["post_duration"]
+          expires_at: string
+          tag_names: string[]
+        }
+        Returns: string
       }
       handle_vote: {
         Args: {
+          p_current_vote: Database["public"]["Enums"]["vote_types"]
           p_post_id: string
           p_user_id: string
           p_vote_type: Database["public"]["Enums"]["vote_types"]
-          p_current_vote: string
         }
         Returns: Json
       }
     }
     Enums: {
+      action_type:
+        | "created"
+        | "deleted"
+        | "updated"
+        | "commented"
+        | "reported"
+        | "upvoted"
+        | "downvoted"
+        | "viewed"
+        | "added"
+      entity_types:
+        | "post"
+        | "comment"
+        | "vote"
+        | "report"
+        | "profile"
+        | "system"
+        | "view"
       feedback_status: "open" | "closed"
       post_duration: "6" | "12" | "24"
       post_mood: "neutral" | "confused" | "sad" | "happy" | "angry"
+      privacy_options: "public" | "private" | "followers_only"
       report_status: "pending" | "reviewed" | "resolved"
+      theme_options: "system" | "light" | "dark"
+      user_role: "normal_user" | "verified" | "blue_team" | "help_professional"
+      verification_method: "manual" | "subscription" | "promo"
       vote_types: "upvote" | "downvote"
     }
     CompositeTypes: {

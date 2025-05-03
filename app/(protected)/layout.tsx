@@ -7,7 +7,7 @@ import { createClient } from '@/utils/supabase/server';
 import InitUser from '@/lib/store/initUser';
 // import { InfoBanner } from '@/components/extras/Info-Banner';
 
-import { SidebarLeft } from "@/components/sidebar-left"
+import { SidebarLeft } from '@/components/sidebar-left';
 // import { SidebarRight } from "@/components/sidebar-right"
 // import {
 //   Breadcrumb,
@@ -16,10 +16,7 @@ import { SidebarLeft } from "@/components/sidebar-left"
 //   BreadcrumbPage,
 // } from "@/components/ui/breadcrumb"
 //import { Separator } from "@/components/ui/separator"
-import {
-  SidebarInset,
-  SidebarProvider,
-} from "@/components/ui/sidebar"
+import { SidebarInset, SidebarProvider } from '@/components/ui/sidebar';
 import { SiteHeader } from '@/components/site-header';
 
 export default async function ProtectedLayout({
@@ -43,12 +40,15 @@ export default async function ProtectedLayout({
 
   return (
     <div className="[--header-height:calc(theme(spacing.14))]">
-    <SidebarProvider className="flex flex-col" style={{ '--header-height': '90px' } as React.CSSProperties}>
-      <SiteHeader />
-       <div className="flex flex-1">
-        <SidebarLeft />
-        <SidebarInset>
-          {/* <header className="sticky top-0 flex h-14 shrink-0 items-center gap-2 bg-background">
+      <SidebarProvider
+        className="flex flex-col"
+        style={{ '--header-height': '90px' } as React.CSSProperties}
+      >
+        <SiteHeader />
+        <div className="flex flex-1">
+          <SidebarLeft />
+          <SidebarInset>
+            {/* <header className="sticky top-0 flex h-14 shrink-0 items-center gap-2 bg-background">
             <div className="flex flex-1 items-center gap-2 px-3">
           <SidebarTrigger />
           <Separator orientation="vertical" className="mr-2 h-4" />
@@ -63,22 +63,19 @@ export default async function ProtectedLayout({
           </Breadcrumb>
         </div>
       </header> */}
-      <section className="main-container">
-        {children}
-      </section>
-      <Bottombar />
-    </SidebarInset>
-    {/* <SidebarRight /> */}
-    </div>
-    <InitUser user={profileUser} />
-  </SidebarProvider>
+            <section className="main-container">{children}</section>
+            <Bottombar />
+          </SidebarInset>
+          {/* <SidebarRight /> */}
+        </div>
+        <InitUser user={profileUser} />
+      </SidebarProvider>
     </div>
   );
 }
 
-
 {
-/*
+  /*
 <>
       <Topbar />
       <InfoBanner />
@@ -92,9 +89,7 @@ export default async function ProtectedLayout({
       <InitUser user={profileUser} />
     </>
 */
-
 }
-
 
 {
   /* <Topbar />

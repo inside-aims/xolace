@@ -4,6 +4,7 @@ import { useEffect, useRef } from 'react';
 import { useUserState } from './user';
 import { Profile } from '@/types/global';
 import { getSupabaseBrowserClient } from '@/utils/supabase/client';
+import { initializePreferences } from './preferences-store';
 
 // Function to fetch additional roles from the database
 async function fetchAdditionalRoles(userId: string): Promise<string[]> {
@@ -43,6 +44,9 @@ export default function InitUser({ user }: { user: Profile | undefined }) {
         const roles = Array.from(new Set([...additionalRoles]));
         console.log("full roles->",roles)
         setRoles(roles);
+
+         // Initialize preferences after user data is set
+         await initializePreferences();
         }
       }
       initializeUser();
