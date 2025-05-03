@@ -106,7 +106,7 @@ const Profile = () => {
 
   return (
     <>
-      <div className="flex items-center justify-center gap-3 md:gap-4">
+      <div className="flex items-center justify-center gap-3 md:gap-4 pt-3">
         <Avatar>
           <AvatarImage src={user?.avatar_url ?? undefined} />
           <AvatarFallback>{user?.username?.charAt(0)}</AvatarFallback>
@@ -120,12 +120,12 @@ const Profile = () => {
       </div>
       <Separator className="my-4" />
 
-      <Tabs defaultValue="account" className="w-full">
+      <Tabs defaultValue="account" className="w-full px-1 md:px-2 lg:px-5">
         <TabsList className="sticky top-16 z-10 grid w-full grid-cols-2">
           <TabsTrigger value="account">Posts</TabsTrigger>
           <TabsTrigger value="password">Edit profile</TabsTrigger>
         </TabsList>
-        <TabsContent value="account" className="px-2">
+        <TabsContent value="account" className="md:px-2">
           <ScrollArea className="h-[calc(100vh-20rem)] w-full rounded-md md:h-[calc(100vh-22rem)]">
             <div className="space-y-4 py-2">
               {isLoadingPosts ? (
@@ -156,7 +156,7 @@ const Profile = () => {
             </div>
           </ScrollArea>
         </TabsContent>
-        <TabsContent value="password" className="mb-10 space-y-6">
+        <TabsContent value="password" className="mb-16 space-y-6">
             <UpdatePasswordCardForm />
             <UpdateUsernameCardForm />
             <DeleteUserAccountCard />

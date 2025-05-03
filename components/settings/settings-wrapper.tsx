@@ -34,7 +34,7 @@ export default function SettingsWrapper({ children, page }: { children?: React.R
 
   return (
     <>
-      <div className="w-full items-start grid grid-cols-12 min-h-screen">
+      <div className="w-full items-start grid grid-cols-12 min-h-[calc(100vh-var(--header-height))]">
         {/* Sidebar */}
         <div className="col-span-12 md:col-span-4">
           <div className={"w-full flex flex-col items-start py-2 px-4 gap-4 mb-4"}>

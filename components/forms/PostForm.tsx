@@ -216,7 +216,7 @@ export function PostForm() {
     <Form {...form}>
       <form
         onSubmit={form.handleSubmit(onSubmit)}
-        className="w-full space-y-6 lg:w-2/3"
+        className="w-full space-y-6 lg:w-2/3 lg:mx-auto"
       >
         <FormField
           control={form.control}

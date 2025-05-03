@@ -108,7 +108,11 @@ body {
 @layer components {
   /* main */
   .main-container {
-    @apply flex min-h-screen flex-1 flex-col items-center overflow-hidden bg-white px-3 pb-2 pt-5 dark:bg-dark-1 max-md:pb-10 sm:px-10 lg:overflow-hidden;
+    @apply flex min-h-[calc(100vh-var(--header-height))] flex-1 flex-col items-center overflow-hidden bg-white  dark:bg-dark-1  lg:overflow-hidden;
+  }
+
+  .container-spacing{
+    @apply px-3 pb-2 pt-5 max-md:pb-10 sm:px-10;
   }
 
   /* Head Text */
