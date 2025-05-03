@@ -31,7 +31,7 @@ export default function EmailPage() {
   );
 }
 
-export function EmailContent() {
+function EmailContent() {
 // Get user profile data
 const user = useUserState(state => state.user);
 
