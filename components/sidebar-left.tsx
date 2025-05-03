@@ -27,7 +27,7 @@ import {
   SidebarFooter,
 } from "@/components/ui/sidebar"
 import { NavUser } from "./nav-user"
-import UserInfo from "./user-info"
+//import UserInfo from "./user-info"
 
 import { useUserState } from "@/lib/store/user"
 

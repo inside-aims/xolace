@@ -108,6 +108,7 @@ export const usePreferencesStore = create<PreferencesState>((set, get) => ({
           isLoading: false,
         });
       }
+       // eslint-disable-next-line @typescript-eslint/no-explicit-any
     } catch (error: any) {
       console.error('Error fetching user preferences:', error);
       set({
@@ -161,8 +162,7 @@ export const usePreferencesStore = create<PreferencesState>((set, get) => ({
         throw error;
       }
 
-      // No need to set state again if successful, optimistic update already applied
-      console.log(`Preference '${key}' updated successfully.`);
+       // eslint-disable-next-line @typescript-eslint/no-explicit-any
     } catch (error: any) {
       console.error(`Error updating preference ${key}:`, error);
       // State is already reverted in the catch block for the Supabase call

@@ -115,7 +115,7 @@ export function PostForm() {
   });
 
   // watch post realtime updates
-  const { watch, setValue, getValues } = form; // Added setValue, getValues
+  const { watch, setValue } = form;
   const content = watch('content');
 
 
@@ -146,7 +146,7 @@ export function PostForm() {
       const savedDraft = localStorage.getItem(POST_DRAFT_KEY);
       if (savedDraft) {
         setValue('content', savedDraft, { shouldValidate: true });
-        handleInput(savedDraft); // Also update tags based on loaded draft
+        handleInput(savedDraft);
       }
     }
   }, [preferences?.auto_save_drafts, setValue]); // Run only once on mount or when preference changes
