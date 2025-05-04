@@ -22,7 +22,7 @@ export const logs = [
   // log new ui update and activities feature and performance improvements
   {
     version: '1.1',
-    date: 'February 2, 2025',
+    date: 'February 25, 2025',
     title: 'New UI and Activities Feature',
     changes: [
       '**New UI**',
@@ -31,6 +31,20 @@ export const logs = [
       '**Performance Improvements**',
       '- 🚀 Faster loading: Optimize data fetching and caching.',
       '- 🔄 Improved performance: Streamline operations for faster responses.',
+    ],
+  },
+
+  // log new settings page and preferences
+  {
+    version: '1.2',
+    date: 'May 4, 2025',
+    title: 'New Settings Page and Preferences',
+    changes: [
+      '**New Settings Page**',
+      '- 🛠️ New design: A fresh, modern look for settings page.',
+      '- 📲 Preferences: Manage your preferences for sensitive content, privacy, and more.',
+      '- 🚪 Privacy Safety: Manage your privacy and safety settings.',
+      '- 🧩 Your Account: Manage your account information, change password, and more.',
     ],
   },
 ];
