@@ -21,7 +21,7 @@ function Bottombar() {
             <Link
               href={link.route}
               key={link.label}
-              className={`bottombar_link ${isActive && 'bg-primary-500'} ${link.route === '/profile' && 'max-sm:hidden'} ${link.route === '/channel' && 'max-sm:hidden'} ${link.route === '/explore' && 'max-sm:hidden'} ${link.route === '/collections' && 'max-sm:hidden'} `}
+              className={`bottombar_link ${isActive && 'bg-primary-500'} ${link.route === '/profile' && 'max-md:hidden'} ${link.route === '/channel' && 'max-md:hidden'} ${link.route === '/explore' && 'max-md:hidden'} ${link.route === '/collections' && 'max-md:hidden'} `}
             >
               {link.icon}
               <p className="text-subtle-medium text-light-1 max-sm:hidden">

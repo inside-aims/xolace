@@ -27,7 +27,7 @@ import {
   SidebarFooter,
 } from "@/components/ui/sidebar"
 import { NavUser } from "./nav-user"
-import UserInfo from "./user-info"
+//import UserInfo from "./user-info"
 
 import { useUserState } from "@/lib/store/user"
 
@@ -296,7 +296,7 @@ export function SidebarLeft({
   return (
     <Sidebar  className="top-[--header-height] !h-[calc(100svh-var(--header-height))] border-r-0" {...props}>
       <SidebarHeader>
-       <UserInfo user={user}/>
+       {/* <UserInfo user={user}/> */}
         <NavMain />
       </SidebarHeader>
       <SidebarContent>

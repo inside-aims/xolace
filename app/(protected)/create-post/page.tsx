@@ -6,18 +6,19 @@ import TourProvider from '@/components/shared/Tour/TourProvider';
 import { createPostSteps } from '@/constants/tourSteps';
 import React from 'react';
 
-
 export const metadata: Metadata = {
   title: 'Create Post',
-}
+};
 
 const CreatePost = () => {
   return (
     <TourProvider steps={createPostSteps}>
-      <PostForm />
+      <div className="container-spacing w-full">
+        <PostForm />
 
-      <div className="fixed bottom-10 right-6 z-50 block rounded-full md:hidden">
-        <TourButton />
+        <div className="fixed bottom-10 right-6 z-50 block rounded-full md:hidden">
+          <TourButton />
+        </div>
       </div>
     </TourProvider>
   );

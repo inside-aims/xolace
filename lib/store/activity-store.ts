@@ -117,10 +117,8 @@ export const useActivityStore = create<ActivityState>((set, get) => ({
         page: page + 1,
         hasMore,
         isLoading: false,
-      });
-      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      }); 
     } catch (error) {
-      // eslint-disable-next-line @typescript-eslint/no-explicit-any
       console.error('Error fetching activity logs:', error);
       set({ 
         error: 'Failed to fetch activity logs', 

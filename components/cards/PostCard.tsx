@@ -23,6 +23,8 @@ import { moodMap } from '@/types';
 import { truncateText } from '@/lib/utils';
 import TagCard from './TagCard';
 import { Post } from '@/types/global';
+import { usePreferencesStore } from '@/lib/store/preferences-store';
+import PostCardMask from '../shared/masks/PostCardMask';
 
 type PostCardType = {
   className?: string;
@@ -40,6 +42,7 @@ export interface TagProps {
 export function PostCard({ className, post, onClick }: PostCardType) {
   // get user data
   const user = useUserState(state => state.user);
+  const { preferences } = usePreferencesStore();
 
   // states
   const [timestamp, setTimestamp] = useState('');
@@ -70,14 +73,14 @@ export function PostCard({ className, post, onClick }: PostCardType) {
         <ReportForm postId={post.id} />
       </KvngDialogDrawer>
 
-      <Card
-        className={className}
-        id={post.id}
-      >
+      <Card className={`${className} relative`} id={post.id}>
         <CardHeader className="flex-row items-start justify-between px-4 py-2">
           <div className="flex items-center gap-3 md:gap-7">
             <Avatar>
-              <AvatarImage src={post.author_avatar_url || undefined} alt={post.author_name} />
+              <AvatarImage
+                src={post.author_avatar_url || undefined}
+                alt={post.author_name}
+              />
               <AvatarFallback>{post.author_name.charAt(0)}</AvatarFallback>
             </Avatar>
             <div className="flex flex-col items-start justify-center">
@@ -106,9 +109,7 @@ export function PostCard({ className, post, onClick }: PostCardType) {
         </CardHeader>
 
         <CardContent className="cursor-pointer" onClick={onClick}>
-          <div className="mb-2">
-            {truncateText(post.content, 70)}
-          </div>
+          <div className="mb-2">{truncateText(post.content, 70)}</div>
           <div className="mt-2 flex flex-wrap gap-2">
             {post.posttags && // check if post has tags
               post.posttags.map((tag: TagProps, index: number) => (
@@ -121,51 +122,58 @@ export function PostCard({ className, post, onClick }: PostCardType) {
           </div>
         </CardContent>
         <CardFooter className="flex w-full items-center justify-between">
-          <PostMetrics
-            post={post}
-            userId={user?.id || ''}
-            votes={post.votes}
-          />
-          <div className="flex items-center gap-2" id='view-btn'>
-            <EyeIcon className=" size-4 sm:size-6 text-red-200" />
-            <span className=" text-sm sm:text-[15px]">{post.views[0].count}</span>
-          </div>
-
-          <div className='flex justify-center items-center gap-2'>
-          <div
-            className={`flex items-center justify-center rounded-3xl border p-1 dark:bg-transparent ${
-              mood.style
-            }`}
-            id='mood-btn'
-          >
-            <span>
-              {mood.gif ? (
-                <Image
-                  src={mood.gif}
-                  alt="Gif Emoji"
-                  width={24}
-                  height={24}
-                  className="h-6"
-                  unoptimized
-                />
-              ) : (
-                mood?.emoji
-              )}
+          <PostMetrics post={post} userId={user?.id || ''} votes={post.votes} />
+          <div className="flex items-center gap-2" id="view-btn">
+            <EyeIcon className="size-4 text-red-200 sm:size-6" />
+            <span className="text-sm sm:text-[15px]">
+              {post.views[0].count}
             </span>
+          </div>
 
-            {post?.expires_in_24hr && (
-              <span className="animate-bounce duration-700 ease-in-out">
-                {' '}
-                ⏳
+          <div className="flex items-center justify-center gap-2">
+            <div
+              className={`flex items-center justify-center rounded-3xl border p-1 dark:bg-transparent ${
+                mood.style
+              }`}
+              id="mood-btn"
+            >
+              <span>
+                {mood.gif ? (
+                  <Image
+                    src={mood.gif}
+                    alt="Gif Emoji"
+                    width={24}
+                    height={24}
+                    className="h-6"
+                    unoptimized
+                  />
+                ) : (
+                  mood?.emoji
+                )}
               </span>
-            )}
-          </div>
 
-          <div id='collection-btn'>
-            <SaveToCollectionsButton userId={user?.id || ''} createdBy={post.created_by} postId={post.id} postCollections={post.collections} />
-          </div>
+              {post?.expires_in_24hr && (
+                <span className="animate-bounce duration-700 ease-in-out">
+                  {' '}
+                  ⏳
+                </span>
+              )}
+            </div>
+
+            <div id="collection-btn">
+              <SaveToCollectionsButton
+                userId={user?.id || ''}
+                createdBy={post.created_by}
+                postId={post.id}
+                postCollections={post.collections}
+              />
+            </div>
           </div>
         </CardFooter>
+
+        {post.is_sensitive && !preferences?.show_sensitive_content && post.created_by != user?.id && (
+          <PostCardMask />
+        )}
       </Card>
     </>
   );

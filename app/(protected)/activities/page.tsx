@@ -35,7 +35,7 @@ export default function ActivitiesPage() {
   }, []);
 
   return (
-    <div className="container py-6 space-y-6 px-0">
+    <div className="container py-6 space-y-6 px-1 lg:px-10">
       <div 
         ref={headerRef}
         className={`${
