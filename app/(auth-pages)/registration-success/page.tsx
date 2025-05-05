@@ -12,7 +12,7 @@ export default function RegistrationSuccessPage(props: {
   const { email } = searchParams;
 
   return (
-    <div className="to-bg-background flex min-h-screen items-center justify-center bg-gradient-to-br from-gray-900 p-4">
+    <div className="to-bg-background flex min-h-screen items-center justify-center bg-linear-to-br from-gray-900 p-4">
       <motion.div
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}

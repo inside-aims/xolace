@@ -13,7 +13,7 @@ export function InfoBanner() {
       style={{ opacity, y }}
     >
       <div className="container mx-auto px-4">
-        <div className="rounded-lg bg-gradient-to-r from-purple-400/30 via-sky-500/30 to-red-500/30 shadow-lg backdrop-blur-md">
+        <div className="rounded-lg bg-linear-to-r from-purple-400/30 via-sky-500/30 to-red-500/30 shadow-lg backdrop-blur-md">
           <div className="px-4 text-center text-xs font-semibold text-black dark:text-white">
             Xolace Beta - Your feedback shapes our future! 🌟
           </div>

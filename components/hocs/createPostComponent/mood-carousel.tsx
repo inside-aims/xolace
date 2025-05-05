@@ -58,7 +58,7 @@ export default function MoodCarousel({
         align: 'start',
         loop: true,
       }}
-      className="xl:max-w-2xl mx-auto !mt-1 w-full sm:max-w-md md:max-w-lg lg:max-w-xl"
+      className="xl:max-w-2xl mx-auto mt-1! w-full sm:max-w-md md:max-w-lg lg:max-w-xl"
     >
       <CarouselContent className="ml-1 md:-ml-4">
         {postMoods.map(mood => (

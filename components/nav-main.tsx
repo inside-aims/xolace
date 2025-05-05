@@ -32,7 +32,7 @@ export function NavMain() {
 
         return (
           <SidebarMenuItem key={item.label}>
-            <SidebarMenuButton asChild isActive={isActive} className={`${isActive && '!bg-primary-500'} hover:bg-primary-500`} onClick={()=> setOpenMobile(false)}>
+            <SidebarMenuButton asChild isActive={isActive} className={`${isActive && 'bg-primary-500!'} hover:bg-primary-500`} onClick={()=> setOpenMobile(false)}>
               <Link href={item.route}
                 key={item.label}>
                 {item.icon}

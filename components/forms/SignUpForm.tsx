@@ -255,7 +255,7 @@ const SignUpForm = () => {
         <div className="mt-5 px-8">
           <Button
             disabled={!terms || pending}
-            className="w-full bg-gradient-to-r from-sky-600 to-sky-400 font-semibold hover:from-sky-500 hover:to-sky-300"
+            className="w-full bg-linear-to-r from-sky-600 to-sky-400 font-semibold hover:from-sky-500 hover:to-sky-300"
             type="submit"
             onClick={handleClick}
           >

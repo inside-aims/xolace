@@ -143,7 +143,7 @@ const Profile = () => {
                         post={post}
                         section="profile"
                         onClick={() => handlePostClick(post.id)}
-                        className="mb-4 w-full bg-[radial-gradient(ellipse_at_top,hsl(0_0%_100%),hsl(0_0%_95%)_70%),linear-gradient(to_bottom_right,hsl(0_0%_98%),hsl(0_0%_96%))] from-[hsl(228_85%_4%)] to-[hsl(228_85%_8%)] ring-1 ring-white/[0.05] transition duration-300 hover:bg-[radial-gradient(ellipse_at_top,hsl(0_0%_100%),hsl(0_0%_99%)_70%),linear-gradient(to_bottom_right,hsl(0_0%_99%),hsl(0_0%_97%))] dark:bg-gradient-to-br dark:ring-zinc-800 dark:hover:ring-zinc-700 dark:focus-visible:ring-[#193a47]"
+                        className="mb-4 w-full bg-[radial-gradient(ellipse_at_top,hsl(0_0%_100%),hsl(0_0%_95%)_70%),linear-gradient(to_bottom_right,hsl(0_0%_98%),hsl(0_0%_96%))] from-[hsl(228_85%_4%)] to-[hsl(228_85%_8%)] ring-1 ring-white/[0.05] transition duration-300 hover:bg-[radial-gradient(ellipse_at_top,hsl(0_0%_100%),hsl(0_0%_99%)_70%),linear-gradient(to_bottom_right,hsl(0_0%_99%),hsl(0_0%_97%))] dark:bg-linear-to-br dark:ring-zinc-800 dark:hover:ring-zinc-700 dark:focus-visible:ring-[#193a47]"
                       />
                     </BlurFade>
                   ))}

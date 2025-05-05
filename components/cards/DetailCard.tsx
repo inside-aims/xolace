@@ -80,7 +80,7 @@ export function DetailCard({ postId, post }: { postId: string; post: DetailPost 
             postCreatedBy={created_by}
           />
         </CardHeader>
-        <CardContent className="overflow-x-hidden !text-wrap">
+        <CardContent className="overflow-x-hidden text-wrap!">
           {content}
 
           <div className="mt-2 flex flex-wrap gap-2">

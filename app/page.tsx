@@ -23,7 +23,7 @@ export default async function Index() {
           />
           <div className="font-tilt phone400:top-[26rem] z-5 absolute left-1/2 top-[23rem] w-full -translate-x-1/2 -translate-y-1/2 transform text-center font-tiltNeon text-[5rem] sm:top-[60%] md:top-[63%]">
             <span className="letter-mask">X</span>
-            <span className="letter-mask !text-amber-400">o</span>
+            <span className="letter-mask text-amber-400!">o</span>
             <span className="letter-mask">l</span>
             <span className="letter-mask">a</span>
             <span className="letter-mask">c</span>

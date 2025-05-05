@@ -40,14 +40,14 @@ export default function ActivitiesPage() {
         ref={headerRef}
         className={`${
           isSticky 
-            ? "fixed top-[--header-height] z-40 bg-background/95 backdrop-blur-sm px-4 py-4 transition-all duration-200" 
+            ? "fixed top-(--header-height) z-40 bg-background/95 backdrop-blur-sm px-4 py-4 transition-all duration-200" 
             : ""
         } ${
           // Adjust width based on sidebar state and device size
           isSticky && !isMobile 
             ? state === "expanded" 
-              ? "md:left-[var(--sidebar-width)] md:right-0 md:w-[calc(100%-var(--sidebar-width))]" 
-              : "md:left-[var(--sidebar-width-icon)] md:right-0 md:w-[calc(100%-var(--sidebar-width-icon))]"
+              ? "md:left-(--sidebar-width) md:right-0 md:w-[calc(100%-var(--sidebar-width))]" 
+              : "md:left-(--sidebar-width-icon) md:right-0 md:w-[calc(100%-var(--sidebar-width-icon))]"
             : isSticky 
               ? "left-0 right-0 w-full" 
               : ""

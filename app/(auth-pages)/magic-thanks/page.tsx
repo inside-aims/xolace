@@ -26,7 +26,7 @@ const MagicLinkSuccessPage = (props: {
   }, []);
 
   return (
-    <div className="to-bg-background flex min-h-screen items-center justify-center bg-gradient-to-br from-gray-900 p-4">
+    <div className="to-bg-background flex min-h-screen items-center justify-center bg-linear-to-br from-gray-900 p-4">
       <motion.div
         initial={{ opacity: 0, scale: 0.9 }}
         animate={{ opacity: 1, scale: 1 }}
