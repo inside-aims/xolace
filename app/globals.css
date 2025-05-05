@@ -1,10 +1,160 @@
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
+@import 'tailwindcss';
 
-@font-face {
-  font-family: 'TiltNeon';
-  src: url('../fonts/TiltNeon-Regular.ttf') format('truetype');
+@config '../tailwind.config.ts';
+
+/*
+  The default border color has changed to `currentcolor` in Tailwind CSS v4,
+  so we've added these compatibility styles to make sure everything still
+  looks the same as it did with Tailwind CSS v3.
+
+  If we ever want to remove these styles, we need to add an explicit border
+  color utility to any element that depends on these defaults.
+*/
+@layer base {
+  *,
+  ::after,
+  ::before,
+  ::backdrop,
+  ::file-selector-button {
+    border-color: var(--color-gray-200, currentcolor);
+  }
+}
+
+@utility main-container {
+  /* main */
+  @apply flex min-h-[calc(100vh-var(--header-height))] flex-1 flex-col items-center overflow-hidden bg-white dark:bg-dark-1 lg:overflow-hidden;
+}
+
+@utility container-spacing {
+  @apply px-3 pb-2 pt-5 max-md:pb-10 sm:px-10;
+}
+
+@utility activity-card {
+  /* Activity */
+  @apply flex items-center gap-2 rounded-md bg-dark-2 px-7 py-4;
+}
+
+@utility no-result {
+  /* No Result */
+  @apply text-base-regular! text-center text-light-3;
+}
+
+@utility mood-happy {
+  /* explore page cards colors */
+  @apply bg-linear-to-br from-green-400 to-green-600 dark:from-green-800 dark:to-green-950;
+  transition: all 0.3s ease;
+  box-shadow: 0 0 15px rgba(34, 197, 94, 0.2);
+}
+
+@utility mood-sad {
+  @apply bg-linear-to-br from-blue/50 to-blue dark:from-sky-800 dark:to-sky-950;
+  transition: all 0.3s ease;
+  box-shadow: 0 0 15px rgba(59, 130, 246, 0.2);
+}
+
+@utility mood-angry {
+  @apply bg-linear-to-br from-red-400 to-red-600 dark:from-red-800 dark:to-red-950;
+  transition: all 0.3s ease;
+  box-shadow: 0 0 15px rgba(239, 68, 68, 0.2);
+}
+
+@utility mood-confused {
+  @apply bg-linear-to-br from-yellow-400 to-secondary-500 dark:from-yellow-800 dark:to-yellow-950;
+  transition: all 0.3s ease;
+  box-shadow: 0 0 15px rgba(234, 179, 8, 0.2);
+}
+
+@utility mood-neutral {
+  @apply bg-linear-to-br from-gray-100 to-gray-300 dark:from-gray-800 dark:to-gray-950;
+  transition: all 0.3s ease;
+  box-shadow: 0 0 15px rgba(107, 114, 128, 0.2);
+}
+
+@utility searchbar {
+  @apply flex gap-1 rounded-lg bg-dark-3 px-4 py-2;
+}
+
+@utility searchbar_input {
+  @apply text-base-regular! border-none! bg-dark-3! text-light-4! outline-hidden!;
+}
+
+@utility bottombar {
+  @apply fixed bottom-0 z-10 flex w-full justify-center bg-transparent opacity-[0.96] backdrop-blur-lg dark:bg-black xs:px-7 md:hidden;
+}
+
+@utility bottombar_container {
+  @apply z-40 flex w-[50%] items-center justify-between gap-3 rounded-full bg-slate-200 p-3 opacity-[0.98] dark:bg-glassmorphism xs:gap-5 sm:w-[70%];
+}
+
+@utility bottombar_link {
+  @apply relative flex flex-col items-center gap-2 rounded-lg p-2 sm:flex-1 sm:px-2 sm:py-2.5;
+}
+
+@utility leftsidebar_link {
+  @apply relative flex justify-start gap-4 rounded-lg p-4;
+}
+
+@utility shad-button_ghost {
+  @apply flex! items-center! justify-center! gap-4! hover:bg-transparent! hover:text-white!;
+}
+
+@utility font-tilt {
+  /* Define the neon effect styles */
+  text-shadow: 5px 2px rgba(255, 255, 255, 1);
+  color: #0c29ca; /* Set the text color */
+}
+
+@utility view-container {
+  /* view */
+  @apply relative mt-5 flex w-full items-center justify-end;
+}
+
+@utility view-text {
+  @apply rounded-lg bg-dark-2 px-4 py-2 text-[16px] font-medium capitalize text-white dark:bg-slate-400 dark:text-dark-1;
+}
+
+@utility view_skeleton {
+  @apply fixed bottom-3 right-3 h-10 w-24 rounded-lg bg-zinc-400;
+}
+
+@utility css-invert {
+  @apply brightness-200 invert-[50%];
+}
+
+@utility no-focus {
+  @apply focus-visible:ring-0! focus-visible:ring-transparent! focus-visible:ring-offset-0!;
+}
+
+@utility custom-scrollbar {
+  &::-webkit-scrollbar {
+    width: 3px;
+    height: 3px;
+    border-radius: 2px;
+  }
+
+  &::-webkit-scrollbar-track {
+    background: #09090a;
+  }
+
+  &::-webkit-scrollbar-thumb {
+    background: #5c5c7b;
+    border-radius: 50px;
+  }
+
+  &::-webkit-scrollbar-thumb:hover {
+    background: #7878a3;
+  }
+}
+
+@utility briefly-highlight {
+  animation: briefly-highlight 1.5s ease-out forwards;
+}
+
+@layer utilities {
+  @font-face {
+    font-family: 'TiltNeon';
+    src: url('../fonts/TiltNeon-Regular.ttf') format('truetype');
+  }
 }
 
 @layer base {
@@ -86,14 +236,16 @@
   }
 }
 
-body {
-  color: rgb(var(--foreground-rgb));
-  background: linear-gradient(
-      to bottom,
-      transparent,
-      rgb(var(--background-end-rgb))
-    )
-    rgb(var(--background-start-rgb));
+@layer utilities {
+  body {
+    color: rgb(var(--foreground-rgb));
+    background: linear-gradient(
+        to bottom,
+        transparent,
+        rgb(var(--background-end-rgb))
+      )
+      rgb(var(--background-start-rgb));
+  }
 }
 
 @layer base {
@@ -105,133 +257,7 @@ body {
   } */
 }
 
-@layer components {
-  /* main */
-  .main-container {
-    @apply flex min-h-[calc(100vh-var(--header-height))] flex-1 flex-col items-center overflow-hidden bg-white dark:bg-dark-1 lg:overflow-hidden;
-  }
-
-  .container-spacing {
-    @apply px-3 pb-2 pt-5 max-md:pb-10 sm:px-10;
-  }
-
-  /* Head Text */
-  .head-text {
-    @apply text-heading2-bold text-light-1;
-  }
-
-  /* Activity */
-  .activity-card {
-    @apply flex items-center gap-2 rounded-md bg-dark-2 px-7 py-4;
-  }
-
-  /* No Result */
-  .no-result {
-    @apply !text-base-regular text-center text-light-3;
-  }
-
-  /* explore page cards colors */
-  .mood-happy {
-    @apply bg-gradient-to-br from-green-400 to-green-600 dark:from-green-800 dark:to-green-950;
-    transition: all 0.3s ease;
-    box-shadow: 0 0 15px rgba(34, 197, 94, 0.2);
-  }
-  .mood-sad {
-    @apply bg-gradient-to-br from-blue/50 to-blue dark:from-sky-800 dark:to-sky-950;
-    transition: all 0.3s ease;
-    box-shadow: 0 0 15px rgba(59, 130, 246, 0.2);
-  }
-  .mood-angry {
-    @apply bg-gradient-to-br from-red-400 to-red-600 dark:from-red-800 dark:to-red-950;
-    transition: all 0.3s ease;
-    box-shadow: 0 0 15px rgba(239, 68, 68, 0.2);
-  }
-  .mood-confused {
-    @apply bg-gradient-to-br from-yellow-400 to-secondary-500 dark:from-yellow-800 dark:to-yellow-950;
-    transition: all 0.3s ease;
-    box-shadow: 0 0 15px rgba(234, 179, 8, 0.2);
-  }
-  .mood-neutral {
-    @apply bg-gradient-to-br from-gray-100 to-gray-300 dark:from-gray-800 dark:to-gray-950;
-    transition: all 0.3s ease;
-    box-shadow: 0 0 15px rgba(107, 114, 128, 0.2);
-  }
-
-  .searchbar {
-    @apply flex gap-1 rounded-lg bg-dark-3 px-4 py-2;
-  }
-
-  .searchbar_input {
-    @apply text-base-regular border-none bg-dark-3 text-light-4 outline-none !important;
-  }
-
-  .bottombar {
-    @apply fixed bottom-0 z-10 flex w-full justify-center bg-transparent opacity-[0.96] backdrop-blur-lg dark:bg-black xs:px-7 md:hidden;
-  }
-
-  .bottombar_container {
-    @apply z-40 flex w-[50%] items-center justify-between gap-3 rounded-full bg-slate-200 p-3 opacity-[0.98] dark:bg-glassmorphism xs:gap-5 sm:w-[70%];
-  }
-
-  .bottombar_link {
-    @apply relative flex flex-col items-center gap-2 rounded-lg p-2 sm:flex-1 sm:px-2 sm:py-2.5;
-  }
-
-  .leftsidebar_link {
-    @apply relative flex justify-start gap-4 rounded-lg p-4;
-  }
-
-  .shad-button_ghost {
-    @apply flex items-center justify-center gap-4 hover:bg-transparent hover:text-white !important;
-  }
-}
-
 @layer utilities {
-  /* Define the neon effect styles */
-  .font-tilt {
-    text-shadow: 5px 2px rgba(255, 255, 255, 1);
-    color: #0c29ca; /* Set the text color */
-  }
-
-  /* view */
-  .view-container {
-    @apply relative mt-5 flex w-full items-center justify-end;
-  }
-
-  .view-text {
-    @apply rounded-lg bg-dark-2 px-4 py-2 text-[16px] font-medium capitalize text-white dark:bg-slate-400 dark:text-dark-1;
-  }
-
-  .view_skeleton {
-    @apply fixed bottom-3 right-3 h-10 w-24 rounded-lg bg-zinc-400;
-  }
-
-  .css-invert {
-    @apply brightness-200 invert-[50%];
-  }
-
-  .no-focus {
-    @apply focus-visible:ring-0 focus-visible:ring-transparent focus-visible:ring-offset-0 !important;
-  }
-
-  .custom-scrollbar::-webkit-scrollbar {
-    width: 3px;
-    height: 3px;
-    border-radius: 2px;
-  }
-
-  .custom-scrollbar::-webkit-scrollbar-track {
-    background: #09090a;
-  }
-
-  .custom-scrollbar::-webkit-scrollbar-thumb {
-    background: #5c5c7b;
-    border-radius: 50px;
-  }
-
-  .custom-scrollbar::-webkit-scrollbar-thumb:hover {
-    background: #7878a3;
-  }
 
   @keyframes briefly-highlight {
     0% {
@@ -247,25 +273,23 @@ body {
       box-shadow: 0 0 0 0 rgba(59, 130, 246, 0);
     }
   }
+}
 
-  .briefly-highlight {
-    animation: briefly-highlight 1.5s ease-out forwards;
+@layer utilities {
+  ::-webkit-scrollbar {
+    width: 8px;
+    height: 8px;
   }
-}
 
-::-webkit-scrollbar {
-  width: 8px;
-  height: 8px;
-}
+  ::-webkit-scrollbar-track {
+    background: #f7fafc17;
+  }
 
-::-webkit-scrollbar-track {
-  background: #f7fafc17;
-}
-
-::-webkit-scrollbar-thumb {
-  background: #7878a3;
-  border-radius: 20px;
-  border: 2px solid rgba(128, 128, 128, 0.199);
+  ::-webkit-scrollbar-thumb {
+    background: #7878a3;
+    border-radius: 20px;
+    border: 2px solid rgba(128, 128, 128, 0.199);
+  }
 }
 
 @layer base {
