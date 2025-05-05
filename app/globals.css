@@ -34,11 +34,6 @@
   @apply flex items-center gap-2 rounded-md bg-dark-2 px-7 py-4;
 }
 
-@utility no-result {
-  /* No Result */
-  @apply text-base-regular! text-center text-light-3;
-}
-
 @utility mood-happy {
   /* explore page cards colors */
   @apply bg-linear-to-br from-green-400 to-green-600 dark:from-green-800 dark:to-green-950;
@@ -74,9 +69,6 @@
   @apply flex gap-1 rounded-lg bg-dark-3 px-4 py-2;
 }
 
-@utility searchbar_input {
-  @apply text-base-regular! border-none! bg-dark-3! text-light-4! outline-hidden!;
-}
 
 @utility bottombar {
   @apply fixed bottom-0 z-10 flex w-full justify-center bg-transparent opacity-[0.96] backdrop-blur-lg dark:bg-black xs:px-7 md:hidden;
