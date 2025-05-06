@@ -22,16 +22,16 @@
 
 @utility main-container {
   /* main */
-  @apply flex min-h-[calc(100vh-var(--header-height))] flex-1 flex-col items-center overflow-hidden bg-white dark:bg-dark-1 lg:overflow-hidden;
+  @apply dark:bg-dark-1 flex min-h-[calc(100vh-var(--header-height))] flex-1 flex-col items-center overflow-hidden bg-white lg:overflow-hidden;
 }
 
 @utility container-spacing {
-  @apply px-3 pb-2 pt-5 max-md:pb-10 sm:px-10;
+  @apply px-3 pt-5 pb-2 max-md:pb-10 sm:px-10;
 }
 
 @utility activity-card {
   /* Activity */
-  @apply flex items-center gap-2 rounded-md bg-dark-2 px-7 py-4;
+  @apply bg-dark-2 flex items-center gap-2 rounded-md px-7 py-4;
 }
 
 @utility mood-happy {
@@ -42,7 +42,7 @@
 }
 
 @utility mood-sad {
-  @apply bg-linear-to-br from-blue/50 to-blue dark:from-sky-800 dark:to-sky-950;
+  @apply from-blue/50 to-blue bg-linear-to-br dark:from-sky-800 dark:to-sky-950;
   transition: all 0.3s ease;
   box-shadow: 0 0 15px rgba(59, 130, 246, 0.2);
 }
@@ -54,7 +54,7 @@
 }
 
 @utility mood-confused {
-  @apply bg-linear-to-br from-yellow-400 to-secondary-500 dark:from-yellow-800 dark:to-yellow-950;
+  @apply to-secondary-500 bg-linear-to-br from-yellow-400 dark:from-yellow-800 dark:to-yellow-950;
   transition: all 0.3s ease;
   box-shadow: 0 0 15px rgba(234, 179, 8, 0.2);
 }
@@ -66,16 +66,15 @@
 }
 
 @utility searchbar {
-  @apply flex gap-1 rounded-lg bg-dark-3 px-4 py-2;
+  @apply bg-dark-3 flex gap-1 rounded-lg px-4 py-2;
 }
 
-
 @utility bottombar {
-  @apply fixed bottom-0 z-10 flex w-full justify-center bg-transparent opacity-[0.96] backdrop-blur-lg dark:bg-black xs:px-7 md:hidden;
+  @apply xs:px-7 fixed bottom-0 z-10 flex w-full justify-center bg-transparent opacity-[0.96] backdrop-blur-lg md:hidden dark:bg-black;
 }
 
 @utility bottombar_container {
-  @apply z-40 flex w-[50%] items-center justify-between gap-3 rounded-full bg-slate-200 p-3 opacity-[0.98] dark:bg-glassmorphism xs:gap-5 sm:w-[70%];
+  @apply dark:bg-glassmorphism xs:gap-5 z-40 flex w-[50%] items-center justify-between gap-3 rounded-full bg-slate-200 p-3 opacity-[0.98] sm:w-[70%];
 }
 
 @utility bottombar_link {
@@ -102,11 +101,11 @@
 }
 
 @utility view-text {
-  @apply rounded-lg bg-dark-2 px-4 py-2 text-[16px] font-medium capitalize text-white dark:bg-slate-400 dark:text-dark-1;
+  @apply bg-dark-2 dark:text-dark-1 rounded-lg px-4 py-2 text-[16px] font-medium text-white capitalize dark:bg-slate-400;
 }
 
 @utility view_skeleton {
-  @apply fixed bottom-3 right-3 h-10 w-24 rounded-lg bg-zinc-400;
+  @apply fixed right-3 bottom-3 h-10 w-24 rounded-lg bg-zinc-400;
 }
 
 @utility css-invert {
@@ -250,7 +249,6 @@
 }
 
 @layer utilities {
-
   @keyframes briefly-highlight {
     0% {
       transform: scale(1);
