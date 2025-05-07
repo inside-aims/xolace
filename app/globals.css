@@ -1,4 +1,5 @@
 @import 'tailwindcss';
+@plugin "tailwindcss-animate";
 
 @config '../tailwind.config.ts';
 
@@ -186,6 +187,9 @@
     --sidebar-accent-foreground: 240 5.9% 10%;
     --sidebar-border: 220 13% 91%;
     --sidebar-ring: 217.2 91.2% 59.8%;
+    --radix-accordion-content-height: auto;
+  --duration: 1s;
+  --bg-size: 200%;
   }
 
   .dark {
@@ -224,6 +228,9 @@
     --sidebar-accent-foreground: 240 4.8% 95.9%;
     --sidebar-border: 240 3.7% 15.9%;
     --sidebar-ring: 217.2 91.2% 59.8%;
+    --radix-accordion-content-height: auto;
+    --duration: 1s;
+    --bg-size: 200%;
   }
 }
 
