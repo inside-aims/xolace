@@ -115,8 +115,7 @@
       "sharp",
       "supabase",
       "@vercel/speed-insights",
-      "unrs-resolver",
-      "iltorb"
+      "unrs-resolver"
     ]
   }
 }
