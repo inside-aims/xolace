@@ -11,7 +11,7 @@ export default async function Login() {
 
 
   return (
-    <div className="main-container">
+    <div className="main-container min-h-[calc(100dvh-(--spacing(30)))]">
       <div>
         <Image
           src={xolaceImage}

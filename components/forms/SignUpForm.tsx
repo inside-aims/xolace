@@ -274,7 +274,7 @@ const SignUpForm = () => {
           Already have an account?{' '}
           <Link
             href="/sign-in"
-            className="text-lavender-500 transition duration-150 ease-in-out hover:text-red-600 focus:text-red-600 active:text-red-700"
+            className="text-lavender-500 transition duration-150 ease-in-out hover:text-lavender-700 focus:text-lavender-600 active:text-lavender-700"
           >
             Login
           </Link>
