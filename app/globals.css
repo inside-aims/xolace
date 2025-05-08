@@ -193,6 +193,10 @@
   transition: all 0.2s ease;
 }
 
+@utility btn-flat {
+  @apply bg-ocean-500 border-ocean-500 text-white;
+}
+
 @utility btn-depth-active {
    @apply border-depth-btn-border-active;
    background-image: linear-gradient(
@@ -202,10 +206,17 @@
   transform: translateY(1px);
 }
 
+@utility btn-flat-active{
+  @apply bg-ocean-700 border-ocean-700 text-white;
+}
+
 @utility btn-depth-hover {
   box-shadow: var(--inset-shadow-depth-btn), var(--shadow-depth-btn), 0 0 0 4px rgba(5, 54, 255, 0.1);
 }
 
+@utility btn-flat-hover{
+  @apply bg-ocean-600 border-ocean-600 text-white;
+}
 
 @utility main-container {
   /* main */

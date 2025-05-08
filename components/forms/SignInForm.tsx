@@ -194,7 +194,7 @@ const SignInForm = () => {
           {/* submit button */}
           <div className="px-8">
             <Button
-              className="w-full dark:bg-sky-600 hover:dark:bg-sky-500"
+              className="w-full btn-flat! hover:btn-flat-hover! active:btn-flat-active!"
               type="submit"
               aria-disabled={isLoading}
             >
@@ -204,7 +204,7 @@ const SignInForm = () => {
                   <Loader /> <span>Loading...</span>
                 </div>
               ) : (
-                'Submit'
+                'Sign in'
               )}
             </Button>
           </div>

@@ -255,7 +255,7 @@ const SignUpForm = () => {
         <div className="mt-5 px-8">
           <Button
             disabled={!terms || pending}
-            className="w-full bg-linear-to-r from-sky-600 to-sky-400 font-semibold hover:from-sky-500 hover:to-sky-300"
+            className={!terms || pending ? `bg-ocean-100 text-ocean-400 w-full` : `w-full btn-flat! hover:btn-flat-hover! active:btn-flat-active!`}
             type="submit"
             onClick={handleClick}
           >
@@ -270,11 +270,11 @@ const SignUpForm = () => {
           </Button>
         </div>
 
-        <p className="mb-0 mt-2 pt-1 text-sm font-semibold text-dark-4">
+        <p className="mb-0 mt-2 pt-1 text-sm font-semibold text-muted-foreground">
           Already have an account?{' '}
           <Link
             href="/sign-in"
-            className="text-red-600 transition duration-150 ease-in-out hover:text-red-600 focus:text-red-600 active:text-red-700"
+            className="text-lavender-500 transition duration-150 ease-in-out hover:text-red-600 focus:text-red-600 active:text-red-700"
           >
             Login
           </Link>
