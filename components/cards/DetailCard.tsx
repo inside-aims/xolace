@@ -57,7 +57,7 @@ export function DetailCard({ postId, post }: { postId: string; post: DetailPost 
 
   return (
     <>
-      <Card className="mb-5 mt-5 w-full md:w-full">
+      <Card className="mb-5 mt-5 w-full md:w-full rounded-none border-x-0 border-t-0">
         <CardHeader className="flex-row items-start justify-between px-4 py-2">
           <div className="flex items-center gap-2 md:gap-4">
             <Avatar>

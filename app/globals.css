@@ -95,8 +95,8 @@
   --color-honey-900: #785b0f;
   --color-honey-950: #453303;
 
-  --color-muted: #f0f2f5;
-  --color-muted-foreground: #64748b;
+  --color-muted: hsl(var(--muted));
+  --color-muted-foreground: hsl(var(--muted-foreground));
 
   --color-label-dark: #000000;
   --color-label-light: #ffffff;
