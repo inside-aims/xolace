@@ -294,7 +294,7 @@ export function SidebarLeft({
    // get user profile data
    const user = useUserState(state => state.user);
   return (
-    <Sidebar  className="top-[--header-height] !h-[calc(100svh-var(--header-height))] border-r-0" {...props}>
+    <Sidebar  className="top-(--header-height) h-[calc(100svh-var(--header-height))]! border-r-0" {...props}>
       <SidebarHeader>
        {/* <UserInfo user={user}/> */}
         <NavMain />

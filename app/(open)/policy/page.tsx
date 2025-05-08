@@ -170,7 +170,7 @@ export default function PolicyPage() {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-purple-100/10 to-indigo-200/10 px-5 py-8">
+    <div className="min-h-screen bg-linear-to-br from-purple-100/10 to-indigo-200/10 px-5 py-8">
       <Button
         variant="outline"
         size="icon"

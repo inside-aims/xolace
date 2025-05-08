@@ -5,7 +5,7 @@ import { GeistSans } from 'geist/font/sans';
 import { ThemeProvider } from 'next-themes';
 import { Toaster } from '@/components/ui/toaster';
 import './globals.css';
-import { SpeedInsights } from "@vercel/speed-insights/next"
+import { SpeedInsights } from '@vercel/speed-insights/next';
 
 const defaultUrl = process.env.VERCEL_URL
   ? `https://${process.env.VERCEL_URL}`
@@ -20,9 +20,22 @@ export const metadata = {
   applicationName: 'Xolace',
   description:
     'Xolace is a social platform designed for users to share their thoughts, stories, and experiences freely, fostering both engagement and self-expression in a unique, user-centered space',
-  keywords: ['Xolace', 'Social', 'Platform', 'Thoughts', 'Stories', 'Experiences', 'Fostering', 'Engagement', 'Self-Expression', 'Unique', 'User-Centered', 'Space'],
-  creator: 'Atlas Innovations Meta Solutions',
-  publisher: 'Atlas Innovations Meta Solutions',
+  keywords: [
+    'Xolace',
+    'Social',
+    'Platform',
+    'Thoughts',
+    'Stories',
+    'Experiences',
+    'Fostering',
+    'Engagement',
+    'Self-Expression',
+    'Unique',
+    'User-Centered',
+    'Space',
+  ],
+  creator: 'Atlas IMeta Solutions',
+  publisher: 'Atlas IMeta Solutions',
 };
 
 export default function RootLayout({
@@ -32,7 +45,7 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en" className={GeistSans.className} suppressHydrationWarning>
-      <body className="bg-background text-foreground">
+      <body className="dark:bg-bg-dark bg-bg text-foreground">
         <ThemeProvider
           attribute="class"
           defaultTheme="system"

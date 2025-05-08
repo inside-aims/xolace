@@ -12,12 +12,12 @@ export default function RegistrationSuccessPage(props: {
   const { email } = searchParams;
 
   return (
-    <div className="to-bg-background flex min-h-screen items-center justify-center bg-gradient-to-br from-gray-900 p-4">
+    <div className="to-dark:bg-bg-dark bg-bg flex min-h-screen items-center justify-center bg-linear-to-br from-gray-900 p-4">
       <motion.div
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.5 }}
-        className="w-full max-w-md rounded-xl bg-white bg-opacity-10 p-8 text-center shadow-2xl backdrop-blur-lg"
+        className="bg-opacity-10 w-full max-w-md rounded-xl bg-white p-8 text-center shadow-2xl backdrop-blur-lg"
       >
         <motion.svg
           className="mx-auto mb-6 h-24 w-24"
@@ -50,9 +50,9 @@ export default function RegistrationSuccessPage(props: {
         <h1 className="mb-4 text-3xl font-bold text-black dark:text-white">
           Welcome to Xolace
         </h1>
-        <p className="mb-3 text-blackA11 dark:text-gray-300">
-          Your anonymous journey begins now. We&apos;ve sent a secret key to {email}.
-          Activate your account and step into the realm of the unseen.
+        <p className="text-blackA11 mb-3 dark:text-gray-300">
+          Your anonymous journey begins now. We&apos;ve sent a secret key to{' '}
+          {email}. Activate your account and step into the realm of the unseen.
         </p>
 
         <p className="mb-6 text-sm text-gray-700 dark:text-gray-500">

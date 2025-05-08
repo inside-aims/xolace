@@ -13,7 +13,7 @@ export default function XolaceBetaBadge() {
       onHoverEnd={() => setIsHovered(false)}
     >
       <motion.div
-        className="absolute inset-0 rounded-full bg-gradient-to-r from-purple-500 via-pink-500 to-red-500"
+        className="absolute inset-0 rounded-full bg-linear-to-r from-purple-500 via-pink-500 to-red-500"
         animate={{
           rotate: isHovered ? 360 : 0,
         }}

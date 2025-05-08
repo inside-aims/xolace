@@ -194,7 +194,7 @@ const SignInForm = () => {
           {/* submit button */}
           <div className="px-8">
             <Button
-              className="w-full dark:bg-sky-600 hover:dark:bg-sky-500"
+              className="w-full btn-flat! hover:btn-flat-hover! active:btn-flat-active!"
               type="submit"
               aria-disabled={isLoading}
             >
@@ -204,7 +204,7 @@ const SignInForm = () => {
                   <Loader /> <span>Loading...</span>
                 </div>
               ) : (
-                'Submit'
+                'Sign in'
               )}
             </Button>
           </div>
@@ -212,7 +212,7 @@ const SignInForm = () => {
             Dont have an account?
             <Link
               href="/sign-up"
-              className="ml-1 text-red-600 transition duration-150 ease-in-out hover:text-red-600 focus:text-red-600 active:text-red-700"
+              className="ml-1 text-lavender-600 transition duration-150 ease-in-out hover:text-lavender-700 focus:text-lavender-600 active:text-lavender-700"
             >
               Register
             </Link>

@@ -10,7 +10,7 @@ export const metadata: Metadata = {
 
 const CollectionPage = () => {
   return (
-    <div className="container-spacing w-full">
+    <div className="container-spacing w-full px-0!">
       <h1 className="text-4xl font-bold mb-6">Your Collections 📚 </h1>
       <div className="space-y-4">
         <Suspense fallback={<FeedSkeletonLoader />}>

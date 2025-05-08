@@ -67,7 +67,7 @@ export default async function FeedPage() {
 
   return (
     <TourProvider steps={FeedSteps}>
-      <div className="sm:container px-4 pt-3 pb-12">
+      <div className="sm:container px-0! pt-3 pb-12">
         <FeedList initialPosts={initialPosts} />
       </div>
 

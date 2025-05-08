@@ -284,7 +284,7 @@ export function PostForm() {
                       }
                     }}
                     placeholder="What's on your mind? Use # for tags! At most 3"
-                    className={`no-focus h-[150px] resize-none !pr-10 !pt-8 text-dark-2 transition-all duration-300 dark:text-white ${moodClasses} `}
+                    className={`no-focus h-[150px] resize-none pr-10! pt-8! text-dark-2 transition-all duration-300 dark:text-white ${moodClasses} `}
                     id='tags-guide'
                   />
 
@@ -384,7 +384,7 @@ export function PostForm() {
           )}
         />
 
-        <div className="!mt-1 w-full max-sm:px-10" id="mood-carousel">
+        <div className="mt-1! w-full max-sm:px-10" id="mood-carousel">
           <MoodCarousel
             selectedMood={selectedMood}
             setSelectedMood={setSelectedMood}

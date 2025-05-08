@@ -15,22 +15,22 @@ export default function NotFound() {
   const router = useRouter();
 
   return (
-    <div className="flex min-h-screen items-center justify-center bg-background p-4">
+    <div className="dark:bg-bg-dark bg-bg flex min-h-screen items-center justify-center p-4">
       <Card className="w-full max-w-md">
         <CardHeader className="text-center">
-          <div className="mx-auto mb-4 w-fit rounded-full bg-muted p-3">
-            <Eye className="h-12 w-12 text-muted-foreground" />
+          <div className="bg-muted mx-auto mb-4 w-fit rounded-full p-3">
+            <Eye className="text-muted-foreground h-12 w-12" />
           </div>
           <CardTitle className="text-2xl font-bold">Page Not Found</CardTitle>
         </CardHeader>
         <CardContent>
-          <p className="text-center text-muted-foreground">
-            The anonymous view you&apos;re looking for seems to have vanished into
-            thin air.
+          <p className="text-muted-foreground text-center">
+            The anonymous view you&apos;re looking for seems to have vanished
+            into thin air.
           </p>
           <div className="mt-6 flex justify-center space-x-4">
-            <Users className="h-16 w-16 text-primary" />
-            <Wifi className="h-16 w-16 text-primary" />
+            <Users className="text-primary h-16 w-16" />
+            <Wifi className="text-primary h-16 w-16" />
           </div>
         </CardContent>
         <CardFooter className="flex flex-col space-y-2">

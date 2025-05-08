@@ -3,17 +3,11 @@ import type { Config } from 'tailwindcss';
 const { blackA, crimson, blue } = require('@radix-ui/colors');
 
 const config = {
-  darkMode: ['class'],
   content: [
     './pages/**/*.{ts,tsx}',
     './components/**/*.{ts,tsx}',
     './app/**/*.{ts,tsx}',
     './src/**/*.{ts,tsx}',
-  ],
-  safelist: [
-    {
-      pattern: /^mood-.*/, // Include all classes starting with "mood-"
-    },
   ],
   prefix: '',
   theme: {

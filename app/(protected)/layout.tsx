@@ -39,7 +39,7 @@ export default async function ProtectedLayout({
     .single();
 
   return (
-    <div className="[--header-height:calc(theme(spacing.14))]">
+    <div className="[--header-height:calc(--spacing(14))]">
       <SidebarProvider
         className="flex flex-col"
         style={{ '--header-height': '90px' } as React.CSSProperties}
@@ -48,7 +48,7 @@ export default async function ProtectedLayout({
         <div className="flex flex-1">
           <SidebarLeft />
           <SidebarInset>
-            {/* <header className="sticky top-0 flex h-14 shrink-0 items-center gap-2 bg-background">
+            {/* <header className="sticky top-0 flex h-14 shrink-0 items-center gap-2 dark:bg-bg-dark bg-bg ">
             <div className="flex flex-1 items-center gap-2 px-3">
           <SidebarTrigger />
           <Separator orientation="vertical" className="mr-2 h-4" />

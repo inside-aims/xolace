@@ -116,7 +116,7 @@ export function ActivityItem({ log, viewType }: ActivityItemProps) {
     >
       <CardContent className="p-4">
         <div className="flex gap-4">
-          <div className="flex-shrink-0">{getActionIcon()}</div>
+          <div className="shrink-0">{getActionIcon()}</div>
 
           <div className="flex-1 space-y-2">
             <div className="flex items-center justify-between">

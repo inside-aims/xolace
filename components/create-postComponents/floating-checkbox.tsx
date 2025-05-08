@@ -8,7 +8,7 @@ import { Clock } from 'lucide-react';
 interface FloatingCheckboxProps {
   checked: boolean;
   onCheckedChange: (checked: boolean) => void;
-  id?: string
+  id?: string;
 }
 
 const Hours = () => <p className="text-[9px]">24h</p>;
@@ -16,7 +16,7 @@ const Hours = () => <p className="text-[9px]">24h</p>;
 export const FloatingCheckbox = React.memo(function FloatingCheckbox({
   checked,
   onCheckedChange,
-  id
+  id,
 }: FloatingCheckboxProps) {
   const [isHovered, setIsHovered] = useState(false);
 
@@ -25,7 +25,7 @@ export const FloatingCheckbox = React.memo(function FloatingCheckbox({
 
   return (
     <motion.div
-      className="absolute right-2 top-0 flex cursor-pointer items-center space-x-2 rounded-full bg-background/80 p-2 backdrop-blur-sm"
+      className="dark:bg-bg-dark bg-bg /80 absolute top-0 right-2 flex cursor-pointer items-center space-x-2 rounded-full p-2 backdrop-blur-sm"
       whileHover={{ scale: 1.05 }}
       whileTap={{ scale: 0.95 }}
       onHoverStart={handleHoverStart}
@@ -37,7 +37,7 @@ export const FloatingCheckbox = React.memo(function FloatingCheckbox({
         indicator={<Hours />}
         checked={checked}
         onCheckedChange={onCheckedChange}
-        className="data-[state=checked]:bg-amber-300 data-[state=checked]:text-primary-foreground"
+        className="data-[state=checked]:text-primary-foreground data-[state=checked]:bg-amber-300"
       />
       <Clock
         className={`h-4 w-4 transition-colors ${checked ? 'text-primary' : 'text-muted-foreground'}`}
@@ -48,7 +48,7 @@ export const FloatingCheckbox = React.memo(function FloatingCheckbox({
             initial={{ opacity: 0, width: 0 }}
             animate={{ opacity: 1, width: 'auto' }}
             exit={{ opacity: 0, width: 0 }}
-            className="overflow-hidden whitespace-nowrap text-xs font-medium"
+            className="overflow-hidden text-xs font-medium whitespace-nowrap"
           >
             24h post
           </motion.span>

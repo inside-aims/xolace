@@ -305,7 +305,9 @@ function UsernameContent() {
               <Button
                 type="submit"
                 className={
-                  'rounded-full bg-blue9 px-8 font-semibold text-white hover:bg-blue10'
+                  isLoading || !form.formState.isDirty
+                    ? 'bg-ocean-100 text-ocean-400 w-full rounded-btn'
+                    : 'btn-depth hover:btn-depth-hover active:btn-depth-active '
                 }
                 disabled={isLoading || !form.formState.isDirty}
               >

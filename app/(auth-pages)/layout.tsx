@@ -9,7 +9,7 @@ export default async function Layout({
   return (
     <main className="relative overflow-y-auto overflow-x-hidden">
       {children}
-      <footer className="mx-auto flex w-full flex-col items-center justify-center border-t py-10 text-center text-xs">
+      <footer className="mx-auto flex w-full flex-col items-center justify-center border-t h-30 text-center text-xs dark:bg-bg-dark">
         <div className="flex items-center justify-center gap-8">
           <p>
             Powered by{' '}
