@@ -212,7 +212,7 @@ function PasswordContent() {
                   <FormItem className="flex w-full flex-col pb-4">
                     <FormLabel>Confirm new password</FormLabel>
                     <FormControl>
-                      <div className="bg-blue-400 relative">
+                      <div className=" relative">
                         <Input
                           type={showConfirmPassword ? 'text' : 'password'}
                           placeholder="Re-enter new password"
@@ -247,7 +247,7 @@ function PasswordContent() {
             <div className="flex justify-end border-t px-4 py-6">
               <Button
                 type="submit"
-                className="rounded-full bg-blue9 px-8 font-semibold text-white hover:bg-blue10"
+                className="btn-depth hover:btn-depth-hover active:btn-depth-active"
                 disabled={isLoading}
               >
                 {isLoading ? <Loader /> : 'Save'}{' '}

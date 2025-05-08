@@ -184,6 +184,29 @@
   --animate-gradient: gradient 8s linear infinite;
 }
 
+@utility btn-depth {
+  @apply w-full text-center py-2 px-6 rounded-btn border border-depth-btn-border active:border-depth-btn-border-active text-white;
+  background-image: linear-gradient(
+    var(--color-ocean-500) 0%,
+    var(--color-ocean-600) 100%);
+  box-shadow: var(--inset-shadow-depth-btn), var(--shadow-depth-btn);
+  transition: all 0.2s ease;
+}
+
+@utility btn-depth-active {
+   @apply border-depth-btn-border-active;
+   background-image: linear-gradient(
+    var(--color-ocean-700) 0%,
+    var(--color-ocean-800) 100%
+  );
+  transform: translateY(1px);
+}
+
+@utility btn-depth-hover {
+  box-shadow: var(--inset-shadow-depth-btn), var(--shadow-depth-btn), 0 0 0 4px rgba(5, 54, 255, 0.1);
+}
+
+
 @utility main-container {
   /* main */
   @apply dark:bg-bg-dark bg-bg flex min-h-[calc(100vh-var(--header-height))] flex-1 flex-col items-center overflow-hidden lg:overflow-hidden;
