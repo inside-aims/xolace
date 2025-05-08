@@ -2,7 +2,7 @@ import React from 'react';
 
 const PostCardMask = () => {
   return (
-    <div className="absolute inset-0 z-10 flex flex-col items-center justify-center rounded-lg bg-black/20 backdrop-blur-md">
+    <div className="absolute inset-0 z-10 flex flex-col items-center justify-center bg-black/20 backdrop-blur-md">
       <div className="max-w-xs p-6 text-center">
         <svg
           xmlns="http://www.w3.org/2000/svg"

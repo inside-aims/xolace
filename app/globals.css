@@ -11,6 +11,7 @@
   If we ever want to remove these styles, we need to add an explicit border
   color utility to any element that depends on these defaults.
 */
+
 @layer base {
   *,
   ::after,
@@ -21,18 +22,175 @@
   }
 }
 
+@theme {
+  --color-bg: #ffffff; /* Light mode */
+  --color-bg-dark: #121212; /* Dark mode */
+
+  /*Primary color*/
+  --color-ocean-50: #e7f4ff; /* Lightest (shallow water) */
+  --color-ocean-100: #d3ecff;
+  --color-ocean-200: #b1d9ff;
+  --color-ocean-300: #82beff; /* Mid-tone */
+  --color-ocean-400: #5193ff;
+  --color-ocean-500: #2967ff; /* Primary action (CTA) */
+  --color-ocean-600: #0536ff;
+  --color-ocean-700: #0032ff; /* Darker (deep ocean) */
+  --color-ocean-800: #012bd2;
+  --color-ocean-900: #0c2ea3;
+  --color-ocean-950: #030a26; /* Darkest (abyss) */
+
+  /*primary depth btn*/
+  --color-depth-btn-border: #0032ff;
+  --color-depth-btn-border-active: #0c2ea3;
+
+  /* Secondary color */
+  --color-lavender-50: #eff2fe; /* Lightest (whisper) */
+  --color-lavender-100: #e2e9fd;
+  --color-lavender-200: #cad5fb;
+  --color-lavender-300: #b8c5f9; /* Mid-tone */
+  --color-lavender-400: #8794f2;
+  --color-lavender-500: #6a71ea; /* Secondary actions */
+  --color-lavender-600: #524edd;
+  --color-lavender-700: #453fc3; /* Darker (twilight) */
+  --color-lavender-800: #39369d;
+  --color-lavender-900: #33327d;
+  --color-lavender-950: #1f1d49; /* Darkest (midnight) */
+
+  /* Success (Growth) - "Moss" */
+  --color-moss-50: #f0fdf5;
+  --color-moss-100: #dcfce8;
+  --color-moss-200: #bbf7d1;
+  --color-moss-300: #86efac;
+  --color-moss-base: #4ade80;
+  --color-moss-500: #22c55d;
+  --color-moss-600: #16a349;
+  --color-moss-700: #15803c;
+  --color-moss-800: #166533;
+  --color-moss-900: #14532b;
+  --color-moss-950: #052e14;
+
+  /* Error (Urgent) - “Carnation” */
+  --color-carnation-50: #fef2f2;
+  --color-carnation-100: #fee2e2;
+  --color-carnation-200: #fecaca;
+  --color-carnation-300: #fca5a5;
+  --color-carnation-base: #f87171;
+  --color-carnation-500: #ef4444;
+  --color-carnation-600: #dc2626;
+  --color-carnation-700: #b91c1c;
+  --color-carnation-800: #991b1b;
+  --color-carnation-900: #7f1d1d;
+  --color-carnation-950: #450a0a;
+
+  /* Warning (Caution) - "Honey" */
+  --color-honey-50: #fff9eb;
+  --color-honey-100: #feefc7;
+  --color-honey-200: #fddd8a;
+  --color-honey-300: #fccb4d;
+  --color-honey-base: #fbbf24; /* Base */
+  --color-honey-500: #f5b40b;
+  --color-honey-600: #d99e06;
+  --color-honey-700: #b48409;
+  --color-honey-800: #926d0e;
+  --color-honey-900: #785b0f;
+  --color-honey-950: #453303;
+
+  --color-muted: #f0f2f5;
+  --color-muted-foreground: #64748b;
+
+  --color-label-dark: #000000;
+  --color-label-light: #ffffff;
+
+  /*moods*/
+  --color-mood-sunrise: #fef08a; /* Happy */
+  --color-mood-tidal: #7dd3fc; /* Calm */
+  --color-mood-twilight: #a78bfa; /* Melancholic */
+  --color-mood-volcano: #fb923c; /* Angry */
+
+  /*Glassphorsim*/
+  --color-glassphorsim: rgba(16, 16, 18, 0.6);
+
+  /*Sidebar colors */
+  --color-sidebar: var(--sidebar-background);
+  --color-sidebar-foreground: var(--sidebar-foreground);
+  --color-sidebar-primary: var(--sidebar-primary);
+  --color-sidebar-primary-foreground: var(--sidebar-primary-foreground);
+  --color-sidebar-accent: var(--sidebar-accent);
+  --color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
+  --color-sidebar-border: var(--color-sidebar-border);
+  
+
+  /*Screen sizes- extends default*/
+  --breakpoint-xl: 80rem;
+  --breakpoint-2xl: 87.5rem;
+  --breakpoint-3xl: 96rem;
+
+  /*radius*/
+  --radius-btn: 0.75rem;
+  --radius-card: 0.5rem;
+
+  /* shadows*/
+  --shadow-depth-btn: 0 2px 4px 0 rgba(5, 54, 255, 0.5);
+
+  --inset-shadow-depth-btn: inset 0 2px 0 0 rgba(255, 255, 255, 0.25);
+
+  /*font*/
+  --font-tiltNeon: 'TiltNeon', 'sans-serif';
+
+  /*text*/
+  --text-muted-label: 0.813rem;
+  --text-heading-label: 1.25rem;
+  --text-username-label: 1rem;
+
+  /* Keyframes */
+  @keyframes accordion-down {
+    from {
+      height: 0;
+    }
+    to {
+      height: var(--radix-accordion-content-height);
+    }
+  }
+
+  @keyframes accordion-up {
+    from {
+      height: var(--radix-accordion-content-height);
+    }
+    to {
+      height: 0;
+    }
+  }
+
+  @keyframes rippling {
+    0% {
+      opacity: 1;
+    }
+    100% {
+      transform: scale(2);
+      opacity: 0;
+    }
+  }
+
+  @keyframes gradient {
+    to {
+      background-position: var(--bg-size) 0;
+    }
+  }
+
+  /* Animation Utilities */
+  --animate-accordion-down: accordion-down 0.2s ease-out;
+  --animate-accordion-up: accordion-up 0.2s ease-out;
+  --animate-rippling: rippling var(--duration) ease-out;
+  --animate-gradient: gradient 8s linear infinite;
+}
+
 @utility main-container {
   /* main */
-  @apply dark:bg-dark-1 flex min-h-[calc(100vh-var(--header-height))] flex-1 flex-col items-center overflow-hidden bg-white lg:overflow-hidden;
+  @apply dark:bg-bg-dark bg-bg flex min-h-[calc(100vh-var(--header-height))] flex-1 flex-col items-center overflow-hidden lg:overflow-hidden;
 }
 
 @utility container-spacing {
   @apply px-3 pt-5 pb-2 max-md:pb-10 sm:px-10;
-}
-
-@utility activity-card {
-  /* Activity */
-  @apply bg-dark-2 flex items-center gap-2 rounded-md px-7 py-4;
 }
 
 @utility mood-happy {
@@ -64,10 +222,6 @@
   @apply bg-linear-to-br from-gray-100 to-gray-300 dark:from-gray-800 dark:to-gray-950;
   transition: all 0.3s ease;
   box-shadow: 0 0 15px rgba(107, 114, 128, 0.2);
-}
-
-@utility searchbar {
-  @apply bg-dark-3 flex gap-1 rounded-lg px-4 py-2;
 }
 
 @utility bottombar {
@@ -102,7 +256,7 @@
 }
 
 @utility view-text {
-  @apply bg-dark-2 dark:text-dark-1 rounded-lg px-4 py-2 text-[16px] font-medium text-white capitalize dark:bg-slate-400;
+  @apply bg-dark-2 dark:text-label-dark text-label-light rounded-lg px-4 py-2 text-[16px] font-medium capitalize dark:bg-slate-400;
 }
 
 @utility view_skeleton {
@@ -188,8 +342,8 @@
     --sidebar-border: 220 13% 91%;
     --sidebar-ring: 217.2 91.2% 59.8%;
     --radix-accordion-content-height: auto;
-  --duration: 1s;
-  --bg-size: 200%;
+    --duration: 1s;
+    --bg-size: 200%;
   }
 
   .dark {
@@ -220,7 +374,7 @@
     --chart-3: 30 80% 55%;
     --chart-4: 280 65% 60%;
     --chart-5: 340 75% 55%;
-    --sidebar-background: 0 0% 3%;
+    --sidebar-background: var(--color-bg-dark);
     --sidebar-foreground: 240 4.8% 95.9%;
     --sidebar-primary: 224.3 76.3% 48%;
     --sidebar-primary-foreground: 0 0% 100%;
@@ -251,7 +405,7 @@
     @apply border-border;
   }
   /* body {
-    @apply bg-background text-foreground;
+    @apply dark:bg-bg-dark bg-bg  text-foreground;
   } */
 }
 
@@ -294,6 +448,6 @@
     @apply border-border;
   }
   body {
-    @apply bg-background text-foreground;
+    @apply bg-bg-dark text-foreground;
   }
 }

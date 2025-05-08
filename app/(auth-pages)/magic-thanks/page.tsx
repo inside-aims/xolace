@@ -26,12 +26,12 @@ const MagicLinkSuccessPage = (props: {
   }, []);
 
   return (
-    <div className="to-bg-background flex min-h-screen items-center justify-center bg-linear-to-br from-gray-900 p-4">
+    <div className="to-dark:bg-bg-dark bg-bg flex min-h-screen items-center justify-center bg-linear-to-br from-gray-900 p-4">
       <motion.div
         initial={{ opacity: 0, scale: 0.9 }}
         animate={{ opacity: 1, scale: 1 }}
         transition={{ duration: 0.5 }}
-        className="w-full max-w-md rounded-xl bg-white bg-opacity-10 p-8 text-center shadow-2xl backdrop-blur-lg"
+        className="bg-opacity-10 w-full max-w-md rounded-xl bg-white p-8 text-center shadow-2xl backdrop-blur-lg"
       >
         <motion.div
           className="relative mx-auto mb-6 h-24 w-24"
@@ -64,7 +64,7 @@ const MagicLinkSuccessPage = (props: {
         <h1 className="mb-4 text-3xl font-bold text-black dark:text-white">
           {isPasswordRecovery ? 'Password Reset' : 'Magic Link'} Conjured!
         </h1>
-        <p className="mb-6 text-blackA11 dark:text-gray-300">
+        <p className="text-blackA11 mb-6 dark:text-gray-300">
           {isPasswordRecovery
             ? 'A mystical link to reset your password has been dispatched to your inbox.'
             : 'A clandestine link for secure access has been whispered into the digital ether.'}

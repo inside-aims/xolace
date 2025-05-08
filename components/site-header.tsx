@@ -58,7 +58,7 @@ export function SiteHeader() {
 
   return (
     <>
-      <header className="sticky top-0 z-50 flex w-full items-center border-b bg-white opacity-[0.96] dark:border-gray-700/90 dark:bg-black dark:opacity-100" id="navbar">
+      <header className="sticky top-0 z-50 flex w-full items-center border-b bg-bg opacity-[0.96] dark:border-gray-700/90 dark:bg-bg-dark dark:opacity-100" id="navbar">
         <div className="flex h-(--header-height) w-full items-center justify-between gap-2 px-4">
           <Button
             className="h-8 w-8"
