@@ -135,7 +135,7 @@ const HelpCenterContent = () =>{
             <p className="flex items-center justify-center font-sans text-lg text-[#28220C]">
               Still have questions?
             </p>
-            <p className="text-pretty text-center text-sm text-[#28220C]">
+            <p className="text-pretty text-center text-sm text-black">
               Can’t find the answer you’re looking for? Please chat to our
               friendly team.
             </p>
