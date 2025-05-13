@@ -12,7 +12,7 @@ import { Button } from '@/components/ui/button';
 import { useSidebar } from '@/components/ui/sidebar';
 import ThemeSwitch from './ui/ThemeSwitch';
 //import { ProgressBetaBadge } from './shared/ProgressBetaBadge';
-import { LogoutIcon } from './animated/Icons/LogoutIcon';
+//import { LogoutIcon } from './animated/Icons/LogoutIcon';
 import { getSupabaseBrowserClient } from '@/utils/supabase/client';
 //import SignoutAlert from './shared/SignoutAlert';
 import { useUserState } from '@/lib/store/user';
