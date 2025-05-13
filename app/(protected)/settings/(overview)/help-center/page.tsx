@@ -7,6 +7,7 @@ import {Input} from "@/components/ui/input";
 import React, {useState} from "react";
 import {Accordion, AccordionContent, AccordionItem, AccordionTrigger} from "@/components/ui/accordion";
 import {Button} from "@/components/ui/button";
+import GetInTouchDialog from "@/app/(protected)/settings/(overview)/help-center/GetInTouchDialog";
 
 const faqs: { id: string, question: string, answer: string }[] = [
   {
@@ -139,7 +140,7 @@ const HelpCenterContent = () =>{
               Can’t find the answer you’re looking for? Please chat to our
               friendly team.
             </p>
-            <Button className={"bg-lavender-500 hover:bg-lavender-600 px-[8%] transition-transform duration-300 ease-in-out hover:scale-110 text-white"}>Get in touch</Button>
+            <GetInTouchDialog/>
         </div>
       </div>
     </div>
