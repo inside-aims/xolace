@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect, useState } from 'react';
+import { useEffect } from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
@@ -11,34 +11,35 @@ import { Button } from '@/components/ui/button';
 //import { Separator } from "@/components/ui/separator"
 import { useSidebar } from '@/components/ui/sidebar';
 import ThemeSwitch from './ui/ThemeSwitch';
-import { ProgressBetaBadge } from './shared/ProgressBetaBadge';
-import { LogoutIcon } from './animated/Icons/LogoutIcon';
+//import { ProgressBetaBadge } from './shared/ProgressBetaBadge';
+//import { LogoutIcon } from './animated/Icons/LogoutIcon';
 import { getSupabaseBrowserClient } from '@/utils/supabase/client';
-import SignoutAlert from './shared/SignoutAlert';
+//import SignoutAlert from './shared/SignoutAlert';
 import { useUserState } from '@/lib/store/user';
+import { RealtimeAvatarStack } from './realtime-avatar-stack';
 
 export function SiteHeader() {
   // get user profile data
   const user = useUserState(state => state.user);
-  const [isOpen, setIsOpen] = useState(false);
+  // const [isOpen, setIsOpen] = useState(false);
   const router = useRouter();
   const supabase = getSupabaseBrowserClient();
   const { toggleSidebar } = useSidebar();
 
   //   signout function
-  const handleSignOut = async (
-    e: React.MouseEvent<HTMLButtonElement, MouseEvent>,
-  ) => {
-    e.preventDefault();
+  // const handleSignOut = async (
+  //   e: React.MouseEvent<HTMLButtonElement, MouseEvent>,
+  // ) => {
+  //   e.preventDefault();
 
-    if (user?.is_anonymous) {
-      setIsOpen(true);
-      return;
-    }
+  //   if (user?.is_anonymous) {
+  //     setIsOpen(true);
+  //     return;
+  //   }
 
-    localStorage.removeItem('welcomePopupDismissed');
-    supabase.auth.signOut();
-  };
+  //   localStorage.removeItem('welcomePopupDismissed');
+  //   supabase.auth.signOut();
+  // };
 
   // Subscribe to sign out event
   useEffect(() => {
@@ -59,7 +60,7 @@ export function SiteHeader() {
   return (
     <>
       <header className="sticky top-0 z-50 flex w-full items-center border-b bg-bg opacity-[0.96] dark:border-gray-700/90 dark:bg-bg-dark dark:opacity-100" id="navbar">
-        <div className="flex h-(--header-height) w-full items-center justify-between gap-2 px-4">
+        <div className="flex h-(--header-height) w-full items-center justify-between ps-3 pe-3 sm:pe-10">
           <Button
             className="h-8 w-8"
             variant="ghost"
@@ -103,7 +104,7 @@ export function SiteHeader() {
           </div> */}
           </div>
 
-          <div className="block md:hidden" id="sign-out">
+          {/* <div className="block md:hidden" id="sign-out">
             <Button
               variant={'ghost'}
               className="shad-button_ghost"
@@ -112,19 +113,22 @@ export function SiteHeader() {
             >
               <LogoutIcon height="23" />
             </Button>
-          </div>
+          </div> */}
 
           {/* Theme switcher */}
-          <div className="hidden gap-x-5 md:flex">
+          <div className="flex gap-x-5 w-30 items-center max-sm:justify-center">
+            <div className='hidden md:block'>
             <ThemeSwitch />
-            <div>
-              <ProgressBetaBadge progress={30} />
+            </div>
+            <div id="online-users">
+              {/* <ProgressBetaBadge progress={30} /> */}
+              <RealtimeAvatarStack roomName="break_room"/>
             </div>
           </div>
         </div>
       </header>
 
-      <SignoutAlert isOpen={isOpen} setIsOpen={setIsOpen} />
+      {/* <SignoutAlert isOpen={isOpen} setIsOpen={setIsOpen} /> */}
     </>
   );
 }

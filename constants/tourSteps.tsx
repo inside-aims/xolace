@@ -168,13 +168,12 @@ export const FeedSteps: Step[] = [
     ),
   },
   {
-    selector: '#sign-out',
+    selector: '#online-users',
     content: () => (
       <TourWrapper>
-        <TourTitle>Sign Out</TourTitle>
+        <TourTitle>Online Users</TourTitle>
         <TourContent>
-          Are you sure you want to leave us? 😢 If you must go, click here to
-          sign out—but we’ll be waiting when you come back!
+          This shows the number of users currently online in the break room.
         </TourContent>
       </TourWrapper>
     ),
