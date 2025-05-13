@@ -120,7 +120,7 @@ export function SiteHeader() {
             <div className='hidden md:block'>
             <ThemeSwitch />
             </div>
-            <div>
+            <div id="online-users">
               {/* <ProgressBetaBadge progress={30} /> */}
               <RealtimeAvatarStack roomName="break_room"/>
             </div>
