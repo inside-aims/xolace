@@ -21,25 +21,25 @@ import { RealtimeAvatarStack } from './realtime-avatar-stack';
 export function SiteHeader() {
   // get user profile data
   const user = useUserState(state => state.user);
-  const [isOpen, setIsOpen] = useState(false);
+  // const [isOpen, setIsOpen] = useState(false);
   const router = useRouter();
   const supabase = getSupabaseBrowserClient();
   const { toggleSidebar } = useSidebar();
 
   //   signout function
-  const handleSignOut = async (
-    e: React.MouseEvent<HTMLButtonElement, MouseEvent>,
-  ) => {
-    e.preventDefault();
+  // const handleSignOut = async (
+  //   e: React.MouseEvent<HTMLButtonElement, MouseEvent>,
+  // ) => {
+  //   e.preventDefault();
 
-    if (user?.is_anonymous) {
-      setIsOpen(true);
-      return;
-    }
+  //   if (user?.is_anonymous) {
+  //     setIsOpen(true);
+  //     return;
+  //   }
 
-    localStorage.removeItem('welcomePopupDismissed');
-    supabase.auth.signOut();
-  };
+  //   localStorage.removeItem('welcomePopupDismissed');
+  //   supabase.auth.signOut();
+  // };
 
   // Subscribe to sign out event
   useEffect(() => {
