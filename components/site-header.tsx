@@ -11,10 +11,10 @@ import { Button } from '@/components/ui/button';
 //import { Separator } from "@/components/ui/separator"
 import { useSidebar } from '@/components/ui/sidebar';
 import ThemeSwitch from './ui/ThemeSwitch';
-import { ProgressBetaBadge } from './shared/ProgressBetaBadge';
+//import { ProgressBetaBadge } from './shared/ProgressBetaBadge';
 import { LogoutIcon } from './animated/Icons/LogoutIcon';
 import { getSupabaseBrowserClient } from '@/utils/supabase/client';
-import SignoutAlert from './shared/SignoutAlert';
+//import SignoutAlert from './shared/SignoutAlert';
 import { useUserState } from '@/lib/store/user';
 import { RealtimeAvatarStack } from './realtime-avatar-stack';
 
@@ -60,7 +60,7 @@ export function SiteHeader() {
   return (
     <>
       <header className="sticky top-0 z-50 flex w-full items-center border-b bg-bg opacity-[0.96] dark:border-gray-700/90 dark:bg-bg-dark dark:opacity-100" id="navbar">
-        <div className="flex h-(--header-height) w-full items-center justify-between ps-3 pe-10">
+        <div className="flex h-(--header-height) w-full items-center justify-between ps-3 pe-3 sm:pe-10">
           <Button
             className="h-8 w-8"
             variant="ghost"
@@ -104,7 +104,7 @@ export function SiteHeader() {
           </div> */}
           </div>
 
-          <div className="block md:hidden" id="sign-out">
+          {/* <div className="block md:hidden" id="sign-out">
             <Button
               variant={'ghost'}
               className="shad-button_ghost"
@@ -113,11 +113,13 @@ export function SiteHeader() {
             >
               <LogoutIcon height="23" />
             </Button>
-          </div>
+          </div> */}
 
           {/* Theme switcher */}
-          <div className="hidden gap-x-5 md:flex w-30">
+          <div className="flex gap-x-5 w-30 items-center max-sm:justify-center">
+            <div className='hidden md:block'>
             <ThemeSwitch />
+            </div>
             <div>
               {/* <ProgressBetaBadge progress={30} /> */}
               <RealtimeAvatarStack roomName="break_room"/>
@@ -126,7 +128,7 @@ export function SiteHeader() {
         </div>
       </header>
 
-      <SignoutAlert isOpen={isOpen} setIsOpen={setIsOpen} />
+      {/* <SignoutAlert isOpen={isOpen} setIsOpen={setIsOpen} /> */}
     </>
   );
 }
