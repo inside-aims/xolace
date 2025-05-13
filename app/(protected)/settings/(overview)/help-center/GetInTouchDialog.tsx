@@ -20,7 +20,7 @@ import {
   FormMessage,
 } from '@/components/ui/form';
 import {useForm} from "react-hook-form";
-import { useToast} from "@/components/ui/use-toast";
+import {toast} from "sonner"
 import {z} from "zod";
 import {zodResolver} from "@hookform/resolvers/zod";
 
@@ -36,7 +36,6 @@ const FormSchema = z.object({
 export default function GetInTouchDialog(){
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [open, setOpen] = useState<boolean>(false);
-  const {toast} = useToast();
 
   const form = useForm<z.infer<typeof FormSchema>>({
     resolver: zodResolver(FormSchema),
@@ -56,17 +55,14 @@ export default function GetInTouchDialog(){
 
         console.log('Request', request);
         setOpen(false);
-        toast({
-          title: '✅ Thanks for reaching out!',
+        toast.success(
+         '✅ Thanks for reaching out!',{
           description: "We've received your question and will be in touch shortly.",
         });
         form.reset();
       } catch (error) {
         console.error(error);
-        toast({
-          variant: 'destructive',
-          title: `😿 Something went wrong while reaching out! Try again.`,
-        });
+        toast.error(`😿 Something went wrong while reaching out! Try again.`);
       } finally {
         setIsLoading(false);
       }

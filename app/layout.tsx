@@ -4,6 +4,7 @@
 import { GeistSans } from 'geist/font/sans';
 import { ThemeProvider } from 'next-themes';
 import { Toaster } from '@/components/ui/toaster';
+import {Toaster as SonnerToaster} from 'sonner'
 import './globals.css';
 import { SpeedInsights } from '@vercel/speed-insights/next';
 
@@ -55,6 +56,7 @@ export default function RootLayout({
           {children}
           <SpeedInsights />
           <Toaster />
+          <SonnerToaster richColors />
         </ThemeProvider>
       </body>
     </html>
