@@ -113,13 +113,12 @@
 
   /*Sidebar colors */
   --color-sidebar: var(--sidebar-background);
-  --color-sidebar-foreground: var(--sidebar-foreground);
-  --color-sidebar-primary: var(--sidebar-primary);
-  --color-sidebar-primary-foreground: var(--sidebar-primary-foreground);
-  --color-sidebar-accent: var(--sidebar-accent);
-  --color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
-  --color-sidebar-border: var(--color-sidebar-border);
-  
+  --color-sidebar-foreground: hsl(var(--sidebar-foreground));
+  --color-sidebar-primary: hsl(var(--sidebar-primary));
+  --color-sidebar-primary-foreground: hsl(var(--sidebar-primary-foreground));
+  --color-sidebar-accent: hsl(var(--sidebar-accent));
+  --color-sidebar-accent-foreground: hsl(var(--sidebar-accent-foreground));
+  --color-sidebar-border: hsl(var(--sidebar-border));
 
   /*Screen sizes- extends default*/
   --breakpoint-xl: 80rem;
@@ -129,9 +128,9 @@
   /*radius*/
   --radius-btn: 0.75rem;
   --radius-card: 0.5rem;
-
-  /* shadows*/
-  --shadow-depth-btn: 0 2px 4px 0 rgba(5, 54, 255, 0.5);
+  --radius-modal: 0.26rem; 
+  
+  /* shadows*/ --shadow-depth-btn: 0 2px 4px 0 rgba(5, 54, 255, 0.5);
 
   --inset-shadow-depth-btn: inset 0 2px 0 0 rgba(255, 255, 255, 0.25);
 
@@ -186,10 +185,11 @@
 }
 
 @utility btn-depth {
-  @apply w-full text-center py-2 px-6 rounded-btn border border-depth-btn-border active:border-depth-btn-border-active text-white;
+  @apply rounded-btn border-depth-btn-border active:border-depth-btn-border-active w-full border px-6 py-2 text-center text-white;
   background-image: linear-gradient(
     var(--color-ocean-500) 0%,
-    var(--color-ocean-600) 100%);
+    var(--color-ocean-600) 100%
+  );
   box-shadow: var(--inset-shadow-depth-btn), var(--shadow-depth-btn);
   transition: all 0.2s ease;
 }
@@ -199,23 +199,26 @@
 }
 
 @utility btn-depth-active {
-   @apply border-depth-btn-border-active;
-   background-image: linear-gradient(
+  @apply border-depth-btn-border-active;
+  background-image: linear-gradient(
     var(--color-ocean-700) 0%,
     var(--color-ocean-800) 100%
   );
   transform: translateY(1px);
 }
 
-@utility btn-flat-active{
+@utility btn-flat-active {
   @apply bg-ocean-700 border-ocean-700 text-white;
 }
 
 @utility btn-depth-hover {
-  box-shadow: var(--inset-shadow-depth-btn), var(--shadow-depth-btn), 0 0 0 4px rgba(5, 54, 255, 0.1);
+  box-shadow:
+    var(--inset-shadow-depth-btn),
+    var(--shadow-depth-btn),
+    0 0 0 4px rgba(5, 54, 255, 0.1);
 }
 
-@utility btn-flat-hover{
+@utility btn-flat-hover {
   @apply bg-ocean-600 border-ocean-600 text-white;
 }
 
@@ -368,7 +371,7 @@
     --chart-3: 197 37% 24%;
     --chart-4: 43 74% 66%;
     --chart-5: 27 87% 67%;
-    --sidebar-background: 0 0% 98%;
+    --sidebar-background: var(--color-bg);
     --sidebar-foreground: 240 5.3% 26.1%;
     --sidebar-primary: 240 5.9% 10%;
     --sidebar-primary-foreground: 0 0% 98%;

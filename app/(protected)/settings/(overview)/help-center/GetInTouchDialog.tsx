@@ -82,7 +82,7 @@ export default function GetInTouchDialog(){
         </Button>
       </DialogTrigger>
       <DialogContent
-        className="sm:max-w-md space-y-2 w-full flex flex-col items-start mx-2"
+        className="sm:max-w-md space-y-2 max-w-[90%] flex flex-col items-start mx-2"
         onInteractOutside={(event) => {
           event.preventDefault();
         }}
