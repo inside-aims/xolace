@@ -190,6 +190,49 @@ export const faqs = [
   },
 ];
 
+export const helpFaqs = [
+  {
+    id: "1",
+    question: "How does Xolace protect my anonymity?",
+    answer: "Xolace uses advanced privacy techniques to ensure your identity remains hidden. No personal details are attached to anonymous posts."
+  },
+  {
+    id: "2",
+    question: "Can I switch from anonymous to public mode when posting?",
+    answer: "Yes, you can choose to post either anonymously or publicly by toggling the visibility option before submitting your post."
+  },
+  {
+    id: "3",
+    question: "How do I report a harmful or abusive post?",
+    answer: "Click the 'Report' button next to the post and choose a reason. Our moderation team will review it within 24 hours."
+  },
+  {
+    id: "4",
+    question: "Can other users see my profile details when I post anonymously?",
+    answer: "No. When you post anonymously, your profile details are completely hidden from other users."
+  },
+  {
+    id: "5",
+    question: "How do I reset my password on Xolace?",
+    answer: "Go to the login page, click on 'Forgot password?', and follow the instructions to reset it using your email."
+  },
+  {
+    id: "6",
+    question: "Is my data shared with third parties?",
+    answer: "No, Xolace does not sell or share your personal data with third parties. We are committed to user privacy."
+  },
+  {
+    id: "7",
+    question: "How can I delete my account permanently?",
+    answer: "Go to 'Settings' > 'Account' > 'Delete Account'. Follow the confirmation steps to permanently remove your data from Xolace."
+  },
+  {
+    id: "8",
+    question: "What kind of content can I post on Xolace?",
+    answer: "You can share thoughts, questions, or experiences. However, harmful, explicit, or illegal content is strictly prohibited."
+  }
+];
+
 export const getMoodLabelStyle = mood => {
   console.log(mood);
   switch (mood) {

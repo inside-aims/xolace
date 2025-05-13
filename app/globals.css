@@ -260,7 +260,7 @@
 }
 
 @utility bottombar {
-  @apply xs:px-7 fixed bottom-0 z-10 flex w-full justify-center bg-transparent opacity-[0.96] backdrop-blur-lg md:hidden dark:bg-black;
+  @apply xs:px-7 fixed bottom-0 z-40 flex w-full justify-center bg-transparent opacity-[0.96] backdrop-blur-lg md:hidden dark:bg-black;
 }
 
 @utility bottombar_container {

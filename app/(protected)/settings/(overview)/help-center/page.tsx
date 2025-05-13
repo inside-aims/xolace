@@ -6,51 +6,10 @@ import {Search} from "lucide-react";
 import {Input} from "@/components/ui/input";
 import React, {useState} from "react";
 import {Accordion, AccordionContent, AccordionItem, AccordionTrigger} from "@/components/ui/accordion";
-import {Button} from "@/components/ui/button";
+import { helpFaqs } from "@/constants";
 import GetInTouchDialog from "@/app/(protected)/settings/(overview)/help-center/GetInTouchDialog";
 
-const faqs: { id: string, question: string, answer: string }[] = [
-  {
-    id: "1",
-    question: "How does Xolace protect my anonymity?",
-    answer: "Xolace uses advanced privacy techniques to ensure your identity remains hidden. No personal details are attached to anonymous posts."
-  },
-  {
-    id: "2",
-    question: "Can I switch from anonymous to public mode when posting?",
-    answer: "Yes, you can choose to post either anonymously or publicly by toggling the visibility option before submitting your post."
-  },
-  {
-    id: "3",
-    question: "How do I report a harmful or abusive post?",
-    answer: "Click the 'Report' button next to the post and choose a reason. Our moderation team will review it within 24 hours."
-  },
-  {
-    id: "4",
-    question: "Can other users see my profile details when I post anonymously?",
-    answer: "No. When you post anonymously, your profile details are completely hidden from other users."
-  },
-  {
-    id: "5",
-    question: "How do I reset my password on Xolace?",
-    answer: "Go to the login page, click on 'Forgot password?', and follow the instructions to reset it using your email."
-  },
-  {
-    id: "6",
-    question: "Is my data shared with third parties?",
-    answer: "No, Xolace does not sell or share your personal data with third parties. We are committed to user privacy."
-  },
-  {
-    id: "7",
-    question: "How can I delete my account permanently?",
-    answer: "Go to 'Settings' > 'Account' > 'Delete Account'. Follow the confirmation steps to permanently remove your data from Xolace."
-  },
-  {
-    id: "8",
-    question: "What kind of content can I post on Xolace?",
-    answer: "You can share thoughts, questions, or experiences. However, harmful, explicit, or illegal content is strictly prohibited."
-  }
-];
+
 
 export default function HelpCenterPage() {
   return (
@@ -71,15 +30,15 @@ const HelpCenterContent = () =>{
   const [searchTerm, setSearchTerm] = useState<string>('');
 
   const filteredFaq = searchTerm.trim() ?
-    faqs.filter(
+    helpFaqs.filter(
       option =>
         option.question.toLowerCase().includes(searchTerm.toLowerCase())
     )
-    : faqs;
+    : helpFaqs;
 
   return(
     <SettingsNavigationWrapper title={'Help Center'}>
-      <div className={"w-full flex flex-col items-center justify-center gap-8 px-4 pb-18 pb-8"}>
+      <div className={"w-full flex flex-col items-center justify-center gap-8 px-4 pb-18"}>
         <div className={"w-full md:w-[80%] flex flex-col items-center justify-center gap-2"}>
           <h3 className={"text-2xl"}>
             How can we help you?
@@ -137,7 +96,7 @@ const HelpCenterContent = () =>{
               Still have questions?
             </p>
             <p className="text-pretty text-center text-sm text-black">
-              Can’t find the answer you’re looking for? Please chat to our
+              Can&apos;t find the answer you&apos;re looking for? Please chat to our
               friendly team.
             </p>
             <GetInTouchDialog/>
