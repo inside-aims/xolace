@@ -1,6 +1,6 @@
 'use client';
 
-import { Button } from "@/components/ui/button"
+import { Button } from '@/components/ui/button';
 import {
   Dialog,
   DialogClose,
@@ -9,9 +9,9 @@ import {
   DialogHeader,
   DialogTitle,
   DialogTrigger,
-} from "@/components/ui/dialog"
-import { Textarea } from "@/components/ui/textarea"
-import React, {useState} from "react";
+} from '@/components/ui/dialog';
+import { Textarea } from '@/components/ui/textarea';
+import React, { useState } from 'react';
 import {
   Form,
   FormControl,
@@ -19,75 +19,85 @@ import {
   FormItem,
   FormMessage,
 } from '@/components/ui/form';
-import {useForm} from "react-hook-form";
-import {toast} from "sonner"
-import {z} from "zod";
-import {zodResolver} from "@hookform/resolvers/zod";
+import { useForm } from 'react-hook-form';
+import { toast } from 'sonner';
+import { z } from 'zod';
+import { zodResolver } from '@hookform/resolvers/zod';
+import { getSupabaseBrowserClient } from '@/utils/supabase/client';
 
 const FormSchema = z.object({
   question: z
     .string()
     .min(8, {
-      message: "Question must be at least 8 characters.",
+      message: 'Question must be at least 8 characters.',
     })
     .max(255),
-})
+});
 
-export default function GetInTouchDialog(){
+export default function GetInTouchDialog() {
+  // initialize supabase client
+  const supabase = getSupabaseBrowserClient();
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [open, setOpen] = useState<boolean>(false);
 
   const form = useForm<z.infer<typeof FormSchema>>({
     resolver: zodResolver(FormSchema),
     defaultValues: {
-      question: ''
+      question: '',
     },
   });
 
   const onSubmit = async (data: z.infer<typeof FormSchema>) => {
     setIsLoading(true);
 
-    setTimeout(() => {
-      try {
-        const request = {
-          ...data,
-        };
+    try {
+      const request = {
+        ...data,
+      };
 
-        console.log('Request', request);
-        setOpen(false);
-        toast.success(
-         '✅ Thanks for reaching out!',{
-          description: "We've received your question and will be in touch shortly.",
-        });
-        form.reset();
-      } catch (error) {
-        console.error(error);
+      const { error: helpCenterError } = await supabase
+        .from('help_center')
+        .insert(request);
+
+      if (helpCenterError) {
         toast.error(`😿 Something went wrong while reaching out! Try again.`);
-      } finally {
         setIsLoading(false);
+        return;
       }
-    }, 2000);
+
+      console.log('Request', request);
+      setOpen(false);
+      toast.success('Thanks for reaching out!', {
+        description:
+          "We've received your question and will be in touch shortly.",
+      });
+      form.reset();
+    } catch (error) {
+      console.error(error);
+      toast.error(`😿 Something went wrong while reaching out! Try again.`);
+    } finally {
+      setIsLoading(false);
+    }
   };
 
-
-  return(
-    <Dialog
-      open={open}
-      onOpenChange={setOpen}
-    >
+  return (
+    <Dialog open={open} onOpenChange={setOpen}>
       <DialogTrigger asChild>
         <Button
-          className={"bg-lavender-500 hover:bg-lavender-600 px-[6%] transition-transform duration-300 ease-in-out hover:scale-110 text-white"}>
+          className={
+            'bg-lavender-500 hover:bg-lavender-600 px-[6%] text-white transition-transform duration-300 ease-in-out hover:scale-110'
+          }
+        >
           Get in touch
         </Button>
       </DialogTrigger>
       <DialogContent
-        className="sm:max-w-md space-y-2 w-full flex flex-col items-start mx-2"
-        onInteractOutside={(event) => {
+        className="mx-2 flex max-w-[90%] flex-col items-start space-y-2 sm:max-w-md"
+        onInteractOutside={event => {
           event.preventDefault();
         }}
       >
-        <DialogHeader className={"w-full items-start"}>
+        <DialogHeader className={'w-full items-start'}>
           <DialogTitle>Send us your question!</DialogTitle>
         </DialogHeader>
         <Form {...form}>
@@ -112,8 +122,8 @@ export default function GetInTouchDialog(){
                           {...field}
                           rows={3}
                           required
-                          className={"w-full text-sm p-1"}
-                          placeholder={"Type your question here."}
+                          className={'w-full p-1 text-sm'}
+                          placeholder={'Type your question here.'}
                         />
                       </FormControl>
                       <FormMessage />
@@ -122,17 +132,19 @@ export default function GetInTouchDialog(){
                 />
               </div>
             </div>
-            <div className="w-full flex items-end justify-end">
+            <div className="flex w-full items-end justify-end">
               <div className="flex gap-4">
                 <DialogClose asChild>
-                  <Button variant="outline" className={"px-6"}>
+                  <Button variant="outline" className={'px-6'}>
                     Cancel
                   </Button>
                 </DialogClose>
                 <Button
                   type="submit"
                   disabled={isLoading}
-                  className={"bg-lavender-500 hover:bg-lavender-600 transition-transform duration-300 ease-in-out hover:scale-110 text-white px-6"}
+                  className={
+                    'bg-lavender-500 hover:bg-lavender-600 px-6 text-white transition-transform duration-300 ease-in-out hover:scale-110'
+                  }
                 >
                   {isLoading ? 'Sending..' : 'Send'}
                 </Button>
@@ -142,5 +154,5 @@ export default function GetInTouchDialog(){
         </Form>
       </DialogContent>
     </Dialog>
-  )
+  );
 }
