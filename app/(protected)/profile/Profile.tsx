@@ -1,167 +1,172 @@
 'use client';
 
-import React, { useEffect, useState } from 'react';
+import React from 'react';
 import { useRouter } from 'next/navigation';
-import dynamic from 'next/dynamic';
+import { Link, Calendar, MapPin, Medal } from "lucide-react";
 
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
-import { Separator } from '@/components/ui/separator';
-import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 
 //import { PostCard } from '@/components/cards/PostCard';
 //import UpdatePasswordCardForm from '@/components/forms/UpdatePasswordCardForm';
 //import UpdateUsernameCardForm from '@/components/forms/UpdateUsernameCardForm';
 //import DeleteUserAccountCard from '@/components/cards/DeleteUserAccountCard';
-import { ScrollArea } from '@/components/ui/scroll-area';
-import Loader from '@/components/shared/loaders/Loader';
 import { useUserState } from '@/lib/store/user';
-import { getSupabaseBrowserClient } from '@/utils/supabase/client';
-//import BlurFade from '@/components/ui/blur-fade';
-import { Post } from '@/types/global';
-import { useToast } from '@/components/ui/use-toast';
-
-// Dynamic imports for non-critical components
-const PostCard = dynamic(
-  () => import('@/components/cards/PostCard').then(mod => mod.PostCard),
-  {
-    loading: () => <Loader />,
-    ssr: false,
-  },
-);
-const UpdatePasswordCardForm = dynamic(
-  () => import('@/components/forms/UpdatePasswordCardForm'),
-  {ssr: false, loading: () => <p className="p-4">Loading forms...</p>}
-);
-const UpdateUsernameCardForm = dynamic(() => import('@/components/forms/UpdateUsernameCardForm'), {ssr: false});
-const DeleteUserAccountCard = dynamic(() => import('@/components/cards/DeleteUserAccountCard'), {ssr: false});
-const BlurFade = dynamic(() => import('@/components/ui/blur-fade'), {
-    ssr: false
-  });
 
 const Profile = () => {
-  const router = useRouter();
   // get user profile data
+  const router = useRouter();
   const user = useUserState(state => state.user);
 
-  // destructure toast function
-  const { toast } = useToast();
-
-  const [isLoadingPosts, setIsLoadingPosts] = useState(true);
-  const [posts, setPosts] = useState<Post[]>([]);
 
   // fetch user posts
-  useEffect(() => {
-    if (!user) {
-      return;
-    }
+  // useEffect(() => {
+  //   if (!user) {
+  //     return;
+  //   }
+  //
+  //   const fetchUserPosts = async () => {
+  //     // initialize supabase client
+  //     const supabase = getSupabaseBrowserClient();
+  //     const postStatement = supabase
+  //       .from('posts')
+  //       .select(
+  //         `
+  //      *,
+  //       posttags (
+  //       tags (
+  //         name
+  //       )
+  //     ),
+  //         votes(
+  //         user_id,
+  //         vote_type
+  //         ),
+  //         comments:comments(count),
+  //         views:views(count),
+  //         collections(
+  //         user_id
+  //         )
+  //   `,
+  //       )
+  //       .eq('created_by', user?.id)
+  //       .order('created_at', { ascending: false });
+  //     const { data: postData, error } = await postStatement;
+  //
+  //     if (error) {
+  //       toast({
+  //         title: 'Error fetching posts',
+  //         description:
+  //           'Something must have gone wrong. Kindly refresh the page',
+  //         variant: 'destructive',
+  //       });
+  //     } else {
+  //       setPosts(postData);
+  //       setIsLoadingPosts(false);
+  //     }
+  //   };
+  //
+  //   fetchUserPosts();
+  // }, [user?.id]);
 
-    const fetchUserPosts = async () => {
-      // initialize supabase client
-      const supabase = getSupabaseBrowserClient();
-      const postStatement = supabase
-        .from('posts')
-        .select(
-          `
-       *,
-        posttags (
-        tags (
-          name
-        )
-      ),
-          votes(
-          user_id,
-          vote_type
-          ),
-          comments:comments(count),
-          views:views(count),
-          collections(
-          user_id
-          )
-    `,
-        )
-        .eq('created_by', user?.id)
-        .order('created_at', { ascending: false });
-      const { data: postData, error } = await postStatement;
 
-      if (error) {
-        toast({
-          title: 'Error fetching posts',
-          description:
-            'Something must have gone wrong. Kindly refresh the page',
-          variant: 'destructive',
-        });
-      } else {
-        setPosts(postData);
-        setIsLoadingPosts(false);
-      }
-    };
-
-    fetchUserPosts();
-  }, [user?.id]);
-
-  // handle post click
-  const handlePostClick = (postId: string) => {
-    router.push(`/post/${postId}`);
-  };
-
+  const profileStatBadges: {key: string, value: number, name: string, color: string}[] = [
+    { key: "gold", value: 0, name: "Gold Badges", color: "#f8d727" },
+    { key: "silver", value: 0, name: "Silver Badges", color: "#C0C0C0" },
+    { key: "bronze", value: 0, name: "Bronze Badges", color: "#CD7F32" },
+  ]
   return (
     <>
-      <div className="flex items-center justify-center gap-3 md:gap-4 pt-3">
-        <Avatar>
-          <AvatarImage src={user?.avatar_url ?? undefined} />
-          <AvatarFallback>{user?.username?.charAt(0)}</AvatarFallback>
-        </Avatar>
-        <div className="flex flex-col items-start justify-center gap-1">
-          <h5 className="text-small text-default-400 tracking-tight text-dark-2 dark:text-white">
-            {user?.username}
-          </h5>
-          <h4 className="text-dark-4/65 dark:text-gray-400">{posts?.length}</h4>
+      <div className="w-full grid grid-cols-12 h-screen">
+        {/* Hey Section */}
+        <div className="col-span-12 md:col-span-8 overflow-y-auto px-4 md:px-8 md:bg-neutral-100 space-y-12">
+          <div className={"flex flex-col md:flex-row items-start md:items-center pt-8 gap-4"}>
+            {/*profile avatar and user name section*/}
+            <Avatar className="w-40 h-40">
+              <AvatarImage
+                src={user?.avatar_url ?? undefined}
+                className="w-full h-full object-cover object-center rounded-full border"
+              />
+              <AvatarFallback className="text-4xl">
+                {user?.username?.charAt(0)}
+              </AvatarFallback>
+            </Avatar>
+            <div className={"w-full flex flex-col items-start gap-4"}>
+              <div>
+                <h3 className={"font-semibold leading-tight text-xl"}>
+                  FedeJnr
+                </h3>
+                <span> @fedejnr </span>
+              </div>
+              <div className={"w-full flex flex-row items-center gap-4 md:gap-8"}>
+                <p className={"flex items-center flex-row gap-1"}>
+                  <Link size={18}/>
+                  <span
+                    className={"text-blue9 cursor-pointer hover:underline"}
+                    onClick = { () => router.push('/settings/your-account')}
+                  >
+                    Settings
+                  </span>
+                </p>
+                <p className={"flex items-center flex-row gap-1"}>
+                  <span><MapPin size={18}/></span>
+                  Miami
+                </p>
+                <p className={"flex items-center flex-row gap-1"}>
+                  <span><Calendar size={18}/></span>
+                  Joined March 2034
+                </p>
+              </div>
+            </div>
+          </div>
+
+          {/*stats badge section*/}
+          <div className={"w-full flex flex-col items-start gap-8"}>
+            <h3 className={"font-semibold text-xl"}> Stats </h3>
+            <div className={"w-full grid grid-cols-12 items-center justify-between gap-4"}>
+              <div
+                className={"col-span-12 md:col-span-3 p-4 shadow-lg rounded-lg items-start justify-center flex flex-col gap-4 border"}>
+                <p className={"flex flex-col gap-0 m-0"}>
+                  <span>0</span>
+                  <span>Posts</span>
+                </p>
+                <p className={"flex flex-col"}>
+                  <span>1</span>
+                  <span>Reactions</span>
+                </p>
+              </div>
+              {
+                profileStatBadges.map((badge) => (
+                  <div
+                    key={badge.key}
+                    className={"col-span-12 md:col-span-3 p-4 shadow-lg rounded-lg items-start justify-center flex flex-col gap-4 border"}>
+                    <p className={"flex flex-col gap-0 m-0"}>
+                      <Medal
+                        className="w-12 h-12"
+                        style = {{ color: badge.color }}
+                      />
+                    </p>
+                    <p className={"flex flex-col"}>
+                      <span>{badge.value}</span>
+                      <span>{badge.name}</span>
+                    </p>
+                  </div>
+                ))
+              }
+            </div>
+          </div>
+        </div>
+
+        {/* One Section (hidden on mobile) */}
+        <div className="hidden md:block md:col-span-4 overflow-y-auto p-4">
+          <div className="flex flex-col w-full gap-4">
+            <h3 className={"font-semibold leading-normal text-xl"}>Your posts</h3>
+            <div>
+              Hey thee there there there there there there there there there
+            </div>
+          </div>
         </div>
       </div>
-      <Separator className="my-4" />
 
-      <Tabs defaultValue="account" className="w-full px-1 md:px-2 lg:px-5">
-        <TabsList className="sticky top-16 z-10 grid w-full grid-cols-2">
-          <TabsTrigger value="account">Posts</TabsTrigger>
-          <TabsTrigger value="password">Edit profile</TabsTrigger>
-        </TabsList>
-        <TabsContent value="account" className="md:px-2">
-          <ScrollArea className="h-[calc(100vh-20rem)] w-full rounded-md md:h-[calc(100vh-22rem)]">
-            <div className="space-y-4 py-2">
-              {isLoadingPosts ? (
-                <Loader />
-              ) : posts?.length > 0 ? (
-                <div className="flex w-full flex-1 flex-col px-4">
-                  {posts?.map((post: Post, idx: number) => (
-                    <BlurFade
-                      key={post.id}
-                      className="flex w-full justify-center"
-                      delay={0.15 + idx * 0.05}
-                      duration={0.3}
-                    >
-                      <PostCard
-                        post={post}
-                        section="profile"
-                        onClick={() => handlePostClick(post.id)}
-                        className="mb-4 w-full bg-[radial-gradient(ellipse_at_top,hsl(0_0%_100%),hsl(0_0%_95%)_70%),linear-gradient(to_bottom_right,hsl(0_0%_98%),hsl(0_0%_96%))] from-[hsl(228_85%_4%)] to-[hsl(228_85%_8%)] ring-1 ring-white/[0.05] transition duration-300 hover:bg-[radial-gradient(ellipse_at_top,hsl(0_0%_100%),hsl(0_0%_99%)_70%),linear-gradient(to_bottom_right,hsl(0_0%_99%),hsl(0_0%_97%))] dark:bg-linear-to-br dark:ring-zinc-800 dark:hover:ring-zinc-700 dark:focus-visible:ring-[#193a47]"
-                      />
-                    </BlurFade>
-                  ))}
-                </div>
-              ) : (
-                <p className="text-center text-muted-foreground">
-                  You have no posts🤔
-                </p>
-              )}
-            </div>
-          </ScrollArea>
-        </TabsContent>
-        <TabsContent value="password" className="mb-16 space-y-6">
-            <UpdatePasswordCardForm />
-            <UpdateUsernameCardForm />
-            <DeleteUserAccountCard />
-        </TabsContent>
-      </Tabs>
     </>
   );
 };
