@@ -61,12 +61,6 @@ grant truncate on table "public"."help_center" to "service_role";
 
 grant update on table "public"."help_center" to "service_role";
 
-create policy "Enable insert for authenticated users only"
-on "public"."feedbacks"
-as permissive
-for insert
-to authenticated
-with check (true);
 
 
 create policy "Enable insert for authenticated users only"
