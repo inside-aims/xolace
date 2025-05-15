@@ -384,3 +384,30 @@ export const fetchCollectionPostsAction = async (
   // Extract and return the nested posts data
   return data?.map((entry) => entry.posts) || [];
 };
+
+
+export async function fetchDailyPromptAction() {
+  const supabase = await createClient();
+  const today = new Date().toISOString().split('T')[0];
+
+  try {
+    const { data: promptData, error } = await supabase
+      .from('daily_prompts')
+      .select(`
+        id,
+        prompt_text,
+        created_at,
+        active_on
+      `)
+      .eq('active_on', today)
+      .single();
+
+    if (error) {
+      return { success: false, error: error.message };
+    }
+
+    return { success: true, data: promptData };
+  } catch (error) {
+    return { success: false, error: 'Failed to fetch daily prompt' };
+  }
+}
