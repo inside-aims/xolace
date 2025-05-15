@@ -46,7 +46,9 @@ const streakCount = 2
   const handleRespond = () => {
     if (!promptData) return;
     
-    const queryParams = qs.stringify({ prompt: promptData.prompt_text });
+    const queryParams = qs.stringify({ prompt: promptData.prompt_text,
+        prompt_id: promptData.id
+     });
     router.push(`/create-post?${queryParams}`);
   };
 

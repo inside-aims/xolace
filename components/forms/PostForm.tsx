@@ -240,6 +240,11 @@ export function PostForm() {
     const expires_at = duration ? calculateExpiryDate(duration) : null;
 
     try {
+
+       // Get prompt_id from searchParams if it exists
+       const promptId = searchParams.get('prompt_id');
+       const promptText = searchParams.get('prompt');
+
       const { data: post_id, error: postError } = await supabase.rpc('create_post_with_tags', {
         content: contentWithoutTags,
         duration: duration ? `${duration}` : duration,
@@ -259,8 +264,31 @@ export function PostForm() {
         return;
       }
 
+       // If this is a prompt response, create the prompt response record
+       if (promptId && post_id && user) {
+        const { error: promptResponseError } = await supabase
+          .from('prompt_responses')
+          .insert({
+            post_id: post_id,
+            prompt_id: promptId,
+            user_id: user.id
+          });
+
+        if (promptResponseError) {
+          console.error('Error creating prompt response:', promptResponseError);
+        }
+      }
+
       // show notification
-      toast.success('Post created successfully🤭 !', {position: "bottom-center"});
+      if(promptId){
+        toast.success(
+          'Your response has been saved!🙂‍↕️',{
+            position: "bottom-center",
+          }
+        );
+      }else{
+        toast.success('Post created successfully🤭 !', {position: "bottom-center"});
+      }
 
       // Log the post creation activity
       if(user && post_id){
@@ -269,10 +297,16 @@ export function PostForm() {
           entityType: ActivityType.POST,
           action: 'created',
           postId: post_id,
-          metadata: { expires_in_24: is24HourPost, mood: selectedMood?.value }
+          metadata: { expires_in_24: is24HourPost, mood: selectedMood?.value, is_prompt_response: !!promptId,
+            prompt_text: promptText || undefined }
         });
       }
   
+      // Clear the form and tags
+      form.reset();
+      setSelectedMood(postMoods[0]);
+      setTags([]);
+      clearDraft();
     // eslint-disable-next-line @typescript-eslint/no-unused-vars 
     } catch (error) {
       toast('Error!',
@@ -282,9 +316,6 @@ export function PostForm() {
       );
     } finally {
       setIsLoading(false);
-      form.reset();
-      setSelectedMood(postMoods[0]);
-      setTags([]);
     }
   }
 
