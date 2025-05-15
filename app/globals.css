@@ -177,6 +177,24 @@
     }
   }
 
+  @keyframes pulse-glow {
+    0% { box-shadow: 0 5px 15px rgba(124, 58, 237, 0.1), 0 0 0 0 rgba(124, 58, 237, 0.1); }
+    50% { box-shadow: 0 5px 25px rgba(124, 58, 237, 0.2), 0 0 10px 5px rgba(124, 58, 237, 0.1); }
+    100% { box-shadow: 0 5px 15px rgba(124, 58, 237, 0.1), 0 0 0 0 rgba(124, 58, 237, 0.1); }
+  }
+  @keyframes float {
+    0% { transform: translateY(0px); }
+    50% { transform: translateY(-8px); }
+    100% { transform: translateY(0px); }
+  }
+  @keyframes rotate {
+    0% { transform: rotate(0deg); }
+    25% { transform: rotate(-15deg); }
+    50% { transform: rotate(0deg); }
+    75% { transform: rotate(15deg); }
+    100% { transform: rotate(0deg); }
+  }
+
   /* Animation Utilities */
   --animate-accordion-down: accordion-down 0.2s ease-out;
   --animate-accordion-up: accordion-up 0.2s ease-out;
@@ -220,6 +238,16 @@
 
 @utility btn-flat-hover {
   @apply bg-ocean-600 border-ocean-600 text-white;
+}
+
+@utility pulse-animation {
+  animation: pulse-glow 2s ease-in-out infinite; /* Changed to infinite for continuous subtle pulse */
+}
+@utility float-animation {
+  animation: float 6s ease-in-out infinite;
+}
+@utility rotate-animation {
+  animation: rotate 1s ease-in-out;
 }
 
 @utility main-container {

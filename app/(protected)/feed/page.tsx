@@ -7,6 +7,7 @@ import TourProvider from '@/components/shared/Tour/TourProvider';
 import { FeedSteps } from '@/constants/tourSteps';
 import TourButton from '@/components/shared/Tour/TourButton';
 import WelcomeModalCard from '@/components/cards/WecomeModalCard';
+import  DailyPrompt  from '@/components/shared/DailyPrompt';
 
 export const metadata: Metadata = {
   title: 'Feed',
@@ -68,6 +69,9 @@ export default async function FeedPage() {
   return (
     <TourProvider steps={FeedSteps}>
       <div className="sm:container px-0! pt-3 pb-12">
+        <div className='px-3'>
+          <DailyPrompt/>
+        </div>
         <FeedList initialPosts={initialPosts} />
       </div>
 

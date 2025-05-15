@@ -40,6 +40,7 @@ import { useUserState } from '@/lib/store/user';
 import { logActivity } from '@/lib/activity-logger';
 import { ActivityType } from '@/types/activity';
 import { usePreferencesStore } from "@/lib/store/preferences-store";
+import { useSearchParams } from 'next/navigation';
 
 // Dynamic Imports
 const Loader = dynamic(() => import('../shared/loaders/Loader'), { ssr: false });
@@ -68,6 +69,7 @@ const MoodCarousel = dynamic(
 const POST_DRAFT_KEY = 'postFormDraft';
 
 export function PostForm() {
+  const searchParams = useSearchParams();
   const {preferences} = usePreferencesStore();
   const supabase = getSupabaseBrowserClient();
   const { toast } = useToast();
@@ -129,28 +131,6 @@ export function PostForm() {
     [preferences?.auto_save_drafts] // Recreate debounce function if preference changes
   );
 
-  // Effect to save draft when content changes
-  useEffect(() => {
-    if (preferences?.auto_save_drafts) {
-      debouncedSaveDraft(content);
-    }
-    // Cleanup function to cancel any pending saves on unmount or preference change
-    return () => {
-      debouncedSaveDraft.cancel();
-    };
-  }, [content, preferences?.auto_save_drafts, debouncedSaveDraft]);
-
-  // Effect to load draft on component mount
-  useEffect(() => {
-    if (typeof window !== 'undefined' && preferences?.auto_save_drafts) {
-      const savedDraft = localStorage.getItem(POST_DRAFT_KEY);
-      if (savedDraft) {
-        setValue('content', savedDraft, { shouldValidate: true });
-        handleInput(savedDraft);
-      }
-    }
-  }, [preferences?.auto_save_drafts, setValue]); // Run only once on mount or when preference changes
-
   // Function to clear the draft from local storage
   const clearDraft = () => {
     if (typeof window !== 'undefined') {
@@ -182,19 +162,73 @@ export function PostForm() {
   };
 
   // retrieve tags from content
-  const handleInput = (value: string) => {
-    // Extract tags
+  const handleInput = useCallback((value: string) => {
     const newTags = value.match(/#\w+/g) || [];
     const cleanTags = newTags
-      .filter((_, index) => index < 3)
+      .filter((_, index) => index < 3) // Limit to 3 tags
       .map(tag =>
         tag
           .slice(1)
           .replace(/[^a-zA-Z0-9_]/g, '')
           .toLowerCase(),
       );
-    setTags([...new Set(cleanTags)]); // Remove # from tags
-  };
+    setTags([...new Set(cleanTags)]);
+  }, [setTags]); // setTags is stable from useState
+
+  // Effect to load draft or prefill from prompt on component mount
+  useEffect(() => {
+    const promptTextQuery = searchParams.get('prompt');
+
+    if (promptTextQuery) {
+      const decodedPromptText = decodeURIComponent(promptTextQuery);
+      const initialContent = `Prompt: ${decodedPromptText}\n\n#DailyPrompt `;
+      
+      setValue('content', initialContent, { shouldValidate: true });
+      handleInput(initialContent);
+      
+      // Clear any saved draft if we are prefilling from a prompt
+      if (typeof window !== 'undefined' && preferences?.auto_save_drafts) {
+        console.log('Clearing saved draft');
+        localStorage.removeItem(POST_DRAFT_KEY);
+      }
+    } else if (typeof window !== 'undefined' && preferences?.auto_save_drafts) {
+      const savedDraft = localStorage.getItem(POST_DRAFT_KEY);
+      if (savedDraft) {
+        setValue('content', savedDraft, { shouldValidate: true });
+        handleInput(savedDraft);
+      }
+    }
+  // eslint-disable-next-line react-hooks/exhaustive-deps 
+  }, [searchParams, setValue, preferences?.auto_save_drafts, handleInput]);
+
+
+  useEffect(() => {
+    if (preferences?.auto_save_drafts) {
+      // Do not save draft if the content is the initial prompt prefill unless modified
+      const currentContent = form.getValues('content');
+      const promptTextQuery = searchParams.get('prompt');
+      let isInitialPromptFill = false;
+      if (promptTextQuery) {
+        const decodedPromptText = decodeURIComponent(promptTextQuery);
+        const initialContentPattern = `Prompt: ${decodedPromptText}\n\n#DailyPrompt `;
+        if (currentContent.trim() === initialContentPattern.trim() || currentContent === `Prompt: ${decodedPromptText}\n\n`) { // check both with and without #DailyPrompt initially
+          console.log("isInitialPromptFill")  
+          isInitialPromptFill = true;
+        }
+      }
+
+      if (!isInitialPromptFill || (isInitialPromptFill && content !== `Prompt: ${decodeURIComponent(promptTextQuery || '')}\n\n#DailyPrompt ` && content !== `Prompt: ${decodeURIComponent(promptTextQuery || '')}\n\n`)) {
+        console.log('Saving draft');
+         debouncedSaveDraft(content);
+      }
+    }
+    return () => {
+      debouncedSaveDraft.cancel();
+    };
+  }, [content, preferences?.auto_save_drafts, debouncedSaveDraft, searchParams, form.getValues]);
+
+
+
 
   // function to handle submit
   async function onSubmit(data: z.infer<typeof PostSchema>) {
