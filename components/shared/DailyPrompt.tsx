@@ -32,7 +32,6 @@ const streakCount = 5; // Dummy streak
     const {preferences} = usePreferencesStore()
   const router = useRouter();
   const [expanded, setExpanded] = useState(false);
-  const [notificationsEnabled, setNotificationsEnabled] = useState(true);
   const [isFlameRotating, setIsFlameRotating] = useState(false);
 
   const toggleExpanded = () => setExpanded(!expanded);
@@ -54,19 +53,6 @@ const streakCount = 5; // Dummy streak
     setTimeout(() => setIsFlameRotating(false), 1000); // Animation duration
   };
 
-  const handleNotificationToggle = (checked: boolean) => {
-    setNotificationsEnabled(checked);
-    if (checked) {
-      toast.success("Daily prompt notifications enabled!", {
-        description: "You'll receive a nudge each day.",
-        position: "bottom-center",
-      });
-    } else {
-      toast.info("Daily prompt notifications disabled.", {
-        position: "bottom-center",
-      });
-    }
-  };
   
   // Subtle pulse animation for the card
   useEffect(() => {
