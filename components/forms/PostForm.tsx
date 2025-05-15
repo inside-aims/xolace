@@ -24,7 +24,7 @@ import {
   PopoverTrigger,
 } from '@/components/ui/popover';
 import { Textarea } from '@/components/ui/textarea';
-import { useToast } from '../ui/use-toast';
+import {toast} from 'sonner';
 //import Loader from '../shared/loaders/Loader';
 import { PostSchema } from '@/validation';
 import { getSupabaseBrowserClient } from '@/utils/supabase/client';
@@ -72,7 +72,6 @@ export function PostForm() {
   const searchParams = useSearchParams();
   const {preferences} = usePreferencesStore();
   const supabase = getSupabaseBrowserClient();
-  const { toast } = useToast();
 
   //get user profile
   const user = useUserState(state => state.user);
@@ -252,18 +251,16 @@ export function PostForm() {
       });
 
       if (postError) {
-        toast({
-          variant: 'destructive',
-          title: 'Oops, something must have gone wrong 😵‍💫! try again',
-        });
+        toast.error(
+         'Oops, something must have gone wrong 😵‍💫! try again',{
+          position: "bottom-center",
+         }
+        );
         return;
       }
 
       // show notification
-      toast({
-        variant: 'default',
-        title: 'Post created successfully🤭 !',
-      });
+      toast.success('Post created successfully🤭 !', {position: "bottom-center"});
 
       // Log the post creation activity
       if(user && post_id){
@@ -278,11 +275,11 @@ export function PostForm() {
   
     // eslint-disable-next-line @typescript-eslint/no-unused-vars 
     } catch (error) {
-      toast({
-        title: 'Error!',
-        description: 'Ooops🫢 !! Could not create post, Please try again',
-        variant: 'destructive',
-      });
+      toast('Error!',
+        {description: 'Ooops🫢 !! Could not create post, Please try again',
+          position: "bottom-center",
+          }
+      );
     } finally {
       setIsLoading(false);
       form.reset();

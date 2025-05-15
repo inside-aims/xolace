@@ -8,7 +8,7 @@ import { Label } from "@/components/ui/label";
 import { Card } from "@/components/ui/card"; 
 import { ArrowRight, Flame, ChevronDown, ChevronUp, Sparkles, CalendarDays } from "lucide-react";
 import { toast } from "sonner";
-import { formUrlQuery } from "@/lib/url";
+import { usePreferencesStore } from "@/lib/store/preferences-store";
 import { motion, AnimatePresence } from "framer-motion";
 import qs from 'query-string';
 
@@ -29,6 +29,7 @@ const DUMMY_PAST_PROMPTS = [
 const streakCount = 5; // Dummy streak
 
  const DailyPrompt = () => {
+    const {preferences} = usePreferencesStore()
   const router = useRouter();
   const [expanded, setExpanded] = useState(false);
   const [notificationsEnabled, setNotificationsEnabled] = useState(true);
@@ -90,7 +91,9 @@ const streakCount = 5; // Dummy streak
         transition={{ duration: 0.6, ease: "anticipate" }}
         className="float-animation" // Apply float animation here
       >
-        <Card className="overflow-hidden border-none shadow-xl bg-gradient-to-br from-purple-600 to-lavender-700 dark:from-ocean-700/80 dark:to-lavender-800/80 relative text-white">
+        {
+            preferences?.daily_prompt_enabled ? (
+                <Card className="overflow-hidden border-none shadow-xl bg-gradient-to-br from-purple-600 to-lavender-700 dark:from-ocean-700/80 dark:to-lavender-800/80 relative text-white">
           {/* Decorative Glows */}
           <div className="absolute top-0 right-0 w-40 h-40 bg-indigo-400/30 rounded-full -mr-20 -mt-20 blur-3xl animate-pulse"></div>
           <div className="absolute bottom-0 left-0 w-32 h-32 bg-purple-400/30 rounded-full -ml-16 -mb-16 blur-3xl animate-pulse delay-1000"></div>
@@ -129,8 +132,8 @@ const streakCount = 5; // Dummy streak
               Share Your Thoughts <ArrowRight className="ml-2.5 h-5 w-5" />
             </Button>
 
-            <div className="mt-5 pt-5 border-t border-white/10 dark:border-black/20">
-              <div className="flex items-center justify-between mb-1">
+            <div className="mt-4 pt-2 border-t border-white/10 dark:border-black/20">
+              {/* <div className="flex items-center justify-between mb-1">
                 <Label htmlFor="notifications-toggle" className="text-sm font-medium flex items-center">
                   Daily Prompt Notifications
                 </Label>
@@ -143,12 +146,12 @@ const streakCount = 5; // Dummy streak
               </div>
                <p className="text-xs text-purple-200 dark:text-purple-300 mb-2">
                 A quiet nudge each day to help you express yourself.
-              </p>
+              </p> */}
 
               <Button
                 variant="ghost"
                 onClick={toggleExpanded}
-                className="w-full text-purple-200 hover:text-white hover:bg-white/5 dark:hover:bg-black/10 flex items-center justify-center py-2.5 rounded-md"
+                className="w-full text-purple-200 hover:text-white hover:bg-white/5 dark:hover:bg-black/10 flex items-center justify-center py-2 rounded-md"
               >
                 {expanded ? "Hide Past Prompts" : "Show Past Prompts"}
                 {expanded ? <ChevronUp className="ml-2 h-4 w-4" /> : <ChevronDown className="ml-2 h-4 w-4" />}
@@ -175,7 +178,13 @@ const streakCount = 5; // Dummy streak
               </motion.div>
             )}
           </AnimatePresence>
-        </Card>
+                </Card>
+            ):(
+                <Card className="overflow-hidden border-none shadow-xl bg-gradient-to-br from-purple-600 to-lavender-700 dark:from-ocean-700/80 dark:to-lavender-800/80 relative text-white">
+                    Toggle on Daily Prompt to get started or well continue with streaks!
+                </Card>
+            )
+        }
       </motion.div>
     </div>
   );
