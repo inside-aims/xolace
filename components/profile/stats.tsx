@@ -14,7 +14,7 @@ export function Stats() {
 
   return(
     <>
-      <div className={"w-full flex flex-col items-start gap-4"}>
+      <div className={"w-full flex flex-col items-start gap-4 mx-4 md:mx-0"}>
         <h3 className={"font-semibold text-xl hidden md:flex"}> Stats </h3>
         <div className="w-full grid grid-cols-12 items-stretch justify-between gap-4">
           <div

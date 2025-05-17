@@ -14,7 +14,7 @@ export function TopTags() {
 
   return(
     <>
-      <div className="w-full flex flex-col gap-4">
+      <div className="w-full flex flex-col gap-4 mx-4 md:mx-0">
         <h3 className="font-semibold text-xl hidden md:flex">Top Tags</h3>
         <div className="flex flex-wrap gap-3">
           {postTags

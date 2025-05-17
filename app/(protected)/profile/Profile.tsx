@@ -95,8 +95,8 @@ const Profile = () => {
   return (
       <div className="w-full grid grid-cols-12 md:h-screen pb-8 md:pb-0">
         <div
-          className="col-span-12 md:col-span-8 px-4 md:px-8 border-0 md:border-e space-y-4 md:space-y-12">
-          <div className={"flex flex-col md:flex-row items-start md:items-center pt-4 md:pt-8 gap-4"}>
+          className="col-span-12 md:col-span-8 px-0 md:px-8 border-0 md:border-e space-y-4 md:space-y-12">
+          <div className={"flex flex-col md:flex-row px-4 md:px-0 items-start md:items-center pt-4 md:pt-8 gap-4"}>
             {/*profile avatar and username section*/}
             <Avatar className="w-40 h-40">
               <AvatarImage
@@ -139,7 +139,7 @@ const Profile = () => {
 
           {/*profile options on only mobile view*/}
           <div className="block md:hidden w-full">
-            <div className="flex items-center gap-2 overflow-x-auto touch-pan-x md:touch-none flex-nowrap no-scrollbar pb-2 no-scrollbar"
+            <div className="mx-4 flex w-full items-center gap-2 overflow-x-auto touch-pan-x md:touch-none flex-nowrap no-scrollbar pb-2"
               ref={scrollRef}
             >
               {profileMenu.map((option) => {
@@ -169,10 +169,9 @@ const Profile = () => {
             </div>
           </div>
 
-
           {/*profile stats badges and top tags only on desktop view*/}
           <div className="hidden md:block col-span-12 md:col-span-8 overflow-y-auto space-y-12">
-          <Stats/>
+            <Stats/>
             <TopTags/>
           </div>
         </div>
@@ -193,7 +192,7 @@ const Profile = () => {
               {profileMenu.filter((menu) =>
                 menu.key !== 'stats' || 'top-tags')
                 .map((menu) => (
-                  <TabsContent key={menu.key} value={menu.key}>
+                  <TabsContent key={menu.key} value={menu.key} className={"rounded-none"}>
                     {menu.children}
                   </TabsContent>
                 ))}
