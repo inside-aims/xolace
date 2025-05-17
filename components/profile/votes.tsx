@@ -1,5 +1,5 @@
 
-export default function Likes() {
+export default function Votes() {
   return(
     <div>
       Likes

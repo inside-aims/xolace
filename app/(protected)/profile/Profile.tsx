@@ -10,8 +10,7 @@ import {Stats} from "@/components/profile/stats";
 import {Tabs, TabsList, TabsContent, TabsTrigger} from '@/components/ui/tabs'
 import Posts from "@/components/profile/posts";
 import YourReplies from "@/components/profile/your-replies";
-import Likes from "@/components/profile/likes";
-import Saved from "@/components/profile/saved";
+import Votes from "@/components/profile/votes";
 
 const Profile = () => {
   // get user profile data
@@ -88,8 +87,7 @@ const Profile = () => {
     {key: 'topTags', name: 'Top Tags', children: <TopTags/>},
     {key: 'posts', name: 'Posts', children: <Posts/> },
     {key: 'yourReplies', name: 'Your Replies', children: <YourReplies/>},
-    {key: 'likes', name: 'Likes', children: <Likes/>},
-    {key: 'saved', name: 'Saved', children: <Saved/>},
+    {key: 'votes', name: 'Votes', children: <Votes/>},
   ]
 
   return (
