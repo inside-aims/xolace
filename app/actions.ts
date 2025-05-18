@@ -400,6 +400,57 @@ export const fetchTags = async () => {
 
   if (error) throw error;
 
-  // Extract and return the nested posts data
+  
   return data || [];
 };
+
+export async function fetchDailyPromptAction() {
+  const supabase = await createClient();
+  const today = new Date().toISOString().split('T')[0];
+
+  try {
+    const { data: promptData, error } = await supabase
+      .from('daily_prompts')
+      .select(`
+        id,
+        prompt_text,
+        created_at,
+        active_on
+      `)
+      .eq('active_on', today)
+      .single();
+
+    if (error) {
+      return { success: false, error: error.message };
+    }
+
+    return { success: true, data: promptData };
+  } catch (error) {
+    return error ? { success: false, error: 'Failed to fetch daily prompt' } : {success: false, error: 'Failed to fetch daily prompt, Try again'};
+  }
+}
+
+export async function fetchUserStreakAction(userId: string) {
+  if (!userId) {
+    return { success: false, error: 'User ID is required.', data: { current_streak: 0 } };
+  }
+  const supabase = await createClient();
+  try {
+    const { data, error } = await supabase
+      .from('prompt_streaks')
+      .select('current_streak')
+      .eq('user_id', userId)
+      .single();
+
+    if (error) {
+      if (error.code === 'PGRST116') { // PGRST116: "Not Found" - user might not have a streak record yet
+        return { success: true, data: { current_streak: 0 } };
+      }
+      return { success: false, error: error.message, data: { current_streak: 0 } };
+    }
+    
+    return { success: true, data: data || { current_streak: 0 } };
+  } catch (error) {
+    return error ? { success: false, error: 'Failed to fetch user streak', data: { current_streak: 0 } } : { success: false, error: 'Failed to fetch user streak, Try again', data: { current_streak: 0 }};
+  }
+}

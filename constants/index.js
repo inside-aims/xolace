@@ -257,3 +257,11 @@ export const filters = [
   { name: 'controversial', label: 'Spicy', icon: <Flame size={16} /> },
   { name: 'recent', label: 'Fresh', icon: <Clock size={16} /> },
 ];
+
+export   const tips = [
+  "How are you… really?",
+"What emotion is taking up the most space in you today?",
+"If your mood were a weather pattern, what would it be and why?",
+"What’s been heavy on your mind that you haven’t shared?",
+"When was the last time you truly felt understood?"
+]

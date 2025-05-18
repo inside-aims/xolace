@@ -23,7 +23,7 @@ const View = ({ id, viewsCount, createdBy, content }: { id: string; viewsCount: 
     }, 3000);
 
     return () => clearTimeout(timer);
-  }, [id, user?.id]);
+  }, [id, user?.id,content, createdBy]);
 
   return (
     <div className="view-container">

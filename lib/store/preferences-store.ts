@@ -1,6 +1,7 @@
 import { create } from 'zustand';
 import { getSupabaseBrowserClient } from '@/utils/supabase/client';
 import { useUserState } from './user'; // Assuming user store provides the user ID
+import {toast } from 'sonner';
 
 // Define types based on your Supabase schema (adjust if needed)
 export type ThemeOptions = 'system' | 'light' | 'dark';
@@ -159,9 +160,11 @@ export const usePreferencesStore = create<PreferencesState>((set, get) => ({
           preferences: currentPreferences,
           error: `Failed to update ${key}`,
         });
+        toast.error(`Failed to update ${key}`);
         throw error;
       }
 
+      toast.success(`Updated ${key} successfully`);
        // eslint-disable-next-line @typescript-eslint/no-explicit-any
     } catch (error: any) {
       console.error(`Error updating preference ${key}:`, error);
