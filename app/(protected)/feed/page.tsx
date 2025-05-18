@@ -7,11 +7,11 @@ import TourProvider from '@/components/shared/Tour/TourProvider';
 import { FeedSteps } from '@/constants/tourSteps';
 import TourButton from '@/components/shared/Tour/TourButton';
 import WelcomeModalCard from '@/components/cards/WecomeModalCard';
-import  DailyPrompt  from '@/components/shared/DailyPrompt';
+import DailyPrompt from '@/components/shared/DailyPrompt';
 
 export const metadata: Metadata = {
   title: 'Feed',
-}
+};
 
 // Function to fetch posts with a Supabase client
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -68,17 +68,16 @@ export default async function FeedPage() {
 
   return (
     <TourProvider steps={FeedSteps}>
-      <div className="sm:container px-0! pt-3 pb-12">
-        <div className='px-3'>
-          <DailyPrompt/>
-        </div>
+      <div className="relative bg-green-400 px-0! pt-3 pb-12 sm:container">
+        <DailyPrompt />
+
         <FeedList initialPosts={initialPosts} />
       </div>
 
-      <div className="fixed bottom-10 right-6  md:bottom-10 md:right-20 z-50 block rounded-full">
+      <div className="fixed right-6 bottom-10 z-50 block rounded-full md:right-20 md:bottom-10">
         <TourButton />
       </div>
-      <WelcomeModalCard/>
+      <WelcomeModalCard />
     </TourProvider>
   );
 }
