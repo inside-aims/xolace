@@ -37,7 +37,7 @@ const Profile = () => {
   ]
 
   return (
-      <div className="w-full grid grid-cols-12 md:h-screen pb-8 md:pb-0">
+      <div className="w-full grid grid-cols-12 md:h-screen pb-12 md:pb-0">
         <div
           className="col-span-12 md:col-span-8 px-0 md:px-8 border-0 md:border-e space-y-4 md:space-y-12">
           <div className={"flex flex-col md:flex-row px-4 md:px-0 items-start md:items-center pt-4 md:pt-8 gap-4"}>

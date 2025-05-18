@@ -8,7 +8,7 @@ import { getSupabaseAdminClient } from '@/utils/supabase/adminClient';
 import { signUpSchema } from '@/validation';
 import { validatedAction } from '@/lib/auth/middleware';
 import { sendOTPLink } from '@/utils/sendOTPLink';
-import { Post, User } from '@/types/global';
+import { Post, Tag, User } from '@/types/global';
 import { revalidatePath , revalidateTag} from 'next/cache';
 import { PostgrestError } from '@supabase/supabase-js';
 import { logActivity } from '@/lib/activity-logger';
@@ -383,4 +383,23 @@ export const fetchCollectionPostsAction = async (
 
   // Extract and return the nested posts data
   return data?.map((entry) => entry.posts) || [];
+};
+
+export const fetchTags = async () => {
+
+  const supabase = await createClient();
+
+  const { data, error }: {data: Tag[] | null, error: PostgrestError | null}  = await supabase
+    .from('tags')
+    .select(
+      `
+      *
+    `
+    ).limit(6)
+    .order('post', { ascending: false });
+
+  if (error) throw error;
+
+  // Extract and return the nested posts data
+  return data || [];
 };
