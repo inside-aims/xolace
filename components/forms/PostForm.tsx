@@ -209,7 +209,6 @@ export function PostForm() {
         handleInput(savedDraft);
       }
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [searchParams, setValue, preferences?.auto_save_drafts, handleInput]);
 
   useEffect(() => {
@@ -252,6 +251,7 @@ export function PostForm() {
     debouncedSaveDraft,
     searchParams,
     form.getValues,
+    form
   ]);
 
   // function to handle submit

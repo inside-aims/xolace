@@ -408,7 +408,7 @@ export async function fetchDailyPromptAction() {
 
     return { success: true, data: promptData };
   } catch (error) {
-    return { success: false, error: 'Failed to fetch daily prompt' };
+    return error ? { success: false, error: 'Failed to fetch daily prompt' } : {success: false, error: 'Failed to fetch daily prompt, Try again'};
   }
 }
 
@@ -433,6 +433,6 @@ export async function fetchUserStreakAction(userId: string) {
     
     return { success: true, data: data || { current_streak: 0 } };
   } catch (error) {
-    return { success: false, error: 'Failed to fetch user streak', data: { current_streak: 0 } };
+    return error ? { success: false, error: 'Failed to fetch user streak', data: { current_streak: 0 } } : { success: false, error: 'Failed to fetch user streak, Try again', data: { current_streak: 0 }};
   }
 }
