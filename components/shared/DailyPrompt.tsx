@@ -12,6 +12,9 @@ import { fetchDailyPromptAction } from "@/app/actions";
 import { format } from "date-fns";
 import { useUserState } from "@/lib/store/user";
 import { fetchUserStreakAction } from "@/app/actions";
+import { TipsBanner } from "./TipsBanner";
+import { WordRotate } from "../magicui/word-rotate";
+import { tips } from "@/constants";
 
 interface DailyPromptData {
   id: string;
@@ -96,9 +99,12 @@ const DailyPrompt = () => {
 
   if (!isLoadingPrompt && !preferences?.daily_prompt_enabled) {
     return (
-      <Card className="overflow-hidden border-none shadow-xl bg-gradient-to-br from-purple-600 to-lavender-700 dark:from-ocean-700/80 dark:to-lavender-800/80 relative text-white p-4 mb-1">
-        Toggle on Daily Prompt to get started or well continue with streaks🔥!
-      </Card>
+      // <Card className="overflow-hidden border-none shadow-xl bg-gradient-to-br from-purple-600 to-lavender-700 dark:from-ocean-700/80 dark:to-lavender-800/80 relative text-white p-4 mb-1">
+      //   Toggle on Daily Prompt to get started or well continue with streaks🔥!
+      // </Card>
+      <TipsBanner className="shadow-xl bg-gradient-to-br from-ocean-500 to-lavender-600 dark:from-ocean-700/90 dark:to-lavender-800/90 md:left-[var(--sidebar-width)] md:w-[calc(100%-var(--sidebar-width))] text-white">
+        <WordRotate className="text-sm md:text-md lg:text-lg" words={tips} duration={5000} />
+     </TipsBanner>
     );
   }
 
@@ -116,14 +122,17 @@ const DailyPrompt = () => {
 
   if (!promptData) {
     return (
-      <Card className="overflow-hidden border-none shadow-xl bg-gradient-to-br from-purple-600 to-lavender-700 dark:from-ocean-700/80 dark:to-lavender-800/80 relative text-white p-4">
-        No prompt available for today.
-      </Card>
+      // <Card className="overflow-hidden border-none shadow-xl bg-gradient-to-br from-purple-600 to-lavender-700 dark:from-ocean-700/80 dark:to-lavender-800/80 relative text-white p-4">
+      //   No prompt available for today.
+      // </Card>
+      <TipsBanner className="shadow-xl bg-gradient-to-br from-ocean-500 to-lavender-600 dark:from-ocean-700/90 dark:to-lavender-800/90 text-white md:left-[var(--sidebar-width)] md:w-[calc(100%-var(--sidebar-width))]">
+        <WordRotate className="text-sm md:text-md lg:text-lg" words={["No prompt available for today.", "Ooops !! Our bad 😅"]} duration={5000} />
+     </TipsBanner>
     );
   }
 
   return (
-    <div className="w-full my-3 sm:my-5" id="daily-prompt-card-container">
+    <div className="w-full mb-3 sm:mb-4" id="daily-prompt-card-container">
       <motion.div
         initial={{ opacity: 0, y: -20 }}
         animate={{ opacity: 1, y: 0 }}

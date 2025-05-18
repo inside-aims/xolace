@@ -68,9 +68,8 @@ export default async function FeedPage() {
 
   return (
     <TourProvider steps={FeedSteps}>
-      <div className="relative bg-green-400 px-0! pt-3 pb-12 sm:container">
+      <div className="  px-0! pt-8 pb-12 sm:container min-h-full overflow-auto">
         <DailyPrompt />
-
         <FeedList initialPosts={initialPosts} />
       </div>
 

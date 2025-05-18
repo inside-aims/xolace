@@ -27,7 +27,7 @@ export const TipsBanner = ({
   return (
     <motion.div
       className={cn(
-        'sticky inset-x-0 top-0 z-40 flex min-h-14 w-full items-center justify-center bg-transparent px-4 py-1',
+        'fixed inset-x-0 top-[var(--header-height)] z-40 flex min-h-10 w-full items-center justify-center bg-transparent px-4 py-1',
         className,
       )}
       initial={{
