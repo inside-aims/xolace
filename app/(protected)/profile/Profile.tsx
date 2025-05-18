@@ -9,8 +9,6 @@ import {TopTags} from "@/components/profile/top-tags";
 import {Stats} from "@/components/profile/stats";
 import {Tabs, TabsList, TabsContent, TabsTrigger} from '@/components/ui/tabs'
 import Posts from "@/components/profile/posts";
-import YourReplies from "@/components/profile/your-replies";
-import Votes from "@/components/profile/votes";
 
 const Profile = () => {
   // get user profile data
@@ -31,63 +29,11 @@ const Profile = () => {
     setSelectedCategory(itemKey);
   };
 
-  // fetch user posts
-  // useEffect(() => {
-  //   if (!user) {
-  //     return;
-  //   }
-  //
-  //   const fetchUserPosts = async () => {
-  //     // initialize supabase client
-  //     const supabase = getSupabaseBrowserClient();
-  //     const postStatement = supabase
-  //       .from('posts')
-  //       .select(
-  //         `
-  //      *,
-  //       posttags (
-  //       tags (
-  //         name
-  //       )
-  //     ),
-  //         votes(
-  //         user_id,
-  //         vote_type
-  //         ),
-  //         comments:comments(count),
-  //         views:views(count),
-  //         collections(
-  //         user_id
-  //         )
-  //   `,
-  //       )
-  //       .eq('created_by', user?.id)
-  //       .order('created_at', { ascending: false });
-  //     const { data: postData, error } = await postStatement;
-  //
-  //     if (error) {
-  //       toast({
-  //         title: 'Error fetching posts',
-  //         description:
-  //           'Something must have gone wrong. Kindly refresh the page',
-  //         variant: 'destructive',
-  //       });
-  //     } else {
-  //       setPosts(postData);
-  //       setIsLoadingPosts(false);
-  //     }
-  //   };
-  //
-  //   fetchUserPosts();
-  // }, [user?.id]);
-
   //dummy data for profile menu options
   const profileMenu: {key: string, name: string, children: React.ReactNode}[] = [
     {key: 'stats', name: 'Stats', children: <Stats/>},
     {key: 'topTags', name: 'Top Tags', children: <TopTags/>},
-    {key: 'posts', name: 'Posts', children: <Posts/> },
-    {key: 'yourReplies', name: 'Your Replies', children: <YourReplies/>},
-    {key: 'votes', name: 'Votes', children: <Votes/>},
+    {key: 'posts', name: 'Your Posts', children: <Posts/> },
   ]
 
   return (
@@ -178,11 +124,11 @@ const Profile = () => {
         <div className="hidden md:block col-span-12 md:col-span-4 overflow-y-auto">
           <div className="flex flex-row w-full gap-4 overflow-x-auto whitespace-nowrap flex-nowrap no-scrollbar">
             <Tabs defaultValue="" className="w-full">
-              <TabsList className="m-2 p-2 gap-2">
+              <TabsList className="flex m-2 gap-2">
                 {profileMenu.filter((menu) =>
                   menu.key !== 'stats' && menu.key !== 'topTags')
                   .map((menu) => (
-                    <TabsTrigger key={menu.key} value={menu.key}>
+                    <TabsTrigger key={menu.key} value={menu.key} className={"px-8"}>
                       {menu.name}
                     </TabsTrigger>
                   ))}
