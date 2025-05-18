@@ -63,7 +63,7 @@ export default async function ProtectedLayout({
           </Breadcrumb>
         </div>
       </header> */}
-            <section className="main-container">{children}</section>
+            <section className="main-container relative">{children}</section>
             <Bottombar />
           </SidebarInset>
           {/* <SidebarRight /> */}
