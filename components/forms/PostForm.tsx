@@ -6,14 +6,14 @@ import React, {
   useMemo,
   useEffect,
   useCallback,
-} from 'react'; 
+} from 'react';
 import Image from 'next/image';
 import dynamic from 'next/dynamic';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useForm } from 'react-hook-form';
 import { z } from 'zod';
 import { Smile } from 'lucide-react';
-import { motion } from 'framer-motion';
+import { motion, AnimatePresence } from 'framer-motion';
 import debounce from 'lodash.debounce';
 
 import { Button } from '@/components/ui/button';
@@ -75,6 +75,11 @@ const MoodCarousel = dynamic(
 // Define a key for local storage
 const POST_DRAFT_KEY = 'postFormDraft';
 
+const placeholders = [
+  "What's on your mind ?",
+  'Use # for tags! At most 3',
+  'Share your experiences',
+];
 export function PostForm() {
   const searchParams = useSearchParams();
   const router = useRouter();
@@ -92,6 +97,35 @@ export function PostForm() {
 
   const [isEmojiPickerOpen, setIsEmojiPickerOpen] = useState(false);
   const textareaRef = useRef<HTMLTextAreaElement>(null);
+
+  const [currentPlaceholder, setCurrentPlaceholder] = useState(0);
+
+  const intervalRef = useRef<NodeJS.Timeout | null>(null);
+  const startAnimation = () => {
+    intervalRef.current = setInterval(() => {
+      setCurrentPlaceholder(prev => (prev + 1) % placeholders.length);
+    }, 3000);
+  };
+  const handleVisibilityChange = () => {
+    if (document.visibilityState !== 'visible' && intervalRef.current) {
+      clearInterval(intervalRef.current); // Clear the interval when the tab is not visible
+      intervalRef.current = null;
+    } else if (document.visibilityState === 'visible') {
+      startAnimation(); // Restart the interval when the tab becomes visible
+    }
+  };
+
+  useEffect(() => {
+    startAnimation();
+    document.addEventListener('visibilitychange', handleVisibilityChange);
+
+    return () => {
+      if (intervalRef.current) {
+        clearInterval(intervalRef.current);
+      }
+      document.removeEventListener('visibilitychange', handleVisibilityChange);
+    };
+  }, [placeholders]);
 
   // get mood boolean value
   // const isNeutral = selectedMood?.value === 'neutral';
@@ -251,7 +285,7 @@ export function PostForm() {
     debouncedSaveDraft,
     searchParams,
     form.getValues,
-    form
+    form,
   ]);
 
   // function to handle submit
@@ -280,7 +314,7 @@ export function PostForm() {
           mood: selectedMood?.value,
           tag_names: tags,
           is_sensitive: preferences?.mark_sensitive_by_default ?? false,
-          is_prompt_response
+          is_prompt_response,
         },
       );
 
@@ -383,7 +417,6 @@ export function PostForm() {
                         clearDraft();
                       }
                     }}
-                    placeholder="What's on your mind? Use # for tags! At most 3"
                     className={`no-focus text-dark-2 h-[150px] resize-none pt-8! pr-10! transition-all duration-300 dark:text-white ${moodClasses} `}
                     id="tags-guide"
                   />
@@ -446,6 +479,35 @@ export function PostForm() {
                       />
                     </PopoverContent>
                   </Popover>
+
+                  <div className="pointer-events-none absolute inset-0 flex items-center rounded-full">
+                    <AnimatePresence mode="wait">
+                      {!content && (
+                        <motion.p
+                          initial={{
+                            y: 5,
+                            opacity: 0,
+                          }}
+                          key={`current-placeholder-${currentPlaceholder}`}
+                          animate={{
+                            y: 0,
+                            opacity: 1,
+                          }}
+                          exit={{
+                            y: -15,
+                            opacity: 0,
+                          }}
+                          transition={{
+                            duration: 0.6,
+                            ease: 'linear',
+                          }}
+                          className="w-[calc(100%-2rem)] truncate pl-4 text-left text-sm font-normal text-neutral-500 sm:pl-12 sm:text-base dark:text-zinc-500"
+                        >
+                          {placeholders[currentPlaceholder]}
+                        </motion.p>
+                      )}
+                    </AnimatePresence>
+                  </div>
                 </div>
               </FormControl>
 
