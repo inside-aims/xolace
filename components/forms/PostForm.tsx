@@ -97,7 +97,9 @@ export function PostForm() {
 
   const [isEmojiPickerOpen, setIsEmojiPickerOpen] = useState(false);
   const textareaRef = useRef<HTMLTextAreaElement>(null);
-
+  const canvasRef = useRef<HTMLCanvasElement>(null);
+  const newDataRef = useRef<any[]>([]);
+  const [animating, setAnimating] = useState(false);
   const [currentPlaceholder, setCurrentPlaceholder] = useState(0);
 
   const intervalRef = useRef<NodeJS.Timeout | null>(null);
@@ -289,103 +291,242 @@ export function PostForm() {
   ]);
 
   // function to handle submit
-  async function onSubmit(data: z.infer<typeof PostSchema>) {
-    // save post values to db
-    setIsLoading(true);
-    const { content, is24HourPost } = data;
-    // remove tags from post content
-    const contentWithoutTags = removeHashtags(content);
-    const duration = is24HourPost ? 24 : null;
-    const expires_at = duration ? calculateExpiryDate(duration) : null;
+  // Canvas drawing function
+  const draw = useCallback(() => {
+    if (!textareaRef.current) return;
+    const canvas = canvasRef.current;
+    if (!canvas) return;
+    const ctx = canvas.getContext('2d');
+    if (!ctx) return;
 
-    try {
-      // Get prompt_id from searchParams if it exists
-      const promptId = searchParams.get('prompt_id');
-      const promptText = searchParams.get('prompt');
-      const is_prompt_response = promptId ? true : false;
+    canvas.width = textareaRef.current.offsetWidth;
+    canvas.height = textareaRef.current.offsetHeight;
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
 
-      const { data: post_id, error: postError } = await supabase.rpc(
-        'create_post_with_tags',
-        {
-          content: contentWithoutTags,
-          duration: duration ? `${duration}` : duration,
-          expires_at,
-          expires_in_24hr: is24HourPost,
-          mood: selectedMood?.value,
-          tag_names: tags,
-          is_sensitive: preferences?.mark_sensitive_by_default ?? false,
-          is_prompt_response,
-        },
-      );
+    const computedStyles = getComputedStyle(textareaRef.current);
+    const fontSize = parseFloat(computedStyles.getPropertyValue('font-size'));
+    ctx.font = `${fontSize}px ${computedStyles.fontFamily}`;
+    ctx.fillStyle = computedStyles.color;
 
-      if (postError) {
-        toast.error('Oops, something must have gone wrong 😵‍💫! try again', {
-          position: 'bottom-center',
-        });
-        return;
-      }
+    // Split content by newlines to render multiple lines
+    const lines = content.split('\n');
+    const lineHeight = fontSize * 1.2;
 
-      // If this is a prompt response, create the prompt response record
-      if (promptId && post_id && user) {
-        const { error: promptResponseError } = await supabase
-          .from('prompt_responses')
-          .insert({
-            post_id: post_id,
-            prompt_id: promptId,
-            user_id: user.id,
+    lines.forEach((line, index) => {
+      ctx.fillText(line, 16, (index + 1) * lineHeight);
+    });
+
+    const imageData = ctx.getImageData(0, 0, canvas.width, canvas.height);
+    const pixelData = imageData.data;
+    const newData: any[] = [];
+
+    for (let t = 0; t < canvas.height; t++) {
+      let i = 4 * t * canvas.width;
+      for (let n = 0; n < canvas.width; n++) {
+        let e = i + 4 * n;
+        if (
+          pixelData[e] !== 0 ||
+          pixelData[e + 1] !== 0 ||
+          pixelData[e + 2] !== 0
+        ) {
+          newData.push({
+            x: n,
+            y: t,
+            color: [
+              pixelData[e],
+              pixelData[e + 1],
+              pixelData[e + 2],
+              pixelData[e + 3],
+            ],
           });
-
-        if (promptResponseError) {
-          console.error('Error creating prompt response:', promptResponseError);
         }
       }
-
-      // show notification
-      if (promptId) {
-        toast.success('Your response has been saved!🙂‍↕️', {
-          position: 'bottom-center',
-        });
-      } else {
-        toast.success('Post created successfully🤭 !', {
-          position: 'bottom-center',
-        });
-      }
-
-      console.log('come on');
-      // Log the post creation activity
-      if (user && post_id) {
-        await logActivity({
-          userId: user.id,
-          entityType: ActivityType.POST,
-          action: 'created',
-          postId: post_id,
-          metadata: {
-            expires_in_24: is24HourPost,
-            mood: selectedMood?.value,
-            is_prompt_response: !!promptId,
-            prompt_text: promptText || undefined,
-          },
-        });
-      }
-
-      // Clear the form and tags
-      form.reset();
-      setSelectedMood(postMoods[0]);
-      setTags([]);
-      clearDraft();
-
-      if (promptId) {
-        router.replace(pathname);
-      }
-      // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    } catch (error) {
-      toast('Error!', {
-        description: 'Ooops🫢 !! Could not create post, Please try again',
-        position: 'bottom-center',
-      });
-    } finally {
-      setIsLoading(false);
     }
+
+    newDataRef.current = newData.map(({ x, y, color }) => ({
+      x,
+      y,
+      r: 1,
+      color: `rgba(${color[0]}, ${color[1]}, ${color[2]}, ${color[3] / 255})`,
+    }));
+  }, [content]);
+
+  // Animation function
+  const animate = (start: number) => {
+    const animateFrame = (pos: number = 0) => {
+      requestAnimationFrame(() => {
+        const newArr = [];
+        for (let i = 0; i < newDataRef.current.length; i++) {
+          const current = newDataRef.current[i];
+          if (current.x < pos) {
+            newArr.push(current);
+          } else {
+            if (current.r <= 0) {
+              current.r = 0;
+              continue;
+            }
+            current.x += Math.random() > 0.5 ? 1 : -1;
+            current.y += Math.random() > 0.5 ? 1 : -1;
+            current.r -= 0.05 * Math.random();
+            newArr.push(current);
+          }
+        }
+        newDataRef.current = newArr;
+        if (!canvasRef.current) {
+          return;
+        }
+        const ctx = canvasRef.current?.getContext('2d');
+        if (ctx) {
+          ctx.clearRect(
+            pos,
+            0,
+            canvasRef.current.width,
+            canvasRef.current.height,
+          );
+          newDataRef.current.forEach(t => {
+            const { x: n, y: i, r: s, color: color } = t;
+            if (n > pos) {
+              ctx.beginPath();
+              ctx.rect(n, i, s, s);
+              ctx.fillStyle = color;
+              ctx.strokeStyle = color;
+              ctx.stroke();
+            }
+          });
+        }
+        if (newDataRef.current.length > 0) {
+          animateFrame(pos - 8);
+        } else {
+          setAnimating(false);
+        }
+      });
+    };
+    animateFrame(start);
+  };
+
+  // Trigger animation on submit
+  const vanishAndSubmit = () => {
+    if (animating || !content.trim()) return;
+
+    setAnimating(true);
+    draw();
+
+    if (textareaRef.current) {
+      const maxX = newDataRef.current.reduce(
+        (prev, current) => (current.x > prev ? current.x : prev),
+        0,
+      );
+      animate(maxX);
+    }
+  };
+
+  // Modified onSubmit function
+  async function onSubmit(data: z.infer<typeof PostSchema>) {
+    if (animating) return; // Prevent multiple submissions during animation
+
+    vanishAndSubmit(); // Start animation
+
+    setTimeout(async () => {
+      // save post values to db
+      setIsLoading(true);
+      const { content, is24HourPost } = data;
+      // remove tags from post content
+      const contentWithoutTags = removeHashtags(content);
+      const duration = is24HourPost ? 24 : null;
+      const expires_at = duration ? calculateExpiryDate(duration) : null;
+
+      try {
+        // Get prompt_id from searchParams if it exists
+        const promptId = searchParams.get('prompt_id');
+        const promptText = searchParams.get('prompt');
+        const is_prompt_response = promptId ? true : false;
+
+        const { data: post_id, error: postError } = await supabase.rpc(
+          'create_post_with_tags',
+          {
+            content: contentWithoutTags,
+            duration: duration ? `${duration}` : duration,
+            expires_at,
+            expires_in_24hr: is24HourPost,
+            mood: selectedMood?.value,
+            tag_names: tags,
+            is_sensitive: preferences?.mark_sensitive_by_default ?? false,
+            is_prompt_response,
+          },
+        );
+
+        if (postError) {
+          toast.error('Oops, something must have gone wrong 😵‍💫! try again', {
+            position: 'bottom-center',
+          });
+          return;
+        }
+
+        // If this is a prompt response, create the prompt response record
+        if (promptId && post_id && user) {
+          const { error: promptResponseError } = await supabase
+            .from('prompt_responses')
+            .insert({
+              post_id: post_id,
+              prompt_id: promptId,
+              user_id: user.id,
+            });
+
+          if (promptResponseError) {
+            console.error(
+              'Error creating prompt response:',
+              promptResponseError,
+            );
+          }
+        }
+
+        // show notification
+        if (promptId) {
+          toast.success('Your response has been saved!🙂‍↕️', {
+            position: 'bottom-center',
+          });
+        } else {
+          toast.success('Post created successfully🤭 !', {
+            position: 'bottom-center',
+          });
+        }
+
+        console.log('come on');
+        // Log the post creation activity
+        if (user && post_id) {
+          await logActivity({
+            userId: user.id,
+            entityType: ActivityType.POST,
+            action: 'created',
+            postId: post_id,
+            metadata: {
+              expires_in_24: is24HourPost,
+              mood: selectedMood?.value,
+              is_prompt_response: !!promptId,
+              prompt_text: promptText || undefined,
+            },
+          });
+        }
+
+        // Clear the form and tags
+        form.reset();
+        setSelectedMood(postMoods[0]);
+        setTags([]);
+        clearDraft();
+
+        if (promptId) {
+          router.replace(pathname);
+        }
+        // eslint-disable-next-line @typescript-eslint/no-unused-vars
+      } catch (error) {
+        toast('Error!', {
+          description: 'Ooops🫢 !! Could not create post, Please try again',
+          position: 'bottom-center',
+        });
+      } finally {
+        setIsLoading(false);
+      }
+    }, 800);
   }
 
   return (
@@ -417,8 +558,15 @@ export function PostForm() {
                         clearDraft();
                       }
                     }}
-                    className={`no-focus text-dark-2 h-[150px] resize-none pt-8! pr-10! transition-all duration-300 dark:text-white ${moodClasses} `}
+                    className={`no-focus text-dark-2 h-[150px] resize-none pt-8! pr-10! transition-all duration-300 dark:text-white ${moodClasses} ${animating && 'text-transparent dark:text-transparent'}`}
                     id="tags-guide"
+                    disabled={animating}
+                  />
+
+                  {/* Canvas for animation */}
+                  <canvas
+                    ref={canvasRef}
+                    className={`pointer-events-none absolute inset-0 z-10 pt-8 ${animating ? 'opacity-100' : 'opacity-0'} `}
                   />
 
                   {/* mood icon */}
@@ -556,7 +704,7 @@ export function PostForm() {
 
         <div className="flex flex-row-reverse items-center justify-between">
           <ShinyButton
-            disabled={content.length > 500 || isLoading}
+            disabled={content.length > 500 || isLoading || animating}
             type="submit"
             className="rounded-full"
             id="submit-btn"
