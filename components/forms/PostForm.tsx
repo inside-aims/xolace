@@ -98,6 +98,7 @@ export function PostForm() {
   const [isEmojiPickerOpen, setIsEmojiPickerOpen] = useState(false);
   const textareaRef = useRef<HTMLTextAreaElement>(null);
   const canvasRef = useRef<HTMLCanvasElement>(null);
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const newDataRef = useRef<any[]>([]);
   const [animating, setAnimating] = useState(false);
   const [currentPlaceholder, setCurrentPlaceholder] = useState(0);
@@ -318,12 +319,13 @@ export function PostForm() {
 
     const imageData = ctx.getImageData(0, 0, canvas.width, canvas.height);
     const pixelData = imageData.data;
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     const newData: any[] = [];
 
     for (let t = 0; t < canvas.height; t++) {
-      let i = 4 * t * canvas.width;
+      const i = 4 * t * canvas.width;
       for (let n = 0; n < canvas.width; n++) {
-        let e = i + 4 * n;
+        const e = i + 4 * n;
         if (
           pixelData[e] !== 0 ||
           pixelData[e + 1] !== 0 ||
