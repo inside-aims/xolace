@@ -8,6 +8,7 @@ import { FeedSteps } from '@/constants/tourSteps';
 import TourButton from '@/components/shared/Tour/TourButton';
 import WelcomeModalCard from '@/components/cards/WecomeModalCard';
 import DailyPrompt from '@/components/shared/DailyPrompt';
+import HealthTipsWrapper from "@/components/shared/layoutUIs/HealthTipsWrapper";
 
 export const metadata: Metadata = {
   title: 'Feed',
@@ -68,15 +69,14 @@ export default async function FeedPage() {
 
   return (
     <TourProvider steps={FeedSteps}>
-      <div className="  px-0! pt-8 pb-12 sm:container min-h-full overflow-auto">
-        <DailyPrompt />
-        <FeedList initialPosts={initialPosts} />
-      </div>
-
+      <HealthTipsWrapper>
+        <DailyPrompt/>
+        <FeedList initialPosts={initialPosts}/>
+      </HealthTipsWrapper>
       <div className="fixed right-6 bottom-10 z-50 block rounded-full md:right-20 md:bottom-10">
-        <TourButton />
+        <TourButton/>
       </div>
-      <WelcomeModalCard />
+      <WelcomeModalCard/>
     </TourProvider>
   );
 }

@@ -30,6 +30,7 @@ import { NavUser } from "./nav-user"
 //import UserInfo from "./user-info"
 
 import { useUserState } from "@/lib/store/user"
+import HealthTips from "@/components/shared/HealthTips";
 
 // This is sample data.
 // const data = {
@@ -296,13 +297,17 @@ export function SidebarLeft({
   return (
     <Sidebar  className="top-(--header-height) h-[calc(100svh-var(--header-height))]! border-r-0" {...props}>
       <SidebarHeader>
-       {/* <UserInfo user={user}/> */}
-        <NavMain />
+        {/* <UserInfo user={user}/> */}
+        <NavMain/>
       </SidebarHeader>
       <SidebarContent>
+        {/*Health tips to display on mobile drawer*/}
+        <div className={"flex  mx-4 mt-8 md:hidden"}>
+          <HealthTips/>
+        </div>
         {/* <NavFavorites favorites={data.favorites} /> */}
         {/* <NavWorkspaces workspaces={data.workspaces} /> */}
-        <NavSecondary items={data.navSecondary} className="mt-auto" />
+        <NavSecondary items={data.navSecondary} className="mt-auto"/>
       </SidebarContent>
       <SidebarFooter>
         <NavUser user={user} />
