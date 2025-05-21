@@ -40,6 +40,7 @@ const PostMetrics = ({
   const [downvoteCount, setDownvoteCount] = useState(post.downvotes);
   const [isVoting, setIsVoting] = useState(false);
 
+  // TODO: this might change in the future , post votes will be fetched seperately
   // Initialize vote state only once when component mounts
   useEffect(() => {
     const userVote =
