@@ -7,6 +7,7 @@ import { ThumbsUp, ThumbsDown } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { voteAction } from '@/app/actions';
 import { Comment } from '@/types/global';
+import { AnimatePresence, motion } from 'motion/react';
 
 interface PostMetricsProps {
   post: {
@@ -29,23 +30,28 @@ const PostMetrics = ({
   userId,
   votes = [],
 }: PostMetricsProps) => {
-  const router = useRouter()
+  const router = useRouter();
 
   // Get the current user's vote if it exists
-  const userVote = votes.find(vote => vote.user_id === userId)?.vote_type || null;
-  
-  const [currentVote, setCurrentVote] = useState<string | null>(userVote);
+  //const userVote = votes.find(vote => vote.user_id === userId)?.vote_type || null;
+
+  const [currentVote, setCurrentVote] = useState<string | null>(null);
   const [upvoteCount, setUpvoteCount] = useState(post.upvotes);
   const [downvoteCount, setDownvoteCount] = useState(post.downvotes);
   const [isVoting, setIsVoting] = useState(false);
 
- 
-
+  // Initialize vote state only once when component mounts
   useEffect(() => {
+    const userVote =
+      votes.find(vote => vote.user_id === userId)?.vote_type || null;
     setCurrentVote(userVote);
+  }, [userId]); // Only run when userId changes
+
+  // Update counts from props without affecting currentVote
+  useEffect(() => {
     setUpvoteCount(post.upvotes);
     setDownvoteCount(post.downvotes);
-  }, [post.upvotes, post.downvotes, userVote]);
+  }, [post.upvotes, post.downvotes]);
 
   const handleVote = async (voteType: 'upvote' | 'downvote') => {
     if (isVoting) return;
@@ -75,16 +81,21 @@ const PostMetrics = ({
       }
 
       // Make server request
-      const result = await voteAction(post.id, voteType, previousVote, userId, post.created_by);
+      const result = await voteAction(
+        post.id,
+        voteType,
+        previousVote,
+        userId,
+        post.created_by,
+      );
 
       if (!result.success) {
         // Revert changes if server request fails
         setCurrentVote(previousVote);
         setUpvoteCount(post.upvotes);
         setDownvoteCount(post.downvotes);
-
       }
-   // eslint-disable-next-line @typescript-eslint/no-unused-vars
+      // eslint-disable-next-line @typescript-eslint/no-unused-vars
     } catch (error) {
       // Revert changes on error
       setCurrentVote(previousVote);
@@ -100,8 +111,9 @@ const PostMetrics = ({
       scrollY: window.scrollY,
       timestamp: Date.now(),
       viewportHeight: window.innerHeight,
-      lastVisiblePost: document.elementFromPoint(0, window.innerHeight - 10)?.id || postId,
-      section: 'feed'
+      lastVisiblePost:
+        document.elementFromPoint(0, window.innerHeight - 10)?.id || postId,
+      section: 'feed',
     };
 
     sessionStorage.setItem('feedViewContext', JSON.stringify(viewContext));
@@ -116,42 +128,68 @@ const PostMetrics = ({
           onClick={() => handleVote('upvote')}
           disabled={isVoting}
           className="focus:outline-none"
-          id='upvote-btn'
+          id="upvote-btn"
         >
           <ThumbsUp
             className={cn(
-              'h-5 w-5 transition-all duration-200 md:hover:scale-110',
+              'h-5 w-5 transition-colors duration-200 md:hover:scale-110',
               currentVote === 'upvote'
                 ? 'fill-green-500 stroke-green-500 dark:fill-green-400 dark:stroke-green-400'
-                : 'stroke-gray-500 hover:stroke-gray-700 dark:stroke-gray-400 dark:hover:stroke-gray-300'
+                : 'stroke-gray-500 hover:stroke-gray-700 dark:stroke-gray-400 dark:hover:stroke-gray-300',
             )}
           />
         </button>
-        <span className="min-w-[2ch] text-center font-medium text-sm" id='upvote-count'>
+        <AnimatePresence mode="wait">
+          <motion.span
+            key={upvoteCount}
+            initial={{ opacity: 0, y: -10 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: 10 }}
+            transition={{ duration: 0.2 }}
+            className="min-w-[2ch] text-center text-sm font-medium"
+            id="upvote-count"
+          >
+            {upvoteCount}
+          </motion.span>
+        </AnimatePresence>
+        {/* <span className="min-w-[2ch] text-center font-medium text-sm" id='upvote-count'>
          {upvoteCount}
-        </span>
+        </span> */}
         <button
           type="button"
           onClick={() => handleVote('downvote')}
           disabled={isVoting}
           className="focus:outline-none"
-          id='downvote-btn'
+          id="downvote-btn"
         >
           <ThumbsDown
             className={cn(
               'h-5 w-5 transition-all duration-200 md:hover:scale-110',
               currentVote === 'downvote'
                 ? 'fill-red-500 stroke-red-500 dark:fill-red-400 dark:stroke-red-400'
-                : 'stroke-gray-500 hover:stroke-gray-700 dark:stroke-gray-400 dark:hover:stroke-gray-300'
+                : 'stroke-gray-500 hover:stroke-gray-700 dark:stroke-gray-400 dark:hover:stroke-gray-300',
             )}
           />
         </button>
-        <span className="min-w-[2ch] text-center font-medium text-sm" id='downvote-count'>
+        <AnimatePresence mode="wait">
+          <motion.span
+            key={downvoteCount}
+            initial={{ opacity: 0, y: -10 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: 10 }}
+            transition={{ duration: 0.2 }}
+            className="min-w-[2ch] text-center text-sm font-medium"
+            id="downvote-count"
+          >
+            {downvoteCount}
+          </motion.span>
+        </AnimatePresence>
+        {/* <span className="min-w-[2ch] text-center font-medium text-sm" id='downvote-count'>
          {downvoteCount}
-        </span>
+        </span> */}
       </div>
 
-      <div className="flex items-center gap-1" id='comment-btn'>
+      <div className="flex items-center gap-1" id="comment-btn">
         {section === 'details' ? (
           <div>
             <svg
@@ -171,8 +209,8 @@ const PostMetrics = ({
           </div>
         ) : (
           <div
-            className="text-default-400 text-small font-semibold cursor-pointer"
-            onClick={()=>handlePostClick(post.id)}
+            className="text-default-400 text-small cursor-pointer font-semibold"
+            onClick={() => handlePostClick(post.id)}
           >
             <svg
               xmlns="http://www.w3.org/2000/svg"
@@ -191,9 +229,9 @@ const PostMetrics = ({
           </div>
         )}
         <p className="text-default-400 text-small">
-          {section === 'details' 
-            ? commentLength 
-            : Array.isArray(post?.comments) 
+          {section === 'details'
+            ? commentLength
+            : Array.isArray(post?.comments)
               ? post.comments[0] && 'count' in post.comments[0]
                 ? post.comments[0].count
                 : post.comments.length
