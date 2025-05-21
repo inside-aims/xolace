@@ -1,9 +1,10 @@
 import { useQuery } from '@tanstack/react-query';
 import { getSupabaseBrowserClient } from '@/utils/supabase/client';
+import { Post } from '@/types/global';
 
 const supabase = getSupabaseBrowserClient();
 
-export function usePosts() {
+export function usePosts(initialData: Post[]) {
   return useQuery({
     queryKey: ['posts'],
     queryFn: async () => {
@@ -33,6 +34,7 @@ export function usePosts() {
       if (error) throw error;
       return data;
     },
-    staleTime: 5 * 60 * 1000,
+    initialData,
+    staleTime: 0,
   });
 }

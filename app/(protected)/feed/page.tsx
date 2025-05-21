@@ -64,13 +64,35 @@ export default async function FeedPage() {
   const supabase = await createClient();
 
   // Pass the Supabase client to the cached function
-  const initialPosts = await getCachedPosts(supabase);
+  //const initialPosts = await getCachedPosts(supabase);
+  const { data: postsData, error } = await supabase
+    .from('posts')
+    .select(
+      `
+       *,
+       posttags (
+          tags (
+            name
+          )
+        ),
+          votes(
+          user_id,
+          vote_type
+          ),
+          comments:comments(count),
+          views:views(count),
+        collections(
+          user_id
+        )  
+    `,
+    )
+    .order('created_at', { ascending: false });
 
   return (
     <TourProvider steps={FeedSteps}>
       <div className="  px-0! pt-8 pb-12 sm:container min-h-full overflow-auto">
         <DailyPrompt />
-        <FeedList initialPosts={initialPosts} />
+        <FeedList initialPosts={postsData || []} />
       </div>
 
       <div className="fixed right-6 bottom-10 z-50 block rounded-full md:right-20 md:bottom-10">

@@ -5,7 +5,7 @@ import Bottombar from '@/components/shared/layoutUIs/Bottombar';
 // import Topbar from '@/components/shared/layoutUIs/Topbar';
 import { createClient } from '@/utils/supabase/server';
 import InitUser from '@/lib/store/initUser';
-// import { InfoBanner } from '@/components/extras/Info-Banner';
+import QueryProvider from '@/providers/queryProvider';
 
 import { SidebarLeft } from '@/components/sidebar-left';
 // import { SidebarRight } from "@/components/sidebar-right"
@@ -39,7 +39,8 @@ export default async function ProtectedLayout({
     .single();
 
   return (
-    <div className="[--header-height:calc(--spacing(14))]">
+   <QueryProvider>
+     <div className="[--header-height:calc(--spacing(14))]">
       <SidebarProvider
         className="flex flex-col"
         style={{ '--header-height': '90px' } as React.CSSProperties}
@@ -71,6 +72,7 @@ export default async function ProtectedLayout({
         <InitUser user={profileUser} />
       </SidebarProvider>
     </div>
+   </QueryProvider>
   );
 }
 
