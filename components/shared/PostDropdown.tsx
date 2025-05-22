@@ -13,7 +13,7 @@ import {
 } from '@/components/ui/dropdown-menu';
 import { useUserState } from '@/lib/store/user';
 import { Trash2, Telescope, Flag } from 'lucide-react';
-import { usePostMutations } from '@/hooks/posts/usePostMutation'; // Import the new hook
+import { usePostMutations } from '@/hooks/posts/usePostMutation';
 
 type DropdownMenuProp = {
   comment?: boolean;
@@ -21,7 +21,7 @@ type DropdownMenuProp = {
   postDetail?: boolean;
   postCard?: boolean;
   postId?: string;
-  postCreatedBy?: string ;
+  postCreatedBy?: string;
   commentId?: number;
   commentCreatedBy?: string | number;
   onOpenChange: React.Dispatch<React.SetStateAction<boolean>>;
@@ -36,16 +36,17 @@ const PostDropdown: React.FC<DropdownMenuProp> = ({
   commentId,
   commentCreatedBy,
   onOpenChange,
-  content
+  content,
 }) => {
   const router = useRouter();
   const user = useUserState(state => state.user);
 
-  const roles = useUserState((state) => state.roles);
+  const roles = useUserState(state => state.roles);
   const isModerator = roles.includes('blue_team');
 
   // Use the new hook
-  const { deletePost, isDeletingPost, deleteComment, isDeletingComment } = usePostMutations();
+  const { deletePost, isDeletingPost, deleteComment, isDeletingComment } =
+    usePostMutations();
 
   // open sheet
   const handleReportClick = () => {
@@ -61,7 +62,13 @@ const PostDropdown: React.FC<DropdownMenuProp> = ({
   //  delete comment
   const onCommentDelete = async () => {
     if (commentId) {
-      deleteComment({ commentId, postId, postCreatedBy, content, userId: user?.id });
+      deleteComment({
+        commentId,
+        postId,
+        postCreatedBy,
+        content,
+        userId: user?.id,
+      });
     }
   };
 
@@ -93,7 +100,7 @@ const PostDropdown: React.FC<DropdownMenuProp> = ({
         <DropdownMenuContent align="end">
           <DropdownMenuLabel>Actions</DropdownMenuLabel>
           <DropdownMenuSeparator />
-          {((isCommentAuthor || isModerator) && comment) && (
+          {(isCommentAuthor || isModerator) && comment && (
             <DropdownMenuItem
               className="text-red-400 hover:cursor-pointer"
               onClick={onCommentDelete}
@@ -110,7 +117,7 @@ const PostDropdown: React.FC<DropdownMenuProp> = ({
           )}
 
           {/* delete action for post */}
-          {((isPostAuthor || isModerator) && !comment) && (
+          {(isPostAuthor || isModerator) && !comment && (
             <DropdownMenuItem
               className="text-red-400 hover:cursor-pointer hover:text-red-500"
               onClick={onPostDelete}

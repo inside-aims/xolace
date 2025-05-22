@@ -27,7 +27,7 @@ import {
 import CommentCard from '../cards/CommentCard';
 
 import PostMetrics from '../shared/PostMetrics';
-import { useToast } from '../ui/use-toast';
+import {toast} from 'sonner'
 import Loader from '../shared/loaders/Loader';
 import { CommentSchema } from '@/validation';
 import { getSupabaseBrowserClient } from '@/utils/supabase/client';
@@ -35,7 +35,7 @@ import { useUserState } from '@/lib/store/user';
 import { Send } from 'lucide-react';
 import { VisuallyHidden } from '@radix-ui/react-visually-hidden';
 import { Comment, DetailPost } from '@/types/global';
-import { logActivity } from '@/lib/activity-logger';
+import { useCommentMutation } from '@/hooks/posts/useCommentMutation';
 
 type Type = string | string[] | undefined;
 
@@ -45,12 +45,13 @@ const PostDetailDrawer = ({ post, type }: { post: DetailPost; type: Type }) => {
   // initialize supabase client
   const supabase = getSupabaseBrowserClient();
 
-  const { toast } = useToast();
   const router = useRouter();
 
   // states
   const [comments, setComments] = useState<Comment[]>(post?.comments || []);
-  const [isLoading, setIsLoading] = useState(false);
+
+// Use the comment mutation hook
+const { mutate: createComment, isPending: isCreatingComment } = useCommentMutation(post);
 
   //   counter for comment fields
   const counter: number = 300;
@@ -95,38 +96,63 @@ const PostDetailDrawer = ({ post, type }: { post: DetailPost; type: Type }) => {
 
   // submit comment form
   async function onSubmit(data: z.infer<typeof CommentSchema>) {
-    setIsLoading(true);
     const { comment } = data;
 
-    // inserting into the database table in supabase
-    supabase
-      .from('comments')
-      .insert({
-        post: post.id,
-        comment_text: comment,
-      })
-      .then(() => {
-        toast({
-          title: 'Comment Created 🖌️',
-          description: 'Your comment has been successfully created! 😆',
-          variant: 'default',
-        });
-        form.reset();
-
-        // check if the user is the creator of the post
-        const relatedUser = post.created_by === user?.id ? undefined : post.created_by;
-        // log comment activity
-        logActivity({
-          userId: user?.id || '',
-          relatedUserId: relatedUser,
-          entityType: 'comment',
-          action: 'commented',
-          postId: post.id,
-          metadata: { content: comment, link : `/post/${post.id}` },
-        });
-  
-        setIsLoading(false);
+    if (!user?.id) {
+      toast.error('Authentication Required',{
+        description: 'Please log in to post a comment.',
       });
+      return;
+  }
+
+    // inserting into the database table in supabase
+    // supabase
+    //   .from('comments')
+    //   .insert({
+    //     post: post.id,
+    //     comment_text: comment,
+    //   })
+    //   .then(() => {
+    //     toast({
+    //       title: 'Comment Created 🖌️',
+    //       description: 'Your comment has been successfully created! 😆',
+    //       variant: 'default',
+    //     });
+    //     form.reset();
+
+    //     // check if the user is the creator of the post
+    //     const relatedUser = post.created_by === user?.id ? undefined : post.created_by;
+    //     // log comment activity
+    //     logActivity({
+    //       userId: user?.id || '',
+    //       relatedUserId: relatedUser,
+    //       entityType: 'comment',
+    //       action: 'commented',
+    //       postId: post.id,
+    //       metadata: { content: comment, link : `/post/${post.id}` },
+    //     });
+  
+    //     setIsLoading(false);
+    //   });
+
+    createComment(
+      {
+        postId: post.id,
+        commentText: comment,
+        postCreatedBy: post.created_by,
+      },
+      {
+        onSuccess: () => {
+          toast.success('Thanks for sharing your thoughts! 😆')
+          form.reset();
+        },
+        onError: (error) => {
+            toast.error("Failed to create comment",{
+                description: error.message || 'Something went wrong.',
+            })
+        }
+      }
+    );
   }
 
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -200,7 +226,7 @@ const PostDetailDrawer = ({ post, type }: { post: DetailPost; type: Type }) => {
                   userId={user?.id || ''}
                   votes={post.votes}
                   section="details"
-                  commentLength={post.comments.length}
+                  commentLength={comments.length}
                 />
 
             ) : (
@@ -231,11 +257,11 @@ const PostDetailDrawer = ({ post, type }: { post: DetailPost; type: Type }) => {
                 <div className="flex flex-row-reverse items-center justify-between">
                   <Button
                     size={'sm'}
-                    disabled={comment.length > 300 || false}
+                    disabled={comment.length > 300 || false || isCreatingComment}
                     type="submit"
                     className="rounded-full"
                   >
-                    {isLoading ? (
+                    {isCreatingComment ? (
                       <div className="flex items-center justify-center gap-x-2">
                         {' '}
                         <Loader /> <span>Loading</span>
