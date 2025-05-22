@@ -270,22 +270,33 @@ export   const tips = [
 export const reputationPoints = {
   upvote: {
     performer: 2,
-    author: 10,
+    author: 3,
+    removed_performer: -2,
+    removed_author: -3,
   },
   downvote: {
     performer: -1,
     author: -2,
+    removed_performer: 1,
+    removed_author: 2,
   },
   post_created: {
-    author: 5, // Default for general posts
+    author: 4, // Default for general posts
+  },
+  prompt_post_created: {
+    author: 6,
   },
   comment_created: {
     author: 2,
   },
   post_deleted: {
-    author: -5,
+    author: -3,
   },
   comment_deleted: {
     author: -2,
   },
+  post_viewed:{
+    performer:1,
+    author: 3,
+  }
 };

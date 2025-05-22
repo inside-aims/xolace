@@ -74,4 +74,5 @@ export interface UpdateReputationParams {
   interaction: ReputationInteraction;
   performerId: string; // User ID of the person performing the action
   authorId?: string; // User ID of the content author (optional, e.g., for self-actions or system actions)
+  metadata?: Record<string, any>; // Additional metadata (optional)
 }
