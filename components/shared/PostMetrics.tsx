@@ -5,9 +5,10 @@ import { useRouter } from 'next/navigation';
 import { ThumbsUp, ThumbsDown } from 'lucide-react';
 //import Link from 'next/link';
 import { cn } from '@/lib/utils';
-import { voteAction } from '@/app/actions';
 import { Comment } from '@/types/global';
 import { AnimatePresence, motion } from 'motion/react';
+import { useUserVote } from '@/hooks/posts/useUserVote';
+import { useVoteMutations } from '@/hooks/posts/useVoteMutation';
 
 interface PostMetricsProps {
   post: {
@@ -28,25 +29,25 @@ const PostMetrics = ({
   section = 'post',
   commentLength,
   userId,
-  votes = [],
 }: PostMetricsProps) => {
   const router = useRouter();
+  const { mutateVote, isLoading: isVoting, isError } = useVoteMutations();
+  const { data: userVote } = useUserVote(post.id, userId);
 
   // Get the current user's vote if it exists
   //const userVote = votes.find(vote => vote.user_id === userId)?.vote_type || null;
 
-  const [currentVote, setCurrentVote] = useState<string | null>(null);
+  const [currentVote, setCurrentVote] = useState<string | null>(userVote);
   const [upvoteCount, setUpvoteCount] = useState(post.upvotes);
   const [downvoteCount, setDownvoteCount] = useState(post.downvotes);
-  const [isVoting, setIsVoting] = useState(false);
+  //const [isVoting, setIsVoting] = useState(false);
 
-  // TODO: this might change in the future , post votes will be fetched seperately
   // Initialize vote state only once when component mounts
-  useEffect(() => {
-    const userVote =
-      votes.find(vote => vote.user_id === userId)?.vote_type || null;
-    setCurrentVote(userVote);
-  }, [userId]); // Only run when userId changes
+  // useEffect(() => {
+  //   const userVote =
+  //     votes.find(vote => vote.user_id === userId)?.vote_type || null;
+  //   setCurrentVote(userVote);
+  // }, [userId]); // Only run when userId changes
 
   // Update counts from props without affecting currentVote
   useEffect(() => {
@@ -56,7 +57,6 @@ const PostMetrics = ({
 
   const handleVote = async (voteType: 'upvote' | 'downvote') => {
     if (isVoting) return;
-    setIsVoting(true);
     const previousVote = currentVote;
 
     try {
@@ -82,15 +82,15 @@ const PostMetrics = ({
       }
 
       // Make server request
-      const result = await voteAction(
-        post.id,
+      mutateVote({
+        postId: post.id,
         voteType,
-        previousVote,
-        userId,
-        post.created_by,
-      );
+        currentVote: previousVote,
+        user_id: userId,
+        relatedUserId: post.created_by,
+      });
 
-      if (!result.success) {
+      if (isError) {
         // Revert changes if server request fails
         setCurrentVote(previousVote);
         setUpvoteCount(post.upvotes);
@@ -99,11 +99,11 @@ const PostMetrics = ({
       // eslint-disable-next-line @typescript-eslint/no-unused-vars
     } catch (error) {
       // Revert changes on error
-      setCurrentVote(previousVote);
-      setUpvoteCount(post.upvotes);
-      setDownvoteCount(post.downvotes);
-    } finally {
-      setIsVoting(false);
+      // setCurrentVote(previousVote);
+      // setUpvoteCount(post.upvotes);
+      // setDownvoteCount(post.downvotes);
+
+      console.log(error);
     }
   };
 
@@ -153,9 +153,6 @@ const PostMetrics = ({
             {upvoteCount}
           </motion.span>
         </AnimatePresence>
-        {/* <span className="min-w-[2ch] text-center font-medium text-sm" id='upvote-count'>
-         {upvoteCount}
-        </span> */}
         <button
           type="button"
           onClick={() => handleVote('downvote')}
@@ -185,9 +182,6 @@ const PostMetrics = ({
             {downvoteCount}
           </motion.span>
         </AnimatePresence>
-        {/* <span className="min-w-[2ch] text-center font-medium text-sm" id='downvote-count'>
-         {downvoteCount}
-        </span> */}
       </div>
 
       <div className="flex items-center gap-1" id="comment-btn">
