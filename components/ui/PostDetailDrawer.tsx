@@ -299,9 +299,30 @@ const { mutate: createComment, isPending: isCreatingComment } = useCommentMutati
               .map((comment: Comment) => <CommentCard key={comment.id} comment={comment} />)
               .reverse()}
             {comments.length == 0 && (
-              <div>
-                <p>No comments</p>
-              </div>
+               <div className="flex flex-col items-center justify-center space-y-4 py-5 text-center">
+               <div className="relative">
+                 <div className="animate-bounce">
+                   💭
+                 </div>
+                 <div className="absolute -right-4 top-0 animate-bounce-delayed">
+                   💭
+                 </div>
+                 <div className="absolute -left-4 top-2 animate-bounce-slow">
+                   💭
+                 </div>
+               </div>
+               <h3 className="text-md font-semibold text-gray-800 dark:text-gray-200">
+                 Be the First to share your Experience!
+               </h3>
+               <p className="max-w-sm text-sm text-gray-600 dark:text-gray-400">
+                 Start the conversation and share your thoughts. Your perspective matters!
+               </p>
+               <div className="mt-2 text-xs text-gray-500 dark:text-gray-500">
+                 <span className="inline-block transform transition-transform hover:scale-110">
+                   👆 Just type above to join the discussion
+                 </span>
+               </div>
+             </div>
             )}
           </div>
         </DrawerContent>
