@@ -62,3 +62,16 @@ export interface DbActivityLog {
   
   // Join relationships
 }
+
+
+// Types for Reputation System
+export interface ReputationInteraction {
+  action: ActionType; // e.g., 'upvoted', 'created', 'deleted'
+  entityType: EntityType; // e.g., 'post', 'comment', 'vote'
+}
+
+export interface UpdateReputationParams {
+  interaction: ReputationInteraction;
+  performerId: string; // User ID of the person performing the action
+  authorId?: string; // User ID of the content author (optional, e.g., for self-actions or system actions)
+}

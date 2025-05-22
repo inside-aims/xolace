@@ -49,6 +49,10 @@ const PostMetrics = ({
   //   setCurrentVote(userVote);
   // }, [userId]); // Only run when userId changes
 
+  useEffect(() => {
+      setCurrentVote(userVote);
+    }, [userVote]);
+
   // Update counts from props without affecting currentVote
   useEffect(() => {
     setUpvoteCount(post.upvotes);

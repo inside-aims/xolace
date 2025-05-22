@@ -17,7 +17,7 @@ interface CreateCommentContext {
   optimisticComment: Comment;
 }
 
-export function useCommentMutation(post : DetailPost) {
+export function useCommentMutation(post: DetailPost) {
   const queryClient = useQueryClient();
   const user = useUserState(state => state.user);
 
@@ -47,7 +47,8 @@ export function useCommentMutation(post : DetailPost) {
       }
 
       // Log activity after successful insertion
-      const relatedUser = post.created_by === user?.id ? undefined : post.created_by;
+      const relatedUser =
+        post.created_by === user?.id ? undefined : post.created_by;
       logActivity({
         userId: user?.id || '',
         relatedUserId: relatedUser,
@@ -64,7 +65,10 @@ export function useCommentMutation(post : DetailPost) {
       await queryClient.cancelQueries({ queryKey: ['comments', postId] });
 
       // Snapshot the previous value of the comments query
-      const previousComments = queryClient.getQueryData<Comment[]>(['comments', postId]);
+      const previousComments = queryClient.getQueryData<Comment[]>([
+        'comments',
+        postId,
+      ]);
 
       // Create an optimistic comment object (needs a temporary ID)
       const optimisticComment: Comment = {
@@ -78,9 +82,8 @@ export function useCommentMutation(post : DetailPost) {
       };
 
       // Optimistically update the comments list
-      queryClient.setQueryData<Comment[]>(
-        ['comments', postId],
-        (old) => (old ? [...old, optimisticComment] : [optimisticComment])
+      queryClient.setQueryData<Comment[]>(['comments', postId], old =>
+        old ? [...old, optimisticComment] : [optimisticComment],
       );
 
       // Return context with the snapshot and optimistic comment
@@ -91,25 +94,26 @@ export function useCommentMutation(post : DetailPost) {
       if (context?.previousComments) {
         queryClient.setQueryData<Comment[]>(
           ['comments', variables.postId],
-          context.previousComments
+          context.previousComments,
         );
       }
       console.error('Comment mutation failed:', err);
       // You might want to show a toast notification here
     },
     onSuccess: (newComment, variables, context) => {
-        // Replace the optimistic comment with the actual comment from the server
-        queryClient.setQueryData<Comment[]>(
-            ['comments', variables.postId],
-            (old) => old?.map(comment =>
-                comment.id === context?.optimisticComment.id ? newComment : comment
-            )
-        );
-        // You might want to show a success toast notification here
+      // Replace the optimistic comment with the actual comment from the server
+      queryClient.setQueryData<Comment[]>(['comments', variables.postId], old =>
+        old?.map(comment =>
+          comment.id === context?.optimisticComment.id ? newComment : comment,
+        ),
+      );
+      // You might want to show a success toast notification here
     },
     onSettled: (data, error, variables) => {
       // Invalidate the comments query to refetch and ensure consistency
-      queryClient.invalidateQueries({ queryKey: ['comments', variables.postId] });
+      queryClient.invalidateQueries({
+        queryKey: ['comments', variables.postId],
+      });
     },
   });
 }
