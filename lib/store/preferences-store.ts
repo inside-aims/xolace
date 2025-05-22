@@ -147,7 +147,7 @@ export const usePreferencesStore = create<PreferencesState>((set, get) => ({
         [key]: value,
         updated_at: new Date().toISOString(),
       };
-      set({ preferences: updatedPrefs, isLoading: false }); // Set loading false after optimistic update
+      set({ preferences: updatedPrefs, isLoading: false }); 
 
       const { error } = await supabase
         .from('user_preferences')
@@ -164,7 +164,7 @@ export const usePreferencesStore = create<PreferencesState>((set, get) => ({
         throw error;
       }
 
-      toast.success(`Updated ${key} successfully`);
+      //toast.success(`Updated ${key} successfully`);
        // eslint-disable-next-line @typescript-eslint/no-explicit-any
     } catch (error: any) {
       console.error(`Error updating preference ${key}:`, error);
