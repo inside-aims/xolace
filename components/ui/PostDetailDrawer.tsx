@@ -50,6 +50,8 @@ const PostDetailDrawer = ({ post, type }: { post: DetailPost; type: Type }) => {
   // states
   const [comments, setComments] = useState<Comment[]>(post?.comments || []);
 
+  // TODO: Will probably fetch comments from the database in the future instead of using from post object
+
 // Use the comment mutation hook
 const { mutate: createComment, isPending: isCreatingComment } = useCommentMutation(post);
 
