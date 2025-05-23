@@ -1,11 +1,10 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 'use client';
 
-import React, { useState, useEffect } from 'react';
+import React, { useEffect } from 'react';
 import { useRouter, usePathname } from 'next/navigation';
 
 import { PostCard } from '@/components/cards/PostCard';
-import { getSupabaseBrowserClient } from '@/utils/supabase/client';
 //import FeedSkeletonLoader from './loaders/FeedSkeletonLoader';
 import BlurFade from '../ui/blur-fade';
 import { Post } from '@/types/global';
