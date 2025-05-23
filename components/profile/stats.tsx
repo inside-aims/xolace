@@ -3,7 +3,12 @@
 import Image from "next/image";
 import React from "react";
 
-export function Stats() {
+
+interface StatsProps {
+  reputation : number
+}
+
+export function Stats({reputation}: StatsProps) {
 
   //Dummy profile stats for badges
   const profileStatBadges: {key: string, value: number, name: string, imageURL: string}[] = [
@@ -24,8 +29,8 @@ export function Stats() {
               <span>Posts</span>
             </p>
             <p className="flex flex-col">
-              <span>1</span>
-              <span>Reactions</span>
+              <span>{reputation}</span>
+              <span>Reputation</span>
             </p>
           </div>
 
