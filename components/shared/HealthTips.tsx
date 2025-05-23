@@ -260,7 +260,7 @@ export function HealthTipDetailsCard(props: HealthTipCardProps) {
           </span>
         </p>
       </div>
-      <div className={'text-neutral-600'}>
+      {/* <div className={'text-neutral-600'}>
         {Array.isArray(props.content) ? (
           props.content.map((para, idx) => (
             <p key={idx} className="mb-2">
@@ -270,7 +270,7 @@ export function HealthTipDetailsCard(props: HealthTipCardProps) {
         ) : (
           <p>{props.content}</p>
         )}
-      </div>
+      </div> */}
     </div>
   );
 }

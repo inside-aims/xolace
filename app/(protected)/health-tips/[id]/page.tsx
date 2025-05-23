@@ -6,13 +6,15 @@ import HealthTipsWrapper from "@/components/shared/layoutUIs/HealthTipsWrapper";
 import Link from 'next/link';
 import {MoveLeft} from "lucide-react";
 import React from "react";
+import { Preview } from '@/components/editor/Preview';
 
 interface Props {
-  params: { id: string };
+  params: Promise<{ id: string }>;
 }
 
 export default async function HealthTipDetailsPage({ params }: Props) {
-  const tip = healthTips.find((tip) => tip.id === params.id);
+  const { id } = await params;
+  const tip = healthTips.find((tip) => tip.id === id);
 
   if (!tip) return notFound();
 
@@ -41,6 +43,9 @@ export default async function HealthTipDetailsPage({ params }: Props) {
             date={tip.date}
             content={tip.content}
           />
+          {typeof tip.content === "string" && (
+            <Preview content={tip.content} />
+          )}
         </div>
       </div>
     </HealthTipsWrapper>

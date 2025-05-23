@@ -1,5 +1,6 @@
 @import 'tailwindcss';
 @plugin "tailwindcss-animate";
+@plugin "@tailwindcss/typography";
 @custom-variant dark (&:where(.dark, .dark *));
 
 @config '../tailwind.config.ts';
@@ -387,6 +388,7 @@
   }
 }
 
+
 @utility briefly-highlight {
   animation: briefly-highlight 1.5s ease-out forwards;
 }
@@ -396,6 +398,26 @@
     font-family: 'TiltNeon';
     src: url('../fonts/TiltNeon-Regular.ttf') format('truetype');
   }
+
+  /* .markdown {
+    @apply max-w-full prose dark:prose-p:text-light-700 dark:prose-ol:text-light-700 dark:prose-ul:text-light-500 dark:prose-strong:text-white dark:prose-headings:text-white prose-headings:text-dark-400 prose-h1:text-dark-300 prose-h2:text-dark-300 prose-p:text-dark-500 prose-ul:text-dark-500 prose-ol:text-dark-500;
+  }
+
+  .markdown-editor {
+    @apply prose max-w-full prose-p:m-0 dark:prose-headings:text-white prose-headings:text-dark-400 prose-p:text-dark-500 dark:prose-p:text-light-700 prose-ul:text-dark-500 dark:prose-ul:text-light-700 prose-ol:text-dark-500 dark:prose-ol:text-light-700 dark:prose-strong:text-white prose-blockquote:text-dark-500 dark:prose-blockquote:text-light-700;
+  } */
+
+  /* global.css or equivalent */
+.markdown {
+  @apply prose max-w-full;
+}
+
+.markdown-editor {
+  @apply prose max-w-full prose-p:m-0;
+}
+
+
+
 }
 
 @layer base {
@@ -483,6 +505,106 @@
   }
 }
 
+/* Regular CSS overrides for dark mode */
+.dark .markdown,
+.dark .markdown-editor {
+  color: #e5e7eb; /* equivalent of text-light-700 */
+}
+
+.dark .markdown p,
+.dark .markdown-editor p {
+  color: #e5e7eb;
+}
+
+.dark .markdown ol,
+.dark .markdown ul,
+.dark .markdown-editor ol,
+.dark .markdown-editor ul {
+  color: #e7ebe5;
+}
+
+.dark .markdown strong,
+.dark .markdown-editor strong,
+.dark .markdown h1,
+.dark .markdown h2,
+.dark .markdown h3,
+.dark .markdown h4,
+.dark .markdown h5,
+.dark .markdown h6,
+.dark .markdown-editor h1,
+.dark .markdown-editor h2,
+.dark .markdown-editor h3,
+.dark .markdown-editor h4,
+.dark .markdown-editor h5,
+.dark .markdown-editor h6 {
+  color: #ffffff;
+}
+
+.mdxeditor-toolbar {
+  background: #ffffff !important;
+}
+
+.dark .mdxeditor-toolbar {
+  background: #151821 !important;
+}
+
+.dark .mdxeditor-toolbar button svg {
+  color: #858ead !important;
+}
+
+.dark .mdxeditor-toolbar button:hover svg {
+  color: #000 !important;
+}
+
+.dark .mdxeditor-toolbar [role="separator"] {
+  border-color: #555 !important;
+}
+
+.markdown a {
+  color: #1da1f2;
+}
+
+.markdown a,
+code {
+  /* These are technically the same, but use both */
+  overflow-wrap: break-word;
+  word-wrap: break-word;
+
+  -ms-word-break: break-all;
+  /* This is the dangerous one in WebKit, as it breaks things wherever */
+  word-break: break-all;
+  /* Instead use this non-standard one: */
+  word-break: break-word;
+
+  /* Adds a hyphen where the word breaks, if supported (No Blink) */
+  -ms-hyphens: auto;
+  -moz-hyphens: auto;
+  -webkit-hyphens: auto;
+  hyphens: auto;
+
+  padding: 2px;
+  color: #ff7000 !important;
+}
+
+.markdown pre {
+  display: grid;
+  width: 100%;
+}
+
+.markdown pre code {
+  width: 100%;
+  display: block;
+  overflow-x: auto;
+
+  color: inherit !important;
+}
+
+[data-lexical-editor="true"] {
+  height: 350px !important;
+  overflow-y: auto !important;
+}
+
+
 @layer utilities {
   body {
     color: rgb(var(--foreground-rgb));
@@ -499,10 +621,9 @@
   * {
     @apply border-border;
   }
-  /* body {
-    @apply dark:bg-bg-dark bg-bg  text-foreground;
-  } */
 }
+
+
 
 @layer utilities {
   @keyframes briefly-highlight {
