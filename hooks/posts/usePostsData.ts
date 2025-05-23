@@ -9,9 +9,9 @@ export function usePosts(initialData: Post[]) {
     queryKey: ['posts'],
     queryFn: async () => {
       const { data, error } = await supabase
-      .from('posts')
-      .select(
-        `
+        .from('posts')
+        .select(
+          `
          *,
          posttags (
             tags (
@@ -28,13 +28,13 @@ export function usePosts(initialData: Post[]) {
             user_id
           )  
       `,
-      )
-      .order('created_at', { ascending: false });
-      
+        )
+        .order('created_at', { ascending: false });
+
       if (error) throw error;
       return data;
     },
     initialData,
-    staleTime: 0,
+    staleTime: 60 * 60,
   });
 }
