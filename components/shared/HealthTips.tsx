@@ -255,7 +255,7 @@ export function HealthTipDetailsCard(props: HealthTipCardProps) {
     <div className={'flex w-full flex-col gap-4'} key={props?.id}>
       <div className={'flex w-full flex-col items-start'}>
         <h4 className={'text-2xl font-semibold'}>{props?.title}</h4>
-        <p className={'flex flex-row gap-2 text-sm text-neutral-400 mb-4'}>
+        <p className={'mb-4 flex flex-row gap-2 text-sm text-neutral-400'}>
           <span>
             {`${props?.author}`} —{' '}
             {new Date(props?.date).toLocaleDateString('en-US', {

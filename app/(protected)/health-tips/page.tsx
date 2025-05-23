@@ -22,8 +22,16 @@ export default function HealthTips(){
   return(
     <HealthTipsWrapper>
       <div className={"flex flex-col w-full items-start gap-4 -mt-5 max-md:pb-6"}>
-        <div className={"font-semibold text-2xl md:text-3xl px-4 mb-2"}>
-          Xolace Wellness Insight
+        <div className="relative flex items-center gap-2 font-semibold text-3xl md:text-4xl px-4 mb-2 group animate-in fade-in slide-in-from-left-5 duration-700">
+          <span className="bg-gradient-to-r from-lavender-400 via-lavender-500 to-lavender-600 text-transparent bg-clip-text">Xolace</span>
+          <span className="relative inline-flex items-center">
+            Wellness
+            <div className="absolute -bottom-2 left-0 w-full h-1 bg-lavender-400/30 rounded-full transform origin-left scale-x-0 transition-transform group-hover:scale-x-100 duration-500"></div>
+          </span>
+          <span className="relative inline-flex items-center">
+            Insight
+            <div className="absolute -right-6 top-1/2 -translate-y-1/2 w-4 h-4 rounded-full bg-lavender-400/20 animate-pulse"></div>
+          </span>
         </div>
         <div className={`flex flex-col w-full px-4 gap-4 md:gap-8`}>
           { healthTips.map((tip) => (
