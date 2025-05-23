@@ -11,7 +11,7 @@ export const Preview = ({ content }: { content: string }) => {
   const formattedContent = content.replace(/\\/g, "").replace(/&#x20;/g, "");
 
   return (
-    <section className="markdown prose grid break-words mt-5 max-sm:pb-5">
+    <section className="markdown prose grid break-words max-sm:pb-5">
       <MDXRemote
         source={formattedContent}
         components={{

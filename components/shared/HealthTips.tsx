@@ -15,6 +15,7 @@ interface HealthTipCardProps {
   index?: number;
   total?: number;
   onHealthTipSelect?: (healthTipId: string) => void;
+  sidebar?: boolean;
 }
 
 // dummy health tips data
@@ -136,10 +137,13 @@ export default function HealthTips() {
           </div>
 
           {/*Filtered health tips little info on desktop device only*/}
-          <div className="hidden flex-col items-start gap-2 rounded-xl border py-2 shadow-lg md:flex md:gap-6 md:py-4 animate-in fade-in duration-500 motion-reduce:animate-none">
-            <h4 className="flex w-full items-center justify-between px-2 text-neutral-500 md:px-4 animate-in fade-in slide-in-from-left-3 duration-300 delay-150">
+          <div className="animate-in fade-in hidden flex-col items-start gap-2 rounded-xl border py-2 shadow-lg duration-500 motion-reduce:animate-none md:flex md:gap-6 md:py-4">
+            <h4 className="animate-in fade-in slide-in-from-left-3 flex w-full items-center justify-between px-2 text-neutral-500 delay-150 duration-300 md:px-4">
               <span className="font-semibold">Health Tips</span>
-              <Info size={22} className="animate-in spin-in-90 duration-500 delay-300" />
+              <Info
+                size={22}
+                className="animate-in spin-in-90 delay-300 duration-500"
+              />
             </h4>
 
             <div className="flex w-full flex-col gap-4 ps-2 md:gap-6 md:ps-4">
@@ -162,14 +166,14 @@ export default function HealthTips() {
                 </div>
               ))}
             </div>
-            <div className="flex w-full items-center justify-center border-t animate-in fade-in-50 slide-in-from-bottom-3 duration-500 delay-500">
+            <div className="animate-in fade-in-50 slide-in-from-bottom-3 flex w-full items-center justify-center border-t delay-500 duration-500">
               <Button
                 variant="link"
                 className="text-lavender-400 hover:lavender-500 flex"
                 onClick={() => handleHealthTipsNavigation()}
               >
                 See More Tips
-                <span className="text-lavender-400 hover:lavender-500 ml-1 animate-in slide-in-from-left-2 duration-300 delay-700">
+                <span className="text-lavender-400 hover:lavender-500 animate-in slide-in-from-left-2 ml-1 delay-700 duration-300">
                   <CircleArrowRight size={16} />
                 </span>
               </Button>
@@ -196,6 +200,7 @@ export default function HealthTips() {
               author={healthTipDetails?.author || ''}
               content={healthTipDetails?.content || ''}
               date={healthTipDetails?.date || ''}
+              sidebar={true}
             />
           </div>
         </div>
@@ -249,8 +254,8 @@ export function HealthTipDetailsCard(props: HealthTipCardProps) {
   return (
     <div className={'flex w-full flex-col gap-4'} key={props?.id}>
       <div className={'flex w-full flex-col items-start'}>
-        <h4 className={'text-lg font-semibold'}>{props?.title}</h4>
-        <p className={'flex flex-row gap-2 text-sm text-neutral-400'}>
+        <h4 className={'text-2xl font-semibold'}>{props?.title}</h4>
+        <p className={'flex flex-row gap-2 text-sm text-neutral-400 mb-4'}>
           <span>
             {`${props?.author}`} —{' '}
             {new Date(props?.date).toLocaleDateString('en-US', {
@@ -260,17 +265,19 @@ export function HealthTipDetailsCard(props: HealthTipCardProps) {
           </span>
         </p>
       </div>
-      {/* <div className={'text-neutral-600'}>
-        {Array.isArray(props.content) ? (
-          props.content.map((para, idx) => (
-            <p key={idx} className="mb-2">
-              {para}
-            </p>
-          ))
-        ) : (
-          <p>{props.content}</p>
-        )}
-      </div> */}
+      {props.sidebar && (
+        <div className={'text-neutral-600'}>
+          {Array.isArray(props.content) ? (
+            props.content.map((para, idx) => (
+              <p key={idx} className="mb-2">
+                {para}
+              </p>
+            ))
+          ) : (
+            <p>{props.content}</p>
+          )}
+        </div>
+      )}
     </div>
   );
 }

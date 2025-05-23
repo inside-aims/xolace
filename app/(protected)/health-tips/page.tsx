@@ -1,19 +1,22 @@
-'use client';
+
 
 import HealthTipsWrapper from "@/components/shared/layoutUIs/HealthTipsWrapper";
 import {CircleArrowRight} from "lucide-react";
 import React from "react";
 import {healthTips} from "@/app/(protected)/health-tips/(overview)/health-tips";
 import Link from 'next/link'
-
+import {Preview} from "@/components/editor/Preview";
 
 export default function HealthTips(){
 
-  const truncateText = (words: string | string[], limit = 150) => {
-    if (words.length <= limit) {
-      return words;
+  const truncateText = (words: string | string[], limit = 150): string => {
+    // Ensure words is treated as a string by joining if it's an array
+    const text = Array.isArray(words) ? words.join(' ') : words;
+
+    if (text.length <= limit) {
+      return text;
     }
-    return words.slice(0, limit) + '...';
+    return text.slice(0, limit) + '...';
   };
 
   return(
@@ -39,7 +42,10 @@ export default function HealthTips(){
               </div>
 
               <div className={""}>
-                {truncateText(tip.content)}
+                {/* {truncateText(tip.content)} */}
+                {typeof truncateText(tip.content) === "string" && (
+                  <Preview content={truncateText(tip.content)}/>
+                )}
               </div>
               <Link
                 href={`/health-tips/${tip.id}`}
