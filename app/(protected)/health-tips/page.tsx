@@ -41,7 +41,7 @@ export default function HealthTips() {
               key={tip?.id}
             >
               <div className={'flex flex-col gap-1'}>
-                <h3 className={'text-lg font-semibold md:text-xl'}>
+                <h3 className={'text-xl font-semibold md:text-xl'}>
                   {tip.title}
                 </h3>
                 <div className={'flex flex-row gap-2 text-sm text-neutral-500'}>
@@ -54,13 +54,13 @@ export default function HealthTips() {
               <div className={''}>
                 {/* {truncateText(tip.content)} */}
                 {typeof truncateText(tip.content) === 'string' && (
-                  <Preview content={truncateText(tip.content)} />
+                  <Preview content={truncateText(tip.content)} className='max-sm:pb-0' />
                 )}
               </div>
               <Link
                 href={`/health-tips/${tip.id}`}
                 className={
-                  'text-lavender-400 hover:text-lavender-600 hover:lavender-500 flex items-center text-sm hover:cursor-pointer hover:underline'
+                  'text-lavender-400 hover:text-lavender-600 hover:lavender-500 flex items-center text-sm hover:cursor-pointer hover:underline mb-4'
                 }
               >
                 Read more
