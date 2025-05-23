@@ -1,15 +1,17 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 'use client';
 
-import React, { useState, useEffect } from 'react';
+import React, { useEffect } from 'react';
 import { useRouter, usePathname } from 'next/navigation';
 
 import { PostCard } from '@/components/cards/PostCard';
-import { getSupabaseBrowserClient } from '@/utils/supabase/client';
 //import FeedSkeletonLoader from './loaders/FeedSkeletonLoader';
 import BlurFade from '../ui/blur-fade';
 import { Post } from '@/types/global';
 import { LazyMotion, domAnimation } from 'framer-motion';
+import { usePosts } from '@/hooks/posts/usePostsData';
+import { useRealtimePosts } from '@/hooks/posts/useRealTimePosts';
+import FeedSkeletonLoader from './loaders/FeedSkeletonLoader';
 
 interface FeedListProps {
   initialPosts: Post[];
@@ -22,48 +24,50 @@ interface FeedListProps {
    * @returns A component that displays a list of posts.
    */
 const FeedList = ({ initialPosts }: FeedListProps) => {
-  const [posts, setPosts] = useState<Post[]>(initialPosts);
-  const supabase = getSupabaseBrowserClient();
+  const { data: queryPosts, isPending, isError, error } = usePosts(initialPosts);
+  //
+  //const supabase = getSupabaseBrowserClient();
   const router = useRouter();
   const pathname = usePathname();
 
+  useRealtimePosts() // use real time updates
   // Handle real-time updates
-  useEffect((): any => {
-    const listener = (payload: any) => {
-      const eventType = payload.eventType;
+  // useEffect((): any => {
+  //   const listener = (payload: any) => {
+  //     const eventType = payload.eventType;
 
-      if (eventType === 'INSERT') {
-        setPosts(prevPosts => [payload.new, ...prevPosts]);
-      } else if (eventType === 'DELETE') {
-        setPosts(prevPosts =>
-          prevPosts.filter(post => post.id !== payload.old.id),
-        );
-      }
-      // else if (eventType === 'UPDATE') {
-      //   setPosts(prevPosts =>
-      //     prevPosts.map(post =>
-      //       post.id === payload.new.id ? payload.new : post,
-      //     ),
-      //   );
-      //   console.log(payload.new)
-      // }
-    };
+  //     if (eventType === 'INSERT') {
+  //       setPosts(prevPosts => [payload.new, ...prevPosts]);
+  //     } else if (eventType === 'DELETE') {
+  //       setPosts(prevPosts =>
+  //         prevPosts.filter(post => post.id !== payload.old.id),
+  //       );
+  //     }
+  //     // else if (eventType === 'UPDATE') {
+  //     //   setPosts(prevPosts =>
+  //     //     prevPosts.map(post =>
+  //     //       post.id === payload.new.id ? payload.new : post,
+  //     //     ),
+  //     //   );
+  //     //   console.log(payload.new)
+  //     // }
+  //   };
 
-    const subscription = supabase
-      .channel('public:posts')
-      .on(
-        'postgres_changes',
-        {
-          event: '*',
-          schema: 'public',
-          table: 'posts',
-        },
-        listener,
-      )
-      .subscribe();
+  //   const subscription = supabase
+  //     .channel('public:posts')
+  //     .on(
+  //       'postgres_changes',
+  //       {
+  //         event: '*',
+  //         schema: 'public',
+  //         table: 'posts',
+  //       },
+  //       listener,
+  //     )
+  //     .subscribe();
 
-    return () => subscription.unsubscribe();
-  }, [supabase]);
+  //   return () => subscription.unsubscribe();
+  // }, [supabase]);
 
   // Handle scroll restoration
   useEffect(() => {
@@ -116,12 +120,21 @@ const FeedList = ({ initialPosts }: FeedListProps) => {
     router.push(`/post/${postId}`);
   };
 
+  if(isPending){
+    return <FeedSkeletonLoader/>
+  }
+
+if(isError){
+  return <div>{error.message}</div>
+}
+
+
   return (
     <LazyMotion features={domAnimation}>
     <div className="flex flex-col gap-4" >
       <BlurFade>
         <div className="flex w-full flex-1 flex-col gap-3 pt-3" id='feedList' data-tour="feedList" >
-          {Array.isArray(posts) && posts.map((post, index) => (
+          {Array.isArray(queryPosts) && queryPosts.map((post, index) => (
             <BlurFade
               key={post.id}
               postId={`post-${index + 1}`}

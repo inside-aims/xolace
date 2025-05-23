@@ -191,6 +191,41 @@ export type Database = {
           },
         ]
       }
+      daily_prompts: {
+        Row: {
+          active_on: string
+          created_at: string
+          created_by: string
+          id: string
+          is_active: boolean | null
+          prompt_text: string
+        }
+        Insert: {
+          active_on: string
+          created_at?: string
+          created_by: string
+          id?: string
+          is_active?: boolean | null
+          prompt_text: string
+        }
+        Update: {
+          active_on?: string
+          created_at?: string
+          created_by?: string
+          id?: string
+          is_active?: boolean | null
+          prompt_text?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "daily_prompts_created_by_fkey"
+            columns: ["created_by"]
+            isOneToOne: false
+            referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       feedbacks: {
         Row: {
           area: string | null
@@ -219,6 +254,38 @@ export type Database = {
         Relationships: [
           {
             foreignKeyName: "feedbacks_created_by_fkey"
+            columns: ["created_by"]
+            isOneToOne: false
+            referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      help_center: {
+        Row: {
+          created_at: string
+          created_by: string | null
+          id: number
+          question: string
+          status: Database["public"]["Enums"]["report_status"]
+        }
+        Insert: {
+          created_at?: string
+          created_by?: string | null
+          id?: number
+          question: string
+          status?: Database["public"]["Enums"]["report_status"]
+        }
+        Update: {
+          created_at?: string
+          created_by?: string | null
+          id?: number
+          question?: string
+          status?: Database["public"]["Enums"]["report_status"]
+        }
+        Relationships: [
+          {
+            foreignKeyName: "help center_created_by_fkey"
             columns: ["created_by"]
             isOneToOne: false
             referencedRelation: "profiles"
@@ -274,6 +341,7 @@ export type Database = {
           expires_at: string | null
           expires_in_24hr: boolean
           id: string
+          is_prompt_response: boolean
           is_sensitive: boolean
           mood: Database["public"]["Enums"]["post_mood"]
           upvotes: number
@@ -289,6 +357,7 @@ export type Database = {
           expires_at?: string | null
           expires_in_24hr?: boolean
           id?: string
+          is_prompt_response?: boolean
           is_sensitive?: boolean
           mood?: Database["public"]["Enums"]["post_mood"]
           upvotes?: number
@@ -304,6 +373,7 @@ export type Database = {
           expires_at?: string | null
           expires_in_24hr?: boolean
           id?: string
+          is_prompt_response?: boolean
           is_sensitive?: boolean
           mood?: Database["public"]["Enums"]["post_mood"]
           upvotes?: number
@@ -363,6 +433,7 @@ export type Database = {
           id: string
           is_anonymous: boolean
           is_verified: boolean
+          reputation: number
           role: Database["public"]["Enums"]["user_role"]
           supabase_user: string
           username: string
@@ -375,6 +446,7 @@ export type Database = {
           id?: string
           is_anonymous?: boolean
           is_verified?: boolean
+          reputation?: number
           role?: Database["public"]["Enums"]["user_role"]
           supabase_user: string
           username: string
@@ -387,11 +459,90 @@ export type Database = {
           id?: string
           is_anonymous?: boolean
           is_verified?: boolean
+          reputation?: number
           role?: Database["public"]["Enums"]["user_role"]
           supabase_user?: string
           username?: string
         }
         Relationships: []
+      }
+      prompt_responses: {
+        Row: {
+          id: string
+          post_id: string
+          prompt_id: string
+          responded_at: string | null
+          user_id: string | null
+        }
+        Insert: {
+          id?: string
+          post_id: string
+          prompt_id: string
+          responded_at?: string | null
+          user_id?: string | null
+        }
+        Update: {
+          id?: string
+          post_id?: string
+          prompt_id?: string
+          responded_at?: string | null
+          user_id?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "prompt_responses_post_id_fkey"
+            columns: ["post_id"]
+            isOneToOne: true
+            referencedRelation: "posts"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "prompt_responses_prompt_id_fkey"
+            columns: ["prompt_id"]
+            isOneToOne: false
+            referencedRelation: "daily_prompts"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "prompt_responses_user_id_fkey"
+            columns: ["user_id"]
+            isOneToOne: false
+            referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      prompt_streaks: {
+        Row: {
+          current_streak: number
+          last_response_date: string | null
+          longest_streak: number
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          current_streak?: number
+          last_response_date?: string | null
+          longest_streak?: number
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          current_streak?: number
+          last_response_date?: string | null
+          longest_streak?: number
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "prompt_streaks_user_id_fkey"
+            columns: ["user_id"]
+            isOneToOne: true
+            referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+        ]
       }
       reports: {
         Row: {
@@ -696,7 +847,8 @@ export type Database = {
           duration: Database["public"]["Enums"]["post_duration"]
           expires_at: string
           tag_names: string[]
-          is_sensitive: boolean
+          is_sensitive?: boolean
+          is_prompt_response?: boolean
         }
         Returns: string
       }
@@ -711,6 +863,18 @@ export type Database = {
         }
         Returns: string
       }
+      create_post_with_tags_v2: {
+        Args: {
+          content: string
+          mood: Database["public"]["Enums"]["post_mood"]
+          expires_in_24hr: boolean
+          duration: Database["public"]["Enums"]["post_duration"]
+          expires_at: string
+          tag_names: string[]
+          is_sensitive: boolean
+        }
+        Returns: string
+      }
       handle_vote: {
         Args: {
           p_current_vote: Database["public"]["Enums"]["vote_types"]
@@ -719,6 +883,10 @@ export type Database = {
           p_vote_type: Database["public"]["Enums"]["vote_types"]
         }
         Returns: Json
+      }
+      increment_reputation: {
+        Args: { user_id_in: string; points_in: number }
+        Returns: undefined
       }
     }
     Enums: {
@@ -756,27 +924,29 @@ export type Database = {
   }
 }
 
-type PublicSchema = Database[Extract<keyof Database, "public">]
+type DefaultSchema = Database[Extract<keyof Database, "public">]
 
 export type Tables<
-  PublicTableNameOrOptions extends
-    | keyof (PublicSchema["Tables"] & PublicSchema["Views"])
+  DefaultSchemaTableNameOrOptions extends
+    | keyof (DefaultSchema["Tables"] & DefaultSchema["Views"])
     | { schema: keyof Database },
-  TableName extends PublicTableNameOrOptions extends { schema: keyof Database }
-    ? keyof (Database[PublicTableNameOrOptions["schema"]]["Tables"] &
-        Database[PublicTableNameOrOptions["schema"]]["Views"])
+  TableName extends DefaultSchemaTableNameOrOptions extends {
+    schema: keyof Database
+  }
+    ? keyof (Database[DefaultSchemaTableNameOrOptions["schema"]]["Tables"] &
+        Database[DefaultSchemaTableNameOrOptions["schema"]]["Views"])
     : never = never,
-> = PublicTableNameOrOptions extends { schema: keyof Database }
-  ? (Database[PublicTableNameOrOptions["schema"]]["Tables"] &
-      Database[PublicTableNameOrOptions["schema"]]["Views"])[TableName] extends {
+> = DefaultSchemaTableNameOrOptions extends { schema: keyof Database }
+  ? (Database[DefaultSchemaTableNameOrOptions["schema"]]["Tables"] &
+      Database[DefaultSchemaTableNameOrOptions["schema"]]["Views"])[TableName] extends {
       Row: infer R
     }
     ? R
     : never
-  : PublicTableNameOrOptions extends keyof (PublicSchema["Tables"] &
-        PublicSchema["Views"])
-    ? (PublicSchema["Tables"] &
-        PublicSchema["Views"])[PublicTableNameOrOptions] extends {
+  : DefaultSchemaTableNameOrOptions extends keyof (DefaultSchema["Tables"] &
+        DefaultSchema["Views"])
+    ? (DefaultSchema["Tables"] &
+        DefaultSchema["Views"])[DefaultSchemaTableNameOrOptions] extends {
         Row: infer R
       }
       ? R
@@ -784,20 +954,22 @@ export type Tables<
     : never
 
 export type TablesInsert<
-  PublicTableNameOrOptions extends
-    | keyof PublicSchema["Tables"]
+  DefaultSchemaTableNameOrOptions extends
+    | keyof DefaultSchema["Tables"]
     | { schema: keyof Database },
-  TableName extends PublicTableNameOrOptions extends { schema: keyof Database }
-    ? keyof Database[PublicTableNameOrOptions["schema"]]["Tables"]
+  TableName extends DefaultSchemaTableNameOrOptions extends {
+    schema: keyof Database
+  }
+    ? keyof Database[DefaultSchemaTableNameOrOptions["schema"]]["Tables"]
     : never = never,
-> = PublicTableNameOrOptions extends { schema: keyof Database }
-  ? Database[PublicTableNameOrOptions["schema"]]["Tables"][TableName] extends {
+> = DefaultSchemaTableNameOrOptions extends { schema: keyof Database }
+  ? Database[DefaultSchemaTableNameOrOptions["schema"]]["Tables"][TableName] extends {
       Insert: infer I
     }
     ? I
     : never
-  : PublicTableNameOrOptions extends keyof PublicSchema["Tables"]
-    ? PublicSchema["Tables"][PublicTableNameOrOptions] extends {
+  : DefaultSchemaTableNameOrOptions extends keyof DefaultSchema["Tables"]
+    ? DefaultSchema["Tables"][DefaultSchemaTableNameOrOptions] extends {
         Insert: infer I
       }
       ? I
@@ -805,20 +977,22 @@ export type TablesInsert<
     : never
 
 export type TablesUpdate<
-  PublicTableNameOrOptions extends
-    | keyof PublicSchema["Tables"]
+  DefaultSchemaTableNameOrOptions extends
+    | keyof DefaultSchema["Tables"]
     | { schema: keyof Database },
-  TableName extends PublicTableNameOrOptions extends { schema: keyof Database }
-    ? keyof Database[PublicTableNameOrOptions["schema"]]["Tables"]
+  TableName extends DefaultSchemaTableNameOrOptions extends {
+    schema: keyof Database
+  }
+    ? keyof Database[DefaultSchemaTableNameOrOptions["schema"]]["Tables"]
     : never = never,
-> = PublicTableNameOrOptions extends { schema: keyof Database }
-  ? Database[PublicTableNameOrOptions["schema"]]["Tables"][TableName] extends {
+> = DefaultSchemaTableNameOrOptions extends { schema: keyof Database }
+  ? Database[DefaultSchemaTableNameOrOptions["schema"]]["Tables"][TableName] extends {
       Update: infer U
     }
     ? U
     : never
-  : PublicTableNameOrOptions extends keyof PublicSchema["Tables"]
-    ? PublicSchema["Tables"][PublicTableNameOrOptions] extends {
+  : DefaultSchemaTableNameOrOptions extends keyof DefaultSchema["Tables"]
+    ? DefaultSchema["Tables"][DefaultSchemaTableNameOrOptions] extends {
         Update: infer U
       }
       ? U
@@ -826,21 +1000,23 @@ export type TablesUpdate<
     : never
 
 export type Enums<
-  PublicEnumNameOrOptions extends
-    | keyof PublicSchema["Enums"]
+  DefaultSchemaEnumNameOrOptions extends
+    | keyof DefaultSchema["Enums"]
     | { schema: keyof Database },
-  EnumName extends PublicEnumNameOrOptions extends { schema: keyof Database }
-    ? keyof Database[PublicEnumNameOrOptions["schema"]]["Enums"]
+  EnumName extends DefaultSchemaEnumNameOrOptions extends {
+    schema: keyof Database
+  }
+    ? keyof Database[DefaultSchemaEnumNameOrOptions["schema"]]["Enums"]
     : never = never,
-> = PublicEnumNameOrOptions extends { schema: keyof Database }
-  ? Database[PublicEnumNameOrOptions["schema"]]["Enums"][EnumName]
-  : PublicEnumNameOrOptions extends keyof PublicSchema["Enums"]
-    ? PublicSchema["Enums"][PublicEnumNameOrOptions]
+> = DefaultSchemaEnumNameOrOptions extends { schema: keyof Database }
+  ? Database[DefaultSchemaEnumNameOrOptions["schema"]]["Enums"][EnumName]
+  : DefaultSchemaEnumNameOrOptions extends keyof DefaultSchema["Enums"]
+    ? DefaultSchema["Enums"][DefaultSchemaEnumNameOrOptions]
     : never
 
 export type CompositeTypes<
   PublicCompositeTypeNameOrOptions extends
-    | keyof PublicSchema["CompositeTypes"]
+    | keyof DefaultSchema["CompositeTypes"]
     | { schema: keyof Database },
   CompositeTypeName extends PublicCompositeTypeNameOrOptions extends {
     schema: keyof Database
@@ -849,7 +1025,43 @@ export type CompositeTypes<
     : never = never,
 > = PublicCompositeTypeNameOrOptions extends { schema: keyof Database }
   ? Database[PublicCompositeTypeNameOrOptions["schema"]]["CompositeTypes"][CompositeTypeName]
-  : PublicCompositeTypeNameOrOptions extends keyof PublicSchema["CompositeTypes"]
-    ? PublicSchema["CompositeTypes"][PublicCompositeTypeNameOrOptions]
+  : PublicCompositeTypeNameOrOptions extends keyof DefaultSchema["CompositeTypes"]
+    ? DefaultSchema["CompositeTypes"][PublicCompositeTypeNameOrOptions]
     : never
+
+export const Constants = {
+  public: {
+    Enums: {
+      action_type: [
+        "created",
+        "deleted",
+        "updated",
+        "commented",
+        "reported",
+        "upvoted",
+        "downvoted",
+        "viewed",
+        "added",
+      ],
+      entity_types: [
+        "post",
+        "comment",
+        "vote",
+        "report",
+        "profile",
+        "system",
+        "view",
+      ],
+      feedback_status: ["open", "closed"],
+      post_duration: ["6", "12", "24"],
+      post_mood: ["neutral", "confused", "sad", "happy", "angry"],
+      privacy_options: ["public", "private", "followers_only"],
+      report_status: ["pending", "reviewed", "resolved"],
+      theme_options: ["system", "light", "dark"],
+      user_role: ["normal_user", "verified", "blue_team", "help_professional"],
+      verification_method: ["manual", "subscription", "promo"],
+      vote_types: ["upvote", "downvote"],
+    },
+  },
+} as const
 

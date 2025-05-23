@@ -265,3 +265,38 @@ export   const tips = [
 "What’s been heavy on your mind that you haven’t shared?",
 "When was the last time you truly felt understood?"
 ]
+
+
+export const reputationPoints = {
+  upvote: {
+    performer: 2,
+    author: 3,
+    removed_performer: -2,
+    removed_author: -3,
+  },
+  downvote: {
+    performer: -1,
+    author: -2,
+    removed_performer: 1,
+    removed_author: 2,
+  },
+  post_created: {
+    author: 4, // Default for general posts
+  },
+  prompt_post_created: {
+    author: 6,
+  },
+  comment_created: {
+    author: 2,
+  },
+  post_deleted: {
+    author: -3,
+  },
+  comment_deleted: {
+    author: -2,
+  },
+  post_viewed:{
+    performer:1,
+    author: 3,
+  }
+};

@@ -102,7 +102,7 @@ const DailyPrompt = () => {
       // <Card className="overflow-hidden border-none shadow-xl bg-gradient-to-br from-purple-600 to-lavender-700 dark:from-ocean-700/80 dark:to-lavender-800/80 relative text-white p-4 mb-1">
       //   Toggle on Daily Prompt to get started or well continue with streaks🔥!
       // </Card>
-      <TipsBanner className="shadow-xl bg-gradient-to-br from-ocean-500 to-lavender-600 dark:from-ocean-700/90 dark:to-lavender-800/90 md:left-[var(--sidebar-width)] md:w-[calc(100%-var(--sidebar-width))] text-white">
+      <TipsBanner className="shadow-xl bg-gradient-to-br from-ocean-500 to-lavender-600 dark:from-ocean-700/90 dark:to-lavender-800/90 md:left-[var(--sidebar-width)] md:w-[calc(100%-var(--sidebar-width))] text-white" hideOnScroll>
         <WordRotate className="text-sm md:text-md lg:text-lg" words={tips} duration={5000} />
      </TipsBanner>
     );
