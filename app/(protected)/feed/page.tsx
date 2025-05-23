@@ -66,7 +66,7 @@ export default async function FeedPage() {
 
   // Pass the Supabase client to the cached function
   //const initialPosts = await getCachedPosts(supabase);
-  const { data: postsData, error } = await supabase
+  const { data: postsData } = await supabase
     .from('posts')
     .select(
       `
