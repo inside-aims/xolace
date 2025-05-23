@@ -1,14 +1,11 @@
+import HealthTipsWrapper from '@/components/shared/layoutUIs/HealthTipsWrapper';
+import { CircleArrowRight } from 'lucide-react';
+import React from 'react';
+import { healthTips } from '@/app/(protected)/health-tips/(overview)/health-tips';
+import Link from 'next/link';
+import { Preview } from '@/components/editor/Preview';
 
-
-import HealthTipsWrapper from "@/components/shared/layoutUIs/HealthTipsWrapper";
-import {CircleArrowRight} from "lucide-react";
-import React from "react";
-import {healthTips} from "@/app/(protected)/health-tips/(overview)/health-tips";
-import Link from 'next/link'
-import {Preview} from "@/components/editor/Preview";
-
-export default function HealthTips(){
-
+export default function HealthTips() {
   const truncateText = (words: string | string[], limit = 150): string => {
     // Ensure words is treated as a string by joining if it's an array
     const text = Array.isArray(words) ? words.join(' ') : words;
@@ -19,55 +16,62 @@ export default function HealthTips(){
     return text.slice(0, limit) + '...';
   };
 
-  return(
+  return (
     <HealthTipsWrapper>
-      <div className={"flex flex-col w-full items-start gap-4 -mt-5 max-md:pb-6"}>
-        <div className="relative flex items-center gap-2 font-semibold text-3xl md:text-4xl px-4 mb-2 group animate-in fade-in slide-in-from-left-5 duration-700">
-          <span className="bg-gradient-to-r from-lavender-400 via-lavender-500 to-lavender-600 text-transparent bg-clip-text">Xolace</span>
+      <div
+        className={'-mt-5 flex w-full flex-col items-start gap-4 max-md:pb-6'}
+      >
+        <div className="group animate-in fade-in slide-in-from-left-5 relative mb-2 flex items-center gap-2 px-4 text-3xl font-semibold duration-700 md:text-4xl">
+          <span className="from-lavender-400 via-lavender-500 to-lavender-600 bg-gradient-to-r bg-clip-text text-transparent">
+            Xolace
+          </span>
           <span className="relative inline-flex items-center">
             Wellness
-            <div className="absolute -bottom-2 left-0 w-full h-1 bg-lavender-400/30 rounded-full transform origin-left scale-x-0 transition-transform group-hover:scale-x-100 duration-500"></div>
+            <div className="bg-lavender-400/30 absolute -bottom-2 left-0 h-1 w-full origin-left scale-x-0 transform rounded-full transition-transform duration-500 group-hover:scale-x-100"></div>
           </span>
           <span className="relative inline-flex items-center">
             Insight
-            <div className="absolute -right-6 top-1/2 -translate-y-1/2 w-4 h-4 rounded-full bg-lavender-400/20 animate-pulse"></div>
+            <div className="bg-lavender-400/20 absolute top-1/2 -right-6 h-4 w-4 -translate-y-1/2 animate-pulse rounded-full"></div>
           </span>
         </div>
-        <div className={`flex flex-col w-full px-4 gap-4 md:gap-8`}>
-          { healthTips.map((tip) => (
-            <div className={"flex w-full items-start flex-col gap-2"} key={tip?.id}>
-              <div className={"flex flex-col gap-1"}>
-                <h3 className={"font-semibold text-lg md:text-xl"}>
+        <div className={`flex w-full flex-col gap-4 px-4 md:gap-8`}>
+          {healthTips.map(tip => (
+            <div
+              className={'flex w-full flex-col items-start gap-2'}
+              key={tip?.id}
+            >
+              <div className={'flex flex-col gap-1'}>
+                <h3 className={'text-lg font-semibold md:text-xl'}>
                   {tip.title}
                 </h3>
-                <div className={"flex flex-row gap-2 text-sm text-neutral-500"}>
+                <div className={'flex flex-row gap-2 text-sm text-neutral-500'}>
                   by
-                  <span className={"text-lavender-500"}>
-                  {tip.author}
-                </span>
+                  <span className={'text-lavender-500'}>{tip.author}</span>
                   <span>{tip.date}</span>
                 </div>
               </div>
 
-              <div className={""}>
+              <div className={''}>
                 {/* {truncateText(tip.content)} */}
-                {typeof truncateText(tip.content) === "string" && (
-                  <Preview content={truncateText(tip.content)}/>
+                {typeof truncateText(tip.content) === 'string' && (
+                  <Preview content={truncateText(tip.content)} />
                 )}
               </div>
               <Link
                 href={`/health-tips/${tip.id}`}
-                className={"flex text-sm items-center text-lavender-400 hover:text-lavender-600 hover:underline hover:cursor-pointer hover:lavender-500"}
+                className={
+                  'text-lavender-400 hover:text-lavender-600 hover:lavender-500 flex items-center text-sm hover:cursor-pointer hover:underline'
+                }
               >
                 Read more
-                <span className={"text-lavender-400 hover:lavender-500 ml-1"}>
-                 <CircleArrowRight size={16}/>
-               </span>
+                <span className={'text-lavender-400 hover:lavender-500 ml-1'}>
+                  <CircleArrowRight size={16} />
+                </span>
               </Link>
             </div>
           ))}
         </div>
       </div>
     </HealthTipsWrapper>
-  )
+  );
 }

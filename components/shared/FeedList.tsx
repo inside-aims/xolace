@@ -133,7 +133,7 @@ if(isError){
     <LazyMotion features={domAnimation}>
     <div className="flex flex-col gap-4" >
       <BlurFade>
-        <div className="flex w-full flex-1 flex-col gap-3 pt-3" id='feedList' data-tour="feedList" >
+        <div className="flex w-full flex-1 flex-col gap-3 pt-3 md:px-8" id='feedList' data-tour="feedList" >
           {Array.isArray(queryPosts) && queryPosts.map((post, index) => (
             <BlurFade
               key={post.id}

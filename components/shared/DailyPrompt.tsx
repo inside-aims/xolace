@@ -110,7 +110,7 @@ const DailyPrompt = () => {
 
   if (isLoadingPrompt) {
     return (
-      <Card className="overflow-hidden border-none shadow-xl bg-gradient-to-br from-purple-600 to-lavender-700 dark:from-ocean-700/80 dark:to-lavender-800/80 relative text-white p-4">
+      <Card className="overflow-hidden border-none shadow-xl bg-gradient-to-br from-purple-600 to-lavender-700 dark:from-ocean-700/80 dark:to-lavender-800/80 relative text-white p-4 md:mx-8">
         <div className="animate-pulse flex flex-col gap-4">
           <div className="h-6 bg-white/20 rounded w-1/3"></div>
           <div className="h-20 bg-white/20 rounded"></div>
@@ -132,7 +132,7 @@ const DailyPrompt = () => {
   }
 
   return (
-    <div className="w-full mb-3 sm:mb-4" id="daily-prompt-card-container">
+    <div className="w-full mb-3 sm:mb-4 md:px-8" id="daily-prompt-card-container">
       <motion.div
         initial={{ opacity: 0, y: -20 }}
         animate={{ opacity: 1, y: 0 }}

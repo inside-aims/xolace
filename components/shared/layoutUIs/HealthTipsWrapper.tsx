@@ -12,7 +12,7 @@ export default function HealthTipsWrapper({children}: {children: ReactNode})  {
         className="px-0! pt-8 pb-12 sm:container overflow-auto col-span-12 md:col-span-8">
         {children}
       </div>
-      <div className={"border-s pt-1 col-span-12 md:col-span-4 hidden md:flex h-full overflow-auto"}>
+      <div className={" pt-1 col-span-12 md:col-span-4 hidden md:flex h-full overflow-auto"}>
        <HealthTips/>
       </div>
     </div>
