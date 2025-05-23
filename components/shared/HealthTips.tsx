@@ -105,23 +105,31 @@ export default function HealthTips() {
      <div className={"w-full flex flex-col"}>
        <div className={`${!showDetails ? 'flex flex-col w-full md:px-4 gap-4' : 'hidden'}`}>
          {/*Xolace wellness section*/}
-         <div className="flex flex-col gap-2  py-2 md:py-4 items-start border shadow-lg rounded-xl">
-           <h4 className="w-full flex justify-between items-center  px-2 md:px-4 text-neutral-500 ">
-          <span className={"font-semibold"}>
+         <div 
+           className="flex flex-col gap-2 py-2 md:py-4 items-start border shadow-lg rounded-xl
+           hover:shadow-xl transition-shadow duration-300 ease-in-out
+           animate-in fade-in slide-in-from-bottom-3 duration-500 motion-reduce:animate-none"
+         >
+           <h4 className="w-full flex justify-between items-center px-2 md:px-4 text-neutral-500">
+          <span className="font-semibold hover:text-lavender-500 transition-colors duration-200">
             Xolace Wellness Insights
           </span>
-             <Cross size={18}/>
+             <Cross 
+               size={18} 
+               className="hover:rotate-90 transition-transform duration-300 cursor-pointer"
+             />
            </h4>
-           <div className={"flex flex-col items-center gap-2 text-sm"}>
-             <p className={"flex ps-2 md:px-4 "}>
+           <div className="flex flex-col items-center gap-2 text-sm hover:scale-[1.01] transition-transform duration-300">
+             <p className="flex ps-2 md:px-4 hover:text-lavender-500 transition-colors duration-200">
                Practical health tips and trusted advice to help you thrive mind and body.
              </p>
-             <p className={"flex ms-2 md:ms-4  border-t py-1 md:py-2"}>
+             <p className="flex ms-2 md:ms-4 border-t py-1 md:py-2 hover:text-lavender-500 transition-colors duration-200">
                Backed by experts, tailored for your everyday wellbeing.
              </p>
-             <div className={"w-full py-2 flex items-center justify-center md:hidden border-t"}>
+             <div className="w-full py-2 flex items-center justify-center md:hidden border-t">
                <Button
-                 className={"w-full mx-8 bg-lavender-400 hover:bg-lavender-500 rounded-full transition-transform duration-300 ease-in-out hover:scale-110"}
+                 className="w-full mx-8 bg-lavender-400 hover:bg-lavender-500 rounded-full 
+                 transition-all duration-300 ease-in-out hover:scale-105 hover:shadow-md"
                  onClick={() => handleHealthTipsNavigation()}
                >
                  View Health Tips
