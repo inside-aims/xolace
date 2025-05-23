@@ -18,8 +18,8 @@ export default function HealthTips(){
 
   return(
     <HealthTipsWrapper>
-      <div className={"flex flex-col w-full items-start gap-4"}>
-        <div className={"font-semibold text-lg md:text-xl px-4"}>
+      <div className={"flex flex-col w-full items-start gap-4 -mt-5 max-md:pb-6"}>
+        <div className={"font-semibold text-2xl md:text-3xl px-4 mb-2"}>
           Xolace Wellness Insight
         </div>
         <div className={`flex flex-col w-full px-4 gap-4 md:gap-8`}>

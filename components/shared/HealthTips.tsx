@@ -4,6 +4,7 @@ import {Info, Cross, CircleArrowRight, MoveLeft} from 'lucide-react';
 import {Button} from '@/components/ui/button'
 import React, {useState} from "react";
 import { useRouter } from 'next/navigation';
+import { useSidebar } from '../ui/sidebar';
 
 interface HealthTipCardProps {
   id: string;
@@ -82,6 +83,7 @@ export default function HealthTips() {
   const [showDetails, setShowDetails] = useState<boolean>(false);
   const [healthTipDetails, setHealthTipDetails] = useState<HealthTipCardProps>()
   const router = useRouter();
+  const { setOpenMobile } = useSidebar();
 
   // Helper for health tip click to read more
   const handleHealthClick = (healthTipId: string) => {
@@ -94,6 +96,7 @@ export default function HealthTips() {
 
   // Handle health tips route navigation
   const handleHealthTipsNavigation = () => {
+    setOpenMobile(false);
     return router.push('/health-tips');
   }
 
