@@ -19,9 +19,9 @@ import { Skeleton } from '@/components/ui/skeleton';
 
 const HealthTipsSkeleton = () => {
   return (
-    <div className="hidden md:flex flex-col gap-6 p-4 w-full">
+    <div className="hidden w-full flex-col gap-6 p-4 md:flex">
       {/* Skeleton for the Xolace Wellness Insights card */}
-      <div className="flex flex-col gap-2 p-4 border rounded-xl shadow-lg">
+      <div className="flex flex-col gap-2 rounded-xl border p-4 shadow-lg">
         <div className="flex items-center justify-between">
           <Skeleton className="h-5 w-2/5" />
           <Skeleton className="h-4 w-4" />
@@ -31,7 +31,7 @@ const HealthTipsSkeleton = () => {
       </div>
 
       {/* Skeleton for the list of health tips */}
-      <div className="flex flex-col gap-6 p-4 border rounded-xl shadow-lg">
+      <div className="flex flex-col gap-6 rounded-xl border p-4 shadow-lg">
         <div className="flex items-center justify-between">
           <Skeleton className="h-5 w-1/3" />
           <Skeleton className="h-5 w-5" />
@@ -43,7 +43,7 @@ const HealthTipsSkeleton = () => {
               <div className="flex-1 space-y-2">
                 <Skeleton className="h-4 w-3/4" />
                 <Skeleton className="h-4 w-1/2" />
-                <Skeleton className="h-8 w-1/4 rounded-full mt-1" />
+                <Skeleton className="mt-1 h-8 w-1/4 rounded-full" />
               </div>
             </div>
           ))}
