@@ -27,7 +27,7 @@ import {
 import CommentCard from '../cards/CommentCard';
 
 import PostMetrics from '../shared/PostMetrics';
-import { useToast } from '../ui/use-toast';
+import {toast} from 'sonner'
 import Loader from '../shared/loaders/Loader';
 import { CommentSchema } from '@/validation';
 import { getSupabaseBrowserClient } from '@/utils/supabase/client';
@@ -35,7 +35,7 @@ import { useUserState } from '@/lib/store/user';
 import { Send } from 'lucide-react';
 import { VisuallyHidden } from '@radix-ui/react-visually-hidden';
 import { Comment, DetailPost } from '@/types/global';
-import { logActivity } from '@/lib/activity-logger';
+import { useCommentMutation } from '@/hooks/posts/useCommentMutation';
 
 type Type = string | string[] | undefined;
 
@@ -45,12 +45,15 @@ const PostDetailDrawer = ({ post, type }: { post: DetailPost; type: Type }) => {
   // initialize supabase client
   const supabase = getSupabaseBrowserClient();
 
-  const { toast } = useToast();
   const router = useRouter();
 
   // states
   const [comments, setComments] = useState<Comment[]>(post?.comments || []);
-  const [isLoading, setIsLoading] = useState(false);
+
+  // TODO: Will probably fetch comments from the database in the future instead of using from post object
+
+// Use the comment mutation hook
+const { mutate: createComment, isPending: isCreatingComment } = useCommentMutation(post);
 
   //   counter for comment fields
   const counter: number = 300;
@@ -95,38 +98,63 @@ const PostDetailDrawer = ({ post, type }: { post: DetailPost; type: Type }) => {
 
   // submit comment form
   async function onSubmit(data: z.infer<typeof CommentSchema>) {
-    setIsLoading(true);
     const { comment } = data;
 
-    // inserting into the database table in supabase
-    supabase
-      .from('comments')
-      .insert({
-        post: post.id,
-        comment_text: comment,
-      })
-      .then(() => {
-        toast({
-          title: 'Comment Created 🖌️',
-          description: 'Your comment has been successfully created! 😆',
-          variant: 'default',
-        });
-        form.reset();
-
-        // check if the user is the creator of the post
-        const relatedUser = post.created_by === user?.id ? undefined : post.created_by;
-        // log comment activity
-        logActivity({
-          userId: user?.id || '',
-          relatedUserId: relatedUser,
-          entityType: 'comment',
-          action: 'commented',
-          postId: post.id,
-          metadata: { content: comment, link : `/post/${post.id}` },
-        });
-  
-        setIsLoading(false);
+    if (!user?.id) {
+      toast.error('Authentication Required',{
+        description: 'Please log in to post a comment.',
       });
+      return;
+  }
+
+    // inserting into the database table in supabase
+    // supabase
+    //   .from('comments')
+    //   .insert({
+    //     post: post.id,
+    //     comment_text: comment,
+    //   })
+    //   .then(() => {
+    //     toast({
+    //       title: 'Comment Created 🖌️',
+    //       description: 'Your comment has been successfully created! 😆',
+    //       variant: 'default',
+    //     });
+    //     form.reset();
+
+    //     // check if the user is the creator of the post
+    //     const relatedUser = post.created_by === user?.id ? undefined : post.created_by;
+    //     // log comment activity
+    //     logActivity({
+    //       userId: user?.id || '',
+    //       relatedUserId: relatedUser,
+    //       entityType: 'comment',
+    //       action: 'commented',
+    //       postId: post.id,
+    //       metadata: { content: comment, link : `/post/${post.id}` },
+    //     });
+  
+    //     setIsLoading(false);
+    //   });
+
+    createComment(
+      {
+        postId: post.id,
+        commentText: comment,
+        postCreatedBy: post.created_by,
+      },
+      {
+        onSuccess: () => {
+          toast.success('Thanks for sharing your thoughts! 😆')
+          form.reset();
+        },
+        onError: (error) => {
+            toast.error("Failed to create comment",{
+                description: error.message || 'Something went wrong.',
+            })
+        }
+      }
+    );
   }
 
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -200,7 +228,7 @@ const PostDetailDrawer = ({ post, type }: { post: DetailPost; type: Type }) => {
                   userId={user?.id || ''}
                   votes={post.votes}
                   section="details"
-                  commentLength={post.comments.length}
+                  commentLength={comments.length}
                 />
 
             ) : (
@@ -231,11 +259,11 @@ const PostDetailDrawer = ({ post, type }: { post: DetailPost; type: Type }) => {
                 <div className="flex flex-row-reverse items-center justify-between">
                   <Button
                     size={'sm'}
-                    disabled={comment.length > 300 || false}
+                    disabled={comment.length > 300 || false || isCreatingComment}
                     type="submit"
                     className="rounded-full"
                   >
-                    {isLoading ? (
+                    {isCreatingComment ? (
                       <div className="flex items-center justify-center gap-x-2">
                         {' '}
                         <Loader /> <span>Loading</span>
@@ -271,9 +299,30 @@ const PostDetailDrawer = ({ post, type }: { post: DetailPost; type: Type }) => {
               .map((comment: Comment) => <CommentCard key={comment.id} comment={comment} />)
               .reverse()}
             {comments.length == 0 && (
-              <div>
-                <p>No comments</p>
-              </div>
+               <div className="flex flex-col items-center justify-center space-y-4 py-5 text-center">
+               <div className="relative">
+                 <div className="animate-bounce">
+                   💭
+                 </div>
+                 <div className="absolute -right-4 top-0 animate-bounce-delayed">
+                   💭
+                 </div>
+                 <div className="absolute -left-4 top-2 animate-bounce-slow">
+                   💭
+                 </div>
+               </div>
+               <h3 className="text-md font-semibold text-gray-800 dark:text-gray-200">
+                 Be the First to share your Experience!
+               </h3>
+               <p className="max-w-sm text-sm text-gray-600 dark:text-gray-400">
+                 Start the conversation and share your thoughts. Your perspective matters!
+               </p>
+               <div className="mt-2 text-xs text-gray-500 dark:text-gray-500">
+                 <span className="inline-block transform transition-transform hover:scale-110">
+                   👆 Just type above to join the discussion
+                 </span>
+               </div>
+             </div>
             )}
           </div>
         </DrawerContent>

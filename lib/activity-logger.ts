@@ -1,10 +1,18 @@
-"use server"
+'use server';
 
 import { createClient } from '@/utils/supabase/server';
 import { ActionType } from '@/types/activity';
+import { updateReputation } from './actions/reputation.action';
 //import { headers } from 'next/headers';
 
-type ActivityEntityType = 'post' | 'comment' | 'vote' | 'report' | 'profile' | 'system' | 'view';
+type ActivityEntityType =
+  | 'post'
+  | 'comment'
+  | 'vote'
+  | 'report'
+  | 'profile'
+  | 'system'
+  | 'view';
 
 interface ActivityLogParams {
   userId: string;
@@ -30,34 +38,42 @@ export async function logActivity({
   voteId,
   reportId,
   profileId,
-  metadata = {}
+  metadata = {},
 }: ActivityLogParams) {
   const supabase = await createClient();
-  
+
   try {
     // Get IP address from headers
     //const headersList = headers();
-    const ip = null
+    const ip = null;
 
-    const { error } = await supabase
-      .from('activity_logs')
-      .insert({
-        user_id: userId,
-        related_user_id: relatedUserId,
-        entity_type: entityType,
-        action,
-        post_id: postId,
-        comment_id: commentId,
-        vote_id: voteId,
-        report_id: reportId,
-        profile_id: profileId,
-        metadata,
-        ip_address: ip || null
-      });
+    const { error } = await supabase.from('activity_logs').insert({
+      user_id: userId,
+      related_user_id: relatedUserId,
+      entity_type: entityType,
+      action,
+      post_id: postId,
+      comment_id: commentId,
+      vote_id: voteId,
+      report_id: reportId,
+      profile_id: profileId,
+      metadata,
+      ip_address: ip || null,
+    });
 
     if (error) {
       console.error('Failed to log activity:', error);
+      return;
     }
+
+    const params = {
+      interaction: { action, entityType },
+      performerId: userId,
+      authorId: relatedUserId,
+      metadata: metadata,
+    };
+    console.log(params);
+    await updateReputation(params);
   } catch (error) {
     console.error('Error logging activity:', error);
   }
