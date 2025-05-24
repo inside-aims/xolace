@@ -213,7 +213,7 @@ const PostDetailDrawer = ({ post, type }: { post: DetailPost; type: Type }) => {
       >
         <DrawerContent
           aria-describedby={undefined}
-          className="h-full max-h-[97%] sm:hidden! bg-lavender-500"
+          className="h-full max-h-[97%] sm:hidden! dark:bg-bg-dark"
         >
           <VisuallyHidden>
             <DrawerTitle>Post Detail Drawer</DrawerTitle>
@@ -303,7 +303,13 @@ const PostDetailDrawer = ({ post, type }: { post: DetailPost; type: Type }) => {
           >
             {comments
               .map((comment: Comment) => (
-                <CommentCard key={comment.id} comment={comment} />
+                <CommentCard
+                  key={comment.id}
+                  comment={comment}
+                  className="bg-transparent! border-0 pl-0!"
+                  headerClassName="px-0 py-0!"
+                  contentClassName="pl-10 pb-0"
+                />
               ))
               .reverse()}
             {comments.length == 0 && (
