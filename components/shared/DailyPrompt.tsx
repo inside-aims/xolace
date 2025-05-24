@@ -113,7 +113,7 @@ const DailyPrompt = () => {
     );
   }
 
-  if (!promptData) {
+  if (!promptData?.data) {
     return (
       // <Card className="overflow-hidden border-none shadow-xl bg-gradient-to-br from-purple-600 to-lavender-700 dark:from-ocean-700/80 dark:to-lavender-800/80 relative text-white p-4">
       //   No prompt available for today.
@@ -160,7 +160,7 @@ const DailyPrompt = () => {
             </div>
             <p className="text-xs text-purple-200 dark:text-purple-300 mb-3 flex items-center">
               <CalendarDays className="h-4 w-4 mr-1.5 text-purple-300"/>
-              {format(new Date(promptData?.data?.active_on), 'MMMM d, yyyy')}
+              {format(new Date(promptData?.data?.active_on || new Date()), 'MMMM d, yyyy')}
             </p>
 
             <div className="relative my-3 p-3 bg-white/5 dark:bg-black/10 rounded-xl backdrop-blur-sm min-h-[50px] flex items-center justify-center">

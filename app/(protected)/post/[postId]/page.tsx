@@ -7,6 +7,7 @@ import PostDetailDrawer from '@/components/ui/PostDetailDrawer';
 import { createClient } from '@/utils/supabase/server';
 import View from '@/components/hocs/detailsPostComponents/View';
 import { Skeleton } from '@/components/ui/skeleton';
+import PostDetailsInteraction from '@/components/hocs/detailsPostComponents/PostDetailsInteraction';
 
 type Params = Promise<{ postId: string }>;
 type SearchParams = Promise<{ [key: string]: string | string[] | undefined }>;
@@ -63,12 +64,16 @@ const PostDetailPage = async (props: {
   return (
     <>
       <DetailCard postId={postId} post={post} />
-      <Suspense fallback={<Skeleton className="view_skeleton" />}>
+      {/* <Suspense fallback={<Skeleton className="view_skeleton" />}>
         <View id={postId} createdBy={post.created_by} viewsCount={post.views[0].count || 0} content={post.content} />
-      </Suspense>
+      </Suspense> */}
 
-      {/* Drawer for comment form and comment cards */}
+      {/* Drawer for comment form and comment cards for mobile */}
       <PostDetailDrawer post={post} type={type} />
+
+      {/* comment form and comment cards for desktop */}
+      <PostDetailsInteraction post={post} />
+      
     </>
   );
 };

@@ -208,7 +208,7 @@ const { mutate: createComment, isPending: isCreatingComment } = useCommentMutati
       >
         <DrawerContent
           aria-describedby={undefined}
-          className="h-full max-h-[97%]"
+          className="h-full max-h-[97%] sm:hidden"
         >
           <VisuallyHidden>
             <DrawerTitle>Post Detail Drawer</DrawerTitle>

@@ -27,6 +27,8 @@
 @theme {
   --color-bg: #ffffff; /* Light mode */
   --color-bg-dark: #121212; /* Dark mode */
+  --color-muted-dark: #27272a;
+  --color-muted-dark-hover: #3a3a3e;
 
   /*Primary color*/
   --color-ocean-50: #e7f4ff; /* Lightest (shallow water) */
@@ -643,7 +645,7 @@ code {
     background: #8794f2;
     border-radius: 20px;
     /* border: 2px solid rgba(128, 128, 128, 0.199); */
-    border: none
+    border: none;
   }
 }
 
