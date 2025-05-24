@@ -27,7 +27,7 @@ import {
 import CommentCard from '../cards/CommentCard';
 
 import PostMetrics from '../shared/PostMetrics';
-import {toast} from 'sonner'
+import { toast } from 'sonner';
 import Loader from '../shared/loaders/Loader';
 import { CommentSchema } from '@/validation';
 import { getSupabaseBrowserClient } from '@/utils/supabase/client';
@@ -52,8 +52,9 @@ const PostDetailDrawer = ({ post, type }: { post: DetailPost; type: Type }) => {
 
   // TODO: Will probably fetch comments from the database in the future instead of using from post object
 
-// Use the comment mutation hook
-const { mutate: createComment, isPending: isCreatingComment } = useCommentMutation(post);
+  // Use the comment mutation hook
+  const { mutate: createComment, isPending: isCreatingComment } =
+    useCommentMutation(post);
 
   //   counter for comment fields
   const counter: number = 300;
@@ -81,7 +82,7 @@ const { mutate: createComment, isPending: isCreatingComment } = useCommentMutati
 
       return () => clearTimeout(timer);
     }
-  // eslint-disable-next-line react-hooks/exhaustive-deps
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [type]);
 
   // form validator
@@ -101,11 +102,11 @@ const { mutate: createComment, isPending: isCreatingComment } = useCommentMutati
     const { comment } = data;
 
     if (!user?.id) {
-      toast.error('Authentication Required',{
+      toast.error('Authentication Required', {
         description: 'Please log in to post a comment.',
       });
       return;
-  }
+    }
 
     // inserting into the database table in supabase
     // supabase
@@ -133,7 +134,7 @@ const { mutate: createComment, isPending: isCreatingComment } = useCommentMutati
     //       postId: post.id,
     //       metadata: { content: comment, link : `/post/${post.id}` },
     //     });
-  
+
     //     setIsLoading(false);
     //   });
 
@@ -145,15 +146,15 @@ const { mutate: createComment, isPending: isCreatingComment } = useCommentMutati
       },
       {
         onSuccess: () => {
-          toast.success('Thanks for sharing your thoughts! 😆')
+          toast.success('Thanks for sharing your thoughts! 😆');
           form.reset();
         },
-        onError: (error) => {
-            toast.error("Failed to create comment",{
-                description: error.message || 'Something went wrong.',
-            })
-        }
-      }
+        onError: error => {
+          toast.error('Failed to create comment', {
+            description: error.message || 'Something went wrong.',
+          });
+        },
+      },
     );
   }
 
@@ -163,12 +164,16 @@ const { mutate: createComment, isPending: isCreatingComment } = useCommentMutati
     const listener = (payload: any) => {
       const eventType = payload.eventType;
 
-
       if (eventType === 'INSERT') {
-        setComments((prevComments: Comment[]) => [...prevComments, payload.new]);
+        setComments((prevComments: Comment[]) => [
+          ...prevComments,
+          payload.new,
+        ]);
       } else if (eventType === 'DELETE') {
         setComments((prevComments: Comment[]) =>
-          prevComments.filter((comment: Comment) => comment.id !== payload.old.id),
+          prevComments.filter(
+            (comment: Comment) => comment.id !== payload.old.id,
+          ),
         );
       } else if (eventType === 'UPDATE') {
         setComments((prevComments: Comment[]) =>
@@ -208,7 +213,7 @@ const { mutate: createComment, isPending: isCreatingComment } = useCommentMutati
       >
         <DrawerContent
           aria-describedby={undefined}
-          className="h-full max-h-[97%] sm:hidden"
+          className="h-full max-h-[97%] sm:hidden! bg-lavender-500"
         >
           <VisuallyHidden>
             <DrawerTitle>Post Detail Drawer</DrawerTitle>
@@ -216,21 +221,20 @@ const { mutate: createComment, isPending: isCreatingComment } = useCommentMutati
           <DrawerHeader className="relative flex flex-col items-center">
             <Button
               variant={'link'}
-              className="absolute left-5 text-blue dark:text-sky-500 max-sm:top-3 md:left-10"
+              className="text-blue absolute left-5 max-sm:top-3 md:left-10 dark:text-sky-500"
               onClick={() => router.back()}
             >
-              <DoubleArrowLeftIcon className="mr-1 text-blue dark:text-sky-500" />
+              <DoubleArrowLeftIcon className="text-blue mr-1 dark:text-sky-500" />
               back
             </Button>
             {user ? (
-                <PostMetrics
-                  post={post}
-                  userId={user?.id || ''}
-                  votes={post.votes}
-                  section="details"
-                  commentLength={comments.length}
-                />
-
+              <PostMetrics
+                post={post}
+                userId={user?.id || ''}
+                votes={post.votes}
+                section="details"
+                commentLength={comments.length}
+              />
             ) : (
               <div>Kindly refresh the page!!</div>
             )}
@@ -248,7 +252,7 @@ const { mutate: createComment, isPending: isCreatingComment } = useCommentMutati
                       <FormControl>
                         <Textarea
                           placeholder="Post your reply"
-                          className="no-focus mb-2 h-[42px] resize-none rounded-full text-dark-1 outline-none dark:text-white"
+                          className="no-focus text-dark-1 dark:border-muted-dark dark:hover:border-muted-dark-hover mb-2 h-[42px] resize-none rounded-full outline-none dark:text-white"
                           {...field}
                         />
                       </FormControl>
@@ -259,14 +263,16 @@ const { mutate: createComment, isPending: isCreatingComment } = useCommentMutati
                 <div className="flex flex-row-reverse items-center justify-between">
                   <Button
                     size={'sm'}
-                    disabled={comment.length > 300 || false || isCreatingComment}
+                    disabled={
+                      comment.length > 300 || false || isCreatingComment
+                    }
                     type="submit"
-                    className="rounded-full"
+                    className="btn-depth active:btn-depth-active hover:btn-depth-hover max-w-20 min-w-12 rounded-full text-white"
                   >
                     {isCreatingComment ? (
                       <div className="flex items-center justify-center gap-x-2">
                         {' '}
-                        <Loader /> <span>Loading</span>
+                        <Loader />
                       </div>
                     ) : (
                       <Send size={20} strokeWidth={1.75} absoluteStrokeWidth />
@@ -277,7 +283,7 @@ const { mutate: createComment, isPending: isCreatingComment } = useCommentMutati
                       counter - comment.length < 0
                         ? 'border-red-500 bg-red-400'
                         : 'border-blue bg-blue'
-                    } flex h-9 max-h-9 min-h-9 w-9 min-w-9 max-w-9 items-center justify-center rounded-full p-3 shadow-sm`}
+                    } flex h-9 max-h-9 min-h-9 w-9 max-w-9 min-w-9 items-center justify-center rounded-full p-3 shadow-sm`}
                   >
                     {counter - comment.length}
                   </p>
@@ -296,33 +302,34 @@ const { mutate: createComment, isPending: isCreatingComment } = useCommentMutati
             )}
           >
             {comments
-              .map((comment: Comment) => <CommentCard key={comment.id} comment={comment} />)
+              .map((comment: Comment) => (
+                <CommentCard key={comment.id} comment={comment} />
+              ))
               .reverse()}
             {comments.length == 0 && (
-               <div className="flex flex-col items-center justify-center space-y-4 py-5 text-center">
-               <div className="relative">
-                 <div className="animate-bounce">
-                   💭
-                 </div>
-                 <div className="absolute -right-4 top-0 animate-bounce-delayed">
-                   💭
-                 </div>
-                 <div className="absolute -left-4 top-2 animate-bounce-slow">
-                   💭
-                 </div>
-               </div>
-               <h3 className="text-md font-semibold text-gray-800 dark:text-gray-200">
-                 Be the First to share your Experience!
-               </h3>
-               <p className="max-w-sm text-sm text-gray-600 dark:text-gray-400">
-                 Start the conversation and share your thoughts. Your perspective matters!
-               </p>
-               <div className="mt-2 text-xs text-gray-500 dark:text-gray-500">
-                 <span className="inline-block transform transition-transform hover:scale-110">
-                   👆 Just type above to join the discussion
-                 </span>
-               </div>
-             </div>
+              <div className="flex flex-col items-center justify-center space-y-4 py-5 text-center">
+                <div className="relative">
+                  <div className="animate-bounce">💭</div>
+                  <div className="animate-bounce-delayed absolute top-0 -right-4">
+                    💭
+                  </div>
+                  <div className="animate-bounce-slow absolute top-2 -left-4">
+                    💭
+                  </div>
+                </div>
+                <h3 className="text-md font-semibold text-gray-800 dark:text-gray-200">
+                  Be the First to share your Experience!
+                </h3>
+                <p className="max-w-sm text-sm text-gray-600 dark:text-gray-400">
+                  Start the conversation and share your thoughts. Your
+                  perspective matters!
+                </p>
+                <div className="mt-2 text-xs text-gray-500 dark:text-gray-500">
+                  <span className="inline-block transform transition-transform hover:scale-110">
+                    👆 Just type above to join the discussion
+                  </span>
+                </div>
+              </div>
             )}
           </div>
         </DrawerContent>

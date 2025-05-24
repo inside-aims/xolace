@@ -1,7 +1,7 @@
 'use client';
 import { useState, useEffect } from 'react';
 import Image from 'next/image';
-import { format } from 'timeago.js';
+import { format, register, type LocaleFunc } from 'timeago.js';
 import dynamic from 'next/dynamic';
 
 import {
@@ -24,7 +24,7 @@ import { useMediaQuery } from '@/hooks/use-media-query';
 import { useSidebar } from '../ui/sidebar';
 import { ArrowLeft } from 'lucide-react';
 import { useRouter } from 'next/navigation';
-
+import { moodMap } from '@/types';
 // Dynamically import non-critical components
 const PostDropdown = dynamic(() => import('../shared/PostDropdown'), {
   ssr: false,
@@ -40,6 +40,26 @@ const KvngSheet = dynamic(
     ssr: false,
   },
 );
+
+// Define a custom locale
+const customLocale: LocaleFunc = (number: number, index: number): [string, string] => {
+  return [
+    ['just now', 'right now'],
+    ['%s sec ago', 'in %s sec'],
+    ['1 min ago', 'in 1 min'],
+    ['%s min ago', 'in %s min'],
+    ['1 hr ago', 'in 1 hr'],
+    ['%s hr ago', 'in %s hr'],
+    ['1 day ago', 'in 1 day'],
+    ['%s days ago', 'in %s days'],
+    ['1 wk ago', 'in 1 wk'],
+    ['%s wks ago', 'in %s wks'],
+    ['1 mo ago', 'in 1 mo'],
+    ['%s mos ago', 'in %s mos'],
+    ['1 yr ago', 'in 1 yr'],
+    ['%s yrs ago', 'in %s yrs'],
+  ][index] as [string, string]; // This assertion ensures TypeScript understands it's a tuple
+};
 
 export function DetailCard({
   postId,
@@ -63,7 +83,9 @@ export function DetailCard({
   const router = useRouter();
 
   const [isSheetOpen, setIsSheetOpen] = useState<boolean>(false);
-  // const postMood = moodMap[post?.mood] || moodMap['neutral'];
+  const postMood = moodMap[post?.mood] || moodMap['neutral'];
+  // Register the custom locale with an ID (e.g. 'short-en')
+register('short-en', customLocale);
 
   const {
     created_at,
@@ -76,14 +98,14 @@ export function DetailCard({
 
   return (
     <>
-      <Card className="mt-5 w-full rounded-none border-0 border-x-0 px-8 max-sm:mb-5 md:w-full">
-        <CardHeader className="flex-row items-start justify-between px-6 py-2">
+      <Card className="mt-5 w-full rounded-none border-0 border-x-0 md:px-8 max-sm:mb-5 md:w-full">
+        <CardHeader className="flex-row items-center justify-between px-6 py-2">
           <div className="flex items-center gap-2 md:gap-3">
-            <button className="flex h-8 w-8 items-center justify-center rounded-full dark:bg-muted-dark bg-gray-700 cursor-pointer hover:bg-muted-dark-hover" onClick={() => router.back()}>
-              <ArrowLeft size={22} />
+            <button className="flex h-8 w-8 items-center justify-center rounded-full dark:bg-muted-dark bg-gray-700 cursor-pointer hover:bg-muted-dark-hover max-md:hidden" onClick={() => router.back()}>
+              <ArrowLeft size={22} className='text-white' />
             </button>
             <Avatar>
-              <AvatarImage src={author_avatar_url || undefined} />
+              <AvatarImage src={author_avatar_url || undefined} className=' max-sm:h-9 max-sm:w-9' />
               <AvatarFallback>XO</AvatarFallback>
             </Avatar>
             <div className="flex flex-col items-start justify-center gap-1">
@@ -92,7 +114,7 @@ export function DetailCard({
               </h5>
             </div>
             <small className="ml-4 text-sm text-zinc-500 md:ml-10 dark:text-gray-400">
-              {format(created_at)}
+              {format(created_at, 'short-en')}
             </small>
           </div>
           <PostDropdown
@@ -116,9 +138,9 @@ export function DetailCard({
               ))}
           </div>
         </CardContent>
-        {/* <CardFooter className='flex justify-between items-center'>
+        <CardFooter className='flex justify-between items-center md:hidden'>
           <div
-            className={`flex items-center justify-center rounded-3xl border p-1 dark:bg-transparent ${
+            className={`flex items-center justify-center h-7 w-10 rounded-full ${
               postMood.style
             }`}
           >
@@ -148,7 +170,7 @@ export function DetailCard({
           <div>
             <SaveToCollectionsButton userId={user?.id || ''} createdBy={post.created_by} postId={post.id} postCollections={post.collections} />
           </div>
-        </CardFooter> */}
+        </CardFooter>
       </Card>
       <KvngSheet
         onOpenChange={setIsSheetOpen}

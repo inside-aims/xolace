@@ -27,6 +27,7 @@ import Loader from '@/components/shared/loaders/Loader';
 import PostMetrics from '@/components/shared/PostMetrics';
 import SaveToCollectionsButton from '@/components/shared/SaveToCollectionsButton';
 import { moodMap } from '@/types';
+import CommentCard from '@/components/cards/CommentCard';
 
 const PostDetailsInteraction = ({ post }: { post: DetailPost }) => {
   // get user data
@@ -138,7 +139,7 @@ const PostDetailsInteraction = ({ post }: { post: DetailPost }) => {
   }, [supabase]);
 
   return (
-    <div className="w-full px-13">
+    <div className="w-full px-13 max-md:hidden">
       <div className="mt-1 mb-5 px-2">
         {user ? (
           <div className="flex items-center gap-5">
@@ -188,7 +189,16 @@ const PostDetailsInteraction = ({ post }: { post: DetailPost }) => {
             </div>
           </div>
         ) : (
-          <div>Kindly refresh the page!!</div>
+          <div className="flex items-center gap-5 animate-pulse">
+            <div className="flex items-center gap-1">
+              <div className="h-5 w-5 bg-gray-200 dark:bg-gray-700 rounded"></div>
+              <div className="h-4 w-8 bg-gray-200 dark:bg-gray-700 rounded"></div>
+              <div className="h-5 w-5 bg-gray-200 dark:bg-gray-700 rounded"></div>
+              <div className="h-4 w-8 bg-gray-200 dark:bg-gray-700 rounded"></div>
+            </div>
+            <div className="h-7 w-10 bg-gray-200 dark:bg-gray-700 rounded-full"></div>
+            <div className="h-8 w-8 bg-gray-200 dark:bg-gray-700 rounded"></div>
+          </div>
         )}
       </div>
       <Form {...form}>
@@ -214,12 +224,12 @@ const PostDetailsInteraction = ({ post }: { post: DetailPost }) => {
               size={'sm'}
               disabled={comment.length > 300 || false || isCreatingComment}
               type="submit"
-              className="btn-depth active:btn-depth-active hover:btn-depth-hover w-12 rounded-full text-white"
+              className="btn-depth active:btn-depth-active hover:btn-depth-hover min-w-12 max-w-20 rounded-full text-white"
             >
               {isCreatingComment ? (
                 <div className="flex items-center justify-center gap-x-2">
                   {' '}
-                  <Loader /> <span>Loading</span>
+                  <Loader />
                 </div>
               ) : (
                 <Send size={20} strokeWidth={1.75} absoluteStrokeWidth />
@@ -237,6 +247,38 @@ const PostDetailsInteraction = ({ post }: { post: DetailPost }) => {
           </div>
         </form>
       </Form>
+
+     <div className='mt-10'>
+     {comments
+              .map((comment: Comment) => <CommentCard key={comment.id} comment={comment} className='border-none bg-transparent! p-0!' headerClassName='p-0!' contentClassName='pl-9 pb-0' />)
+              .reverse()}
+            {comments.length == 0 && (
+               <div className="flex flex-col items-center justify-center space-y-4 py-5 text-center">
+               <div className="relative">
+                 <div className="animate-bounce">
+                   💭
+                 </div>
+                 <div className="absolute -right-4 top-0 animate-bounce-delayed">
+                   💭
+                 </div>
+                 <div className="absolute -left-4 top-2 animate-bounce-slow">
+                   💭
+                 </div>
+               </div>
+               <h3 className="text-md font-semibold text-gray-800 dark:text-gray-200">
+                 Be the First to share your Experience!
+               </h3>
+               <p className="max-w-sm text-sm text-gray-600 dark:text-gray-400">
+                 Start the conversation and share your thoughts. Your perspective matters!
+               </p>
+               <div className="mt-2 text-xs text-gray-500 dark:text-gray-500">
+                 <span className="inline-block transform transition-transform hover:scale-110">
+                   👆 Just type above to join the discussion
+                 </span>
+               </div>
+             </div>
+            )}
+     </div>
     </div>
   );
 };
