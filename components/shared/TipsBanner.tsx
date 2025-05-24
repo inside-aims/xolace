@@ -6,7 +6,7 @@ import { cn } from '@/lib/utils';
 export const TipsBanner = ({
   className,
   children,
-  hideOnScroll = false,
+  hideOnScroll = true,
 }: {
   className?: string;
   children: React.ReactNode;
