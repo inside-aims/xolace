@@ -3,6 +3,7 @@
 import type React from 'react';
 import { TourProvider as ReactourProvider } from '@reactour/tour';
 import { TourButton, TourNavigation, TourProgress } from '@/styles/tourStyles';
+import { usePreferencesStore } from '@/lib/store/preferences-store';
 
 interface TourProviderProps {
   children: React.ReactNode;
@@ -11,6 +12,7 @@ interface TourProviderProps {
 }
 
 export default function TourProvider({ children, steps }: TourProviderProps) {
+  const { updatePreference } = usePreferencesStore();
   return (
     <ReactourProvider
       steps={steps}
@@ -36,7 +38,10 @@ export default function TourProvider({ children, steps }: TourProviderProps) {
               {currentStep + 1} / {steps.length}
             </TourProgress>
             {currentStep === steps.length - 1 ? (
-              <TourButton onClick={() => setIsOpen(false)}>Finish</TourButton>
+              <TourButton onClick={() => {
+                setIsOpen(false);
+                updatePreference('guided_tour_enabled', false);
+              }}>Finish</TourButton>
             ) : (
               <TourButton onClick={() => setCurrentStep(s => s + 1)}>
                 Next

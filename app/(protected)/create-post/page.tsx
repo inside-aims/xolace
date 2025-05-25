@@ -16,7 +16,7 @@ const CreatePost = () => {
       <div className="container-spacing w-full">
         <PostForm />
 
-        <div className="fixed bottom-10 right-6 z-50 block rounded-full md:hidden">
+        <div className="fixed bottom-10 right-6 z-50 block rounded-full">
           <TourButton />
         </div>
       </div>

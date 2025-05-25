@@ -740,7 +740,7 @@ export function PostForm() {
         Tip : Platform made to share your experiences without holding back..
       </div>
       <div className="flex justify-center item-center">
-      <Mascot/>
+      <Mascot id="mascot"/>
       </div>
     </Form>
   );
