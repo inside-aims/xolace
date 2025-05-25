@@ -61,7 +61,7 @@ export function SiteHeader() {
   return (
     <>
       <header className="sticky top-0 z-50 flex w-full items-center border-b bg-bg opacity-[0.96] dark:border-gray-700/90 dark:bg-bg-dark dark:opacity-100" id="navbar">
-        <div className="flex h-(--header-height) w-full items-center justify-between ps-3 pe-3 sm:pe-10">
+        <div className="flex h-(--header-height) w-full items-center justify-between ps-3 pe-3 sm:pe-10 relative">
           <Button
             className="h-8 w-8"
             variant="ghost"
@@ -77,14 +77,13 @@ export function SiteHeader() {
           </Button>
 
           {/* Logo */}
-          <div className="flex items-center gap-x-4">
+          <div className="absolute left-1/2 -translate-x-1/2 ">
             <Link href="/feed" className="flex items-center gap-4">
               <Image
                 src={mascot}
                 alt="logo"
                 width={60}
                 height={60}
-                className="hidden dark:block"
                 priority={true}
                 loading="eager"
               />
