@@ -47,6 +47,7 @@ import { logActivity } from '@/lib/activity-logger';
 import { ActivityType } from '@/types/activity';
 import { usePreferencesStore } from '@/lib/store/preferences-store';
 import { useSearchParams, useRouter, usePathname } from 'next/navigation';
+import Mascot from '../extras/mascot';
 
 // Dynamic Imports
 const Loader = dynamic(() => import('../shared/loaders/Loader'), {
@@ -737,6 +738,9 @@ export function PostForm() {
 
       <div className="container mx-auto px-3 pt-20 text-center text-sm text-zinc-600">
         Tip : Platform made to share your thought without holding back..
+      </div>
+      <div className="flex justify-center item-center">
+      <Mascot/>
       </div>
     </Form>
   );
