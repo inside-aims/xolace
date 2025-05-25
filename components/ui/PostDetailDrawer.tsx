@@ -251,7 +251,7 @@ const PostDetailDrawer = ({ post, type }: { post: DetailPost; type: Type }) => {
                     <FormItem>
                       <FormControl>
                         <Textarea
-                          placeholder="Post your reply"
+                          placeholder="Join the conversation..."
                           className="no-focus text-dark-1 dark:border-muted-dark dark:hover:border-muted-dark-hover mb-2 h-[42px] resize-none rounded-full outline-none dark:text-white"
                           {...field}
                         />

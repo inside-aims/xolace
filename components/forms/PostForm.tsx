@@ -737,7 +737,7 @@ export function PostForm() {
       </form>
 
       <div className="container mx-auto px-3 pt-20 text-center text-sm text-zinc-600">
-        Tip : Platform made to share your thought without holding back..
+        Tip : Platform made to share your experiences without holding back..
       </div>
       <div className="flex justify-center item-center">
       <Mascot/>
