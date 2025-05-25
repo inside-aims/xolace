@@ -111,7 +111,7 @@ export function PostCard({ className, post, onClick }: PostCardType) {
         </CardHeader>
 
         <CardContent className="cursor-pointer" onClick={onClick}>
-          <div className="mb-2">{truncateText(post.content, 70)}</div>
+          <div className="mb-2">{truncateText(post.content, 200)}</div>
           <div className="mt-2 flex flex-wrap gap-2">
             {post.posttags && // check if post has tags
               post.posttags.map((tag: TagProps, index: number) => (
