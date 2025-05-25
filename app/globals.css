@@ -248,6 +248,10 @@
   @apply bg-ocean-500 border-ocean-500 text-white;
 }
 
+@utility font-button-small{
+  @apply text-xs font-semibold;
+}
+
 @utility btn-depth-active {
   @apply border-depth-btn-border-active;
   background-image: linear-gradient(
@@ -350,11 +354,11 @@
 
 @utility view-container {
   /* view */
-  @apply relative mt-5 flex w-full items-center justify-end;
+  @apply relative bg-zinc-400 dark:bg-zinc-700 rounded-full h-7 w-13 flex items-center justify-center;
 }
 
 @utility view-text {
-  @apply bg-dark-2 dark:text-label-dark text-label-light rounded-lg px-4 py-2 text-[16px] font-medium capitalize dark:bg-slate-400;
+  @apply text-label-dark dark:text-white font-button-small capitalize;
 }
 
 @utility view_skeleton {

@@ -4,6 +4,7 @@ import { useState, useEffect } from 'react';
 import Ping from '@/components/animated/Ping';
 import { useUserState } from '@/lib/store/user';
 import { updateViewsAction } from '@/app/actions';
+import { ScanEye } from 'lucide-react';
 
 const View = ({ id, viewsCount, createdBy, content }: { id: string; viewsCount: number ; createdBy: string ; content: string}) => {
   // get user profile data
@@ -31,8 +32,8 @@ const View = ({ id, viewsCount, createdBy, content }: { id: string; viewsCount: 
         <Ping />
       </div>
 
-      <p className="view-text lg:z-49">
-        <span className="font-black"> 👀 : {totalViews}</span>
+      <p className="view-text lg:z-49 flex justify-center items-center gap-x-2">
+      <ScanEye size={16} strokeWidth={3} className='text-black dark:text-white ' />{totalViews}
       </p>
     </div>
   );

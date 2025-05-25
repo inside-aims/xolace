@@ -28,6 +28,7 @@ import PostMetrics from '@/components/shared/PostMetrics';
 import SaveToCollectionsButton from '@/components/shared/SaveToCollectionsButton';
 import { moodMap } from '@/types';
 import CommentCard from '@/components/cards/CommentCard';
+import View from '@/components/hocs/detailsPostComponents/View';
 
 const PostDetailsInteraction = ({ post }: { post: DetailPost }) => {
   // get user data
@@ -179,6 +180,8 @@ const PostDetailsInteraction = ({ post }: { post: DetailPost }) => {
               )}
             </div>
 
+            <View id={post.id} createdBy={post.created_by} viewsCount={post.views[0].count || 0} content={post.content} />
+
             <div>
               <SaveToCollectionsButton
                 userId={user?.id || ''}
@@ -187,6 +190,8 @@ const PostDetailsInteraction = ({ post }: { post: DetailPost }) => {
                 postCollections={post.collections}
               />
             </div>
+
+           
           </div>
         ) : (
           <div className="flex items-center gap-5 animate-pulse">

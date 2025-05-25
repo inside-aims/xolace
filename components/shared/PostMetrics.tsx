@@ -151,7 +151,7 @@ const PostMetrics = ({
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: 10 }}
             transition={{ duration: 0.2 }}
-            className="min-w-[2ch] text-center text-sm font-medium"
+            className="min-w-[2ch] text-center font-button-small"
             id="upvote-count"
           >
             {upvoteCount}
@@ -180,7 +180,7 @@ const PostMetrics = ({
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: 10 }}
             transition={{ duration: 0.2 }}
-            className="min-w-[2ch] text-center text-sm font-medium"
+            className="min-w-[2ch] text-center font-button-small"
             id="downvote-count"
           >
             {downvoteCount}
@@ -227,7 +227,7 @@ const PostMetrics = ({
             </svg>
           </div>
         )}
-        <p className="text-default-400 text-small">
+        <p className="font-button-small">
           {section === 'details'
             ? commentLength
             : Array.isArray(post?.comments)
