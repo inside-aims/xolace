@@ -91,7 +91,7 @@ interface HealthTipDetailsProps {
 // ];
 
 export default function HealthTips() {
-  const { data: feedHealthTips, isLoading: feedHealthTipsLoading, isError: feedHealthTipsError } = useFeedHealthTips();
+  const { data: feedHealthTips, isPending: feedHealthTipsLoading, isError: feedHealthTipsError } = useFeedHealthTips();
   const [showDetails, setShowDetails] = useState<boolean>(false);
   const [healthTipDetails, setHealthTipDetails] =
     useState<HealthTipDetailsProps>();

@@ -35,6 +35,7 @@ export function usePosts(initialData: Post[]) {
       return data;
     },
     initialData,
-    staleTime: 60 * 60,
+    staleTime: 60 * 60, // 1 hour
+    
   });
 }

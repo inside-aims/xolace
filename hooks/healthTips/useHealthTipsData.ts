@@ -22,5 +22,27 @@ export function useFeedHealthTips() {
       return data;
     },
     staleTime: 60 * 60 * 24, // 24 hours
+    refetchOnMount: false,
+  });
+}
+
+export function useHealthTips() {
+  return useQuery({
+    queryKey: ['healthTips'],
+    queryFn: async () => {
+      const { data, error } = await supabase
+        .from('health_tips')
+        .select(
+          `
+         *
+      `,
+        )
+        .order('created_at', { ascending: false })
+
+      if (error) throw error;
+      return data;
+    },
+    staleTime: 60 * 60 * 24, // 24 hours    
+    refetchOnMount: false,
   });
 }
