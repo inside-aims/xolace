@@ -17,6 +17,7 @@ import { getSupabaseBrowserClient } from '@/utils/supabase/client';
 //import SignoutAlert from './shared/SignoutAlert';
 import { useUserState } from '@/lib/store/user';
 import { RealtimeAvatarStack } from './realtime-avatar-stack';
+import mascot from '../public/assets/images/mas.webp'
 
 export function SiteHeader() {
   // get user profile data
@@ -79,22 +80,12 @@ export function SiteHeader() {
           <div className="flex items-center gap-x-4">
             <Link href="/feed" className="flex items-center gap-4">
               <Image
-                src="/assets/images/anonymous-messenger.png"
+                src={mascot}
                 alt="logo"
-                width={40}
-                height={32}
+                width={60}
+                height={60}
                 className="hidden dark:block"
                 priority={true}
-                loading="eager"
-              />
-
-              <Image
-                src="/assets/images/anonymous-messenger_light.png"
-                alt="logo"
-                width={40}
-                height={32}
-                className="block dark:hidden"
-                 priority={true}
                 loading="eager"
               />
             </Link>
@@ -116,7 +107,7 @@ export function SiteHeader() {
           </div> */}
 
           {/* Theme switcher */}
-          <div className="flex gap-x-5 w-30 items-center max-sm:justify-center">
+          <div className="flex gap-x-5 md:w-30 items-center max-sm:justify-center">
             <div className='hidden md:block'>
             <ThemeSwitch />
             </div>
