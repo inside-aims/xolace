@@ -48,6 +48,7 @@ import { ActivityType } from '@/types/activity';
 import { usePreferencesStore } from '@/lib/store/preferences-store';
 import { useSearchParams, useRouter, usePathname } from 'next/navigation';
 import Mascot from '../extras/mascot';
+import img1 from '../extras/mas.webp'
 
 // Dynamic Imports
 const Loader = dynamic(() => import('../shared/loaders/Loader'), {
@@ -739,9 +740,11 @@ export function PostForm() {
       <div className="container mx-auto px-3 pt-20 text-center text-sm text-zinc-600">
         Tip : Platform made to share your experiences without holding back..
       </div>
-      <div className="flex justify-center item-center">
-      <Mascot id="mascot"/>
+      <div className="flex justify-center item-center mt-7 md:mt-5">
+      <Image src={img1} height={130} width={130} alt='image'/>
+      {/* <Mascot id="mascot"/> */}
       </div>
+      
     </Form>
   );
 }
