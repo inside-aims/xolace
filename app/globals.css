@@ -459,6 +459,7 @@
     --radix-accordion-content-height: auto;
     --duration: 1s;
     --bg-size: 200%;
+    --ocean-600: 228, 100%, 51%;
   }
 
   .dark {
@@ -500,6 +501,7 @@
     --radix-accordion-content-height: auto;
     --duration: 1s;
     --bg-size: 200%;
+    --ocean-600: 228, 100%, 51%;
   }
 }
 

@@ -54,13 +54,16 @@ export default function HealthTips() {
               <div className={''}>
                 {/* {truncateText(tip.content)} */}
                 {typeof truncateText(tip.content) === 'string' && (
-                  <Preview content={truncateText(tip.content)} className='max-sm:pb-0' />
+                  <Preview
+                    content={truncateText(tip.content)}
+                    className="max-sm:pb-0"
+                  />
                 )}
               </div>
               <Link
                 href={`/health-tips/${tip.id}`}
                 className={
-                  'text-lavender-400 hover:text-lavender-600 hover:lavender-500 flex items-center text-sm hover:cursor-pointer hover:underline mb-4'
+                  'text-lavender-400 hover:text-lavender-600 hover:lavender-500 mb-4 flex items-center text-sm hover:cursor-pointer hover:underline'
                 }
               >
                 Read more
