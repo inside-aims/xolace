@@ -15,6 +15,7 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import { useForm } from 'react-hook-form';
 import { z } from 'zod';
 import { DoubleArrowLeftIcon } from '@radix-ui/react-icons';
+import { ArrowLeft } from 'lucide-react';
 
 import { Button } from '@/components/ui/button';
 import {
@@ -219,14 +220,12 @@ const PostDetailDrawer = ({ post, type }: { post: DetailPost; type: Type }) => {
             <DrawerTitle>Post Detail Drawer</DrawerTitle>
           </VisuallyHidden>
           <DrawerHeader className="relative flex flex-col items-center">
-            <Button
-              variant={'link'}
-              className="text-blue absolute left-5 max-sm:top-3 md:left-10 dark:text-sky-500"
+            <button
+              className=" absolute left-5 max-sm:top-3 md:left-10 dark:bg-muted-dark hover:bg-muted-dark-hover flex h-7 w-7 cursor-pointer items-center justify-center rounded-full bg-gray-700 no-underline"
               onClick={() => router.back()}
             >
-              <DoubleArrowLeftIcon className="text-blue mr-1 dark:text-sky-500" />
-              back
-            </Button>
+              <ArrowLeft size={20} className="text-white" />
+            </button>
             {user ? (
               <PostMetrics
                 post={post}

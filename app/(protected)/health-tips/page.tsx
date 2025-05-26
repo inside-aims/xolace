@@ -8,17 +8,16 @@ import {
   dehydrate,
   HydrationBoundary,
   QueryClient,
-} from '@tanstack/react-query'
+} from '@tanstack/react-query';
 
 export default async function HealthTips() {
-
-  const queryClient = new QueryClient()
+  const queryClient = new QueryClient();
 
   // Note we are now using fetchQuery()
   const healthTips = await queryClient.fetchQuery({
     queryKey: ['healthTips'],
     queryFn: getHealthTips,
-  })
+  });
 
   const truncateText = (words: string | string[], limit = 150): string => {
     // Ensure words is treated as a string by joining if it's an array
@@ -61,10 +60,12 @@ export default async function HealthTips() {
                 <div className={'flex flex-row gap-2 text-sm text-neutral-500'}>
                   by
                   <span className={'text-lavender-500'}>{tip.author_name}</span>
-                  <span>{new Date(tip?.created_at).toLocaleDateString('en-US', {
-              month: 'short',
-              year: 'numeric',
-            })}</span>
+                  <span>
+                    {new Date(tip?.created_at).toLocaleDateString('en-US', {
+                      month: 'short',
+                      year: 'numeric',
+                    })}
+                  </span>
                 </div>
               </div>
 

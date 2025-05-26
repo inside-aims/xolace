@@ -69,7 +69,7 @@ export default async function FeedPage() {
   const queryClient = new QueryClient();
 
   // Note we are now using fetchQuery()
-  const posts = await queryClient.prefetchQuery({
+ await queryClient.prefetchQuery({
     queryKey: ['posts'],
     queryFn: getAllPosts,
   });

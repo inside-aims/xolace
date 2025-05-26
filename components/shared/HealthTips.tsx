@@ -6,7 +6,7 @@ import React, { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { useSidebar } from '../ui/sidebar';
 import { useFeedHealthTips } from '@/hooks/healthTips/useHealthTipsData';
-import { Avatar, AvatarImage , AvatarFallback } from '../ui/avatar';
+import { Avatar, AvatarImage, AvatarFallback } from '../ui/avatar';
 
 interface HealthTipCardProps {
   id: number;
@@ -91,7 +91,11 @@ interface HealthTipDetailsProps {
 // ];
 
 export default function HealthTips() {
-  const { data: feedHealthTips, isPending: feedHealthTipsLoading, isError: feedHealthTipsError } = useFeedHealthTips();
+  const {
+    data: feedHealthTips,
+    isPending: feedHealthTipsLoading,
+    isError: feedHealthTipsError,
+  } = useFeedHealthTips();
   const [showDetails, setShowDetails] = useState<boolean>(false);
   const [healthTipDetails, setHealthTipDetails] =
     useState<HealthTipDetailsProps>();
@@ -160,53 +164,53 @@ export default function HealthTips() {
             </h4>
 
             <div className="flex w-full flex-col gap-4 ps-2 md:gap-6 md:ps-4">
-              {feedHealthTipsLoading ? (
-                // Show 3 skeleton loaders while loading
-                Array.from({ length: 3 }).map((_, index) => (
-                  <div
-                    key={`skeleton-${index}`}
-                    className={`${index > 0 ? 'hidden md:block' : 'block'} animate-pulse`}
-                  >
-                    <div className="flex flex-row items-start gap-2 md:gap-4">
-                      {/* Avatar skeleton */}
-                      <div className="h-10 w-10 rounded-full bg-gray-200 dark:bg-gray-700"></div>
-                      <div className="flex w-full flex-col items-start gap-2">
-                        {/* Title skeleton */}
-                        <div className="h-4 w-3/4 rounded bg-gray-200 dark:bg-gray-700"></div>
-                        {/* Author and date skeleton */}
-                        <div className="h-3 w-1/2 rounded bg-gray-200 dark:bg-gray-700"></div>
-                        {/* Button skeleton */}
-                        <div className="h-8 w-20 rounded-full bg-gray-200 dark:bg-gray-700"></div>
-                        {/* Divider for non-last items */}
-                        {index < 2 && (
-                          <div className="hidden w-full border-b py-2 md:flex"></div>
-                        )}
+              {feedHealthTipsLoading
+                ? // Show 3 skeleton loaders while loading
+                  Array.from({ length: 3 }).map((_, index) => (
+                    <div
+                      key={`skeleton-${index}`}
+                      className={`${index > 0 ? 'hidden md:block' : 'block'} animate-pulse`}
+                    >
+                      <div className="flex flex-row items-start gap-2 md:gap-4">
+                        {/* Avatar skeleton */}
+                        <div className="h-10 w-10 rounded-full bg-gray-200 dark:bg-gray-700"></div>
+                        <div className="flex w-full flex-col items-start gap-2">
+                          {/* Title skeleton */}
+                          <div className="h-4 w-3/4 rounded bg-gray-200 dark:bg-gray-700"></div>
+                          {/* Author and date skeleton */}
+                          <div className="h-3 w-1/2 rounded bg-gray-200 dark:bg-gray-700"></div>
+                          {/* Button skeleton */}
+                          <div className="h-8 w-20 rounded-full bg-gray-200 dark:bg-gray-700"></div>
+                          {/* Divider for non-last items */}
+                          {index < 2 && (
+                            <div className="hidden w-full border-b py-2 md:flex"></div>
+                          )}
+                        </div>
                       </div>
                     </div>
-                  </div>
-                ))
-              ) : (
-                // Show actual health tips when loaded
-                feedHealthTips?.map((healthTip, index) => (
-                  <div
-                    key={healthTip.id}
-                    className={`${index > 0 ? 'hidden md:block' : 'block'} animate-in fade-in slide-in-from-right-3 duration-300`}
-                    style={{ animationDelay: `${(index + 2) * 150}ms` }}
-                  >
-                    <HealthTipCard
-                      id={healthTip.id}
-                      title={healthTip.title}
-                      author={healthTip.author_name}
-                      author_avatar_url={healthTip.author_avatar_url}
-                      content={healthTip.content}
-                      date={healthTip.created_at}
-                      index={index}
-                      total={feedHealthTips?.length}
-                      onHealthTipSelect={() => handleHealthClick(healthTip.id)}
-                    />
-                  </div>
-                ))
-              )}
+                  ))
+                : // Show actual health tips when loaded
+                  feedHealthTips?.map((healthTip, index) => (
+                    <div
+                      key={healthTip.id}
+                      className={`${index > 0 ? 'hidden md:block' : 'block'} animate-in fade-in slide-in-from-right-3 duration-300`}
+                      style={{ animationDelay: `${(index + 2) * 150}ms` }}
+                    >
+                      <HealthTipCard
+                        id={healthTip.id}
+                        title={healthTip.title}
+                        author={healthTip.author_name}
+                        author_avatar_url={healthTip.author_avatar_url}
+                        content={healthTip.content}
+                        date={healthTip.created_at}
+                        index={index}
+                        total={feedHealthTips?.length}
+                        onHealthTipSelect={() =>
+                          handleHealthClick(healthTip.id)
+                        }
+                      />
+                    </div>
+                  ))}
             </div>
             <div className="animate-in fade-in-50 slide-in-from-bottom-3 flex w-full items-center justify-center border-t delay-500 duration-500">
               <Button
@@ -265,13 +269,10 @@ export function HealthTipCard({
 }: HealthTipCardProps) {
   return (
     <div className="flex flex-row items-start gap-2 md:gap-4">
-       <Avatar>
-              <AvatarImage
-                src={author_avatar_url || undefined}
-                alt={author}
-              />
-              <AvatarFallback>{author.charAt(0)}</AvatarFallback>
-            </Avatar>
+      <Avatar>
+        <AvatarImage src={author_avatar_url || undefined} alt={author} />
+        <AvatarFallback>{author.charAt(0)}</AvatarFallback>
+      </Avatar>
       <div className="flex w-full flex-col items-start">
         <p className="pe-2 text-sm md:pe-4">{title}</p>
         <h3 className="mb-1 flex w-full items-center justify-between pe-2 text-sm text-neutral-500 md:pe-4">
