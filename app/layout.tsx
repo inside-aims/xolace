@@ -7,6 +7,7 @@ import { Toaster } from '@/components/ui/toaster';
 import {Toaster as SonnerToaster} from 'sonner'
 import './globals.css';
 import { SpeedInsights } from '@vercel/speed-insights/next';
+import Providers from './providers';
 
 const defaultUrl = process.env.VERCEL_URL
   ? `https://${process.env.VERCEL_URL}`
@@ -53,10 +54,12 @@ export default function RootLayout({
           enableSystem
           disableTransitionOnChange
         >
+          <Providers>
           {children}
           <SpeedInsights />
           <Toaster />
           <SonnerToaster richColors />
+          </Providers>
         </ThemeProvider>
       </body>
     </html>

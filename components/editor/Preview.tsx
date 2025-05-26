@@ -1,5 +1,5 @@
 import { Code } from "bright";
-import { MDXRemote } from "next-mdx-remote/rsc";
+import { MDXRemote } from "next-mdx-remote-client/rsc";
 import { cn } from "@/lib/utils";
 
 Code.theme = {

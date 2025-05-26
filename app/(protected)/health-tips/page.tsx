@@ -1,11 +1,25 @@
 import HealthTipsWrapper from '@/components/shared/layoutUIs/HealthTipsWrapper';
 import { CircleArrowRight } from 'lucide-react';
 import React from 'react';
-import { healthTips } from '@/app/(protected)/health-tips/(overview)/health-tips';
+import { getHealthTips } from '@/queries/tips/getHealthTips.action';
 import Link from 'next/link';
 import { Preview } from '@/components/editor/Preview';
+import {
+  dehydrate,
+  HydrationBoundary,
+  QueryClient,
+} from '@tanstack/react-query'
 
-export default function HealthTips() {
+export default async function HealthTips() {
+
+  const queryClient = new QueryClient()
+
+  // Note we are now using fetchQuery()
+  const healthTips = await queryClient.fetchQuery({
+    queryKey: ['healthTips'],
+    queryFn: getHealthTips,
+  })
+
   const truncateText = (words: string | string[], limit = 150): string => {
     // Ensure words is treated as a string by joining if it's an array
     const text = Array.isArray(words) ? words.join(' ') : words;
@@ -46,8 +60,11 @@ export default function HealthTips() {
                 </h3>
                 <div className={'flex flex-row gap-2 text-sm text-neutral-500'}>
                   by
-                  <span className={'text-lavender-500'}>{tip.author}</span>
-                  <span>{tip.date}</span>
+                  <span className={'text-lavender-500'}>{tip.author_name}</span>
+                  <span>{new Date(tip?.created_at).toLocaleDateString('en-US', {
+              month: 'short',
+              year: 'numeric',
+            })}</span>
                 </div>
               </div>
 

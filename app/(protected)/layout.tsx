@@ -39,7 +39,6 @@ export default async function ProtectedLayout({
     .single();
 
   return (
-   <QueryProvider>
      <div className="[--header-height:calc(--spacing(14))]">
       <SidebarProvider
         className="flex flex-col"
@@ -72,7 +71,6 @@ export default async function ProtectedLayout({
         <InitUser user={profileUser} />
       </SidebarProvider>
     </div>
-   </QueryProvider>
   );
 }
 

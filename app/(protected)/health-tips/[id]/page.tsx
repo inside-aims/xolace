@@ -7,16 +7,36 @@ import Link from 'next/link';
 import {MoveLeft} from "lucide-react";
 import React from "react";
 import { Preview } from '@/components/editor/Preview';
+import { QueryClient } from '@tanstack/react-query'
+import { getHealthTip } from '@/queries/tips/getHealthTip.action'
 
 interface Props {
   params: Promise<{ id: string }>;
 }
 
+interface HealthTipDetailsProps {
+  id: number;
+  title: string;
+  author_name: string;
+  author_avatar_url: string;
+  content: string;
+  created_at: string;
+}
+
 export default async function HealthTipDetailsPage({ params }: Props) {
   const { id } = await params;
-  const tip = healthTips.find((tip) => tip.id === id);
+  const tipId = Number(id);
+  const queryClient = new QueryClient()
 
-  if (!tip) return notFound();
+  // Note we are now using fetchQuery()
+  const healthTip: HealthTipDetailsProps = await queryClient.fetchQuery({
+    queryKey: ['healthTip', tipId],
+    queryFn: () => getHealthTip(tipId),
+  })
+
+console.log("##### ",healthTip)
+
+  if (!healthTip) return notFound();
 
   return (
     <HealthTipsWrapper>
@@ -37,14 +57,15 @@ export default async function HealthTipDetailsPage({ params }: Props) {
         </div>
         <div className="flex flex-col items-center">
           <HealthTipDetailsCard
-            id={tip.id}
-            title={tip.title}
-            author={tip.author}
-            date={tip.date}
-            content={tip.content}
+            id={healthTip.id}
+            title={healthTip.title}
+            author={healthTip.author_name}
+            author_avatar_url={healthTip.author_avatar_url}
+            date={healthTip.created_at}
+            content={healthTip.content}
           />
-          {typeof tip.content === "string" && (
-            <Preview content={tip.content} />
+          {typeof healthTip.content === "string" && (
+            <Preview content={healthTip.content} />
           )}
         </div>
       </div>
