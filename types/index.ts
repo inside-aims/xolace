@@ -24,3 +24,13 @@ export const moodMap: Record<
   angry: { emoji: '😠', style: 'border-red-500 bg-red-400',gif: '/assets/gifs/post-moods/angry-unscreen.gif' },
   confused: { emoji: '🫤', style: 'border-yellow-500 bg-yellow-400' },
 };
+
+
+export type Frontmatter = {
+  title: string;
+  author_name: string;
+  created_at: Date;
+  content: string;
+};
+
+export type HealthTip = Frontmatter & { id: number };

@@ -9,6 +9,24 @@ import React from "react";
 import { Preview } from '@/components/editor/Preview';
 import { QueryClient } from '@tanstack/react-query'
 import { getHealthTip } from '@/queries/tips/getHealthTip.action'
+import { getFrontmatter } from "next-mdx-remote-client/utils";
+import { Metadata } from "next";
+import type { Frontmatter } from "@/types";
+
+
+export async function generateMetadata({ params }: Props): Promise<Metadata> {
+  const { id } = await params;
+  const tipId = Number(id);
+  const file = await getHealthTip(tipId);
+
+  if (!file) return {};
+
+  const { frontmatter } = getFrontmatter<Frontmatter>(file);
+
+  return {
+    title: frontmatter.title ?? "Article",
+  };
+}
 
 interface Props {
   params: Promise<{ id: string }>;
