@@ -41,8 +41,15 @@ const KvngSheet = dynamic(
   },
 );
 
+const View = dynamic(() => import('../hocs/detailsPostComponents/View'), {
+  ssr: false,
+});
+
 // Define a custom locale
-const customLocale: LocaleFunc = (number: number, index: number): [string, string] => {
+const customLocale: LocaleFunc = (
+  number: number,
+  index: number,
+): [string, string] => {
   return [
     ['just now', 'right now'],
     ['%s sec ago', 'in %s sec'],
@@ -85,7 +92,7 @@ export function DetailCard({
   const [isSheetOpen, setIsSheetOpen] = useState<boolean>(false);
   const postMood = moodMap[post?.mood] || moodMap['neutral'];
   // Register the custom locale with an ID (e.g. 'short-en')
-register('short-en', customLocale);
+  register('short-en', customLocale);
 
   const {
     created_at,
@@ -98,14 +105,20 @@ register('short-en', customLocale);
 
   return (
     <>
-      <Card className="mt-5 w-full rounded-none border-0 border-x-0 md:px-8 max-sm:mb-5 md:w-full">
+      <Card className="mt-5 w-full rounded-none border-0 border-x-0 max-sm:mb-5 md:w-full md:px-8">
         <CardHeader className="flex-row items-center justify-between px-6 py-2">
           <div className="flex items-center gap-2 md:gap-3">
-            <button className="flex h-8 w-8 items-center justify-center rounded-full dark:bg-muted-dark bg-gray-700 cursor-pointer hover:bg-muted-dark-hover max-md:hidden" onClick={() => router.back()}>
-              <ArrowLeft size={22} className='text-white' />
+            <button
+              className="dark:bg-muted-dark hover:bg-muted-dark-hover flex h-8 w-8 cursor-pointer items-center justify-center rounded-full bg-gray-700 max-md:hidden"
+              onClick={() => router.back()}
+            >
+              <ArrowLeft size={22} className="text-white" />
             </button>
             <Avatar>
-              <AvatarImage src={author_avatar_url || undefined} className=' max-sm:h-9 max-sm:w-9' />
+              <AvatarImage
+                src={author_avatar_url || undefined}
+                className="max-sm:h-9 max-sm:w-9"
+              />
               <AvatarFallback>XO</AvatarFallback>
             </Avatar>
             <div className="flex flex-col items-start justify-center gap-1">
@@ -138,37 +151,51 @@ register('short-en', customLocale);
               ))}
           </div>
         </CardContent>
-        <CardFooter className='flex justify-between items-center md:hidden'>
-          <div
-            className={`flex items-center justify-center h-7 w-10 rounded-full ${
-              postMood.style
-            }`}
-          >
-            <span>
-              {postMood.gif ? (
-                <Image
-                  src={postMood.gif}
-                  alt="Gif Emoji"
-                  width={24}
-                  height={24}
-                  className="h-6"
-                  unoptimized
-                />
-              ) : (
-                postMood.emoji
-              )}
-            </span>
-
-            {post?.expires_in_24hr && (
-              <span className="animate-bounce duration-700 ease-in-out">
-                {' '}
-                ⏳
+        <CardFooter className="flex items-center justify-between md:hidden">
+          <div className="flex items-center gap-3">
+            <div
+              className={`flex h-7 w-10 items-center justify-center rounded-full ${
+                postMood.style
+              }`}
+            >
+              <span>
+                {postMood.gif ? (
+                  <Image
+                    src={postMood.gif}
+                    alt="Gif Emoji"
+                    width={24}
+                    height={24}
+                    className="h-6"
+                    unoptimized
+                  />
+                ) : (
+                  postMood.emoji
+                )}
               </span>
-            )}
+
+              {post?.expires_in_24hr && (
+                <span className="animate-bounce duration-700 ease-in-out">
+                  {' '}
+                  ⏳
+                </span>
+              )}
+            </div>
+
+            <View
+              id={post.id}
+              createdBy={post.created_by}
+              viewsCount={post.views[0].count || 0}
+              content={post.content}
+            />
           </div>
-          
+
           <div>
-            <SaveToCollectionsButton userId={user?.id || ''} createdBy={post.created_by} postId={post.id} postCollections={post.collections} />
+            <SaveToCollectionsButton
+              userId={user?.id || ''}
+              createdBy={post.created_by}
+              postId={post.id}
+              postCollections={post.collections}
+            />
           </div>
         </CardFooter>
       </Card>
