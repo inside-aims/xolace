@@ -7,7 +7,13 @@ import { FeedSteps } from '@/constants/tourSteps';
 import TourButton from '@/components/shared/Tour/TourButton';
 import WelcomeModalCard from '@/components/cards/WecomeModalCard';
 import DailyPrompt from '@/components/shared/DailyPrompt';
-import HealthTipsWrapper from "@/components/shared/layoutUIs/HealthTipsWrapper";
+import HealthTipsWrapper from '@/components/shared/layoutUIs/HealthTipsWrapper';
+import {
+  dehydrate,
+  HydrationBoundary,
+  QueryClient,
+} from '@tanstack/react-query';
+import { getAllPosts } from '@/queries/posts/getAllPosts.action';
 
 export const metadata: Metadata = {
   title: 'Feed',
@@ -34,7 +40,7 @@ export const metadata: Metadata = {
 //           views:views(count),
 //         collections(
 //           user_id
-//         )  
+//         )
 //     `,
 //     )
 //     .order('created_at', { ascending: false });
@@ -60,44 +66,55 @@ export const metadata: Metadata = {
 // );
 
 export default async function FeedPage() {
+  const queryClient = new QueryClient();
+
+  // Note we are now using fetchQuery()
+  const posts = await queryClient.prefetchQuery({
+    queryKey: ['posts'],
+    queryFn: getAllPosts,
+  });
+
   // Create Supabase client with cookies outside the cached function
-  const supabase = await createClient();
+  // const supabase = await createClient();
 
   // Pass the Supabase client to the cached function
   //const initialPosts = await getCachedPosts(supabase);
-  const { data: postsData } = await supabase
-    .from('posts')
-    .select(
-      `
-       *,
-       posttags (
-          tags (
-            name
-          )
-        ),
-          votes(
-          user_id,
-          vote_type
-          ),
-          comments:comments(count),
-          views:views(count),
-        collections(
-          user_id
-        )  
-    `,
-    )
-    .order('created_at', { ascending: false });
+  // const { data: postsData } = await supabase
+  //   .from('posts')
+  //   .select(
+  //     `
+  //      *,
+  //      posttags (
+  //         tags (
+  //           name
+  //         )
+  //       ),
+  //         votes(
+  //         user_id,
+  //         vote_type
+  //         ),
+  //         comments:comments(count),
+  //         views:views(count),
+  //       collections(
+  //         user_id
+  //       )
+  //   `,
+  //   )
+  //   .order('created_at', { ascending: false });
 
   return (
     <TourProvider steps={FeedSteps}>
-      <HealthTipsWrapper>
-        <DailyPrompt/>
-        <FeedList initialPosts={postsData || []}/>
-      </HealthTipsWrapper>
+      <HydrationBoundary state={dehydrate(queryClient)}>
+        <HealthTipsWrapper>
+          <DailyPrompt />
+
+          <FeedList />
+        </HealthTipsWrapper>
+      </HydrationBoundary>
       <div className="fixed right-6 bottom-10 z-50 block rounded-full md:right-20 md:bottom-10">
-        <TourButton/>
+        <TourButton />
       </div>
-      <WelcomeModalCard/>
+      <WelcomeModalCard />
     </TourProvider>
   );
 }

@@ -4,7 +4,7 @@ import { Post } from '@/types/global';
 
 const supabase = getSupabaseBrowserClient();
 
-export function usePosts(initialData: Post[]) {
+export function usePosts() {
   return useQuery({
     queryKey: ['posts'],
     queryFn: async () => {
@@ -34,7 +34,6 @@ export function usePosts(initialData: Post[]) {
       if (error) throw error;
       return data;
     },
-    initialData,
     staleTime: 60 * 60, // 1 hour
     
   });

@@ -13,18 +13,14 @@ import { usePosts } from '@/hooks/posts/usePostsData';
 import { useRealtimePosts } from '@/hooks/posts/useRealTimePosts';
 import FeedSkeletonLoader from './loaders/FeedSkeletonLoader';
 
-interface FeedListProps {
-  initialPosts: Post[];
-}
 
   /**
    * A component that displays a list of posts, with real-time updates and scroll restoration.
    *
-   * @param initialPosts - The initial list of posts to display.
    * @returns A component that displays a list of posts.
    */
-const FeedList = ({ initialPosts }: FeedListProps) => {
-  const { data: queryPosts, isPending, isError, error } = usePosts(initialPosts);
+const FeedList = () => {
+  const { data: queryPosts, isPending, isError, error } = usePosts();
   //
   //const supabase = getSupabaseBrowserClient();
   const router = useRouter();
