@@ -6,6 +6,7 @@ import Image from 'next/image';
 import { getSupabaseBrowserClient } from '@/utils/supabase/client';
 import { useRouter } from 'next/navigation';
 import { useState, useEffect } from 'react';
+import dynamic from 'next/dynamic';
 import {
   Form,
   FormControl,
@@ -28,7 +29,10 @@ import PostMetrics from '@/components/shared/PostMetrics';
 import SaveToCollectionsButton from '@/components/shared/SaveToCollectionsButton';
 import { moodMap } from '@/types';
 import CommentCard from '@/components/cards/CommentCard';
-import View from '@/components/hocs/detailsPostComponents/View';
+// import View from '@/components/hocs/detailsPostComponents/View';
+const View = dynamic(() => import('../../hocs/detailsPostComponents/View'), {
+  ssr: false,
+});
 
 const PostDetailsInteraction = ({ post }: { post: DetailPost }) => {
   // get user data

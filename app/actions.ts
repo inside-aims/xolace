@@ -221,8 +221,8 @@ export async function updateViewsAction(postId: string, userId: string, relatedU
     });
 
     revalidatePath('/feed');
-    revalidateTag('posts')
     revalidatePath('/explore');
+    revalidatePath(`/post/${postId}`, 'page');
 
     return { success: true, data };
   } catch (error) {
@@ -268,7 +268,6 @@ export async function voteAction(
     });
 
     revalidatePath('/feed', 'page');
-    revalidateTag('posts')
     revalidatePath('/explore', 'page');
 
     return { success: true, data: voteResult };
