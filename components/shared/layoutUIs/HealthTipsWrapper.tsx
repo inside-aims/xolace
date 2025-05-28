@@ -19,7 +19,10 @@ export default function HealthTipsWrapper({
         'grid w-full grid-cols-12 md:h-[calc(100vh-var(--header-height))]'
       }
     >
-      <div id="feed-scroll-container" className="col-span-12 overflow-auto px-0! pt-8 pb-12 sm:container md:col-span-8">
+      <div
+        id="feed-scroll-container"
+        className="col-span-12 overflow-auto px-0! pt-8 pb-12 sm:container md:col-span-8"
+      >
         {children}
       </div>
       <div

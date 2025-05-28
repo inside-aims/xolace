@@ -155,11 +155,10 @@ export default function HealthTips() {
 
           {/*Filtered health tips little info on desktop device only*/}
           <div className="animate-in fade-in hidden flex-col items-start gap-2 rounded-xl border py-2 shadow-lg duration-500 motion-reduce:animate-none md:flex md:gap-6 md:py-4">
-            <h4 className="animate-in fade-in slide-in-from-left-3 flex w-full items-center justify-between px-2 text-neutral-500 delay-150 duration-300 md:px-4">
+            <h4 className="flex w-full items-center justify-between px-2 text-neutral-500 md:px-4">
               <span className="font-semibold">Health Tips</span>
               <Info
                 size={22}
-                className="animate-in spin-in-90 delay-300 duration-500"
               />
             </h4>
 
@@ -193,8 +192,7 @@ export default function HealthTips() {
                   feedHealthTips?.map((healthTip, index) => (
                     <div
                       key={healthTip.id}
-                      className={`${index > 0 ? 'hidden md:block' : 'block'} animate-in fade-in slide-in-from-right-3 duration-300`}
-                      style={{ animationDelay: `${(index + 2) * 150}ms` }}
+                      className={`${index > 0 ? 'hidden md:block' : 'block'}`}
                     >
                       <HealthTipCard
                         id={healthTip.id}
@@ -212,14 +210,14 @@ export default function HealthTips() {
                     </div>
                   ))}
             </div>
-            <div className="animate-in fade-in-50 slide-in-from-bottom-3 flex w-full items-center justify-center border-t delay-500 duration-500">
+            <div className=" flex w-full items-center justify-center border-t">
               <Button
                 variant="link"
                 className="text-lavender-400 hover:lavender-500 flex"
                 onClick={() => handleHealthTipsNavigation()}
               >
                 See More Tips
-                <span className="text-lavender-400 hover:lavender-500 animate-in slide-in-from-left-2 ml-1 delay-700 duration-300">
+                <span className="text-lavender-400 hover:lavender-500  ml-1">
                   <CircleArrowRight size={16} />
                 </span>
               </Button>
