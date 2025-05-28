@@ -56,7 +56,7 @@ type UserPreferences = Database['public']['Tables']['user_preferences']['Row']
 
 type Tag = Database['public']['Tables']['tags']['Row']
 
-interface Badges {
+interface BadgeCounts {
   GOLD: number;
   SILVER: number;
   BRONZE: number;

@@ -31,7 +31,7 @@ const Profile = () => {
 
   //dummy data for profile menu options
   const profileMenu: {key: string, name: string, children: React.ReactNode}[] = [
-    {key: 'stats', name: 'Stats', children: <Stats reputation={user?.reputation || 0} />},
+    {key: 'stats', name: 'Stats', children: <Stats reputation={user?.reputation || 0} userId={user?.id || ""} />},
     {key: 'topTags', name: 'Top Tags', children: <TopTags/>},
     {key: 'posts', name: 'Your Posts', children: <Posts/> },
   ]
@@ -115,7 +115,7 @@ const Profile = () => {
 
           {/*profile stats badges and top tags only on desktop view*/}
           <div className="hidden md:block col-span-12 md:col-span-8 overflow-y-auto space-y-12">
-            <Stats reputation={user?.reputation || 0}/>
+            <Stats reputation={user?.reputation || 0} userId={user?.id || ""}/>
             <TopTags/>
           </div>
         </div>

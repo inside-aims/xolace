@@ -2,19 +2,21 @@
 
 import Image from "next/image";
 import React from "react";
-
+import { useAssignBadges } from "@/hooks/profile/useAssignBadges";
 
 interface StatsProps {
-  reputation : number
+  reputation : number,
+  userId: string
 }
 
-export function Stats({reputation}: StatsProps) {
+export function Stats({reputation, userId}: StatsProps) {
+  const { data , isPending } = useAssignBadges(userId);
 
   //Dummy profile stats for badges
   const profileStatBadges: {key: string, value: number, name: string, imageURL: string}[] = [
-    { key: "gold", value: 0, name: "Gold Badges", imageURL: "gold-medal" },
-    { key: "silver", value: 0, name: "Silver Badges", imageURL: "silver-medal" },
-    { key: "bronze", value: 0, name: "Bronze Badges", imageURL: "bronze-medal" },
+    { key: "gold", value: data?.GOLD || 0, name: "Gold Badges", imageURL: "gold-medal" },
+    { key: "silver", value: data?.SILVER || 0, name: "Silver Badges", imageURL: "silver-medal" },
+    { key: "bronze", value: data?.BRONZE || 0, name: "Bronze Badges", imageURL: "bronze-medal" },
   ]
 
   return(
@@ -48,7 +50,11 @@ export function Stats({reputation}: StatsProps) {
                 />
               </p>
               <p className="flex flex-col">
-                <span>{badge.value}</span>
+                {isPending ? (
+                  <span className="animate-pulse">...</span>
+                ) : (
+                  <span>{badge.value}</span>
+                )}
                 <span>{badge.name}</span>
               </p>
             </div>
