@@ -232,25 +232,26 @@ export default function HealthTips() {
             <div className='flex flex-col justify-end  h-full '>
 <div className=' text-xs flex justify-center flex-wrap gap-2 text-slate-600/60 dark:text-slate-400/60 p-2 '>
   <span>
-    <Link className=" hover:underline hover:text-slate-200" href="">
+    <Link className=" hover:underline hover:text-slate-200 " href="">
     Xolace Rules
     </Link>
   </span>
   <span>
-    <Link className=" hover:underline hover:text-slate-200" href="">
+    <Link className=" hover:underline hover:text-slate-200 " href="">
     Privacy Policy
     </Link>
   </span>
   <span>
-    <Link className=" hover:underline hover:text-slate-200" href="">
+    <Link className=" hover:underline hover:text-slate-200 " href="">
     User Agreement
     </Link>
   </span>
   <span>
-    <Link className=" hover:underline hover:text-slate-200" href="">
+    <Link className=" hover:underline hover:text-slate-200 " href="">
     Xolace, Inc. © 2025. All rights reserved.
     </Link>
 </span>
+
 </div>
 
             </div>
