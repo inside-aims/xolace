@@ -1,7 +1,6 @@
 import { notFound } from 'next/navigation';
 import { HealthTipDetailsCard } from '@/components/shared/HealthTips';
 import { Button } from '@/components/ui/button';
-import { healthTips } from "@/app/(protected)/health-tips/(overview)/health-tips";
 import HealthTipsWrapper from "@/components/shared/layoutUIs/HealthTipsWrapper";
 import Link from 'next/link';
 import {MoveLeft} from "lucide-react";

@@ -4,7 +4,7 @@ import { useEffect, useState } from 'react';
 import { format } from 'timeago.js';
 import Image from 'next/image';
 import { formatDistanceToNow } from 'date-fns';
-import { Clock, EyeIcon } from 'lucide-react';
+import { Clock } from 'lucide-react';
 import SaveToCollectionsButton from '../shared/SaveToCollectionsButton';
 
 import {

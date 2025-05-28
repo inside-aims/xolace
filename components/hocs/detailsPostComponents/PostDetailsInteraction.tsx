@@ -43,7 +43,6 @@ const PostDetailsInteraction = ({ post }: { post: DetailPost }) => {
   // mood
   const postMood = moodMap[post?.mood] || moodMap['neutral'];
 
-  const router = useRouter();
 
   // states
   const [comments, setComments] = useState<Comment[]>(post?.comments || []);

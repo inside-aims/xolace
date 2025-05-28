@@ -1,12 +1,12 @@
 import { notFound } from 'next/navigation';
-import { Suspense } from 'react';
+//import { Suspense } from 'react';
 import type { Metadata } from 'next';
 
 import { DetailCard } from '@/components/cards/DetailCard';
 import PostDetailDrawer from '@/components/ui/PostDetailDrawer';
 import { createClient } from '@/utils/supabase/server';
-import View from '@/components/hocs/detailsPostComponents/View';
-import { Skeleton } from '@/components/ui/skeleton';
+// import View from '@/components/hocs/detailsPostComponents/View';
+// import { Skeleton } from '@/components/ui/skeleton';
 import PostDetailsInteraction from '@/components/hocs/detailsPostComponents/PostDetailsInteraction';
 
 type Params = Promise<{ postId: string }>;

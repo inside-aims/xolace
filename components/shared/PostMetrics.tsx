@@ -100,12 +100,11 @@ const PostMetrics = ({
         setUpvoteCount(post.upvotes);
         setDownvoteCount(post.downvotes);
       }
-      // eslint-disable-next-line @typescript-eslint/no-unused-vars
     } catch (error) {
       // Revert changes on error
-      // setCurrentVote(previousVote);
-      // setUpvoteCount(post.upvotes);
-      // setDownvoteCount(post.downvotes);
+      setCurrentVote(previousVote);
+      setUpvoteCount(post.upvotes);
+      setDownvoteCount(post.downvotes);
 
       console.log(error);
     }

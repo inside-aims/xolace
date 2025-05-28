@@ -13,6 +13,7 @@ const View = ({ id, viewsCount, createdBy, content }: { id: string; viewsCount: 
 
   useEffect(() => {
     const handleUpdateViews = async () => {
+      console.log("total..")
       const result = await updateViewsAction(id, user?.id || '', createdBy, totalViews, content);
       if (result.success) {
         setTotalViews((prev) => prev + 1);
@@ -28,7 +29,7 @@ const View = ({ id, viewsCount, createdBy, content }: { id: string; viewsCount: 
 
   return (
     <div className="view-container">
-      <div className="absolute -right-2 -top-2 lg:z-50">
+      <div className="absolute -right-2 -top-2 lg:z-50 sm:hidden">
         <Ping />
       </div>
 

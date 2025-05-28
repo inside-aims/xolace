@@ -8,7 +8,6 @@ import { ArrowRight, Flame, Sparkles, CalendarDays } from "lucide-react";
 import { usePreferencesStore } from "@/lib/store/preferences-store";
 import { motion } from "framer-motion";
 import qs from 'query-string';
-import { fetchDailyPromptAction } from "@/app/actions";
 import { format } from "date-fns";
 import { useUserState } from "@/lib/store/user";
 import { fetchUserStreakAction } from "@/app/actions";
@@ -17,12 +16,12 @@ import { WordRotate } from "../magicui/word-rotate";
 import { tips } from "@/constants";
 import { usePrompt } from "@/hooks/prompts/usePromptData";
 
-interface DailyPromptData {
-  id: string;
-  prompt_text: string;
-  created_at: string;
-  active_on: string;
-}
+// interface DailyPromptData {
+//   id: string;
+//   prompt_text: string;
+//   created_at: string;
+//   active_on: string;
+// }
 
 const DailyPrompt = () => {
   const { preferences } = usePreferencesStore();

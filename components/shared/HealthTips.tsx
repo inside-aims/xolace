@@ -163,6 +163,9 @@ export default function HealthTips() {
             </h4>
 
             <div className="flex w-full flex-col gap-4 ps-2 md:gap-6 md:ps-4">
+              {
+                feedHealthTipsError && <p className=' text-carnation-500'>Something went wrong</p>
+              }
               {feedHealthTipsLoading
                 ? // Show 3 skeleton loaders while loading
                   Array.from({ length: 3 }).map((_, index) => (

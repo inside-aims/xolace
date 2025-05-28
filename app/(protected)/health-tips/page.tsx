@@ -5,8 +5,6 @@ import { getHealthTips } from '@/queries/tips/getHealthTips.action';
 import Link from 'next/link';
 import { Preview } from '@/components/editor/Preview';
 import {
-  dehydrate,
-  HydrationBoundary,
   QueryClient,
 } from '@tanstack/react-query';
 

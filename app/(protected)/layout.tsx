@@ -5,7 +5,6 @@ import Bottombar from '@/components/shared/layoutUIs/Bottombar';
 // import Topbar from '@/components/shared/layoutUIs/Topbar';
 import { createClient } from '@/utils/supabase/server';
 import InitUser from '@/lib/store/initUser';
-import QueryProvider from '@/providers/queryProvider';
 
 import { SidebarLeft } from '@/components/sidebar-left';
 // import { SidebarRight } from "@/components/sidebar-right"

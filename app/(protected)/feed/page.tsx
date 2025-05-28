@@ -1,6 +1,5 @@
 import type { Metadata } from 'next';
 
-import { createClient } from '@/utils/supabase/server';
 import FeedList from '@/components/shared/FeedList';
 import TourProvider from '@/components/shared/Tour/TourProvider';
 import { FeedSteps } from '@/constants/tourSteps';
@@ -20,7 +19,6 @@ export const metadata: Metadata = {
 };
 
 // Function to fetch posts with a Supabase client
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
 // async function fetchPosts(supabase: any) {
 //   const { data: postsData, error } = await supabase
 //     .from('posts')

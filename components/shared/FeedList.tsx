@@ -84,7 +84,7 @@ const FeedList = () => {
         }
       }
     }
-  }, [pathname, scrollableContainer]);
+  }, [pathname, scrollableContainer, isDesktop]);
 
   /**
    * Handles the click event on a post, saving the current scroll position
@@ -97,7 +97,6 @@ const FeedList = () => {
     let viewContext = {};
     if (isDesktop) {
       if (!scrollableContainer) return;
-      console.log('clicked ', scrollableContainer.scrollTop);
       viewContext = {
         scrollY: scrollableContainer.scrollTop, // should use window. on mobile view
         timestamp: Date.now(),

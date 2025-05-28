@@ -9,7 +9,7 @@ import { signUpSchema } from '@/validation';
 import { validatedAction } from '@/lib/auth/middleware';
 import { sendOTPLink } from '@/utils/sendOTPLink';
 import { Post, Tag, User } from '@/types/global';
-import { revalidatePath , revalidateTag} from 'next/cache';
+import { revalidatePath } from 'next/cache';
 import { PostgrestError } from '@supabase/supabase-js';
 import { logActivity } from '@/lib/activity-logger';
 import { ActivityType } from '@/types/activity';
