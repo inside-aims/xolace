@@ -1,6 +1,8 @@
+import React from "react";
+
 type Props = React.SVGAttributes<SVGElement>;
 
-const IconContentCopy = (props: Props): JSX.Element => {
+const IconContentCopy = (props: Props): React.JSX.Element => {
   return (
     <svg
       xmlns="http://www.w3.org/2000/svg"
