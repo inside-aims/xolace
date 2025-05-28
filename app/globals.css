@@ -546,7 +546,28 @@
   .no-scrollbar::-webkit-scrollbar {
     display: none;
   }
+
+  .responsive-container { /* landing page responsive container */
+    width: 100%;
+    padding-left: 0.5rem;
+    padding-right: 0.5rem;
+  }
+  .curved-edge {
+    --c: 80; /* control the curve */
+
+    mask: radial-gradient(calc(var(--c)*0.7%) 100%
+            at 30% calc(-80%*cos(asin(40/var(--c)))),
+            #0000 100%,#000);
+  }
+
+  @media (min-width: 768px) {
+    .responsive-container {
+      padding-left: 5%;
+      padding-right: 5%;
+    }
+  }
 }
+
 
 
 
