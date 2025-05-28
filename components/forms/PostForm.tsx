@@ -129,7 +129,7 @@ export function PostForm() {
       }
       document.removeEventListener('visibilitychange', handleVisibilityChange);
     };
-  }, [placeholders, handleVisibilityChange]);
+  }, [handleVisibilityChange]);
 
   // get mood boolean value
   // const isNeutral = selectedMood?.value === 'neutral';
