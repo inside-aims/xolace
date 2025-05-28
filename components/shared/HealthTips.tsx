@@ -7,6 +7,7 @@ import { useRouter } from 'next/navigation';
 import { useSidebar } from '../ui/sidebar';
 import { useFeedHealthTips } from '@/hooks/healthTips/useHealthTipsData';
 import { Avatar, AvatarImage, AvatarFallback } from '../ui/avatar';
+import Link from 'next/link';
 
 interface HealthTipCardProps {
   id: number;
@@ -121,7 +122,7 @@ export default function HealthTips() {
     <>
       <div className={'flex w-full flex-col'}>
         <div
-          className={`${!showDetails ? 'flex w-full flex-col gap-4 md:px-4' : 'hidden'}`}
+          className={`${!showDetails ? 'flex w-full flex-col gap-4 md:px-4 h-full' : 'hidden'}`}
         >
           {/*Xolace wellness section*/}
           <div className="animate-in fade-in slide-in-from-bottom-3 flex flex-col items-start gap-2 rounded-xl border py-2 shadow-lg transition-shadow duration-300 duration-500 ease-in-out hover:shadow-xl motion-reduce:animate-none md:py-4">
@@ -224,6 +225,34 @@ export default function HealthTips() {
                   <CircleArrowRight size={16} />
                 </span>
               </Button>
+            </div>
+          </div>
+
+          <div className='flex-1'>
+            <div className='flex flex-col justify-end  h-full '>
+<div className=' text-xs flex justify-center flex-wrap gap-2 text-slate-600/60 dark:text-slate-400/60 p-2 '>
+  <span>
+    <Link className=" hover:underline hover:text-slate-200" href="">
+    Xolace Rules
+    </Link>
+  </span>
+  <span>
+    <Link className=" hover:underline hover:text-slate-200" href="">
+    Privacy Policy
+    </Link>
+  </span>
+  <span>
+    <Link className=" hover:underline hover:text-slate-200" href="">
+    User Agreement
+    </Link>
+  </span>
+  <span>
+    <Link className=" hover:underline hover:text-slate-200" href="">
+    Xolace, Inc. © 2025. All rights reserved.
+    </Link>
+</span>
+</div>
+
             </div>
           </div>
         </div>
