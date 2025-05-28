@@ -2,30 +2,30 @@ import Image from "next/image";
 
 const howItWorks: {key: string, label: string, description: string}[] = [
   {
-    key: 'anonymityFirst',
-    label: 'Anonymity First',
-    description: 'Express yourself without fear of being identified.'
+    key: 'signUp',
+    label: 'Sign up',
+    description: 'Join anonymously in seconds. No pressure, just presence. A safe start for open minds.'
   },
   {
-    key: 'emotionBaseReactions',
-    label: 'Emotion-Based Reactions',
-    description: 'Express yourself without fear of being identified.'
+    key: 'postFreely',
+    label: 'Post Freely',
+    description: 'Share thoughts, fears, or joys without judgment. Venting and vulnerability meet a listening community.'
   },
   {
-    key: 'focusedFeed',
-    label: 'Focused Feed',
-    description: 'Express yourself without fear of being identified.'
+    key: 'reactEmotionally',
+    label: 'React Emotionally',
+    description: 'Respond with emojis that reflect your mood. A lightweight way to feel seen and heard.'
   },
   {
-    key: 'focuse',
-    label: 'Focused Feed',
-    description: 'Express yourself without fear of being identified.'
+    key: 'echoEngage',
+    label: 'Echo & Engage',
+    description: 'Re-post what resonates. Help others realize they’re not alone in their thoughts or struggles.'
   },
 ];
 
 export default function HowItWorksSection() {
   return (
-    <section className="responsive-container bg-[#272829] z-30 -mt-[5%] p-[5%] rounded-4xl">
+    <section className="responsive-container bg-[#272829] z-30 -mt-[5%] py-[5%] rounded-4xl">
       <div className={"relative w-full flex"}>
 
         {/*star image one*/}
@@ -40,7 +40,7 @@ export default function HowItWorksSection() {
         </div>
 
         {/*First div section*/}
-        <div className="w-full flex flex-col items-start justify-center gap-8 mt-[6%] relative">
+        <div className="w-full flex flex-col items-start justify-center gap-8 my-[4%] relative">
           <div
             className="relative flex items-start text-white text-3xl md:text-5xl font-bold uppercase">
             How it works
@@ -64,12 +64,19 @@ export default function HowItWorksSection() {
           </span>
           </div>
 
-          <div className={"w-full grid grid-cols-12 gap-8 mt-4"}>
-            {howItWorks.map((feature) => (
+          <div className={"w-full grid grid-cols-12 gap-8 mt-4 md:mt-18"}>
+            {howItWorks.map((feature, index) => (
               <div
                 key={feature.key}
-                className={"col-span-12 md:col-span-6 lg:col-span-3 h-[350px] bg-white rounded-lg shadow-md p-4 w-full flex flex-col items-center justify-start gap-8 "}>
-                <h4 className={"text-center font-semibold text-lg uppercase"}> {feature.label} </h4>
+                className={"col-span-12 md:col-span-6 lg:col-span-3 h-[320px] bg-white rounded-2xl shadow-md p-4 w-full flex flex-col items-center justify-start gap-8 "}>
+                <div className={"flex flex-col items-center justify-center font-bold text-2xl uppercase"}>
+                  <h3 className={"text-4xl"}>
+                    { index + 1 }
+                  </h3>
+                  <h4 className={"text-center"}>
+                    {feature.label}
+                  </h4>
+                </div>
                 <p className={"text-center"}> {feature.description} </p>
               </div>
             ))}

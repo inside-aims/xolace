@@ -58,7 +58,7 @@ export default function WhyXolaceSection() {
           </span>
           </div>
 
-          <div className="bg-gray-50 flex flex-col items-center justify-center py-1 px-4 rounded-lg">
+          <div className="bg-[#1212122B] text-white flex flex-col items-center justify-center py-1 px-4 rounded-lg">
             <span>
               Social media today is crowded with noise and pressure.
             </span>
@@ -67,11 +67,11 @@ export default function WhyXolaceSection() {
             </span>
           </div>
 
-          <div className={"w-full grid grid-cols-12 gap-8 mt-4"}>
+          <div className={"w-full grid grid-cols-12 gap-8 mt-4 md:mt-18"}>
             { xolaceFeatures.map((feature) => (
               <div
                 key={feature.key}
-                className={"col-span-12 md:col-span-6 lg:col-span-4 h-[400px] bg-white rounded-t-lg shadow-md p-4 w-full flex flex-col items-center justify-start gap-8 "}>
+                className={"col-span-12 md:col-span-6 lg:col-span-4 h-[450px] bg-white rounded-t-lg shadow-md p-4 w-full flex flex-col items-center justify-start gap-8 "}>
                 <h4 className={"items-center font-semibold text-lg uppercase"}> { feature.label } </h4>
                 <p className={"text-center"}> { feature.description } </p>
               </div>
