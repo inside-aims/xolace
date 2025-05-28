@@ -541,6 +541,7 @@
 .dark .markdown-editor h4,
 .dark .markdown-editor h5,
 .dark .markdown-editor h6 {
+  margin-top: 0 !important;
   color: #ffffff;
 }
 
