@@ -8,44 +8,36 @@ import { ArrowRight, Flame, Sparkles, CalendarDays } from "lucide-react";
 import { usePreferencesStore } from "@/lib/store/preferences-store";
 import { motion } from "framer-motion";
 import qs from 'query-string';
-import { fetchDailyPromptAction } from "@/app/actions";
 import { format } from "date-fns";
 import { useUserState } from "@/lib/store/user";
 import { fetchUserStreakAction } from "@/app/actions";
 import { TipsBanner } from "./TipsBanner";
 import { WordRotate } from "../magicui/word-rotate";
 import { tips } from "@/constants";
+import { usePrompt } from "@/hooks/prompts/usePromptData";
 
-interface DailyPromptData {
-  id: string;
-  prompt_text: string;
-  created_at: string;
-  active_on: string;
-}
+// interface DailyPromptData {
+//   id: string;
+//   prompt_text: string;
+//   created_at: string;
+//   active_on: string;
+// }
 
 const DailyPrompt = () => {
   const { preferences } = usePreferencesStore();
   const router = useRouter();
   const user = useUserState(state => state.user);
+  const { data: promptData, isLoading: isLoadingPrompt } = usePrompt();
   
   // const [expanded, setExpanded] = useState(false);
   const [isFlameRotating, setIsFlameRotating] = useState(false);
-  const [promptData, setPromptData] = useState<DailyPromptData | null>(null);
-  const [isLoadingPrompt, setIsLoadingPrompt] = useState(true);
   const [ isLoadingStreak, setIsLoadingStreak ] = useState(true);
   const [streakCount, setStreakCount] = useState<number>(0)
 
 
   useEffect(() => {
     const loadData = async () => {
-      setIsLoadingPrompt(true);
       setIsLoadingStreak(true);
-
-      const result = await fetchDailyPromptAction();
-      if (result.success && result.data) {
-        setPromptData(result.data);
-      }
-      setIsLoadingPrompt(false);
 
       if (user?.id) {
         const streakResult = await fetchUserStreakAction(user.id);
@@ -72,8 +64,8 @@ const DailyPrompt = () => {
   const handleRespond = () => {
     if (!promptData) return;
     
-    const queryParams = qs.stringify({ prompt: promptData.prompt_text,
-        prompt_id: promptData.id
+    const queryParams = qs.stringify({ prompt: promptData?.data?.prompt_text,
+        prompt_id: promptData?.data?.id
      });
     router.push(`/create-post?${queryParams}`);
   };
@@ -110,7 +102,7 @@ const DailyPrompt = () => {
 
   if (isLoadingPrompt) {
     return (
-      <Card className="overflow-hidden border-none shadow-xl bg-gradient-to-br from-purple-600 to-lavender-700 dark:from-ocean-700/80 dark:to-lavender-800/80 relative text-white p-4">
+      <Card className="overflow-hidden border-none shadow-xl bg-gradient-to-br from-purple-600 to-lavender-700 dark:from-ocean-700/80 dark:to-lavender-800/80 relative text-white p-4 md:mx-8">
         <div className="animate-pulse flex flex-col gap-4">
           <div className="h-6 bg-white/20 rounded w-1/3"></div>
           <div className="h-20 bg-white/20 rounded"></div>
@@ -120,7 +112,7 @@ const DailyPrompt = () => {
     );
   }
 
-  if (!promptData) {
+  if (!promptData?.data) {
     return (
       // <Card className="overflow-hidden border-none shadow-xl bg-gradient-to-br from-purple-600 to-lavender-700 dark:from-ocean-700/80 dark:to-lavender-800/80 relative text-white p-4">
       //   No prompt available for today.
@@ -132,7 +124,7 @@ const DailyPrompt = () => {
   }
 
   return (
-    <div className="w-full mb-3 sm:mb-4" id="daily-prompt-card-container">
+    <div className="w-full mb-3 sm:mb-4 md:px-8" id="daily-prompt-card-container">
       <motion.div
         initial={{ opacity: 0, y: -20 }}
         animate={{ opacity: 1, y: 0 }}
@@ -167,13 +159,13 @@ const DailyPrompt = () => {
             </div>
             <p className="text-xs text-purple-200 dark:text-purple-300 mb-3 flex items-center">
               <CalendarDays className="h-4 w-4 mr-1.5 text-purple-300"/>
-              {format(new Date(promptData.active_on), 'MMMM d, yyyy')}
+              {format(new Date(promptData?.data?.active_on || new Date()), 'MMMM d, yyyy')}
             </p>
 
             <div className="relative my-3 p-3 bg-white/5 dark:bg-black/10 rounded-xl backdrop-blur-sm min-h-[50px] flex items-center justify-center">
               <span className="absolute -left-2 top-1 text-6xl text-purple-400/50 dark:text-purple-500/50 font-serif select-none">“</span>
               <p className="text-md sm:text-xl font-medium leading-snug text-center px-4">
-                {promptData.prompt_text}
+                {promptData?.data?.prompt_text}
               </p>
               <span className="absolute -right-2 bottom-0 text-6xl text-purple-400/50 dark:text-purple-500/50 font-serif select-none">”</span>
             </div>

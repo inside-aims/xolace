@@ -47,6 +47,7 @@ import { logActivity } from '@/lib/activity-logger';
 import { ActivityType } from '@/types/activity';
 import { usePreferencesStore } from '@/lib/store/preferences-store';
 import { useSearchParams, useRouter, usePathname } from 'next/navigation';
+import mascot from '../../public/assets/images/mas.webp'
 
 // Dynamic Imports
 const Loader = dynamic(() => import('../shared/loaders/Loader'), {
@@ -128,7 +129,7 @@ export function PostForm() {
       }
       document.removeEventListener('visibilitychange', handleVisibilityChange);
     };
-  }, [placeholders]);
+  }, [handleVisibilityChange]);
 
   // get mood boolean value
   // const isNeutral = selectedMood?.value === 'neutral';
@@ -736,8 +737,13 @@ export function PostForm() {
       </form>
 
       <div className="container mx-auto px-3 pt-20 text-center text-sm text-zinc-600">
-        Tip : Platform made to share your thought without holding back..
+        Tip : Platform made to share your experiences without holding back..
       </div>
+      <div className="flex justify-center item-center mt-7 md:mt-5">
+      <Image src={mascot} height={130} width={130} alt='image'/>
+      {/* <Mascot id="mascot"/> */}
+      </div>
+      
     </Form>
   );
 }

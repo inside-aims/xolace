@@ -4,7 +4,7 @@ import { useEffect, useState } from 'react';
 import { format } from 'timeago.js';
 import Image from 'next/image';
 import { formatDistanceToNow } from 'date-fns';
-import { Clock, EyeIcon } from 'lucide-react';
+import { Clock } from 'lucide-react';
 import SaveToCollectionsButton from '../shared/SaveToCollectionsButton';
 
 import {
@@ -25,6 +25,7 @@ import TagCard from './TagCard';
 import { Post } from '@/types/global';
 import { usePreferencesStore } from '@/lib/store/preferences-store';
 import PostCardMask from '../shared/masks/PostCardMask';
+import { ScanEye } from 'lucide-react';
 
 type PostCardType = {
   className?: string;
@@ -110,7 +111,7 @@ export function PostCard({ className, post, onClick }: PostCardType) {
         </CardHeader>
 
         <CardContent className="cursor-pointer" onClick={onClick}>
-          <div className="mb-2">{truncateText(post.content, 70)}</div>
+          <div className="mb-2">{truncateText(post.content, 200)}</div>
           <div className="mt-2 flex flex-wrap gap-2">
             {post.posttags && // check if post has tags
               post.posttags.map((tag: TagProps, index: number) => (
@@ -125,8 +126,8 @@ export function PostCard({ className, post, onClick }: PostCardType) {
         <CardFooter className="flex w-full items-center justify-between">
           <PostMetrics post={post} userId={user?.id || ''} votes={post.votes} />
           <div className="flex items-center gap-2" id="view-btn">
-            <EyeIcon className="size-4 text-red-200 sm:size-6" />
-            <span className="text-sm sm:text-[15px]">
+            <ScanEye className="size-4 text-red-200 sm:size-4" />
+            <span className="font-button-small">
               {post.views[0].count}
             </span>
           </div>

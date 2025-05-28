@@ -9,8 +9,9 @@ import PostDropdown from '../shared/PostDropdown';
 import ReportForm from '../forms/ReportForm';
 import KvngDialogDrawer from '../shared/KvngDialogDrawer';
 import { Comment } from '@/types/global';
+import { cn } from '@/lib/utils';
 
-const CommentCard = ({ comment }: {comment : Comment}) => {
+const CommentCard = ({ comment, className, headerClassName, contentClassName }: {comment : Comment, className?: string, headerClassName?: string, contentClassName?: string}) => {
   // states
   const [isOpen, setIsOpen] = useState<boolean>(false);
   const [timestamp, setTimestamp] = useState('');
@@ -31,19 +32,19 @@ const CommentCard = ({ comment }: {comment : Comment}) => {
         <ReportForm commentId={comment.id} />
       </KvngDialogDrawer>
 
-      <Card className="mb-5 w-full dark:bg-dark-3 md:w-full">
-        <CardHeader className="flex-row items-start justify-between px-4 py-2">
-          <div className="flex items-center gap-2">
-            <Avatar>
-              <AvatarImage src={comment.author_avatar_url || undefined} />
+      <Card className={cn("mb-5 w-full dark:bg-dark-3 md:w-full  ", className)}>
+        <CardHeader className={cn("flex-row items-start justify-between px-4 py-2", headerClassName)}>
+          <div className="flex items-center justify-center gap-1">
+            <Avatar className='h-8 w-8'>
+              <AvatarImage src={comment.author_avatar_url || undefined}/>
               <AvatarFallback>XO</AvatarFallback>
             </Avatar>
-            <div className="flex flex-col items-start justify-center gap-1">
-              <h5 className="text-small text-default-400 tracking-tight">
+            <div className="flex flex-col items-center justify-center gap-1">
+              <h5 className="text-sm text-default-400 tracking-tight">
                 {comment.author_name}
               </h5>
             </div>
-            <small className="ml-4 text-sm text-zinc-500 dark:text-gray-400">
+            <small className="ml-2 text-xs text-zinc-500 dark:text-gray-400">
               {timestamp}
             </small>
           </div>
@@ -56,7 +57,7 @@ const CommentCard = ({ comment }: {comment : Comment}) => {
             content={comment.comment_text}
           />
         </CardHeader>
-        <CardContent className=" ">{comment.comment_text}</CardContent>
+        <CardContent className={cn("", contentClassName)}>{comment.comment_text}</CardContent>
       </Card>
     </>
   );

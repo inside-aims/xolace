@@ -16,7 +16,67 @@ export const healthTips: HealthTipCardProps[] = [
     author: 'Darlton Carwell',
     date: '12/9/2032',
     content:
-      'Mindful journaling invites us to observe our inner world with curiosity and compassion, helping us process emotions and find clarity. When practiced consistently, it becomes a safe outlet for stress relief and self-awareness, encouraging personal growth over time. Writing freely without judgment allows suppressed feelings to surface, which is essential for emotional healing. In addition to reducing anxiety, journaling can help track mood patterns, improve problem-solving, and reinforce positive habits. The act of writing itself can become a grounding ritual, offering structure and peace in chaotic times.',
+      `### Question
+
+I'm looking for tips and best practices to enhance the performance of a React application. I have a moderately complex app with multiple components, and I've noticed some performance bottlenecks. What should I focus on?
+
+#### What I've Tried:
+- Lazy loading components
+- Using React.memo on some components
+- Managing state with React Context API
+
+#### Issues:
+- The app still lags when rendering large lists.
+- Switching between pages feels sluggish.
+- Sometimes, re-renders happen unexpectedly.
+
+#### Key Areas I Need Help With:
+1. Efficiently handling large datasets.
+2. Reducing unnecessary re-renders.
+3. Optimizing state management.
+
+Here is a snippet of my code that renders a large list. Maybe I'm doing something wrong here:
+
+\`\`\`js
+import React, { useState, useMemo } from "react";
+
+const LargeList = ({ items }) => {
+  const [filter, setFilter] = useState("");
+
+  // Filtering items dynamically
+  const filteredItems = useMemo(() => {
+    return items.filter((item) => item.includes(filter));
+  }, [items, filter]);
+
+  return (
+    <div>
+      <input
+        type="text"
+        value={filter}
+        onChange={(e) => setFilter(e.target.value)}
+        placeholder="Filter items"
+      />
+      <ul>
+        {filteredItems.map((item, index) => (
+          <li key={index}>{item}</li>
+        ))}
+      </ul>
+    </div>
+  );
+};
+
+export default LargeList;
+\`\`\`
+
+#### Questions:
+1. Is using \`useMemo\` the right approach here, or is there a better alternative?
+2. Should I implement virtualization for the list? If yes, which library would you recommend?
+3. Are there better ways to optimize state changes when dealing with user input and dynamic data?
+
+Looking forward to your suggestions and examples!
+
+**Tags:** React, Performance, State Management
+  `,
   },
   {
     id: '2',
@@ -24,7 +84,67 @@ export const healthTips: HealthTipCardProps[] = [
     author: 'Dr. Angela Mensah',
     date: '2025-04-12',
     content:
-      'Practicing gratitude can shift your mindset and positively impact your mental health. By focusing on what you have rather than what’s lacking, you create a habit of recognizing the good in your life. This perspective helps reduce anxiety, promote better sleep, and increase emotional resilience in stressful situations. Keeping a gratitude journal or simply reflecting on three positive moments each day can elevate your mood over time. Gratitude enhances empathy, strengthens relationships, and serves as a daily reminder of life’s meaningful moments—even during difficult times.',
+      `### Question
+
+I'm looking for tips and best practices to enhance the performance of a React application. I have a moderately complex app with multiple components, and I've noticed some performance bottlenecks. What should I focus on?
+
+#### What I've Tried:
+- Lazy loading components
+- Using React.memo on some components
+- Managing state with React Context API
+
+#### Issues:
+- The app still lags when rendering large lists.
+- Switching between pages feels sluggish.
+- Sometimes, re-renders happen unexpectedly.
+
+#### Key Areas I Need Help With:
+1. Efficiently handling large datasets.
+2. Reducing unnecessary re-renders.
+3. Optimizing state management.
+
+Here is a snippet of my code that renders a large list. Maybe I'm doing something wrong here:
+
+\`\`\`js
+import React, { useState, useMemo } from "react";
+
+const LargeList = ({ items }) => {
+  const [filter, setFilter] = useState("");
+
+  // Filtering items dynamically
+  const filteredItems = useMemo(() => {
+    return items.filter((item) => item.includes(filter));
+  }, [items, filter]);
+
+  return (
+    <div>
+      <input
+        type="text"
+        value={filter}
+        onChange={(e) => setFilter(e.target.value)}
+        placeholder="Filter items"
+      />
+      <ul>
+        {filteredItems.map((item, index) => (
+          <li key={index}>{item}</li>
+        ))}
+      </ul>
+    </div>
+  );
+};
+
+export default LargeList;
+\`\`\`
+
+#### Questions:
+1. Is using \`useMemo\` the right approach here, or is there a better alternative?
+2. Should I implement virtualization for the list? If yes, which library would you recommend?
+3. Are there better ways to optimize state changes when dealing with user input and dynamic data?
+
+Looking forward to your suggestions and examples!
+
+**Tags:** React, Performance, State Management
+  `,
   },
   {
     id: '3',
@@ -48,7 +168,67 @@ export const healthTips: HealthTipCardProps[] = [
     author: 'Dr. Nana Serwaa',
     date: '2025-06-18',
     content:
-      'There’s a growing link between nutrition and mental health. Diets rich in leafy greens, omega-3 fatty acids, and fermented foods support gut health, which in turn impacts mood and cognition. Eliminating excessive sugar and processed foods can also reduce brain fog and emotional fluctuations. A balanced diet stabilizes blood sugar, enhances neurotransmitter production, and can even help alleviate symptoms of depression and anxiety. Nutritional psychiatry is emerging as a powerful complement to traditional mental health treatment, reinforcing that what we eat truly affects how we feel.',
+      `### Question
+
+I'm looking for tips and best practices to enhance the performance of a React application. I have a moderately complex app with multiple components, and I've noticed some performance bottlenecks. What should I focus on?
+
+#### What I've Tried:
+- Lazy loading components
+- Using React.memo on some components
+- Managing state with React Context API
+
+#### Issues:
+- The app still lags when rendering large lists.
+- Switching between pages feels sluggish.
+- Sometimes, re-renders happen unexpectedly.
+
+#### Key Areas I Need Help With:
+1. Efficiently handling large datasets.
+2. Reducing unnecessary re-renders.
+3. Optimizing state management.
+
+Here is a snippet of my code that renders a large list. Maybe I'm doing something wrong here:
+
+\`\`\`js
+import React, { useState, useMemo } from "react";
+
+const LargeList = ({ items }) => {
+  const [filter, setFilter] = useState("");
+
+  // Filtering items dynamically
+  const filteredItems = useMemo(() => {
+    return items.filter((item) => item.includes(filter));
+  }, [items, filter]);
+
+  return (
+    <div>
+      <input
+        type="text"
+        value={filter}
+        onChange={(e) => setFilter(e.target.value)}
+        placeholder="Filter items"
+      />
+      <ul>
+        {filteredItems.map((item, index) => (
+          <li key={index}>{item}</li>
+        ))}
+      </ul>
+    </div>
+  );
+};
+
+export default LargeList;
+\`\`\`
+
+#### Questions:
+1. Is using \`useMemo\` the right approach here, or is there a better alternative?
+2. Should I implement virtualization for the list? If yes, which library would you recommend?
+3. Are there better ways to optimize state changes when dealing with user input and dynamic data?
+
+Looking forward to your suggestions and examples!
+
+**Tags:** React, Performance, State Management
+  `,
   },
   {
     id: '6',

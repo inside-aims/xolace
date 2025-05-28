@@ -41,6 +41,9 @@ type DetailPost = Database['public']['Tables']['posts']['Row'] & {
     };
   }[];
   votes: Database['public']['Tables']['votes']['Row'][];
+  views:[{
+    count:number
+  }]
   comments: Database['public']['Tables']['comments']['Row'][];
   collections: Database['public']['Tables']['collections']['Row'][]
 };
