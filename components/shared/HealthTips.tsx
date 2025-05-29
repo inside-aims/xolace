@@ -7,6 +7,7 @@ import { useRouter } from 'next/navigation';
 import { useSidebar } from '../ui/sidebar';
 import { useFeedHealthTips } from '@/hooks/healthTips/useHealthTipsData';
 import { Avatar, AvatarImage, AvatarFallback } from '../ui/avatar';
+import Link from 'next/link';
 
 interface HealthTipCardProps {
   id: number;
@@ -121,7 +122,7 @@ export default function HealthTips() {
     <>
       <div className={'flex w-full flex-col'}>
         <div
-          className={`${!showDetails ? 'flex w-full flex-col gap-4 md:px-4' : 'hidden'}`}
+          className={`${!showDetails ? 'flex h-full w-full flex-col gap-4 md:px-4' : 'hidden'}`}
         >
           {/*Xolace wellness section*/}
           <div className="animate-in fade-in slide-in-from-bottom-3 flex flex-col items-start gap-2 rounded-xl border py-2 shadow-lg transition-shadow duration-300 duration-500 ease-in-out hover:shadow-xl motion-reduce:animate-none md:py-4">
@@ -157,15 +158,13 @@ export default function HealthTips() {
           <div className="animate-in fade-in hidden flex-col items-start gap-2 rounded-xl border py-2 shadow-lg duration-500 motion-reduce:animate-none md:flex md:gap-6 md:py-4">
             <h4 className="flex w-full items-center justify-between px-2 text-neutral-500 md:px-4">
               <span className="font-semibold">Health Tips</span>
-              <Info
-                size={22}
-              />
+              <Info size={22} />
             </h4>
 
             <div className="flex w-full flex-col gap-4 ps-2 md:gap-6 md:ps-4">
-              {
-                feedHealthTipsError && <p className=' text-carnation-500'>Something went wrong</p>
-              }
+              {feedHealthTipsError && (
+                <p className="text-carnation-500">Something went wrong</p>
+              )}
               {feedHealthTipsLoading
                 ? // Show 3 skeleton loaders while loading
                   Array.from({ length: 3 }).map((_, index) => (
@@ -213,17 +212,56 @@ export default function HealthTips() {
                     </div>
                   ))}
             </div>
-            <div className=" flex w-full items-center justify-center border-t">
+            <div className="flex w-full items-center justify-center border-t">
               <Button
                 variant="link"
                 className="text-lavender-400 hover:lavender-500 flex"
                 onClick={() => handleHealthTipsNavigation()}
               >
                 See More Tips
-                <span className="text-lavender-400 hover:lavender-500  ml-1">
+                <span className="text-lavender-400 hover:lavender-500 ml-1">
                   <CircleArrowRight size={16} />
                 </span>
               </Button>
+            </div>
+          </div>
+
+          <div className="flex-1">
+            <div className="flex h-full flex-col justify-end">
+              <div className="flex flex-wrap justify-center gap-2 p-2 text-xs text-slate-600/60 dark:text-slate-400/60">
+                <span>
+                  <Link
+                    className="hover:text-slate-200 hover:underline"
+                    href=""
+                  >
+                    Xolace Rules
+                  </Link>
+                </span>
+                <span>
+                  <Link
+                    className="hover:text-slate-200 hover:underline"
+                    href=""
+                  >
+                    Privacy Policy
+                  </Link>
+                </span>
+                <span>
+                  <Link
+                    className="hover:text-slate-200 hover:underline"
+                    href=""
+                  >
+                    User Agreement
+                  </Link>
+                </span>
+                <span>
+                  <Link
+                    className="hover:text-slate-200 hover:underline"
+                    href=""
+                  >
+                    Xolace, Inc. © 2025. All rights reserved.
+                  </Link>
+                </span>
+              </div>
             </div>
           </div>
         </div>

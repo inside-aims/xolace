@@ -2,19 +2,21 @@
 
 import Image from "next/image";
 import React from "react";
-
+import { useAssignBadges } from "@/hooks/profile/useAssignBadges";
 
 interface StatsProps {
-  reputation : number
+  reputation : number,
+  userId: string
 }
 
-export function Stats({reputation}: StatsProps) {
+export function Stats({reputation, userId}: StatsProps) {
+  const { data , isPending } = useAssignBadges(userId);
 
   //Dummy profile stats for badges
-  const profileStatBadges: {key: string, value: number, name: string, imageURL: string}[] = [
-    { key: "gold", value: 0, name: "Gold Badges", imageURL: "gold-medal" },
-    { key: "silver", value: 0, name: "Silver Badges", imageURL: "silver-medal" },
-    { key: "bronze", value: 0, name: "Bronze Badges", imageURL: "bronze-medal" },
+  const profileStatBadges: {key: string, value: number, name: string, imageURL: string, className?: string}[] = [
+    { key: "gold", value: data?.GOLD || 0, name: "Gold Badges", imageURL: "gold-medal", className: "border-honey-600 hover:border-honey-800" },
+    { key: "silver", value: data?.SILVER || 0, name: "Silver Badges", imageURL: "silver-medal", className: "border-zinc-400 hover:border-zinc-600" },
+    { key: "bronze", value: data?.BRONZE || 0, name: "Bronze Badges", imageURL: "bronze-medal", className: "border-yellow-800 hover:border-yellow-800/50" },
   ]
 
   return(
@@ -37,7 +39,7 @@ export function Stats({reputation}: StatsProps) {
           {profileStatBadges.map((badge) => (
             <div
               key={badge.key}
-              className="col-span-12 md:col-span-3 p-4 shadow-lg rounded-lg flex flex-row md:flex-col gap-4 md:gap-8 border h-full"
+              className={`col-span-12 md:col-span-3 p-4 shadow-lg rounded-lg flex flex-row md:flex-col gap-4 md:gap-8 border h-full ${badge.className} `}
             >
               <p className="flex w-8 h-8 flex-col gap-0 m-0">
                 <Image
@@ -48,7 +50,11 @@ export function Stats({reputation}: StatsProps) {
                 />
               </p>
               <p className="flex flex-col">
-                <span>{badge.value}</span>
+                {isPending ? (
+                  <span className="animate-pulse">...</span>
+                ) : (
+                  <span>{badge.value}</span>
+                )}
                 <span>{badge.name}</span>
               </p>
             </div>

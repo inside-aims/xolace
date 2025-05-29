@@ -261,6 +261,50 @@ export type Database = {
           },
         ]
       }
+      health_tips: {
+        Row: {
+          author_avatar_url: string | null
+          author_name: string
+          content: string
+          created_at: string
+          created_by: string | null
+          id: number
+          is_approved: boolean
+          is_sponsored: boolean
+          title: string | null
+        }
+        Insert: {
+          author_avatar_url?: string | null
+          author_name: string
+          content: string
+          created_at?: string
+          created_by?: string | null
+          id?: number
+          is_approved?: boolean
+          is_sponsored?: boolean
+          title?: string | null
+        }
+        Update: {
+          author_avatar_url?: string | null
+          author_name?: string
+          content?: string
+          created_at?: string
+          created_by?: string | null
+          id?: number
+          is_approved?: boolean
+          is_sponsored?: boolean
+          title?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "health_tips_created_by_fkey"
+            columns: ["created_by"]
+            isOneToOne: false
+            referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       help_center: {
         Row: {
           created_at: string
