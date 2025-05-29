@@ -8,7 +8,7 @@ import { ArrowRight, Flame, Sparkles, CalendarDays } from "lucide-react";
 import { usePreferencesStore } from "@/lib/store/preferences-store";
 import { motion } from "framer-motion";
 import qs from 'query-string';
-import { format } from "date-fns";
+import { format, isToday } from "date-fns";
 import { useUserState } from "@/lib/store/user";
 import { fetchUserStreakAction } from "@/app/actions";
 import { TipsBanner } from "./TipsBanner";
@@ -32,7 +32,11 @@ const DailyPrompt = () => {
   // const [expanded, setExpanded] = useState(false);
   const [isFlameRotating, setIsFlameRotating] = useState(false);
   const [ isLoadingStreak, setIsLoadingStreak ] = useState(true);
-  const [streakCount, setStreakCount] = useState<number>(0)
+  const [streakData, setStreakData] = useState<{
+    current_streak: any;
+    last_response_date: any;
+  } | { current_streak: number; } | null>(null);
+  const [showUrgencyIndicator, setShowUrgencyIndicator] = useState(false);
 
 
   useEffect(() => {
@@ -42,16 +46,32 @@ const DailyPrompt = () => {
       if (user?.id) {
         const streakResult = await fetchUserStreakAction(user.id);
         if (streakResult.success && streakResult.data) {
-          setStreakCount(streakResult.data.current_streak);
+          setStreakData(streakResult.data);
+
+          if (streakResult.data?.last_response_date) {
+            const lastResponseDate = new Date(streakResult.data.last_response_date);
+            const now = new Date();
+            const hoursLeft = 23 - now.getHours(); // Hours until midnight
+            
+            setShowUrgencyIndicator(
+              !isToday(lastResponseDate) && 
+              hoursLeft <= 4 && 
+              hoursLeft > 0
+            );
+          } else {
+            // No previous response at all
+            const hoursLeft = 23 - new Date().getHours();
+            setShowUrgencyIndicator(hoursLeft <= 4 && hoursLeft > 0);
+          }
         } else {
           // Handle case where streak fetch might fail but prompt succeeded
           console.error("Failed to fetch streak:", streakResult.error);
-          setStreakCount(0); 
+          setStreakData({ current_streak: 0, last_response_date: null }); 
         }
         setIsLoadingStreak(false);
       } else {
         setIsLoadingStreak(false);
-        setStreakCount(0); 
+        setStreakData({ current_streak: 0, last_response_date: null }); 
       }
       
     };
@@ -143,16 +163,16 @@ const DailyPrompt = () => {
                 <h3 className="text-md sm:text-lg font-semibold">Prompt of the Day</h3>
               </div>
               <div
-                className="flex items-center gap-2 bg-white/10 dark:bg-black/20 px-3 py-1.5 rounded-full cursor-pointer hover:scale-105 transition-transform"
+                className="flex items-center gap-1 bg-white/10 dark:bg-black/20 px-3 py-1.5 rounded-full cursor-pointer hover:scale-105 transition-transform"
                 onMouseEnter={handleStreakHover}
-                title={`${streakCount} day streak! Keep it up!`}
+                title={`${streakData?.current_streak} day streak! Keep it up!`}
               >
-                <Flame className={`h-5 w-5 text-orange-400 ${isFlameRotating ? 'rotate-animation' : ''}`} />
+                <Flame className={`h-5 w-5 text-orange-400 ${isFlameRotating ? 'rotate-animation' : ''}`} /> {showUrgencyIndicator && <span className="animate-bounce duration-700 ease-in-out">⏳</span>}
                 {
                     isLoadingStreak && user?.id ? (
                         <span className="text-sm font-medium">...</span>
                     ):(
-                        <span className="text-sm font-medium">{streakCount} {streakCount <= 1? "day" : "days"}</span>
+                        <span className="text-sm font-medium">{streakData?.current_streak} {streakData?.current_streak <= 1? "day" : "days"}</span>
                     )
                 }
               </div>
