@@ -1,12 +1,18 @@
 import HealthTipsWrapper from '@/components/shared/layoutUIs/HealthTipsWrapper';
 import { CircleArrowRight } from 'lucide-react';
 import React from 'react';
+import type { Metadata } from 'next'
 import { getHealthTips } from '@/queries/tips/getHealthTips.action';
 import Link from 'next/link';
 import { Preview } from '@/components/editor/Preview';
 import {
   QueryClient,
 } from '@tanstack/react-query';
+
+export const metadata: Metadata = {
+  title: 'Health Tips',
+  description: "Discover daily health tips and expert-backed advice to boost your wellness, fitness, and mental health—trusted by millions worldwide."
+}
 
 export default async function HealthTips() {
   const queryClient = new QueryClient();

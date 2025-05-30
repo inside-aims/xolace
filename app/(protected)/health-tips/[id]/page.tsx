@@ -20,10 +20,13 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 
   if (!file) return {};
 
-  const { frontmatter } = getFrontmatter<Frontmatter>(file);
+  const { frontmatter } = getFrontmatter<Frontmatter>(file.content);
+
+  console.log("frontmatter ",frontmatter)
 
   return {
-    title: frontmatter.title ?? "Article",
+    title: frontmatter.title ?? file.title,
+    description: "Health tips and expert-backed advice to boost your wellness and mental health—trusted by millions worldwide."
   };
 }
 

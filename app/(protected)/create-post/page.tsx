@@ -8,6 +8,7 @@ import React from 'react';
 
 export const metadata: Metadata = {
   title: 'Create Post',
+  description: "Create and share your story with a caring community offering support, advice, and encouragement for mental wellness and personal growth."
 };
 
 const CreatePost = () => {
