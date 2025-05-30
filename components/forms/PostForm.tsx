@@ -49,6 +49,7 @@ import { ActivityType } from '@/types/activity';
 import { usePreferencesStore } from '@/lib/store/preferences-store';
 import { useSearchParams, useRouter, usePathname } from 'next/navigation';
 import mascot from '../../public/assets/images/mas.webp';
+import { CURRENT_CONSENT_VERSION } from '@/constants/terms';
 
 // Dynamic Imports
 const Loader = dynamic(() => import('../shared/loaders/Loader'), {
@@ -73,6 +74,9 @@ const MoodCarousel = dynamic(
     loading: () => <div className="h-[50px] w-full rounded-full bg-gray-900" />,
   },
 );
+const ConsentModal = dynamic(() => import('../modals/ConsentModal'), {
+  ssr: false,
+});
 
 // Define a key for local storage
 const POST_DRAFT_KEY = 'postFormDraft';
@@ -104,6 +108,7 @@ export function PostForm() {
   const newDataRef = useRef<any[]>([]);
   const [animating, setAnimating] = useState(false);
   const [currentPlaceholder, setCurrentPlaceholder] = useState(0);
+  const [showConsent, setShowConsent] = useState(false);
 
   const intervalRef = useRef<NodeJS.Timeout | null>(null);
   const startAnimation = () => {
@@ -427,6 +432,16 @@ export function PostForm() {
   // Modified onSubmit function
   async function onSubmit(data: z.infer<typeof PostSchema>) {
     if (animating) return; // Prevent multiple submissions during animation
+
+    if (user.has_consented) {
+      if (user.consent_version !== CURRENT_CONSENT_VERSION) {
+        setShowConsent(true);
+        return;
+      }
+    } else {
+      setShowConsent(true);
+      return;
+    }
 
     vanishAndSubmit(); // Start animation
 
@@ -772,6 +787,17 @@ export function PostForm() {
           </span>
         </div>
       </div>
+
+      {showConsent && (
+        <ConsentModal
+          isOpen={showConsent}
+          onAccept={() => {}}
+          onReject={() => {
+            setShowConsent(false);
+          }}
+          user={user}
+        />
+      )}
     </Form>
   );
 }
