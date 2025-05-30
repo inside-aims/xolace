@@ -552,13 +552,6 @@
     padding-left: 0.5rem;
     padding-right: 0.5rem;
   }
-  .curved-edge {
-    --c: 80; /* control the curve */
-
-    mask: radial-gradient(calc(var(--c)*0.7%) 100%
-            at 30% calc(-80%*cos(asin(40/var(--c)))),
-            #0000 100%,#000);
-  }
 
   .slope-overlay {
     position: absolute;
@@ -570,24 +563,8 @@
     background-size: cover;
     z-index: 10;
     pointer-events: none;
-    transform: scaleX(-1); /* Flips it horizontally */
-    /* Make sure it flips around the correct anchor */
+    transform: scaleX(-1);
   }
-
-
-  .curved-slope {
-    position: absolute;
-    bottom: 0;
-    right: 0;
-    width: 40%;
-    height: 60%;
-    background: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 300" preserveAspectRatio="none"><path d="M400,300 C370,200 300,170 250,180 C200,190 150,230 100,250 C50,270 0,280 0,300 L400,300 Z" fill="%2359382F"/></svg>') no-repeat bottom right;
-    background-size: cover;
-    z-index: 10;
-    pointer-events: none;
-    opacity: 0.85;
-  }
-
 
   @media (min-width: 768px) {
     .responsive-container {

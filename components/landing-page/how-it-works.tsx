@@ -25,7 +25,7 @@ const howItWorks: {key: string, label: string, description: string}[] = [
 
 export default function HowItWorksSection() {
   return (
-    <section className="responsive-container bg-[#272829] z-30 -mt-[5%] py-[5%] rounded-4xl">
+    <section id={"how-it-works"} className="responsive-container bg-[#272829] z-30 -mt-[5%] py-[5%] rounded-4xl">
       <div className={"relative w-full flex"}>
 
         {/*star image one*/}
@@ -40,10 +40,11 @@ export default function HowItWorksSection() {
         </div>
 
         {/*First div section*/}
-        <div className="w-full flex flex-col items-start justify-center gap-8 my-[4%] relative">
+        <div className="w-full flex flex-col items-center md:items-start justify-center gap-8 my-[4%] relative">
           <div
-            className="relative flex items-start text-white text-3xl md:text-5xl font-bold uppercase">
-            How it works
+            className="relative flex flex-col items-center md:items-start text-white text-3xl md:text-5xl font-bold uppercase">
+            <span className="w-full text-center md:text-left">How it works</span>
+
             <span className={"absolute -left-[30%] md:-left-[90%] -bottom-10"}>
             <Image
               src="/assets/images/landing-page/star.png"
@@ -64,7 +65,7 @@ export default function HowItWorksSection() {
           </span>
           </div>
 
-          <div className={"w-full grid grid-cols-12 gap-8 mt-4 md:mt-18"}>
+          <div className={"grid grid-cols-12 gap-8 mt-8 md:mt-18 mx-6 md:mx-0"}>
             {howItWorks.map((feature, index) => (
               <div
                 key={feature.key}
@@ -74,10 +75,10 @@ export default function HowItWorksSection() {
                     { index + 1 }
                   </h3>
                   <h4 className={"text-center"}>
-                    {feature.label}
+                    { feature.label }
                   </h4>
                 </div>
-                <p className={"text-center"}> {feature.description} </p>
+                <p className={"text-center  text-md md:text-lg"}> {feature.description} </p>
               </div>
             ))}
           </div>

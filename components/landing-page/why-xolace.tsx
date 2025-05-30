@@ -19,7 +19,7 @@ const xolaceFeatures: {key: string, label: string, description: string}[] = [
 ]
 export default function WhyXolaceSection() {
   return (
-    <section className="responsive-container bg-ocean-400 -z-10 -mt-[5%] pt-[5%]">
+    <section id={"why-xolace"} className="responsive-container bg-ocean-400 -z-10 -mt-[5%] pt-[5%]">
       <div className={"relative w-full flex"}>
 
         {/*star image one*/}
@@ -58,7 +58,7 @@ export default function WhyXolaceSection() {
           </span>
           </div>
 
-          <div className="bg-[#1212122B] text-white flex flex-col items-center justify-center py-1 px-4 rounded-lg">
+          <div className="bg-[#1212122B] text-md md:text-lg text-white flex flex-col items-center justify-center py-1 px-4 rounded-lg">
             <span>
               Social media today is crowded with noise and pressure.
             </span>
@@ -67,13 +67,13 @@ export default function WhyXolaceSection() {
             </span>
           </div>
 
-          <div className={"w-full grid grid-cols-12 gap-8 mt-4 md:mt-18"}>
+          <div className={"items-center grid grid-cols-12 gap-8 my-8 md:mt-18 mx-6 md:mx-0"}>
             { xolaceFeatures.map((feature) => (
               <div
                 key={feature.key}
-                className={"col-span-12 md:col-span-6 lg:col-span-4 h-[450px] bg-white rounded-t-lg shadow-md p-4 w-full flex flex-col items-center justify-start gap-8 "}>
-                <h4 className={"items-center font-semibold text-lg uppercase"}> { feature.label } </h4>
-                <p className={"text-center"}> { feature.description } </p>
+                className={"col-span-12 md:col-span-6 lg:col-span-4 h-[328px] w-full bg-white rounded-4xl md:rounded-t-4xl shadow-md p-4 flex flex-col items-center justify-start gap-8 "}>
+                <h4 className={"items-center text-center font-bold text-lg uppercase md:text-2xl"}> { feature.label } </h4>
+                <p className={"text-center text-md md:text-lg"}> { feature.description } </p>
               </div>
             ))}
           </div>
