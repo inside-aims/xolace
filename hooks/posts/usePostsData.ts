@@ -1,6 +1,5 @@
 import { useQuery } from '@tanstack/react-query';
 import { getSupabaseBrowserClient } from '@/utils/supabase/client';
-import { Post } from '@/types/global';
 
 const supabase = getSupabaseBrowserClient();
 
