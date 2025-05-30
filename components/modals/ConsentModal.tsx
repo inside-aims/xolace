@@ -85,7 +85,7 @@ const ConsentModal = ({ isOpen, onAccept, onReject , user}: ConsentModalProps) =
 
   return (
     <Dialog open={isOpen} onOpenChange={() => onReject()}>
-      <DialogContent className="max-w-2xl max-h-[90vh] overflow-y-auto p-0 gap-0">
+      <DialogContent className=" max-w-[95%] md:max-w-2xl max-h-[90vh] overflow-y-auto p-0 gap-0">
         <div className="relative">
           {/* Hero Image */}
           <div className="h-48 bg-gradient-to-r from-purple-500 to-blue-600 relative overflow-hidden">
@@ -102,7 +102,7 @@ const ConsentModal = ({ isOpen, onAccept, onReject , user}: ConsentModalProps) =
           </div>
 
           {/* Content */}
-          <div className="p-6">
+          <div className=" px-1 py-6 lg:p-6">
             <DialogHeader className="mb-6">
               <DialogTitle className="text-xl text-gray-800 dark:text-white">
                 Before you post, please agree to our guidelines
@@ -130,9 +130,7 @@ const ConsentModal = ({ isOpen, onAccept, onReject , user}: ConsentModalProps) =
               ))}
             </div>
 
-            {/* statement above our xolace's goals on how we want to connect and share the worlds experiences */}
-            <div className="my-2 flex items-center gap-2">
-                {/* need an icon to match */}
+            <div className="mt-2 mb-4 flex items-center gap-2">
                 <Info className=" w-6 h-6 md:w-4 md:h-4 text-honey-600" />
                 <p className="text-[13px] text-gray-500">
                   The Dream and Goal of Xolace is to connect and share the worlds experiences in a safe and judgment-free zone.
