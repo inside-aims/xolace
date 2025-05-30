@@ -21,7 +21,7 @@ export const metadata = {
   },
   applicationName: 'Xolace',
   description:
-    'Xolace is a social platform designed for users to share their thoughts, stories, and experiences freely, fostering both engagement and self-expression in a unique, user-centered space',
+    'Xolace is a social platform designed for users to share their thoughts, stories, and experiences freely, fostering peer to peer engagement, self-expression and professional mental healthcare support in a unique, user-centered, community-like space',
   keywords: [
     'Xolace',
     'Social',
@@ -35,9 +35,13 @@ export const metadata = {
     'Unique',
     'User-Centered',
     'Space',
+    'Communities',
+    'Healthcare',
+    "Mental healthcare",
+    'Professional Support'
   ],
-  creator: 'Atlas IMeta Solutions',
-  publisher: 'Atlas IMeta Solutions',
+  creator: 'Xolace Inc.',
+  publisher: 'Xolace Inc.',
 };
 
 export default function RootLayout({

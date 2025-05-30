@@ -1,7 +1,8 @@
 "use server"
 
 import { createClient } from "@/utils/supabase/server";
-export const getHealthTip = async (id: number) => {
+import { cache } from "react";
+export const getHealthTip = cache(async (id: number) => {
 
   const supabase = await createClient();
 
@@ -17,6 +18,6 @@ export const getHealthTip = async (id: number) => {
 
   if (error) throw error;
 
-  
+  console.log("health tip ",data)
   return data;
-};
+});

@@ -9,6 +9,7 @@ import { createClient } from '@/utils/supabase/server';
 
 export const metadata: Metadata = {
   title: 'Explore',
+  description: "Browse authentic stories and experiences shared by real individuals within our vibrant mental health and self-growth community."
 }
 
 interface SearchParams {

@@ -5,6 +5,7 @@ import xolaceImage from "../../../public/assets/images/xolace-1.png"
 
 export const metadata: Metadata = {
   title: 'Sign-in',
+  description: "Sign in to access a supportive community offering mental health resources, expert advice, and a safe space to share your experiences."
 }
 
 export default async function Login() {

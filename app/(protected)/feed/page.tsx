@@ -16,6 +16,7 @@ import { getAllPosts } from '@/queries/posts/getAllPosts.action';
 
 export const metadata: Metadata = {
   title: 'Feed',
+  description: "Discover different stories , experiences from real and unique individuals as well as the community"
 };
 
 // Function to fetch posts with a Supabase client

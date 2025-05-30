@@ -8,12 +8,26 @@ import { createClient } from '@/utils/supabase/server';
 // import View from '@/components/hocs/detailsPostComponents/View';
 // import { Skeleton } from '@/components/ui/skeleton';
 import PostDetailsInteraction from '@/components/hocs/detailsPostComponents/PostDetailsInteraction';
+import { getPostMetadata } from '@/lib/actions/post.action';
 
 type Params = Promise<{ postId: string }>;
 type SearchParams = Promise<{ [key: string]: string | string[] | undefined }>;
 
-export const metadata: Metadata = {
-  title: 'Post',
+export async function generateMetadata({
+  params,
+}: {
+  params: Promise<{ postId: string }>;
+}): Promise<Metadata> {
+  const { postId } = await params;
+
+  const post = await getPostMetadata(postId);
+
+  if (!post) return {};
+
+  return {
+    title: `Post-${post.author_name}`,
+    description: post.content.slice(0, 100)
+  };
 }
 
 const PostDetailPage = async (props: {
