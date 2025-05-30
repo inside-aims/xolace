@@ -79,7 +79,7 @@ export function NavBar() {
               transition={{ duration: 0.3, ease: "easeInOut" }}
             >
               <div className="flex justify-between items-center">
-                <span className="text-lg font-semibold">Menu</span>
+                <span className="text-lg font-semibold"></span>
                 <button onClick={() => setIsOpen(false)} className="text-white">
                   <X className="w-6 h-6" />
                 </button>

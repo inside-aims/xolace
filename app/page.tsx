@@ -8,10 +8,8 @@ import React from 'react';
 import WhyXolaceSection from "@/components/landing-page/why-xolace";
 import HowItWorksSection from "@/components/landing-page/how-it-works";
 import ReadyToSpeakSection from "@/components/landing-page/ready-to-speak";
-import FooterSection from "@/components/landing-page/footer-section";
 import HeroSection from "@/components/landing-page/hero-section";
 import {NavBar} from "@/components/landing-page/nav-bar";
-import AnimatedSection from "@/components/landing-page/animated-section";
 
 export default async function Index() {
   return (
@@ -23,7 +21,6 @@ export default async function Index() {
           <WhyXolaceSection/>
           <HowItWorksSection/>
           <ReadyToSpeakSection/>
-          <FooterSection/>
         </div>
       </main>
       {/*<main className="relative flex min-h-screen flex-col items-center justify-between overflow-y-hidden p-14 md:px-16 md:py-4">*/}

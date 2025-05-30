@@ -58,9 +58,7 @@ export default function HeroSection() {
       </div>
 
       {/* Curved Slope Design */}
-      <div className="absolute bottom-0 right-0 w-full h-full pointer-events-none">
-        <div className="curved-edge absolute bottom-0 right-0 w-[40%] h-[60%] bg-gradient-to-br bg-[#D9D9D9] rounded-tl-[90%] opacity-60"></div>
-      </div>
+      <div className={"hidden md:flex slope-overlay"}></div>
     </section>
   );
 }
