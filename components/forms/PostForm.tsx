@@ -789,14 +789,14 @@ export function PostForm() {
         </section>
       </div>
 
-      {showConsent && (
+      {showConsent && user && (
         <ConsentModal
-          isOpen={showConsent}
-          onReject={() => {
-            setShowConsent(false);
-          }}
-          user={user}
-        />
+        isOpen={showConsent}
+        onReject={() => {
+          setShowConsent(false);
+        }}
+        user={user}
+      />
       )}
     </Form>
   );
