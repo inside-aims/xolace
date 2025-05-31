@@ -6,7 +6,6 @@ import { useRouter } from "next/navigation"
 import {
   ChevronsUpDown,
   LogOut,
-  Sparkles,
   Settings,
 } from "lucide-react"
 
@@ -113,7 +112,7 @@ export function NavUser({
             </SidebarMenuButton>
           </DropdownMenuTrigger>
           <DropdownMenuContent
-            className="w-(--radix-dropdown-menu-trigger-width) min-w-56 rounded-lg"
+            className="w-(--radix-dropdown-menu-trigger-width) min-w-56 rounded-lg dark:bg-bg-dark"
             side={isMobile ? "bottom" : "right"}
             align="start"
             sideOffset={4}
@@ -130,13 +129,13 @@ export function NavUser({
               </div>
             </DropdownMenuLabel>
             <DropdownMenuSeparator /> */}
-            <DropdownMenuGroup>
+            {/* <DropdownMenuGroup>
               <DropdownMenuItem>
                 <Sparkles />
                 Upgrade to Pro
               </DropdownMenuItem>
             </DropdownMenuGroup>
-            <DropdownMenuSeparator />
+            <DropdownMenuSeparator /> */}
             <DropdownMenuGroup>
               <DropdownMenuItem
                 onClick={handleOpenSettings}

@@ -48,7 +48,8 @@ import { logActivity } from '@/lib/activity-logger';
 import { ActivityType } from '@/types/activity';
 import { usePreferencesStore } from '@/lib/store/preferences-store';
 import { useSearchParams, useRouter, usePathname } from 'next/navigation';
-import mascot from '../../public/assets/images/mas.webp';
+//import mascot from '../../public/assets/images/mas.webp';
+import { CURRENT_CONSENT_VERSION } from '@/constants/terms';
 
 // Dynamic Imports
 const Loader = dynamic(() => import('../shared/loaders/Loader'), {
@@ -73,6 +74,9 @@ const MoodCarousel = dynamic(
     loading: () => <div className="h-[50px] w-full rounded-full bg-gray-900" />,
   },
 );
+const ConsentModal = dynamic(() => import('../modals/ConsentModal'), {
+  ssr: false,
+});
 
 // Define a key for local storage
 const POST_DRAFT_KEY = 'postFormDraft';
@@ -104,6 +108,7 @@ export function PostForm() {
   const newDataRef = useRef<any[]>([]);
   const [animating, setAnimating] = useState(false);
   const [currentPlaceholder, setCurrentPlaceholder] = useState(0);
+  const [showConsent, setShowConsent] = useState(false);
 
   const intervalRef = useRef<NodeJS.Timeout | null>(null);
   const startAnimation = () => {
@@ -428,6 +433,16 @@ export function PostForm() {
   async function onSubmit(data: z.infer<typeof PostSchema>) {
     if (animating) return; // Prevent multiple submissions during animation
 
+    if (user?.has_consented) {
+      if (user?.consent_version !== CURRENT_CONSENT_VERSION) {
+        setShowConsent(true);
+        return;
+      }
+    } else {
+      setShowConsent(true);
+      return;
+    }
+
     vanishAndSubmit(); // Start animation
 
     setTimeout(async () => {
@@ -742,13 +757,13 @@ export function PostForm() {
           <div className="container mx-auto px-3 pt-10 text-center text-sm text-zinc-600 md:pt-20">
             Tip : Platform made to share your experiences without holding back..
           </div>
-          <div className="item-center mt-7 flex justify-center md:mt-5">
+          {/* <div className="item-center mt-7 flex justify-center md:mt-5">
             <Image src={mascot} height={130} width={130} alt="image" />
-            {/* <Mascot id="mascot"/> */}
-          </div>
+          </div> */}
         </div>
 
-        <div className="flex flex-wrap justify-center gap-2 p-2 text-xs text-slate-600/60 dark:text-slate-400/60">
+        <section className='flex-1 flex flex-col items-center justify-center'>
+        <div className="flex flex-wrap justify-center gap-2 px-2 pb-4 text-xs text-slate-600/60 dark:text-slate-400/60">
           <span>
             <Link className="hover:text-slate-200 hover:underline" href="">
               Xolace Rules
@@ -771,7 +786,18 @@ export function PostForm() {
             </Link>
           </span>
         </div>
+        </section>
       </div>
+
+      {showConsent && user && (
+        <ConsentModal
+        isOpen={showConsent}
+        onReject={() => {
+          setShowConsent(false);
+        }}
+        user={user}
+      />
+      )}
     </Form>
   );
 }

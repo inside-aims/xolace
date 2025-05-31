@@ -18,7 +18,7 @@ import { useForm } from 'react-hook-form';
 import { z } from 'zod';
 import { useUserState } from '@/lib/store/user';
 import { getSupabaseBrowserClient } from '@/utils/supabase/client';
-import { useToast } from '@/components/ui/use-toast';
+import { toast } from 'sonner';
 import { logActivity } from '@/lib/activity-logger';
 import { ActivityType } from '@/types/activity';
 import { UpdateUsernameSchema } from '@/validation';
@@ -50,8 +50,6 @@ function UsernameContent() {
   // States
   const [isLoading, setIsLoading] = useState<boolean>(false);
 
-  const { toast } = useToast();
-
   // Use the correct schema from validation file
   const form = useForm<z.infer<typeof UpdateUsernameSchema>>({
     resolver: zodResolver(UpdateUsernameSchema),
@@ -73,21 +71,14 @@ function UsernameContent() {
     const { username } = data;
 
     if (!user) {
-      toast({
-        title: 'Error updating username',
-        description: 'User is not logged in.',
-        variant: 'destructive',
-      });
+      toast.error('User is not logged in.');
       setIsLoading(false);
       return;
     }
 
     // Prevent updating if the username hasn't changed
     if (username === user.username) {
-      toast({
-        title: 'No changes detected',
-        description: 'The username is the same as the current one.',
-      });
+      toast('No changes detected');
       setIsLoading(false);
       return;
     }
@@ -106,19 +97,12 @@ function UsernameContent() {
       .single();
 
     if (updateError) {
-      toast({
-        title: 'Error updating username',
-        description: updateError.message || 'Oops🫢!! Something went wrong.',
-        variant: 'destructive',
-      });
+      toast.error(updateError.message || 'Oops🫢 !! Something went wrong.');
       setIsLoading(false);
       return;
     }
 
-    toast({
-      title: 'Username updated successfully',
-      description: 'Your username has been changed!',
-    });
+    toast.success('Username updated successfully');
 
     // Log profile update activity
     await logActivity({

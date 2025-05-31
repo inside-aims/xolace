@@ -42,6 +42,27 @@ export const metadata = {
   ],
   creator: 'Xolace Inc.',
   publisher: 'Xolace Inc.',
+  formatDetection: {
+    email: false,
+    address: false,
+    telephone: false,
+  },
+  openGraph: {
+    title: "Xolace | Social experiencing platform with a touch of mental health support",
+    description: "Xolace is a social platform designed for users to share their thoughts, stories, and experiences freely, fostering peer to peer engagement, self-expression and professional mental healthcare support in a unique, user-centered, community-like space",
+    url: "https://xolace.app",
+    siteName: "Xolace",
+    images: [
+      {
+        url: "/assets/images/mas.webp",
+        width: 1200,
+        height: 630,
+        alt: "Xolace OG Banner",
+      },
+    ],
+    locale: "en_US",
+    type: "website",
+  },
 };
 
 export default function RootLayout({

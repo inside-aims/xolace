@@ -471,8 +471,10 @@ export type Database = {
       profiles: {
         Row: {
           avatar_url: string | null
+          consent_version: number
           created_at: string
           email: string | null
+          has_consented: boolean
           has_seen_welcome: boolean
           id: string
           is_anonymous: boolean
@@ -484,8 +486,10 @@ export type Database = {
         }
         Insert: {
           avatar_url?: string | null
+          consent_version?: number
           created_at?: string
           email?: string | null
+          has_consented?: boolean
           has_seen_welcome?: boolean
           id?: string
           is_anonymous?: boolean
@@ -497,8 +501,10 @@ export type Database = {
         }
         Update: {
           avatar_url?: string | null
+          consent_version?: number
           created_at?: string
           email?: string | null
+          has_consented?: boolean
           has_seen_welcome?: boolean
           id?: string
           is_anonymous?: boolean
@@ -918,6 +924,16 @@ export type Database = {
           is_sensitive: boolean
         }
         Returns: string
+      }
+      get_user_stats: {
+        Args: { profile_id: string }
+        Returns: {
+          total_posts: number
+          total_comments: number
+          total_upvotes: number
+          total_views: number
+          total_downvotes: number
+        }[]
       }
       handle_vote: {
         Args: {

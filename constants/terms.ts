@@ -1,0 +1,1 @@
+export const CURRENT_CONSENT_VERSION = 1; // increment this when terms change

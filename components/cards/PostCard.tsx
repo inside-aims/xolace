@@ -63,7 +63,6 @@ export function PostCard({ className, post, onClick }: PostCardType) {
       })
     : null;
 
-    console.log("####### ", post)
   return (
     <>
       {/* dialog or drawer to report post */}
