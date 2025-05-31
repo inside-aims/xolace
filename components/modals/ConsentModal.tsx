@@ -91,7 +91,7 @@ const ConsentModal = ({ isOpen, onReject , user}: ConsentModalProps) => {
           {/* Hero Image */}
           <div className="h-48 bg-gradient-to-r from-purple-500 to-blue-600 relative overflow-hidden">
             <Image
-              src="/assets/images/AIMS.png"
+              src="/assets/images/consent-img.webp"
               alt="Community guidelines"
               fill
               className="object-cover opacity-80"
