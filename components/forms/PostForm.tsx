@@ -433,8 +433,8 @@ export function PostForm() {
   async function onSubmit(data: z.infer<typeof PostSchema>) {
     if (animating) return; // Prevent multiple submissions during animation
 
-    if (user.has_consented) {
-      if (user.consent_version !== CURRENT_CONSENT_VERSION) {
+    if (user?.has_consented) {
+      if (user?.consent_version !== CURRENT_CONSENT_VERSION) {
         setShowConsent(true);
         return;
       }
