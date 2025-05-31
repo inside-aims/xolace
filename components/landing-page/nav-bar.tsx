@@ -60,7 +60,7 @@ export function NavBar() {
   }, [])
 
   return (
-    <header className="px-0 md:px-[5%] fixed top-0 z-70 left-0 w-full bg-neutral-900 text-white shadow-lg">
+    <header className="px-0 md:px-[5%] fixed top-0 z-70 left-0 w-full bg-transparent text-white max-sm:shadow-lg">
       <div className="relative max-w-7xl mx-auto w-full py-3 md:py-4 flex items-center justify-end md:justify-center border-b border-neutral-800 rounded-none md:rounded-b-3xl bg-neutral-950">
         <p className="absolute left-4 text-lavender-500">Xolace.app</p>
 

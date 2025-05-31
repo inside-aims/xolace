@@ -25,7 +25,7 @@ export default function WhyXolaceSection() {
         {/*star image one*/}
         <div className={"absolute top-4 md:top-8 right-4 md:right-[10%]"}>
           <Image
-            src="/assets/images/landing-page/star.png"
+            src="/assets/images/landing-page/star.webp"
             alt="Hero Image"
             width={100}
             height={100}
@@ -40,7 +40,7 @@ export default function WhyXolaceSection() {
             Why xolace?
             <span className={"absolute -left-[30%] md:-left-[90%] -bottom-10"}>
             <Image
-              src="/assets/images/landing-page/star.png"
+              src="/assets/images/landing-page/star.webp"
               alt="Hero Image"
               width={80}
               height={80}
@@ -67,7 +67,7 @@ export default function WhyXolaceSection() {
             </span>
           </div>
 
-          <div className={"items-center grid grid-cols-12 gap-8 my-8 md:mt-18 mx-6 md:mx-0"}>
+          <div className={"items-center grid grid-cols-12 gap-8 my-8 md:mt-18 mx-6 md:mx-0 text-black"}>
             { xolaceFeatures.map((feature) => (
               <div
                 key={feature.key}

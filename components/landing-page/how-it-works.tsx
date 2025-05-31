@@ -31,7 +31,7 @@ export default function HowItWorksSection() {
         {/*star image one*/}
         <div className={"absolute top-4 md:top-8 right-4 md:right-[10%]"}>
           <Image
-            src="/assets/images/landing-page/star.png"
+            src="/assets/images/landing-page/star.webp"
             alt="Hero Image"
             width={100}
             height={100}
@@ -65,7 +65,7 @@ export default function HowItWorksSection() {
           </span>
           </div>
 
-          <div className={"grid grid-cols-12 gap-8 mt-8 md:mt-18 mx-6 md:mx-0"}>
+          <div className={"grid grid-cols-12 gap-8 mt-8 md:mt-18 mx-6 md:mx-0 text-black"}>
             {howItWorks.map((feature, index) => (
               <div
                 key={feature.key}

@@ -13,7 +13,7 @@ export default function ReadyToSpeakSection() {
         {/* Image */}
         <div className="relative w-[400px] md:w-[500px] h-[550px]">
           <Image
-            src="/assets/images/landing-page/ready-to-speak-img.png"
+            src="/assets/images/landing-page/ready-to-speak-img.webp"
             alt="Hero Image"
             fill
             className="object-contain"
