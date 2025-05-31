@@ -7,6 +7,7 @@ import { Toaster } from '@/components/ui/toaster';
 import {Toaster as SonnerToaster} from 'sonner'
 import './globals.css';
 import { SpeedInsights } from '@vercel/speed-insights/next';
+import Providers from './providers';
 
 const defaultUrl = process.env.VERCEL_URL
   ? `https://${process.env.VERCEL_URL}`
@@ -20,7 +21,7 @@ export const metadata = {
   },
   applicationName: 'Xolace',
   description:
-    'Xolace is a social platform designed for users to share their thoughts, stories, and experiences freely, fostering both engagement and self-expression in a unique, user-centered space',
+    'Xolace is a social platform designed for users to share their thoughts, stories, and experiences freely, fostering peer to peer engagement, self-expression and professional mental healthcare support in a unique, user-centered, community-like space',
   keywords: [
     'Xolace',
     'Social',
@@ -34,9 +35,13 @@ export const metadata = {
     'Unique',
     'User-Centered',
     'Space',
+    'Communities',
+    'Healthcare',
+    "Mental healthcare",
+    'Professional Support'
   ],
-  creator: 'Atlas IMeta Solutions',
-  publisher: 'Atlas IMeta Solutions',
+  creator: 'Xolace Inc.',
+  publisher: 'Xolace Inc.',
 };
 
 export default function RootLayout({
@@ -53,10 +58,12 @@ export default function RootLayout({
           enableSystem
           disableTransitionOnChange
         >
+          <Providers>
           {children}
           <SpeedInsights />
           <Toaster />
           <SonnerToaster richColors />
+          </Providers>
         </ThemeProvider>
       </body>
     </html>

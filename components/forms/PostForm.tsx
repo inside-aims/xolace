@@ -8,6 +8,7 @@ import React, {
   useCallback,
 } from 'react';
 import Image from 'next/image';
+import Link from 'next/link';
 import dynamic from 'next/dynamic';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useForm } from 'react-hook-form';
@@ -47,6 +48,7 @@ import { logActivity } from '@/lib/activity-logger';
 import { ActivityType } from '@/types/activity';
 import { usePreferencesStore } from '@/lib/store/preferences-store';
 import { useSearchParams, useRouter, usePathname } from 'next/navigation';
+import mascot from '../../public/assets/images/mas.webp';
 
 // Dynamic Imports
 const Loader = dynamic(() => import('../shared/loaders/Loader'), {
@@ -128,7 +130,7 @@ export function PostForm() {
       }
       document.removeEventListener('visibilitychange', handleVisibilityChange);
     };
-  }, [placeholders]);
+  }, [handleVisibilityChange]);
 
   // get mood boolean value
   // const isNeutral = selectedMood?.value === 'neutral';
@@ -735,8 +737,40 @@ export function PostForm() {
         </div>
       </form>
 
-      <div className="container mx-auto px-3 pt-20 text-center text-sm text-zinc-600">
-        Tip : Platform made to share your thought without holding back..
+      <div className="flex h-full flex-col gap-y-3 md:gap-y-30 lg:gap-y-36">
+        <div className="">
+          <div className="container mx-auto px-3 pt-10 text-center text-sm text-zinc-600 md:pt-20">
+            Tip : Platform made to share your experiences without holding back..
+          </div>
+          <div className="item-center mt-7 flex justify-center md:mt-5">
+            <Image src={mascot} height={130} width={130} alt="image" />
+            {/* <Mascot id="mascot"/> */}
+          </div>
+        </div>
+
+        <div className="flex flex-wrap justify-center gap-2 p-2 text-xs text-slate-600/60 dark:text-slate-400/60">
+          <span>
+            <Link className="hover:text-slate-200 hover:underline" href="">
+              Xolace Rules
+            </Link>
+          </span>
+          <span>
+            <Link className="hover:text-slate-200 hover:underline" href="">
+              Privacy Policy
+            </Link>
+          </span>
+          <span>
+            <Link className="hover:text-slate-200 hover:underline" href="">
+              User Agreement
+            </Link>
+          </span>
+          <span className="metadata-divider before:content-['•']"></span>
+          <span>
+            <Link className="hover:text-slate-200 hover:underline" href="">
+              Xolace, Inc. © 2025. All rights reserved.
+            </Link>
+          </span>
+        </div>
       </div>
     </Form>
   );

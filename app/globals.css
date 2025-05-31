@@ -1,5 +1,6 @@
 @import 'tailwindcss';
 @plugin "tailwindcss-animate";
+@plugin "@tailwindcss/typography";
 @custom-variant dark (&:where(.dark, .dark *));
 
 @config '../tailwind.config.ts';
@@ -26,6 +27,8 @@
 @theme {
   --color-bg: #ffffff; /* Light mode */
   --color-bg-dark: #121212; /* Dark mode */
+  --color-muted-dark: #27272a;
+  --color-muted-dark-hover: #3a3a3e;
 
   /*Primary color*/
   --color-ocean-50: #e7f4ff; /* Lightest (shallow water) */
@@ -245,6 +248,10 @@
   @apply bg-ocean-500 border-ocean-500 text-white;
 }
 
+@utility font-button-small{
+  @apply text-xs font-semibold;
+}
+
 @utility btn-depth-active {
   @apply border-depth-btn-border-active;
   background-image: linear-gradient(
@@ -347,11 +354,11 @@
 
 @utility view-container {
   /* view */
-  @apply relative mt-5 flex w-full items-center justify-end;
+  @apply relative bg-zinc-400 dark:bg-zinc-700 rounded-full h-7 w-13 flex items-center justify-center;
 }
 
 @utility view-text {
-  @apply bg-dark-2 dark:text-label-dark text-label-light rounded-lg px-4 py-2 text-[16px] font-medium capitalize dark:bg-slate-400;
+  @apply text-label-dark dark:text-white font-button-small capitalize;
 }
 
 @utility view_skeleton {
@@ -396,6 +403,23 @@
     font-family: 'TiltNeon';
     src: url('../fonts/TiltNeon-Regular.ttf') format('truetype');
   }
+
+  /* .markdown {
+    @apply max-w-full prose dark:prose-p:text-light-700 dark:prose-ol:text-light-700 dark:prose-ul:text-light-500 dark:prose-strong:text-white dark:prose-headings:text-white prose-headings:text-dark-400 prose-h1:text-dark-300 prose-h2:text-dark-300 prose-p:text-dark-500 prose-ul:text-dark-500 prose-ol:text-dark-500;
+  }
+
+  .markdown-editor {
+    @apply prose max-w-full prose-p:m-0 dark:prose-headings:text-white prose-headings:text-dark-400 prose-p:text-dark-500 dark:prose-p:text-light-700 prose-ul:text-dark-500 dark:prose-ul:text-light-700 prose-ol:text-dark-500 dark:prose-ol:text-light-700 dark:prose-strong:text-white prose-blockquote:text-dark-500 dark:prose-blockquote:text-light-700;
+  } */
+
+  /* global.css or equivalent */
+  .markdown {
+    @apply prose max-w-full;
+  }
+
+  .markdown-editor {
+    @apply prose prose-p:m-0 max-w-full;
+  }
 }
 
 @layer base {
@@ -439,6 +463,7 @@
     --radix-accordion-content-height: auto;
     --duration: 1s;
     --bg-size: 200%;
+    --ocean-600: 228, 100%, 51%;
   }
 
   .dark {
@@ -480,7 +505,108 @@
     --radix-accordion-content-height: auto;
     --duration: 1s;
     --bg-size: 200%;
+    --ocean-600: 228, 100%, 51%;
   }
+}
+
+/* Regular CSS overrides for dark mode */
+.dark .markdown,
+.dark .markdown-editor {
+  color: #e5e7eb; /* equivalent of text-light-700 */
+}
+
+.dark .markdown p,
+.dark .markdown-editor p {
+  color: #e5e7eb;
+}
+
+.dark .markdown ol,
+.dark .markdown ul,
+.dark .markdown-editor ol,
+.dark .markdown-editor ul {
+  color: #e7ebe5;
+}
+
+.dark .markdown strong,
+.dark .markdown-editor strong,
+.dark .markdown h1,
+.dark .markdown h2,
+.dark .markdown h3,
+.dark .markdown h4,
+.dark .markdown h5,
+.dark .markdown h6,
+.dark .markdown-editor h1,
+.dark .markdown-editor h2,
+.dark .markdown-editor h3,
+.dark .markdown-editor h4,
+.dark .markdown-editor h5,
+.dark .markdown-editor h6 {
+  margin-top: 0 !important;
+  color: #ffffff;
+}
+
+.mdxeditor-toolbar {
+  background: #ffffff !important;
+}
+
+.dark .mdxeditor-toolbar {
+  background: #151821 !important;
+}
+
+.dark .mdxeditor-toolbar button svg {
+  color: #858ead !important;
+}
+
+.dark .mdxeditor-toolbar button:hover svg {
+  color: #000 !important;
+}
+
+.dark .mdxeditor-toolbar [role='separator'] {
+  border-color: #555 !important;
+}
+
+.markdown a {
+  color: #1da1f2;
+}
+
+.markdown a,
+code {
+  /* These are technically the same, but use both */
+  overflow-wrap: break-word;
+  word-wrap: break-word;
+
+  -ms-word-break: break-all;
+  /* This is the dangerous one in WebKit, as it breaks things wherever */
+  word-break: break-all;
+  /* Instead use this non-standard one: */
+  word-break: break-word;
+
+  /* Adds a hyphen where the word breaks, if supported (No Blink) */
+  -ms-hyphens: auto;
+  -moz-hyphens: auto;
+  -webkit-hyphens: auto;
+  hyphens: auto;
+
+  padding: 2px;
+  color: #ff7000 !important;
+}
+
+.markdown pre {
+  display: grid;
+  width: 100%;
+}
+
+.markdown pre code {
+  width: 100%;
+  display: block;
+  overflow-x: auto;
+
+  color: inherit !important;
+}
+
+[data-lexical-editor='true'] {
+  height: 350px !important;
+  overflow-y: auto !important;
 }
 
 @layer utilities {
@@ -493,15 +619,6 @@
       )
       rgb(var(--background-start-rgb));
   }
-}
-
-@layer base {
-  * {
-    @apply border-border;
-  }
-  /* body {
-    @apply dark:bg-bg-dark bg-bg  text-foreground;
-  } */
 }
 
 @layer utilities {
@@ -523,18 +640,19 @@
 
 @layer utilities {
   ::-webkit-scrollbar {
-    width: 2px;
-    height: 2px;
+    width: 0px;
+    height: 0px;
   }
 
   ::-webkit-scrollbar-track {
-    background: #f7fafc17;
+    background: transparent;
   }
 
   ::-webkit-scrollbar-thumb {
     background: #8794f2;
     border-radius: 20px;
-    border: 2px solid rgba(128, 128, 128, 0.199);
+    /* border: 2px solid rgba(128, 128, 128, 0.199); */
+    border: none;
   }
 }
 
@@ -574,14 +692,16 @@
   }
 }
 
-
-
-
 @layer base {
   * {
     @apply border-border;
   }
   body {
     @apply bg-bg-dark text-foreground;
+  }
+
+  button:not(:disabled),
+  [role='button']:not(:disabled) {
+    cursor: pointer;
   }
 }

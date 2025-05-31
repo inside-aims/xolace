@@ -1,6 +1,5 @@
 'use client';
 
-
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 
@@ -45,11 +44,9 @@ const PostDropdown: React.FC<DropdownMenuProp> = ({
   const roles = useUserState(state => state.roles);
   const isModerator = roles.includes('blue_team');
 
-
   // Use the new hook
   const { deletePost, isDeletingPost, deleteComment, isDeletingComment } =
     usePostMutations();
-
 
   // open sheet
   const handleReportClick = () => {
@@ -64,7 +61,6 @@ const PostDropdown: React.FC<DropdownMenuProp> = ({
 
   //  delete comment
   const onCommentDelete = async () => {
-
     if (commentId) {
       deleteComment({
         commentId,

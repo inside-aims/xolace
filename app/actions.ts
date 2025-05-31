@@ -9,7 +9,7 @@ import { signUpSchema } from '@/validation';
 import { validatedAction } from '@/lib/auth/middleware';
 import { sendOTPLink } from '@/utils/sendOTPLink';
 import { Post, Tag, User } from '@/types/global';
-import { revalidatePath , revalidateTag} from 'next/cache';
+import { revalidatePath } from 'next/cache';
 import { PostgrestError } from '@supabase/supabase-js';
 import { logActivity } from '@/lib/activity-logger';
 import { ActivityType } from '@/types/activity';
@@ -221,8 +221,8 @@ export async function updateViewsAction(postId: string, userId: string, relatedU
     });
 
     revalidatePath('/feed');
-    revalidateTag('posts')
     revalidatePath('/explore');
+    revalidatePath(`/post/${postId}`, 'page');
 
     return { success: true, data };
   } catch (error) {
@@ -268,7 +268,6 @@ export async function voteAction(
     });
 
     revalidatePath('/feed', 'page');
-    revalidateTag('posts')
     revalidatePath('/explore', 'page');
 
     return { success: true, data: voteResult };
@@ -432,25 +431,25 @@ export async function fetchDailyPromptAction() {
 
 export async function fetchUserStreakAction(userId: string) {
   if (!userId) {
-    return { success: false, error: 'User ID is required.', data: { current_streak: 0 } };
+    return { success: false, error: 'User ID is required.', data: null };
   }
   const supabase = await createClient();
   try {
     const { data, error } = await supabase
       .from('prompt_streaks')
-      .select('current_streak')
+      .select('current_streak, last_response_date')
       .eq('user_id', userId)
       .single();
 
     if (error) {
       if (error.code === 'PGRST116') { // PGRST116: "Not Found" - user might not have a streak record yet
-        return { success: true, data: { current_streak: 0 } };
+        return { success: true, data: null };
       }
-      return { success: false, error: error.message, data: { current_streak: 0 } };
+      return { success: false, error: error.message, data: null };
     }
     
-    return { success: true, data: data || { current_streak: 0 } };
+    return { success: true, data: data };
   } catch (error) {
-    return error ? { success: false, error: 'Failed to fetch user streak', data: { current_streak: 0 } } : { success: false, error: 'Failed to fetch user streak, Try again', data: { current_streak: 0 }};
+    return error ? { success: false, error: 'Failed to fetch user streak', data: null } : { success: false, error: 'Failed to fetch user streak, Try again', data: null };
   }
 }

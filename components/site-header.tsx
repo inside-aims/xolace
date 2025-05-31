@@ -17,6 +17,7 @@ import { getSupabaseBrowserClient } from '@/utils/supabase/client';
 //import SignoutAlert from './shared/SignoutAlert';
 import { useUserState } from '@/lib/store/user';
 import { RealtimeAvatarStack } from './realtime-avatar-stack';
+import mascot from '../public/assets/images/mas.webp';
 
 export function SiteHeader() {
   // get user profile data
@@ -45,7 +46,7 @@ export function SiteHeader() {
   useEffect(() => {
     const {
       data: { subscription },
-    } = supabase.auth.onAuthStateChange((event) => {
+    } = supabase.auth.onAuthStateChange(event => {
       if (event === 'SIGNED_OUT') {
         router.push(`/sign-in`);
       }
@@ -55,12 +56,15 @@ export function SiteHeader() {
     return () => {
       subscription.unsubscribe();
     };
-  }, [router , supabase.auth]);
+  }, [router, supabase.auth]);
 
   return (
     <>
-      <header className="sticky top-0 z-50 flex w-full items-center border-b bg-bg opacity-[0.96] dark:border-gray-700/90 dark:bg-bg-dark dark:opacity-100" id="navbar">
-        <div className="flex h-(--header-height) w-full items-center justify-between ps-3 pe-3 sm:pe-10">
+      <header
+        className="bg-bg dark:bg-bg-dark sticky top-0 z-50 flex w-full items-center border-b opacity-[0.96] dark:border-gray-700/90 dark:opacity-100"
+        id="navbar"
+      >
+        <div className="relative flex h-(--header-height) w-full items-center justify-between ps-3 pe-3 sm:pe-10">
           <Button
             className="h-8 w-8"
             variant="ghost"
@@ -69,32 +73,26 @@ export function SiteHeader() {
             aria-label="Toggle Sidebar"
             id="sidebar-btn"
           >
-            <Avatar className='h-8 w-8'>
-              <AvatarImage src={user?.avatar_url ?? undefined} alt={user?.username ?? "avatar"} />
-              <AvatarFallback className=' bg-indigo-500'>{user?.username?.charAt(0)}</AvatarFallback>
+            <Avatar className="h-8 w-8">
+              <AvatarImage
+                src={user?.avatar_url ?? undefined}
+                alt={user?.username ?? 'avatar'}
+              />
+              <AvatarFallback className="bg-indigo-500">
+                {user?.username?.charAt(0)}
+              </AvatarFallback>
             </Avatar>
           </Button>
 
           {/* Logo */}
-          <div className="flex items-center gap-x-4">
+          <div className="absolute left-1/2 -translate-x-1/2">
             <Link href="/feed" className="flex items-center gap-4">
               <Image
-                src="/assets/images/anonymous-messenger.png"
+                src={mascot}
                 alt="logo"
-                width={40}
-                height={32}
-                className="hidden dark:block"
+                width={60}
+                height={60}
                 priority={true}
-                loading="eager"
-              />
-
-              <Image
-                src="/assets/images/anonymous-messenger_light.png"
-                alt="logo"
-                width={40}
-                height={32}
-                className="block dark:hidden"
-                 priority={true}
                 loading="eager"
               />
             </Link>
@@ -116,13 +114,13 @@ export function SiteHeader() {
           </div> */}
 
           {/* Theme switcher */}
-          <div className="flex gap-x-5 w-30 items-center max-sm:justify-center">
-            <div className='hidden md:block'>
-            <ThemeSwitch />
+          <div className="flex items-center gap-x-5 max-sm:justify-center md:w-30">
+            <div className="hidden md:block">
+              <ThemeSwitch />
             </div>
             <div id="online-users">
               {/* <ProgressBetaBadge progress={30} /> */}
-              <RealtimeAvatarStack roomName="break_room"/>
+              <RealtimeAvatarStack roomName="break_room" />
             </div>
           </div>
         </div>

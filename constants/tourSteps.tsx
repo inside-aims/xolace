@@ -276,4 +276,15 @@ export const createPostSteps: Step[] = [
       </TourWrapper>
     ),
   },
+  {
+    selector: '#mascot',
+    content: () => (
+      <TourWrapper>
+        <TourTitle>Finished</TourTitle>
+        <TourContent>
+          You&apos;ve completed the tour! Tour guide will be disabled now 😉. If you haven&apos;t taken the tour on the feed page📃 yet you can always turn it back on in the settings page.
+        </TourContent>
+      </TourWrapper>
+    ),
+  },
 ];
