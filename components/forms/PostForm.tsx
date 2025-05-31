@@ -48,7 +48,7 @@ import { logActivity } from '@/lib/activity-logger';
 import { ActivityType } from '@/types/activity';
 import { usePreferencesStore } from '@/lib/store/preferences-store';
 import { useSearchParams, useRouter, usePathname } from 'next/navigation';
-import mascot from '../../public/assets/images/mas.webp';
+//import mascot from '../../public/assets/images/mas.webp';
 import { CURRENT_CONSENT_VERSION } from '@/constants/terms';
 
 // Dynamic Imports
@@ -792,7 +792,6 @@ export function PostForm() {
       {showConsent && (
         <ConsentModal
           isOpen={showConsent}
-          onAccept={() => {}}
           onReject={() => {
             setShowConsent(false);
           }}

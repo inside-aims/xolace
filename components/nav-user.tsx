@@ -6,7 +6,6 @@ import { useRouter } from "next/navigation"
 import {
   ChevronsUpDown,
   LogOut,
-  Sparkles,
   Settings,
 } from "lucide-react"
 

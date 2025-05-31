@@ -1,4 +1,5 @@
 import { useState, useEffect } from "react";
+import Image from "next/image";
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 import {Button} from "@/components/ui/button";
 import { Checkbox } from "@/components/ui/checkbox";
@@ -12,7 +13,7 @@ import { Info } from "lucide-react";
 
 interface ConsentModalProps {
   isOpen: boolean;
-  onAccept: () => void;
+  onAccept?: () => void;
   onReject: () => void;
   user: Profile;
 }
@@ -40,7 +41,7 @@ const consentItems = [
   }
 ];
 
-const ConsentModal = ({ isOpen, onAccept, onReject , user}: ConsentModalProps) => {
+const ConsentModal = ({ isOpen, onReject , user}: ConsentModalProps) => {
     const supabase = getSupabaseBrowserClient()
   const [checkedItems, setCheckedItems] = useState<Record<string, boolean>>({});
   const [allChecked, setAllChecked] = useState(false);
@@ -89,10 +90,11 @@ const ConsentModal = ({ isOpen, onAccept, onReject , user}: ConsentModalProps) =
         <div className="relative">
           {/* Hero Image */}
           <div className="h-48 bg-gradient-to-r from-purple-500 to-blue-600 relative overflow-hidden">
-            <img
-              src="https://images.unsplash.com/photo-1605810230434-7631ac76ec81?auto=format&fit=crop&w=800&q=80"
+            <Image
+              src="/assets/images/AIMS.png"
               alt="Community guidelines"
-              className="w-full h-full object-cover opacity-80"
+              fill
+              className="object-cover opacity-80"
             />
             <div className="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent" />
             <div className="absolute bottom-4 left-6 text-white">
