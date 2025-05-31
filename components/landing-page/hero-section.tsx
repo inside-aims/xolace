@@ -26,9 +26,9 @@ export default function HeroSection() {
             transition={{ duration: 0.6, ease: "easeOut" }}
             className="w-full"
           >
-            <h1 className="text-3xl md:text-5xl font-extrabold leading-tight">
-              <span className="text-ocean-500 mr-2">ANONYMITY</span>
-              MEETS EXPRESSION
+            <h1 className="text-3xl md:text-5xl font-extrabold leading-tight capitalize">
+              <span className="text-ocean-500 mr-2">CONNECTING</span>
+              the world&apos;s experiences— <span className='text-lg'>so no one struggles alone</span>.
             </h1>
           </motion.div>
 
@@ -39,8 +39,9 @@ export default function HeroSection() {
             className="w-full"
           >
             <p className="flex flex-col w-full items-center justify-center text-md md:text-xl text-gray-300 mb-4 md:mb-8 ">
-              <span>Share your thoughts freely without judgment.</span>
-              <span>Xolace is your safe space for expression.</span>
+              {/* <span>Share your thoughts freely without judgment.</span>
+              <span>Xolace is your safe space for expression.</span> */}
+              A safe, supportive space where real people share, care, and grow—together with mental health professionals who are part of the conversation, not behind a wall.
             </p>
           </motion.div>
 

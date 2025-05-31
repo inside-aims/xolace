@@ -2,24 +2,24 @@ import Image from "next/image";
 
 const howItWorks: {key: string, label: string, description: string}[] = [
   {
-    key: 'signUp',
-    label: 'Sign up',
-    description: 'Join anonymously in seconds. No pressure, just presence. A safe start for open minds.'
+    key: 'speak',
+    label: 'Speak',
+    description: 'Post your thoughts anonymously or with your profile — be as open as you choose. Set content to expire or stay forever. This is your space, your rules.'
   },
   {
-    key: 'postFreely',
-    label: 'Post Freely',
-    description: 'Share thoughts, fears, or joys without judgment. Venting and vulnerability meet a listening community.'
+    key: 'connect',
+    label: 'Connect',
+    description: 'Get responses from both community members and verified professionals. No hierarchies—just shared humanity. Know that every interaction builds someone up'
   },
   {
-    key: 'reactEmotionally',
-    label: 'React Emotionally',
-    description: 'Respond with emojis that reflect your mood. A lightweight way to feel seen and heard.'
+    key: 'grow',
+    label: 'Grow',
+    description: 'Daily prompts gently nudge self-reflection, community votes foster connection, and streaks reward showing up—exactly as you are'
   },
   {
-    key: 'echoEngage',
-    label: 'Echo & Engage',
-    description: 'Re-post what resonates. Help others realize they’re not alone in their thoughts or struggles.'
+    key: 'heal',
+    label: 'Heal',
+    description: 'Need more? Seamless transition to paid sessions if needed, with professionals you already trust from the community'
   },
 ];
 
@@ -78,7 +78,7 @@ export default function HowItWorksSection() {
                     { feature.label }
                   </h4>
                 </div>
-                <p className={"text-center  text-md md:text-lg"}> {feature.description} </p>
+                <p className={"text-center  text-lg md:text-xl"}> {feature.description} </p>
               </div>
             ))}
           </div>

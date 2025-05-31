@@ -25,13 +25,13 @@ export default function ReadyToSpeakSection() {
             READY TO SPEAK YOUR MIND ?
           </h1>
           <p className="mb-4 md:mb-8 flex text-md md:text-lg w-full items-center justify-center text-gray-300 ">
-            Start your journey with Xolace and rediscover social media on your terms.
+            Start your journey with Xolace and discover social experiencing on your terms.
           </p>
           <Link
             href={"sign-up"}
             className="bg-ocean-400 px-6 py-3 text-white rounded-full font-semibold hover:bg-ocean-500 transition-transform duration-300 ease-in-out hover:scale-110 shadow-lg"
           >
-            Get Started
+            Start Sharing
           </Link>
         </div>
       </div>

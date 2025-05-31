@@ -138,7 +138,7 @@ export function NavBar() {
                   href={"/sign-up"}
                   className="bg-ocean-400 hover:bg-lavender-800 text-center text-white px-4 py-2 rounded-full hover:bg-ocean-500 transition-transform duration-300 ease-in-out hover:scale-110"
                 >
-                  Get Started
+                  Start Sharing
                 </Link>
               </div>
             </motion.div>
