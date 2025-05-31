@@ -145,6 +145,7 @@
   --text-muted-label: 0.813rem;
   --text-heading-label: 1.25rem;
   --text-username-label: 1rem;
+  --text-sidebar-label: 0.875rem;
 
   /* Keyframes */
   @keyframes accordion-down {

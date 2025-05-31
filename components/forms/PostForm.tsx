@@ -757,13 +757,13 @@ export function PostForm() {
           <div className="container mx-auto px-3 pt-10 text-center text-sm text-zinc-600 md:pt-20">
             Tip : Platform made to share your experiences without holding back..
           </div>
-          <div className="item-center mt-7 flex justify-center md:mt-5">
+          {/* <div className="item-center mt-7 flex justify-center md:mt-5">
             <Image src={mascot} height={130} width={130} alt="image" />
-            {/* <Mascot id="mascot"/> */}
-          </div>
+          </div> */}
         </div>
 
-        <div className="flex flex-wrap justify-center gap-2 p-2 text-xs text-slate-600/60 dark:text-slate-400/60">
+        <section className='flex-1 flex flex-col items-center justify-center'>
+        <div className="flex flex-wrap justify-center gap-2 px-2 pb-4 text-xs text-slate-600/60 dark:text-slate-400/60">
           <span>
             <Link className="hover:text-slate-200 hover:underline" href="">
               Xolace Rules
@@ -786,6 +786,7 @@ export function PostForm() {
             </Link>
           </span>
         </div>
+        </section>
       </div>
 
       {showConsent && (

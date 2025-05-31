@@ -170,7 +170,7 @@ export default function HealthTips() {
                   Array.from({ length: 3 }).map((_, index) => (
                     <div
                       key={`skeleton-${index}`}
-                      className={`${index > 0 ? 'hidden md:block' : 'block'} animate-pulse`}
+                      className={`hidden md:block animate-pulse`}
                     >
                       <div className="flex flex-row items-start gap-2 md:gap-4">
                         {/* Avatar skeleton */}
@@ -194,7 +194,7 @@ export default function HealthTips() {
                   feedHealthTips?.map((healthTip, index) => (
                     <div
                       key={healthTip.id}
-                      className={`${index > 0 ? 'hidden md:block' : 'block'}`}
+                      className={`hidden md:block`}
                     >
                       <HealthTipCard
                         id={healthTip.id}
@@ -226,7 +226,7 @@ export default function HealthTips() {
             </div>
           </div>
 
-          <div className="flex-1">
+          <div className="flex-1 max-sm:hidden">
             <div className="flex h-full flex-col justify-end">
               <div className="flex flex-wrap justify-center gap-2 p-2 text-xs text-slate-600/60 dark:text-slate-400/60">
                 <span>
