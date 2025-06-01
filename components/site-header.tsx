@@ -17,7 +17,7 @@ import { getSupabaseBrowserClient } from '@/utils/supabase/client';
 //import SignoutAlert from './shared/SignoutAlert';
 import { useUserState } from '@/lib/store/user';
 import { RealtimeAvatarStack } from './realtime-avatar-stack';
-import mascot from '../public/assets/images/mas.webp';
+import mascot from '../public/assets/images/x-logo.webp';
 
 export function SiteHeader() {
   // get user profile data
