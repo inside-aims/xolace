@@ -26,9 +26,9 @@ export default function HeroSection() {
             transition={{ duration: 0.6, ease: "easeOut" }}
             className="w-full"
           >
-            <h1 className="text-3xl md:text-5xl font-extrabold leading-tight capitalize">
+            <h1 className="text-3xl md:text-5xl font-extrabold leading-tight uppercase">
               <span className="text-ocean-500 mr-2">CONNECTING</span>
-              the world&apos;s experiences— <span className='text-lg'>so no one struggles alone</span>.
+              the world&apos;s🌍 experiences— <span className='text-lg'>so no one struggles alone</span>.
             </h1>
           </motion.div>
 

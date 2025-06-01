@@ -42,7 +42,7 @@ export default function HowItWorksSection() {
         {/*First div section*/}
         <div className="w-full flex flex-col items-center md:items-start justify-center gap-8 my-[4%] relative">
           <div
-            className="relative flex flex-col items-center md:items-start text-white text-3xl md:text-5xl font-bold uppercase">
+            className="relative flex flex-col items-center md:items-start text-white text-4xl md:text-6xl font-bold uppercase">
             <span className="w-full text-center md:text-left">How it works</span>
 
             <span className={"absolute -left-[30%] md:-left-[90%] -bottom-10"}>

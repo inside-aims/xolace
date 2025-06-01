@@ -37,7 +37,7 @@ export default function WhyXolaceSection() {
         {/*First div section*/}
         <div className="w-full flex flex-col items-center justify-center gap-8 mt-[6%] relative">
           <div
-            className="relative flex items-center justify-center text-white text-3xl md:text-5xl font-bold uppercase">
+            className="relative flex items-center justify-center text-white text-4xl md:text-6xl font-bold uppercase">
             Why xolace?
             <span className={"absolute -left-[30%] md:-left-[90%] -bottom-10"}>
             <Image
