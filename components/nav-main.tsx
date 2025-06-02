@@ -6,6 +6,7 @@ import Link from "next/link";
 
 import { sidebarLinks } from "@/constants"
 import { useSidebar } from "@/components/ui/sidebar";
+import LinkLoadingIndicator from "./shared/loaders/LinkLoadingIndicator";
 
 import {
   SidebarMenu,
@@ -36,7 +37,7 @@ export function NavMain() {
               <Link href={item.route}
                 key={item.label}>
                 {item.icon}
-                <span className="text-sidebar-label">{item.label}</span>
+                <span className="text-sidebar-label mr-2">{item.label}</span> <LinkLoadingIndicator/>
               </Link>
             </SidebarMenuButton>
           </SidebarMenuItem>

@@ -6,7 +6,8 @@ import Link from 'next/link';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useForm } from 'react-hook-form';
 import { z } from 'zod';
-import { useToast } from '../ui/use-toast';
+//import { useToast } from '../ui/use-toast';
+import {toast} from 'sonner'
 import { useRouter } from 'next/navigation';
 
 import { Button } from '@/components/ui/button';
@@ -29,7 +30,7 @@ import AnonymousSignIn from '../ui/AnonymousSignIn';
 
 const SignInForm = () => {
   const router = useRouter();
-  const { toast } = useToast();
+  //const { toast } = useToast();
   const [showPassword, setShowPassword] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const supabase = getSupabaseBrowserClient();
@@ -59,12 +60,8 @@ const SignInForm = () => {
         })
         .then(result => {
           if (!result.data?.user) {
-            toast({
-              variant: 'destructive',
-              title: ' 😿 Invalid credentials, check email or password',
-            });
+            toast.error(' 😿 Invalid credentials, check email or password');
             setIsLoading(false);
-            form.reset();
             return;
           }
 
@@ -74,10 +71,7 @@ const SignInForm = () => {
 
       // eslint-disable-next-line @typescript-eslint/no-unused-vars
     } catch (error) {
-      toast({
-        variant: 'destructive',
-        title: ' 😿 Something must have gone wrong, Please try again',
-      });
+      toast.error(' 😿 Something must have gone wrong, Please try again');
     }
 
     return;
@@ -91,9 +85,7 @@ const SignInForm = () => {
       data: { subscription },
     } = supabase.auth.onAuthStateChange((event) => {
       if (event === 'SIGNED_IN') {
-        toast({
-          title: ' 😸 Welcome to Xolace!',
-        });
+        toast.success(' 😸 Welcome to Xolace! Ready to explore! 🎭');
         router.push('/feed');
       }
     });

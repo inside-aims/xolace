@@ -3,7 +3,9 @@
 import { useEffect, useState } from "react"
 import { Menu, X } from "lucide-react"
 import Link from 'next/link'
+import Image from "next/image"
 import { motion, AnimatePresence } from 'framer-motion'
+import mascot from '../../public/assets/images/x-logo.webp';
 
 const navigation = [
   { name: "Home", href: "hero-section" },
@@ -62,7 +64,17 @@ export function NavBar() {
   return (
     <header className="px-0 md:px-[5%] fixed top-0 z-70 left-0 w-full bg-transparent text-white max-sm:shadow-lg">
       <div className="relative max-w-7xl mx-auto w-full py-3 md:py-4 flex items-center justify-end md:justify-center border-b border-neutral-800 rounded-none md:rounded-b-3xl bg-neutral-950">
-        <p className="absolute left-4 text-lavender-500">Xolace.app</p>
+        {/* <p className="absolute left-4 text-lavender-500">Xolace.app</p> */}
+        <div className="absolute left-4">
+        <Image
+                src={mascot}
+                alt="logo"
+                width={60}
+                height={60}
+                priority={true}
+                loading="eager"
+              />
+        </div>
 
         {/* Desktop Navigation */}
         <nav className="hidden md:flex items-center space-x-10 font-semibold">
@@ -138,7 +150,7 @@ export function NavBar() {
                   href={"/sign-up"}
                   className="bg-ocean-400 hover:bg-lavender-800 text-center text-white px-4 py-2 rounded-full hover:bg-ocean-500 transition-transform duration-300 ease-in-out hover:scale-110"
                 >
-                  Get Started
+                  Start Sharing
                 </Link>
               </div>
             </motion.div>

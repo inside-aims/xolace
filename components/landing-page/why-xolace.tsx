@@ -1,20 +1,21 @@
 import Image from "next/image";
 
-const xolaceFeatures: {key: string, label: string, description: string}[] = [
+const xolaceFeatures: {key: string, label: string, description: string , description2?: string}[] = [
   {
     key: 'anonymityFirst',
-    label: 'Anonymity First',
-    description: 'Express yourself without fear of being identified.'
+    label: 'You’re Not Alone',
+    description: "Hear from people just like you — not as influencers, not as celebrities — real voices navigating life's highs and lows.",
+    description2: "Behind every 'I’m fine' is a story waiting to be heard. Xolace is where those stories meet understanding ears—from peers who get it to professionals who care."
   },
   {
     key: 'emotionBaseReactions',
-    label: 'Emotion-Based Reactions',
-    description: 'Express yourself without fear of being identified.'
+    label: 'Care Without Walls ',
+    description: 'Mental health professionals walk beside you, not above you. They engage openly—sharing free advice and offering help when needed.'
   },
   {
     key: 'focusedFeed',
-    label: 'Focused Feed',
-    description: 'Express yourself without fear of being identified.'
+    label: 'Light in the Dark',
+    description: 'Because healing isn’t just about pain—it’s about joy too. Share funny stories, celebrate small wins, and be the reason someone smiles today. Here, every emotion belongs.'
   },
 ]
 export default function WhyXolaceSection() {
@@ -36,7 +37,7 @@ export default function WhyXolaceSection() {
         {/*First div section*/}
         <div className="w-full flex flex-col items-center justify-center gap-8 mt-[6%] relative">
           <div
-            className="relative flex items-center justify-center text-white text-3xl md:text-5xl font-bold uppercase">
+            className="relative flex items-center justify-center text-white text-4xl md:text-6xl font-bold uppercase">
             Why xolace?
             <span className={"absolute -left-[30%] md:-left-[90%] -bottom-10"}>
             <Image
@@ -63,7 +64,7 @@ export default function WhyXolaceSection() {
               Social media today is crowded with noise and pressure.
             </span>
             <span>
-              Xolace gives you a calm, anonymous corner to breathe, speak, and be heard.
+            Everyone has a story. Some need to be heard, others need to be told. 
             </span>
           </div>
 
@@ -71,9 +72,10 @@ export default function WhyXolaceSection() {
             { xolaceFeatures.map((feature) => (
               <div
                 key={feature.key}
-                className={"col-span-12 md:col-span-6 lg:col-span-4 h-[328px] w-full bg-white rounded-4xl md:rounded-t-4xl shadow-md p-4 flex flex-col items-center justify-start gap-8 "}>
-                <h4 className={"items-center text-center font-bold text-lg uppercase md:text-2xl"}> { feature.label } </h4>
-                <p className={"text-center text-md md:text-lg"}> { feature.description } </p>
+                className={"col-span-12 md:col-span-6 lg:col-span-4 h-[328px] w-full bg-white rounded-4xl md:rounded-t-4xl shadow-md p-4 flex flex-col items-center justify-start gap-6 "}>
+                <h4 className={"items-center text-center font-bold text-2xl uppercase md:text-3xl"}> { feature.label } </h4>
+                <p className={"text-center text-lg md:text-xl"}> { feature.description } </p>
+                { feature.description2 && <p className={"text-center text-[15px] md:text-[16px]"}> { feature.description2 } </p> }
               </div>
             ))}
           </div>
