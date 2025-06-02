@@ -235,8 +235,8 @@ export function PostForm() {
     const promptTextQuery = searchParams.get('prompt');
 
     if (promptTextQuery) {
-      const decodedPromptText = decodeURIComponent(promptTextQuery);
-      const initialContent = `Prompt: ${decodedPromptText}\n\n#DailyPrompt `;
+      //const decodedPromptText = decodeURIComponent(promptTextQuery);
+      const initialContent = `\n\n#DailyPrompt `;
 
       setValue('content', initialContent, { shouldValidate: true });
       handleInput(initialContent);
@@ -262,11 +262,10 @@ export function PostForm() {
       const promptTextQuery = searchParams.get('prompt');
       let isInitialPromptFill = false;
       if (promptTextQuery) {
-        const decodedPromptText = decodeURIComponent(promptTextQuery);
-        const initialContentPattern = `Prompt: ${decodedPromptText}\n\n#DailyPrompt `;
+        //const decodedPromptText = decodeURIComponent(promptTextQuery);
+        const initialContentPattern = `\n\n#DailyPrompt `;
         if (
-          currentContent.trim() === initialContentPattern.trim() ||
-          currentContent === `Prompt: ${decodedPromptText}\n\n`
+          currentContent.trim() === initialContentPattern.trim()
         ) {
           // check both with and without #DailyPrompt initially
           console.log('isInitialPromptFill');
@@ -275,12 +274,7 @@ export function PostForm() {
       }
 
       if (
-        !isInitialPromptFill ||
-        (isInitialPromptFill &&
-          content !==
-            `Prompt: ${decodeURIComponent(promptTextQuery || '')}\n\n#DailyPrompt ` &&
-          content !==
-            `Prompt: ${decodeURIComponent(promptTextQuery || '')}\n\n`)
+        !isInitialPromptFill 
       ) {
         console.log('Saving draft');
         debouncedSaveDraft(content);
