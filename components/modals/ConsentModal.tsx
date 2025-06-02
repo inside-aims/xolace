@@ -60,7 +60,10 @@ const ConsentModal = ({ isOpen, onReject , user}: ConsentModalProps) => {
 
   const handleAccept = async () => {
     if (allChecked) {
-      const { error: updateError } = await supabase
+      if(user?.is_anonymous){
+        sessionStorage.setItem('consentAccepted', 'true');
+      }else{
+        const { error: updateError } = await supabase
       .from('profiles')
       .update({
         has_consented : true,
@@ -74,6 +77,7 @@ const ConsentModal = ({ isOpen, onReject , user}: ConsentModalProps) => {
         console.log(updateError)
         toast.error('Oops🫢!! Consent could not be accepted.');
         return;
+      }
       }
 
       useUserState.setState({ user: { ...user, has_consented : true, consent_version : CURRENT_CONSENT_VERSION } });

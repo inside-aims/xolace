@@ -13,6 +13,7 @@ import {
 import { useUserState } from '@/lib/store/user';
 import { getSupabaseBrowserClient } from '@/utils/supabase/client';
 import { HeartHandshake, Zap, Medal } from 'lucide-react';
+import confetti from 'canvas-confetti';
 
 export default function WelcomeModalCard() {
   // initialize supabase client
@@ -35,7 +36,7 @@ export default function WelcomeModalCard() {
         setIsOpen(true);
       }
     } else {
-      if (user?.has_seen_welcome) {
+      if (!dismissed && !user?.has_seen_welcome) {
         setIsOpen(true);
       }
     }
@@ -52,6 +53,36 @@ export default function WelcomeModalCard() {
         .update({ has_seen_welcome: true })
         .eq('id', user?.id);
     }
+
+    // confetti animation
+    const end = Date.now() + 3 * 1000; // 3 seconds
+    const colors = ["#a786ff", "#fd8bbc", "#eca184", "#f8deb1"];
+ 
+    const frame = () => {
+      if (Date.now() > end) return;
+ 
+      confetti({
+        particleCount: 2,
+        angle: 60,
+        spread: 55,
+        startVelocity: 60,
+        origin: { x: 0, y: 0.5 },
+        colors: colors,
+      });
+      confetti({
+        particleCount: 2,
+        angle: 120,
+        spread: 55,
+        startVelocity: 60,
+        origin: { x: 1, y: 0.5 },
+        colors: colors,
+      });
+ 
+      requestAnimationFrame(frame);
+    };
+ 
+    frame();
+    
   };
 
   // Prevent rendering the popup before the user state is fully loaded

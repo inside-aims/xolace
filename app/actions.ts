@@ -13,6 +13,7 @@ import { revalidatePath } from 'next/cache';
 import { PostgrestError } from '@supabase/supabase-js';
 import { logActivity } from '@/lib/activity-logger';
 import { ActivityType } from '@/types/activity';
+import { cache } from 'react';
 
 export const signUpAction = validatedAction(signUpSchema, async data => {
   const supabaseAdmin = getSupabaseAdminClient();
@@ -429,7 +430,7 @@ export async function fetchDailyPromptAction() {
   }
 }
 
-export async function fetchUserStreakAction(userId: string) {
+export const fetchUserStreakAction = cache(async (userId: string) => {
   if (!userId) {
     return { success: false, error: 'User ID is required.', data: null };
   }
@@ -443,7 +444,7 @@ export async function fetchUserStreakAction(userId: string) {
 
     if (error) {
       if (error.code === 'PGRST116') { // PGRST116: "Not Found" - user might not have a streak record yet
-        return { success: true, data: null };
+        return { success: true, data: { current_streak: 0, last_response_date: null } };
       }
       return { success: false, error: error.message, data: null };
     }
@@ -452,4 +453,4 @@ export async function fetchUserStreakAction(userId: string) {
   } catch (error) {
     return error ? { success: false, error: 'Failed to fetch user streak', data: null } : { success: false, error: 'Failed to fetch user streak, Try again', data: null };
   }
-}
+})
