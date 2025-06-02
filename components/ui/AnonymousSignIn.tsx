@@ -13,13 +13,13 @@ import {
   AlertDialogTrigger,
 } from '@/components/ui/alert-dialog';
 //import { Button } from '@/components/ui/button';
-import { useToast } from './use-toast';
+import { toast } from 'sonner';
 import { getSupabaseBrowserClient } from '@/utils/supabase/client';
 import { generateRandomNumber } from '@/lib/utils';
+import { AlertTriangle, CheckCircle2, Key, Shield, ShieldAlert, VenetianMask, XCircle } from 'lucide-react';
 
 const AnonymousSignIn = () => {
   const supabase = getSupabaseBrowserClient();
-  const { toast } = useToast();
   const router = useRouter();
   const is_anonymous_user: boolean = true;
 
@@ -33,19 +33,13 @@ const AnonymousSignIn = () => {
     setIsLoading(true);
     const { data, error } = await supabase.auth.signInAnonymously();
     if (error) {
-      toast({
-        title: 'Error signing in anonymously:',
-        description: "Oops, looks like you couldn't get in right now, please try again 🤔",
-      });
+      toast.error("Oops, looks like you couldn't get in right now, please try again 🤔");
       console.error('Error signing in anonymously:', error);
       return;
     }
 
     if (!data.user) {
-      toast({
-        title: 'Error signing in anonymously:',
-        description: 'There is no user data',
-      });
+      toast.error('There is no user data');
       console.error('Error signing in anonymously:', error);
       return;
     }
@@ -66,27 +60,18 @@ const AnonymousSignIn = () => {
       .single();
 
     if(profileError){
-      toast({
-        title: 'Error signing in anonymously:',
-        description: 'Masking you failed, why is that ? 🤔. Just try again I guess',
-      });
+      toast.error('Masking you failed, why is that ? 🤔. Just try again I guess');
       console.error('Error signing in anonymously:', profileError);
       return;
     }
 
     if(profileUser){
-      toast({
-        title: ' 🥷 Masked up and ready to explore! 🎭!',
-        description: "You've been signed in anonymously.",
-      });
+      toast.success(' 🥷 Masked up and ready to explore! 🎭!');
       // Redirect to the feed page or your desired page after successful sign-in
       router.push('/feed');
     }
    } catch (error) {
-    toast({
-      title: 'Error signing in anonymously:',
-      description: "Masking you failed, why is that ? 🤔",
-    });
+    toast.error("Masking you failed, why is that ? 🤔");
     console.error('Error signing in anonymously:', error);
    }
    finally {
@@ -105,33 +90,63 @@ const AnonymousSignIn = () => {
             {isLoading ? 'Masking up...' : 'Activate Ghost Mode 👻'}
           </button>
         </AlertDialogTrigger>
-        <AlertDialogContent>
-          <AlertDialogHeader>
-            <AlertDialogTitle>About Signing in Anonymously </AlertDialogTitle>
-            <AlertDialogDescription>
-              By signing in anonymously, you&apos;ll be able to:
-              <span className="mb-2 block">
-                {' '}
-                ✅ Add posts, vote, and comment just like any other user.
-              </span>
-              However, keep in mind:
-              <span className="block"> 📛 You cannot delete anonymous accounts.</span>
-              <span className="block">
-                📛 If you log out, clear your browser, or switch devices, you
-                will lose access to your account            </span>
-              <span className="block"> 📛 You cannot recover this account once lost.</span>
-            </AlertDialogDescription>
-          </AlertDialogHeader>
-          <AlertDialogFooter>
-            <AlertDialogCancel>Cancel</AlertDialogCancel>
-            <AlertDialogAction
-              onClick={handleSignIn}
-              className="bg-red-500 font-semibold text-slate-50 shadow-sm hover:bg-red-500/90 dark:bg-red-900 dark:text-slate-50 dark:hover:bg-red-900/90"
-            >
-              SignIn Anonymously
-            </AlertDialogAction>
-          </AlertDialogFooter>
-        </AlertDialogContent>
+        <AlertDialogContent className="border-0 bg-gradient-to-br from-gray-900 to-gray-800 text-gray-100 w-full max-w-[95%] sm:max-w-md">
+  <AlertDialogHeader>
+    <div className="flex items-center gap-3">
+      <div className="rounded-full bg-gray-700 p-2">
+        <VenetianMask className="h-6 w-6 text-purple-400" /> 
+      </div>
+      <AlertDialogTitle className="text-left text-xl font-bold">
+      Anonymous Sign-In 👻
+      </AlertDialogTitle>
+    </div>
+    <AlertDialogDescription>
+    Jump in, no strings attached. Signing in anonymously lets you:
+    </AlertDialogDescription>
+    </AlertDialogHeader>
+    
+    <div className="mt-4 space-y-3 text-gray-300 text-sm">
+      <div className="flex items-start gap-3">
+        <CheckCircle2 className="mt-0.5 h-5 w-5 flex-shrink-0 text-green-400" />
+        <span>Post, vote, and comment freely</span>
+      </div>
+      
+      <div className="border-t border-gray-700 pt-3 ">
+        <p className="mb-2 flex items-center gap-2 font-medium text-amber-300">
+          <AlertTriangle className="h-4 w-4" />
+          Important limitations:
+        </p>
+        <ul className="space-y-2 pl-1">
+          <li className="flex items-start gap-2">
+            <XCircle className="mt-0.5 h-5 w-5 flex-shrink-0 text-rose-400/80" />
+            <span>Account can't be deleted or recovered if lost</span>
+          </li>
+          <li className="flex items-start gap-2">
+            <Key className="mt-0.5 h-5 w-5 flex-shrink-0 text-amber-400/80" />
+            <span>Browser data = your only key (clear it and it's gone)</span>
+          </li>
+          <li className="flex items-start gap-2">
+          <ShieldAlert className="mt-0.5 h-5 w-5 flex-shrink-0 text-amber-500/80" />
+            <span>Anonymous access is temporary and non-transferable</span>
+          </li>
+        </ul>
+      </div>
+    </div>
+  
+  
+  <AlertDialogFooter className="flex-col gap-2 sm:flex-row">
+    <AlertDialogCancel className="mt-0 font-bold border-none bg-ocean-600 dark:bg-ocean-600 text-gray-200 hover:bg-ocean-700/80 hover:text-gray-200">
+      Sign-up Instead
+    </AlertDialogCancel>
+    <AlertDialogAction
+      onClick={handleSignIn}
+      className="bg-gradient-to-r from-lavender-600 to-rose-400  shadow-lg hover:from-lavender-700 hover:to-rose-500 text-gray-200"
+    >
+      <Shield className="mr-2 h-4 w-4" />
+      Enter Ghost Mode
+    </AlertDialogAction>
+  </AlertDialogFooter>
+</AlertDialogContent>
       </AlertDialog>
     </div>
   );
