@@ -47,7 +47,7 @@ const DailyPrompt = () => {
 
       if (user?.id) {
         const streakResult = await fetchUserStreakAction(user.id);
-        if (streakResult.success && streakResult.data) {
+        if (streakResult?.success && streakResult?.data) {
           setStreakData(streakResult.data);
 
           if (streakResult.data?.last_response_date) {
@@ -67,7 +67,7 @@ const DailyPrompt = () => {
           }
         } else {
           // Handle case where streak fetch might fail but prompt succeeded
-          console.error("Failed to fetch streak:", streakResult.error);
+          console.error("Failed to fetch streak:", streakResult?.error);
           setStreakData({ current_streak: 0, last_response_date: null }); 
         }
         setIsLoadingStreak(false);
