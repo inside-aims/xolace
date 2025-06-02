@@ -1,6 +1,6 @@
 // 5. Wave Spinner - Bouncing dots
 export const WaveSpinner = ({ size = 40, className = "" }: { size?: number; className?: string }) => (
-    <div className={`flex items-center space-x-1 ${className}`}>
+    <div role="status" aria-label="Loading" className={`flex items-center space-x-1 ${className}`}>
       {[0, 1, 2].map((i) => (
         <div
           key={i}
