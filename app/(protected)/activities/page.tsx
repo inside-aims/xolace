@@ -57,7 +57,7 @@ export default function ActivitiesPage() {
               : ''
         }`}
       >
-        <div className={`${isSticky ? 'container max-w-4xl' : ''}`}>
+        <div className={`md:container md:max-w-4xl`}>
           <div className="space-y-4">
             <div className="flex flex-col gap-2 md:gap-0">
               <h1 className="text-2xl font-bold tracking-tight md:text-3xl">
