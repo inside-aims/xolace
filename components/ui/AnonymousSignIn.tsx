@@ -119,11 +119,11 @@ const AnonymousSignIn = () => {
         <ul className="space-y-2 pl-1">
           <li className="flex items-start gap-2">
             <XCircle className="mt-0.5 h-5 w-5 flex-shrink-0 text-rose-400/80" />
-            <span>Account can't be deleted or recovered if lost</span>
+            <span>Account can&apos;t be deleted or recovered if lost</span>
           </li>
           <li className="flex items-start gap-2">
             <Key className="mt-0.5 h-5 w-5 flex-shrink-0 text-amber-400/80" />
-            <span>Browser data = your only key (clear it and it's gone)</span>
+            <span>Browser data = your only key (clear it and it&apos;s gone)</span>
           </li>
           <li className="flex items-start gap-2">
           <ShieldAlert className="mt-0.5 h-5 w-5 flex-shrink-0 text-amber-500/80" />

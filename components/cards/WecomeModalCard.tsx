@@ -93,10 +93,10 @@ export default function WelcomeModalCard() {
       <AlertDialogContent className="mx-auto max-w-[90%] rounded-xl border-gray-700 bg-gray-900 text-gray-100 md:max-w-[425px]">
         <AlertDialogHeader>
           <AlertDialogTitle className="text-center text-2xl font-bold">
-          You're Early — and Essential! 🚀 
+          You&apos;re Early — and Essential! 🚀 
           </AlertDialogTitle>
           <AlertDialogDescription className="text-center text-gray-300">
-          <span className='text-lavender-500'>Welcome to Xolace 🎉</span>, and thank you for being part of few hundreds shaping Xolace&apos;s future.
+          <span className='text-lavender-500'>Welcome to Xolace 🎉</span>, and thank you for being part of the few hundreds shaping Xolace&apos;s future.
           </AlertDialogDescription>
         </AlertDialogHeader>
         <div className="py-4">
@@ -104,7 +104,7 @@ export default function WelcomeModalCard() {
         <Medal className="mt-1 h-5 w-5 flex-shrink-0 text-ocean-400" />
        <p>
        <span className="font-medium text-purple-300">Early adopters like you</span> will define what this space becomes. 
-       We can't wait to see what you'll share.
+       We can&apos;t wait to see what you&apos;ll share.
        </p>
       </div>
           <div className="mb-4 text-gray-300 flex items-start gap-2">
