@@ -261,11 +261,9 @@ export const filters = [
 ];
 
 export   const tips = [
-  "How are you… really?",
-"What emotion is taking up the most space in you today?",
-"If your mood were a weather pattern, what would it be and why?",
-"What’s been heavy on your mind that you haven’t shared?",
-"When was the last time you truly felt understood?"
+  "Try not to use personal data in your post , like your name and such.",
+  "Be real and authentic in your posts.",
+  "Don't use any profanity or offensive language.",
 ]
 
 
