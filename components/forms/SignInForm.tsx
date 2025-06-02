@@ -85,7 +85,7 @@ const SignInForm = () => {
       data: { subscription },
     } = supabase.auth.onAuthStateChange((event) => {
       if (event === 'SIGNED_IN') {
-        toast.success(' 😸 Welcome to Xolace!');
+        toast.success(' 😸 Welcome to Xolace! Ready to explore! 🎭');
         router.push('/feed');
       }
     });

@@ -66,7 +66,7 @@ const AnonymousSignIn = () => {
     }
 
     if(profileUser){
-      toast.success(' 🥷 Masked up and ready to explore! 🎭!');
+      //toast.success(' 🥷 Masked up and ready to explore! 🎭!');
       // Redirect to the feed page or your desired page after successful sign-in
       router.push('/feed');
     }
