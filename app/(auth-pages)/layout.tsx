@@ -1,5 +1,5 @@
-import { ThemeSwitcher } from '@/components/theme-switcher';
-import Link from 'next/link';
+// import { ThemeSwitcher } from '@/components/theme-switcher';
+// import Link from 'next/link';
 
 export default async function Layout({
   children,
