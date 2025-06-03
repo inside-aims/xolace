@@ -1,6 +1,5 @@
 import { getSupabaseAdminClient } from '@/utils/supabase/adminClient';
 import { sendOTPLink } from '@/utils/sendOTPLink';
-import { builderUrl } from '@/utils/url-helpers';
 import { NextResponse } from 'next/server';
 
 
