@@ -3,6 +3,7 @@
 import Image from 'next/image';
 import { motion } from 'framer-motion';
 import Link from 'next/link';
+import heroSection from "../../public/assets/images/landing-page/hero-section-img.png"
 
 export default function HeroSection() {
   return (
@@ -12,10 +13,11 @@ export default function HeroSection() {
         {/* Image */}
         <div className="relative w-[400px] md:w-[500px] h-[550px] -translate-x-16 md:ml-[-35%]">
           <Image
-            src="/assets/images/landing-page/hero-section-img.png"
+            src={heroSection}
             alt="Hero Image"
             fill
             className="object-contain"
+            priority
           />
         </div>
 
