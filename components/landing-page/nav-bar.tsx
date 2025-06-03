@@ -5,7 +5,7 @@ import { Menu, X } from "lucide-react"
 import Link from 'next/link'
 import Image from "next/image"
 import { motion, AnimatePresence } from 'framer-motion'
-import mascot from '../../public/assets/images/x-logo.webp';
+import mascot from '../../public/assets/images/x-logo-full.webp';
 
 const navigation = [
   { name: "Home", href: "hero-section" },
