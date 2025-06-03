@@ -240,7 +240,7 @@ const PostDetailDrawer = ({ post, type }: { post: DetailPost; type: Type }) => {
             <Form {...form}>
               <form
                 onSubmit={form.handleSubmit(onSubmit)}
-                className="w-full md:w-1/2"
+                className="w-full md:w-1/2 mt-3"
               >
                 <FormField
                   control={form.control}
@@ -250,7 +250,7 @@ const PostDetailDrawer = ({ post, type }: { post: DetailPost; type: Type }) => {
                       <FormControl>
                         <Textarea
                           placeholder="Join the conversation..."
-                          className="no-focus text-dark-1 dark:border-muted-dark dark:hover:border-muted-dark-hover mb-2 h-[42px] resize-none rounded-full outline-none dark:text-white"
+                          className="no-focus text-dark-1 dark:border-muted-dark dark:hover:border-muted-dark-hover mb-3 min-h-10 rounded-lg resize-none outline-none dark:text-white focus-visible:ring-0  focus-visible:border-input"
                           {...field}
                         />
                       </FormControl>
