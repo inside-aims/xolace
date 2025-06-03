@@ -68,10 +68,10 @@ const Profile = () => {
                     Settings
                   </span>
                 </p>
-                <p className={"flex items-center flex-row gap-1"}>
+                {/* <p className={"flex items-center flex-row gap-1"}>
                   <span><MapPin size={18}/></span>
                   Miami
-                </p>
+                </p> */}
                 <p className={"flex items-center flex-row gap-1"}>
                   <span><Calendar size={18}/></span>
                   {user?.created_at ?
