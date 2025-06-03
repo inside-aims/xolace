@@ -111,8 +111,8 @@ const SignInForm = () => {
         />
       </div>
       <div className="w-full max-w-md items-start">
-        <h2 className="text-2xl font-bold">Holla,</h2>
-        <h2 className="text-2xl font-bold">Welcome Back</h2>
+        <h2 className="text-4xl sm:text-5xl font-bold">Holla 👋,</h2>
+        <h2 className="text-4xl sm:text-5xl font-bold">Welcome Back</h2>
       </div>
 
       <div className="w-full max-w-md">

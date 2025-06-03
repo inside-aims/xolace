@@ -1,6 +1,7 @@
 import type { Metadata } from 'next';
 import Image from 'next/image';
 import SignInForm from '@/components/forms/SignInForm';
+import signIn from "../../../public/assets/images/auth/sign-in.png"
 
 export const metadata: Metadata = {
   title: 'Sign-in',
@@ -21,9 +22,11 @@ export default async function Login() {
         <div className="relative hidden md:block md:col-span-5 m-2">
           <div className="w-full h-full rounded-3xl overflow-hidden relative">
             <Image
-              src="/assets/images/auth/sign-in.png"
+              src={signIn}
               alt="Sign-in"
               fill
+              placeholder='blur'
+              priority
             />
           </div>
         </div>
