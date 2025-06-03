@@ -98,7 +98,8 @@ export const signUpAction = validatedAction(signUpSchema, async data => {
     };
   }
 
-  redirect(`/registration-success?email=${safeEmailString}`);
+  const safeUserId = encodeURIComponent(userData.user.id);
+  redirect(`/registration-success?id=${safeUserId}&email=${safeEmailString}`);
 });
 
 export const forgotPasswordAction = async (formData: FormData) => {
