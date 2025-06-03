@@ -27,6 +27,8 @@ import { ActionState } from '@/lib/auth/middleware';
 
 import Loader from '../shared/loaders/Loader';
 import { FormMessage as SubmitFormMessage } from '../shared/form-message';
+import Image from "next/image";
+import mascot from "@/public/assets/images/mas.webp";
 
 const male = 'male' as const;
 const female = 'female' as const;
@@ -80,207 +82,226 @@ const SignUpForm = () => {
   };
 
   return (
-    <Form {...form}>
-      <form action={formAction} className="z-10 w-full max-sm:p-2">
-        <FormField
-          control={form.control}
-          name="username"
-          render={({ field }) => (
-            <FormItem>
-              <FormControl>
-                <Input
-                  placeholder="username eg.T-bones🦴"
-                  {...field}
-                  type="text"
-                  className="w-full text-black dark:text-white max-sm:py-6 md:h-12"
-                  required
-                  min={2}
-                  max={12}
-                  autoComplete="off"
-                />
-              </FormControl>
-              <FormDescription className="text-[12px]">
-                <span className="font-semibold text-amber-400"> NB: </span>{' '}
-                Definitely not the name your mum gave you ❗
-              </FormDescription>
-              {state?.errors?.username && (
-                <div className="text-sm text-red-500">
-                  {state.errors.username[0]}
-                </div>
-              )}
-            </FormItem>
-          )}
+    <div className="w-full flex flex-col items-center justify-center gap-8 p-4">
+      <div className="flex md:hidden">
+        <Image
+          src={mascot}
+          alt="logo"
+          width={60}
+          height={60}
+          priority={true}
+          loading="eager"
         />
+      </div>
+      <div className="w-full max-w-md items-start">
+        <h2 className="text-4xl sm:text-5xl font-bold">Register Here</h2>
+      </div>
 
-        {/* Email input */}
-        <FormField
-          control={form.control}
-          name="email"
-          render={({ field }) => (
-            <FormItem>
-              <FormControl>
-                <Input
-                  placeholder="Email"
-                  {...field}
-                  type="email"
-                  className="mb-4 mt-2 w-full text-black dark:text-white max-sm:py-6 sm:py-5 md:h-12"
-                  required
-                  autoComplete="off"
-                />
-              </FormControl>
-              {state?.errors?.email && (
-                <div className="text-sm text-red-500">
-                  {state.errors.email[0]}
-                </div>
-              )}
-            </FormItem>
-          )}
-        />
+      <div className="w-full max-w-md">
+        <Form {...form}>
+          <form
+            action={formAction}
+            className="flex flex-col gap-8">
+            <div className={"w-full flex flex-col gap-4"}>
+              {/* username */}
+              <FormField
+                control={form.control}
+                name="username"
+                render={({field}) => (
+                  <FormItem>
+                    <FormLabel>Username</FormLabel>
+                    <FormControl>
+                      <Input
+                        {...field}
+                        type="text"
+                        className="w-full rounded-lg"
+                        required
+                        min={2}
+                        max={12}
+                        autoComplete="off"
+                      />
+                    </FormControl>
+                    <FormDescription className="text-sm text-neutral-400">
+                      Tip: Pick a unique name - it helps people find you.
+                    </FormDescription>
 
-        {/* Password input */}
-        <FormField
-          control={form.control}
-          name="password"
-          render={({ field }) => (
-            <FormItem>
-              <FormControl>
-                <div className="relative text-black dark:text-white">
-                  <Input
-                    placeholder="******** eg. Example123"
-                    {...field}
-                    className="w-full max-sm:py-6 sm:py-5 md:h-12"
-                    type={showPassword ? 'text' : 'password'}
-                    required
-                    autoComplete="off"
-                  />
-                  <button
-                      type="button"
-                      onClick={() => setShowPassword(!showPassword)}
-                      className="absolute right-3 top-4 md:top-[-3] transform"
-                    >
-                      <ToggleEyeIcon showPassword={showPassword} />
-                    </button>
-                </div>
-              </FormControl>
-              <FormDescription className="text-[12px]">
-                <span className="">Tip: </span>
-                Minimum 8 characters, atleast 1 uppercase, 1 number
-              </FormDescription>
-              {state?.errors?.password && (
-                <div className="text-sm text-red-500">
-                  {state.errors.password[0]}
-                </div>
-              )}
-            </FormItem>
-          )}
-        />
-
-        {/* gender radio field */}
-
-        {username.length >= 2 && password.length >= 8 && (
-          <FormField
-            control={form.control}
-            name="type"
-            render={({ field }) => (
-              <FormItem className="mb-2 mt-2 space-y-2">
-                <FormLabel>Select your gender...</FormLabel>
-                <FormControl>
-                  <RadioGroup
-                    {...field}
-                    value={field.value} // Bind value from React Hook Form
-                    onValueChange={field.onChange} // Update value in React Hook Form
-                    className="flex items-center justify-around"
-                  >
-                    <FormItem className="flex items-center space-x-3 space-y-0">
-                      <FormControl>
-                        <RadioGroupItem
-                          value="male"
-                          userGender={true}
-                          genderType={male}
-                          className="bg-blue4 shadow-[0_2px_10px] shadow-blue7 hover:bg-blue3 focus:shadow-[0_0_0_2px] focus:shadow-black"
-                        />
-                      </FormControl>
-                      <FormLabel className="font-normal">Male</FormLabel>
-                    </FormItem>
-                    <FormItem className="flex items-center space-x-3 space-y-0">
-                      <FormControl>
-                        <RadioGroupItem
-                          value="female"
-                          userGender={true}
-                          genderType={female}
-                          className="bg-crimson5 shadow-[0_2px_10px] shadow-crimson7 hover:bg-crimson3 focus:shadow-[0_0_0_2px] focus:shadow-black"
-                        />
-                      </FormControl>
-                      <FormLabel className="font-normal">Female</FormLabel>
-                    </FormItem>
-                  </RadioGroup>
-                </FormControl>
-                {state?.errors?.type && (
-                  <div className="text-sm text-red-500">
-                    {state.errors.type[0]}
-                  </div>
+                    {state?.errors?.username && (
+                      <div className="text-sm text-red-500">
+                        {state.errors.username[0]}
+                      </div>
+                    )}
+                  </FormItem>
                 )}
-              </FormItem>
-            )}
-          />
-        )}
+              />
 
-        {/* Terms & conditions */}
-        <div className="mb-2 mt-3 flex items-start">
-          {/* checkbox*/}
-          <FormField
-            control={form.control}
-            name="terms"
-            render={({ field }) => (
-              <FormItem className="flex flex-row items-center space-x-2 space-y-0">
-                <FormControl>
-                  <Checkbox
-                    checked={field.value}
-                    onCheckedChange={field.onChange}
-                  />
-                </FormControl>
-                <div className="space-x-4 space-y-1 leading-none">
-                  <FormLabel className="text-dark-3 dark:text-white">
-                    I agree <TermsConditions />
-                  </FormLabel>
-                </div>
-              </FormItem>
-            )}
-          />
-        </div>
+              {/* Email input */}
+              <FormField
+                control={form.control}
+                name="email"
+                render={({field}) => (
+                  <FormItem>
+                    <FormLabel>Email</FormLabel>
+                    <FormControl>
+                      <Input
+                        {...field}
+                        type="email"
+                        className="w-full rounded-lg"
+                        required
+                        autoComplete="off"
+                      />
+                    </FormControl>
+                    {state?.errors?.email && (
+                      <div className="text-sm text-red-500">
+                        {state.errors.email[0]}
+                      </div>
+                    )}
+                  </FormItem>
+                )}
+              />
 
-        {state?.message && <SubmitFormMessage message={errorMessage} />}
+              {/* Password input */}
+              <FormField
+                control={form.control}
+                name="password"
+                render={({field}) => (
+                  <FormItem>
+                    <FormLabel>Password</FormLabel>
+                    <FormControl>
+                      <div className="relative">
+                        <Input
+                          {...field}
+                          className="w-full rounded-lg"
+                          type={showPassword ? 'text' : 'password'}
+                          required
+                          autoComplete="off"
+                        />
+                        <button
+                          type="button"
+                          onClick={() => setShowPassword(!showPassword)}
+                          className="absolute right-3 top-4 md:top-[-3] transform"
+                        >
+                          <ToggleEyeIcon showPassword={showPassword}/>
+                        </button>
+                      </div>
+                    </FormControl>
+                    <FormDescription className="text-sm text-neutral-400">
+                      Tip: Min 8 chars,at least 1 uppercase & 1 number.
+                    </FormDescription>
 
-        {/* submit button */}
-        <div className="mt-5 px-8">
-          <Button
-            disabled={!terms || pending}
-            className={!terms || pending ? `bg-ocean-100 text-ocean-400 w-full` : `w-full btn-flat! hover:btn-flat-hover! active:btn-flat-active!`}
-            type="submit"
-            onClick={handleClick}
-          >
-            {pending ? (
-              <div className="flex items-center justify-center gap-x-2">
-                {' '}
-                <Loader /> <span>Loading...</span>
-              </div>
-            ) : (
-              'Submit'
-            )}
-          </Button>
-        </div>
+                    {state?.errors?.password && (
+                      <div className="text-sm text-red-500">
+                        {state.errors.password[0]}
+                      </div>
+                    )}
+                  </FormItem>
+                )}
+              />
 
-        <p className="mb-0 mt-2 pt-1 text-sm font-semibold text-muted-foreground">
-          Already have an account?{' '}
-          <Link
-            href="/sign-in"
-            className="text-lavender-500 transition duration-150 ease-in-out hover:text-lavender-700 focus:text-lavender-600 active:text-lavender-700"
-          >
-            Login
-          </Link>
-        </p>
-      </form>
-    </Form>
+              {username.length >= 2 && password.length >= 8 && (
+                <FormField
+                  control={form.control}
+                  name="type"
+                  render={({field}) => (
+                    <FormItem className="space-y-2">
+                      <FormLabel>Select your gender...</FormLabel>
+                      <FormControl>
+                        <RadioGroup
+                          {...field}
+                          value={field.value} // Bind value from React Hook Form
+                          onValueChange={field.onChange} // Update value in React Hook Form
+                          className="flex items-center flex-row gap-12"
+                        >
+                          <FormItem className="flex items-center space-x-3 space-y-0">
+                            <FormControl>
+                              <RadioGroupItem
+                                value="male"
+                                userGender={true}
+                                genderType={male}
+                                className="w-4 h-4 bg-blue4 shadow-[0_2px_10px] shadow-blue7 hover:bg-blue3 focus:shadow-[0_0_0_2px] focus:shadow-black"
+                              />
+                            </FormControl>
+                            <FormLabel className="font-normal">Male</FormLabel>
+                          </FormItem>
+                          <FormItem className="flex items-center space-x-3 space-y-0">
+                            <FormControl>
+                              <RadioGroupItem
+                                value="female"
+                                userGender={true}
+                                genderType={female}
+                                className="w-4 h-4 bg-crimson5 shadow-[0_2px_10px] shadow-crimson7 hover:bg-crimson3 focus:shadow-[0_0_0_2px] focus:shadow-black"
+                              />
+                            </FormControl>
+                            <FormLabel className="font-normal">Female</FormLabel>
+                          </FormItem>
+                        </RadioGroup>
+                      </FormControl>
+                      {state?.errors?.type && (
+                        <div className="text-sm text-red-500">
+                          {state.errors.type[0]}
+                        </div>
+                      )}
+                    </FormItem>
+                  )}
+                />
+              )}
+
+              {/* Terms & conditions */}
+              <FormField
+                control={form.control}
+                name="terms"
+                render={({field}) => (
+                  <FormItem className="flex flex-row items-center space-x-2 space-y-0">
+                    <FormControl>
+                      <Checkbox
+                        checked={field.value}
+                        onCheckedChange={field.onChange}
+                      />
+                    </FormControl>
+                    <div className="space-x-4 space-y-1 leading-none">
+                      <FormLabel className="">
+                        I’ve read and agree to the <TermsConditions />
+                      </FormLabel>
+                    </div>
+                  </FormItem>
+                )}
+              />
+
+              {state?.message && <SubmitFormMessage message={errorMessage}/>}
+            </div>
+
+            {/* submit button */}
+            <div className="">
+              <Button
+                disabled={!terms || pending}
+                className={!terms || pending ? `bg-ocean-100 text-ocean-400 w-full` : `rounded-lg bg-ocean-500 hover:bg-ocean-600 transition-transform transform hover:scale-[1.03] duration-300 ease-in-out w-full`}
+                type="submit"
+                onClick={handleClick}
+              >
+                {pending ? (
+                  <div className="flex items-center justify-center gap-x-2">
+                    {' '}
+                    <Loader/> <span>Loading...</span>
+                  </div>
+                ) : (
+                  'Register'
+                )}
+              </Button>
+            </div>
+
+            {/*Already existing user - login*/}
+            <p className="w-full max-w-md items-start text-sm">
+              Already registered?{' '}
+              <Link
+                href={"/sign-in"}
+                className="font-semibold ml-1 text-lavender-500 hover:text-lavender-600 hover:underline"
+              >
+                Sign In
+              </Link>
+            </p>
+          </form>
+        </Form>
+      </div>
+    </div>
   );
 };
 
