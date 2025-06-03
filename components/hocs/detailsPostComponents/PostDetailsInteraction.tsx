@@ -143,7 +143,7 @@ const PostDetailsInteraction = ({ post }: { post: DetailPost }) => {
 
   return (
     <div className="w-full px-13 max-md:hidden">
-      <div className="mt-1 mb-5 px-2">
+      <div className="mt-1 mb-10 px-2">
         {user ? (
           <div className="flex items-center gap-5">
             <PostMetrics
@@ -218,7 +218,7 @@ const PostDetailsInteraction = ({ post }: { post: DetailPost }) => {
                 <FormControl>
                   <Textarea
                     placeholder="Join the conversation"
-                    className="no-focus text-dark-1 dark:border-muted-dark dark:hover:border-muted-dark-hover mb-2 h-[42px] resize-none rounded-full outline-none dark:text-white"
+                    className="mb-5 no-focus! dark:hover:border-muted-dark-hover focus-visible:ring-0  focus-visible:border-input min-h-12 resize-none rounded-lg"
                     {...field}
                   />
                 </FormControl>

@@ -1,6 +1,6 @@
 import Image from "next/image";
 
-const xolaceFeatures: {key: string, label: string, description: string , description2?: string}[] = [
+const xolaceFeatures: {key: string, label: string, description: string , description2?: string, isQuote?: boolean}[] = [
   {
     key: 'anonymityFirst',
     label: 'You’re Not Alone',
@@ -10,12 +10,15 @@ const xolaceFeatures: {key: string, label: string, description: string , descrip
   {
     key: 'emotionBaseReactions',
     label: 'Care Without Walls ',
-    description: 'Mental health professionals walk beside you, not above you. They engage openly—sharing free advice and offering help when needed.'
+    description: 'Mental health professionals walk beside you, not above you. They engage openly—sharing free advice and offering dedicated help when needed.',
+    description2: "Therapy should feel like a natural next step—not a clinical obligation. - Xolace",
+    isQuote: true
   },
   {
     key: 'focusedFeed',
     label: 'Light in the Dark',
-    description: 'Because healing isn’t just about pain—it’s about joy too. Share funny stories, celebrate small wins, and be the reason someone smiles today. Here, every emotion belongs.'
+    description: 'Because healing isn’t just about pain—it’s about joy too. Share funny stories, celebrate small wins, and be the reason someone smiles today. Here, every emotion belongs.',
+    description2: "Real people, real stories—building real support"
   },
 ]
 export default function WhyXolaceSection() {
@@ -46,6 +49,7 @@ export default function WhyXolaceSection() {
               width={80}
               height={80}
               className="object-cover"
+              loading="lazy"
             />
           </span>
             <span className={"absolute -top-[200%] left-[5%]"}>
@@ -55,6 +59,7 @@ export default function WhyXolaceSection() {
               width={120}
               height={120}
               className="object-cover"
+              loading="lazy"
             />
           </span>
           </div>
@@ -75,7 +80,7 @@ export default function WhyXolaceSection() {
                 className={"col-span-12 md:col-span-6 lg:col-span-4 h-[328px] w-full bg-white rounded-4xl md:rounded-t-4xl shadow-md p-4 flex flex-col items-center justify-start gap-6 "}>
                 <h4 className={"items-center text-center font-bold text-2xl uppercase md:text-3xl"}> { feature.label } </h4>
                 <p className={"text-center text-lg md:text-xl"}> { feature.description } </p>
-                { feature.description2 && <p className={"text-center text-[15px] md:text-[16px]"}> { feature.description2 } </p> }
+                { feature.description2 && feature.isQuote ?  <blockquote className="mt-6 border-l-2 pl-6 italic text-sm"> { feature.description2 } </blockquote> : <p className={"text-center text-[15px] md:text-[16px]"}> { feature.description2 } </p> }
               </div>
             ))}
           </div>

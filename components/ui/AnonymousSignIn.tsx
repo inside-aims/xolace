@@ -90,14 +90,14 @@ const AnonymousSignIn = () => {
             {isLoading ? 'Masking up...' : 'Activate Ghost Mode 👻'}
           </button>
         </AlertDialogTrigger>
-        <AlertDialogContent className="border-0 bg-gradient-to-br from-gray-900 to-gray-800 text-gray-100 w-full max-w-[95%] sm:max-w-md">
+        <AlertDialogContent className="border-0 bg-gradient-to-br from-bg-dark to-bg-dark text-gray-100 w-full max-w-[95%] sm:max-w-md">
   <AlertDialogHeader>
     <div className="flex items-center gap-3">
       <div className="rounded-full bg-gray-700 p-2">
         <VenetianMask className="h-6 w-6 text-purple-400" /> 
       </div>
       <AlertDialogTitle className="text-left text-xl font-bold">
-      Anonymous Sign-In 👻
+      Anonymous Sign-In
       </AlertDialogTitle>
     </div>
     <AlertDialogDescription>
@@ -112,7 +112,7 @@ const AnonymousSignIn = () => {
       </div>
       
       <div className="border-t border-gray-700 pt-3 ">
-        <p className="mb-2 flex items-center gap-2 font-medium text-amber-300">
+        <p className="mb-2 flex items-center gap-2 font-medium">
           <AlertTriangle className="h-4 w-4" />
           Important limitations:
         </p>
@@ -140,7 +140,7 @@ const AnonymousSignIn = () => {
     </AlertDialogCancel>
     <AlertDialogAction
       onClick={handleSignIn}
-      className="bg-gradient-to-r from-lavender-600 to-rose-400  shadow-lg hover:from-lavender-700 hover:to-rose-500 text-gray-200"
+      className="bg-transparent text-white border border-zinc-500 hover:border-zinc-500/20 hover:bg-transparent"
     >
       <Shield className="mr-2 h-4 w-4" />
       Enter Ghost Mode

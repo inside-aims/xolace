@@ -374,12 +374,12 @@ to authenticated
 using (true);
 
 
-create policy "Enable insert for authenticated users only"
-on "public"."feedbacks"
-as permissive
-for insert
-to authenticated
-with check (true);
+-- create policy "Enable insert for authenticated users only"
+-- on "public"."feedbacks"
+-- as permissive
+-- for insert
+-- to authenticated
+-- with check (true);
 
 
 create policy "Enable insert for authenticated users only"
