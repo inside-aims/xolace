@@ -19,7 +19,7 @@ export default async function Login() {
         </div>
 
         {/*image section*/}
-        <div className="relative hidden md:block md:col-span-5 m-2">
+        <div className="relative hidden md:block md:col-span-5 m-4">
           <div className="w-full h-full rounded-3xl overflow-hidden relative">
             <Image
               src={signIn}

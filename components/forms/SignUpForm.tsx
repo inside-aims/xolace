@@ -178,7 +178,7 @@ const SignUpForm = () => {
                         <button
                           type="button"
                           onClick={() => setShowPassword(!showPassword)}
-                          className="absolute right-3 top-4 md:top-[-3] transform"
+                          className="absolute right-3 top-[10] md:top-[-5] text-neutral-400"
                         >
                           <ToggleEyeIcon showPassword={showPassword}/>
                         </button>
@@ -289,7 +289,7 @@ const SignUpForm = () => {
             </div>
 
             {/*Already existing user - login*/}
-            <p className="w-full max-w-md items-start text-sm">
+            <p className="text-sm text-center md:text-left">
               Already registered?{' '}
               <Link
                 href={"/sign-in"}

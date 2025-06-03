@@ -229,7 +229,7 @@ const SignInForm = () => {
             <AnonymousSignIn/>
 
             {/* Register Redirect */}
-            <p className="text-sm text-neutral-400 text-center md:text-left">
+            <p className="text-sm text-center md:text-left">
               Don’t have an account?{' '}
               <Link
                 href={"/sign-up"}

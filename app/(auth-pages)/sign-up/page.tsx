@@ -15,7 +15,7 @@ export default function Signup() {
       <div className="w-full grid grid-cols-12 min-h-screen">
 
         {/*image section*/}
-        <div className="relative hidden md:block md:col-span-5 m-2">
+        <div className="relative hidden md:block md:col-span-5 m-4">
           <div className="w-full h-full rounded-3xl overflow-hidden relative">
             <Image
               src={signIn}
