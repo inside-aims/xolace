@@ -20,7 +20,7 @@ export default async function ForgotPassword(props: {
   const searchParams = await props.searchParams;
   return (
     <div className="flex min-h-[100vh] items-center justify-center overflow-hidden">
-      <div className="max-sm:w-full md:w-[32%] flex flex-col items-center justify-center px-6 gap-8">
+      <div className="max-sm:w-full md:w-[60%] lg:w-[40%] xl:w-[32%] flex flex-col items-center justify-center px-6 gap-8">
         <div className="flex md:hidden">
           <Image
             src={mascot}
@@ -31,7 +31,7 @@ export default async function ForgotPassword(props: {
             loading="eager"
           />
         </div>
-        <div className={"w-full max-w-md items-start flex flex-col gap-2"}>
+        <div className={"w-full max-xl items-start flex flex-col gap-2"}>
           <h1 className="text-2xl font-medium">Reset Password</h1>
           <p className={"text-neutral-500"}>
             Entered your registered email below to receive password reset instruction
