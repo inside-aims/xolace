@@ -90,7 +90,7 @@ const SignUpForm = () => {
           width={60}
           height={60}
           priority={true}
-          loading="eager"
+          className="w-auto h-auto"
         />
       </div>
       <div className="w-full max-w-md items-start">

@@ -19,10 +19,11 @@ export default function Signup() {
           <div className="w-full h-full rounded-3xl overflow-hidden relative">
             <Image
               src={signIn}
-              alt="Sign-in"
+              alt="Sign-up"
               fill
               placeholder='blur'
               priority
+              sizes="(max-width: 767px) 0px, (min-width: 768px) 42vw"
             />
           </div>
         </div>

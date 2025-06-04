@@ -28,7 +28,7 @@ export default async function ForgotPassword(props: {
             width={60}
             height={60}
             priority={true}
-            loading="eager"
+            className="w-auto h-auto"
           />
         </div>
         <div className={"w-full max-xl items-start flex flex-col gap-2"}>

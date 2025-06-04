@@ -27,6 +27,7 @@ export default async function Login() {
               fill
               placeholder='blur'
               priority
+              sizes="(max-width: 767px) 0px, (min-width: 768px) 42vw"
             />
           </div>
         </div>

@@ -250,7 +250,7 @@ const PostDetailDrawer = ({ post, type }: { post: DetailPost; type: Type }) => {
                       <FormControl>
                         <Textarea
                           placeholder="Join the conversation..."
-                          className="no-focus text-dark-1 dark:border-muted-dark dark:hover:border-muted-dark-hover mb-3 min-h-10 rounded-lg resize-none outline-none dark:text-white focus-visible:ring-0  focus-visible:border-input"
+                          className="no-focus text-dark-1 dark:border-muted-dark dark:hover:border-muted-dark-hover mb-3 min-h-10! rounded-lg resize-none outline-none dark:text-white focus-visible:ring-0  focus-visible:border-input"
                           {...field}
                         />
                       </FormControl>
