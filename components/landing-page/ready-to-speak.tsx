@@ -2,6 +2,7 @@
 
 import Image from "next/image";
 import Link from 'next/link'
+import readyToSpeak from "../../public/assets/images/landing-page/ready-to-speak-img.webp"
 
 export default function ReadyToSpeakSection() {
   return (
@@ -13,10 +14,11 @@ export default function ReadyToSpeakSection() {
         {/* Image */}
         <div className="relative w-[400px] md:w-[500px] h-[550px]">
           <Image
-            src="/assets/images/landing-page/ready-to-speak-img.webp"
+            src={readyToSpeak}
             alt="Hero Image"
             fill
             className="object-contain"
+            priority
           />
         </div>
 

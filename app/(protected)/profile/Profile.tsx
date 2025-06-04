@@ -2,7 +2,7 @@
 
 import React, {useRef, useState} from 'react';
 import { useRouter } from 'next/navigation';
-import { Link, Calendar, MapPin } from "lucide-react";
+import { Link, Calendar } from "lucide-react";
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { useUserState } from '@/lib/store/user';
 import {TopTags} from "@/components/profile/top-tags";
@@ -68,10 +68,10 @@ const Profile = () => {
                     Settings
                   </span>
                 </p>
-                <p className={"flex items-center flex-row gap-1"}>
+                {/* <p className={"flex items-center flex-row gap-1"}>
                   <span><MapPin size={18}/></span>
                   Miami
-                </p>
+                </p> */}
                 <p className={"flex items-center flex-row gap-1"}>
                   <span><Calendar size={18}/></span>
                   {user?.created_at ?
