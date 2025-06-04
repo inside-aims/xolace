@@ -8,7 +8,7 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import { useForm } from 'react-hook-form';
 import { z } from 'zod';
 //import { useToast } from '../ui/use-toast';
-import {toast} from 'sonner'
+import { toast } from 'sonner';
 import { useRouter } from 'next/navigation';
 
 import { Button } from '@/components/ui/button';
@@ -28,7 +28,7 @@ import Loader from '../shared/loaders/Loader';
 import { getSupabaseBrowserClient } from '@/utils/supabase/client';
 import { Separator } from '@/components/ui/separator';
 import AnonymousSignIn from '../ui/AnonymousSignIn';
-import Image from "next/image";
+import Image from 'next/image';
 
 const SignInForm = () => {
   const router = useRouter();
@@ -68,6 +68,7 @@ const SignInForm = () => {
           }
 
           setIsLoading(false);
+          localStorage.setItem('welcomePopupDismissed', 'true');
           form.reset();
         });
 
@@ -85,7 +86,7 @@ const SignInForm = () => {
     // listen for sign in events from the server(supabase)
     const {
       data: { subscription },
-    } = supabase.auth.onAuthStateChange((event) => {
+    } = supabase.auth.onAuthStateChange(event => {
       if (event === 'SIGNED_IN') {
         toast.success(' 😸 Welcome to Xolace! Ready to explore! 🎭');
         router.push('/feed');
@@ -99,7 +100,7 @@ const SignInForm = () => {
   }, [router, supabase]);
 
   return (
-    <div className="w-full flex flex-col items-center justify-center gap-8 p-4">
+    <div className="flex w-full flex-col items-center justify-center gap-8 p-4">
       <div className="flex md:hidden">
         <Image
           src={mascot}
@@ -107,12 +108,12 @@ const SignInForm = () => {
           width={60}
           height={60}
           priority={true}
-          loading="eager"
+          className="w-auto h-auto"
         />
       </div>
       <div className="w-full max-w-md items-start">
-        <h2 className="text-4xl sm:text-5xl font-bold">Holla 👋,</h2>
-        <h2 className="text-4xl sm:text-5xl font-bold">Welcome Back</h2>
+        <h2 className="text-4xl font-bold sm:text-5xl">Holla 👋,</h2>
+        <h2 className="text-4xl font-bold sm:text-5xl">Welcome Back</h2>
       </div>
 
       <div className="w-full max-w-md">
@@ -121,12 +122,12 @@ const SignInForm = () => {
             onSubmit={form.handleSubmit(onSubmit)}
             className="flex flex-col gap-8"
           >
-            <div className={"w-full flex flex-col gap-4"}>
+            <div className={'flex w-full flex-col gap-4'}>
               {/* Email Field */}
               <FormField
                 control={form.control}
                 name="email"
-                render={({field}) => (
+                render={({ field }) => (
                   <FormItem>
                     <FormLabel>Email</FormLabel>
                     <FormControl>
@@ -139,7 +140,7 @@ const SignInForm = () => {
                         required
                       />
                     </FormControl>
-                    <FormMessage/>
+                    <FormMessage />
                   </FormItem>
                 )}
               />
@@ -148,7 +149,7 @@ const SignInForm = () => {
               <FormField
                 control={form.control}
                 name="password"
-                render={({field}) => (
+                render={({ field }) => (
                   <FormItem>
                     <FormLabel>Password</FormLabel>
                     <FormControl>
@@ -156,7 +157,7 @@ const SignInForm = () => {
                         <Input
                           placeholder="Enter your password"
                           {...field}
-                          className="rounded-lg px-4 items-center"
+                          className="items-center rounded-lg px-4"
                           type={showPassword ? 'text' : 'password'}
                           autoComplete="off"
                           required
@@ -164,39 +165,41 @@ const SignInForm = () => {
                         <button
                           type="button"
                           onClick={() => setShowPassword(!showPassword)}
-                          className="absolute right-3 top-[10] md:top-[-5] text-neutral-400"
+                          className="absolute top-[10] right-3 text-neutral-400 md:top-[-5]"
                         >
-                          <ToggleEyeIcon showPassword={showPassword}/>
+                          <ToggleEyeIcon showPassword={showPassword} />
                         </button>
                       </div>
                     </FormControl>
-                    <FormMessage/>
+                    <FormMessage />
                   </FormItem>
                 )}
               />
 
               {/* Forgot Password Link */}
-              <div className="flex justify-between items-center">
+              <div className="flex items-center justify-between">
                 <FormField
                   control={form.control}
                   name="remember"
-                  render={({field}) => (
+                  render={({ field }) => (
                     <FormItem className="flex items-center justify-center space-x-2">
                       <FormControl>
                         <Checkbox
                           checked={field.value}
                           onCheckedChange={field.onChange}
-                          className={"rounded-none w-4 h-4 "}
+                          className={'h-4 w-4 rounded-none'}
                         />
                       </FormControl>
-                      <FormLabel className="items-center text-sm mb-1">Remember me</FormLabel>
+                      <FormLabel className="mb-1 items-center text-sm">
+                        Remember me
+                      </FormLabel>
                     </FormItem>
                   )}
                 />
 
                 <Link
-                  href={"/forgot-password"}
-                  className="text-sm text-lavender-400 hover:underline"
+                  href={'/forgot-password'}
+                  className="text-lavender-400 text-sm hover:underline"
                 >
                   Forgot password?
                 </Link>
@@ -207,11 +210,11 @@ const SignInForm = () => {
             <Button
               type="submit"
               disabled={isLoading}
-              className="rounded-lg bg-ocean-500 hover:bg-ocean-600 transition-transform transform hover:scale-[1.03] duration-300 ease-in-out w-full"
+              className="bg-ocean-500 hover:bg-ocean-600 w-full transform rounded-lg transition-transform duration-300 ease-in-out hover:scale-[1.03]"
             >
               {isLoading ? (
                 <div className="flex items-center gap-2">
-                  <Loader/>
+                  <Loader />
                   <span>Loading...</span>
                 </div>
               ) : (
@@ -221,19 +224,19 @@ const SignInForm = () => {
 
             {/* OR Divider */}
             <div className="flex items-center justify-center gap-3">
-              <Separator className="flex-1 bg-black"/>
+              <Separator className="flex-1 bg-black" />
               <span className="text-sm">OR</span>
-              <Separator className="flex-1 bg-black"/>
+              <Separator className="flex-1 bg-black" />
             </div>
 
-            <AnonymousSignIn/>
+            <AnonymousSignIn />
 
             {/* Register Redirect */}
-            <p className="text-sm text-neutral-400 text-center md:text-left">
+            <p className="text-center text-sm md:text-left">
               Don’t have an account?{' '}
               <Link
-                href={"/sign-up"}
-                className="text-lavender-400 hover:text-lavender-500 font-medium hover:underline ml-1"
+                href={'/sign-up'}
+                className="text-lavender-400 hover:text-lavender-500 ml-1 font-medium hover:underline"
               >
                 Create one
               </Link>

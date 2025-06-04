@@ -56,6 +56,8 @@ export function NavUser({
       setIsOpen(true);
       return;
     }
+
+    localStorage.removeItem('welcomePopupDismissed');
     supabase.auth.signOut();
   };
 
