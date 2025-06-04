@@ -65,6 +65,7 @@ export const signUpAction = validatedAction(signUpSchema, async data => {
       username: username,
       supabase_user: userData.user.id,
       avatar_url: avatarUrl,
+      email: email,
     })
     .select()
     .single();
