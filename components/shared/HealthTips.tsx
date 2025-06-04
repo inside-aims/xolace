@@ -2,12 +2,13 @@
 
 import { Info, Cross, CircleArrowRight, MoveLeft } from 'lucide-react';
 import { Button } from '@/components/ui/button';
-import React, { useState } from 'react';
+import React, {useEffect, useRef, useState} from 'react';
 import { useRouter } from 'next/navigation';
 import { useSidebar } from '../ui/sidebar';
 import { useFeedHealthTips } from '@/hooks/healthTips/useHealthTipsData';
 import { Avatar, AvatarImage, AvatarFallback } from '../ui/avatar';
 import Link from 'next/link';
+import {AnimatePresence, motion} from "framer-motion";
 
 interface HealthTipCardProps {
   id: number;
@@ -91,6 +92,17 @@ interface HealthTipDetailsProps {
 //   },
 // ];
 
+const placeholders = [
+  "This June, speak up — your mind matters.",
+  "Silent battles deserve a voice. Start here.",
+  "Strong men share too. Break the silence.",
+  "June is for healing — tell your story.",
+  "Every man has a story. Yours matters.",
+  "Mental health isn’t weakness. Let’s talk.",
+  "Say it. Feel it. Heal it — right here.",
+];
+
+
 export default function HealthTips() {
   const {
     data: feedHealthTips,
@@ -102,6 +114,39 @@ export default function HealthTips() {
     useState<HealthTipDetailsProps>();
   const router = useRouter();
   const { setOpenMobile } = useSidebar();
+  const [awarenessTime, setAwarenessTime] = useState<boolean>(true);
+
+  const [currentPlaceholder, setCurrentPlaceholder] = useState(0);
+  const intervalRef = useRef<NodeJS.Timeout | null>(null);
+
+  // Initiate animate when it's time
+  const startAnimation = () => {
+    intervalRef.current = setInterval(() => {
+      setCurrentPlaceholder(prev => (prev + 1) % placeholders.length);
+    }, 3000);
+  };
+
+  // Hook for animate awareness time content
+  useEffect(() => {
+    startAnimation();
+    const handleVisibility = () => {
+      if (document.visibilityState !== 'visible' && intervalRef.current) {
+        clearInterval(intervalRef.current);
+        intervalRef.current = null;
+      } else if (document.visibilityState === 'visible') {
+        startAnimation();
+      }
+    };
+
+    document.addEventListener('visibilitychange', handleVisibility);
+    return () => {
+      if (intervalRef.current) {
+        clearInterval(intervalRef.current);
+      }
+      document.removeEventListener('visibilitychange', handleVisibility);
+    };
+  }, []);
+
 
   // Helper for health tip click to read more
   const handleHealthClick = (healthTipId: number) => {
@@ -124,8 +169,32 @@ export default function HealthTips() {
         <div
           className={`${!showDetails ? 'flex h-full w-full flex-col gap-4 md:px-4' : 'hidden'}`}
         >
+          {/*Awareness time section*/}
+          <div
+            className={`${awarenessTime ? 'w-full flex-col p-1 border shadow-lg h-32 rounded-lg relative inline-flex overflow-hidden focus:outline-none' : 'hidden'}`}>
+            <span
+              className="absolute inset-[-1000%] animate-[spin_2s_linear_infinite] bg-[conic-gradient(from_90deg_at_50%_50%,#E2CBFF_0%,#8794f2_50%,#E2CBFF_100%)]">
+            </span>
+            <span
+              className="inline-flex h-full w-full items-center justify-center px-8 py-2 text-lg font-medium backdrop-blur-2xl dark:text-white bg-white dark:bg-black relative">
+              <AnimatePresence mode="wait">
+                <motion.p
+                  key={`placeholder-${currentPlaceholder}`}
+                  initial={{y: 5, opacity: 0}}
+                  animate={{y: 0, opacity: 1}}
+                  exit={{y: -15, opacity: 0}}
+                  transition={{duration: 1, ease: 'linear'}}
+                  className="w-full truncate px-4 text-left text-sm font-normal text-neutral-500 sm:text-base dark:text-zinc-500"
+                >
+                  {placeholders[currentPlaceholder]}
+                </motion.p>
+              </AnimatePresence>
+            </span>
+          </div>
+
           {/*Xolace wellness section*/}
-          <div className="animate-in fade-in slide-in-from-bottom-3 flex flex-col items-start gap-2 rounded-xl border py-2 shadow-lg transition-shadow duration-300 duration-500 ease-in-out hover:shadow-xl motion-reduce:animate-none md:py-4">
+          <div
+            className={`${awarenessTime ? 'hidden' : 'animate-in fade-in slide-in-from-bottom-3 flex flex-col items-start gap-2 rounded-xl border py-2 shadow-lg transition-shadow duration-500 ease-in-out hover:shadow-xl motion-reduce:animate-none md:py-4'}`}>
             <h4 className="flex w-full items-center justify-between px-2 text-neutral-500 md:px-4">
               <span className="hover:text-lavender-500 font-semibold transition-colors duration-200">
                 Xolace Wellness Insights
@@ -135,7 +204,8 @@ export default function HealthTips() {
                 className="cursor-pointer transition-transform duration-300 hover:rotate-90"
               />
             </h4>
-            <div className="flex flex-col items-center gap-2 text-sm transition-transform duration-300 hover:scale-[1.01]">
+            <div
+              className="flex flex-col items-center gap-2 text-sm transition-transform duration-300 hover:scale-[1.01]">
               <p className="hover:text-lavender-500 flex ps-2 transition-colors duration-200 md:px-4">
                 Practical health tips and trusted advice to help you thrive mind
                 and body.
