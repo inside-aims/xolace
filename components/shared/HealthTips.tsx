@@ -232,7 +232,7 @@ export default function HealthTips() {
                 <span>
                   <Link
                     className="hover:text-slate-200 hover:underline"
-                    href=""
+                    href="#"
                   >
                     Xolace Rules
                   </Link>
@@ -240,7 +240,7 @@ export default function HealthTips() {
                 <span>
                   <Link
                     className="hover:text-slate-200 hover:underline"
-                    href=""
+                    href="/policy"
                   >
                     Privacy Policy
                   </Link>
@@ -248,7 +248,7 @@ export default function HealthTips() {
                 <span>
                   <Link
                     className="hover:text-slate-200 hover:underline"
-                    href=""
+                    href="/policy"
                   >
                     User Agreement
                   </Link>
@@ -256,7 +256,7 @@ export default function HealthTips() {
                 <span>
                   <Link
                     className="hover:text-slate-200 hover:underline"
-                    href=""
+                    href="#"
                   >
                     Xolace, Inc. © 2025. All rights reserved.
                   </Link>

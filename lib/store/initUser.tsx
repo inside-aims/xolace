@@ -22,7 +22,6 @@ async function fetchAdditionalRoles(userId: string): Promise<string[]> {
     return [];
   }
 
-  console.log("roles ", data)
   
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   return data.map((r: any) => r.role);
@@ -42,7 +41,6 @@ export default function InitUser({ user }: { user: Profile | undefined }) {
         const additionalRoles = await fetchAdditionalRoles(user.id);
         // Combine them and store in Zustand
         const roles = Array.from(new Set([...additionalRoles]));
-        console.log("full roles->",roles)
         setRoles(roles);
 
          // Initialize preferences after user data is set

@@ -65,7 +65,6 @@ export default function GetInTouchDialog() {
         return;
       }
 
-      console.log('Request', request);
       setOpen(false);
       toast.success('Thanks for reaching out!', {
         description:

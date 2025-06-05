@@ -95,9 +95,6 @@ export const usePreferencesStore = create<PreferencesState>((set, get) => ({
         set({ preferences: data as UserPreferences, isLoading: false });
       } else {
         // No preferences found, potentially set defaults
-        console.log(
-          'PreferencesStore: No preferences found for user, using defaults.',
-        );
         set({
           preferences: {
             ...defaultPreferences,

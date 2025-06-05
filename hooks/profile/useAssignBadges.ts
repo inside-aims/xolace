@@ -5,7 +5,6 @@ export function useAssignBadges(userId: string) {
     return useQuery({
         queryKey: ['assignBadges', userId],
         queryFn: async () => {
-            console.log("Assigning badges for user:", userId);
             const { badges } = await assignBadgesToUser(userId);
             return badges;
         },
