@@ -47,7 +47,7 @@ export default function HowItWorksSection() {
 
             <span className={"absolute -left-[30%] md:-left-[90%] -bottom-10"}>
             <Image
-              src="/assets/images/landing-page/star.png"
+              src="/assets/images/landing-page/star.webp"
               alt="Hero Image"
               width={80}
               height={80}
