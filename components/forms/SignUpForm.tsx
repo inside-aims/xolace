@@ -121,8 +121,8 @@ const SignUpForm = () => {
                         autoComplete="off"
                       />
                     </FormControl>
-                    <FormDescription className="text-sm text-neutral-400">
-                      Tip: Pick a unique name - it helps people find you.
+                    <FormDescription className="text-xs text-neutral-400">
+                      Tip: Pick a unique name - Definitely not the name your mom gave you
                     </FormDescription>
 
                     {state?.errors?.username && (
