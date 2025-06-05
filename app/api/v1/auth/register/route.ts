@@ -68,7 +68,7 @@ export async function POST(request: Request) {
     );
   }
 
-  const { data: profileUser, error: puError } = await supabaseAdmin
+  const { error: puError } = await supabaseAdmin
     .from('profiles')
     .insert({
       username: username,
