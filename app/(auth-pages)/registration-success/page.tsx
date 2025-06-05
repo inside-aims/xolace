@@ -59,7 +59,7 @@ export default function RegistrationSuccessPage(props: {
       
       // Reset the countdown
       setCanResend(false);
-      setCountdown(60);
+      setCountdown(120);
       
       // Start countdown
       const timer = setInterval(() => {
