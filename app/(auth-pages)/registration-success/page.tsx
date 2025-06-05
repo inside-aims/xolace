@@ -4,7 +4,7 @@ import { use, useState, useEffect } from 'react';
 import { urlPath } from '@/utils/url-helpers';
 import Link from 'next/link';
 import { motion } from 'framer-motion';
-import { MailCheck, RotateCw } from 'lucide-react';
+import { MailCheck, MessageCircle, RotateCw } from 'lucide-react';
 
 export default function RegistrationSuccessPage(props: {
   searchParams: Promise<{ email: string; id: string }>;
@@ -198,6 +198,20 @@ export default function RegistrationSuccessPage(props: {
           Emerge from the Shadows
         </Link>
       </motion.div>
+
+       {/* Floating Support Button */}
+     <Link target='_blank' href={"mailto:xolace25@gmail.com?subject=Support%20Ticket"}>
+     <motion.button
+        
+        className="fixed bottom-6 right-6 flex items-center gap-2 rounded-full bg-indigo-600 px-4 py-3 text-white shadow-lg hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2"
+        initial={{ opacity: 0, y: 20 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ delay: 1, duration: 0.5 }}
+      >
+        <MessageCircle className="h-5 w-5" />
+        <span className="hidden sm:inline">Support</span>
+      </motion.button>
+      </Link>
     </div>
   );
 }
