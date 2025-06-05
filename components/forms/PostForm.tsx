@@ -243,7 +243,6 @@ export function PostForm() {
 
       // Clear any saved draft if we are prefilling from a prompt
       if (typeof window !== 'undefined' && preferences?.auto_save_drafts) {
-        console.log('Clearing saved draft');
         localStorage.removeItem(POST_DRAFT_KEY);
       }
     } else if (typeof window !== 'undefined' && preferences?.auto_save_drafts) {
@@ -268,7 +267,6 @@ export function PostForm() {
           currentContent.trim() === initialContentPattern.trim()
         ) {
           // check both with and without #DailyPrompt initially
-          console.log('isInitialPromptFill');
           isInitialPromptFill = true;
         }
       }
@@ -276,7 +274,6 @@ export function PostForm() {
       if (
         !isInitialPromptFill 
       ) {
-        console.log('Saving draft');
         debouncedSaveDraft(content);
       }
     }
@@ -504,7 +501,6 @@ export function PostForm() {
           });
         }
 
-        console.log('come on');
         // Log the post creation activity
         if (user && post_id) {
           await logActivity({

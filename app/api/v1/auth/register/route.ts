@@ -11,9 +11,6 @@ export async function POST(request: Request) {
   const password = formData.get('password') as string;
   const type = searchParams.get('type') as string;
 
-  console.log(formData);
-  console.log(username, email, password, type);
-
   const isNonEmptyString = (value: string) =>
     typeof value === 'string' && value.trim().length > 0;
 
@@ -35,14 +32,11 @@ export async function POST(request: Request) {
 
   const safeEmailString = encodeURIComponent(email);
 
-  console.log('Creating account');
   const { data: userData, error: userError } =
     await supabaseAdmin.auth.admin.createUser({
       email,
       password,
     });
-
-  console.log('User data -> ', userData);
 
   if (userError) {
     const userExists = userError.message.includes('already been registered');
@@ -85,20 +79,14 @@ export async function POST(request: Request) {
     .select()
     .single();
 
-  console.log('Profile -> ', profileUser);
-
   if (puError) {
     await supabaseAdmin.auth.admin.deleteUser(userData.user.id);
     return NextResponse.redirect(builderUrl('/error', request), 302);
   }
 
-  console.log('normal1 -> ', userData.user.id);
-
   await sendOTPLink(email, 'signup', request);
 
   const safeUserId = encodeURIComponent(userData.user.id);
-  console.log('normal -> ', userData.user.id);
-  console.log('Safe user ID -> ', safeUserId);
   return NextResponse.redirect(
     builderUrl(
       `/registration-success?id=${safeUserId}&email=${safeEmailString}`,

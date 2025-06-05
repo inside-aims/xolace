@@ -13,7 +13,6 @@ const View = ({ id, viewsCount, createdBy, content }: { id: string; viewsCount: 
 
   useEffect(() => {
     const handleUpdateViews = async () => {
-      console.log("total..")
       const result = await updateViewsAction(id, user?.id || '', createdBy, totalViews, content);
       if (result.success) {
         setTotalViews((prev) => prev + 1);

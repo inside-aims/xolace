@@ -11,7 +11,6 @@ const About = () => {
 
     useEffect(() => {
         if (isDesktop) {
-            console.log('not desktop', isDesktop)
             router.replace('/about/general')
         }
     }, [isDesktop, router])

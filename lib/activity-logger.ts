@@ -72,7 +72,6 @@ export async function logActivity({
       authorId: relatedUserId,
       metadata: metadata,
     };
-    console.log(params);
     await updateReputation(params);
   } catch (error) {
     console.error('Error logging activity:', error);

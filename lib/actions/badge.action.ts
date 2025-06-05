@@ -13,14 +13,12 @@ export async function assignBadgesToUser(userId: string) {
         badges: { GOLD: 0, SILVER: 0, BRONZE: 0 },
       };
 
-console.log("User ID:", userId)
     try {
         // Fetch stats using database function
         const { data, error } = await supabase.rpc('get_user_stats', {
           profile_id: userId
         });
     
-        console.log("User stats:", data," ", error)
         if (error || !data || data.length === 0) {
           throw new Error(error?.message || 'User stats not found');
         }
