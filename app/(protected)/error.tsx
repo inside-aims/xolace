@@ -38,7 +38,7 @@ export default function Error({
         title: 'Connection Error',
         message:
           'Oops! It seems your connection to the anonymous realm is lost.',
-        icon: <WifiOff className="h-12 w-12 text-muted-foreground" />,
+        icon: <WifiOff className="text-muted-foreground h-12 w-12" />,
       };
     }
     if (error.message.includes('Not found')) {
@@ -46,7 +46,7 @@ export default function Error({
         title: 'Page Not Found',
         message:
           "The anonymous view you're looking for seems to have vanished into thin air.",
-        icon: <Eye className="h-12 w-12 text-muted-foreground" />,
+        icon: <Eye className="text-muted-foreground h-12 w-12" />,
       };
     }
     // Default error
@@ -54,26 +54,26 @@ export default function Error({
       title: 'Unexpected Error',
       message:
         "An unexpected error occurred in the anonymous realm. Don't worry, your identity is still safe!",
-      icon: <AlertCircle className="h-12 w-12 text-muted-foreground" />,
+      icon: <AlertCircle className="text-muted-foreground h-12 w-12" />,
     };
   };
 
   const { title, message, icon } = getErrorDetails();
 
   return (
-    <div className="flex min-h-screen items-center justify-center bg-background p-4">
+    <div className="dark:bg-bg-dark bg-bg flex min-h-screen items-center justify-center p-4">
       <Card className="w-full max-w-md">
         <CardHeader className="text-center">
-          <div className="mx-auto mb-4 w-fit rounded-full bg-muted p-3">
+          <div className="bg-muted mx-auto mb-4 w-fit rounded-full p-3">
             {icon}
           </div>
           <CardTitle className="text-2xl font-bold">{title}</CardTitle>
         </CardHeader>
         <CardContent>
-          <p className="text-center text-muted-foreground">{message}</p>
+          <p className="text-muted-foreground text-center">{message}</p>
           <div className="mt-6 flex justify-center space-x-4">
-            <Users className="h-16 w-16 text-primary" />
-            <Wifi className="h-16 w-16 text-primary" />
+            <Users className="text-primary h-16 w-16" />
+            <Wifi className="text-primary h-16 w-16" />
           </div>
         </CardContent>
         <CardFooter className="flex flex-col space-y-2">

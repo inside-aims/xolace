@@ -101,7 +101,7 @@ const CollectionsFeedList = ({ postsData, isLoading }: CollectionsFeedListProps)
           key={post.id}
           post={post}
           onClick={() => handlePostClick(post.id)}
-          className={`mb-5 w-full bg-[radial-gradient(ellipse_at_top,hsl(0_0%_100%),hsl(0_0%_90%)_90%),linear-gradient(to_bottom_right,hsl(0_0%_98%),hsl(0_0%_96%))] hover:bg-[radial-gradient(ellipse_at_top,hsl(0_0%_95%),hsl(0_0%_98%)_90%),linear-gradient(to_bottom_right,hsl(0_0%_99%),hsl(0_0%_97%))] dark:bg-[radial-gradient(ellipse_at_top,hsl(228_85%_15%),transparent),linear-gradient(to_bottom_right,hsl(228_85%_7%),hsl(228_65%_3%))] ring-1 ring-black/[0.03] transition duration-300 hover:ring-black/[0.05] dark:hover:bg-[radial-gradient(ellipse_at_top,hsl(228_80%_10%),transparent),linear-gradient(to_bottom_right,hsl(228_85%_18%),hsl(228_85%_10%))] dark:ring-zinc-800 dark:hover:ring-zinc-700 dark:focus-visible:ring-[#193a47] md:w-full`}
+          className={`rounded-none mb-5 w-full dark:bg-bg-dark bg-bg dark:ring-zinc-800 dark:hover:ring-zinc-700 dark:focus-visible:ring-[#193a47] md:w-full border-x-0`}
         />
       ))
       }

@@ -2,11 +2,13 @@
 
 import React, { useState, useEffect } from 'react';
 import Link from 'next/link';
+import mascot from '../../public/assets/images/mas.webp';
 
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useForm } from 'react-hook-form';
 import { z } from 'zod';
-import { useToast } from '../ui/use-toast';
+//import { useToast } from '../ui/use-toast';
+import { toast } from 'sonner';
 import { useRouter } from 'next/navigation';
 
 import { Button } from '@/components/ui/button';
@@ -26,10 +28,11 @@ import Loader from '../shared/loaders/Loader';
 import { getSupabaseBrowserClient } from '@/utils/supabase/client';
 import { Separator } from '@/components/ui/separator';
 import AnonymousSignIn from '../ui/AnonymousSignIn';
+import Image from 'next/image';
 
 const SignInForm = () => {
   const router = useRouter();
-  const { toast } = useToast();
+  //const { toast } = useToast();
   const [showPassword, setShowPassword] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const supabase = getSupabaseBrowserClient();
@@ -59,25 +62,19 @@ const SignInForm = () => {
         })
         .then(result => {
           if (!result.data?.user) {
-            toast({
-              variant: 'destructive',
-              title: ' 😿 Invalid credentials, check email or password',
-            });
+            toast.error(' 😿 Invalid credentials, check email or password');
             setIsLoading(false);
-            form.reset();
             return;
           }
 
           setIsLoading(false);
+          localStorage.setItem('welcomePopupDismissed', 'true');
           form.reset();
         });
 
       // eslint-disable-next-line @typescript-eslint/no-unused-vars
     } catch (error) {
-      toast({
-        variant: 'destructive',
-        title: ' 😿 Something must have gone wrong, Please try again',
-      });
+      toast.error(' 😿 Something must have gone wrong, Please try again');
     }
 
     return;
@@ -89,11 +86,9 @@ const SignInForm = () => {
     // listen for sign in events from the server(supabase)
     const {
       data: { subscription },
-    } = supabase.auth.onAuthStateChange((event) => {
+    } = supabase.auth.onAuthStateChange(event => {
       if (event === 'SIGNED_IN') {
-        toast({
-          title: ' 😸 Welcome to Xolace!',
-        });
+        toast.success(' 😸 Welcome to Xolace! Ready to explore! 🎭');
         router.push('/feed');
       }
     });
@@ -102,131 +97,154 @@ const SignInForm = () => {
     return () => {
       subscription.unsubscribe();
     };
-  }, [router, supabase, toast]);
+  }, [router, supabase]);
 
   return (
-    <>
-      <Form {...form}>
-        <form
-          onSubmit={form.handleSubmit(onSubmit)}
-          className="z-10 w-full max-sm:p-2"
-        >
-          <FormField
-            control={form.control}
-            name="email"
-            render={({ field }) => (
-              <FormItem>
-                <FormControl>
-                  <Input
-                    placeholder="Email"
-                    {...field}
-                    type="email"
-                    className="mb-4 w-full text-black dark:text-white max-sm:py-6 sm:py-5 md:h-12"
-                    required
-                    autoComplete="off"
-                  />
-                </FormControl>
-                {/* <FormDescription>
-                This is your public display name.
-              </FormDescription> */}
-                <FormMessage />
-              </FormItem>
-            )}
-          />
-          {/* Password input */}
-          <FormField
-            control={form.control}
-            name="password"
-            render={({ field }) => (
-              <FormItem>
-                <FormControl>
-                  <div className="relative mb-1 max-sm:mb-2">
-                    <Input
-                      placeholder="********"
-                      {...field}
-                      className="w-full text-black dark:text-white max-sm:py-6 sm:py-5 md:h-12"
-                      type={showPassword ? 'text' : 'password'}
-                      required
-                      autoComplete="off"
-                    />
-                    <button
-                      type="button"
-                      onClick={() => setShowPassword(!showPassword)}
-                      className="absolute right-3 top-4 md:top-[-3] transform"
-                    >
-                      <ToggleEyeIcon showPassword={showPassword} />
-                    </button>
-                  </div>
-                </FormControl>
-                <FormMessage />
-              </FormItem>
-            )}
-          />
-
-          {/* checkbox*/}
-          <FormField
-            control={form.control}
-            name="remember"
-            render={({ field }) => (
-              <FormItem className="relative mb-5 flex items-start justify-between px-2 max-sm:mb-8">
-                <div className="flex flex-row items-center space-x-2">
-                  <FormControl>
-                    <Checkbox
-                      checked={field.value}
-                      onCheckedChange={field.onChange}
-                    />
-                  </FormControl>
-                  <div className="text-black dark:text-white">
-                    <FormLabel>Remember me</FormLabel>
-                  </div>
-                </div>
-
-                <Link
-                  href="/forgot-password"
-                  className="hover:text-primary-600 focus:text-primary-600 active:text-primary-700 dark:text-primary-400 dark:active:text-primary-600 absolute -top-[6px] right-2 text-sm text-blue transition duration-150 ease-in-out dark:hover:text-primary-500 dark:focus:text-primary-500"
-                >
-                  Forgot password
-                </Link>
-              </FormItem>
-            )}
-          />
-
-          {/* submit button */}
-          <div className="px-8">
-            <Button
-              className="w-full dark:bg-sky-600 hover:dark:bg-sky-500"
-              type="submit"
-              aria-disabled={isLoading}
-            >
-              {isLoading ? (
-                <div className="flex items-center justify-center gap-x-2">
-                  {' '}
-                  <Loader /> <span>Loading...</span>
-                </div>
-              ) : (
-                'Submit'
-              )}
-            </Button>
-          </div>
-          <p className="mb-0 mt-2 pt-1 text-sm font-semibold text-dark-3 dark:text-gray-500">
-            Dont have an account?
-            <Link
-              href="/sign-up"
-              className="ml-1 text-red-600 transition duration-150 ease-in-out hover:text-red-600 focus:text-red-600 active:text-red-700"
-            >
-              Register
-            </Link>
-          </p>
-        </form>
-      </Form>
-      <div className="mt-3 flex items-center justify-center gap-3">
-        <Separator />
-        <p className="text-sm text-gray-600 dark:text-gray-400">OR</p>
-        <Separator />
+    <div className="flex w-full flex-col items-center justify-center gap-8 p-4">
+      <div className="flex md:hidden">
+        <Image
+          src={mascot}
+          alt="logo"
+          width={60}
+          height={60}
+          priority={true}
+          className="w-auto h-auto"
+        />
+      </div>
+      <div className="w-full max-w-md items-start">
+        <h2 className="text-4xl font-bold sm:text-5xl">Holla 👋,</h2>
+        <h2 className="text-4xl font-bold sm:text-5xl">Welcome Back</h2>
       </div>
 
-      <AnonymousSignIn />
-    </>
+      <div className="w-full max-w-md">
+        <Form {...form}>
+          <form
+            onSubmit={form.handleSubmit(onSubmit)}
+            className="flex flex-col gap-8"
+          >
+            <div className={'flex w-full flex-col gap-4'}>
+              {/* Email Field */}
+              <FormField
+                control={form.control}
+                name="email"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>Email</FormLabel>
+                    <FormControl>
+                      <Input
+                        placeholder="Enter your email"
+                        {...field}
+                        type="email"
+                        className="rounded-lg px-4"
+                        autoComplete="off"
+                        required
+                      />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+
+              {/* Password Field */}
+              <FormField
+                control={form.control}
+                name="password"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>Password</FormLabel>
+                    <FormControl>
+                      <div className="relative">
+                        <Input
+                          placeholder="Enter your password"
+                          {...field}
+                          className="items-center rounded-lg px-4"
+                          type={showPassword ? 'text' : 'password'}
+                          autoComplete="off"
+                          required
+                        />
+                        <button
+                          type="button"
+                          onClick={() => setShowPassword(!showPassword)}
+                          className="absolute top-[10] right-3 text-neutral-400 md:top-[-5]"
+                        >
+                          <ToggleEyeIcon showPassword={showPassword} />
+                        </button>
+                      </div>
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+
+              {/* Forgot Password Link */}
+              <div className="flex items-center justify-between">
+                <FormField
+                  control={form.control}
+                  name="remember"
+                  render={({ field }) => (
+                    <FormItem className="flex items-center justify-center space-x-2">
+                      <FormControl>
+                        <Checkbox
+                          checked={field.value}
+                          onCheckedChange={field.onChange}
+                          className={'h-4 w-4 rounded-none'}
+                        />
+                      </FormControl>
+                      <FormLabel className="mb-1 items-center text-sm">
+                        Remember me
+                      </FormLabel>
+                    </FormItem>
+                  )}
+                />
+
+                <Link
+                  href={'/forgot-password'}
+                  className="text-lavender-400 text-sm hover:underline"
+                >
+                  Forgot password?
+                </Link>
+              </div>
+            </div>
+
+            {/* Submit Button */}
+            <Button
+              type="submit"
+              disabled={isLoading}
+              className="bg-ocean-500 hover:bg-ocean-600 w-full transform rounded-lg transition-transform duration-300 ease-in-out hover:scale-[1.03]"
+            >
+              {isLoading ? (
+                <div className="flex items-center gap-2">
+                  <Loader />
+                  <span>Loading...</span>
+                </div>
+              ) : (
+                'Sign In'
+              )}
+            </Button>
+
+            {/* OR Divider */}
+            <div className="flex items-center justify-center gap-3">
+              <Separator className="flex-1 bg-black" />
+              <span className="text-sm">OR</span>
+              <Separator className="flex-1 bg-black" />
+            </div>
+
+            <AnonymousSignIn />
+
+            {/* Register Redirect */}
+            <p className="text-center text-sm md:text-left">
+              Don’t have an account?{' '}
+              <Link
+                href={'/sign-up'}
+                className="text-lavender-400 hover:text-lavender-500 ml-1 font-medium hover:underline"
+              >
+                Create one
+              </Link>
+            </p>
+          </form>
+        </Form>
+      </div>
+    </div>
   );
 };
 

@@ -168,13 +168,12 @@ export const FeedSteps: Step[] = [
     ),
   },
   {
-    selector: '#sign-out',
+    selector: '#online-users',
     content: () => (
       <TourWrapper>
-        <TourTitle>Sign Out</TourTitle>
+        <TourTitle>Online Users</TourTitle>
         <TourContent>
-          Are you sure you want to leave us? 😢 If you must go, click here to
-          sign out—but we’ll be waiting when you come back!
+          This shows the number of users currently online in the break room.
         </TourContent>
       </TourWrapper>
     ),
@@ -273,6 +272,17 @@ export const createPostSteps: Step[] = [
         <TourContent>
           Keep an eye on your words! This shows how many characters you&apos;ve
           typed—if it turns red, you&apos;ve gone over the limit!
+        </TourContent>
+      </TourWrapper>
+    ),
+  },
+  {
+    selector: '#mascot',
+    content: () => (
+      <TourWrapper>
+        <TourTitle>Finished</TourTitle>
+        <TourContent>
+          You&apos;ve completed the tour! Tour guide will be disabled now 😉. If you haven&apos;t taken the tour on the feed page📃 yet you can always turn it back on in the settings page.
         </TourContent>
       </TourWrapper>
     ),

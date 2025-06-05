@@ -1,7 +1,7 @@
 'use client';
-import { useState , useEffect} from 'react';
+import { useState } from 'react';
 import Image from 'next/image';
-import { format } from 'timeago.js';
+import { format, register, type LocaleFunc } from 'timeago.js';
 import dynamic from 'next/dynamic';
 
 import {
@@ -14,15 +14,14 @@ import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 //import PostDropdown from '../shared/PostDropdown';
 //import ReportForm from '../forms/ReportForm';
 //import { KvngSheet } from '../shared/KvngSheet';
-import { moodMap } from '@/types';
 import { DetailPost } from '@/types/global';
 import TagCard from './TagCard';
 import { TagProps } from './PostCard';
 import SaveToCollectionsButton from '../shared/SaveToCollectionsButton';
 import { useUserState } from '@/lib/store/user';
-import { useMediaQuery } from '@/hooks/use-media-query';
-import { useSidebar } from '../ui/sidebar';
-
+import { ArrowLeft } from 'lucide-react';
+import { useRouter } from 'next/navigation';
+import { moodMap } from '@/types';
 // Dynamically import non-critical components
 const PostDropdown = dynamic(() => import('../shared/PostDropdown'), {
   ssr: false,
@@ -32,36 +31,91 @@ const ReportForm = dynamic(() => import('../forms/ReportForm'), {
   ssr: false,
 });
 
-const KvngSheet = dynamic(() => import('../shared/KvngSheet').then((mod => mod.KvngSheet)), {
+const KvngSheet = dynamic(
+  () => import('../shared/KvngSheet').then(mod => mod.KvngSheet),
+  {
+    ssr: false,
+  },
+);
+
+const View = dynamic(() => import('../hocs/detailsPostComponents/View'), {
   ssr: false,
 });
 
-export function DetailCard({ postId, post }: { postId: string; post: DetailPost }) {
-  const isDesktop = useMediaQuery('(min-width: 768px)');
-  const {setOpen } = useSidebar();
+// Define a custom locale
+const customLocale: LocaleFunc = (
+  number: number,
+  index: number,
+): [string, string] => {
+  return [
+    ['just now', 'right now'],
+    ['%s sec ago', 'in %s sec'],
+    ['1 min ago', 'in 1 min'],
+    ['%s min ago', 'in %s min'],
+    ['1 hr ago', 'in 1 hr'],
+    ['%s hr ago', 'in %s hr'],
+    ['1 day ago', 'in 1 day'],
+    ['%s days ago', 'in %s days'],
+    ['1 wk ago', 'in 1 wk'],
+    ['%s wks ago', 'in %s wks'],
+    ['1 mo ago', 'in 1 mo'],
+    ['%s mos ago', 'in %s mos'],
+    ['1 yr ago', 'in 1 yr'],
+    ['%s yrs ago', 'in %s yrs'],
+  ][index] as [string, string]; // This assertion ensures TypeScript understands it's a tuple
+};
 
-  useEffect(() => {
-    if (isDesktop) {
-      setOpen(false);
-    }
-  }, [isDesktop, setOpen]); // Runs when `isDesktop` changes
+export function DetailCard({
+  postId,
+  post,
+}: {
+  postId: string;
+  post: DetailPost;
+}) {
+  // const isDesktop = useMediaQuery('(min-width: 768px)');
+  // const {setOpen } = useSidebar();
+
+  // useEffect(() => {
+  //   if (isDesktop) {
+  //     setOpen(false);
+  //   }
+  // }, [isDesktop, setOpen]); // Runs when `isDesktop` changes
 
   // get user data
   const user = useUserState(state => state.user);
 
+  const router = useRouter();
+
   const [isSheetOpen, setIsSheetOpen] = useState<boolean>(false);
   const postMood = moodMap[post?.mood] || moodMap['neutral'];
+  // Register the custom locale with an ID (e.g. 'short-en')
+  register('short-en', customLocale);
 
-  const { created_at, content, author_name, author_avatar_url, created_by, posttags } =
-    post;
+  const {
+    created_at,
+    content,
+    author_name,
+    author_avatar_url,
+    created_by,
+    posttags,
+  } = post;
 
   return (
     <>
-      <Card className="mb-5 mt-5 w-full md:w-full">
-        <CardHeader className="flex-row items-start justify-between px-4 py-2">
-          <div className="flex items-center gap-2 md:gap-4">
+      <Card className="mt-5 w-full rounded-none border-0 border-x-0 max-sm:mb-5 md:w-full md:px-8">
+        <CardHeader className="flex-row items-center justify-between px-6 py-2">
+          <div className="flex items-center gap-2 md:gap-3">
+            <button
+              className="dark:bg-muted-dark hover:bg-muted-dark-hover flex h-8 w-8 cursor-pointer items-center justify-center rounded-full bg-gray-700 max-md:hidden"
+              onClick={() => router.back()}
+            >
+              <ArrowLeft size={22} className="text-white" />
+            </button>
             <Avatar>
-              <AvatarImage src={author_avatar_url || undefined} />
+              <AvatarImage
+                src={author_avatar_url || undefined}
+                className="max-sm:h-9 max-sm:w-9"
+              />
               <AvatarFallback>XO</AvatarFallback>
             </Avatar>
             <div className="flex flex-col items-start justify-center gap-1">
@@ -69,8 +123,8 @@ export function DetailCard({ postId, post }: { postId: string; post: DetailPost 
                 {author_name}
               </h5>
             </div>
-            <small className="ml-4 text-sm text-zinc-500 dark:text-gray-400 md:ml-10">
-              {format(created_at)}
+            <small className="ml-4 text-sm text-zinc-500 md:ml-10 dark:text-gray-400">
+              {format(created_at, 'short-en')}
             </small>
           </div>
           <PostDropdown
@@ -80,10 +134,10 @@ export function DetailCard({ postId, post }: { postId: string; post: DetailPost 
             postCreatedBy={created_by}
           />
         </CardHeader>
-        <CardContent className="overflow-x-hidden !text-wrap">
+        <CardContent className="overflow-x-hidden text-wrap!">
           {content}
 
-          <div className="mt-2 flex flex-wrap gap-2">
+          <div className="mt-4 flex flex-wrap gap-2">
             {posttags && // check if post has tags
               posttags.map((tag: TagProps, index: number) => (
                 <TagCard
@@ -94,37 +148,51 @@ export function DetailCard({ postId, post }: { postId: string; post: DetailPost 
               ))}
           </div>
         </CardContent>
-        <CardFooter className='flex justify-between items-center'>
-          <div
-            className={`flex items-center justify-center rounded-3xl border p-1 dark:bg-transparent ${
-              postMood.style
-            }`}
-          >
-            <span>
-              {postMood.gif ? (
-                <Image
-                  src={postMood.gif}
-                  alt="Gif Emoji"
-                  width={24}
-                  height={24}
-                  className="h-6"
-                  unoptimized
-                />
-              ) : (
-                postMood.emoji
-              )}
-            </span>
-
-            {post?.expires_in_24hr && (
-              <span className="animate-bounce duration-700 ease-in-out">
-                {' '}
-                ⏳
+        <CardFooter className="flex items-center justify-between md:hidden">
+          <div className="flex items-center gap-3">
+            <div
+              className={`flex h-7 w-10 items-center justify-center rounded-full ${
+                postMood.style
+              }`}
+            >
+              <span>
+                {postMood.gif ? (
+                  <Image
+                    src={postMood.gif}
+                    alt="Gif Emoji"
+                    width={24}
+                    height={24}
+                    className="h-6"
+                    unoptimized
+                  />
+                ) : (
+                  postMood.emoji
+                )}
               </span>
-            )}
+
+              {post?.expires_in_24hr && (
+                <span className="animate-bounce duration-700 ease-in-out">
+                  {' '}
+                  ⏳
+                </span>
+              )}
+            </div>
+
+            <View
+              id={post.id}
+              createdBy={post.created_by}
+              viewsCount={post.views[0].count || 0}
+              content={post.content}
+            />
           </div>
-          
+
           <div>
-            <SaveToCollectionsButton userId={user?.id || ''} createdBy={post.created_by} postId={post.id} postCollections={post.collections} />
+            <SaveToCollectionsButton
+              userId={user?.id || ''}
+              createdBy={post.created_by}
+              postId={post.id}
+              postCollections={post.collections}
+            />
           </div>
         </CardFooter>
       </Card>

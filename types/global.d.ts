@@ -41,6 +41,9 @@ type DetailPost = Database['public']['Tables']['posts']['Row'] & {
     };
   }[];
   votes: Database['public']['Tables']['votes']['Row'][];
+  views:[{
+    count:number
+  }]
   comments: Database['public']['Tables']['comments']['Row'][];
   collections: Database['public']['Tables']['collections']['Row'][]
 };
@@ -52,3 +55,9 @@ type Comment = Database['public']['Tables']['comments']['Row']
 type UserPreferences = Database['public']['Tables']['user_preferences']['Row']
 
 type Tag = Database['public']['Tables']['tags']['Row']
+
+interface BadgeCounts {
+  GOLD: number;
+  SILVER: number;
+  BRONZE: number;
+}

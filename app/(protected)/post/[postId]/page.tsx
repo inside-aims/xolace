@@ -1,18 +1,33 @@
 import { notFound } from 'next/navigation';
-import { Suspense } from 'react';
+//import { Suspense } from 'react';
 import type { Metadata } from 'next';
 
 import { DetailCard } from '@/components/cards/DetailCard';
 import PostDetailDrawer from '@/components/ui/PostDetailDrawer';
 import { createClient } from '@/utils/supabase/server';
-import View from '@/components/hocs/detailsPostComponents/View';
-import { Skeleton } from '@/components/ui/skeleton';
+// import View from '@/components/hocs/detailsPostComponents/View';
+// import { Skeleton } from '@/components/ui/skeleton';
+import PostDetailsInteraction from '@/components/hocs/detailsPostComponents/PostDetailsInteraction';
+import { getPostMetadata } from '@/lib/actions/post.action';
 
 type Params = Promise<{ postId: string }>;
 type SearchParams = Promise<{ [key: string]: string | string[] | undefined }>;
 
-export const metadata: Metadata = {
-  title: 'Post',
+export async function generateMetadata({
+  params,
+}: {
+  params: Promise<{ postId: string }>;
+}): Promise<Metadata> {
+  const { postId } = await params;
+
+  const post = await getPostMetadata(postId);
+
+  if (!post) return {};
+
+  return {
+    title: `Post-${post.author_name}`,
+    description: post.content.slice(0, 100)
+  };
 }
 
 const PostDetailPage = async (props: {
@@ -63,12 +78,16 @@ const PostDetailPage = async (props: {
   return (
     <>
       <DetailCard postId={postId} post={post} />
-      <Suspense fallback={<Skeleton className="view_skeleton" />}>
+      {/* <Suspense fallback={<Skeleton className="view_skeleton" />}>
         <View id={postId} createdBy={post.created_by} viewsCount={post.views[0].count || 0} content={post.content} />
-      </Suspense>
+      </Suspense> */}
 
-      {/* Drawer for comment form and comment cards */}
+      {/* Drawer for comment form and comment cards for mobile */}
       <PostDetailDrawer post={post} type={type} />
+
+      {/* comment form and comment cards for desktop */}
+      <PostDetailsInteraction post={post} />
+      
     </>
   );
 };

@@ -1,10 +1,438 @@
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
+@import 'tailwindcss';
+@plugin "tailwindcss-animate";
+@plugin "@tailwindcss/typography";
+@custom-variant dark (&:where(.dark, .dark *));
 
-@font-face {
-  font-family: 'TiltNeon';
-  src: url('../fonts/TiltNeon-Regular.ttf') format('truetype');
+@config '../tailwind.config.ts';
+
+/*
+  The default border color has changed to `currentcolor` in Tailwind CSS v4,
+  so we've added these compatibility styles to make sure everything still
+  looks the same as it did with Tailwind CSS v3.
+
+  If we ever want to remove these styles, we need to add an explicit border
+  color utility to any element that depends on these defaults.
+*/
+
+@layer base {
+  *,
+  ::after,
+  ::before,
+  ::backdrop,
+  ::file-selector-button {
+    border-color: var(--color-gray-200, currentcolor);
+  }
+}
+
+@theme {
+  --color-bg: #ffffff; /* Light mode */
+  --color-bg-dark: #121212; /* Dark mode */
+  --color-muted-dark: #27272a;
+  --color-muted-dark-hover: #3a3a3e;
+
+  /*Primary color*/
+  --color-ocean-50: #e7f4ff; /* Lightest (shallow water) */
+  --color-ocean-100: #d3ecff;
+  --color-ocean-200: #b1d9ff;
+  --color-ocean-300: #82beff; /* Mid-tone */
+  --color-ocean-400: #5193ff;
+  --color-ocean-500: #2967ff; /* Primary action (CTA) */
+  --color-ocean-600: #0536ff;
+  --color-ocean-700: #0032ff; /* Darker (deep ocean) */
+  --color-ocean-800: #012bd2;
+  --color-ocean-900: #0c2ea3;
+  --color-ocean-950: #030a26; /* Darkest (abyss) */
+
+  /*primary depth btn*/
+  --color-depth-btn-border: #0032ff;
+  --color-depth-btn-border-active: #0c2ea3;
+
+  /* Secondary color */
+  --color-lavender-50: #eff2fe; /* Lightest (whisper) */
+  --color-lavender-100: #e2e9fd;
+  --color-lavender-200: #cad5fb;
+  --color-lavender-300: #b8c5f9; /* Mid-tone */
+  --color-lavender-400: #8794f2;
+  --color-lavender-500: #6a71ea; /* Secondary actions */
+  --color-lavender-600: #524edd;
+  --color-lavender-700: #453fc3; /* Darker (twilight) */
+  --color-lavender-800: #39369d;
+  --color-lavender-900: #33327d;
+  --color-lavender-950: #1f1d49; /* Darkest (midnight) */
+
+  /* Success (Growth) - "Moss" */
+  --color-moss-50: #f0fdf5;
+  --color-moss-100: #dcfce8;
+  --color-moss-200: #bbf7d1;
+  --color-moss-300: #86efac;
+  --color-moss-base: #4ade80;
+  --color-moss-500: #22c55d;
+  --color-moss-600: #16a349;
+  --color-moss-700: #15803c;
+  --color-moss-800: #166533;
+  --color-moss-900: #14532b;
+  --color-moss-950: #052e14;
+
+  /* Error (Urgent) - “Carnation” */
+  --color-carnation-50: #fef2f2;
+  --color-carnation-100: #fee2e2;
+  --color-carnation-200: #fecaca;
+  --color-carnation-300: #fca5a5;
+  --color-carnation-base: #f87171;
+  --color-carnation-500: #ef4444;
+  --color-carnation-600: #dc2626;
+  --color-carnation-700: #b91c1c;
+  --color-carnation-800: #991b1b;
+  --color-carnation-900: #7f1d1d;
+  --color-carnation-950: #450a0a;
+
+  /* Warning (Caution) - "Honey" */
+  --color-honey-50: #fff9eb;
+  --color-honey-100: #feefc7;
+  --color-honey-200: #fddd8a;
+  --color-honey-300: #fccb4d;
+  --color-honey-base: #fbbf24; /* Base */
+  --color-honey-500: #f5b40b;
+  --color-honey-600: #d99e06;
+  --color-honey-700: #b48409;
+  --color-honey-800: #926d0e;
+  --color-honey-900: #785b0f;
+  --color-honey-950: #453303;
+
+  --color-muted: hsl(var(--muted));
+  --color-muted-foreground: hsl(var(--muted-foreground));
+
+  --color-label-dark: #000000;
+  --color-label-light: #ffffff;
+
+  /*moods*/
+  --color-mood-sunrise: #fef08a; /* Happy */
+  --color-mood-tidal: #7dd3fc; /* Calm */
+  --color-mood-twilight: #a78bfa; /* Melancholic */
+  --color-mood-volcano: #fb923c; /* Angry */
+
+  /*Glassphorsim*/
+  --color-glassphorsim: rgba(16, 16, 18, 0.6);
+
+  /*Sidebar colors */
+  --color-sidebar: var(--sidebar-background);
+  --color-sidebar-foreground: hsl(var(--sidebar-foreground));
+  --color-sidebar-primary: hsl(var(--sidebar-primary));
+  --color-sidebar-primary-foreground: hsl(var(--sidebar-primary-foreground));
+  --color-sidebar-accent: hsl(var(--sidebar-accent));
+  --color-sidebar-accent-foreground: hsl(var(--sidebar-accent-foreground));
+  --color-sidebar-border: hsl(var(--sidebar-border));
+
+  /*Screen sizes- extends default*/
+  --breakpoint-xl: 80rem;
+  --breakpoint-2xl: 87.5rem;
+  --breakpoint-3xl: 96rem;
+
+  /*radius*/
+  --radius-btn: 0.75rem;
+  --radius-card: 0.5rem;
+  --radius-modal: 0.26rem;
+
+  /* shadows*/
+  --shadow-depth-btn: 0 2px 4px 0 rgba(5, 54, 255, 0.5);
+
+  --inset-shadow-depth-btn: inset 0 2px 0 0 rgba(255, 255, 255, 0.25);
+
+  /*font*/
+  --font-tiltNeon: 'TiltNeon', 'sans-serif';
+
+  /*text*/
+  --text-muted-label: 0.813rem;
+  --text-heading-label: 1.25rem;
+  --text-username-label: 1rem;
+  --text-sidebar-label: 0.875rem;
+
+  /* Keyframes */
+  @keyframes accordion-down {
+    from {
+      height: 0;
+    }
+    to {
+      height: var(--radix-accordion-content-height);
+    }
+  }
+
+  @keyframes accordion-up {
+    from {
+      height: var(--radix-accordion-content-height);
+    }
+    to {
+      height: 0;
+    }
+  }
+
+  @keyframes rippling {
+    0% {
+      opacity: 1;
+    }
+    100% {
+      transform: scale(2);
+      opacity: 0;
+    }
+  }
+
+  @keyframes gradient {
+    to {
+      background-position: var(--bg-size) 0;
+    }
+  }
+
+  @keyframes pulse-glow {
+    0% {
+      box-shadow:
+        0 5px 15px rgba(124, 58, 237, 0.1),
+        0 0 0 0 rgba(124, 58, 237, 0.1);
+    }
+    50% {
+      box-shadow:
+        0 5px 25px rgba(124, 58, 237, 0.2),
+        0 0 10px 5px rgba(124, 58, 237, 0.1);
+    }
+    100% {
+      box-shadow:
+        0 5px 15px rgba(124, 58, 237, 0.1),
+        0 0 0 0 rgba(124, 58, 237, 0.1);
+    }
+  }
+  @keyframes float {
+    0% {
+      transform: translateY(0px);
+    }
+    50% {
+      transform: translateY(-8px);
+    }
+    100% {
+      transform: translateY(0px);
+    }
+  }
+  @keyframes rotate {
+    0% {
+      transform: rotate(0deg);
+    }
+    25% {
+      transform: rotate(-15deg);
+    }
+    50% {
+      transform: rotate(0deg);
+    }
+    75% {
+      transform: rotate(15deg);
+    }
+    100% {
+      transform: rotate(0deg);
+    }
+  }
+
+  @keyframes spin-once {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+  }
+
+  @keyframes fade-in {
+    0% { opacity: 0; }
+    100% { opacity: 1; }
+  }
+
+  /* Animation Utilities */
+  --animate-accordion-down: accordion-down 0.2s ease-out;
+  --animate-accordion-up: accordion-up 0.2s ease-out;
+  --animate-rippling: rippling var(--duration) ease-out;
+  --animate-gradient: gradient 8s linear infinite;
+  --animate-spin-once: spin-once 0.5s ease-in-out;
+  --animate-fade-in: fade-in 0.5s ease-in-out forwards;
+}
+
+@utility btn-depth {
+  @apply rounded-btn border-depth-btn-border active:border-depth-btn-border-active w-full border px-6 py-2 text-center text-white;
+  background-image: linear-gradient(
+    var(--color-ocean-500) 0%,
+    var(--color-ocean-600) 100%
+  );
+  box-shadow: var(--inset-shadow-depth-btn), var(--shadow-depth-btn);
+  transition: all 0.2s ease;
+}
+
+@utility btn-flat {
+  @apply bg-ocean-500 border-ocean-500 text-white;
+}
+
+@utility font-button-small{
+  @apply text-xs font-semibold;
+}
+
+@utility btn-depth-active {
+  @apply border-depth-btn-border-active;
+  background-image: linear-gradient(
+    var(--color-ocean-700) 0%,
+    var(--color-ocean-800) 100%
+  );
+  transform: translateY(1px);
+}
+
+@utility btn-flat-active {
+  @apply bg-ocean-700 border-ocean-700 text-white;
+}
+
+@utility btn-depth-hover {
+  box-shadow:
+    var(--inset-shadow-depth-btn),
+    var(--shadow-depth-btn),
+    0 0 0 4px rgba(5, 54, 255, 0.1);
+}
+
+@utility btn-flat-hover {
+  @apply bg-ocean-600 border-ocean-600 text-white;
+}
+
+@utility pulse-animation {
+  animation: pulse-glow 2s ease-in-out infinite; /* Changed to infinite for continuous subtle pulse */
+}
+@utility float-animation {
+  animation: float 6s ease-in-out infinite;
+}
+@utility rotate-animation {
+  animation: rotate 1s ease-in-out;
+}
+
+@utility main-container {
+  /* main */
+  @apply dark:bg-bg-dark bg-bg flex min-h-[calc(100vh-var(--header-height))] flex-1 flex-col items-center overflow-hidden lg:overflow-hidden;
+}
+
+@utility container-spacing {
+  @apply px-3 pt-5 pb-2 max-md:pb-10 sm:px-10;
+}
+
+@utility mood-happy {
+  /* explore page cards colors */
+  @apply bg-linear-to-br from-green-400 to-green-600 dark:from-green-800 dark:to-green-950;
+  transition: all 0.3s ease;
+  box-shadow: 0 0 15px rgba(34, 197, 94, 0.2);
+}
+
+@utility mood-sad {
+  @apply from-blue/50 to-blue bg-linear-to-br dark:from-sky-800 dark:to-sky-950;
+  transition: all 0.3s ease;
+  box-shadow: 0 0 15px rgba(59, 130, 246, 0.2);
+}
+
+@utility mood-angry {
+  @apply bg-linear-to-br from-red-400 to-red-600 dark:from-red-800 dark:to-red-950;
+  transition: all 0.3s ease;
+  box-shadow: 0 0 15px rgba(239, 68, 68, 0.2);
+}
+
+@utility mood-confused {
+  @apply to-secondary-500 bg-linear-to-br from-yellow-400 dark:from-yellow-800 dark:to-yellow-950;
+  transition: all 0.3s ease;
+  box-shadow: 0 0 15px rgba(234, 179, 8, 0.2);
+}
+
+@utility mood-neutral {
+  @apply bg-linear-to-br from-gray-100 to-gray-300 dark:from-gray-800 dark:to-gray-950;
+  transition: all 0.3s ease;
+  box-shadow: 0 0 15px rgba(107, 114, 128, 0.2);
+}
+
+@utility bottombar {
+  @apply xs:px-7 fixed bottom-0 z-40 flex w-full justify-center bg-transparent opacity-[0.96] backdrop-blur-lg md:hidden dark:bg-black;
+}
+
+@utility bottombar_container {
+  @apply dark:bg-glassmorphism xs:gap-5 z-40 flex w-[50%] items-center justify-between gap-3 rounded-full bg-slate-200 p-3 opacity-[0.98] sm:w-[70%];
+}
+
+@utility bottombar_link {
+  @apply relative flex flex-col items-center gap-2 rounded-lg p-2 sm:flex-1 sm:px-2 sm:py-2.5;
+}
+
+@utility leftsidebar_link {
+  @apply relative flex justify-start gap-4 rounded-lg p-4;
+}
+
+@utility shad-button_ghost {
+  @apply flex! items-center! justify-center! gap-4! hover:bg-transparent! hover:text-white!;
+}
+
+@utility font-tilt {
+  /* Define the neon effect styles */
+  text-shadow: 5px 2px rgba(255, 255, 255, 1);
+  color: #0c29ca; /* Set the text color */
+}
+
+@utility view-container {
+  /* view */
+  @apply relative bg-zinc-400 dark:bg-zinc-700 rounded-full h-7 w-13 flex items-center justify-center;
+}
+
+@utility view-text {
+  @apply text-label-dark dark:text-white font-button-small capitalize;
+}
+
+@utility view_skeleton {
+  @apply fixed right-3 bottom-3 h-10 w-24 rounded-lg bg-zinc-400;
+}
+
+@utility css-invert {
+  @apply brightness-200 invert-[50%];
+}
+
+@utility no-focus {
+  @apply focus-visible:ring-0! focus-visible:ring-transparent! focus-visible:ring-offset-0!;
+}
+
+@utility custom-scrollbar {
+  &::-webkit-scrollbar {
+    width: 3px;
+    height: 3px;
+    border-radius: 2px;
+  }
+
+  &::-webkit-scrollbar-track {
+    background: #09090a;
+  }
+
+  &::-webkit-scrollbar-thumb {
+    background: #5c5c7b;
+    border-radius: 50px;
+  }
+
+  &::-webkit-scrollbar-thumb:hover {
+    background: #7878a3;
+  }
+}
+
+@utility briefly-highlight {
+  animation: briefly-highlight 1.5s ease-out forwards;
+}
+
+@layer utilities {
+  @font-face {
+    font-family: 'TiltNeon';
+    src: url('../fonts/TiltNeon-Regular.ttf') format('truetype');
+  }
+
+  /* .markdown {
+    @apply max-w-full prose dark:prose-p:text-light-700 dark:prose-ol:text-light-700 dark:prose-ul:text-light-500 dark:prose-strong:text-white dark:prose-headings:text-white prose-headings:text-dark-400 prose-h1:text-dark-300 prose-h2:text-dark-300 prose-p:text-dark-500 prose-ul:text-dark-500 prose-ol:text-dark-500;
+  }
+
+  .markdown-editor {
+    @apply prose max-w-full prose-p:m-0 dark:prose-headings:text-white prose-headings:text-dark-400 prose-p:text-dark-500 dark:prose-p:text-light-700 prose-ul:text-dark-500 dark:prose-ul:text-light-700 prose-ol:text-dark-500 dark:prose-ol:text-light-700 dark:prose-strong:text-white prose-blockquote:text-dark-500 dark:prose-blockquote:text-light-700;
+  } */
+
+  /* global.css or equivalent */
+  .markdown {
+    @apply prose max-w-full;
+  }
+
+  .markdown-editor {
+    @apply prose prose-p:m-0 max-w-full;
+  }
 }
 
 @layer base {
@@ -37,7 +465,7 @@
     --chart-3: 197 37% 24%;
     --chart-4: 43 74% 66%;
     --chart-5: 27 87% 67%;
-    --sidebar-background: 0 0% 98%;
+    --sidebar-background: var(--color-bg);
     --sidebar-foreground: 240 5.3% 26.1%;
     --sidebar-primary: 240 5.9% 10%;
     --sidebar-primary-foreground: 0 0% 98%;
@@ -45,6 +473,10 @@
     --sidebar-accent-foreground: 240 5.9% 10%;
     --sidebar-border: 220 13% 91%;
     --sidebar-ring: 217.2 91.2% 59.8%;
+    --radix-accordion-content-height: auto;
+    --duration: 1s;
+    --bg-size: 200%;
+    --ocean-600: 228, 100%, 51%;
   }
 
   .dark {
@@ -75,7 +507,7 @@
     --chart-3: 30 80% 55%;
     --chart-4: 280 65% 60%;
     --chart-5: 340 75% 55%;
-    --sidebar-background: 0 0% 3%;
+    --sidebar-background: var(--color-bg-dark);
     --sidebar-foreground: 240 4.8% 95.9%;
     --sidebar-primary: 224.3 76.3% 48%;
     --sidebar-primary-foreground: 0 0% 100%;
@@ -83,156 +515,126 @@
     --sidebar-accent-foreground: 240 4.8% 95.9%;
     --sidebar-border: 240 3.7% 15.9%;
     --sidebar-ring: 217.2 91.2% 59.8%;
+    --radix-accordion-content-height: auto;
+    --duration: 1s;
+    --bg-size: 200%;
+    --ocean-600: 228, 100%, 51%;
   }
 }
 
-body {
-  color: rgb(var(--foreground-rgb));
-  background: linear-gradient(
-      to bottom,
-      transparent,
-      rgb(var(--background-end-rgb))
-    )
-    rgb(var(--background-start-rgb));
+/* Regular CSS overrides for dark mode */
+.dark .markdown,
+.dark .markdown-editor {
+  color: #e5e7eb; /* equivalent of text-light-700 */
 }
 
-@layer base {
-  * {
-    @apply border-border;
-  }
-  /* body {
-    @apply bg-background text-foreground;
-  } */
+.dark .markdown p,
+.dark .markdown-editor p {
+  color: #e5e7eb;
 }
 
-@layer components {
-  /* main */
-  .main-container {
-    @apply flex min-h-[calc(100vh-var(--header-height))] flex-1 flex-col items-center overflow-hidden bg-white dark:bg-dark-1 lg:overflow-hidden;
-  }
+.dark .markdown ol,
+.dark .markdown ul,
+.dark .markdown-editor ol,
+.dark .markdown-editor ul {
+  color: #e7ebe5;
+}
 
-  .container-spacing {
-    @apply px-3 pb-2 pt-5 max-md:pb-10 sm:px-10;
-  }
+.dark .markdown strong,
+.dark .markdown-editor strong,
+.dark .markdown h1,
+.dark .markdown h2,
+.dark .markdown h3,
+.dark .markdown h4,
+.dark .markdown h5,
+.dark .markdown h6,
+.dark .markdown-editor h1,
+.dark .markdown-editor h2,
+.dark .markdown-editor h3,
+.dark .markdown-editor h4,
+.dark .markdown-editor h5,
+.dark .markdown-editor h6 {
+  margin-top: 0 !important;
+  color: #ffffff;
+}
 
-  /* Head Text */
-  .head-text {
-    @apply text-heading2-bold text-light-1;
-  }
+.mdxeditor-toolbar {
+  background: #ffffff !important;
+}
 
-  /* Activity */
-  .activity-card {
-    @apply flex items-center gap-2 rounded-md bg-dark-2 px-7 py-4;
-  }
+.dark .mdxeditor-toolbar {
+  background: #151821 !important;
+}
 
-  /* No Result */
-  .no-result {
-    @apply !text-base-regular text-center text-light-3;
-  }
+.dark .mdxeditor-toolbar button svg {
+  color: #858ead !important;
+}
 
-  /* explore page cards colors */
-  .mood-happy {
-    @apply bg-gradient-to-br from-green-400 to-green-600 dark:from-green-800 dark:to-green-950;
-    transition: all 0.3s ease;
-    box-shadow: 0 0 15px rgba(34, 197, 94, 0.2);
-  }
-  .mood-sad {
-    @apply bg-gradient-to-br from-blue/50 to-blue dark:from-sky-800 dark:to-sky-950;
-    transition: all 0.3s ease;
-    box-shadow: 0 0 15px rgba(59, 130, 246, 0.2);
-  }
-  .mood-angry {
-    @apply bg-gradient-to-br from-red-400 to-red-600 dark:from-red-800 dark:to-red-950;
-    transition: all 0.3s ease;
-    box-shadow: 0 0 15px rgba(239, 68, 68, 0.2);
-  }
-  .mood-confused {
-    @apply bg-gradient-to-br from-yellow-400 to-secondary-500 dark:from-yellow-800 dark:to-yellow-950;
-    transition: all 0.3s ease;
-    box-shadow: 0 0 15px rgba(234, 179, 8, 0.2);
-  }
-  .mood-neutral {
-    @apply bg-gradient-to-br from-gray-100 to-gray-300 dark:from-gray-800 dark:to-gray-950;
-    transition: all 0.3s ease;
-    box-shadow: 0 0 15px rgba(107, 114, 128, 0.2);
-  }
+.dark .mdxeditor-toolbar button:hover svg {
+  color: #000 !important;
+}
 
-  .searchbar {
-    @apply flex gap-1 rounded-lg bg-dark-3 px-4 py-2;
-  }
+.dark .mdxeditor-toolbar [role='separator'] {
+  border-color: #555 !important;
+}
 
-  .searchbar_input {
-    @apply text-base-regular border-none bg-dark-3 text-light-4 outline-none !important;
-  }
+.markdown a {
+  color: #1da1f2;
+}
 
-  .bottombar {
-    @apply fixed bottom-0 z-10 flex w-full justify-center bg-transparent opacity-[0.96] backdrop-blur-lg dark:bg-black xs:px-7 md:hidden;
-  }
+.markdown a,
+code {
+  /* These are technically the same, but use both */
+  overflow-wrap: break-word;
+  word-wrap: break-word;
 
-  .bottombar_container {
-    @apply z-40 flex w-[50%] items-center justify-between gap-3 rounded-full bg-slate-200 p-3 opacity-[0.98] dark:bg-glassmorphism xs:gap-5 sm:w-[70%];
-  }
+  -ms-word-break: break-all;
+  /* This is the dangerous one in WebKit, as it breaks things wherever */
+  word-break: break-all;
+  /* Instead use this non-standard one: */
+  word-break: break-word;
 
-  .bottombar_link {
-    @apply relative flex flex-col items-center gap-2 rounded-lg p-2 sm:flex-1 sm:px-2 sm:py-2.5;
-  }
+  /* Adds a hyphen where the word breaks, if supported (No Blink) */
+  -ms-hyphens: auto;
+  -moz-hyphens: auto;
+  -webkit-hyphens: auto;
+  hyphens: auto;
 
-  .leftsidebar_link {
-    @apply relative flex justify-start gap-4 rounded-lg p-4;
-  }
+  padding: 2px;
+  color: #ff7000 !important;
+}
 
-  .shad-button_ghost {
-    @apply flex items-center justify-center gap-4 hover:bg-transparent hover:text-white !important;
+.markdown pre {
+  display: grid;
+  width: 100%;
+}
+
+.markdown pre code {
+  width: 100%;
+  display: block;
+  overflow-x: auto;
+
+  color: inherit !important;
+}
+
+[data-lexical-editor='true'] {
+  height: 350px !important;
+  overflow-y: auto !important;
+}
+
+@layer utilities {
+  body {
+    color: rgb(var(--foreground-rgb));
+    background: linear-gradient(
+        to bottom,
+        transparent,
+        rgb(var(--background-end-rgb))
+      )
+      rgb(var(--background-start-rgb));
   }
 }
 
 @layer utilities {
-  /* Define the neon effect styles */
-  .font-tilt {
-    text-shadow: 5px 2px rgba(255, 255, 255, 1);
-    color: #0c29ca; /* Set the text color */
-  }
-
-  /* view */
-  .view-container {
-    @apply relative mt-5 flex w-full items-center justify-end;
-  }
-
-  .view-text {
-    @apply rounded-lg bg-dark-2 px-4 py-2 text-[16px] font-medium capitalize text-white dark:bg-slate-400 dark:text-dark-1;
-  }
-
-  .view_skeleton {
-    @apply fixed bottom-3 right-3 h-10 w-24 rounded-lg bg-zinc-400;
-  }
-
-  .css-invert {
-    @apply brightness-200 invert-[50%];
-  }
-
-  .no-focus {
-    @apply focus-visible:ring-0 focus-visible:ring-transparent focus-visible:ring-offset-0 !important;
-  }
-
-  .custom-scrollbar::-webkit-scrollbar {
-    width: 3px;
-    height: 3px;
-    border-radius: 2px;
-  }
-
-  .custom-scrollbar::-webkit-scrollbar-track {
-    background: #09090a;
-  }
-
-  .custom-scrollbar::-webkit-scrollbar-thumb {
-    background: #5c5c7b;
-    border-radius: 50px;
-  }
-
-  .custom-scrollbar::-webkit-scrollbar-thumb:hover {
-    background: #7878a3;
-  }
-
   @keyframes briefly-highlight {
     0% {
       transform: scale(1);
@@ -247,25 +649,60 @@ body {
       box-shadow: 0 0 0 0 rgba(59, 130, 246, 0);
     }
   }
+}
 
-  .briefly-highlight {
-    animation: briefly-highlight 1.5s ease-out forwards;
+@layer utilities {
+  ::-webkit-scrollbar {
+    width: 0px;
+    height: 0px;
+  }
+
+  ::-webkit-scrollbar-track {
+    background: transparent;
+  }
+
+  ::-webkit-scrollbar-thumb {
+    background: #8794f2;
+    border-radius: 20px;
+    /* border: 2px solid rgba(128, 128, 128, 0.199); */
+    border: none;
   }
 }
 
-::-webkit-scrollbar {
-  width: 8px;
-  height: 8px;
-}
+@layer utilities {
+  .no-scrollbar {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+  }
+  .no-scrollbar::-webkit-scrollbar {
+    display: none;
+  }
 
-::-webkit-scrollbar-track {
-  background: #f7fafc17;
-}
+  .responsive-container { /* landing page responsive container */
+    width: 100%;
+    padding-left: 0.5rem;
+    padding-right: 0.5rem;
+  }
 
-::-webkit-scrollbar-thumb {
-  background: #7878a3;
-  border-radius: 20px;
-  border: 2px solid rgba(128, 128, 128, 0.199);
+  .slope-overlay {
+    position: absolute;
+    bottom: 0;
+    right: 0;
+    width: 40%;
+    height: 60%;
+    background: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200" preserveAspectRatio="none"><path d="M200,200 C100,140 160,100 90,80 C80,70 90,90 60,60 C30,30 20,50 0,0 L0,200 Z" fill="%23727272"/></svg>') no-repeat;
+    background-size: cover;
+    z-index: 10;
+    pointer-events: none;
+    transform: scaleX(-1);
+  }
+
+  @media (min-width: 768px) {
+    .responsive-container {
+      padding-left: 5%;
+      padding-right: 5%;
+    }
+  }
 }
 
 @layer base {
@@ -273,6 +710,11 @@ body {
     @apply border-border;
   }
   body {
-    @apply bg-background text-foreground;
+    @apply bg-bg-dark text-foreground;
+  }
+
+  button:not(:disabled),
+  [role='button']:not(:disabled) {
+    cursor: pointer;
   }
 }

@@ -8,6 +8,7 @@ import React from 'react';
 
 export const metadata: Metadata = {
   title: 'Create Post',
+  description: "Create and share your story with a caring community offering support, advice, and encouragement for mental wellness and personal growth."
 };
 
 const CreatePost = () => {
@@ -16,7 +17,7 @@ const CreatePost = () => {
       <div className="container-spacing w-full">
         <PostForm />
 
-        <div className="fixed bottom-10 right-6 z-50 block rounded-full md:hidden">
+        <div className="fixed bottom-10 right-6 z-50 block rounded-full">
           <TourButton />
         </div>
       </div>

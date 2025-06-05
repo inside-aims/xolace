@@ -38,7 +38,7 @@ const ChannelQuestionsCard = () => {
             </p>
           </motion.div>
         </DialogTrigger>
-        <DialogContent className="h-[60%] w-full max-w-[26rem] sm:max-w-md">
+        <DialogContent className="h-[60%] w-full max-w-[95%] sm:max-w-md">
           <DialogHeader>
             <DialogTitle className="mb-6 text-2xl font-bold">
               <span>&#128220; </span>Frequently Asked Questions
@@ -50,7 +50,7 @@ const ChannelQuestionsCard = () => {
           <Accordion
             type="single"
             collapsible
-            className="max-h-[90%] min-h-[90%] w-full overflow-auto px-3"
+            className="max-h-[90%] min-h-[90%] w-full overflow-auto px-2"
           >
             {faqs.map(faq => (
               <AccordionItem key={faq.id} value={`item-${faq.id}`}>

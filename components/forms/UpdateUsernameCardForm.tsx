@@ -110,9 +110,9 @@ export default function UpdateUsernameCardForm() {
 
   return (
     <Form {...form}>
-      <Card className="relative overflow-hidden bg-gradient-to-bl from-white to-gray-50 p-1 shadow-xl dark:from-[hsl(228_85%_5%)] dark:to-[hsl(228_85%_3%)]">
+      <Card className="relative overflow-hidden bg-linear-to-bl from-white to-gray-50 p-1 shadow-xl dark:from-[hsl(228_85%_5%)] dark:to-[hsl(228_85%_3%)]">
         {/* <div className="absolute inset-0 bg-[linear-gradient(45deg,transparent_0%,rgba(255,255,255,0.1)_50%,transparent_100%)] dark:bg-[linear-gradient(45deg,transparent_0%,rgba(255,255,255,0.03)_50%,transparent_100%)]" /> */}
-        <div className="absolute right-0 top-0 h-16 w-16 rotate-45 bg-gradient-to-br from-purple-500/20 to-transparent dark:from-purple-500/10" />
+        <div className="absolute right-0 top-0 h-16 w-16 rotate-45 bg-linear-to-br from-purple-500/20 to-transparent dark:from-purple-500/10" />
         
         <CardHeader className="space-y-1">
           <CardTitle className="text-2xl font-semibold tracking-tight">
@@ -152,7 +152,7 @@ export default function UpdateUsernameCardForm() {
             <CardFooter className="-mx-6 -mb-6 mt-4 bg-gray-50/50 px-6 py-4 dark:bg-[hsl(228_85%_4%)] ">
               <Button
                 type="submit"
-                className="w-full bg-gradient-to-r from-purple-600 to-pink-600 text-white shadow-lg transition-all hover:from-purple-700 hover:to-pink-700 dark:from-purple-500 dark:to-pink-500 dark:hover:from-purple-600 dark:hover:to-pink-600 "
+                className="w-full bg-linear-to-r from-purple-600 to-pink-600 text-white shadow-lg transition-all hover:from-purple-700 hover:to-pink-700 dark:from-purple-500 dark:to-pink-500 dark:hover:from-purple-600 dark:hover:to-pink-600 "
                 disabled={isLoading}
               >
                 {isLoading ? <Loader /> : 'Update Username'}

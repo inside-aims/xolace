@@ -8,11 +8,12 @@ import { getSupabaseAdminClient } from '@/utils/supabase/adminClient';
 import { signUpSchema } from '@/validation';
 import { validatedAction } from '@/lib/auth/middleware';
 import { sendOTPLink } from '@/utils/sendOTPLink';
-import { Post, User } from '@/types/global';
-import { revalidatePath , revalidateTag} from 'next/cache';
+import { Post, Tag, User } from '@/types/global';
+import { revalidatePath } from 'next/cache';
 import { PostgrestError } from '@supabase/supabase-js';
 import { logActivity } from '@/lib/activity-logger';
 import { ActivityType } from '@/types/activity';
+import { cache } from 'react';
 
 export const signUpAction = validatedAction(signUpSchema, async data => {
   const supabaseAdmin = getSupabaseAdminClient();
@@ -64,6 +65,7 @@ export const signUpAction = validatedAction(signUpSchema, async data => {
       username: username,
       supabase_user: userData.user.id,
       avatar_url: avatarUrl,
+      email: email,
     })
     .select()
     .single();
@@ -97,7 +99,8 @@ export const signUpAction = validatedAction(signUpSchema, async data => {
     };
   }
 
-  redirect(`/registration-success?email=${safeEmailString}`);
+  const safeUserId = encodeURIComponent(userData.user.id);
+  redirect(`/registration-success?id=${safeUserId}&email=${safeEmailString}`);
 });
 
 export const forgotPasswordAction = async (formData: FormData) => {
@@ -221,8 +224,8 @@ export async function updateViewsAction(postId: string, userId: string, relatedU
     });
 
     revalidatePath('/feed');
-    revalidateTag('posts')
     revalidatePath('/explore');
+    revalidatePath(`/post/${postId}`, 'page');
 
     return { success: true, data };
   } catch (error) {
@@ -268,7 +271,6 @@ export async function voteAction(
     });
 
     revalidatePath('/feed', 'page');
-    revalidateTag('posts')
     revalidatePath('/explore', 'page');
 
     return { success: true, data: voteResult };
@@ -384,3 +386,73 @@ export const fetchCollectionPostsAction = async (
   // Extract and return the nested posts data
   return data?.map((entry) => entry.posts) || [];
 };
+
+export const fetchTags = async () => {
+
+  const supabase = await createClient();
+
+  const { data, error }: {data: Tag[] | null, error: PostgrestError | null}  = await supabase
+    .from('tags')
+    .select(
+      `
+      *
+    `
+    ).limit(6)
+    .order('post', { ascending: false });
+
+  if (error) throw error;
+
+  
+  return data || [];
+};
+
+export async function fetchDailyPromptAction() {
+  const supabase = await createClient();
+  const today = new Date().toISOString().split('T')[0];
+
+  try {
+    const { data: promptData, error } = await supabase
+      .from('daily_prompts')
+      .select(`
+        id,
+        prompt_text,
+        created_at,
+        active_on
+      `)
+      .eq('active_on', today)
+      .single();
+
+    if (error) {
+      return { success: false, error: error.message };
+    }
+
+    return { success: true, data: promptData };
+  } catch (error) {
+    return error ? { success: false, error: 'Failed to fetch daily prompt' } : {success: false, error: 'Failed to fetch daily prompt, Try again'};
+  }
+}
+
+export const fetchUserStreakAction = cache(async (userId: string) => {
+  if (!userId) {
+    return { success: false, error: 'User ID is required.', data: null };
+  }
+  const supabase = await createClient();
+  try {
+    const { data, error } = await supabase
+      .from('prompt_streaks')
+      .select('current_streak, last_response_date')
+      .eq('user_id', userId)
+      .single();
+
+    if (error) {
+      if (error.code === 'PGRST116') { // PGRST116: "Not Found" - user might not have a streak record yet
+        return { success: true, data: { current_streak: 0, last_response_date: null } };
+      }
+      return { success: false, error: error.message, data: null };
+    }
+    
+    return { success: true, data: data };
+  } catch (error) {
+    return error ? { success: false, error: 'Failed to fetch user streak', data: null } : { success: false, error: 'Failed to fetch user streak, Try again', data: null };
+  }
+})

@@ -10,6 +10,8 @@ import {
   Bomb, Eclipse, Key , GlobeLock, Copyright, LibraryBig,
 } from 'lucide-react';
 
+
+
 export const sidebarLinks = [
   {
     icon: <HomeIcon />,
@@ -190,11 +192,54 @@ export const faqs = [
   },
 ];
 
+export const helpFaqs = [
+  {
+    id: "1",
+    question: "How does Xolace protect my anonymity?",
+    answer: "Xolace uses advanced privacy techniques to ensure your identity remains hidden. No personal details are attached to anonymous posts."
+  },
+  {
+    id: "2",
+    question: "Can I switch from anonymous to public mode when posting?",
+    answer: "Yes, you can choose to post either anonymously or publicly by toggling the visibility option before submitting your post."
+  },
+  {
+    id: "3",
+    question: "How do I report a harmful or abusive post?",
+    answer: "Click the 'Report' button next to the post and choose a reason. Our moderation team will review it within 24 hours."
+  },
+  {
+    id: "4",
+    question: "Can other users see my profile details when I post anonymously?",
+    answer: "No. When you post anonymously, your profile details are completely hidden from other users."
+  },
+  {
+    id: "5",
+    question: "How do I reset my password on Xolace?",
+    answer: "Go to the login page, click on 'Forgot password?', and follow the instructions to reset it using your email."
+  },
+  {
+    id: "6",
+    question: "Is my data shared with third parties?",
+    answer: "No, Xolace does not sell or share your personal data with third parties. We are committed to user privacy."
+  },
+  {
+    id: "7",
+    question: "How can I delete my account permanently?",
+    answer: "Go to 'Settings' > 'Account' > 'Delete Account'. Follow the confirmation steps to permanently remove your data from Xolace."
+  },
+  {
+    id: "8",
+    question: "What kind of content can I post on Xolace?",
+    answer: "You can share thoughts, questions, or experiences. However, harmful, explicit, or illegal content is strictly prohibited."
+  }
+];
+
 export const getMoodLabelStyle = mood => {
   console.log(mood);
   switch (mood) {
     case 'neutral':
-      return ' !text-pink-500 !dark:text-pink-400 ';
+      return ' text-pink-500! !dark:text-pink-400 ';
     case 'happy':
       return 'text-green-500 dark:text-green-400';
     case 'sad':
@@ -214,3 +259,44 @@ export const filters = [
   { name: 'controversial', label: 'Spicy', icon: <Flame size={16} /> },
   { name: 'recent', label: 'Fresh', icon: <Clock size={16} /> },
 ];
+
+export   const tips = [
+  "Try not to use personal data in your post , like your name and such.",
+  "Be real and authentic in your posts.",
+  "Don't use any profanity or offensive language.",
+]
+
+
+export const reputationPoints = {
+  upvote: {
+    performer: 2,
+    author: 3,
+    removed_performer: -2,
+    removed_author: -3,
+  },
+  downvote: {
+    performer: -1,
+    author: -2,
+    removed_performer: 1,
+    removed_author: 2,
+  },
+  post_created: {
+    author: 4, // Default for general posts
+  },
+  prompt_post_created: {
+    author: 6,
+  },
+  comment_created: {
+    author: 2,
+  },
+  post_deleted: {
+    author: -3,
+  },
+  comment_deleted: {
+    author: -2,
+  },
+  post_viewed:{
+    performer:1,
+    author: 3,
+  }
+};

@@ -14,7 +14,7 @@ import { Textarea } from './textarea';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useForm } from 'react-hook-form';
 import { z } from 'zod';
-import { DoubleArrowLeftIcon } from '@radix-ui/react-icons';
+import { ArrowLeft } from 'lucide-react';
 
 import { Button } from '@/components/ui/button';
 import {
@@ -27,7 +27,7 @@ import {
 import CommentCard from '../cards/CommentCard';
 
 import PostMetrics from '../shared/PostMetrics';
-import { useToast } from '../ui/use-toast';
+import { toast } from 'sonner';
 import Loader from '../shared/loaders/Loader';
 import { CommentSchema } from '@/validation';
 import { getSupabaseBrowserClient } from '@/utils/supabase/client';
@@ -35,7 +35,7 @@ import { useUserState } from '@/lib/store/user';
 import { Send } from 'lucide-react';
 import { VisuallyHidden } from '@radix-ui/react-visually-hidden';
 import { Comment, DetailPost } from '@/types/global';
-import { logActivity } from '@/lib/activity-logger';
+import { useCommentMutation } from '@/hooks/posts/useCommentMutation';
 
 type Type = string | string[] | undefined;
 
@@ -45,12 +45,16 @@ const PostDetailDrawer = ({ post, type }: { post: DetailPost; type: Type }) => {
   // initialize supabase client
   const supabase = getSupabaseBrowserClient();
 
-  const { toast } = useToast();
   const router = useRouter();
 
   // states
   const [comments, setComments] = useState<Comment[]>(post?.comments || []);
-  const [isLoading, setIsLoading] = useState(false);
+
+  // TODO: Will probably fetch comments from the database in the future instead of using from post object
+
+  // Use the comment mutation hook
+  const { mutate: createComment, isPending: isCreatingComment } =
+    useCommentMutation(post);
 
   //   counter for comment fields
   const counter: number = 300;
@@ -78,7 +82,7 @@ const PostDetailDrawer = ({ post, type }: { post: DetailPost; type: Type }) => {
 
       return () => clearTimeout(timer);
     }
-  // eslint-disable-next-line react-hooks/exhaustive-deps
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [type]);
 
   // form validator
@@ -95,38 +99,63 @@ const PostDetailDrawer = ({ post, type }: { post: DetailPost; type: Type }) => {
 
   // submit comment form
   async function onSubmit(data: z.infer<typeof CommentSchema>) {
-    setIsLoading(true);
     const { comment } = data;
 
-    // inserting into the database table in supabase
-    supabase
-      .from('comments')
-      .insert({
-        post: post.id,
-        comment_text: comment,
-      })
-      .then(() => {
-        toast({
-          title: 'Comment Created 🖌️',
-          description: 'Your comment has been successfully created! 😆',
-          variant: 'default',
-        });
-        form.reset();
-
-        // check if the user is the creator of the post
-        const relatedUser = post.created_by === user?.id ? undefined : post.created_by;
-        // log comment activity
-        logActivity({
-          userId: user?.id || '',
-          relatedUserId: relatedUser,
-          entityType: 'comment',
-          action: 'commented',
-          postId: post.id,
-          metadata: { content: comment, link : `/post/${post.id}` },
-        });
-  
-        setIsLoading(false);
+    if (!user?.id) {
+      toast.error('Authentication Required', {
+        description: 'Please log in to post a comment.',
       });
+      return;
+    }
+
+    // inserting into the database table in supabase
+    // supabase
+    //   .from('comments')
+    //   .insert({
+    //     post: post.id,
+    //     comment_text: comment,
+    //   })
+    //   .then(() => {
+    //     toast({
+    //       title: 'Comment Created 🖌️',
+    //       description: 'Your comment has been successfully created! 😆',
+    //       variant: 'default',
+    //     });
+    //     form.reset();
+
+    //     // check if the user is the creator of the post
+    //     const relatedUser = post.created_by === user?.id ? undefined : post.created_by;
+    //     // log comment activity
+    //     logActivity({
+    //       userId: user?.id || '',
+    //       relatedUserId: relatedUser,
+    //       entityType: 'comment',
+    //       action: 'commented',
+    //       postId: post.id,
+    //       metadata: { content: comment, link : `/post/${post.id}` },
+    //     });
+
+    //     setIsLoading(false);
+    //   });
+
+    createComment(
+      {
+        postId: post.id,
+        commentText: comment,
+        postCreatedBy: post.created_by,
+      },
+      {
+        onSuccess: () => {
+          toast.success('Thanks for sharing your thoughts! 😆');
+          form.reset();
+        },
+        onError: error => {
+          toast.error('Failed to create comment', {
+            description: error.message || 'Something went wrong.',
+          });
+        },
+      },
+    );
   }
 
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -135,12 +164,16 @@ const PostDetailDrawer = ({ post, type }: { post: DetailPost; type: Type }) => {
     const listener = (payload: any) => {
       const eventType = payload.eventType;
 
-
       if (eventType === 'INSERT') {
-        setComments((prevComments: Comment[]) => [...prevComments, payload.new]);
+        setComments((prevComments: Comment[]) => [
+          ...prevComments,
+          payload.new,
+        ]);
       } else if (eventType === 'DELETE') {
         setComments((prevComments: Comment[]) =>
-          prevComments.filter((comment: Comment) => comment.id !== payload.old.id),
+          prevComments.filter(
+            (comment: Comment) => comment.id !== payload.old.id,
+          ),
         );
       } else if (eventType === 'UPDATE') {
         setComments((prevComments: Comment[]) =>
@@ -180,29 +213,26 @@ const PostDetailDrawer = ({ post, type }: { post: DetailPost; type: Type }) => {
       >
         <DrawerContent
           aria-describedby={undefined}
-          className="h-full max-h-[97%]"
+          className="h-full max-h-[97%] sm:hidden! dark:bg-bg-dark"
         >
           <VisuallyHidden>
             <DrawerTitle>Post Detail Drawer</DrawerTitle>
           </VisuallyHidden>
           <DrawerHeader className="relative flex flex-col items-center">
-            <Button
-              variant={'link'}
-              className="absolute left-5 text-blue dark:text-sky-500 max-sm:top-3 md:left-10"
+            <button
+              className=" absolute left-5 max-sm:top-3 md:left-10 dark:bg-muted-dark hover:bg-muted-dark-hover flex h-7 w-7 cursor-pointer items-center justify-center rounded-full bg-gray-700 no-underline"
               onClick={() => router.back()}
             >
-              <DoubleArrowLeftIcon className="mr-1 text-blue dark:text-sky-500" />
-              back
-            </Button>
+              <ArrowLeft size={20} className="text-white" />
+            </button>
             {user ? (
-                <PostMetrics
-                  post={post}
-                  userId={user?.id || ''}
-                  votes={post.votes}
-                  section="details"
-                  commentLength={post.comments.length}
-                />
-
+              <PostMetrics
+                post={post}
+                userId={user?.id || ''}
+                votes={post.votes}
+                section="details"
+                commentLength={comments.length}
+              />
             ) : (
               <div>Kindly refresh the page!!</div>
             )}
@@ -210,7 +240,7 @@ const PostDetailDrawer = ({ post, type }: { post: DetailPost; type: Type }) => {
             <Form {...form}>
               <form
                 onSubmit={form.handleSubmit(onSubmit)}
-                className="w-full md:w-1/2"
+                className="w-full md:w-1/2 mt-3"
               >
                 <FormField
                   control={form.control}
@@ -219,8 +249,8 @@ const PostDetailDrawer = ({ post, type }: { post: DetailPost; type: Type }) => {
                     <FormItem>
                       <FormControl>
                         <Textarea
-                          placeholder="Post your reply"
-                          className="no-focus mb-2 h-[42px] resize-none rounded-full text-dark-1 outline-none dark:text-white"
+                          placeholder="Join the conversation..."
+                          className="no-focus text-dark-1 dark:border-muted-dark dark:hover:border-muted-dark-hover mb-3 min-h-10! rounded-lg resize-none outline-none dark:text-white focus-visible:ring-0  focus-visible:border-input"
                           {...field}
                         />
                       </FormControl>
@@ -231,14 +261,16 @@ const PostDetailDrawer = ({ post, type }: { post: DetailPost; type: Type }) => {
                 <div className="flex flex-row-reverse items-center justify-between">
                   <Button
                     size={'sm'}
-                    disabled={comment.length > 300 || false}
+                    disabled={
+                      comment.length > 300 || false || isCreatingComment
+                    }
                     type="submit"
-                    className="rounded-full"
+                    className="btn-depth active:btn-depth-active hover:btn-depth-hover max-w-20 min-w-12 rounded-full text-white"
                   >
-                    {isLoading ? (
+                    {isCreatingComment ? (
                       <div className="flex items-center justify-center gap-x-2">
                         {' '}
-                        <Loader /> <span>Loading</span>
+                        <Loader />
                       </div>
                     ) : (
                       <Send size={20} strokeWidth={1.75} absoluteStrokeWidth />
@@ -249,7 +281,7 @@ const PostDetailDrawer = ({ post, type }: { post: DetailPost; type: Type }) => {
                       counter - comment.length < 0
                         ? 'border-red-500 bg-red-400'
                         : 'border-blue bg-blue'
-                    } flex h-9 max-h-9 min-h-9 w-9 min-w-9 max-w-9 items-center justify-center rounded-full p-3 shadow-sm`}
+                    } flex h-9 max-h-9 min-h-9 w-9 max-w-9 min-w-9 items-center justify-center rounded-full p-3 shadow-sm`}
                   >
                     {counter - comment.length}
                   </p>
@@ -268,11 +300,39 @@ const PostDetailDrawer = ({ post, type }: { post: DetailPost; type: Type }) => {
             )}
           >
             {comments
-              .map((comment: Comment) => <CommentCard key={comment.id} comment={comment} />)
+              .map((comment: Comment) => (
+                <CommentCard
+                  key={comment.id}
+                  comment={comment}
+                  className="bg-transparent! border-0 pl-0!"
+                  headerClassName="px-0 py-0!"
+                  contentClassName="pl-10 pb-0"
+                />
+              ))
               .reverse()}
             {comments.length == 0 && (
-              <div>
-                <p>No comments</p>
+              <div className="flex flex-col items-center justify-center space-y-4 py-5 text-center">
+                <div className="relative">
+                  <div className="animate-bounce">💭</div>
+                  <div className="animate-bounce-delayed absolute top-0 -right-4">
+                    💭
+                  </div>
+                  <div className="animate-bounce-slow absolute top-2 -left-4">
+                    💭
+                  </div>
+                </div>
+                <h3 className="text-md font-semibold text-gray-800 dark:text-gray-200">
+                  Be the First to share your Experience!
+                </h3>
+                <p className="max-w-sm text-sm text-gray-600 dark:text-gray-400">
+                  Start the conversation and share your thoughts. Your
+                  perspective matters!
+                </p>
+                <div className="mt-2 text-xs text-gray-500 dark:text-gray-500">
+                  <span className="inline-block transform transition-transform hover:scale-110">
+                    👆 Just type above to join the discussion
+                  </span>
+                </div>
               </div>
             )}
           </div>

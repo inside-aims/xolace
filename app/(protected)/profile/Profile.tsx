@@ -1,169 +1,151 @@
 'use client';
 
-import React, { useEffect, useState } from 'react';
+import React, {useRef, useState} from 'react';
 import { useRouter } from 'next/navigation';
-import dynamic from 'next/dynamic';
-
+import { Link, Calendar } from "lucide-react";
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
-import { Separator } from '@/components/ui/separator';
-import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
-
-//import { PostCard } from '@/components/cards/PostCard';
-//import UpdatePasswordCardForm from '@/components/forms/UpdatePasswordCardForm';
-//import UpdateUsernameCardForm from '@/components/forms/UpdateUsernameCardForm';
-//import DeleteUserAccountCard from '@/components/cards/DeleteUserAccountCard';
-import { ScrollArea } from '@/components/ui/scroll-area';
-import Loader from '@/components/shared/loaders/Loader';
 import { useUserState } from '@/lib/store/user';
-import { getSupabaseBrowserClient } from '@/utils/supabase/client';
-//import BlurFade from '@/components/ui/blur-fade';
-import { Post } from '@/types/global';
-import { useToast } from '@/components/ui/use-toast';
-
-// Dynamic imports for non-critical components
-const PostCard = dynamic(
-  () => import('@/components/cards/PostCard').then(mod => mod.PostCard),
-  {
-    loading: () => <Loader />,
-    ssr: false,
-  },
-);
-const UpdatePasswordCardForm = dynamic(
-  () => import('@/components/forms/UpdatePasswordCardForm'),
-  {ssr: false, loading: () => <p className="p-4">Loading forms...</p>}
-);
-const UpdateUsernameCardForm = dynamic(() => import('@/components/forms/UpdateUsernameCardForm'), {ssr: false});
-const DeleteUserAccountCard = dynamic(() => import('@/components/cards/DeleteUserAccountCard'), {ssr: false});
-const BlurFade = dynamic(() => import('@/components/ui/blur-fade'), {
-    ssr: false
-  });
+import {TopTags} from "@/components/profile/top-tags";
+import {Stats} from "@/components/profile/stats";
+import {Tabs, TabsList, TabsContent, TabsTrigger} from '@/components/ui/tabs'
+import Posts from "@/components/profile/posts";
 
 const Profile = () => {
-  const router = useRouter();
   // get user profile data
+  const router = useRouter();
   const user = useUserState(state => state.user);
+  const [selectedCategory, setSelectedCategory] = useState<string>("stats")
+  const scrollRef = useRef<HTMLDivElement>(null);
 
-  // destructure toast function
-  const { toast } = useToast();
+  // Handle date format to humanize
+  const formattedDate = (joinedDate: string) => {
+    const date = new Date(joinedDate);
+    return `Joined ${date.toLocaleDateString('en-US', {month: 'short'})}
+    ${date.getDate()}, ${date.getFullYear()}
+    `
+  }
 
-  const [isLoadingPosts, setIsLoadingPosts] = useState(true);
-  const [posts, setPosts] = useState<Post[]>([]);
-
-  // fetch user posts
-  useEffect(() => {
-    if (!user) {
-      return;
-    }
-
-    const fetchUserPosts = async () => {
-      // initialize supabase client
-      const supabase = getSupabaseBrowserClient();
-      const postStatement = supabase
-        .from('posts')
-        .select(
-          `
-       *,
-        posttags (
-        tags (
-          name
-        )
-      ),
-          votes(
-          user_id,
-          vote_type
-          ),
-          comments:comments(count),
-          views:views(count),
-          collections(
-          user_id
-          )
-    `,
-        )
-        .eq('created_by', user?.id)
-        .order('created_at', { ascending: false });
-      const { data: postData, error } = await postStatement;
-
-      if (error) {
-        toast({
-          title: 'Error fetching posts',
-          description:
-            'Something must have gone wrong. Kindly refresh the page',
-          variant: 'destructive',
-        });
-      } else {
-        setPosts(postData);
-        setIsLoadingPosts(false);
-      }
-    };
-
-    fetchUserPosts();
-  }, [user?.id]);
-
-  // handle post click
-  const handlePostClick = (postId: string) => {
-    router.push(`/post/${postId}`);
+  const handleSelectedItem = (itemKey: string) => {
+    setSelectedCategory(itemKey);
   };
 
+  //dummy data for profile menu options
+  const profileMenu: {key: string, name: string, children: React.ReactNode}[] = [
+    {key: 'stats', name: 'Stats', children: <Stats reputation={user?.reputation || 0} userId={user?.id || ""} />},
+    {key: 'topTags', name: 'Top Tags', children: <TopTags/>},
+    {key: 'posts', name: 'Your Posts', children: <Posts/> },
+  ]
+
   return (
-    <>
-      <div className="flex items-center justify-center gap-3 md:gap-4 pt-3">
-        <Avatar>
-          <AvatarImage src={user?.avatar_url ?? undefined} />
-          <AvatarFallback>{user?.username?.charAt(0)}</AvatarFallback>
-        </Avatar>
-        <div className="flex flex-col items-start justify-center gap-1">
-          <h5 className="text-small text-default-400 tracking-tight text-dark-2 dark:text-white">
-            {user?.username}
-          </h5>
-          <h4 className="text-dark-4/65 dark:text-gray-400">{posts?.length}</h4>
+      <div className="w-full grid grid-cols-12 md:h-screen pb-12 md:pb-0">
+        <div
+          className="col-span-12 md:col-span-8 px-0 md:px-8 border-0 md:border-e space-y-4 md:space-y-12">
+          <div className={"flex flex-col md:flex-row px-4 md:px-0 items-start md:items-center pt-4 md:pt-8 gap-4"}>
+            {/*profile avatar and username section*/}
+            <Avatar className="w-40 h-40">
+              <AvatarImage
+                src={user?.avatar_url ?? undefined}
+                className="w-full h-full object-cover object-center rounded-full border"
+              />
+              <AvatarFallback className="text-4xl border">
+                {user?.username?.charAt(0)}
+              </AvatarFallback>
+            </Avatar>
+            <div className={"w-full flex flex-col items-start gap-4"}>
+              <div>
+                <h3 className={"font-semibold leading-tight text-xl"}>
+                  {user?.username}
+                </h3>
+                <span className={"lowercase"}>{`@${user?.username}`}</span>
+              </div>
+              <div className={"w-full flex flex-row flex-wrap items-center gap-4 "}>
+                <p className={"flex items-center flex-row gap-1"}>
+                  <Link size={18}/>
+                  <span
+                    className={"text-blue9 cursor-pointer hover:underline"}
+                    onClick={() => router.push('/settings/your-account')}
+                  >
+                    Settings
+                  </span>
+                </p>
+                {/* <p className={"flex items-center flex-row gap-1"}>
+                  <span><MapPin size={18}/></span>
+                  Miami
+                </p> */}
+                <p className={"flex items-center flex-row gap-1"}>
+                  <span><Calendar size={18}/></span>
+                  {user?.created_at ?
+                    formattedDate(user.created_at) : "N/A"}
+                </p>
+              </div>
+            </div>
+          </div>
+
+          {/*profile options on only mobile view*/}
+          <div className="block md:hidden w-full">
+            <div className="mx-4 flex w-full items-center gap-2 overflow-x-auto touch-pan-x md:touch-none flex-nowrap no-scrollbar pb-2"
+              ref={scrollRef}
+            >
+              {profileMenu.map((option) => {
+                const isActive = selectedCategory === option.key;
+                return (
+                  <p
+                    key={option.key}
+                    className={`whitespace-nowrap flex items-center px-3 cursor-pointer border rounded-md  ${
+                      isActive ? "border-lavender-500 text-lavender-500" : "border-neutral-300 hover:border-lavender-400"
+                    }`}
+                    onClick={() => handleSelectedItem(option.key)}
+                  >
+                    {`${option.name}`}
+                  </p>
+                );
+              })}
+            </div>
+            <div className={"pt-2"}>
+              {profileMenu.map((option) => (
+                <div
+                  key={option.key}
+                  style={{display: selectedCategory === option.key ? "block" : "none"}}
+                >
+                  {option.children}
+                </div>
+              ))}
+            </div>
+          </div>
+
+          {/*profile stats badges and top tags only on desktop view*/}
+          <div className="hidden md:block col-span-12 md:col-span-8 overflow-y-auto space-y-12">
+            <Stats reputation={user?.reputation || 0} userId={user?.id || ""}/>
+            <TopTags/>
+          </div>
+        </div>
+
+        {/* profile options(except stats and top tags) on only desktop view */}
+        <div className="hidden md:block col-span-12 md:col-span-4 overflow-y-auto">
+          <div className="flex flex-row w-full gap-4 overflow-x-auto whitespace-nowrap flex-nowrap no-scrollbar">
+            <Tabs defaultValue="" className="w-full">
+              <TabsList className="flex m-2 gap-2">
+                {profileMenu.filter((menu) =>
+                  menu.key !== 'stats' && menu.key !== 'topTags')
+                  .map((menu) => (
+                    <TabsTrigger key={menu.key} value={menu.key} className={"px-8"}>
+                      {menu.name}
+                    </TabsTrigger>
+                  ))}
+              </TabsList>
+              {profileMenu.filter((menu) =>
+                menu.key !== 'stats' || 'top-tags')
+                .map((menu) => (
+                  <TabsContent key={menu.key} value={menu.key} className={"rounded-none"}>
+                    {menu.children}
+                  </TabsContent>
+                ))}
+            </Tabs>
+          </div>
         </div>
       </div>
-      <Separator className="my-4" />
-
-      <Tabs defaultValue="account" className="w-full px-1 md:px-2 lg:px-5">
-        <TabsList className="sticky top-16 z-10 grid w-full grid-cols-2">
-          <TabsTrigger value="account">Posts</TabsTrigger>
-          <TabsTrigger value="password">Edit profile</TabsTrigger>
-        </TabsList>
-        <TabsContent value="account" className="md:px-2">
-          <ScrollArea className="h-[calc(100vh-20rem)] w-full rounded-md md:h-[calc(100vh-22rem)]">
-            <div className="space-y-4 py-2">
-              {isLoadingPosts ? (
-                <Loader />
-              ) : posts?.length > 0 ? (
-                <div className="flex w-full flex-1 flex-col px-4">
-                  {posts?.map((post: Post, idx: number) => (
-                    <BlurFade
-                      key={post.id}
-                      className="flex w-full justify-center"
-                      delay={0.15 + idx * 0.05}
-                      duration={0.3}
-                    >
-                      <PostCard
-                        post={post}
-                        section="profile"
-                        onClick={() => handlePostClick(post.id)}
-                        className="mb-4 w-full bg-[radial-gradient(ellipse_at_top,hsl(0_0%_100%),hsl(0_0%_95%)_70%),linear-gradient(to_bottom_right,hsl(0_0%_98%),hsl(0_0%_96%))] from-[hsl(228_85%_4%)] to-[hsl(228_85%_8%)] ring-1 ring-white/[0.05] transition duration-300 hover:bg-[radial-gradient(ellipse_at_top,hsl(0_0%_100%),hsl(0_0%_99%)_70%),linear-gradient(to_bottom_right,hsl(0_0%_99%),hsl(0_0%_97%))] dark:bg-gradient-to-br dark:ring-zinc-800 dark:hover:ring-zinc-700 dark:focus-visible:ring-[#193a47]"
-                      />
-                    </BlurFade>
-                  ))}
-                </div>
-              ) : (
-                <p className="text-center text-muted-foreground">
-                  You have no posts🤔
-                </p>
-              )}
-            </div>
-          </ScrollArea>
-        </TabsContent>
-        <TabsContent value="password" className="mb-16 space-y-6">
-            <UpdatePasswordCardForm />
-            <UpdateUsernameCardForm />
-            <DeleteUserAccountCard />
-        </TabsContent>
-      </Tabs>
-    </>
   );
 };
 
 export default Profile;
+

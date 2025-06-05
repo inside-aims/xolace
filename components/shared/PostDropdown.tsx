@@ -1,6 +1,5 @@
 'use client';
 
-import { useState} from 'react';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 
@@ -12,11 +11,9 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu';
-import { useToast } from '../ui/use-toast';
 import { useUserState } from '@/lib/store/user';
-import { getSupabaseBrowserClient } from '@/utils/supabase/client';
 import { Trash2, Telescope, Flag } from 'lucide-react';
-import { logActivity } from '@/lib/activity-logger';
+import { usePostMutations } from '@/hooks/posts/usePostMutation';
 
 type DropdownMenuProp = {
   comment?: boolean;
@@ -24,7 +21,7 @@ type DropdownMenuProp = {
   postDetail?: boolean;
   postCard?: boolean;
   postId?: string;
-  postCreatedBy?: string ;
+  postCreatedBy?: string;
   commentId?: number;
   commentCreatedBy?: string | number;
   onOpenChange: React.Dispatch<React.SetStateAction<boolean>>;
@@ -39,17 +36,17 @@ const PostDropdown: React.FC<DropdownMenuProp> = ({
   commentId,
   commentCreatedBy,
   onOpenChange,
-  content
+  content,
 }) => {
   const router = useRouter();
   const user = useUserState(state => state.user);
 
-  const roles = useUserState((state) => state.roles);
+  const roles = useUserState(state => state.roles);
   const isModerator = roles.includes('blue_team');
-  
-  const supabase = getSupabaseBrowserClient();
-  const { toast } = useToast();
-  const [isLoading, setIsLoading] = useState(false);
+
+  // Use the new hook
+  const { deletePost, isDeletingPost, deleteComment, isDeletingComment } =
+    usePostMutations();
 
   // open sheet
   const handleReportClick = () => {
@@ -64,82 +61,28 @@ const PostDropdown: React.FC<DropdownMenuProp> = ({
 
   //  delete comment
   const onCommentDelete = async () => {
-    setIsLoading(true);
-    try {
-      // await handleDelete({ comment, postCard, postId });
-       await supabase
-        .from('comments')
-        .delete()
-        .eq('id', commentId);
-      toast({
-        title: `Successfully Deleted Comment.💯 `,
+    if (commentId) {
+      deleteComment({
+        commentId,
+        postId,
+        postCreatedBy,
+        content,
+        userId: user?.id,
       });
-
-      // log comment activity
-      await logActivity({
-        userId: user?.id || '',
-        relatedUserId: postCreatedBy,
-        entityType: 'comment',
-        action: 'deleted',
-        postId: postId,
-        metadata: { content: content , link : `post/${postId}`},
-      });
-
-      // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    } catch (error) {
-      toast({
-        title: 'Error deleting comment:',
-      });
-    } finally {
-      setIsLoading(false);
     }
   };
 
   // delete post
   const onPostDelete = async () => {
-    setIsLoading(true);
-    try {
-      const { error: deleteError } = await supabase
-        .from('posts')
-        .delete()
-        .eq('id', postId);
-
-      if (deleteError) {
-        toast({
-          title: 'Error deleting post',
-          description: 'Oops! Something went wrong , please try again 👀 ',
-        });
-        return;
-      }
-
-      // display success toast
-      toast({
-        title: `Successfully Deleted Post.💯 `,
-      });
-
-      // log post activity
-      await logActivity({
-        userId: postCreatedBy || '',
-        entityType: 'post',
-        action: 'deleted',
-        postId: postId,
-        metadata: { content: content },
-      });
-
+    if (postId) {
+      deletePost({ postId, postCreatedBy, content });
       // navigate to feed page if its the details page
       // eslint-disable-next-line @typescript-eslint/no-unused-expressions
       postDetail && router.replace('/feed');
-
-      // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    } catch (error) {
-      toast({
-        title: 'Error deleting post:',
-      });
-      return;
-    } finally {
-      setIsLoading(false);
     }
   };
+
+  const isLoading = isDeletingPost || isDeletingComment; // Combine loading states
 
   return (
     <>
@@ -157,10 +100,11 @@ const PostDropdown: React.FC<DropdownMenuProp> = ({
         <DropdownMenuContent align="end">
           <DropdownMenuLabel>Actions</DropdownMenuLabel>
           <DropdownMenuSeparator />
-          {((isCommentAuthor || isModerator) && comment) && (
+          {(isCommentAuthor || isModerator) && comment && (
             <DropdownMenuItem
               className="text-red-400 hover:cursor-pointer"
               onClick={onCommentDelete}
+              disabled={isLoading} // Disable while loading
             >
               <Trash2 />
 
@@ -173,10 +117,11 @@ const PostDropdown: React.FC<DropdownMenuProp> = ({
           )}
 
           {/* delete action for post */}
-          {((isPostAuthor || isModerator) && !comment) && (
+          {(isPostAuthor || isModerator) && !comment && (
             <DropdownMenuItem
               className="text-red-400 hover:cursor-pointer hover:text-red-500"
               onClick={onPostDelete}
+              disabled={isLoading} // Disable while loading
             >
               <Trash2 size={'17px'} />
               <span>{isLoading ? 'Deleting...' : 'Delete Post'}</span>

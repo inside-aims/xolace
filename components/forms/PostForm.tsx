@@ -1,13 +1,20 @@
 'use client';
 
-import React, { useState, useRef, useMemo, useEffect, useCallback } from 'react'; // Added useEffect, useCallback
+import React, {
+  useState,
+  useRef,
+  useMemo,
+  useEffect,
+  useCallback,
+} from 'react';
 import Image from 'next/image';
+import Link from 'next/link';
 import dynamic from 'next/dynamic';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useForm } from 'react-hook-form';
 import { z } from 'zod';
 import { Smile } from 'lucide-react';
-import { motion } from 'framer-motion';
+import { motion, AnimatePresence } from 'framer-motion';
 import debounce from 'lodash.debounce';
 
 import { Button } from '@/components/ui/button';
@@ -24,7 +31,7 @@ import {
   PopoverTrigger,
 } from '@/components/ui/popover';
 import { Textarea } from '@/components/ui/textarea';
-import { useToast } from '../ui/use-toast';
+import { toast } from 'sonner';
 //import Loader from '../shared/loaders/Loader';
 import { PostSchema } from '@/validation';
 import { getSupabaseBrowserClient } from '@/utils/supabase/client';
@@ -39,38 +46,52 @@ import { removeHashtags } from '@/lib/utils';
 import { useUserState } from '@/lib/store/user';
 import { logActivity } from '@/lib/activity-logger';
 import { ActivityType } from '@/types/activity';
-import { usePreferencesStore } from "@/lib/store/preferences-store";
+import { usePreferencesStore } from '@/lib/store/preferences-store';
+import { useSearchParams, useRouter, usePathname } from 'next/navigation';
+//import mascot from '../../public/assets/images/mas.webp';
+import { CURRENT_CONSENT_VERSION } from '@/constants/terms';
 
 // Dynamic Imports
-const Loader = dynamic(() => import('../shared/loaders/Loader'), { ssr: false });
-const EmojiPicker = dynamic(() => import('emoji-picker-react'), { ssr: false, loading: () => <p className="p-4">Loading emojis...</p> });
-const ShinyButton = dynamic(
-  () => import('../ui/shiny-button'),
-  { 
-    ssr: false,
-    loading: () => (
-      <Button disabled className="rounded-full disabled:bg-gray-900">
-        <Send size={20} strokeWidth={1.75} absoluteStrokeWidth />
-      </Button>
-    )
-  }
-);
+const Loader = dynamic(() => import('../shared/loaders/Loader'), {
+  ssr: false,
+});
+const EmojiPicker = dynamic(() => import('emoji-picker-react'), {
+  ssr: false,
+  loading: () => <p className="p-4">Loading emojis...</p>,
+});
+const ShinyButton = dynamic(() => import('../ui/shiny-button'), {
+  ssr: false,
+  loading: () => (
+    <Button disabled className="rounded-full disabled:bg-gray-900">
+      <Send size={20} strokeWidth={1.75} absoluteStrokeWidth />
+    </Button>
+  ),
+});
 const MoodCarousel = dynamic(
   () => import('../hocs/createPostComponent/mood-carousel'),
-  { 
+  {
     ssr: false,
-    loading: () => <div className="h-[50px] w-full bg-gray-900 rounded-full" />
-  }
+    loading: () => <div className="h-[50px] w-full rounded-full bg-gray-900" />,
+  },
 );
-
+const ConsentModal = dynamic(() => import('../modals/ConsentModal'), {
+  ssr: false,
+});
 
 // Define a key for local storage
 const POST_DRAFT_KEY = 'postFormDraft';
 
+const placeholders = [
+  "What's on your mind ?",
+  'Use # for tags! At most 3',
+  'Share your experiences',
+];
 export function PostForm() {
-  const {preferences} = usePreferencesStore();
+  const searchParams = useSearchParams();
+  const router = useRouter();
+  const pathname = usePathname();
+  const { preferences } = usePreferencesStore();
   const supabase = getSupabaseBrowserClient();
-  const { toast } = useToast();
 
   //get user profile
   const user = useUserState(state => state.user);
@@ -82,6 +103,39 @@ export function PostForm() {
 
   const [isEmojiPickerOpen, setIsEmojiPickerOpen] = useState(false);
   const textareaRef = useRef<HTMLTextAreaElement>(null);
+  const canvasRef = useRef<HTMLCanvasElement>(null);
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  const newDataRef = useRef<any[]>([]);
+  const [animating, setAnimating] = useState(false);
+  const [currentPlaceholder, setCurrentPlaceholder] = useState(0);
+  const [showConsent, setShowConsent] = useState(false);
+
+  const intervalRef = useRef<NodeJS.Timeout | null>(null);
+  const startAnimation = () => {
+    intervalRef.current = setInterval(() => {
+      setCurrentPlaceholder(prev => (prev + 1) % placeholders.length);
+    }, 3000);
+  };
+  const handleVisibilityChange = () => {
+    if (document.visibilityState !== 'visible' && intervalRef.current) {
+      clearInterval(intervalRef.current); // Clear the interval when the tab is not visible
+      intervalRef.current = null;
+    } else if (document.visibilityState === 'visible') {
+      startAnimation(); // Restart the interval when the tab becomes visible
+    }
+  };
+
+  useEffect(() => {
+    startAnimation();
+    document.addEventListener('visibilitychange', handleVisibilityChange);
+
+    return () => {
+      if (intervalRef.current) {
+        clearInterval(intervalRef.current);
+      }
+      document.removeEventListener('visibilitychange', handleVisibilityChange);
+    };
+  }, [handleVisibilityChange]);
 
   // get mood boolean value
   // const isNeutral = selectedMood?.value === 'neutral';
@@ -99,7 +153,9 @@ export function PostForm() {
       angry: 'border-red-500 dark:border-red-400',
       confused: 'border-yellow-500 dark:border-yellow-400',
     };
-    return selectedMood ? moodColors[selectedMood.value as keyof typeof moodColors] || '' : '';
+    return selectedMood
+      ? moodColors[selectedMood.value as keyof typeof moodColors] || ''
+      : '';
   }, [selectedMood]);
 
   //  counter for comment fields
@@ -118,7 +174,6 @@ export function PostForm() {
   const { watch, setValue } = form;
   const content = watch('content');
 
-
   // Debounced function to save draft to local storage
   const debouncedSaveDraft = useCallback(
     debounce((draftContent: string) => {
@@ -126,30 +181,8 @@ export function PostForm() {
         localStorage.setItem(POST_DRAFT_KEY, draftContent);
       }
     }, 500), // Debounce time: 500ms
-    [preferences?.auto_save_drafts] // Recreate debounce function if preference changes
+    [preferences?.auto_save_drafts], // Recreate debounce function if preference changes
   );
-
-  // Effect to save draft when content changes
-  useEffect(() => {
-    if (preferences?.auto_save_drafts) {
-      debouncedSaveDraft(content);
-    }
-    // Cleanup function to cancel any pending saves on unmount or preference change
-    return () => {
-      debouncedSaveDraft.cancel();
-    };
-  }, [content, preferences?.auto_save_drafts, debouncedSaveDraft]);
-
-  // Effect to load draft on component mount
-  useEffect(() => {
-    if (typeof window !== 'undefined' && preferences?.auto_save_drafts) {
-      const savedDraft = localStorage.getItem(POST_DRAFT_KEY);
-      if (savedDraft) {
-        setValue('content', savedDraft, { shouldValidate: true });
-        handleInput(savedDraft);
-      }
-    }
-  }, [preferences?.auto_save_drafts, setValue]); // Run only once on mount or when preference changes
 
   // Function to clear the draft from local storage
   const clearDraft = () => {
@@ -158,9 +191,8 @@ export function PostForm() {
     }
   };
 
-
   // function to handle emoji selection add to post field
-  const handleEmojiClick = (emojiData: {emoji : string}) => {
+  const handleEmojiClick = (emojiData: { emoji: string }) => {
     const emoji = emojiData.emoji;
     const textarea = textareaRef.current;
     if (textarea) {
@@ -182,86 +214,339 @@ export function PostForm() {
   };
 
   // retrieve tags from content
-  const handleInput = (value: string) => {
-    // Extract tags
-    const newTags = value.match(/#\w+/g) || [];
-    const cleanTags = newTags
-      .filter((_, index) => index < 3)
-      .map(tag =>
-        tag
-          .slice(1)
-          .replace(/[^a-zA-Z0-9_]/g, '')
-          .toLowerCase(),
-      );
-    setTags([...new Set(cleanTags)]); // Remove # from tags
-  };
+  const handleInput = useCallback(
+    (value: string) => {
+      const newTags = value.match(/#\w+/g) || [];
+      const cleanTags = newTags
+        .filter((_, index) => index < 3) // Limit to 3 tags
+        .map(tag =>
+          tag
+            .slice(1)
+            .replace(/[^a-zA-Z0-9_]/g, '')
+            .toLowerCase(),
+        );
+      setTags([...new Set(cleanTags)]);
+    },
+    [setTags],
+  ); // setTags is stable from useState
+
+  // Effect to load draft or prefill from prompt on component mount
+  useEffect(() => {
+    const promptTextQuery = searchParams.get('prompt');
+
+    if (promptTextQuery) {
+      //const decodedPromptText = decodeURIComponent(promptTextQuery);
+      const initialContent = `\n\n#DailyPrompt `;
+
+      setValue('content', initialContent, { shouldValidate: true });
+      handleInput(initialContent);
+
+      // Clear any saved draft if we are prefilling from a prompt
+      if (typeof window !== 'undefined' && preferences?.auto_save_drafts) {
+        console.log('Clearing saved draft');
+        localStorage.removeItem(POST_DRAFT_KEY);
+      }
+    } else if (typeof window !== 'undefined' && preferences?.auto_save_drafts) {
+      const savedDraft = localStorage.getItem(POST_DRAFT_KEY);
+      if (savedDraft) {
+        setValue('content', savedDraft, { shouldValidate: true });
+        handleInput(savedDraft);
+      }
+    }
+  }, [searchParams, setValue, preferences?.auto_save_drafts, handleInput]);
+
+  useEffect(() => {
+    if (preferences?.auto_save_drafts) {
+      // Do not save draft if the content is the initial prompt prefill unless modified
+      const currentContent = form.getValues('content');
+      const promptTextQuery = searchParams.get('prompt');
+      let isInitialPromptFill = false;
+      if (promptTextQuery) {
+        //const decodedPromptText = decodeURIComponent(promptTextQuery);
+        const initialContentPattern = `\n\n#DailyPrompt `;
+        if (
+          currentContent.trim() === initialContentPattern.trim()
+        ) {
+          // check both with and without #DailyPrompt initially
+          console.log('isInitialPromptFill');
+          isInitialPromptFill = true;
+        }
+      }
+
+      if (
+        !isInitialPromptFill 
+      ) {
+        console.log('Saving draft');
+        debouncedSaveDraft(content);
+      }
+    }
+    return () => {
+      debouncedSaveDraft.cancel();
+    };
+  }, [
+    content,
+    preferences?.auto_save_drafts,
+    debouncedSaveDraft,
+    searchParams,
+    form.getValues,
+    form,
+  ]);
 
   // function to handle submit
-  async function onSubmit(data: z.infer<typeof PostSchema>) {
-    // save post values to db
-    setIsLoading(true);
-    const { content, is24HourPost } = data;
-    // remove tags from post content
-    const contentWithoutTags = removeHashtags(content);
-    const duration = is24HourPost ? 24 : null;
-    const expires_at = duration ? calculateExpiryDate(duration) : null;
+  // Canvas drawing function
+  const draw = useCallback(() => {
+    if (!textareaRef.current) return;
+    const canvas = canvasRef.current;
+    if (!canvas) return;
+    const ctx = canvas.getContext('2d');
+    if (!ctx) return;
 
-    try {
-      const { data: post_id, error: postError } = await supabase.rpc('create_post_with_tags', {
-        content: contentWithoutTags,
-        duration: duration ? `${duration}` : duration,
-        expires_at,
-        expires_in_24hr: is24HourPost,
-        mood: selectedMood?.value,
-        tag_names: tags,
-        is_sensitive: preferences?.mark_sensitive_by_default ?? false,
+    canvas.width = textareaRef.current.offsetWidth;
+    canvas.height = textareaRef.current.offsetHeight;
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+    const computedStyles = getComputedStyle(textareaRef.current);
+    const fontSize = parseFloat(computedStyles.getPropertyValue('font-size'));
+    ctx.font = `${fontSize}px ${computedStyles.fontFamily}`;
+    ctx.fillStyle = computedStyles.color;
+
+    // Split content by newlines to render multiple lines
+    const lines = content.split('\n');
+    const lineHeight = fontSize * 1.2;
+
+    lines.forEach((line, index) => {
+      ctx.fillText(line, 16, (index + 1) * lineHeight);
+    });
+
+    const imageData = ctx.getImageData(0, 0, canvas.width, canvas.height);
+    const pixelData = imageData.data;
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    const newData: any[] = [];
+
+    for (let t = 0; t < canvas.height; t++) {
+      const i = 4 * t * canvas.width;
+      for (let n = 0; n < canvas.width; n++) {
+        const e = i + 4 * n;
+        if (
+          pixelData[e] !== 0 ||
+          pixelData[e + 1] !== 0 ||
+          pixelData[e + 2] !== 0
+        ) {
+          newData.push({
+            x: n,
+            y: t,
+            color: [
+              pixelData[e],
+              pixelData[e + 1],
+              pixelData[e + 2],
+              pixelData[e + 3],
+            ],
+          });
+        }
+      }
+    }
+
+    newDataRef.current = newData.map(({ x, y, color }) => ({
+      x,
+      y,
+      r: 1,
+      color: `rgba(${color[0]}, ${color[1]}, ${color[2]}, ${color[3] / 255})`,
+    }));
+  }, [content]);
+
+  // Animation function
+  const animate = (start: number) => {
+    const animateFrame = (pos: number = 0) => {
+      requestAnimationFrame(() => {
+        const newArr = [];
+        for (let i = 0; i < newDataRef.current.length; i++) {
+          const current = newDataRef.current[i];
+          if (current.x < pos) {
+            newArr.push(current);
+          } else {
+            if (current.r <= 0) {
+              current.r = 0;
+              continue;
+            }
+            current.x += Math.random() > 0.5 ? 1 : -1;
+            current.y += Math.random() > 0.5 ? 1 : -1;
+            current.r -= 0.05 * Math.random();
+            newArr.push(current);
+          }
+        }
+        newDataRef.current = newArr;
+        if (!canvasRef.current) {
+          return;
+        }
+        const ctx = canvasRef.current?.getContext('2d');
+        if (ctx) {
+          ctx.clearRect(
+            pos,
+            0,
+            canvasRef.current.width,
+            canvasRef.current.height,
+          );
+          newDataRef.current.forEach(t => {
+            const { x: n, y: i, r: s, color: color } = t;
+            if (n > pos) {
+              ctx.beginPath();
+              ctx.rect(n, i, s, s);
+              ctx.fillStyle = color;
+              ctx.strokeStyle = color;
+              ctx.stroke();
+            }
+          });
+        }
+        if (newDataRef.current.length > 0) {
+          animateFrame(pos - 8);
+        } else {
+          setAnimating(false);
+        }
       });
+    };
+    animateFrame(start);
+  };
 
-      if (postError) {
-        toast({
-          variant: 'destructive',
-          title: 'Oops, something must have gone wrong 😵‍💫! try again',
-        });
+  // Trigger animation on submit
+  const vanishAndSubmit = () => {
+    if (animating || !content.trim()) return;
+
+    setAnimating(true);
+    draw();
+
+    if (textareaRef.current) {
+      const maxX = newDataRef.current.reduce(
+        (prev, current) => (current.x > prev ? current.x : prev),
+        0,
+      );
+      animate(maxX);
+    }
+  };
+
+  // Modified onSubmit function
+  async function onSubmit(data: z.infer<typeof PostSchema>) {
+    if (animating) return; // Prevent multiple submissions during animation
+
+    if (user?.has_consented) {
+      if (user?.consent_version !== CURRENT_CONSENT_VERSION) {
+        setShowConsent(true);
         return;
       }
-
-      // show notification
-      toast({
-        variant: 'default',
-        title: 'Post created successfully🤭 !',
-      });
-
-      // Log the post creation activity
-      if(user && post_id){
-        await logActivity({
-          userId: user.id,
-          entityType: ActivityType.POST,
-          action: 'created',
-          postId: post_id,
-          metadata: { expires_in_24: is24HourPost, mood: selectedMood?.value }
-        });
-      }
-  
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars 
-    } catch (error) {
-      toast({
-        title: 'Error!',
-        description: 'Ooops🫢 !! Could not create post, Please try again',
-        variant: 'destructive',
-      });
-    } finally {
-      setIsLoading(false);
-      form.reset();
-      setSelectedMood(postMoods[0]);
-      setTags([]);
+    } else {
+      setShowConsent(true);
+      return;
     }
+
+    vanishAndSubmit(); // Start animation
+
+    setTimeout(async () => {
+      // save post values to db
+      setIsLoading(true);
+      const { content, is24HourPost } = data;
+      // remove tags from post content
+      const contentWithoutTags = removeHashtags(content);
+      const duration = is24HourPost ? 24 : null;
+      const expires_at = duration ? calculateExpiryDate(duration) : null;
+
+      try {
+        // Get prompt_id from searchParams if it exists
+        const promptId = searchParams.get('prompt_id');
+        const promptText = searchParams.get('prompt');
+        const is_prompt_response = promptId ? true : false;
+
+        const { data: post_id, error: postError } = await supabase.rpc(
+          'create_post_with_tags',
+          {
+            content: contentWithoutTags,
+            duration: duration ? `${duration}` : duration,
+            expires_at,
+            expires_in_24hr: is24HourPost,
+            mood: selectedMood?.value,
+            tag_names: tags,
+            is_sensitive: preferences?.mark_sensitive_by_default ?? false,
+            is_prompt_response,
+          },
+        );
+
+        if (postError) {
+          toast.error('Oops, something must have gone wrong 😵‍💫! try again', {
+            position: 'bottom-center',
+          });
+          return;
+        }
+
+        // If this is a prompt response, create the prompt response record
+        if (promptId && post_id && user) {
+          const { error: promptResponseError } = await supabase
+            .from('prompt_responses')
+            .insert({
+              post_id: post_id,
+              prompt_id: promptId,
+              user_id: user.id,
+            });
+
+          if (promptResponseError) {
+            console.error(
+              'Error creating prompt response:',
+              promptResponseError,
+            );
+          }
+        }
+
+        // show notification
+        if (promptId) {
+          toast.success('Your response has been saved!🙂‍↕️', {
+            position: 'bottom-center',
+          });
+        } else {
+          toast.success('Post created successfully🤭 !', {
+            position: 'bottom-center',
+          });
+        }
+
+        console.log('come on');
+        // Log the post creation activity
+        if (user && post_id) {
+          await logActivity({
+            userId: user.id,
+            entityType: ActivityType.POST,
+            action: 'created',
+            postId: post_id,
+            metadata: {
+              expires_in_24: is24HourPost,
+              mood: selectedMood?.value,
+              is_prompt_response: !!promptId,
+              prompt_text: promptText || undefined,
+            },
+          });
+        }
+
+        // Clear the form and tags
+        form.reset();
+        setSelectedMood(postMoods[0]);
+        setTags([]);
+        clearDraft();
+
+        if (promptId) {
+          router.replace(pathname);
+        }
+        // eslint-disable-next-line @typescript-eslint/no-unused-vars
+      } catch (error) {
+        toast('Error!', {
+          description: 'Ooops🫢 !! Could not create post, Please try again',
+          position: 'bottom-center',
+        });
+      } finally {
+        setIsLoading(false);
+      }
+    }, 800);
   }
 
   return (
     <Form {...form}>
       <form
         onSubmit={form.handleSubmit(onSubmit)}
-        className="w-full space-y-6 lg:w-2/3 lg:mx-auto"
+        className="w-full space-y-6 lg:mx-auto lg:w-2/3"
       >
         <FormField
           control={form.control}
@@ -269,7 +554,7 @@ export function PostForm() {
           render={({ field }) => (
             <FormItem className="relative">
               <FormControl>
-                <div className="relative" id='postTextArea'>
+                <div className="relative" id="postTextArea">
                   <Textarea
                     {...field}
                     ref={e => {
@@ -279,17 +564,29 @@ export function PostForm() {
                     onChange={(e: React.ChangeEvent<HTMLTextAreaElement>) => {
                       field.onChange(e);
                       handleInput(e.target.value);
-                      if (e.target.value === '' && preferences?.auto_save_drafts) {
-                         clearDraft();
+                      if (
+                        e.target.value === '' &&
+                        preferences?.auto_save_drafts
+                      ) {
+                        clearDraft();
                       }
                     }}
-                    placeholder="What's on your mind? Use # for tags! At most 3"
-                    className={`no-focus h-[150px] resize-none !pr-10 !pt-8 text-dark-2 transition-all duration-300 dark:text-white ${moodClasses} `}
-                    id='tags-guide'
+                    className={`no-focus text-dark-2 h-[150px] resize-none pt-8! pr-10! transition-all duration-300 dark:text-white ${moodClasses} ${animating && 'text-transparent dark:text-transparent'}`}
+                    id="tags-guide"
+                    disabled={animating}
+                  />
+
+                  {/* Canvas for animation */}
+                  <canvas
+                    ref={canvasRef}
+                    className={`pointer-events-none absolute inset-0 z-10 pt-8 ${animating ? 'opacity-100' : 'opacity-0'} `}
                   />
 
                   {/* mood icon */}
-                  <div className="absolute bottom-3 left-3 flex items-center gap-x-1" id="mood-display">
+                  <div
+                    className="absolute bottom-3 left-3 flex items-center gap-x-1"
+                    id="mood-display"
+                  >
                     <span>
                       {selectedMood?.gif ? (
                         <Image
@@ -306,9 +603,7 @@ export function PostForm() {
                     </span>
                     <p className="text-[12px] text-gray-900 dark:text-gray-500">
                       Mood:{' '}
-                      <span
-                        className={`${moodClasses}`}
-                      >
+                      <span className={`${moodClasses}`}>
                         {selectedMood?.label}
                       </span>
                     </p>
@@ -324,9 +619,9 @@ export function PostForm() {
                         type="button"
                         variant="ghost"
                         size="icon"
-                        className="absolute bottom-2 right-2"
+                        className="absolute right-2 bottom-2"
                         aria-label="Open emoji picker"
-                        id='emoji-btn'
+                        id="emoji-btn"
                       >
                         <Smile className="h-4 w-4" />
                       </Button>
@@ -336,15 +631,44 @@ export function PostForm() {
                         onEmojiClick={handleEmojiClick}
                         width="100%"
                         // eslint-disable-next-line @typescript-eslint/no-explicit-any
-                        theme={"auto" as any}
+                        theme={'auto' as any}
                         height={370}
                         searchDisabled
                         // eslint-disable-next-line @typescript-eslint/no-explicit-any
-                        emojiStyle={"apple" as any}
+                        emojiStyle={'apple' as any}
                         lazyLoadEmojis
                       />
                     </PopoverContent>
                   </Popover>
+
+                  <div className="pointer-events-none absolute inset-0 flex items-center rounded-full">
+                    <AnimatePresence mode="wait">
+                      {!content && (
+                        <motion.p
+                          initial={{
+                            y: 5,
+                            opacity: 0,
+                          }}
+                          key={`current-placeholder-${currentPlaceholder}`}
+                          animate={{
+                            y: 0,
+                            opacity: 1,
+                          }}
+                          exit={{
+                            y: -15,
+                            opacity: 0,
+                          }}
+                          transition={{
+                            duration: 0.6,
+                            ease: 'linear',
+                          }}
+                          className="w-[calc(100%-2rem)] truncate pl-4 text-left text-sm font-normal text-neutral-500 sm:pl-12 sm:text-base dark:text-zinc-500"
+                        >
+                          {placeholders[currentPlaceholder]}
+                        </motion.p>
+                      )}
+                    </AnimatePresence>
+                  </div>
                 </div>
               </FormControl>
 
@@ -369,7 +693,7 @@ export function PostForm() {
                       key={index}
                       initial={{ opacity: 0, scale: 0.8 }}
                       animate={{ opacity: 1, scale: 1 }}
-                      className="rounded-full bg-primary px-2 py-1 text-sm text-primary-foreground"
+                      className="bg-primary text-primary-foreground rounded-full px-2 py-1 text-sm"
                     >
                       #{tag}
                     </motion.span>
@@ -384,7 +708,7 @@ export function PostForm() {
           )}
         />
 
-        <div className="!mt-1 w-full max-sm:px-10" id="mood-carousel">
+        <div className="mt-1! w-full max-sm:px-10" id="mood-carousel">
           <MoodCarousel
             selectedMood={selectedMood}
             setSelectedMood={setSelectedMood}
@@ -393,7 +717,7 @@ export function PostForm() {
 
         <div className="flex flex-row-reverse items-center justify-between">
           <ShinyButton
-            disabled={content.length > 500 || isLoading}
+            disabled={content.length > 500 || isLoading || animating}
             type="submit"
             className="rounded-full"
             id="submit-btn"
@@ -414,17 +738,60 @@ export function PostForm() {
               counter - content.length < 0
                 ? 'border-red-500 bg-red-400'
                 : 'border-blue bg-blue'
-            } flex h-9 max-h-9 min-h-9 w-9 min-w-9 max-w-9 items-center justify-center rounded-full p-3 shadow-sm`}
-             id='counter'
+            } flex h-9 max-h-9 min-h-9 w-9 max-w-9 min-w-9 items-center justify-center rounded-full p-3 shadow-sm`}
+            id="counter"
           >
             {counter - content.length}
           </p>
         </div>
       </form>
 
-      <div className="container mx-auto px-3 pt-20 text-center text-sm text-zinc-600">
-        Tip : Platform made to share your thought without holding back..
+      <div className="flex h-full flex-col gap-y-3 md:gap-y-30 lg:gap-y-36">
+        <div className="">
+          <div className="container mx-auto px-3 pt-10 text-center text-sm text-zinc-600 md:pt-20">
+            Tip : Platform made to share your experiences without holding back..
+          </div>
+          {/* <div className="item-center mt-7 flex justify-center md:mt-5">
+            <Image src={mascot} height={130} width={130} alt="image" />
+          </div> */}
+        </div>
+
+        <section className='flex-1 flex flex-col items-center justify-center'>
+        <div className="flex flex-wrap justify-center gap-2 px-2 pb-4 text-xs text-slate-600/60 dark:text-slate-400/60">
+          <span>
+            <Link className="hover:text-slate-200 hover:underline" href="">
+              Xolace Rules
+            </Link>
+          </span>
+          <span>
+            <Link className="hover:text-slate-200 hover:underline" href="">
+              Privacy Policy
+            </Link>
+          </span>
+          <span>
+            <Link className="hover:text-slate-200 hover:underline" href="">
+              User Agreement
+            </Link>
+          </span>
+          <span className="metadata-divider before:content-['•']"></span>
+          <span>
+            <Link className="hover:text-slate-200 hover:underline" href="">
+              Xolace, Inc. © 2025. All rights reserved.
+            </Link>
+          </span>
+        </div>
+        </section>
       </div>
+
+      {showConsent && user && (
+        <ConsentModal
+        isOpen={showConsent}
+        onReject={() => {
+          setShowConsent(false);
+        }}
+        user={user}
+      />
+      )}
     </Form>
   );
 }

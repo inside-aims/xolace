@@ -80,6 +80,7 @@ export async function POST(request: Request) {
       username: username,
       supabase_user: userData.user.id,
       avatar_url: avatarUrl,
+      email: email,
     })
     .select()
     .single();
@@ -91,10 +92,18 @@ export async function POST(request: Request) {
     return NextResponse.redirect(builderUrl('/error', request), 302);
   }
 
+  console.log('normal1 -> ', userData.user.id);
+
   await sendOTPLink(email, 'signup', request);
 
+  const safeUserId = encodeURIComponent(userData.user.id);
+  console.log('normal -> ', userData.user.id);
+  console.log('Safe user ID -> ', safeUserId);
   return NextResponse.redirect(
-    builderUrl(`/registration-success?email=${safeEmailString}`, request),
+    builderUrl(
+      `/registration-success?id=${safeUserId}&email=${safeEmailString}`,
+      request,
+    ),
     302,
   );
 }

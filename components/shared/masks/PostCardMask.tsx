@@ -1,9 +1,11 @@
 import React from 'react';
+import { Badge } from '@/components/ui/badge';
+import { Settings } from 'lucide-react';
 
 const PostCardMask = () => {
   return (
-    <div className="absolute inset-0 z-10 flex flex-col items-center justify-center rounded-lg bg-black/20 backdrop-blur-md">
-      <div className="max-w-xs p-6 text-center">
+    <div className="absolute inset-0 z-10 flex flex-col items-center justify-center bg-black/60 backdrop-blur-md">
+      <div className="max-w-xs p-6 text-center relative">
         <svg
           xmlns="http://www.w3.org/2000/svg"
           width="48"
@@ -25,6 +27,13 @@ const PostCardMask = () => {
           This post may contain sensitive content that some viewers might find
           offensive or disturbing.
         </p>
+
+        <Badge
+          variant="outline"
+          className="absolute top-6 -right-8"
+        >
+          disable in <Settings />
+        </Badge>
         {/* <Button onClick={() => setRevealed(true)}>Show Content</Button> */}
       </div>
     </div>
