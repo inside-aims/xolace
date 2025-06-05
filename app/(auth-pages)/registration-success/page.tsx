@@ -12,7 +12,7 @@ export default function RegistrationSuccessPage(props: {
   const searchParams = use(props.searchParams);
   const { email, id } = searchParams;
 
-  const [countdown, setCountdown] = useState(60);
+  const [countdown, setCountdown] = useState(120);
   const [canResend, setCanResend] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const [resendStatus, setResendStatus] = useState<{ type: 'success' | 'error'; message: string } | null>(null);
@@ -59,7 +59,7 @@ export default function RegistrationSuccessPage(props: {
       
       // Reset the countdown
       setCanResend(false);
-      setCountdown(60);
+      setCountdown(120);
       
       // Start countdown
       const timer = setInterval(() => {
