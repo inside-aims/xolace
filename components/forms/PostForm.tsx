@@ -755,23 +755,23 @@ export function PostForm() {
         <section className='flex-1 flex flex-col items-center justify-center'>
         <div className="flex flex-wrap justify-center gap-2 px-2 pb-4 text-xs text-slate-600/60 dark:text-slate-400/60">
           <span>
-            <Link className="hover:text-slate-200 hover:underline" href="">
+            <Link className="hover:text-slate-200 hover:underline" href="#">
               Xolace Rules
             </Link>
           </span>
           <span>
-            <Link className="hover:text-slate-200 hover:underline" href="">
+            <Link className="hover:text-slate-200 hover:underline" href="/policy">
               Privacy Policy
             </Link>
           </span>
           <span>
-            <Link className="hover:text-slate-200 hover:underline" href="">
+            <Link className="hover:text-slate-200 hover:underline" href="/policy">
               User Agreement
             </Link>
           </span>
           <span className="metadata-divider before:content-['•']"></span>
           <span>
-            <Link className="hover:text-slate-200 hover:underline" href="">
+            <Link className="hover:text-slate-200 hover:underline" href="#">
               Xolace, Inc. © 2025. All rights reserved.
             </Link>
           </span>
