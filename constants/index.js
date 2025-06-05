@@ -14,7 +14,7 @@ import {
 
 export const sidebarLinks = [
   {
-    icon: <HomeIcon />,
+    icon: <HomeIcon className='size-5!' />,
     route: '/feed',
     label: 'Home',
   },
@@ -25,27 +25,27 @@ export const sidebarLinks = [
   //   label: "Activity",
   // },
   {
-    icon: <MessageSquareDiff />,
+    icon: <MessageSquareDiff className='size-5!'/>,
     route: '/create-post',
     label: 'Create Post',
   },
   {
-    icon: <UserPen />,
+    icon: <UserPen className='size-5!'/>,
     route: '/profile',
     label: 'Profile',
   },
   {
-    icon: <Bomb size={22} strokeWidth={1.75} />,
+    icon: <Bomb className='size-5!' strokeWidth={1.75} />,
     route: '/explore',
     label: 'Explore',
   },
   {
-    icon: <Rss />,
+    icon: <Rss className='size-5!'/>,
     route: '/channel',
     label: 'Channel',
   },
   {
-    icon: <LibraryBig />,
+    icon: <LibraryBig className='size-5!'/>,
     route: '/collections',
     label: 'Collections',
   },

@@ -25,7 +25,7 @@ export function NavMain() {
   const pathName = usePathname();
   const { setOpenMobile } = useSidebar();
   return (
-    <SidebarMenu className="gap-2 md:gap-4 pt-5">
+    <SidebarMenu className="gap-1 md:gap-3 pt-5">
       {sidebarLinks.map((item : SidebarLinkInterface) => {
         const isActive =
         (pathName.includes(item.route) && item.route.length > 1) ||
@@ -33,7 +33,7 @@ export function NavMain() {
 
         return (
           <SidebarMenuItem key={item.label}>
-            <SidebarMenuButton asChild isActive={isActive} className={`${isActive && 'bg-lavender-500!'} hover:bg-lavender-700/40`} onClick={()=> setOpenMobile(false)}>
+            <SidebarMenuButton asChild isActive={isActive} className={`${isActive && 'bg-lavender-500!'} hover:bg-lavender-700/40 py-5`} onClick={()=> setOpenMobile(false)}>
               <Link href={item.route}
                 key={item.label}>
                 {item.icon}
