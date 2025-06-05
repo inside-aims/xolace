@@ -30,7 +30,6 @@ export function useRealtimePosts() {
         },
         payload => {
           if (payload.eventType === 'INSERT') {
-            console.log('inside real');
             queryClient.setQueryData(['posts'], (oldPosts: any) => [
               {
                 ...payload.new,
@@ -43,8 +42,6 @@ export function useRealtimePosts() {
               ...oldPosts,
             ]);
           } else if (payload.eventType === 'UPDATE') {
-            console.log('inside real update');
-            console.log('******** ', payload);
             queryClient.setQueryData(['posts'], (oldPosts: any[]) =>
               oldPosts.map(post => {
                 if (post.id === payload.new.id) {

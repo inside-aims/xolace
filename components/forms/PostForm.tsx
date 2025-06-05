@@ -243,7 +243,6 @@ export function PostForm() {
 
       // Clear any saved draft if we are prefilling from a prompt
       if (typeof window !== 'undefined' && preferences?.auto_save_drafts) {
-        console.log('Clearing saved draft');
         localStorage.removeItem(POST_DRAFT_KEY);
       }
     } else if (typeof window !== 'undefined' && preferences?.auto_save_drafts) {
@@ -268,7 +267,6 @@ export function PostForm() {
           currentContent.trim() === initialContentPattern.trim()
         ) {
           // check both with and without #DailyPrompt initially
-          console.log('isInitialPromptFill');
           isInitialPromptFill = true;
         }
       }
@@ -276,7 +274,6 @@ export function PostForm() {
       if (
         !isInitialPromptFill 
       ) {
-        console.log('Saving draft');
         debouncedSaveDraft(content);
       }
     }
@@ -504,7 +501,6 @@ export function PostForm() {
           });
         }
 
-        console.log('come on');
         // Log the post creation activity
         if (user && post_id) {
           await logActivity({
@@ -759,23 +755,23 @@ export function PostForm() {
         <section className='flex-1 flex flex-col items-center justify-center'>
         <div className="flex flex-wrap justify-center gap-2 px-2 pb-4 text-xs text-slate-600/60 dark:text-slate-400/60">
           <span>
-            <Link className="hover:text-slate-200 hover:underline" href="">
+            <Link className="hover:text-slate-200 hover:underline" href="#">
               Xolace Rules
             </Link>
           </span>
           <span>
-            <Link className="hover:text-slate-200 hover:underline" href="">
+            <Link className="hover:text-slate-200 hover:underline" href="/policy">
               Privacy Policy
             </Link>
           </span>
           <span>
-            <Link className="hover:text-slate-200 hover:underline" href="">
+            <Link className="hover:text-slate-200 hover:underline" href="/policy">
               User Agreement
             </Link>
           </span>
           <span className="metadata-divider before:content-['•']"></span>
           <span>
-            <Link className="hover:text-slate-200 hover:underline" href="">
+            <Link className="hover:text-slate-200 hover:underline" href="#">
               Xolace, Inc. © 2025. All rights reserved.
             </Link>
           </span>

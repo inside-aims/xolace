@@ -18,6 +18,5 @@ export const getHealthTip = cache(async (id: number) => {
 
   if (error) throw error;
 
-  console.log("health tip ",data)
   return data;
 });

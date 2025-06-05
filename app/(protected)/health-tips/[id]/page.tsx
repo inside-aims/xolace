@@ -22,7 +22,6 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 
   const { frontmatter } = getFrontmatter<Frontmatter>(file.content);
 
-  console.log("frontmatter ",frontmatter)
 
   return {
     title: frontmatter.title ?? file.title,
@@ -54,7 +53,6 @@ export default async function HealthTipDetailsPage({ params }: Props) {
     queryFn: () => getHealthTip(tipId),
   })
 
-console.log("##### ",healthTip)
 
   if (!healthTip) return notFound();
 

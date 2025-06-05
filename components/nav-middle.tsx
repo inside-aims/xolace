@@ -50,7 +50,7 @@ export function NavMiddle({
               <CollapsibleTrigger asChild>
                 <SidebarMenuButton
                   tooltip={item.title}
-                  className="py-5 tracking-widest uppercase"
+                  className="py-5 tracking-widest uppercase focus:outline-none focus-visible:outline-none focus:ring-0 focus-visible:ring-0"
                 >
                   {item.icon && <item.icon />}
                   <span className="text-muted-foreground text-xs leading-4">

@@ -19,16 +19,13 @@ export async function updateReputation(params: UpdateReputationParams) {
         metadata?.content_type === 'comment'
       ) {
         if (metadata?.action === 'added') {
-          console.log('add reputation points');
           performerPointsEarned = reputationPoints.upvote.performer;
           if (authorId) authorPointsEarned = reputationPoints.upvote.author;
         } else if(metadata?.action ==='removed') {
-          console.log('remove reputation points');
           performerPointsEarned = reputationPoints.upvote.removed_performer;
           if (authorId)
             authorPointsEarned = reputationPoints.upvote.removed_author;
         } else if(metadata?.action ==='changed') {
-            console.log('toggle downvote reputation points');
             performerPointsEarned = reputationPoints.downvote.removed_performer + reputationPoints.upvote.performer;
             if (authorId)
               authorPointsEarned = reputationPoints.downvote.removed_author + reputationPoints.upvote.author;
@@ -41,16 +38,13 @@ export async function updateReputation(params: UpdateReputationParams) {
         metadata?.content_type === 'comment'
       ) {
         if (metadata?.action === 'added') {
-          console.log('downvote reputation points');
           performerPointsEarned = reputationPoints.downvote.performer;
           if (authorId) authorPointsEarned = reputationPoints.downvote.author;
         }else if(metadata?.action === 'removed') {
-          console.log('remove downvote reputation points');
           performerPointsEarned = reputationPoints.downvote.removed_performer;
           if (authorId)
             authorPointsEarned = reputationPoints.downvote.removed_author;
         } else if(metadata?.action ==='changed') {
-          console.log('toggle downvote reputation points');
           performerPointsEarned = reputationPoints.upvote.removed_performer + reputationPoints.downvote.performer;
           if (authorId)
             authorPointsEarned = reputationPoints.upvote.removed_author + reputationPoints.downvote.author;
@@ -95,7 +89,6 @@ export async function updateReputation(params: UpdateReputationParams) {
       performerId &&
       performerId !== authorId
     ) {
-      console.log('add reputation points for performer');
       const { error: performerError } = await supabase.rpc(
         'increment_reputation',
         { user_id_in: performerId, points_in: performerPointsEarned },
@@ -110,7 +103,6 @@ export async function updateReputation(params: UpdateReputationParams) {
 
     // Update author's reputation if they earned points and are different from the performer
     if (authorPointsEarned !== 0 && authorId && performerId !== authorId) {
-      console.log('#### add reputation points for author');
       const { error: authorError } = await supabase.rpc(
         'increment_reputation',
         { user_id_in: authorId, points_in: authorPointsEarned },
@@ -125,7 +117,6 @@ export async function updateReputation(params: UpdateReputationParams) {
     // Handle cases where performer is the author (e.g. creating/deleting own post)
     // In this scenario, authorPointsEarned already contains the correct value for the user.
     if (authorPointsEarned !== 0 && authorId && performerId === authorId) {
-      console.log('#### add reputation points for author ####');
       const { error: selfActionError } = await supabase.rpc(
         'increment_reputation',
         { user_id_in: authorId, points_in: authorPointsEarned },

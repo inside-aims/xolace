@@ -74,7 +74,6 @@ const ConsentModal = ({ isOpen, onReject , user}: ConsentModalProps) => {
       .single();
 
       if (updateError) {
-        console.log(updateError)
         toast.error('Oops🫢!! Consent could not be accepted.');
         return;
       }
