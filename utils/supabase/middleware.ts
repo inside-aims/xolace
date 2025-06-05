@@ -50,7 +50,8 @@ export const updateSession = async (request: NextRequest) => {
       '/settings',
       '/activities',
       '/collections',
-      '/explore'
+      '/explore',
+      '/health-tips'
     ];
 
     // List of public routes
