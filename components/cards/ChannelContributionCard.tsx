@@ -97,7 +97,7 @@ const ChannelContributionCard = () => {
                 Get in touch with our team.
               </p>
               <a
-                href="mailto:support@xolace.com"
+                href="mailto:xolace25@gmail.com"
                 className="text-blue-500 flex items-center hover:underline"
               >
                 <MailPlusIcon className="mr-2 h-5 w-5" />
