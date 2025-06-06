@@ -37,8 +37,6 @@ const View = dynamic(() => import('../../hocs/detailsPostComponents/View'), {
 const PostDetailsInteraction = ({ post }: { post: DetailPost }) => {
   // get user data
   const user = useUserState(state => state.user);
-  // initialize supabase client
-  const supabase = getSupabaseBrowserClient();
 
   // mood
   const postMood = moodMap[post?.mood] || moodMap['neutral'];

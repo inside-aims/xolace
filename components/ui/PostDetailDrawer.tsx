@@ -43,8 +43,6 @@ type Type = string | string[] | undefined;
 const PostDetailDrawer = ({ post, type }: { post: DetailPost; type: Type }) => {
   // get user data
   const user = useUserState(state => state.user);
-  // initialize supabase client
-  const supabase = getSupabaseBrowserClient();
 
   const router = useRouter();
 
@@ -146,7 +144,7 @@ const PostDetailDrawer = ({ post, type }: { post: DetailPost; type: Type }) => {
     }
   });
 
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+
   // useEffect((): any => {
   //   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   //   const listener = (payload: any) => {
