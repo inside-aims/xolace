@@ -4,7 +4,7 @@ import { use, useState, useEffect } from 'react';
 import { urlPath } from '@/utils/url-helpers';
 import Link from 'next/link';
 import { motion } from 'framer-motion';
-import { MailCheck, RotateCw, MessageCircle, Info } from 'lucide-react';
+import { MailCheck, RotateCw, MessageCircle, Info, FileText } from 'lucide-react';
 import SupportButton from '@/components/shared/support-button';
 
 const supportOptions = [
@@ -16,6 +16,11 @@ const supportOptions = [
         icon: Info,
         label: "About us",
         href: "/about",
+    },
+    {
+      icon: FileText,
+      label: "Change logs",
+      href: "/updates",
     }
 ]
 
