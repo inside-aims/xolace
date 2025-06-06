@@ -64,7 +64,7 @@ export async function sendOTPLink(email, type, request) {
   }
 
   await transporter.sendMail({
-    from: 'Xolace <team@mail.xolace.app>',
+    from: 'Xolace <onboarding@mail.xolace.app>',
     to: email,
     subject: mailSubject,
     html: `
@@ -72,7 +72,7 @@ export async function sendOTPLink(email, type, request) {
   <html dir="ltr" lang="en">
 
     <head>
-      <link rel="preload" as="image" href="https://xolace.app/_next/image?url=%2Fassets%2Fimages%2Fxolace-1.png&w=640&q=75" />
+      <link rel="preload" as="image" href="https://www.xolace.app/_next/image?url=%2F_next%2Fstatic%2Fmedia%2Fx-logo-full.ed0794df.webp&w=128&q=75" />
       <meta content="text/html; charset=UTF-8" http-equiv="Content-Type" />
       <meta name="x-apple-disable-message-reformatting" /><!--$-->
     </head>
@@ -83,7 +83,7 @@ export async function sendOTPLink(email, type, request) {
       <table align="center" width="100%" border="0" cellPadding="0" cellSpacing="0" role="presentation" style="max-width:37.5em;margin:0 auto;padding:20px 25px 48px;background-image:url(&quot;/assets/raycast-bg.png&quot;);background-position:bottom;background-repeat:no-repeat, no-repeat">
         <tbody>
           <tr style="width:100%">
-            <td><img alt="Xolace" height="110" src="https://xolace.app/_next/image?url=%2Fassets%2Fimages%2Ftwitter-image.png&w=640&q=75" style="display:block;outline:none;border:none;text-decoration:none" width="110" />
+            <td><img alt="Xolace" height="110" src="https://www.xolace.app/_next/image?url=%2F_next%2Fstatic%2Fmedia%2Fx-logo-full.ed0794df.webp&w=128&q=75" style="display:block;outline:none;border:none;text-decoration:none" width="110" />
               <h1 style="font-size:28px;font-weight:bold;margin-top:20px">🪄 ${initialSentence}</h1>
               <table align="center" width="100%" border="0" cellPadding="0" cellSpacing="0" role="presentation" style="margin:24px 0">
                 <tbody>
@@ -95,9 +95,9 @@ export async function sendOTPLink(email, type, request) {
                   </tr>
                 </tbody>
               </table>
-              <p style="font-size:16px;line-height:26px;margin:16px 0">Best,<br />- Atlas Innovations & Meta Solutions Team</p>
-              <hr style="width:100%;border:none;border-top:1px solid #eaeaea;border-color:#dddddd;margin-top:48px" /><img alt="AIMS logo" height="60" src="https://xolace.app/_next/image?url=%2Fassets%2Fimages%2Fxolace-1.png&w=640&q=75" style="display:block;outline:none;border:none;text-decoration:none;-webkit-filter:grayscale(100%);filter:grayscale(100%);margin:20px 0" width="60" />
-              <p style="font-size:12px;line-height:24px;margin:16px 0;color:#8898aa;margin-left:4px">Atlas Innovations & Meta Solutions</p>
+              <p style="font-size:16px;line-height:26px;margin:16px 0">Best,<br />- Xolace Team</p>
+              <hr style="width:100%;border:none;border-top:1px solid #eaeaea;border-color:#dddddd;margin-top:48px" /><img alt="AIMS logo" height="60" src="https://www.xolace.app/_next/image?url=%2F_next%2Fstatic%2Fmedia%2Fx-logo-full.ed0794df.webp&w=128&q=75" style="display:block;outline:none;border:none;text-decoration:none;-webkit-filter:grayscale(100%);filter:grayscale(100%);margin:20px 0" width="60" />
+              <p style="font-size:12px;line-height:24px;margin:16px 0;color:#8898aa;margin-left:4px">Xolace inc.</p>
               <p style="font-size:12px;line-height:24px;margin:16px 0;color:#8898aa;margin-left:4px">Koforidua , poly-junction</p>
             </td>
           </tr>
