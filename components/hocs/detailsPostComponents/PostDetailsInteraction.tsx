@@ -3,7 +3,6 @@
 import React from 'react';
 import { useUserState } from '@/lib/store/user';
 import Image from 'next/image';
-import { getSupabaseBrowserClient } from '@/utils/supabase/client';
 import { useState } from 'react';
 import dynamic from 'next/dynamic';
 import {

@@ -30,7 +30,6 @@ import PostMetrics from '../shared/PostMetrics';
 import { toast } from 'sonner';
 import Loader from '../shared/loaders/Loader';
 import { CommentSchema } from '@/validation';
-import { getSupabaseBrowserClient } from '@/utils/supabase/client';
 import { useUserState } from '@/lib/store/user';
 import { Send } from 'lucide-react';
 import { VisuallyHidden } from '@radix-ui/react-visually-hidden';
