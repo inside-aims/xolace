@@ -96,7 +96,7 @@ export async function sendOTPLink(email, type, request) {
                 </tbody>
               </table>
               <p style="font-size:16px;line-height:26px;margin:16px 0">Best,<br />- Xolace Team</p>
-              <hr style="width:100%;border:none;border-top:1px solid #eaeaea;border-color:#dddddd;margin-top:48px" /><img alt="AIMS logo" height="60" src="https://www.xolace.app/_next/image?url=%2F_next%2Fstatic%2Fmedia%2Fx-logo-full.ed0794df.webp&w=128&q=75" style="display:block;outline:none;border:none;text-decoration:none;-webkit-filter:grayscale(100%);filter:grayscale(100%);margin:20px 0" width="60" />
+              <hr style="width:100%;border:none;border-top:1px solid #eaeaea;border-color:#dddddd;margin-top:48px" /><img alt="AIMS logo" height="60" src="https://www.xolace.app/_next/image?url=%2F_next%2Fstatic%2Fmedia%2Fx-logo-full.ed0794df.webp&w=128&q=75" style="display:block;outline:none;border:none;text-decoration:none;margin:20px 0" width="60" />
               <p style="font-size:12px;line-height:24px;margin:16px 0;color:#8898aa;margin-left:4px">Xolace inc.</p>
               <p style="font-size:12px;line-height:24px;margin:16px 0;color:#8898aa;margin-left:4px">Koforidua , poly-junction</p>
             </td>
