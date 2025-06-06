@@ -36,6 +36,7 @@ import { Send } from 'lucide-react';
 import { VisuallyHidden } from '@radix-ui/react-visually-hidden';
 import { Comment, DetailPost } from '@/types/global';
 import { useCommentMutation } from '@/hooks/posts/useCommentMutation';
+import { useCommentSubscription } from '@/hooks/posts/useCommentSubscription';
 
 type Type = string | string[] | undefined;
 
@@ -108,36 +109,6 @@ const PostDetailDrawer = ({ post, type }: { post: DetailPost; type: Type }) => {
       return;
     }
 
-    // inserting into the database table in supabase
-    // supabase
-    //   .from('comments')
-    //   .insert({
-    //     post: post.id,
-    //     comment_text: comment,
-    //   })
-    //   .then(() => {
-    //     toast({
-    //       title: 'Comment Created 🖌️',
-    //       description: 'Your comment has been successfully created! 😆',
-    //       variant: 'default',
-    //     });
-    //     form.reset();
-
-    //     // check if the user is the creator of the post
-    //     const relatedUser = post.created_by === user?.id ? undefined : post.created_by;
-    //     // log comment activity
-    //     logActivity({
-    //       userId: user?.id || '',
-    //       relatedUserId: relatedUser,
-    //       entityType: 'comment',
-    //       action: 'commented',
-    //       postId: post.id,
-    //       metadata: { content: comment, link : `/post/${post.id}` },
-    //     });
-
-    //     setIsLoading(false);
-    //   });
-
     createComment(
       {
         postId: post.id,
@@ -158,48 +129,67 @@ const PostDetailDrawer = ({ post, type }: { post: DetailPost; type: Type }) => {
     );
   }
 
+  // real time updates
+  useCommentSubscription({
+    onInsert: (newComment) => {
+      setComments(prev => [...prev, newComment]);
+    },
+    onUpdate: (updatedComment) => {
+      setComments(prev =>
+        prev.map(comment =>
+          comment.id === updatedComment.id ? updatedComment : comment
+        )
+      );
+    },
+    onDelete: (deletedId) => {
+      setComments(prev => prev.filter(comment => comment.id !== deletedId));
+    }
+  });
+
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  useEffect((): any => {
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    const listener = (payload: any) => {
-      const eventType = payload.eventType;
+  // useEffect((): any => {
+  //   // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  //   const listener = (payload: any) => {
+  //     const eventType = payload.eventType;
 
-      if (eventType === 'INSERT') {
-        setComments((prevComments: Comment[]) => [
-          ...prevComments,
-          payload.new,
-        ]);
-      } else if (eventType === 'DELETE') {
-        setComments((prevComments: Comment[]) =>
-          prevComments.filter(
-            (comment: Comment) => comment.id !== payload.old.id,
-          ),
-        );
-      } else if (eventType === 'UPDATE') {
-        setComments((prevComments: Comment[]) =>
-          prevComments.map((comment: Comment) =>
-            comment.id === payload.new.id ? payload.new : comment,
-          ),
-        );
-      }
-    };
+  //     if (eventType === 'INSERT') {
+  //       setComments((prevComments: Comment[]) => [
+  //         ...prevComments,
+  //         payload.new,
+  //       ]);
+  //       console.log("updated")
+  //     } else if (eventType === 'DELETE') {
+  //       setComments((prevComments: Comment[]) =>
+  //         prevComments.filter(
+  //           (comment: Comment) => comment.id !== payload.old.id,
+  //         ),
+  //       );
+  //       console.log("deleted")
+  //     } else if (eventType === 'UPDATE') {
+  //       setComments((prevComments: Comment[]) =>
+  //         prevComments.map((comment: Comment) =>
+  //           comment.id === payload.new.id ? payload.new : comment,
+  //         ),
+  //       );
+  //     }
+  //   };
 
-    const subscription = supabase
-      .channel('my-channel')
-      .on(
-        'postgres_changes',
-        {
-          event: '*',
-          schema: 'public',
-          table: 'comments',
-          // filter: `ticket=eq.${ticket}`,
-        },
-        listener,
-      )
-      .subscribe();
+  //   const subscription = supabase
+  //     .channel('my-channel')
+  //     .on(
+  //       'postgres_changes',
+  //       {
+  //         event: '*',
+  //         schema: 'public',
+  //         table: 'comments',
+  //         // filter: `ticket=eq.${ticket}`,
+  //       },
+  //       listener,
+  //     )
+  //     .subscribe();
 
-    return () => subscription.unsubscribe();
-  }, [supabase]);
+  //   return () => subscription.unsubscribe();
+  // }, [supabase]);
 
   return (
     <>

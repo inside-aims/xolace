@@ -4,7 +4,7 @@ import React from 'react';
 import { useUserState } from '@/lib/store/user';
 import Image from 'next/image';
 import { getSupabaseBrowserClient } from '@/utils/supabase/client';
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import dynamic from 'next/dynamic';
 import {
   Form,
@@ -28,6 +28,7 @@ import PostMetrics from '@/components/shared/PostMetrics';
 import SaveToCollectionsButton from '@/components/shared/SaveToCollectionsButton';
 import { moodMap } from '@/types';
 import CommentCard from '@/components/cards/CommentCard';
+import { useCommentSubscription } from '@/hooks/posts/useCommentSubscription';
 // import View from '@/components/hocs/detailsPostComponents/View';
 const View = dynamic(() => import('../../hocs/detailsPostComponents/View'), {
   ssr: false,
@@ -98,48 +99,69 @@ const PostDetailsInteraction = ({ post }: { post: DetailPost }) => {
     );
   }
 
+  // real time updates
+  useCommentSubscription({
+    onInsert: (newComment) => {
+      setComments(prev => [...prev, newComment]);
+    },
+    onUpdate: (updatedComment) => {
+      setComments(prev =>
+        prev.map(comment =>
+          comment.id === updatedComment.id ? updatedComment : comment
+        )
+      );
+    },
+    onDelete: (deletedId) => {
+      setComments(prev => prev.filter(comment => comment.id !== deletedId));
+    }
+  });
+  
+
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  useEffect((): any => {
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    const listener = (payload: any) => {
-      const eventType = payload.eventType;
+  // useEffect((): any => {
+  //   // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  //   const listener = (payload: any) => {
+  //     const eventType = payload.eventType;
+  //     console.log(eventType)
+  //     if (eventType === 'INSERT') {
+  //       setComments((prevComments: Comment[]) => [
+  //         ...prevComments,
+  //         payload.new,
+  //       ]);
+  //       console.log("insert")
+  //     } else if (eventType === 'DELETE') {
+  //       setComments((prevComments: Comment[]) =>
+  //         prevComments.filter(
+  //           (comment: Comment) => comment.id !== payload.old.id,
+  //         ),
+  //       );
+  //       console.log("delete")
+  //     } else if (eventType === 'UPDATE') {
+  //       setComments((prevComments: Comment[]) =>
+  //         prevComments.map((comment: Comment) =>
+  //           comment.id === payload.new.id ? payload.new : comment,
+  //         ),
+  //       );
+  //       console.log("update")
+  //     }
+  //   };
 
-      if (eventType === 'INSERT') {
-        setComments((prevComments: Comment[]) => [
-          ...prevComments,
-          payload.new,
-        ]);
-      } else if (eventType === 'DELETE') {
-        setComments((prevComments: Comment[]) =>
-          prevComments.filter(
-            (comment: Comment) => comment.id !== payload.old.id,
-          ),
-        );
-      } else if (eventType === 'UPDATE') {
-        setComments((prevComments: Comment[]) =>
-          prevComments.map((comment: Comment) =>
-            comment.id === payload.new.id ? payload.new : comment,
-          ),
-        );
-      }
-    };
+  //   const subscription = supabase
+  //     .channel('my-channel')
+  //     .on(
+  //       'postgres_changes',
+  //       {
+  //         event: '*',
+  //         schema: 'public',
+  //         table: 'comments',
+  //         // filter: `ticket=eq.${ticket}`,
+  //       },
+  //       listener,
+  //     )
+  //     .subscribe();
 
-    const subscription = supabase
-      .channel('my-channel')
-      .on(
-        'postgres_changes',
-        {
-          event: '*',
-          schema: 'public',
-          table: 'comments',
-          // filter: `ticket=eq.${ticket}`,
-        },
-        listener,
-      )
-      .subscribe();
-
-    return () => subscription.unsubscribe();
-  }, [supabase]);
+  //   return () => subscription.unsubscribe();
+  // }, [supabase]);
 
   return (
     <div className="w-full px-13 max-md:hidden">
