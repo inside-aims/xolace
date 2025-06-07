@@ -15,8 +15,7 @@ export function usePostsCount(userId: string) {
       if (error) throw error;
       return count;
     },
-    staleTime: 5 * 60 * 1000, // 5 minutes in milliseconds
-    refetchOnMount: false,
+    staleTime: 20 * 5,
     refetchOnWindowFocus: false,
   });
 }
