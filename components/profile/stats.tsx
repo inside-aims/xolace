@@ -4,6 +4,7 @@ import Image from "next/image";
 import React from "react";
 import { useAssignBadges } from "@/hooks/profile/useAssignBadges";
 import { ChatBubblesSpinner } from "../shared/loaders/ChatBubbleSpinner";
+import { usePostsCount } from "@/hooks/profile/usePostsCount";
 
 interface StatsProps {
   reputation : number,
@@ -12,6 +13,8 @@ interface StatsProps {
 
 export function Stats({reputation, userId}: StatsProps) {
   const { data , isPending } = useAssignBadges(userId);
+
+  const { data: count } = usePostsCount(userId);
 
   //Dummy profile stats for badges
   const profileStatBadges: {key: string, value: number, name: string, imageURL: string, className?: string}[] = [
@@ -28,7 +31,7 @@ export function Stats({reputation, userId}: StatsProps) {
           <div
             className="col-span-12 md:col-span-3 p-4 shadow-lg rounded-lg flex flex-row md:flex-col gap-4 border">
             <p className="flex flex-col gap-0 m-0">
-              <span>0</span>
+              <span>{count || 0}</span>
               <span>Posts</span>
             </p>
             <p className="flex flex-col">
