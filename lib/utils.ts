@@ -74,3 +74,13 @@ export const seededShuffleArray = <T>(array: T[], seed: number): T[] => {
 
   return arrayCopy;
 };
+
+
+/**
+ * Generates a slug from a given title.
+ * @param {string} title - The title to generate a slug from.
+ * @returns {string} The generated slug.
+ */
+export function generateSlug(title: string) {
+  return title.toLowerCase().replace(/\s+/g, "-");
+}

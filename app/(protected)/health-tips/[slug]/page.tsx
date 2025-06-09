@@ -14,9 +14,8 @@ import type { Frontmatter } from "@/types";
 
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
-  const { id } = await params;
-  const tipId = Number(id);
-  const file = await getHealthTip(tipId);
+  const { slug } = await params;
+  const file = await getHealthTip(slug);
 
   if (!file) return {};
 
@@ -30,12 +29,13 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 }
 
 interface Props {
-  params: Promise<{ id: string }>;
+  params: Promise<{ slug: string }>;
 }
 
 interface HealthTipDetailsProps {
   id: number;
   title: string;
+  slug: string;
   author_name: string;
   author_avatar_url: string;
   content: string;
@@ -43,14 +43,13 @@ interface HealthTipDetailsProps {
 }
 
 export default async function HealthTipDetailsPage({ params }: Props) {
-  const { id } = await params;
-  const tipId = Number(id);
+  const { slug } = await params;
   const queryClient = new QueryClient()
 
   // Note we are now using fetchQuery()
   const healthTip: HealthTipDetailsProps = await queryClient.fetchQuery({
-    queryKey: ['healthTip', tipId],
-    queryFn: () => getHealthTip(tipId),
+    queryKey: ['healthTip', slug],
+    queryFn: () => getHealthTip(slug),
   })
 
 

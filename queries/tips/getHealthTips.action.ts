@@ -12,6 +12,7 @@ export const getHealthTips = async () => {
       *
     `
     ).limit(6)
+    .eq("is_approved", true)
     .order('created_at', { ascending: false });
 
   if (error) throw error;
