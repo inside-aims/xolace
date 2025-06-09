@@ -232,7 +232,7 @@ const HealthTipsForm = () => {
             className=" w-fit !text-light-900 disabled:opacity-50"
             disabled={isLoading}
           >
-            {!isLoading ? <DefaultLoader size={20}/> : 'Add Health Tip'}
+            {isLoading ? <DefaultLoader size={20}/> : 'Add Health Tip'}
           </Button>
         </div>
       </form>
