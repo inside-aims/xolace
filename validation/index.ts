@@ -60,6 +60,7 @@ export const PostSchema = z.object({
       message: 'Post must not be longer than 500 characters.',
     }),
   is24HourPost: z.boolean(),
+  type: z.enum(["single", "carousel"])
 });
 
 // Validation schema for comment form
