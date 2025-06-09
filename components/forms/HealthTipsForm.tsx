@@ -25,6 +25,8 @@ import { Input } from "../ui/input";
 import { getSupabaseBrowserClient } from "@/utils/supabase/client";
 import { useUserState } from "@/lib/store/user";
 import { generateSlug } from "@/lib/utils";
+import { toast } from "sonner";
+import { DefaultLoader } from "../shared/loaders/DefaultLoader";
 
 const HealthTipsForm = () => {
   const supabase = getSupabaseBrowserClient();
@@ -80,8 +82,12 @@ const HealthTipsForm = () => {
 
     console.log('Health tip created successfully:', healthTipData);
     form.reset();
+    form.setValue("content", "");
+    toast.success("Health tip submitted successfully, currently under review and will be published soon 🖊️");
+    //editorRef.current?.setValue("");
     } catch (error) {
       console.error('Error creating health tip:', error);
+      toast.error("Failed to create health tip, please try again later 🖊️");
     } finally {
       setIsLoading(false);
     }
@@ -138,7 +144,7 @@ const HealthTipsForm = () => {
           render={({ field }) => (
             <FormItem className="flex w-full flex-col gap-2.5 ">
               <FormLabel className=" paragraph-semibold text-dark400_light800">
-                Health Tip Title <span className=" text-primary-500">*</span>
+                Health Tip Title <span className=" text-rose-500">*</span>
               </FormLabel>
               <FormControl>
                 <Input
@@ -186,7 +192,7 @@ const HealthTipsForm = () => {
           render={({ field }) => (
             <FormItem className="flex w-full flex-col gap-2.5 ">
               <FormLabel className=" paragraph-semibold text-dark400_light800">
-                Tags <span className=" text-primary-500">*</span>
+                Tags <span className=" text-rose-500">*</span>
               </FormLabel>
               <FormControl>
                 <div>
@@ -223,10 +229,11 @@ const HealthTipsForm = () => {
 
         <div className=" mt-5 mb-16 md:mb-5 flex justify-end">
           <Button
-            className="primary-gradient w-fit !text-light-900"
+          variant="flat"
+            className=" w-fit !text-light-900 disabled:opacity-50"
             disabled={isLoading}
           >
-            {isLoading ? 'Adding...' : 'Add Health Tip'}
+            {!isLoading ? <DefaultLoader size={20}/> : 'Add Health Tip'}
           </Button>
         </div>
       </form>

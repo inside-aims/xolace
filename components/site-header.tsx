@@ -18,10 +18,13 @@ import { getSupabaseBrowserClient } from '@/utils/supabase/client';
 import { useUserState } from '@/lib/store/user';
 import { RealtimeAvatarStack } from './realtime-avatar-stack';
 import mascot from '../public/assets/images/x-logo-full.webp';
+import { PlusIcon } from 'lucide-react';
 
 export function SiteHeader() {
   // get user profile data
   const user = useUserState(state => state.user);
+  const { roles } = useUserState()
+  const isProfessional = roles.includes("help_professional")
   // const [isOpen, setIsOpen] = useState(false);
   const router = useRouter();
   const supabase = getSupabaseBrowserClient();
@@ -114,7 +117,17 @@ export function SiteHeader() {
           </div> */}
 
           {/* Theme switcher */}
-          <div className="flex items-center gap-x-5 max-sm:justify-center md:w-30">
+          <div className={`flex items-center max-sm:justify-center ${isProfessional ? "md:w-50 gap-x-2 md:gap-x-5" : "md:w-30 gap-x-5"}`}>
+             {/* link to navigate create-health-tips */}
+             {/* design like a button */}
+             {roles.includes("help_professional") && (
+             <Link
+              href="/create-health-tips"
+              className="flex items-center gap-x-1 px-2 py-2 rounded-full hover:bg-lavender-400 hover:text-white transition-colors"
+            >
+              <PlusIcon height="22" className=' size-7 max-sm:size-8' /> <span className="text-sm hidden md:block">Create</span>
+            </Link>
+             )}
             <div className="hidden md:block">
               <ThemeSwitch />
             </div>
