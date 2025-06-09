@@ -31,6 +31,8 @@ const HealthTipsForm = () => {
   const supabase = getSupabaseBrowserClient();
   const { user , roles} = useUserState();
 
+  const isProfessional = roles?.includes("help_professional");
+
   const [isLoading, setIsLoading] = useState(false);
   const editorRef = useRef<MDXEditorMethods>(null);
   const form = useForm<z.infer<typeof AddHealthTipsSchema>>({
@@ -46,6 +48,10 @@ const HealthTipsForm = () => {
     if(!user){
       return;
     }
+    if(!isProfessional){
+      toast.error("You are not authorized to create health tips 🖊️");
+      return;
+    }
     setIsLoading(true);
 
     try {
@@ -59,7 +65,7 @@ const HealthTipsForm = () => {
     // generate a slug from the title
     const slug = generateSlug(data.title);
 
-    const { data: healthTipData, error } = await supabase
+    const { error } = await supabase
   .rpc('insert_health_tip_with_tags', {
     p_title: data.title,
     p_content: data.content,
