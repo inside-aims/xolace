@@ -30,7 +30,8 @@ import { DefaultLoader } from "../shared/loaders/DefaultLoader";
 const HealthTipsForm = () => {
   const supabase = getSupabaseBrowserClient();
   const { user , roles} = useUserState();
-  console.log("roles ", roles)
+
+  const isProfessional = roles?.includes("help_professional");
 
   const [isLoading, setIsLoading] = useState(false);
   const editorRef = useRef<MDXEditorMethods>(null);
@@ -47,10 +48,11 @@ const HealthTipsForm = () => {
     if(!user){
       return;
     }
+    if(!isProfessional){
+      toast.error("You are not authorized to create health tips 🖊️");
+      return;
+    }
     setIsLoading(true);
-    // TODO: Create question logic here
-    console.log(data);
-    console.log(form.getValues());
 
     try {
       // we will call the edge fuction over here 
@@ -63,7 +65,7 @@ const HealthTipsForm = () => {
     // generate a slug from the title
     const slug = generateSlug(data.title);
 
-    const { data: healthTipData, error } = await supabase
+    const { error } = await supabase
   .rpc('insert_health_tip_with_tags', {
     p_title: data.title,
     p_content: data.content,
@@ -75,22 +77,19 @@ const HealthTipsForm = () => {
   });
 
     if (error) {
-      console.error('Error creating health tip:', error);
+      toast.error(`Failed to create health tip, please try again later 🖊️. ${error.message}`);
       return;
     }
 
-    console.log('Health tip created successfully:', healthTipData);
     form.reset();
-    form.setValue("content", "");
     toast.success("Health tip submitted successfully, currently under review and will be published soon 🖊️");
-    //editorRef.current?.setValue("");
+    editorRef.current?.setMarkdown("");
     } catch (error) {
       console.error('Error creating health tip:', error);
       toast.error("Failed to create health tip, please try again later 🖊️");
     } finally {
       setIsLoading(false);
     }
-    // Redirect to the dashboard or show a success message.
   };
 
   const handleTagRemove = (tag: string, field: { value: string[] }) => {
@@ -201,7 +200,7 @@ const HealthTipsForm = () => {
                     className=" paragraph-regular background-light700_dark300 light-border-2 text-dark300_light700 no-focus min-h-[56px] rounded-1.5 border"
                   />
                   {field.value.length > 0 && (
-                    <div className="flex-start mt-2.5 flex-wrap gap-2.5 ">
+                    <div className="flex items-start mt-2.5 flex-wrap gap-2.5 ">
                       {field.value.map((tag: string) => (
                         <HelathTipTagCard
                           key={tag}
@@ -218,7 +217,7 @@ const HealthTipsForm = () => {
                 </div>
               </FormControl>
               <FormDescription className=" body-regular mt-2.5 text-light-500">
-                Add up to three tags to describe what your question is about.
+                Add up to three tags to describe what your article is about.
                 You need to press enter to add a tag
               </FormDescription>
               <FormMessage />
@@ -232,7 +231,7 @@ const HealthTipsForm = () => {
             className=" w-fit !text-light-900 disabled:opacity-50"
             disabled={isLoading}
           >
-            {!isLoading ? <DefaultLoader size={20}/> : 'Add Health Tip'}
+            {isLoading ? <DefaultLoader size={20}/> : 'Add Health Tip'}
           </Button>
         </div>
       </form>
