@@ -1,6 +1,6 @@
 'use client';
 
-import { Info, Cross, CircleArrowRight, MoveLeft } from 'lucide-react';
+import { Info, Cross, CircleArrowRight} from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import React, { useState } from 'react';
 import { useRouter } from 'next/navigation';
@@ -23,14 +23,14 @@ interface HealthTipCardProps {
   sidebar?: boolean;
 }
 
-interface HealthTipDetailsProps {
-  id: number;
-  title: string;
-  author_name: string;
-  author_avatar_url: string;
-  content: string;
-  created_at: string;
-}
+// interface HealthTipDetailsProps {
+//   id: number;
+//   title: string;
+//   author_name: string;
+//   author_avatar_url: string;
+//   content: string;
+//   created_at: string;
+// }
 
 
 export default function HealthTips() {
@@ -39,9 +39,9 @@ export default function HealthTips() {
     isPending: feedHealthTipsLoading,
     isError: feedHealthTipsError,
   } = useFeedHealthTips();
-  const [showDetails, setShowDetails] = useState<boolean>(false);
-  const [healthTipDetails, setHealthTipDetails] =
-    useState<HealthTipDetailsProps>();
+  //const [showDetails, setShowDetails] = useState<boolean>(false);
+  // const [healthTipDetails, setHealthTipDetails] =
+  //   useState<HealthTipDetailsProps>();
   const router = useRouter();
   const { setOpenMobile } = useSidebar();
 
@@ -65,7 +65,7 @@ export default function HealthTips() {
     <>
       <div className={'flex w-full flex-col'}>
         <div
-          className={`${!showDetails ? 'flex h-full w-full flex-col gap-4 md:px-4' : 'hidden'}`}
+          className={`flex h-full w-full flex-col gap-4 md:px-4`}
         >
           {/*Xolace wellness section*/}
           <div className="animate-in fade-in slide-in-from-bottom-3 flex flex-col items-start gap-2 rounded-xl border py-2 shadow-lg transition-shadow duration-300 duration-500 ease-in-out hover:shadow-xl motion-reduce:animate-none md:py-4">
@@ -211,7 +211,7 @@ export default function HealthTips() {
         </div>
 
         {/*health tips details on desktop */}
-        <div
+        {/* <div
           className={`${showDetails ? 'hidden w-full flex-col items-start gap-4 px-4 py-2 md:flex' : 'hidden'}`}
         >
           <button
@@ -233,7 +233,7 @@ export default function HealthTips() {
               sidebar={true}
             />
           </div>
-        </div>
+        </div> */}
       </div>
     </>
   );
@@ -241,7 +241,6 @@ export default function HealthTips() {
 
 // Health tip card component
 export function HealthTipCard({
-  id,
   slug,
   title,
   author,
