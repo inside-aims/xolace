@@ -24,6 +24,7 @@
   },
   "dependencies": {
     "@hookform/resolvers": "^5.0.1",
+    "@mdxeditor/editor": "^3.35.0",
     "@next/bundle-analyzer": "^15.3.1",
     "@radix-ui/colors": "^3.0.0",
     "@radix-ui/react-accordion": "^1.2.8",
@@ -57,6 +58,7 @@
     "canvas-confetti": "^1.9.3",
     "class-variance-authority": "^0.7.1",
     "clsx": "^2.1.1",
+    "cm6-theme-basic-dark": "^0.2.0",
     "date-fns": "^4.1.0",
     "embla-carousel-react": "^8.6.0",
     "emoji-picker-react": "^4.12.2",
@@ -143,7 +145,8 @@
       "sharp",
       "supabase",
       "@vercel/speed-insights",
-      "unrs-resolver"
+      "unrs-resolver",
+      "es5-ext"
     ]
   }
 }

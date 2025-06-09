@@ -1,8 +1,8 @@
 'use client';
 
-import { Info, Cross, CircleArrowRight, MoveLeft } from 'lucide-react';
+import { Info, Cross, CircleArrowRight} from 'lucide-react';
 import { Button } from '@/components/ui/button';
-import React, { useState } from 'react';
+import React from 'react';
 import { useRouter } from 'next/navigation';
 import { useSidebar } from '../ui/sidebar';
 import { useFeedHealthTips } from '@/hooks/healthTips/useHealthTipsData';
@@ -11,6 +11,7 @@ import Link from 'next/link';
 
 interface HealthTipCardProps {
   id: number;
+  slug?: string;
   title: string;
   author: string;
   author_avatar_url: string;
@@ -18,78 +19,19 @@ interface HealthTipCardProps {
   date: string;
   index?: number;
   total?: number;
-  onHealthTipSelect?: (healthTipId: number) => void;
+  onHealthTipSelect?: (healthTipSlug: string) => void;
   sidebar?: boolean;
 }
 
-interface HealthTipDetailsProps {
-  id: number;
-  title: string;
-  author_name: string;
-  author_avatar_url: string;
-  content: string;
-  created_at: string;
-}
+// interface HealthTipDetailsProps {
+//   id: number;
+//   title: string;
+//   author_name: string;
+//   author_avatar_url: string;
+//   content: string;
+//   created_at: string;
+// }
 
-// dummy health tips data
-// const healthTips: HealthTipCardProps[] = [
-//   {
-//     id: '1',
-//     title: 'Coping With Anxiety in Isolation',
-//     author: 'Dr. Sarah Mensah',
-//     content: [
-//       'Anxiety during isolation is a common struggle that many individuals face. The lack of social interaction can heighten feelings of loneliness and uncertainty.',
-//       'To manage this, acknowledge your emotions without judgment. It’s okay to feel overwhelmed — acceptance is the first step toward healing.',
-//       'Establishing a daily routine can help regain a sense of control. Set fixed wake-up and sleep times, eat balanced meals, and schedule intentional breaks.',
-//       'Stay mentally active. Read books, solve puzzles, or try learning a new skill — cognitive engagement boosts your mood and reduces rumination.',
-//       'Don’t underestimate the value of movement. A short walk, stretching, or a quick dance session can release endorphins and reduce stress.',
-//       'Digital connections matter. Schedule regular virtual catch-ups with family or join online support groups to avoid complete social withdrawal.',
-//       'Incorporate grounding techniques — like focusing on your breath or naming five things you see — to calm your mind during anxiety spikes.',
-//       'Lastly, speak kindly to yourself. You’re not failing for feeling anxious. Progress isn’t linear, and every effort counts.',
-//     ],
-//     date: '2025-05-20',
-//   },
-//   {
-//     id: '2',
-//     title: 'Daily Breathing Exercises for Calm',
-//     author: 'Dr. Kwame Boateng',
-//     content: [
-//       'Breathing exercises are accessible tools to reset your body’s stress response, offering a natural path to calm and balance.',
-//       'Start with diaphragmatic breathing. Lie down, place one hand on your chest and another on your belly. Breathe deeply and slowly so only your belly rises.',
-//       'Practice this for 5–10 minutes daily. Over time, it can lower blood pressure and reduce chronic anxiety symptoms.',
-//       'Box breathing is another effective method — inhale for 4 counts, hold for 4, exhale for 4, and pause for 4. Repeat this cycle for several minutes.',
-//       'Use breathing as a mindfulness anchor. When your thoughts wander, gently return to the rhythm of your breath without judgment.',
-//       'Breathwork isn’t only for mornings — it’s perfect before stressful meetings, during traffic, or when falling asleep.',
-//       'Pair your breathing practice with calming music or ambient nature sounds to enhance the effect.',
-//       'As you continue, note how your body responds. The more consistent your practice, the easier it becomes to enter a state of calm quickly.',
-//     ],
-//     date: '2025-12-18',
-//   },
-//   {
-//     id: '3',
-//     title: 'Benefits of Mindful Journaling',
-//     author: 'Dr. Linda Owusu',
-//     content: [
-//       'Mindful journaling invites us to observe our inner world with curiosity and compassion, helping us process emotions and find clarity.',
-//       'Start with simple prompts like “What emotions am I feeling right now?” or “What drained or energized me today?”',
-//       'Journaling is most effective when done consistently. Set a timer for 10–15 minutes and allow your thoughts to spill without censorship.',
-//       'Use it as a tool to track your personal growth, highlight recurring thought patterns, or identify emotional triggers.',
-//       'It can serve as an emotional outlet, reducing the mental clutter that contributes to stress and anxiety.',
-//       'Over time, you may notice more gratitude, resilience, and emotional intelligence emerging through your entries.',
-//       'You don’t have to write daily. Even two or three times a week can offer benefits. Just be intentional when you do.',
-//       'Finally, treat your journal as a safe space. There’s no right or wrong — only your authentic self, expressed freely.',
-//       'Mindful journaling invites us to observe our inner world with curiosity and compassion, helping us process emotions and find clarity.',
-//       'Start with simple prompts like “What emotions am I feeling right now?” or “What drained or energized me today?”',
-//       'Journaling is most effective when done consistently. Set a timer for 10–15 minutes and allow your thoughts to spill without censorship.',
-//       'Use it as a tool to track your personal growth, highlight recurring thought patterns, or identify emotional triggers.',
-//       'It can serve as an emotional outlet, reducing the mental clutter that contributes to stress and anxiety.',
-//       'Over time, you may notice more gratitude, resilience, and emotional intelligence emerging through your entries.',
-//       'You don’t have to write daily. Even two or three times a week can offer benefits. Just be intentional when you do.',
-//       'Finally, treat your journal as a safe space. There’s no right or wrong — only your authentic self, expressed freely.',
-//     ],
-//     date: '2025-10-17',
-//   },
-// ];
 
 export default function HealthTips() {
   const {
@@ -97,19 +39,20 @@ export default function HealthTips() {
     isPending: feedHealthTipsLoading,
     isError: feedHealthTipsError,
   } = useFeedHealthTips();
-  const [showDetails, setShowDetails] = useState<boolean>(false);
-  const [healthTipDetails, setHealthTipDetails] =
-    useState<HealthTipDetailsProps>();
+  //const [showDetails, setShowDetails] = useState<boolean>(false);
+  // const [healthTipDetails, setHealthTipDetails] =
+  //   useState<HealthTipDetailsProps>();
   const router = useRouter();
   const { setOpenMobile } = useSidebar();
 
   // Helper for health tip click to read more
-  const handleHealthClick = (healthTipId: number) => {
-    const selectTip = feedHealthTips?.find(tip => tip.id === healthTipId);
-    if (selectTip) {
-      setHealthTipDetails(selectTip);
-      setShowDetails(!showDetails);
-    }
+  const handleHealthClick = (healthTipSlug: string) => {
+    // const selectTip = feedHealthTips?.find(tip => tip.id === healthTipId);
+    // if (selectTip) {
+    //   setHealthTipDetails(selectTip);
+    //   setShowDetails(!showDetails);
+    // }
+    router.push(`/health-tips/${healthTipSlug}`);
   };
 
   // Handle health tips route navigation
@@ -122,7 +65,7 @@ export default function HealthTips() {
     <>
       <div className={'flex w-full flex-col'}>
         <div
-          className={`${!showDetails ? 'flex h-full w-full flex-col gap-4 md:px-4' : 'hidden'}`}
+          className={`flex h-full w-full flex-col gap-4 md:px-4`}
         >
           {/*Xolace wellness section*/}
           <div className="animate-in fade-in slide-in-from-bottom-3 flex flex-col items-start gap-2 rounded-xl border py-2 shadow-lg transition-shadow duration-300 duration-500 ease-in-out hover:shadow-xl motion-reduce:animate-none md:py-4">
@@ -198,6 +141,7 @@ export default function HealthTips() {
                     >
                       <HealthTipCard
                         id={healthTip.id}
+                        slug={healthTip.slug}
                         title={healthTip.title}
                         author={healthTip.author_name}
                         author_avatar_url={healthTip.author_avatar_url}
@@ -206,7 +150,7 @@ export default function HealthTips() {
                         index={index}
                         total={feedHealthTips?.length}
                         onHealthTipSelect={() =>
-                          handleHealthClick(healthTip.id)
+                          handleHealthClick(healthTip.slug)
                         }
                       />
                     </div>
@@ -267,7 +211,7 @@ export default function HealthTips() {
         </div>
 
         {/*health tips details on desktop */}
-        <div
+        {/* <div
           className={`${showDetails ? 'hidden w-full flex-col items-start gap-4 px-4 py-2 md:flex' : 'hidden'}`}
         >
           <button
@@ -289,7 +233,7 @@ export default function HealthTips() {
               sidebar={true}
             />
           </div>
-        </div>
+        </div> */}
       </div>
     </>
   );
@@ -297,7 +241,7 @@ export default function HealthTips() {
 
 // Health tip card component
 export function HealthTipCard({
-  id,
+  slug,
   title,
   author,
   author_avatar_url,
@@ -325,7 +269,7 @@ export function HealthTipCard({
         </h3>
         <button
           className="from-lavender-500/70 to-lavender-200/30 dark:from-lavender-700/70 dark:to-lavender-500/40 border-lavender-500/10 hover:from-lavender-300/80 hover:to-lavender-200/40 dark:hover:from-lavender-600/80 dark:hover:to-lavender-500/40 cursor-pointer rounded-full border bg-linear-to-b px-5 py-2 text-sm text-black backdrop-blur-md transition duration-500 dark:border-white/30 dark:text-white"
-          onClick={() => onHealthTipSelect && onHealthTipSelect(id)}
+          onClick={() => (onHealthTipSelect && slug) && onHealthTipSelect(slug)}
         >
           See more
         </button>

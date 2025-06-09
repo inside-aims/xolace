@@ -4,7 +4,7 @@ import { getSupabaseBrowserClient } from '@/utils/supabase/client';
 const supabase = getSupabaseBrowserClient();
 
 export function useFeedHealthTips() {
-    // fetch only 3 health tips from supabase
+  // fetch only 3 health tips from supabase
   return useQuery({
     queryKey: ['feedHealthTips'],
     queryFn: async () => {
@@ -15,6 +15,7 @@ export function useFeedHealthTips() {
          *
       `,
         )
+        .eq('is_approved', true)
         .order('created_at', { ascending: false })
         .limit(3);
 
@@ -37,12 +38,13 @@ export function useHealthTips() {
          *
       `,
         )
-        .order('created_at', { ascending: false })
+        .eq('is_approved', true)
+        .order('created_at', { ascending: false });
 
       if (error) throw error;
       return data;
     },
-    staleTime: 60 * 60 * 24, // 24 hours    
+    staleTime: 60 * 60 * 24, // 24 hours
     refetchOnMount: false,
   });
 }

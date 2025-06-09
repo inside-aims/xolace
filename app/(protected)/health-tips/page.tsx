@@ -83,7 +83,7 @@ export default async function HealthTips() {
                 )}
               </div>
               <Link
-                href={`/health-tips/${tip.id}`}
+                href={`/health-tips/${tip.slug}`}
                 className={
                   'text-lavender-400 hover:text-lavender-600 hover:lavender-500 mb-4 flex items-center text-sm hover:cursor-pointer hover:underline'
                 }
