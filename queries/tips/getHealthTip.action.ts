@@ -2,7 +2,7 @@
 
 import { createClient } from "@/utils/supabase/server";
 import { cache } from "react";
-export const getHealthTip = cache(async (id: number) => {
+export const getHealthTip = cache(async (slug: string) => {
 
   const supabase = await createClient();
 
@@ -13,7 +13,7 @@ export const getHealthTip = cache(async (id: number) => {
       *
     `
     )
-    .eq('id', id)
+    .eq('slug', slug)
     .single();
 
   if (error) throw error;
