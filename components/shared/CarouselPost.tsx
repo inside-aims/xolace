@@ -66,7 +66,7 @@ export default function CarouselPost({
         {slides.map((slide, index) => (
           <SwiperSlide key={index}>
             <div
-              className="relative min-h-[200px] overflow-hidden rounded-2xl bg-gradient-to-br from-purple-100 via-pink-50 to-blue-100 p-8"
+              className="relative min-h-[120px] overflow-hidden rounded-2xl bg-gradient-to-br dark:from-bg-dark dark:via-bg-dark dark:to-bg-dark p-4 shadow-inner"
               data-swiper-parallax="-100"
               onClick={onClick}
             >
@@ -79,13 +79,13 @@ export default function CarouselPost({
 
               {/* Content */}
               <div className="relative z-10">
-                <div className="mb-4 flex items-center justify-between">
-                  <span className="rounded-full bg-purple-100 px-3 py-1 text-sm font-medium text-purple-600">
-                    Slide {slide.slide_index} of {slides.length}
+                <div className="mb-2 flex items-center justify-between">
+                  <span className="rounded-full bg-lavender-100 py-1 px-1 text-xs font-medium text-lavender-600">
+                    Slide {slide.slide_index + 1} of {slides.length}
                   </span>
                 </div>
                 <p
-                  className="text-lg leading-relaxed text-gray-800"
+                  className="text-content-label leading-relaxed dark:text-gray-200"
                   data-swiper-parallax="-200"
                 >
                   {slide.content}
@@ -93,8 +93,8 @@ export default function CarouselPost({
               </div>
 
               {/* Decorative Elements */}
-              <div className="absolute -top-4 -right-4 h-24 w-24 animate-pulse rounded-full bg-gradient-to-br from-yellow-200 to-orange-200 opacity-20"></div>
-              <div className="absolute -bottom-2 -left-2 h-16 w-16 animate-bounce rounded-full bg-gradient-to-br from-green-200 to-teal-200 opacity-30"></div>
+              <div className="absolute -top-4 -right-4 h-12 w-12 animate-pulse rounded-full bg-gradient-to-br from-orange-300 to-orange-200 opacity-20"></div>
+              {/* <div className="absolute -bottom-2 -left-2 h-14 w-14 animate-bounce rounded-full bg-gradient-to-br from-teal-200 to-teal-200 opacity-30"></div> */}
             </div>
           </SwiperSlide>
         ))}

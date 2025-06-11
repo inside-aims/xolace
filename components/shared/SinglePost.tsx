@@ -6,8 +6,8 @@ interface SinglePostProps {
   export function SinglePost({ content, onClick }: SinglePostProps) {
     return (
       <div className="relative" onClick={onClick}>
-        <div className="bg-transparent  rounded-2xl p-3 ">
-          <p className="dark:text-white leading-relaxed text-sm whitespace-pre-wrap">{content}</p>
+        <div className="bg-transparent  rounded-2xl py-2 ">
+          <p className="dark:text-white leading-relaxed text-content-label whitespace-pre-wrap">{content}</p>
         </div>
   
         {/* Decorative elements */}

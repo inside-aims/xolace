@@ -619,7 +619,7 @@ export function PostForm() {
 
   return (
     <div className="relative h-full">
-      <Card className="mb-3 overflow-visible rounded-2xl border-none shadow-lg">
+      <Card className="mb-3 overflow-visible rounded-2xl border-none">
         <CardContent className="px-0">
           <Form {...form}>
             <form
@@ -1133,7 +1133,7 @@ export function PostForm() {
         </CardContent>
       </Card>
 
-      <div className="flex h-full flex-col gap-y-12 md:gap-y-30 lg:gap-y-36">
+      <div className="flex h-full flex-col gap-y-20 md:gap-y-30 lg:gap-y-36">
         <div className="">
           <div className="container mx-auto px-3 pt-10 text-center text-sm text-zinc-600 md:pt-20">
             Tip : Platform made to share your experiences without holding back..

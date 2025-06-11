@@ -63,7 +63,7 @@ const SimpleCarouselPost = ({ slides = [], onClick }: SimpleCarouselPostProps) =
 
       {/* Carousel Content */}
       <div className="mb-3 cursor-pointer" onClick={onClick}>
-        <p className="text-foreground leading-relaxed whitespace-pre-wrap">
+        <p className="text-foreground leading-relaxed whitespace-pre-wrap text-content-label">
           {slides[currentSlide]?.content || ''}
         </p>
       </div>

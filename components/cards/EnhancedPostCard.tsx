@@ -241,9 +241,7 @@ export function EnhancedPostCard({ className, post, onClick }: PostCardType) {
           <div className="flex items-center justify-center gap-2">
           {post?.expires_in_24hr && (
             <div
-              className={`flex items-center justify-center rounded-3xl border p-1 dark:bg-transparent ${
-                mood.style
-              }`}
+              className={`flex h-6 w-8 items-center justify-center rounded-full bg-zinc-400 dark:bg-zinc-700 `}
               id="mood-btn"
             >
 
