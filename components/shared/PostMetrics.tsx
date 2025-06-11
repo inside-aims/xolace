@@ -5,13 +5,13 @@ import { useRouter } from 'next/navigation';
 import { ThumbsUp, ThumbsDown } from 'lucide-react';
 //import Link from 'next/link';
 import { cn } from '@/lib/utils';
-import { Post } from '@/types/global';
+import { DetailPost, Post } from '@/types/global';
 import { AnimatePresence, motion } from 'motion/react';
 import { useUserVote } from '@/hooks/posts/useUserVote';
 import { useVoteMutations } from '@/hooks/posts/useVoteMutation';
 
 interface PostMetricsProps {
-  post: Post;
+  post: Post | DetailPost;
   section?: string;
   commentLength?: number;
   userId: string;
@@ -85,7 +85,7 @@ const PostMetrics = ({
         voteType,
         currentVote: previousVote,
         user_id: userId,
-        relatedUserId: post.created_by,
+        relatedUserId: post.created_by ?? "",
       });
 
       if (isError) {

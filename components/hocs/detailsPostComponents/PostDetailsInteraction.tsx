@@ -201,12 +201,12 @@ const PostDetailsInteraction = ({ post }: { post: DetailPost }) => {
               )}
             </div>
 
-            <View id={post.id} createdBy={post.created_by} viewsCount={post.views[0].count || 0} content={post.content} />
+            <View id={post.id} createdBy={post.created_by ?? ''} viewsCount={post.views[0].count || 0} content={post.content} />
 
             <div>
               <SaveToCollectionsButton
                 userId={user?.id || ''}
-                createdBy={post.created_by}
+                createdBy={post.created_by ?? ''}
                 postId={post.id}
                 postCollections={post.collections}
               />
