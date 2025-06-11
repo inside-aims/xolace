@@ -176,7 +176,7 @@ console.log(post_slides)
           )}
             <View
               id={post.id}
-              createdBy={post.created_by}
+              createdBy={post.created_by ?? ""}
               viewsCount={post.views[0].count || 0}
               content={post.content}
             />
