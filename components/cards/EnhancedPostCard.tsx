@@ -45,8 +45,6 @@ import {
 import { Badge } from '../ui/badge';
 import { SinglePost } from '../shared/SinglePost';
 //import { CarouselPost } from '../shared/CarouselPost';
-import FeedCarouselPost from '../shared/FeedCarouselPost';
-import { DefaultLoader } from '../shared/loaders/DefaultLoader';
 import SimpleCarouselPost from '../shared/Tour/SimpleCorouselPost';
 
 // const CarouselPost = dynamic(() => import('../shared/CarouselPost'), {

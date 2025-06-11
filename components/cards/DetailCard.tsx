@@ -20,7 +20,6 @@ import SaveToCollectionsButton from '../shared/SaveToCollectionsButton';
 import { useUserState } from '@/lib/store/user';
 import { ArrowLeft } from 'lucide-react';
 import { useRouter } from 'next/navigation';
-import { moodMap } from '@/types';
 import { moodColors, moodIcons } from '@/constants/moods';
 import CarouselPost from '../shared/CarouselPost';
 // Dynamically import non-critical components
@@ -88,7 +87,6 @@ export function DetailCard({
   const router = useRouter();
 
   const [isSheetOpen, setIsSheetOpen] = useState<boolean>(false);
-  const postMood = moodMap[post?.mood] || moodMap['neutral'];
   // Register the custom locale with an ID (e.g. 'short-en')
   register('short-en', customLocale);
 

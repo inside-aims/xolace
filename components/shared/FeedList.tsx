@@ -4,7 +4,6 @@
 import { useEffect, useState } from 'react';
 import { useRouter, usePathname } from 'next/navigation';
 
-import { PostCard } from '@/components/cards/PostCard';
 import { EnhancedPostCard } from '../cards/EnhancedPostCard';
 //import FeedSkeletonLoader from './loaders/FeedSkeletonLoader';
 import BlurFade from '../ui/blur-fade';

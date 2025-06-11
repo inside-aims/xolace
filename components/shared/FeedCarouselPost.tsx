@@ -7,7 +7,6 @@ import "swiper/css/navigation"
 import "swiper/css/pagination"
 import "swiper/css/parallax"
 import "swiper/css/effect-coverflow"
-import { Post } from "@/types/global"
 import { truncateText } from "@/lib/utils"
 
 interface CarouselPostProps {
@@ -16,7 +15,6 @@ interface CarouselPostProps {
     onClick?: () => void
   }
 const FeedCarouselPost = ({ slides, postId, onClick }: CarouselPostProps) => {
-    console.log(slides)
   return (
     <div className="mb-4">
     {/* Enhanced Swiper Carousel */}

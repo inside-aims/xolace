@@ -3,7 +3,6 @@
 import React, {
   useState,
   useRef,
-  useMemo,
   useEffect,
   useCallback,
 } from 'react';
@@ -57,9 +56,7 @@ import { getSupabaseBrowserClient } from '@/utils/supabase/client';
 import { moods } from '@/constants';
 import { Send } from 'lucide-react';
 // import MoodCarousel from '../hocs/createPostComponent/mood-carousel';
-import { Mood } from '@/types';
 // import ShinyButton from '../ui/shiny-button';
-import { FloatingCheckbox } from '../create-postComponents/floating-checkbox';
 import { calculateExpiryDate } from '@/lib/utils';
 import { removeHashtags } from '@/lib/utils';
 import { useUserState } from '@/lib/store/user';
@@ -74,9 +71,6 @@ import { Switch } from '@/components/ui/switch';
 import { DefaultLoader } from '../shared/loaders/DefaultLoader';
 
 // Dynamic Imports
-const Loader = dynamic(() => import('../shared/loaders/Loader'), {
-  ssr: false,
-});
 const EmojiPicker = dynamic(() => import('emoji-picker-react'), {
   ssr: false,
   loading: () => <p className="p-4">Loading emojis...</p>,
