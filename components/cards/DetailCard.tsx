@@ -185,7 +185,7 @@ console.log(post_slides)
           <div>
             <SaveToCollectionsButton
               userId={user?.id || ''}
-              createdBy={post.created_by}
+              createdBy={post.created_by ?? ""}
               postId={post.id}
               postCollections={post.collections}
             />
