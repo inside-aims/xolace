@@ -5,19 +5,13 @@ import { useRouter } from 'next/navigation';
 import { ThumbsUp, ThumbsDown } from 'lucide-react';
 //import Link from 'next/link';
 import { cn } from '@/lib/utils';
-import { Comment } from '@/types/global';
+import { Comment, Post } from '@/types/global';
 import { AnimatePresence, motion } from 'motion/react';
 import { useUserVote } from '@/hooks/posts/useUserVote';
 import { useVoteMutations } from '@/hooks/posts/useVoteMutation';
 
 interface PostMetricsProps {
-  post: {
-    id: string;
-    created_by: string;
-    upvotes: number;
-    downvotes: number;
-    comments: { count: number }[] | Comment[];
-  };
+  post: Post;
   section?: string;
   commentLength?: number;
   userId: string;
@@ -70,17 +64,17 @@ const PostMetrics = ({
       // Update vote counts based on the action
       if (isRemovingVote) {
         // Removing vote
-        if (voteType === 'upvote') setUpvoteCount(prev => prev - 1);
-        else setDownvoteCount(prev => prev - 1);
+        if (voteType === 'upvote') setUpvoteCount((prev: number) => prev - 1);
+        else setDownvoteCount((prev: number) => prev - 1);
         setCurrentVote(null);
       } else {
         // Adding or changing vote
         if (voteType === 'upvote') {
-          setUpvoteCount(prev => prev + 1);
-          if (currentVote === 'downvote') setDownvoteCount(prev => prev - 1);
+          setUpvoteCount((prev: number) => prev + 1);
+          if (currentVote === 'downvote') setDownvoteCount((prev: number) => prev - 1);
         } else {
-          setDownvoteCount(prev => prev + 1);
-          if (currentVote === 'upvote') setUpvoteCount(prev => prev - 1);
+          setDownvoteCount((prev: number) => prev + 1);
+          if (currentVote === 'upvote') setUpvoteCount((prev: number) => prev - 1);
         }
         setCurrentVote(voteType);
       }
