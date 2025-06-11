@@ -46,7 +46,7 @@ type DetailPost = Database['public']['Tables']['posts']['Row'] & {
   }]
   comments: Database['public']['Tables']['comments']['Row'][];
   collections: Database['public']['Tables']['collections']['Row'][];
-  slides: {
+  post_slides: {
     content: string;
     slide_index: number;
   }[];
