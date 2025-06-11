@@ -74,6 +74,7 @@ import { useSearchParams, useRouter, usePathname } from 'next/navigation';
 import { CURRENT_CONSENT_VERSION } from '@/constants/terms';
 import { Card, CardContent } from '@/components/ui/card';
 import { Switch } from '@/components/ui/switch';
+import { DefaultLoader } from '../shared/loaders/DefaultLoader';
 
 // Dynamic Imports
 const Loader = dynamic(() => import('../shared/loaders/Loader'), {
@@ -131,6 +132,7 @@ export function PostForm() {
 
   const [isEmojiPickerOpen, setIsEmojiPickerOpen] = useState(false);
   const textareaRef = useRef<HTMLTextAreaElement>(null);
+  const carouselTextareaRef = useRef<HTMLTextAreaElement>(null)
   const canvasRef = useRef<HTMLCanvasElement>(null);
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const newDataRef = useRef<any[]>([]);
@@ -222,7 +224,7 @@ export function PostForm() {
   // function to handle emoji selection add to post field
   const handleEmojiClick = (emojiData: { emoji: string }) => {
     const emoji = emojiData.emoji;
-    const textarea = textareaRef.current;
+    const textarea = postType === 'single' ? textareaRef.current : carouselTextareaRef.current;
     if (textarea) {
       const start = textarea.selectionStart;
       const end = textarea.selectionEnd;
@@ -486,11 +488,18 @@ export function PostForm() {
     setTimeout(async () => {
       // save post values to db
       setIsLoading(true);
-      const { content, is24HourPost } = data;
+      console.log("values ", data)
+      const { content, is24HourPost, type } = data;
       // remove tags from post content
       const contentWithoutTags = removeHashtags(content);
       const duration = is24HourPost ? 24 : null;
       const expires_at = duration ? calculateExpiryDate(duration) : null;
+
+      // Filter out empty slides before submission
+      const filteredSlides = slides.filter(slide => slide.trim() !== '');
+
+      // remove hashtags from slides
+      const slidesWithoutTags = filteredSlides.map(slide => removeHashtags(slide));
 
       try {
         // Get prompt_id from searchParams if it exists
@@ -498,27 +507,32 @@ export function PostForm() {
         const promptText = searchParams.get('prompt');
         const is_prompt_response = promptId ? true : false;
 
+        console.log('Data ', slides, ' Type: ', type);
         const { data: post_id, error: postError } = await supabase.rpc(
           'create_post_with_tags',
           {
-            content: contentWithoutTags,
+            content: contentWithoutTags || slides[0],
+            mood: selectedMood?.id,
+            expires_in_24hr: is24HourPost,
             duration: duration ? `${duration}` : duration,
             expires_at,
-            expires_in_24hr: is24HourPost,
-            mood: selectedMood?.id,
-            tag_names: tags,
             is_sensitive: preferences?.mark_sensitive_by_default ?? false,
             is_prompt_response,
+            tag_names: tags,
+            type,
+            slide_contents: slidesWithoutTags,
           },
         );
 
         if (postError) {
+          console.error('Error creating post:', postError);
           toast.error('Oops, something must have gone wrong 😵‍💫! try again', {
             position: 'bottom-center',
           });
           return;
         }
 
+        console.log('id ', post_id);
         // If this is a prompt response, create the prompt response record
         if (promptId && post_id && user) {
           const { error: promptResponseError } = await supabase
@@ -560,21 +574,33 @@ export function PostForm() {
               mood: selectedMood?.id,
               is_prompt_response: !!promptId,
               prompt_text: promptText || undefined,
+              type: type,
             },
           });
         }
 
         // Clear the form and tags
-        form.reset();
-        setSelectedMood(moods[1]);
-        setTags([]);
-        clearDraft();
+        if (type === 'single') {
+          console.log('single');
+          form.reset();
+          setSelectedMood(moods[1]);
+          setTags([]);
+          clearDraft();
+        }
+        {
+          console.log('carousel');
+          setSlides(['']);
+          setSelectedMood(moods[1]);
+          setTags([]);
+          router.refresh();
+        }
 
         if (promptId) {
           router.replace(pathname);
         }
         // eslint-disable-next-line @typescript-eslint/no-unused-vars
       } catch (error) {
+        console.error('Error creating post:', error);
         toast('Error!', {
           description: 'Ooops🫢 !! Could not create post, Please try again',
           position: 'bottom-center',
@@ -661,7 +687,7 @@ export function PostForm() {
                       type="button"
                       variant="outline"
                       size="sm"
-                      className={`rounded-xl transition-all duration-200 mb-2 ${
+                      className={`mb-2 rounded-xl transition-all duration-200 ${
                         is24HourPost
                           ? 'border-purple-200 bg-purple-50 text-purple-700 dark:border-purple-800 dark:bg-purple-950 dark:text-purple-300'
                           : 'hover:bg-muted'
@@ -813,7 +839,7 @@ export function PostForm() {
                                 clearDraft();
                               }
                             }}
-                            className="border-border min-h-[140px] resize-none rounded-xl border-2 border-dashed bg-transparent text-base leading-relaxed transition-all duration-200 focus:border-purple-400 focus:ring-0 focus-visible:ring-0"
+                            className={`border-border min-h-[140px] resize-none rounded-xl border-2 border-dashed bg-transparent text-base leading-relaxed transition-all duration-200 focus:border-purple-400 focus:ring-0 focus-visible:ring-0 ${animating && 'text-transparent dark:text-transparent'}`}
                             maxLength={maxChars}
                             id="tags-guide"
                             disabled={animating}
@@ -925,7 +951,7 @@ export function PostForm() {
                   {/* Carousel Content */}
                   <div className="relative">
                     <Textarea
-                      ref={textareaRef}
+                      ref={carouselTextareaRef}
                       value={slides[currentSlide]}
                       onChange={e => {
                         updateSlide(currentSlide, e.target.value);
@@ -1093,8 +1119,7 @@ export function PostForm() {
                 >
                   {isLoading ? (
                     <span className="flex gap-2">
-                      <Loader />
-                      <p>Loading...</p>
+                      <DefaultLoader size={20} />
                     </span>
                   ) : (
                     <>

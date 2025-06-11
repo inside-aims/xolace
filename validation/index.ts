@@ -52,16 +52,11 @@ export const signUpSchema = z.object({
 
 export const PostSchema = z.object({
   content: z
-    .string()
-    .min(10, {
-      message: 'Post must be at least 10 characters.',
-    })
-    .max(500, {
-      message: 'Post must not be longer than 500 characters.',
-    }),
+    .string(),
   is24HourPost: z.boolean(),
   type: z.enum(["single", "carousel"])
-});
+})
+
 
 // Validation schema for comment form
 export const CommentSchema = z.object({

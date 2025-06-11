@@ -2,6 +2,7 @@
 
 import { useState, useEffect } from "react"
 import { useRouter } from "next/navigation"
+import Image from "next/image"
 
 import {
   ChevronsUpDown,
@@ -31,12 +32,15 @@ import {
 import { Profile } from "@/types/global"
 import { getSupabaseBrowserClient } from '@/utils/supabase/client';
 import SignoutAlert from "./shared/SignoutAlert"
+import profBadge from "../public/assets/images/user-role-badges/consellors-badge.webp"
 
 
 export function NavUser({
   user,
+  roles,
 }: {
   user?: Profile
+  roles?: string[]
 }) {
   const router = useRouter();
   const supabase = getSupabaseBrowserClient();
@@ -107,7 +111,7 @@ export function NavUser({
                 <AvatarFallback className="rounded-lg">{user?.username?.charAt(0)}</AvatarFallback>
               </Avatar>
               <div className="grid flex-1 text-left text-sm leading-tight">
-                <span className="truncate font-semibold">{user?.username}</span>
+                <span className="truncate font-semibold flex items-center gap-[2px]">{user?.username} {roles?.includes("help_professional") && <Image src={profBadge} alt="professional badge" width={20} height={20} />}</span>
                 <span className="truncate text-xs">{timestamp}</span>
               </div>
               <ChevronsUpDown className="ml-auto size-4" />
