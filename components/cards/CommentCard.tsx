@@ -52,7 +52,7 @@ const CommentCard = ({ comment, className, headerClassName, contentClassName }: 
             postId={comment.post}
             comment={true}
             commentId={comment.id}
-            commentCreatedBy={comment.created_by}
+            commentCreatedBy={comment.created_by ?? ''}
             onOpenChange={setIsOpen}
             content={comment.comment_text}
           />
