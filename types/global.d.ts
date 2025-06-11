@@ -31,7 +31,11 @@ type Post = Database['public']['Tables']['posts']['Row'] & {
   views:[{
     count:number
   }];
-  collections: Database['public']['Tables']['collections']['Row'][]
+  collections: Database['public']['Tables']['collections']['Row'][];
+  post_slides: {
+    content: string;
+    slide_index: number;
+  }[];
 };
 
 type DetailPost = Database['public']['Tables']['posts']['Row'] & {
