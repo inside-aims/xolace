@@ -45,7 +45,11 @@ type DetailPost = Database['public']['Tables']['posts']['Row'] & {
     count:number
   }]
   comments: Database['public']['Tables']['comments']['Row'][];
-  collections: Database['public']['Tables']['collections']['Row'][]
+  collections: Database['public']['Tables']['collections']['Row'][];
+  slides: {
+    content: string;
+    slide_index: number;
+  }[];
 };
 
 type User = Database['public']['Tables']['profiles']['Row']
