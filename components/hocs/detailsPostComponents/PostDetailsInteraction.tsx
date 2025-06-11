@@ -80,7 +80,7 @@ const PostDetailsInteraction = ({ post }: { post: DetailPost }) => {
       {
         postId: post.id,
         commentText: comment,
-        postCreatedBy: post.created_by,
+        postCreatedBy: post.created_by ?? "",
       },
       {
         onSuccess: () => {
