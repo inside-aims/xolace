@@ -141,7 +141,7 @@ console.log(post_slides)
             postId={postId}
             postDetail={true}
             onOpenChange={setIsSheetOpen}
-            postCreatedBy={created_by}
+            postCreatedBy={created_by ?? ""}
           />
         </CardHeader>
         <CardContent className="overflow-x-hidden text-wrap!">
