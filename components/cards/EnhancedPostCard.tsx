@@ -2,8 +2,6 @@
 import * as React from 'react';
 import { useEffect, useState } from 'react';
 import { format, register, type LocaleFunc } from 'timeago.js';
-import dynamic from 'next/dynamic';
-import Image from 'next/image';
 import { formatDistanceToNow } from 'date-fns';
 import { Clock } from 'lucide-react';
 import SaveToCollectionsButton from '../shared/SaveToCollectionsButton';
@@ -20,7 +18,6 @@ import PostMetrics from '../shared/PostMetrics';
 import { useUserState } from '@/lib/store/user';
 import ReportForm from '../forms/ReportForm';
 import KvngDialogDrawer from '../shared/KvngDialogDrawer';
-import { moodMap } from '@/types';
 import { truncateText } from '@/lib/utils';
 import TagCard from './TagCard';
 import { Post } from '@/types/global';
@@ -52,10 +49,10 @@ import FeedCarouselPost from '../shared/FeedCarouselPost';
 import { DefaultLoader } from '../shared/loaders/DefaultLoader';
 import SimpleCarouselPost from '../shared/Tour/SimpleCorouselPost';
 
-const CarouselPost = dynamic(() => import('../shared/CarouselPost'), {
-  ssr: false,
-  loading: () => <DefaultLoader />,
-});
+// const CarouselPost = dynamic(() => import('../shared/CarouselPost'), {
+//   ssr: false,
+//   loading: () => <DefaultLoader />,
+// });
 
 
 
@@ -142,8 +139,6 @@ export function EnhancedPostCard({ className, post, onClick }: PostCardType) {
   const [timestamp, setTimestamp] = useState('');
   const [isOpen, setIsOpen] = useState<boolean>(false);
 
-  // get mood from mood object
-  const mood = moodMap[post?.mood] || moodMap['neutral'];
   // Register the custom locale with an ID (e.g. 'short-en')
   register('short-en', customLocale);
 

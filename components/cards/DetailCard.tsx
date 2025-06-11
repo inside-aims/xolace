@@ -1,6 +1,5 @@
 'use client';
 import { useState } from 'react';
-import Image from 'next/image';
 import { format, register, type LocaleFunc } from 'timeago.js';
 import dynamic from 'next/dynamic';
 

@@ -1,6 +1,6 @@
 import React from 'react'
 import { Swiper, SwiperSlide } from "swiper/react"
-import { Navigation, Pagination, Parallax, EffectCoverflow, Autoplay } from "swiper/modules"
+import { Navigation, Pagination, EffectCoverflow } from "swiper/modules"
 import { ArrowRight, ArrowLeft } from "lucide-react"
 import "swiper/css"
 import "swiper/css/navigation"

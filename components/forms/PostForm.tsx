@@ -7,7 +7,6 @@ import React, {
   useEffect,
   useCallback,
 } from 'react';
-import Image from 'next/image';
 import Link from 'next/link';
 import dynamic from 'next/dynamic';
 import { zodResolver } from '@hookform/resolvers/zod';
@@ -16,8 +15,6 @@ import { z } from 'zod';
 import {
   ArrowLeft,
   ArrowRight,
-  ArrowUp,
-  Clock,
   Eye,
   FileText,
   Globe,
@@ -57,7 +54,7 @@ import { toast } from 'sonner';
 //import Loader from '../shared/loaders/Loader';
 import { PostSchema } from '@/validation';
 import { getSupabaseBrowserClient } from '@/utils/supabase/client';
-import { moods, postMoods } from '@/constants';
+import { moods } from '@/constants';
 import { Send } from 'lucide-react';
 // import MoodCarousel from '../hocs/createPostComponent/mood-carousel';
 import { Mood } from '@/types';
@@ -92,13 +89,6 @@ const ShinyButton = dynamic(() => import('../ui/shiny-button'), {
     </Button>
   ),
 });
-const MoodCarousel = dynamic(
-  () => import('../hocs/createPostComponent/mood-carousel'),
-  {
-    ssr: false,
-    loading: () => <div className="h-[50px] w-full rounded-full bg-gray-900" />,
-  },
-);
 const ConsentModal = dynamic(() => import('../modals/ConsentModal'), {
   ssr: false,
 });
@@ -488,7 +478,6 @@ export function PostForm() {
     setTimeout(async () => {
       // save post values to db
       setIsLoading(true);
-      console.log("values ", data)
       const { content, is24HourPost, type } = data;
       // remove tags from post content
       const contentWithoutTags = removeHashtags(content);
@@ -507,7 +496,6 @@ export function PostForm() {
         const promptText = searchParams.get('prompt');
         const is_prompt_response = promptId ? true : false;
 
-        console.log('Data ', slides, ' Type: ', type);
         const { data: post_id, error: postError } = await supabase.rpc(
           'create_post_with_tags',
           {
@@ -532,7 +520,6 @@ export function PostForm() {
           return;
         }
 
-        console.log('id ', post_id);
         // If this is a prompt response, create the prompt response record
         if (promptId && post_id && user) {
           const { error: promptResponseError } = await supabase
@@ -581,14 +568,12 @@ export function PostForm() {
 
         // Clear the form and tags
         if (type === 'single') {
-          console.log('single');
           form.reset();
           setSelectedMood(moods[1]);
           setTags([]);
           clearDraft();
         }
         {
-          console.log('carousel');
           setSlides(['']);
           setSelectedMood(moods[1]);
           setTags([]);
