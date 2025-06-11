@@ -5,7 +5,7 @@ import { useRouter } from 'next/navigation';
 import { ThumbsUp, ThumbsDown } from 'lucide-react';
 //import Link from 'next/link';
 import { cn } from '@/lib/utils';
-import { Comment, Post } from '@/types/global';
+import { Post } from '@/types/global';
 import { AnimatePresence, motion } from 'motion/react';
 import { useUserVote } from '@/hooks/posts/useUserVote';
 import { useVoteMutations } from '@/hooks/posts/useVoteMutation';
