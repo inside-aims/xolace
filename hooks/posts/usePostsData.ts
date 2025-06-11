@@ -25,15 +25,22 @@ export function usePosts() {
             views:views(count),
           collections(
             user_id
+          ),
+          post_slides (
+            slide_index,
+            content
           )  
       `,
         )
-        .order('created_at', { ascending: false });
+        .order('created_at', { ascending: false })
+        .order('slide_index', {
+          referencedTable: 'post_slides',
+          ascending: true,
+        });
 
       if (error) throw error;
       return data;
     },
     staleTime: 60 * 60, // 1 hour
-    
   });
 }
