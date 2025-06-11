@@ -104,7 +104,7 @@ export function PostCard({ className, post, onClick }: PostCardType) {
           <PostDropdown
             postCard
             postId={post.id}
-            postCreatedBy={post.created_by}
+            postCreatedBy={post.created_by ?? ""}
             onOpenChange={setIsOpen}
           />
         </CardHeader>
@@ -164,7 +164,7 @@ export function PostCard({ className, post, onClick }: PostCardType) {
             <div id="collection-btn">
               <SaveToCollectionsButton
                 userId={user?.id || ''}
-                createdBy={post.created_by}
+                createdBy={post.created_by ?? ""}
                 postId={post.id}
                 postCollections={post.collections}
               />
