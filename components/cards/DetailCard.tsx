@@ -101,7 +101,7 @@ export function DetailCard({
     type,
     post_slides,
   } = post;
-console.log(post_slides)
+  console.log(post_slides);
   return (
     <>
       <Card className="mt-5 w-full rounded-none border-0 border-x-0 max-sm:mb-5 md:w-full md:px-8">
@@ -122,30 +122,29 @@ console.log(post_slides)
             </Avatar>
             <div className="flex flex-col items-start justify-center">
               <div className="flex items-center gap-1">
-              <h5 className="text-small text-default-400 tracking-tight">
-                {author_name}
-              </h5>
-              <div
+                <h5 className="text-small text-default-400 tracking-tight">
+                  {author_name}
+                </h5>
+                <div
                   className={`h-5 w-5 ${moodColors[mood]} flex items-center justify-center rounded-full text-white`}
                 >
                   {moodIcons[mood]}
                 </div>
               </div>
               <small className="text-sm text-zinc-500 dark:text-gray-400">
-              {format(created_at, 'short-en')}
-            </small>
+                {format(created_at, 'short-en')}
+              </small>
             </div>
-            
           </div>
           <PostDropdown
             postId={postId}
             postDetail={true}
             onOpenChange={setIsSheetOpen}
-            postCreatedBy={created_by ?? ""}
+            postCreatedBy={created_by ?? ''}
           />
         </CardHeader>
         <CardContent className="overflow-x-hidden text-wrap!">
-          { type === 'carousel' ? (
+          {type === 'carousel' ? (
             <CarouselPost slides={post_slides} postId={postId} />
           ) : (
             content
@@ -164,19 +163,19 @@ console.log(post_slides)
         </CardContent>
         <CardFooter className="flex items-center justify-between md:hidden">
           <div className="flex items-center gap-3">
-          {post?.expires_in_24hr && (
-            <div
-              className={`flex h-7 w-10 items-center justify-center rounded-full bg-zinc-400 dark:bg-zinc-700 `}
-            >
-              <span className="animate-bounce duration-700 ease-in-out">
-                {' '}
-                ⏳
-              </span>
-            </div>
-          )}
+            {post?.expires_in_24hr && (
+              <div
+                className={`flex h-7 w-10 items-center justify-center rounded-full bg-zinc-400 dark:bg-zinc-700`}
+              >
+                <span className="animate-bounce duration-700 ease-in-out">
+                  {' '}
+                  ⏳
+                </span>
+              </div>
+            )}
             <View
               id={post.id}
-              createdBy={post.created_by ?? ""}
+              createdBy={post.created_by ?? ''}
               viewsCount={post.views[0].count || 0}
               content={post.content}
             />
@@ -185,7 +184,7 @@ console.log(post_slides)
           <div>
             <SaveToCollectionsButton
               userId={user?.id || ''}
-              createdBy={post.created_by ?? ""}
+              createdBy={post.created_by ?? ''}
               postId={post.id}
               postCollections={post.collections}
             />

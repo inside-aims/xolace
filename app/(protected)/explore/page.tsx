@@ -101,10 +101,18 @@ posttags (
   views:views(count),
   collections(
           user_id
-        )  
+        ),
+        post_slides(
+      slide_index,
+      content
+    )
 `,
   )
-  .order('created_at', { ascending: false });
+  .order('created_at', { ascending: false })
+  .order('slide_index', {
+    referencedTable: 'post_slides',
+    ascending: true,
+  });
 const { data: postsData} = await postStatement;
 
 if(!postsData) {

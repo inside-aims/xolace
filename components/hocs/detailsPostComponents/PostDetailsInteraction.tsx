@@ -40,7 +40,6 @@ const PostDetailsInteraction = ({ post }: { post: DetailPost }) => {
   // mood
   const postMood = moodMap[post?.mood] || moodMap['neutral'];
 
-
   // states
   const [comments, setComments] = useState<Comment[]>(post?.comments || []);
 
@@ -80,7 +79,7 @@ const PostDetailsInteraction = ({ post }: { post: DetailPost }) => {
       {
         postId: post.id,
         commentText: comment,
-        postCreatedBy: post.created_by ?? "",
+        postCreatedBy: post.created_by ?? '',
       },
       {
         onSuccess: () => {
@@ -98,21 +97,20 @@ const PostDetailsInteraction = ({ post }: { post: DetailPost }) => {
 
   // real time updates
   useCommentSubscription({
-    onInsert: (newComment) => {
+    onInsert: newComment => {
       setComments(prev => [...prev, newComment]);
     },
-    onUpdate: (updatedComment) => {
+    onUpdate: updatedComment => {
       setComments(prev =>
         prev.map(comment =>
-          comment.id === updatedComment.id ? updatedComment : comment
-        )
+          comment.id === updatedComment.id ? updatedComment : comment,
+        ),
       );
     },
-    onDelete: (deletedId) => {
+    onDelete: deletedId => {
       setComments(prev => prev.filter(comment => comment.id !== deletedId));
-    }
+    },
   });
-  
 
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   // useEffect((): any => {
@@ -173,35 +171,35 @@ const PostDetailsInteraction = ({ post }: { post: DetailPost }) => {
               commentLength={comments.length}
             />
 
-            <div
-              className={`flex items-center justify-center h-7 w-10 rounded-full ${
-                postMood.style
-              }`}
-            >
-              <span>
-                {postMood.gif ? (
-                  <Image
-                    src={postMood.gif}
-                    alt="Gif Emoji"
-                    width={24}
-                    height={24}
-                    className="h-6"
-                    unoptimized
-                  />
-                ) : (
-                  postMood.emoji
-                )}
-              </span>
-
+            <div className="flex items-center justify-center gap-2">
               {post?.expires_in_24hr && (
-                <span className="animate-bounce duration-700 ease-in-out">
-                  {' '}
-                  ⏳
-                </span>
+                <div
+                  className={`flex h-6 w-8 items-center justify-center rounded-full bg-zinc-400 dark:bg-zinc-700`}
+                  id="mood-btn"
+                >
+                  <span className="animate-bounce duration-700 ease-in-out">
+                    {' '}
+                    ⏳
+                  </span>
+                </div>
               )}
+
+              <div id="collection-btn">
+                <SaveToCollectionsButton
+                  userId={user?.id || ''}
+                  createdBy={post.created_by ?? ''}
+                  postId={post.id}
+                  postCollections={post.collections}
+                />
+              </div>
             </div>
 
-            <View id={post.id} createdBy={post.created_by ?? ''} viewsCount={post.views[0].count || 0} content={post.content} />
+            <View
+              id={post.id}
+              createdBy={post.created_by ?? ''}
+              viewsCount={post.views[0].count || 0}
+              content={post.content}
+            />
 
             <div>
               <SaveToCollectionsButton
@@ -211,19 +209,17 @@ const PostDetailsInteraction = ({ post }: { post: DetailPost }) => {
                 postCollections={post.collections}
               />
             </div>
-
-           
           </div>
         ) : (
-          <div className="flex items-center gap-5 animate-pulse">
+          <div className="flex animate-pulse items-center gap-5">
             <div className="flex items-center gap-1">
-              <div className="h-5 w-5 bg-gray-200 dark:bg-gray-700 rounded"></div>
-              <div className="h-4 w-8 bg-gray-200 dark:bg-gray-700 rounded"></div>
-              <div className="h-5 w-5 bg-gray-200 dark:bg-gray-700 rounded"></div>
-              <div className="h-4 w-8 bg-gray-200 dark:bg-gray-700 rounded"></div>
+              <div className="h-5 w-5 rounded bg-gray-200 dark:bg-gray-700"></div>
+              <div className="h-4 w-8 rounded bg-gray-200 dark:bg-gray-700"></div>
+              <div className="h-5 w-5 rounded bg-gray-200 dark:bg-gray-700"></div>
+              <div className="h-4 w-8 rounded bg-gray-200 dark:bg-gray-700"></div>
             </div>
-            <div className="h-7 w-10 bg-gray-200 dark:bg-gray-700 rounded-full"></div>
-            <div className="h-8 w-8 bg-gray-200 dark:bg-gray-700 rounded"></div>
+            <div className="h-7 w-10 rounded-full bg-gray-200 dark:bg-gray-700"></div>
+            <div className="h-8 w-8 rounded bg-gray-200 dark:bg-gray-700"></div>
           </div>
         )}
       </div>
@@ -237,7 +233,7 @@ const PostDetailsInteraction = ({ post }: { post: DetailPost }) => {
                 <FormControl>
                   <Textarea
                     placeholder="Join the conversation"
-                    className="mb-5 no-focus! dark:hover:border-muted-dark-hover focus-visible:ring-0  focus-visible:border-input min-h-12 resize-none rounded-lg"
+                    className="no-focus! dark:hover:border-muted-dark-hover focus-visible:border-input mb-5 min-h-12 resize-none rounded-lg focus-visible:ring-0 w-full lg:w-2/3"
                     {...field}
                   />
                 </FormControl>
@@ -250,7 +246,7 @@ const PostDetailsInteraction = ({ post }: { post: DetailPost }) => {
               size={'sm'}
               disabled={comment.length > 300 || false || isCreatingComment}
               type="submit"
-              className="btn-depth active:btn-depth-active hover:btn-depth-hover min-w-12 max-w-20 rounded-full text-white"
+              className="btn-depth active:btn-depth-active hover:btn-depth-hover max-w-20 min-w-12 rounded-full text-white"
             >
               {isCreatingComment ? (
                 <div className="flex items-center justify-center gap-x-2">
@@ -274,37 +270,44 @@ const PostDetailsInteraction = ({ post }: { post: DetailPost }) => {
         </form>
       </Form>
 
-     <div className='mt-10'>
-     {comments
-              .map((comment: Comment) => <CommentCard key={comment.id} comment={comment} className='border-none bg-transparent! p-0!' headerClassName='p-0!' contentClassName='pl-9 pb-0' />)
-              .reverse()}
-            {comments.length == 0 && (
-               <div className="flex flex-col items-center justify-center space-y-4 py-5 text-center">
-               <div className="relative">
-                 <div className="animate-bounce">
-                   💭
-                 </div>
-                 <div className="absolute -right-4 top-0 animate-bounce-delayed">
-                   💭
-                 </div>
-                 <div className="absolute -left-4 top-2 animate-bounce-slow">
-                   💭
-                 </div>
-               </div>
-               <h3 className="text-md font-semibold text-gray-800 dark:text-gray-200">
-                 Be the First to share your Experience!
-               </h3>
-               <p className="max-w-sm text-sm text-gray-600 dark:text-gray-400">
-                 Start the conversation and share your thoughts. Your perspective matters!
-               </p>
-               <div className="mt-2 text-xs text-gray-500 dark:text-gray-500">
-                 <span className="inline-block transform transition-transform hover:scale-110">
-                   👆 Just type above to join the discussion
-                 </span>
-               </div>
-             </div>
-            )}
-     </div>
+      <div className="mt-10">
+        {comments
+          .map((comment: Comment) => (
+            <CommentCard
+              key={comment.id}
+              comment={comment}
+              className="border-none bg-transparent! p-0!"
+              headerClassName="p-0!"
+              contentClassName="pl-9 pb-0"
+            />
+          ))
+          .reverse()}
+        {comments.length == 0 && (
+          <div className="flex flex-col items-center justify-center space-y-4 py-5 text-center">
+            <div className="relative">
+              <div className="animate-bounce">💭</div>
+              <div className="animate-bounce-delayed absolute top-0 -right-4">
+                💭
+              </div>
+              <div className="animate-bounce-slow absolute top-2 -left-4">
+                💭
+              </div>
+            </div>
+            <h3 className="text-md font-semibold text-gray-800 dark:text-gray-200">
+              Be the First to share your Experience!
+            </h3>
+            <p className="max-w-sm text-sm text-gray-600 dark:text-gray-400">
+              Start the conversation and share your thoughts. Your perspective
+              matters!
+            </p>
+            <div className="mt-2 text-xs text-gray-500 dark:text-gray-500">
+              <span className="inline-block transform transition-transform hover:scale-110">
+                👆 Just type above to join the discussion
+              </span>
+            </div>
+          </div>
+        )}
+      </div>
     </div>
   );
 };
