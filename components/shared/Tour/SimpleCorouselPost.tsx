@@ -12,7 +12,7 @@ interface SimpleCarouselPostProps {
   onClick?: () => void;
 }
 
-const SimpleCarouselPost = ({ slides = [], onClick }: SimpleCarouselPostProps) => {
+const SimpleCarouselPost = ({ slides, onClick }: SimpleCarouselPostProps) => {
   const [currentSlide, setCurrentSlide] = useState(0);
 
   const navigateSlide = (direction: 'prev' | 'next') => {
