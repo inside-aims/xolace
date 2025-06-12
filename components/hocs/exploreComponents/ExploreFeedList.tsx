@@ -8,7 +8,6 @@ import { cn } from '@/lib/utils';
 import { Post } from '@/types/global';
 import { usePathname, useRouter } from 'next/navigation';
 import { FeedSkeletonCard } from '@/components/shared/loaders/FeedSkeletonLoader';
-import { moodColors } from '@/constants/moods';
 
 const PostCard = dynamic(() => import('@/components/cards/PostCard').then((mod)=> mod.PostCard ), {
   ssr: false,

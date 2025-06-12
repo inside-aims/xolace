@@ -2,7 +2,6 @@
 
 import React from 'react';
 import { useUserState } from '@/lib/store/user';
-import Image from 'next/image';
 import { useState } from 'react';
 import dynamic from 'next/dynamic';
 import {
@@ -22,12 +21,11 @@ import { CommentSchema } from '@/validation';
 import { useCommentMutation } from '@/hooks/posts/useCommentMutation';
 import { DetailPost, Comment } from '@/types/global';
 import { Send } from 'lucide-react';
-import Loader from '@/components/shared/loaders/Loader';
 import PostMetrics from '@/components/shared/PostMetrics';
 import SaveToCollectionsButton from '@/components/shared/SaveToCollectionsButton';
-import { moodMap } from '@/types';
 import CommentCard from '@/components/cards/CommentCard';
 import { useCommentSubscription } from '@/hooks/posts/useCommentSubscription';
+import { DefaultLoader } from '@/components/shared/loaders/DefaultLoader';
 // import View from '@/components/hocs/detailsPostComponents/View';
 const View = dynamic(() => import('../../hocs/detailsPostComponents/View'), {
   ssr: false,
@@ -36,9 +34,6 @@ const View = dynamic(() => import('../../hocs/detailsPostComponents/View'), {
 const PostDetailsInteraction = ({ post }: { post: DetailPost }) => {
   // get user data
   const user = useUserState(state => state.user);
-
-  // mood
-  const postMood = moodMap[post?.mood] || moodMap['neutral'];
 
   // states
   const [comments, setComments] = useState<Comment[]>(post?.comments || []);
@@ -251,7 +246,7 @@ const PostDetailsInteraction = ({ post }: { post: DetailPost }) => {
               {isCreatingComment ? (
                 <div className="flex items-center justify-center gap-x-2">
                   {' '}
-                  <Loader />
+                  <DefaultLoader size={20} />
                 </div>
               ) : (
                 <Send size={20} strokeWidth={1.75} absoluteStrokeWidth />

@@ -2,7 +2,6 @@
 import * as React from 'react';
 import { useEffect, useState } from 'react';
 import { format } from 'timeago.js';
-import Image from 'next/image';
 import { formatDistanceToNow } from 'date-fns';
 import { Clock } from 'lucide-react';
 import SaveToCollectionsButton from '../shared/SaveToCollectionsButton';
@@ -19,7 +18,6 @@ import PostMetrics from '../shared/PostMetrics';
 import { useUserState } from '@/lib/store/user';
 import ReportForm from '../forms/ReportForm';
 import KvngDialogDrawer from '../shared/KvngDialogDrawer';
-import { moodMap } from '@/types';
 import { truncateText } from '@/lib/utils';
 import TagCard from './TagCard';
 import { Post } from '@/types/global';
@@ -51,9 +49,6 @@ export function PostCard({ className, post, onClick }: PostCardType) {
   // states
   const [timestamp, setTimestamp] = useState('');
   const [isOpen, setIsOpen] = useState<boolean>(false);
-
-  // get mood from mood object
-  const mood = moodMap[post?.mood] || moodMap['neutral'];
 
   // convert created_at
   useEffect(() => {
