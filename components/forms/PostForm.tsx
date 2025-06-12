@@ -1,11 +1,6 @@
 'use client';
 
-import React, {
-  useState,
-  useRef,
-  useEffect,
-  useCallback,
-} from 'react';
+import React, { useState, useRef, useEffect, useCallback } from 'react';
 import Link from 'next/link';
 import dynamic from 'next/dynamic';
 import { zodResolver } from '@hookform/resolvers/zod';
@@ -69,6 +64,7 @@ import { CURRENT_CONSENT_VERSION } from '@/constants/terms';
 import { Card, CardContent } from '@/components/ui/card';
 import { Switch } from '@/components/ui/switch';
 import { DefaultLoader } from '../shared/loaders/DefaultLoader';
+import { NewBadge } from '../shared/NewBadge';
 
 // Dynamic Imports
 const EmojiPicker = dynamic(() => import('emoji-picker-react'), {
@@ -116,7 +112,7 @@ export function PostForm() {
 
   const [isEmojiPickerOpen, setIsEmojiPickerOpen] = useState(false);
   const textareaRef = useRef<HTMLTextAreaElement>(null);
-  const carouselTextareaRef = useRef<HTMLTextAreaElement>(null)
+  const carouselTextareaRef = useRef<HTMLTextAreaElement>(null);
   const canvasRef = useRef<HTMLCanvasElement>(null);
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const newDataRef = useRef<any[]>([]);
@@ -208,7 +204,8 @@ export function PostForm() {
   // function to handle emoji selection add to post field
   const handleEmojiClick = (emojiData: { emoji: string }) => {
     const emoji = emojiData.emoji;
-    const textarea = postType === 'single' ? textareaRef.current : carouselTextareaRef.current;
+    const textarea =
+      postType === 'single' ? textareaRef.current : carouselTextareaRef.current;
     if (textarea) {
       const start = textarea.selectionStart;
       const end = textarea.selectionEnd;
@@ -482,7 +479,9 @@ export function PostForm() {
       const filteredSlides = slides.filter(slide => slide.trim() !== '');
 
       // remove hashtags from slides
-      const slidesWithoutTags = filteredSlides.map(slide => removeHashtags(slide));
+      const slidesWithoutTags = filteredSlides.map(slide =>
+        removeHashtags(slide),
+      );
 
       try {
         // Get prompt_id from searchParams if it exists
@@ -606,12 +605,12 @@ export function PostForm() {
               className="w-full space-y-3 lg:mx-auto lg:w-2/3"
             >
               {/* Post Type Dropdown and 24h Expiry Toggle */}
-              <div className="flex items-end justify-between">
+              <div className="flex items-end justify-between relative">
                 <FormField
                   control={form.control}
                   name="type"
                   render={({ field }) => (
-                    <FormItem className="flex-1">
+                    <FormItem className="relative flex-1">
                       <FormLabel className="text-foreground text-sm font-medium">
                         Post Type
                       </FormLabel>
@@ -656,6 +655,7 @@ export function PostForm() {
                         </SelectContent>
                       </Select>
                       <FormMessage />
+                      <NewBadge size="sm" containerClass="absolute top-0 left-17" />
                     </FormItem>
                   )}
                 />
@@ -749,7 +749,7 @@ export function PostForm() {
                             </div>
                           </div>
 
-                          <div className="border-border flex items-center justify-between rounded-lg border border-dashed p-3 opacity-50">
+                          {/* <div className="border-border flex items-center justify-between rounded-lg border border-dashed p-3 opacity-50">
                             <div className="flex items-center gap-3">
                               <div className="bg-muted text-muted-foreground rounded-lg p-2">
                                 <Eye className="h-4 w-4" />
@@ -763,7 +763,7 @@ export function PostForm() {
                                 </p>
                               </div>
                             </div>
-                          </div>
+                          </div> */}
                         </div>
                       </div>
                     </div>
@@ -994,6 +994,38 @@ export function PostForm() {
               {/* Action Bar */}
               <div className="border-border flex items-center justify-between border-t pt-4">
                 <div className="flex items-center gap-3">
+                  {/* Emoji Button */}
+                  <Popover
+                    open={isEmojiPickerOpen}
+                    onOpenChange={setIsEmojiPickerOpen}
+                  >
+                    <PopoverTrigger asChild>
+                      <Button
+                        type="button"
+                        variant="ghost"
+                        size="icon"
+                        className=""
+                        aria-label="Open emoji picker"
+                        id="emoji-btn"
+                      >
+                        <Smile className="h-4 w-4" />
+                      </Button>
+                    </PopoverTrigger>
+                    <PopoverContent className="w-full p-0" align="end">
+                      <EmojiPicker
+                        onEmojiClick={handleEmojiClick}
+                        width="100%"
+                        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+                        theme={'auto' as any}
+                        height={370}
+                        searchDisabled
+                        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+                        emojiStyle={'apple' as any}
+                        lazyLoadEmojis
+                      />
+                    </PopoverContent>
+                  </Popover>
+
                   {/* Mood Button with Slow Pulse Animation */}
                   <div className="relative">
                     <Button
@@ -1043,38 +1075,6 @@ export function PostForm() {
                       </div>
                     )}
                   </div>
-
-                  {/* Emoji Button */}
-                  <Popover
-                    open={isEmojiPickerOpen}
-                    onOpenChange={setIsEmojiPickerOpen}
-                  >
-                    <PopoverTrigger asChild>
-                      <Button
-                        type="button"
-                        variant="ghost"
-                        size="icon"
-                        className=""
-                        aria-label="Open emoji picker"
-                        id="emoji-btn"
-                      >
-                        <Smile className="h-4 w-4" />
-                      </Button>
-                    </PopoverTrigger>
-                    <PopoverContent className="w-full p-0" align="end">
-                      <EmojiPicker
-                        onEmojiClick={handleEmojiClick}
-                        width="100%"
-                        // eslint-disable-next-line @typescript-eslint/no-explicit-any
-                        theme={'auto' as any}
-                        height={370}
-                        searchDisabled
-                        // eslint-disable-next-line @typescript-eslint/no-explicit-any
-                        emojiStyle={'apple' as any}
-                        lazyLoadEmojis
-                      />
-                    </PopoverContent>
-                  </Popover>
 
                   {/* Current Mood Display */}
                   {selectedMood && (

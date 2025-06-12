@@ -19,6 +19,7 @@ import {
   SidebarMenuSubButton,
   SidebarMenuSubItem,
 } from '@/components/ui/sidebar';
+import { NewBadge } from './shared/NewBadge';
 
 export function NavMiddle({
   items,
@@ -71,14 +72,15 @@ export function NavMiddle({
                       <SidebarMenuSubItem key={subItem.title}>
                         <SidebarMenuSubButton
                           asChild
-                          className="py-5"
+                          className="py-5 relative"
                           isActive={isActive}
                           onClick={() => setOpenMobile(false)}
                         >
-                          <Link href={subItem.url}>
+                          <Link href={subItem.url} className='flex justify-start items-center'>
                             <span className="text-sidebar-label">
                               {subItem.title}
                             </span>
+                            <NewBadge size="sm" />
                           </Link>
                         </SidebarMenuSubButton>
                       </SidebarMenuSubItem>
