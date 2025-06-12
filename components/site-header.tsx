@@ -5,8 +5,6 @@ import Image from 'next/image';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 
-import { Avatar, AvatarFallback, AvatarImage } from './ui/avatar';
-
 import { Button } from '@/components/ui/button';
 //import { Separator } from "@/components/ui/separator"
 import { useSidebar } from '@/components/ui/sidebar';
@@ -22,7 +20,6 @@ import { Menu, PlusIcon } from 'lucide-react';
 
 export function SiteHeader() {
   // get user profile data
-  const user = useUserState(state => state.user);
   const { roles } = useUserState();
   const isProfessional = roles.includes('help_professional');
   // const [isOpen, setIsOpen] = useState(false);
