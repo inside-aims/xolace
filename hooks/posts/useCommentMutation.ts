@@ -51,7 +51,7 @@ export function useCommentMutation(post: DetailPost) {
         post.created_by === user?.id ? undefined : post.created_by;
       logActivity({
         userId: user?.id || '',
-        relatedUserId: relatedUser,
+        relatedUserId: relatedUser ?? '',
         entityType: 'comment',
         action: 'commented',
         postId: postId,
@@ -78,7 +78,9 @@ export function useCommentMutation(post: DetailPost) {
         created_at: new Date().toISOString(), // Use current time
         created_by: user?.id || '', // Use current user ID
         author_name: user?.username || 'Anonymous', // Use current username
-        author_avatar_url: user?.avatar_url || null, // Use current avatar
+        author_avatar_url: user?.avatar_url || null,
+        depth: 0,
+        parent_id: null
       };
 
       // Optimistically update the comments list
