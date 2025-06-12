@@ -110,7 +110,7 @@ const PostDetailDrawer = ({ post, type }: { post: DetailPost; type: Type }) => {
       {
         postId: post.id,
         commentText: comment,
-        postCreatedBy: post.created_by,
+        postCreatedBy: post.created_by ?? '',
       },
       {
         onSuccess: () => {

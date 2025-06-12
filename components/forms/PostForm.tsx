@@ -1,19 +1,23 @@
 'use client';
 
-import React, {
-  useState,
-  useRef,
-  useMemo,
-  useEffect,
-  useCallback,
-} from 'react';
-import Image from 'next/image';
+import React, { useState, useRef, useEffect, useCallback } from 'react';
 import Link from 'next/link';
 import dynamic from 'next/dynamic';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useForm } from 'react-hook-form';
 import { z } from 'zod';
-import { Smile } from 'lucide-react';
+import {
+  ArrowLeft,
+  ArrowRight,
+  FileText,
+  Globe,
+  ImageIcon,
+  PaintRoller,
+  Plus,
+  Smile,
+  Timer,
+  X,
+} from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 import debounce from 'lodash.debounce';
 
@@ -23,6 +27,7 @@ import {
   FormControl,
   FormField,
   FormItem,
+  FormLabel,
   FormMessage,
 } from '@/components/ui/form';
 import {
@@ -30,17 +35,22 @@ import {
   PopoverContent,
   PopoverTrigger,
 } from '@/components/ui/popover';
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from '@/components/ui/select';
 import { Textarea } from '@/components/ui/textarea';
 import { toast } from 'sonner';
 //import Loader from '../shared/loaders/Loader';
 import { PostSchema } from '@/validation';
 import { getSupabaseBrowserClient } from '@/utils/supabase/client';
-import { postMoods } from '@/constants';
+import { moods } from '@/constants';
 import { Send } from 'lucide-react';
 // import MoodCarousel from '../hocs/createPostComponent/mood-carousel';
-import { Mood } from '@/types';
 // import ShinyButton from '../ui/shiny-button';
-import { FloatingCheckbox } from '../create-postComponents/floating-checkbox';
 import { calculateExpiryDate } from '@/lib/utils';
 import { removeHashtags } from '@/lib/utils';
 import { useUserState } from '@/lib/store/user';
@@ -50,11 +60,12 @@ import { usePreferencesStore } from '@/lib/store/preferences-store';
 import { useSearchParams, useRouter, usePathname } from 'next/navigation';
 //import mascot from '../../public/assets/images/mas.webp';
 import { CURRENT_CONSENT_VERSION } from '@/constants/terms';
+import { Card, CardContent } from '@/components/ui/card';
+import { Switch } from '@/components/ui/switch';
+import { DefaultLoader } from '../shared/loaders/DefaultLoader';
+import { NewBadge } from '../shared/NewBadge';
 
 // Dynamic Imports
-const Loader = dynamic(() => import('../shared/loaders/Loader'), {
-  ssr: false,
-});
 const EmojiPicker = dynamic(() => import('emoji-picker-react'), {
   ssr: false,
   loading: () => <p className="p-4">Loading emojis...</p>,
@@ -67,13 +78,6 @@ const ShinyButton = dynamic(() => import('../ui/shiny-button'), {
     </Button>
   ),
 });
-const MoodCarousel = dynamic(
-  () => import('../hocs/createPostComponent/mood-carousel'),
-  {
-    ssr: false,
-    loading: () => <div className="h-[50px] w-full rounded-full bg-gray-900" />,
-  },
-);
 const ConsentModal = dynamic(() => import('../modals/ConsentModal'), {
   ssr: false,
 });
@@ -98,11 +102,16 @@ export function PostForm() {
 
   // states
   const [isLoading, setIsLoading] = useState(false);
-  const [selectedMood, setSelectedMood] = useState<Mood | null>(postMoods[0]);
+  const [selectedMood, setSelectedMood] = useState(moods[1]);
   const [tags, setTags] = useState<string[]>([]);
+  const [slides, setSlides] = useState(['']);
+  const [currentSlide, setCurrentSlide] = useState(0);
+  const [showMoodPicker, setShowMoodPicker] = useState(false);
+  const [isTextareaFocused, setIsTextareaFocused] = useState(false);
 
   const [isEmojiPickerOpen, setIsEmojiPickerOpen] = useState(false);
   const textareaRef = useRef<HTMLTextAreaElement>(null);
+  const carouselTextareaRef = useRef<HTMLTextAreaElement>(null);
   const canvasRef = useRef<HTMLCanvasElement>(null);
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const newDataRef = useRef<any[]>([]);
@@ -145,21 +154,18 @@ export function PostForm() {
   // const isConfused = selectedMood?.value === 'confused';
 
   // Memoized mood boolean values
-  const moodClasses = useMemo(() => {
-    const moodColors = {
-      neutral: 'border-pink-500 dark:border-pink-400',
-      happy: 'border-green-500 dark:border-green-400',
-      sad: 'border-blue dark:border-sky-400',
-      angry: 'border-red-500 dark:border-red-400',
-      confused: 'border-yellow-500 dark:border-yellow-400',
-    };
-    return selectedMood
-      ? moodColors[selectedMood.value as keyof typeof moodColors] || ''
-      : '';
-  }, [selectedMood]);
-
-  //  counter for comment fields
-  const counter: number = 500;
+  // const moodClasses = useMemo(() => {
+  //   const moodColors = {
+  //     neutral: 'border-pink-500 dark:border-pink-400',
+  //     happy: 'border-green-500 dark:border-green-400',
+  //     sad: 'border-blue dark:border-sky-400',
+  //     angry: 'border-red-500 dark:border-red-400',
+  //     confused: 'border-yellow-500 dark:border-yellow-400',
+  //   };
+  //   return selectedMood
+  //     ? moodColors[selectedMood.id as keyof typeof moodColors] || ''
+  //     : '';
+  // }, [selectedMood]);
 
   //  form
   const form = useForm<z.infer<typeof PostSchema>>({
@@ -167,12 +173,15 @@ export function PostForm() {
     defaultValues: {
       content: '',
       is24HourPost: false,
+      type: 'single',
     },
   });
 
   // watch post realtime updates
   const { watch, setValue } = form;
   const content = watch('content');
+  const postType = watch('type');
+  const is24HourPost = watch('is24HourPost');
 
   // Debounced function to save draft to local storage
   const debouncedSaveDraft = useCallback(
@@ -194,7 +203,8 @@ export function PostForm() {
   // function to handle emoji selection add to post field
   const handleEmojiClick = (emojiData: { emoji: string }) => {
     const emoji = emojiData.emoji;
-    const textarea = textareaRef.current;
+    const textarea =
+      postType === 'single' ? textareaRef.current : carouselTextareaRef.current;
     if (textarea) {
       const start = textarea.selectionStart;
       const end = textarea.selectionEnd;
@@ -263,17 +273,13 @@ export function PostForm() {
       if (promptTextQuery) {
         //const decodedPromptText = decodeURIComponent(promptTextQuery);
         const initialContentPattern = `\n\n#DailyPrompt `;
-        if (
-          currentContent.trim() === initialContentPattern.trim()
-        ) {
+        if (currentContent.trim() === initialContentPattern.trim()) {
           // check both with and without #DailyPrompt initially
           isInitialPromptFill = true;
         }
       }
 
-      if (
-        !isInitialPromptFill 
-      ) {
+      if (!isInitialPromptFill) {
         debouncedSaveDraft(content);
       }
     }
@@ -288,6 +294,29 @@ export function PostForm() {
     form.getValues,
     form,
   ]);
+
+  const addSlide = () => {
+    if (slides.length < 10) {
+      setSlides([...slides, '']);
+      setCurrentSlide(slides.length);
+    }
+  };
+
+  const removeSlide = (index: number) => {
+    if (slides.length > 1) {
+      const newSlides = slides.filter((_, i) => i !== index);
+      setSlides(newSlides);
+      if (currentSlide >= newSlides.length) {
+        setCurrentSlide(newSlides.length - 1);
+      }
+    }
+  };
+
+  const updateSlide = (index: number, value: string) => {
+    const newSlides = [...slides];
+    newSlides[index] = value;
+    setSlides(newSlides);
+  };
 
   // function to handle submit
   // Canvas drawing function
@@ -439,11 +468,19 @@ export function PostForm() {
     setTimeout(async () => {
       // save post values to db
       setIsLoading(true);
-      const { content, is24HourPost } = data;
+      const { content, is24HourPost, type } = data;
       // remove tags from post content
       const contentWithoutTags = removeHashtags(content);
       const duration = is24HourPost ? 24 : null;
       const expires_at = duration ? calculateExpiryDate(duration) : null;
+
+      // Filter out empty slides before submission
+      const filteredSlides = slides.filter(slide => slide.trim() !== '');
+
+      // remove hashtags from slides
+      const slidesWithoutTags = filteredSlides.map(slide =>
+        removeHashtags(slide),
+      );
 
       try {
         // Get prompt_id from searchParams if it exists
@@ -454,18 +491,21 @@ export function PostForm() {
         const { data: post_id, error: postError } = await supabase.rpc(
           'create_post_with_tags',
           {
-            content: contentWithoutTags,
+            content: contentWithoutTags || slides[0],
+            mood: selectedMood?.id,
+            expires_in_24hr: is24HourPost,
             duration: duration ? `${duration}` : duration,
             expires_at,
-            expires_in_24hr: is24HourPost,
-            mood: selectedMood?.value,
-            tag_names: tags,
             is_sensitive: preferences?.mark_sensitive_by_default ?? false,
             is_prompt_response,
+            tag_names: tags,
+            type,
+            slide_contents: slidesWithoutTags,
           },
         );
 
         if (postError) {
+          console.error('Error creating post:', postError);
           toast.error('Oops, something must have gone wrong 😵‍💫! try again', {
             position: 'bottom-center',
           });
@@ -510,24 +550,34 @@ export function PostForm() {
             postId: post_id,
             metadata: {
               expires_in_24: is24HourPost,
-              mood: selectedMood?.value,
+              mood: selectedMood?.id,
               is_prompt_response: !!promptId,
               prompt_text: promptText || undefined,
+              type: type,
             },
           });
         }
 
         // Clear the form and tags
-        form.reset();
-        setSelectedMood(postMoods[0]);
-        setTags([]);
-        clearDraft();
+        if (type === 'single') {
+          form.reset();
+          setSelectedMood(moods[1]);
+          setTags([]);
+          clearDraft();
+        }
+        {
+          setSlides(['']);
+          setSelectedMood(moods[1]);
+          setTags([]);
+          router.refresh();
+        }
 
         if (promptId) {
           router.replace(pathname);
         }
         // eslint-disable-next-line @typescript-eslint/no-unused-vars
       } catch (error) {
+        console.error('Error creating post:', error);
         toast('Error!', {
           description: 'Ooops🫢 !! Could not create post, Please try again',
           position: 'bottom-center',
@@ -538,74 +588,412 @@ export function PostForm() {
     }, 800);
   }
 
+  //
+  const currentContent =
+    postType === 'single' ? form.watch('content') : slides[currentSlide];
+  const charCount = currentContent?.length || 0;
+  const maxChars = 500;
+
   return (
-    <Form {...form}>
-      <form
-        onSubmit={form.handleSubmit(onSubmit)}
-        className="w-full space-y-6 lg:mx-auto lg:w-2/3"
-      >
-        <FormField
-          control={form.control}
-          name="content"
-          render={({ field }) => (
-            <FormItem className="relative">
-              <FormControl>
-                <div className="relative" id="postTextArea">
-                  <Textarea
-                    {...field}
-                    ref={e => {
-                      field.ref(e);
-                      textareaRef.current = e;
-                    }}
-                    onChange={(e: React.ChangeEvent<HTMLTextAreaElement>) => {
-                      field.onChange(e);
-                      handleInput(e.target.value);
-                      if (
-                        e.target.value === '' &&
-                        preferences?.auto_save_drafts
-                      ) {
-                        clearDraft();
-                      }
-                    }}
-                    className={`no-focus text-dark-2 h-[150px] resize-none pt-8! pr-10! transition-all duration-300 dark:text-white ${moodClasses} ${animating && 'text-transparent dark:text-transparent'}`}
-                    id="tags-guide"
-                    disabled={animating}
-                  />
+    <div className="relative h-full">
+      <Card className="mb-3 overflow-visible rounded-2xl border-none">
+        <CardContent className="px-0">
+          <Form {...form}>
+            <form
+              onSubmit={form.handleSubmit(onSubmit)}
+              className="w-full space-y-3 lg:mx-auto lg:w-2/3"
+            >
+              {/* Post Type Dropdown and 24h Expiry Toggle */}
+              <div className="flex items-end justify-between relative">
+                <FormField
+                  control={form.control}
+                  name="type"
+                  render={({ field }) => (
+                    <FormItem className="relative flex-1">
+                      <FormLabel className="text-foreground text-sm font-medium">
+                        Post Type
+                      </FormLabel>
+                      <Select
+                        onValueChange={field.onChange}
+                        defaultValue={field.value}
+                      >
+                        <FormControl>
+                          <SelectTrigger className="w-48 rounded-xl border-0">
+                            <SelectValue />
+                          </SelectTrigger>
+                        </FormControl>
+                        <SelectContent className="bg-background border-border rounded-xl border shadow-xl">
+                          <SelectItem
+                            value="single"
+                            className="hover:bg-muted cursor-pointer rounded-lg p-3"
+                          >
+                            <div className="flex items-center gap-3">
+                              <div className="flex h-3 w-3 items-center justify-center rounded-full bg-green-500">
+                                <div className="h-1.5 w-1.5 rounded-full bg-white"></div>
+                              </div>
+                              <div className="flex items-center gap-2">
+                                <FileText className="text-muted-foreground h-4 w-4" />
+                                <span className="font-medium">Single Post</span>
+                              </div>
+                            </div>
+                          </SelectItem>
+                          <SelectItem
+                            value="carousel"
+                            className="hover:bg-muted cursor-pointer rounded-lg p-3"
+                          >
+                            <div className="flex items-center gap-3">
+                              <div className="flex h-3 w-3 items-center justify-center rounded-full bg-blue-500">
+                                <div className="h-1.5 w-1.5 rounded-full bg-white"></div>
+                              </div>
+                              <div className="flex items-center gap-2">
+                                <ImageIcon className="text-muted-foreground h-4 w-4" />
+                                <span className="font-medium">Carousel</span>
+                              </div>
+                            </div>
+                          </SelectItem>
+                        </SelectContent>
+                      </Select>
+                      <FormMessage />
+                      <NewBadge size="sm" containerClass="absolute top-0 left-17" />
+                    </FormItem>
+                  )}
+                />
 
-                  {/* Canvas for animation */}
-                  <canvas
-                    ref={canvasRef}
-                    className={`pointer-events-none absolute inset-0 z-10 pt-8 ${animating ? 'opacity-100' : 'opacity-0'} `}
-                  />
-
-                  {/* mood icon */}
-                  <div
-                    className="absolute bottom-3 left-3 flex items-center gap-x-1"
-                    id="mood-display"
-                  >
-                    <span>
-                      {selectedMood?.gif ? (
-                        <Image
-                          src={selectedMood?.gif}
-                          alt="Sad Emoji"
-                          width={24}
-                          height={24}
-                          className="h-6 sm:h-7 sm:w-7"
-                          unoptimized
-                        />
-                      ) : (
-                        selectedMood?.icon
+                <Popover>
+                  <PopoverTrigger asChild>
+                    <Button
+                      type="button"
+                      variant="outline"
+                      size="sm"
+                      className={`mb-2 rounded-xl transition-all duration-200 ${
+                        is24HourPost
+                          ? 'border-purple-200 bg-purple-50 text-purple-700 dark:border-purple-800 dark:bg-purple-950 dark:text-purple-300'
+                          : 'hover:bg-muted'
+                      }`}
+                    >
+                      <PaintRoller className="mr-2 h-4 w-4" />
+                      Tools
+                      {is24HourPost && (
+                        <div className="ml-2 h-2 w-2 animate-pulse rounded-full bg-purple-500"></div>
                       )}
-                    </span>
-                    <p className="text-[12px] text-gray-900 dark:text-gray-500">
-                      Mood:{' '}
-                      <span className={`${moodClasses}`}>
-                        {selectedMood?.label}
+                    </Button>
+                  </PopoverTrigger>
+                  <PopoverContent
+                    className="bg-background border-border w-80 rounded-xl border p-0 shadow-xl"
+                    align="end"
+                  >
+                    <div className="p-4">
+                      <div className="mb-4 flex items-center gap-2">
+                        <PaintRoller className="text-foreground h-5 w-5" />
+                        <h3 className="text-foreground font-semibold">
+                          Post Tools
+                        </h3>
+                      </div>
+
+                      {/* tools popover */}
+                      <div className="space-y-4">
+                        {/* 24h Expiry Setting */}
+                        <FormField
+                          control={form.control}
+                          name="is24HourPost"
+                          render={({ field }) => (
+                            <FormItem>
+                              <div className="border-border hover:bg-muted/50 flex items-center justify-between rounded-lg border p-3 transition-colors">
+                                <div className="flex items-center gap-3">
+                                  <div
+                                    className={`rounded-lg p-2 ${
+                                      field.value
+                                        ? 'bg-purple-100 text-purple-600 dark:bg-purple-900 dark:text-purple-400'
+                                        : 'bg-muted text-muted-foreground'
+                                    }`}
+                                  >
+                                    <Timer className="h-4 w-4" />
+                                  </div>
+                                  <div>
+                                    <FormLabel className="text-foreground cursor-pointer text-sm font-medium">
+                                      24h Auto-Delete
+                                    </FormLabel>
+                                    <p className="text-muted-foreground text-xs">
+                                      Post will disappear after 24 hours
+                                    </p>
+                                  </div>
+                                </div>
+                                <FormControl>
+                                  <Switch
+                                    checked={field.value}
+                                    onCheckedChange={field.onChange}
+                                    className="data-[state=checked]:bg-purple-500"
+                                  />
+                                </FormControl>
+                              </div>
+                            </FormItem>
+                          )}
+                        />
+
+                        {/* Future Settings Placeholder */}
+                        <div className="space-y-2">
+                          <div className="border-border flex items-center justify-between rounded-lg border border-dashed p-3 opacity-50">
+                            <div className="flex items-center gap-3">
+                              <div className="bg-muted text-muted-foreground rounded-lg p-2">
+                                <Globe className="h-4 w-4" />
+                              </div>
+                              <div>
+                                <div className="text-muted-foreground text-sm font-medium">
+                                  Visibility
+                                </div>
+                                <p className="text-muted-foreground text-xs">
+                                  Coming soon
+                                </p>
+                              </div>
+                            </div>
+                          </div>
+
+                          {/* <div className="border-border flex items-center justify-between rounded-lg border border-dashed p-3 opacity-50">
+                            <div className="flex items-center gap-3">
+                              <div className="bg-muted text-muted-foreground rounded-lg p-2">
+                                <Eye className="h-4 w-4" />
+                              </div>
+                              <div>
+                                <div className="text-muted-foreground text-sm font-medium">
+                                  Comments
+                                </div>
+                                <p className="text-muted-foreground text-xs">
+                                  Coming soon
+                                </p>
+                              </div>
+                            </div>
+                          </div> */}
+                        </div>
+                      </div>
+                    </div>
+                  </PopoverContent>
+                </Popover>
+                {/* <FormField
+                  control={form.control}
+                  name="is24HourPost"
+                  render={({ field }) => (
+                    <FormItem>
+                      <div className="bg-muted flex items-center gap-3 rounded-xl p-3">
+                        <Clock className="text-muted-foreground h-4 w-4" />
+                        <FormLabel className="text-foreground text-sm font-medium">
+                          24h Expiry
+                        </FormLabel>
+                        <FormControl>
+                          <Switch
+                            checked={field.value}
+                            onCheckedChange={field.onChange}
+                            className="data-[state=checked]:bg-lavender-500 data-[state=unchecked]:bg-white"
+                          />
+                        </FormControl>
+                      </div>
+                    </FormItem>
+                  )}
+                /> */}
+              </div>
+
+              {/* Content Input */}
+              {postType === 'single' ? (
+                <FormField
+                  control={form.control}
+                  name="content"
+                  render={({ field }) => (
+                    <FormItem>
+                      <div className="relative">
+                        <FormControl>
+                          <Textarea
+                            {...field}
+                            ref={textareaRef}
+                            onFocus={() => setIsTextareaFocused(true)}
+                            onBlur={() => setIsTextareaFocused(false)}
+                            onChange={(
+                              e: React.ChangeEvent<HTMLTextAreaElement>,
+                            ) => {
+                              field.onChange(e);
+                              handleInput(e.target.value);
+                              if (
+                                e.target.value === '' &&
+                                preferences?.auto_save_drafts
+                              ) {
+                                clearDraft();
+                              }
+                            }}
+                            className={`border-border min-h-[140px] resize-none rounded-xl border-2 border-dashed bg-transparent text-base leading-relaxed transition-all duration-200 focus:border-purple-400 focus:ring-0 focus-visible:ring-0 ${animating && 'text-transparent dark:text-transparent'}`}
+                            maxLength={maxChars}
+                            id="tags-guide"
+                            disabled={animating}
+                          />
+                        </FormControl>
+                        <div className="text-muted-foreground absolute right-3 bottom-3 text-xs">
+                          {charCount}/{maxChars}
+                        </div>
+
+                        {/* Canvas for animation */}
+                        <canvas
+                          ref={canvasRef}
+                          className={`pointer-events-none absolute inset-0 z-10 pt-8 ${animating ? 'opacity-100' : 'opacity-0'} `}
+                        />
+
+                        <div className="pointer-events-none absolute inset-0 flex items-center rounded-md">
+                          <AnimatePresence mode="wait">
+                            {!content && (
+                              <motion.p
+                                initial={{
+                                  y: 5,
+                                  opacity: 0,
+                                }}
+                                key={`current-placeholder-${currentPlaceholder}`}
+                                animate={{
+                                  y: 0,
+                                  opacity: 1,
+                                }}
+                                exit={{
+                                  y: -15,
+                                  opacity: 0,
+                                }}
+                                transition={{
+                                  duration: 0.6,
+                                  ease: 'linear',
+                                }}
+                                className="w-[calc(100%-2rem)] truncate pl-4 text-left text-sm font-normal text-neutral-500 sm:pl-12 sm:text-base dark:text-zinc-500"
+                              >
+                                {placeholders[currentPlaceholder]}
+                              </motion.p>
+                            )}
+                          </AnimatePresence>
+                        </div>
+                      </div>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+              ) : (
+                <div className="space-y-4">
+                  {/* Carousel Navigation */}
+                  <div className="flex items-center justify-between">
+                    <div className="flex items-center gap-3">
+                      <Button
+                        type="button"
+                        variant="outline"
+                        size="sm"
+                        onClick={() =>
+                          setCurrentSlide(Math.max(0, currentSlide - 1))
+                        }
+                        disabled={currentSlide === 0}
+                        className="h-9 w-9 rounded-full p-0"
+                      >
+                        <ArrowLeft className="h-4 w-4" />
+                      </Button>
+                      <span className="text-muted-foreground bg-muted rounded-full px-3 py-1 text-sm">
+                        {currentSlide + 1} / {slides.length}
                       </span>
-                    </p>
+                      <Button
+                        type="button"
+                        variant="outline"
+                        size="sm"
+                        onClick={() =>
+                          setCurrentSlide(
+                            Math.min(slides.length - 1, currentSlide + 1),
+                          )
+                        }
+                        disabled={currentSlide === slides.length - 1}
+                        className="h-9 w-9 rounded-full p-0"
+                      >
+                        <ArrowRight className="h-4 w-4" />
+                      </Button>
+                    </div>
+                    <div className="flex gap-2">
+                      <Button
+                        type="button"
+                        variant="outline"
+                        size="sm"
+                        onClick={addSlide}
+                        disabled={slides.length >= 10}
+                        className="h-9 w-9 rounded-full p-0"
+                      >
+                        <Plus className="h-4 w-4" />
+                      </Button>
+                      {slides.length > 1 && (
+                        <Button
+                          type="button"
+                          variant="outline"
+                          size="sm"
+                          onClick={() => removeSlide(currentSlide)}
+                          className="h-9 w-9 rounded-full p-0 text-red-500 hover:text-red-600"
+                        >
+                          <X className="h-4 w-4" />
+                        </Button>
+                      )}
+                    </div>
                   </div>
 
-                  {/* emoji picker */}
+                  {/* Carousel Content */}
+                  <div className="relative">
+                    <Textarea
+                      ref={carouselTextareaRef}
+                      value={slides[currentSlide]}
+                      onChange={e => {
+                        updateSlide(currentSlide, e.target.value);
+                        handleInput(e.target.value);
+                      }}
+                      onFocus={() => setIsTextareaFocused(true)}
+                      onBlur={() => setIsTextareaFocused(false)}
+                      placeholder={`Slide ${currentSlide + 1} content... Tell part of your story here`}
+                      className="border-border min-h-[140px] resize-none rounded-xl border-2 border-dashed bg-transparent text-base leading-relaxed transition-all duration-200 focus:ring-0 focus-visible:ring-0"
+                      maxLength={maxChars}
+                      id="tags-guide"
+                      disabled={animating}
+                    />
+                    <div className="text-muted-foreground absolute right-3 bottom-3 text-xs">
+                      {charCount}/{maxChars}
+                    </div>
+
+                    {/* Canvas for animation */}
+                    <canvas
+                      ref={canvasRef}
+                      className={`pointer-events-none absolute inset-0 z-10 pt-8 ${animating ? 'opacity-100' : 'opacity-0'} `}
+                    />
+                  </div>
+
+                  {/* Slide Indicators */}
+                  <div className="flex justify-center gap-2 pt-2">
+                    {slides.map((_, index) => (
+                      <button
+                        key={index}
+                        type="button"
+                        onClick={() => setCurrentSlide(index)}
+                        className={`h-3 w-3 rounded-full transition-all duration-200 ${
+                          index === currentSlide
+                            ? 'scale-125 bg-purple-500 shadow-lg'
+                            : slides[index].trim()
+                              ? 'bg-purple-200 dark:bg-purple-700'
+                              : 'bg-muted'
+                        }`}
+                      />
+                    ))}
+                  </div>
+                </div>
+              )}
+
+              {/* tags */}
+              {tags.length > 0 && (
+                <div className="flex flex-wrap gap-2">
+                  {tags.map((tag, index) => (
+                    <motion.span
+                      key={index}
+                      initial={{ opacity: 0, scale: 0.8 }}
+                      animate={{ opacity: 1, scale: 1 }}
+                      className="bg-primary text-primary-foreground rounded-full px-2 py-1 text-sm"
+                    >
+                      #{tag}
+                    </motion.span>
+                  ))}
+                </div>
+              )}
+
+              {/* Action Bar */}
+              <div className="border-border flex items-center justify-between border-t pt-4">
+                <div className="flex items-center gap-3">
+                  {/* Emoji Button */}
                   <Popover
                     open={isEmojiPickerOpen}
                     onOpenChange={setIsEmojiPickerOpen}
@@ -615,7 +1003,7 @@ export function PostForm() {
                         type="button"
                         variant="ghost"
                         size="icon"
-                        className="absolute right-2 bottom-2"
+                        className=""
                         aria-label="Open emoji picker"
                         id="emoji-btn"
                       >
@@ -637,112 +1025,93 @@ export function PostForm() {
                     </PopoverContent>
                   </Popover>
 
-                  <div className="pointer-events-none absolute inset-0 flex items-center rounded-full">
-                    <AnimatePresence mode="wait">
-                      {!content && (
-                        <motion.p
-                          initial={{
-                            y: 5,
-                            opacity: 0,
-                          }}
-                          key={`current-placeholder-${currentPlaceholder}`}
-                          animate={{
-                            y: 0,
-                            opacity: 1,
-                          }}
-                          exit={{
-                            y: -15,
-                            opacity: 0,
-                          }}
-                          transition={{
-                            duration: 0.6,
-                            ease: 'linear',
-                          }}
-                          className="w-[calc(100%-2rem)] truncate pl-4 text-left text-sm font-normal text-neutral-500 sm:pl-12 sm:text-base dark:text-zinc-500"
-                        >
-                          {placeholders[currentPlaceholder]}
-                        </motion.p>
-                      )}
-                    </AnimatePresence>
-                  </div>
-                </div>
-              </FormControl>
-
-              {/* checkbox*/}
-              <FormField
-                control={form.control}
-                name="is24HourPost"
-                render={({ field }) => (
-                  <FloatingCheckbox
-                    checked={field.value}
-                    onCheckedChange={field.onChange}
-                    id="toggle24hr"
-                  />
-                )}
-              />
-
-              {/* tags */}
-              {tags.length > 0 && (
-                <div className="flex flex-wrap gap-2">
-                  {tags.map((tag, index) => (
-                    <motion.span
-                      key={index}
-                      initial={{ opacity: 0, scale: 0.8 }}
-                      animate={{ opacity: 1, scale: 1 }}
-                      className="bg-primary text-primary-foreground rounded-full px-2 py-1 text-sm"
+                  {/* Mood Button with Slow Pulse Animation */}
+                  <div className="relative">
+                    <Button
+                      type="button"
+                      variant="ghost"
+                      size="sm"
+                      onClick={() => setShowMoodPicker(!showMoodPicker)}
+                      className={`rounded-xl p-3 transition-all duration-900 ${
+                        isTextareaFocused || showMoodPicker
+                          ? `${selectedMood.color} scale-110 animate-[pulse_9s_ease-in-out_infinite] text-white shadow-lg`
+                          : 'text-muted-foreground hover:text-foreground hover:bg-muted'
+                      }`}
                     >
-                      #{tag}
-                    </motion.span>
-                  ))}
+                      {selectedMood.icon}
+                    </Button>
+
+                    {/* Mood Picker Dropdown */}
+                    {showMoodPicker && (
+                      <div className="bg-card border-border animate-in slide-in-from-top-2 absolute top-full left-0 z-50 mt-3 w-80 rounded-xl border p-4 shadow-2xl duration-200">
+                        <h4 className="text-foreground mb-4 text-center font-semibold">
+                          How are you feeling?
+                        </h4>
+                        <div className="grid max-h-64 grid-cols-4 gap-2 overflow-y-auto">
+                          {moods.map(mood => (
+                            <button
+                              key={mood.id}
+                              type="button"
+                              onClick={() => {
+                                setSelectedMood(mood);
+                                setShowMoodPicker(false);
+                              }}
+                              className={`rounded-xl p-3 transition-all duration-200 hover:scale-105 ${
+                                selectedMood.id === mood.id
+                                  ? `${mood.color} scale-105 text-white shadow-lg`
+                                  : `bg-muted hover:bg-muted/80 text-foreground ${mood.hoverColor}`
+                              }`}
+                            >
+                              <div className="flex flex-col items-center gap-1">
+                                {mood.icon}
+                                <span className="text-xs font-medium">
+                                  {mood.label}
+                                </span>
+                              </div>
+                            </button>
+                          ))}
+                        </div>
+                      </div>
+                    )}
+                  </div>
+
+                  {/* Current Mood Display */}
+                  {selectedMood && (
+                    <div className="bg-muted flex items-center gap-2 rounded-lg px-3 py-2">
+                      <div
+                        className={`h-2 w-2 rounded-full ${selectedMood.color}`}
+                      ></div>
+                      <span className="text-muted-foreground text-sm">
+                        {selectedMood.label}
+                      </span>
+                    </div>
+                  )}
                 </div>
-              )}
 
-              <div className="h-4">
-                <FormMessage />
+                {/* Submit Button */}
+                <ShinyButton
+                  disabled={content.length > 500 || isLoading || animating}
+                  type="submit"
+                  className="rounded-full"
+                  id="submit-btn"
+                >
+                  {isLoading ? (
+                    <span className="flex gap-2">
+                      <DefaultLoader size={20} />
+                    </span>
+                  ) : (
+                    <>
+                      <Send size={20} strokeWidth={1.75} absoluteStrokeWidth />
+                    </>
+                  )}
+                </ShinyButton>
               </div>
-            </FormItem>
-          )}
-        />
+            </form>
+          </Form>
+        </CardContent>
+      </Card>
 
-        <div className="mt-1! w-full max-sm:px-10" id="mood-carousel">
-          <MoodCarousel
-            selectedMood={selectedMood}
-            setSelectedMood={setSelectedMood}
-          />
-        </div>
-
-        <div className="flex flex-row-reverse items-center justify-between">
-          <ShinyButton
-            disabled={content.length > 500 || isLoading || animating}
-            type="submit"
-            className="rounded-full"
-            id="submit-btn"
-          >
-            {isLoading ? (
-              <span className="flex gap-2">
-                <Loader />
-                <p>Loading...</p>
-              </span>
-            ) : (
-              <>
-                <Send size={20} strokeWidth={1.75} absoluteStrokeWidth />
-              </>
-            )}
-          </ShinyButton>
-          <p
-            className={`border text-slate-900/90 dark:text-white ${
-              counter - content.length < 0
-                ? 'border-red-500 bg-red-400'
-                : 'border-blue bg-blue'
-            } flex h-9 max-h-9 min-h-9 w-9 max-w-9 min-w-9 items-center justify-center rounded-full p-3 shadow-sm`}
-            id="counter"
-          >
-            {counter - content.length}
-          </p>
-        </div>
-      </form>
-
-      <div className="flex h-full flex-col gap-y-3 md:gap-y-30 lg:gap-y-36">
+      <div className="flex h-full flex-col gap-y-20 md:gap-y-30 lg:gap-y-36">
         <div className="">
           <div className="container mx-auto px-3 pt-10 text-center text-sm text-zinc-600 md:pt-20">
             Tip : Platform made to share your experiences without holding back..
@@ -752,42 +1121,48 @@ export function PostForm() {
           </div> */}
         </div>
 
-        <section className='flex-1 flex flex-col items-center justify-center'>
-        <div className="flex flex-wrap justify-center gap-2 px-2 pb-4 text-xs text-slate-600/60 dark:text-slate-400/60">
-          <span>
-            <Link className="hover:text-slate-200 hover:underline" href="#">
-              Xolace Rules
-            </Link>
-          </span>
-          <span>
-            <Link className="hover:text-slate-200 hover:underline" href="/policy">
-              Privacy Policy
-            </Link>
-          </span>
-          <span>
-            <Link className="hover:text-slate-200 hover:underline" href="/policy">
-              User Agreement
-            </Link>
-          </span>
-          <span className="metadata-divider before:content-['•']"></span>
-          <span>
-            <Link className="hover:text-slate-200 hover:underline" href="#">
-              Xolace, Inc. © 2025. All rights reserved.
-            </Link>
-          </span>
-        </div>
+        <section className="flex flex-col items-center justify-center">
+          <div className="flex flex-wrap justify-center gap-2 px-2 pb-4 text-xs text-slate-600/60 dark:text-slate-400/60">
+            <span>
+              <Link className="hover:text-slate-200 hover:underline" href="#">
+                Xolace Rules
+              </Link>
+            </span>
+            <span>
+              <Link
+                className="hover:text-slate-200 hover:underline"
+                href="/policy"
+              >
+                Privacy Policy
+              </Link>
+            </span>
+            <span>
+              <Link
+                className="hover:text-slate-200 hover:underline"
+                href="/policy"
+              >
+                User Agreement
+              </Link>
+            </span>
+            <span className="metadata-divider before:content-['•']"></span>
+            <span>
+              <Link className="hover:text-slate-200 hover:underline" href="#">
+                Xolace, Inc. © 2025. All rights reserved.
+              </Link>
+            </span>
+          </div>
         </section>
       </div>
 
       {showConsent && user && (
         <ConsentModal
-        isOpen={showConsent}
-        onReject={() => {
-          setShowConsent(false);
-        }}
-        user={user}
-      />
+          isOpen={showConsent}
+          onReject={() => {
+            setShowConsent(false);
+          }}
+          user={user}
+        />
       )}
-    </Form>
+    </div>
   );
 }

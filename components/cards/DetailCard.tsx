@@ -1,6 +1,5 @@
 'use client';
 import { useState } from 'react';
-import Image from 'next/image';
 import { format, register, type LocaleFunc } from 'timeago.js';
 import dynamic from 'next/dynamic';
 
@@ -21,7 +20,8 @@ import SaveToCollectionsButton from '../shared/SaveToCollectionsButton';
 import { useUserState } from '@/lib/store/user';
 import { ArrowLeft } from 'lucide-react';
 import { useRouter } from 'next/navigation';
-import { moodMap } from '@/types';
+import { moodColors, moodIcons } from '@/constants/moods';
+import CarouselPost from '../shared/CarouselPost';
 // Dynamically import non-critical components
 const PostDropdown = dynamic(() => import('../shared/PostDropdown'), {
   ssr: false,
@@ -87,7 +87,6 @@ export function DetailCard({
   const router = useRouter();
 
   const [isSheetOpen, setIsSheetOpen] = useState<boolean>(false);
-  const postMood = moodMap[post?.mood] || moodMap['neutral'];
   // Register the custom locale with an ID (e.g. 'short-en')
   register('short-en', customLocale);
 
@@ -98,12 +97,15 @@ export function DetailCard({
     author_avatar_url,
     created_by,
     posttags,
+    mood,
+    type,
+    post_slides,
   } = post;
-
+  console.log(post_slides);
   return (
     <>
       <Card className="mt-5 w-full rounded-none border-0 border-x-0 max-sm:mb-5 md:w-full md:px-8">
-        <CardHeader className="flex-row items-center justify-between px-6 py-2">
+        <CardHeader className="flex-row items-start justify-between px-6 py-2">
           <div className="flex items-center gap-2 md:gap-3">
             <button
               className="dark:bg-muted-dark hover:bg-muted-dark-hover flex h-8 w-8 cursor-pointer items-center justify-center rounded-full bg-gray-700 max-md:hidden"
@@ -118,24 +120,35 @@ export function DetailCard({
               />
               <AvatarFallback>XO</AvatarFallback>
             </Avatar>
-            <div className="flex flex-col items-start justify-center gap-1">
-              <h5 className="text-small text-default-400 tracking-tight">
-                {author_name}
-              </h5>
+            <div className="flex flex-col items-start justify-center">
+              <div className="flex items-center gap-1">
+                <h5 className="text-small text-default-400 tracking-tight">
+                  {author_name}
+                </h5>
+                <div
+                  className={`h-5 w-5 ${moodColors[mood]} flex items-center justify-center rounded-full text-white`}
+                >
+                  {moodIcons[mood]}
+                </div>
+              </div>
+              <small className="text-sm text-zinc-500 dark:text-gray-400">
+                {format(created_at, 'short-en')}
+              </small>
             </div>
-            <small className="ml-4 text-sm text-zinc-500 md:ml-10 dark:text-gray-400">
-              {format(created_at, 'short-en')}
-            </small>
           </div>
           <PostDropdown
             postId={postId}
             postDetail={true}
             onOpenChange={setIsSheetOpen}
-            postCreatedBy={created_by}
+            postCreatedBy={created_by ?? ''}
           />
         </CardHeader>
         <CardContent className="overflow-x-hidden text-wrap!">
-          {content}
+          {type === 'carousel' ? (
+            <CarouselPost slides={post_slides} postId={postId} />
+          ) : (
+            content
+          )}
 
           <div className="mt-4 flex flex-wrap gap-2">
             {posttags && // check if post has tags
@@ -150,37 +163,19 @@ export function DetailCard({
         </CardContent>
         <CardFooter className="flex items-center justify-between md:hidden">
           <div className="flex items-center gap-3">
-            <div
-              className={`flex h-7 w-10 items-center justify-center rounded-full ${
-                postMood.style
-              }`}
-            >
-              <span>
-                {postMood.gif ? (
-                  <Image
-                    src={postMood.gif}
-                    alt="Gif Emoji"
-                    width={24}
-                    height={24}
-                    className="h-6"
-                    unoptimized
-                  />
-                ) : (
-                  postMood.emoji
-                )}
-              </span>
-
-              {post?.expires_in_24hr && (
+            {post?.expires_in_24hr && (
+              <div
+                className={`flex h-7 w-10 items-center justify-center rounded-full bg-zinc-400 dark:bg-zinc-700`}
+              >
                 <span className="animate-bounce duration-700 ease-in-out">
                   {' '}
                   ⏳
                 </span>
-              )}
-            </div>
-
+              </div>
+            )}
             <View
               id={post.id}
-              createdBy={post.created_by}
+              createdBy={post.created_by ?? ''}
               viewsCount={post.views[0].count || 0}
               content={post.content}
             />
@@ -189,7 +184,7 @@ export function DetailCard({
           <div>
             <SaveToCollectionsButton
               userId={user?.id || ''}
-              createdBy={post.created_by}
+              createdBy={post.created_by ?? ''}
               postId={post.id}
               postCollections={post.collections}
             />
