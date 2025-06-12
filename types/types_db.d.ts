@@ -152,8 +152,10 @@ export type Database = {
           author_name: string | null
           comment_text: string
           created_at: string
-          created_by: string
+          created_by: string | null
+          depth: number
           id: number
+          parent_id: number | null
           post: string
         }
         Insert: {
@@ -161,8 +163,10 @@ export type Database = {
           author_name?: string | null
           comment_text: string
           created_at?: string
-          created_by: string
+          created_by?: string | null
+          depth?: number
           id?: number
+          parent_id?: number | null
           post: string
         }
         Update: {
@@ -170,8 +174,10 @@ export type Database = {
           author_name?: string | null
           comment_text?: string
           created_at?: string
-          created_by?: string
+          created_by?: string | null
+          depth?: number
           id?: number
+          parent_id?: number | null
           post?: string
         }
         Relationships: [
@@ -180,6 +186,13 @@ export type Database = {
             columns: ["created_by"]
             isOneToOne: false
             referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "comments_parent_id_fkey"
+            columns: ["parent_id"]
+            isOneToOne: false
+            referencedRelation: "comments"
             referencedColumns: ["id"]
           },
           {
@@ -261,6 +274,50 @@ export type Database = {
           },
         ]
       }
+      health_professionals: {
+        Row: {
+          bio: string | null
+          consultation_link: string | null
+          created_at: string | null
+          field: string
+          id: string
+          license_number: string | null
+          updated_at: string | null
+          verified_by_admin: boolean | null
+          years_of_experience: number | null
+        }
+        Insert: {
+          bio?: string | null
+          consultation_link?: string | null
+          created_at?: string | null
+          field: string
+          id: string
+          license_number?: string | null
+          updated_at?: string | null
+          verified_by_admin?: boolean | null
+          years_of_experience?: number | null
+        }
+        Update: {
+          bio?: string | null
+          consultation_link?: string | null
+          created_at?: string | null
+          field?: string
+          id?: string
+          license_number?: string | null
+          updated_at?: string | null
+          verified_by_admin?: boolean | null
+          years_of_experience?: number | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "health_professionals_id_fkey"
+            columns: ["id"]
+            isOneToOne: true
+            referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       health_tips: {
         Row: {
           author_avatar_url: string | null
@@ -271,7 +328,8 @@ export type Database = {
           id: number
           is_approved: boolean
           is_sponsored: boolean
-          title: string | null
+          slug: string
+          title: string
         }
         Insert: {
           author_avatar_url?: string | null
@@ -282,7 +340,8 @@ export type Database = {
           id?: number
           is_approved?: boolean
           is_sponsored?: boolean
-          title?: string | null
+          slug: string
+          title: string
         }
         Update: {
           author_avatar_url?: string | null
@@ -293,7 +352,8 @@ export type Database = {
           id?: number
           is_approved?: boolean
           is_sponsored?: boolean
-          title?: string | null
+          slug?: string
+          title?: string
         }
         Relationships: [
           {
@@ -301,6 +361,42 @@ export type Database = {
             columns: ["created_by"]
             isOneToOne: false
             referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      health_tips_tags: {
+        Row: {
+          created_at: string
+          health_tips: number
+          id: number
+          tags_id: number
+        }
+        Insert: {
+          created_at?: string
+          health_tips: number
+          id?: number
+          tags_id: number
+        }
+        Update: {
+          created_at?: string
+          health_tips?: number
+          id?: number
+          tags_id?: number
+        }
+        Relationships: [
+          {
+            foreignKeyName: "health_tips_tags_health_tips_fkey"
+            columns: ["health_tips"]
+            isOneToOne: false
+            referencedRelation: "health_tips"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "health_tips_tags_tags_id_fkey"
+            columns: ["tags_id"]
+            isOneToOne: false
+            referencedRelation: "tags"
             referencedColumns: ["id"]
           },
         ]
@@ -373,13 +469,45 @@ export type Database = {
           },
         ]
       }
+      post_slides: {
+        Row: {
+          content: string
+          created_at: string | null
+          id: string
+          post_id: string
+          slide_index: number
+        }
+        Insert: {
+          content: string
+          created_at?: string | null
+          id?: string
+          post_id: string
+          slide_index: number
+        }
+        Update: {
+          content?: string
+          created_at?: string | null
+          id?: string
+          post_id?: string
+          slide_index?: number
+        }
+        Relationships: [
+          {
+            foreignKeyName: "post_slides_post_id_fkey"
+            columns: ["post_id"]
+            isOneToOne: false
+            referencedRelation: "posts"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       posts: {
         Row: {
           author_avatar_url: string | null
           author_name: string
           content: string
           created_at: string
-          created_by: string
+          created_by: string | null
           downvotes: number
           duration: Database["public"]["Enums"]["post_duration"] | null
           expires_at: string | null
@@ -388,6 +516,7 @@ export type Database = {
           is_prompt_response: boolean
           is_sensitive: boolean
           mood: Database["public"]["Enums"]["post_mood"]
+          type: Database["public"]["Enums"]["post_type"]
           upvotes: number
         }
         Insert: {
@@ -395,7 +524,7 @@ export type Database = {
           author_name: string
           content: string
           created_at?: string
-          created_by: string
+          created_by?: string | null
           downvotes?: number
           duration?: Database["public"]["Enums"]["post_duration"] | null
           expires_at?: string | null
@@ -404,6 +533,7 @@ export type Database = {
           is_prompt_response?: boolean
           is_sensitive?: boolean
           mood?: Database["public"]["Enums"]["post_mood"]
+          type?: Database["public"]["Enums"]["post_type"]
           upvotes?: number
         }
         Update: {
@@ -411,7 +541,7 @@ export type Database = {
           author_name?: string
           content?: string
           created_at?: string
-          created_by?: string
+          created_by?: string | null
           downvotes?: number
           duration?: Database["public"]["Enums"]["post_duration"] | null
           expires_at?: string | null
@@ -420,6 +550,7 @@ export type Database = {
           is_prompt_response?: boolean
           is_sensitive?: boolean
           mood?: Database["public"]["Enums"]["post_mood"]
+          type?: Database["public"]["Enums"]["post_type"]
           upvotes?: number
         }
         Relationships: [
@@ -886,7 +1017,25 @@ export type Database = {
       }
     }
     Views: {
-      [_ in never]: never
+      professionals_public_view: {
+        Row: {
+          avatar_url: string | null
+          bio: string | null
+          field: string | null
+          id: string | null
+          username: string | null
+          years_of_experience: number | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "health_professionals_id_fkey"
+            columns: ["id"]
+            isOneToOne: true
+            referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
     }
     Functions: {
       create_post_with_tags: {
@@ -896,9 +1045,11 @@ export type Database = {
           expires_in_24hr: boolean
           duration: Database["public"]["Enums"]["post_duration"]
           expires_at: string
-          tag_names: string[]
-          is_sensitive?: boolean
-          is_prompt_response?: boolean
+          is_sensitive: boolean
+          is_prompt_response: boolean
+          type: Database["public"]["Enums"]["post_type"]
+          tag_names?: string[]
+          slide_contents?: string[]
         }
         Returns: string
       }
@@ -925,6 +1076,33 @@ export type Database = {
         }
         Returns: string
       }
+      create_post_with_tags_v3: {
+        Args: {
+          content: string
+          mood: Database["public"]["Enums"]["post_mood"]
+          expires_in_24hr: boolean
+          duration: Database["public"]["Enums"]["post_duration"]
+          expires_at: string
+          tag_names: string[]
+          is_sensitive?: boolean
+          is_prompt_response?: boolean
+        }
+        Returns: string
+      }
+      create_post_with_tags_v4: {
+        Args: {
+          content: string
+          mood: Database["public"]["Enums"]["post_mood"]
+          expires_in_24hr: boolean
+          duration: Database["public"]["Enums"]["post_duration"]
+          expires_at: string
+          is_sensitive: boolean
+          is_prompt_response: boolean
+          tag_names: string[]
+          type: Database["public"]["Enums"]["post_type"]
+        }
+        Returns: string
+      }
       get_user_stats: {
         Args: { profile_id: string }
         Returns: {
@@ -946,6 +1124,24 @@ export type Database = {
       }
       increment_reputation: {
         Args: { user_id_in: string; points_in: number }
+        Returns: undefined
+      }
+      insert_health_tip_with_tags: {
+        Args: {
+          p_title: string
+          p_content: string
+          p_created_by: string
+          p_author_name: string
+          p_author_avatar_url: string
+          p_tags: string[]
+          p_slug: string
+        }
+        Returns: {
+          id: number
+        }[]
+      }
+      upsert_tags_and_tips_relationship: {
+        Args: { tag_names: string[]; tips_id: number }
         Returns: undefined
       }
     }
@@ -970,7 +1166,25 @@ export type Database = {
         | "view"
       feedback_status: "open" | "closed"
       post_duration: "6" | "12" | "24"
-      post_mood: "neutral" | "confused" | "sad" | "happy" | "angry"
+      post_mood:
+        | "neutral"
+        | "confused"
+        | "sad"
+        | "happy"
+        | "angry"
+        | "thoughtful"
+        | "chill"
+        | "grateful"
+        | "laughing"
+        | "inspired"
+        | "peaceful"
+        | "melancholy"
+        | "creative"
+        | "nostalgic"
+        | "motivated"
+        | "excited"
+        | "energetic"
+      post_type: "single" | "carousel"
       privacy_options: "public" | "private" | "followers_only"
       report_status: "pending" | "reviewed" | "resolved"
       theme_options: "system" | "light" | "dark"
@@ -1114,7 +1328,26 @@ export const Constants = {
       ],
       feedback_status: ["open", "closed"],
       post_duration: ["6", "12", "24"],
-      post_mood: ["neutral", "confused", "sad", "happy", "angry"],
+      post_mood: [
+        "neutral",
+        "confused",
+        "sad",
+        "happy",
+        "angry",
+        "thoughtful",
+        "chill",
+        "grateful",
+        "laughing",
+        "inspired",
+        "peaceful",
+        "melancholy",
+        "creative",
+        "nostalgic",
+        "motivated",
+        "excited",
+        "energetic",
+      ],
+      post_type: ["single", "carousel"],
       privacy_options: ["public", "private", "followers_only"],
       report_status: ["pending", "reviewed", "resolved"],
       theme_options: ["system", "light", "dark"],

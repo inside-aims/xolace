@@ -73,6 +73,7 @@ export function SidebarLeft({
 
    // get user profile data
    const user = useUserState(state => state.user);
+   const { roles } = useUserState()
   return (
     <Sidebar  className="top-(--header-height) h-[calc(100svh-var(--header-height))]! border-r-0" {...props}>
       <SidebarHeader>
@@ -91,7 +92,7 @@ export function SidebarLeft({
         <NavSecondary items={data.navSecondary} className="mt-auto"/>
       </SidebarContent>
       <SidebarFooter>
-        <NavUser user={user} />
+        <NavUser user={user} roles={roles} />
       </SidebarFooter>
       {/* <SidebarRail /> */}
     </Sidebar>

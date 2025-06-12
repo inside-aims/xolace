@@ -51,7 +51,8 @@ export const updateSession = async (request: NextRequest) => {
       '/activities',
       '/collections',
       '/explore',
-      '/health-tips'
+      '/health-tips',
+      '/create-health-tips'
     ];
 
     // List of public routes

@@ -58,11 +58,19 @@ const PostDetailPage = async (props: {
          views:views(count),
          collections(
            user_id
-         )
+         ),
+          post_slides (
+            slide_index,
+            content
+          )  
    `,
     )
     .eq('id', postId)
     .order('created_at', { ascending: true, referencedTable: 'comments' })
+    .order('slide_index', {
+      ascending: true,
+      referencedTable: 'post_slides',
+    })
     .single();
 
   //  check for error

@@ -1,7 +1,7 @@
 'use client';
 import * as React from 'react';
 import { useEffect, useState } from 'react';
-import { format } from 'timeago.js';
+import { format, register, type LocaleFunc } from 'timeago.js';
 import { formatDistanceToNow } from 'date-fns';
 import { Clock } from 'lucide-react';
 import SaveToCollectionsButton from '../shared/SaveToCollectionsButton';
@@ -23,10 +23,97 @@ import TagCard from './TagCard';
 import { Post } from '@/types/global';
 import { usePreferencesStore } from '@/lib/store/preferences-store';
 import PostCardMask from '../shared/masks/PostCardMask';
-import { ScanEye } from 'lucide-react';
-import { moodColors, moodIcons } from '@/constants/moods';
+import {
+  ScanEye,
+  Smile,
+  Zap,
+  Brain,
+  Coffee,
+  Heart,
+  Frown,
+  Angry,
+  Meh,
+  Laugh,
+  Star,
+  Sun,
+  Moon,
+  CloudRain,
+  Palette,
+  Camera,
+  Music,
+} from 'lucide-react';
 import { Badge } from '../ui/badge';
-import FeedCarouselPost from '../shared/FeedCarouselPost';
+import { SinglePost } from '../shared/SinglePost';
+//import { CarouselPost } from '../shared/CarouselPost';
+import SimpleCarouselPost from '../shared/Tour/SimpleCorouselPost';
+
+// const CarouselPost = dynamic(() => import('../shared/CarouselPost'), {
+//   ssr: false,
+//   loading: () => <DefaultLoader />,
+// });
+
+
+
+const moodIcons: Record<string, React.JSX.Element> = {
+  happy: <Smile className="h-4 w-4" />,
+  excited: <Zap className="h-4 w-4" />,
+  thoughtful: <Brain className="h-4 w-4" />,
+  chill: <Coffee className="h-4 w-4" />,
+  grateful: <Heart className="h-4 w-4" />,
+  sad: <Frown className="h-4 w-4" />,
+  angry: <Angry className="h-4 w-4" />,
+  neutral: <Meh className="h-4 w-4" />,
+  laughing: <Laugh className="h-4 w-4" />,
+  inspired: <Star className="h-4 w-4" />,
+  energetic: <Sun className="h-4 w-4" />,
+  peaceful: <Moon className="h-4 w-4" />,
+  melancholy: <CloudRain className="h-4 w-4" />,
+  creative: <Palette className="h-4 w-4" />,
+  nostalgic: <Camera className="h-4 w-4" />,
+  motivated: <Music className="h-4 w-4" />,
+};
+
+const moodColors: Record<string, string> = {
+  happy: 'bg-yellow-400',
+  excited: 'bg-orange-400',
+  thoughtful: 'bg-purple-400',
+  chill: 'bg-blue-400',
+  grateful: 'bg-pink-400',
+  sad: 'bg-slate-400',
+  angry: 'bg-red-400',
+  neutral: 'bg-gray-400',
+  laughing: 'bg-emerald-400',
+  inspired: 'bg-amber-400',
+  energetic: 'bg-lime-400',
+  peaceful: 'bg-indigo-400',
+  melancholy: 'bg-cyan-400',
+  creative: 'bg-violet-400',
+  nostalgic: 'bg-rose-400',
+  motivated: 'bg-teal-400',
+};
+
+// Define a custom locale
+const customLocale: LocaleFunc = (
+  number: number,
+  index: number,
+): [string, string] => {
+  return [
+    ['just now', 'right now'],
+    ['%s sec ago', 'in %s sec'],
+    ['1 min ago', 'in 1 min'],
+    ['%s min ago', 'in %s min'],
+    ['1 hr ago', 'in 1 hr'],
+    ['%s hr ago', 'in %s hr'],
+    ['1 day ago', 'in 1 day'],
+    ['%s days ago', 'in %s days'],
+    ['1 wk ago', 'in 1 wk'],
+    ['%s wks ago', 'in %s wks'],
+    ['1 mo ago', 'in 1 mo'],
+    ['%s mos ago', 'in %s mos'],
+    ['1 yr ago', 'in 1 yr'],
+    ['%s yrs ago', 'in %s yrs'],
+  ][index] as [string, string]; // This assertion ensures TypeScript understands it's a tuple
+};
 
 type PostCardType = {
   className?: string;
@@ -41,7 +128,7 @@ export interface TagProps {
   };
 }
 
-export function PostCard({ className, post, onClick }: PostCardType) {
+export function EnhancedPostCard({ className, post, onClick }: PostCardType) {
   // get user data
   const user = useUserState(state => state.user);
   const { preferences } = usePreferencesStore();
@@ -50,9 +137,12 @@ export function PostCard({ className, post, onClick }: PostCardType) {
   const [timestamp, setTimestamp] = useState('');
   const [isOpen, setIsOpen] = useState<boolean>(false);
 
+  // Register the custom locale with an ID (e.g. 'short-en')
+  register('short-en', customLocale);
+
   // convert created_at
   useEffect(() => {
-    setTimestamp(format(post.created_at));
+    setTimestamp(format(post.created_at, 'short-en'));
   }, [post]);
 
   const timeLeft = post.expires_at
@@ -72,9 +162,9 @@ export function PostCard({ className, post, onClick }: PostCardType) {
         <ReportForm postId={post.id} />
       </KvngDialogDrawer>
 
-      <Card className={`${className} relative`} id={post.id}>
-      <CardHeader className="flex-row items-start justify-between px-4 py-2">
-          <div className="flex items-center gap-2 md:gap-3">
+      <Card className={`${className} relative hover:shadow-2xl transition-all duration-500 hover:scale-[1.02]`} id={post.id}>
+        <CardHeader className="flex-row items-start justify-between px-4 py-2">
+          <div className="flex items-center gap-3 md:gap-7">
             <Avatar>
               <AvatarImage
                 src={post.author_avatar_url || undefined}
@@ -116,13 +206,11 @@ export function PostCard({ className, post, onClick }: PostCardType) {
         </CardHeader>
 
         <CardContent className="cursor-pointer" >
-          {
-            post.type === 'single' ? (
-              <div className="mb-2">{truncateText(post.content, 200)}</div>
-            ) : (
-              <FeedCarouselPost slides={post.post_slides || []} onClick={onClick} postId={post.id} />
-            )
-          }
+        {/* <div className="px-6 mb-2">
+        {post.type === "single" ? <SinglePost content={truncateText(post.content, 200)} /> : <CarouselPost slides={post.post_slides || []} />}
+      </div> */}
+      {post.type === "single" ? <SinglePost content={truncateText(post.content, 200)} onClick={onClick} /> : <SimpleCarouselPost slides={post.post_slides || []} onClick={onClick} />}
+          {/* <div className="mb-2">{truncateText(post.content, 200)}</div> */}
           <div className="mt-2 flex flex-wrap gap-2">
             {post.posttags && // check if post has tags
               post.posttags.map((tag: TagProps, index: number) => (
@@ -138,9 +226,7 @@ export function PostCard({ className, post, onClick }: PostCardType) {
           <PostMetrics post={post} userId={user?.id || ''} votes={post.votes} />
           <div className="flex items-center gap-2" id="view-btn">
             <ScanEye className="size-4 text-red-200 sm:size-4" />
-            <span className="font-button-small">
-              {post.views[0].count}
-            </span>
+            <span className="font-button-small">{post.views[0].count}</span>
           </div>
 
           <div className="flex items-center justify-center gap-2">
@@ -170,9 +256,9 @@ export function PostCard({ className, post, onClick }: PostCardType) {
           </div>
         </CardFooter>
 
-        {post.is_sensitive && !preferences?.show_sensitive_content && post.created_by != user?.id && (
-          <PostCardMask />
-        )}
+        {post.is_sensitive &&
+          !preferences?.show_sensitive_content &&
+          post.created_by != user?.id && <PostCardMask />}
       </Card>
     </>
   );

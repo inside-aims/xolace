@@ -4,7 +4,7 @@
 import { useEffect, useState } from 'react';
 import { useRouter, usePathname } from 'next/navigation';
 
-import { PostCard } from '@/components/cards/PostCard';
+import { EnhancedPostCard } from '../cards/EnhancedPostCard';
 //import FeedSkeletonLoader from './loaders/FeedSkeletonLoader';
 import BlurFade from '../ui/blur-fade';
 //import { Post } from '@/types/global';
@@ -148,7 +148,7 @@ const FeedList = () => {
                   duration={0.3}
                   inView
                 >
-                  <PostCard
+                  <EnhancedPostCard
                     post={post}
                     onClick={() => handlePostClick(post.id)}
                     className="bg-bg dark:bg-bg-dark mb-5 w-full rounded-none border-x-0 md:w-full dark:ring-zinc-800 dark:hover:ring-zinc-700 dark:focus-visible:ring-[#193a47]"

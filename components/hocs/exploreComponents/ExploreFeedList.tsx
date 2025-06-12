@@ -64,15 +64,6 @@ const ExploreFeedList = ({ filteredPosts }: Props) => {
     router.push(`/post/${postId}`);
   }, [router]);
 
-  //
-  const moodClasses = {
-    happy: 'mood-happy',
-    sad: 'mood-sad',
-    neutral:'mood-neutral',
-    angry:'mood-angry',
-    confused: 'mood-confused',
-  }
-
   const renderedPosts = useMemo(
     () =>
       filteredPosts.length > 0 ? (
@@ -87,7 +78,6 @@ const ExploreFeedList = ({ filteredPosts }: Props) => {
             <PostCard
               post={post}
               className={cn(
-                moodClasses[post.mood] as keyof typeof moodClasses,
                 'mb-5 w-full overflow-hidden transition-colors duration-300',
               )}
               onClick={() => handlePostClick(post.id)}
@@ -128,6 +118,7 @@ const ExploreFeedList = ({ filteredPosts }: Props) => {
             ))
           ) : (
             <p>No posts found.</p>
+            moodColors[post.mood] as keyof typeof moodColors
           )} */}
         </AnimatePresence>
       </motion.div>
