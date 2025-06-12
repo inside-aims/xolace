@@ -18,7 +18,7 @@ import { getSupabaseBrowserClient } from '@/utils/supabase/client';
 import { useUserState } from '@/lib/store/user';
 import { RealtimeAvatarStack } from './realtime-avatar-stack';
 import mascot from '../public/assets/images/x-logo-full.webp';
-import { PlusIcon } from 'lucide-react';
+import { Menu, PlusIcon } from 'lucide-react';
 
 export function SiteHeader() {
   // get user profile data
@@ -77,15 +77,7 @@ export function SiteHeader() {
               aria-label="Toggle Sidebar"
               id="sidebar-btn"
             >
-              <Avatar className="h-8 w-8">
-                <AvatarImage
-                  src={user?.avatar_url ?? undefined}
-                  alt={user?.username ?? 'avatar'}
-                />
-                <AvatarFallback className="bg-indigo-500">
-                  {user?.username?.charAt(0)}
-                </AvatarFallback>
-              </Avatar>
+             <Menu strokeWidth={1.5} />
             </Button>
 
             {/* Logo */}

@@ -9,7 +9,6 @@ import { z } from 'zod';
 import {
   ArrowLeft,
   ArrowRight,
-  Eye,
   FileText,
   Globe,
   ImageIcon,
