@@ -8,6 +8,7 @@ import { useSidebar } from '../ui/sidebar';
 import { useFeedHealthTips } from '@/hooks/healthTips/useHealthTipsData';
 import { Avatar, AvatarImage, AvatarFallback } from '../ui/avatar';
 import Link from 'next/link';
+import Chat from "@/components/chatbot-ai/Chat";
 
 interface HealthTipCardProps {
   id: number;
@@ -68,7 +69,7 @@ export default function HealthTips() {
           className={`flex h-full w-full flex-col gap-4 md:px-4`}
         >
           {/*Xolace wellness section*/}
-          <div className="animate-in fade-in slide-in-from-bottom-3 flex flex-col items-start gap-2 rounded-xl border py-2 shadow-lg transition-shadow duration-300 duration-500 ease-in-out hover:shadow-xl motion-reduce:animate-none md:py-4">
+          <div className="animate-in fade-in slide-in-from-bottom-3 flex flex-col items-start gap-2 rounded-xl border py-2 shadow-lg transition-shadow duration-500 ease-in-out hover:shadow-xl motion-reduce:animate-none md:py-4">
             <h4 className="flex w-full items-center justify-between px-2 text-neutral-500 md:px-4">
               <span className="hover:text-lavender-500 font-semibold transition-colors duration-200">
                 Xolace Wellness Insights
@@ -98,7 +99,8 @@ export default function HealthTips() {
           </div>
 
           {/*Filtered health tips little info on desktop device only*/}
-          <div className="animate-in fade-in hidden flex-col items-start gap-2 rounded-xl border py-2 shadow-lg duration-500 motion-reduce:animate-none md:flex md:gap-6 md:py-4">
+          <Chat/>
+          <div className="animate-in fade-in hidden flex-col items-start gap-2 rounded-xl border py-2 shadow-lg duration-500 motion-reduce:animate-none  md:gap-6 md:py-4">
             <h4 className="flex w-full items-center justify-between px-2 text-neutral-500 md:px-4">
               <span className="font-semibold">Health Tips</span>
               <Info size={22} />
