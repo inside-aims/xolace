@@ -241,17 +241,15 @@ export function AIChatInterface({ isOpen, onClose, isMinimized, onToggleMinimize
                     </Avatar>
                     <div
                       className={cn(
-                        "max-w-[80%] rounded-xl px-4 py-2 shadow-sm",
+                        "max-w-[80%] rounded-xl px-4 py-2 shadow-sm text-sm",
                         message.sender === "user"
                           ? "bg-ocean-400 text-white"
                           : "bg-neutral-100 text-neutral-800"
                       )}
                     >
-                      <p className="text-sm leading-relaxed">
-                        <ReactMarkdown>
-                          {message.content}
-                        </ReactMarkdown>
-                      </p>
+                      <ReactMarkdown>
+                        {message.content}
+                      </ReactMarkdown>
                       <p className={cn(
                         "text-xs mt-1 opacity-70",
                         message.sender === "user" ? "text-blue-100" : "text-muted-foreground"
