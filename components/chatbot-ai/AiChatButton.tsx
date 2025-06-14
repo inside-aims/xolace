@@ -1,7 +1,9 @@
+'use client';
+
 import { useState } from "react"
 import { Button } from "@/components/ui/button"
 import { Badge } from "@/components/ui/badge"
-import { AIChatInterface } from "./AiChatInterface"
+import { AIChatInterface } from "../extras/AiChatInterface"
 import { MessageCircle, Sparkles, Heart } from "lucide-react"
 import { cn } from "@/lib/utils"
 
@@ -37,7 +39,7 @@ export function AIChatButton() {
   }
 
   return (
-    <div className="fixed bottom-4 right-4 z-50">
+    <div className="">
       <div className="relative">
         {/* Floating Action Button */}
         <Button

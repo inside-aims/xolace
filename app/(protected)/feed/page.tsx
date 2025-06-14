@@ -13,6 +13,7 @@ import {
   QueryClient,
 } from '@tanstack/react-query';
 import { getAllPosts } from '@/queries/posts/getAllPosts.action';
+import {AIChatButton} from "@/components/chatbot-ai/AiChatButton";
 
 export const metadata: Metadata = {
   title: 'Feed',
@@ -111,7 +112,8 @@ export default async function FeedPage() {
         </HealthTipsWrapper>
       </HydrationBoundary>
       <div className="fixed right-6 bottom-10 z-50 block rounded-full md:right-20 md:bottom-10">
-        <TourButton />
+        {/*<TourButton />*/}
+        <AIChatButton/>
       </div>
       <WelcomeModalCard />
     </TourProvider>

@@ -8,7 +8,6 @@ import { useSidebar } from '../ui/sidebar';
 import { useFeedHealthTips } from '@/hooks/healthTips/useHealthTipsData';
 import { Avatar, AvatarImage, AvatarFallback } from '../ui/avatar';
 import Link from 'next/link';
-import Chat from "@/components/chatbot-ai/Chat";
 
 interface HealthTipCardProps {
   id: number;
@@ -99,8 +98,7 @@ export default function HealthTips() {
           </div>
 
           {/*Filtered health tips little info on desktop device only*/}
-          <Chat/>
-          <div className="animate-in fade-in hidden flex-col items-start gap-2 rounded-xl border py-2 shadow-lg duration-500 motion-reduce:animate-none  md:gap-6 md:py-4">
+          <div className="animate-in fade-in flex flex-col items-start gap-2 rounded-xl border py-2 shadow-lg duration-500 motion-reduce:animate-none md:gap-6 md:py-4">
             <h4 className="flex w-full items-center justify-between px-2 text-neutral-500 md:px-4">
               <span className="font-semibold">Health Tips</span>
               <Info size={22} />

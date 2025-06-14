@@ -1,4 +1,4 @@
-import { useState, useRef, useEffect } from "react"
+import React, { useState, useRef, useEffect } from "react"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Card, CardContent, CardHeader } from "@/components/ui/card"
@@ -11,12 +11,14 @@ import {
   User,
   Heart,
   Sparkles,
-  MessageCircle,
   X,
   Minimize2,
   Maximize2,
 } from "lucide-react"
 import { cn } from "@/lib/utils"
+import {readStreamableValue} from "ai/rsc";
+import {continueConversation} from "@/app/api/v1/chatbot-ai/route";
+import ReactMarkdown from "react-markdown";
 
 interface Message {
   id: string
@@ -42,14 +44,14 @@ const quickSuggestions = [
   "Dealing with overthinking"
 ]
 
-const aiResponses = [
-  "I understand you're feeling anxious. Let's take a moment to breathe together. Try the 4-7-8 breathing technique: inhale for 4, hold for 7, exhale for 8. 🌸",
-  "Stress can feel overwhelming, but you're taking the right step by reaching out. What specific situation is causing you stress right now?",
-  "You have the strength within you! Remember, every small step forward is progress. What's one thing you accomplished today, no matter how small? ✨",
-  "Let's practice a simple breathing exercise. Close your eyes and take slow, deep breaths. Focus on the rhythm: in... and out... You're safe right now. 🌿",
-  "Good sleep is essential for mental well-being. Try creating a calming bedtime routine: dim lights, no screens 1 hour before bed, and perhaps some gentle stretching. 🌙",
-  "Overthinking is like being stuck in a mental loop. Try the 5-4-3-2-1 grounding technique: name 5 things you see, 4 you can touch, 3 you hear, 2 you smell, 1 you taste. 🧘‍♀️"
-]
+// const aiResponses = [
+//   "I understand you're feeling anxious. Let's take a moment to breathe together. Try the 4-7-8 breathing technique: inhale for 4, hold for 7, exhale for 8. 🌸",
+//   "Stress can feel overwhelming, but you're taking the right step by reaching out. What specific situation is causing you stress right now?",
+//   "You have the strength within you! Remember, every small step forward is progress. What's one thing you accomplished today, no matter how small? ✨",
+//   "Let's practice a simple breathing exercise. Close your eyes and take slow, deep breaths. Focus on the rhythm: in... and out... You're safe right now. 🌿",
+//   "Good sleep is essential for mental well-being. Try creating a calming bedtime routine: dim lights, no screens 1 hour before bed, and perhaps some gentle stretching. 🌙",
+//   "Overthinking is like being stuck in a mental loop. Try the 5-4-3-2-1 grounding technique: name 5 things you see, 4 you can touch, 3 you hear, 2 you smell, 1 you taste. 🧘‍♀️"
+// ]
 
 export function AIChatInterface({ isOpen, onClose, isMinimized, onToggleMinimize }: AIChatInterfaceProps) {
   const [messages, setMessages] = useState<Message[]>([
@@ -78,28 +80,28 @@ export function AIChatInterface({ isOpen, onClose, isMinimized, onToggleMinimize
     scrollToBottom()
   }, [messages])
 
-  const generateAIResponse = (userMessage: string): string => {
-    const lowerMessage = userMessage.toLowerCase()
-    
-    if (lowerMessage.includes('anxious') || lowerMessage.includes('anxiety')) {
-      return aiResponses[0]
-    } else if (lowerMessage.includes('stress')) {
-      return aiResponses[1]
-    } else if (lowerMessage.includes('motivation') || lowerMessage.includes('motivated')) {
-      return aiResponses[2]
-    } else if (lowerMessage.includes('breath') || lowerMessage.includes('breathing')) {
-      return aiResponses[3]
-    } else if (lowerMessage.includes('sleep') || lowerMessage.includes('tired')) {
-      return aiResponses[4]
-    } else if (lowerMessage.includes('overthink') || lowerMessage.includes('thinking')) {
-      return aiResponses[5]
-    } else {
-      return `I hear you, and your feelings are valid. Thank you for sharing with me. Remember, it's okay to not be okay sometimes. What would help you feel a little better right now? 💙`
-    }
-  }
+  // const generateAIResponse = (userMessage: string): string => {
+  //   const lowerMessage = userMessage.toLowerCase()
+  //
+  //   if (lowerMessage.includes('anxious') || lowerMessage.includes('anxiety')) {
+  //     return aiResponses[0]
+  //   } else if (lowerMessage.includes('stress')) {
+  //     return aiResponses[1]
+  //   } else if (lowerMessage.includes('motivation') || lowerMessage.includes('motivated')) {
+  //     return aiResponses[2]
+  //   } else if (lowerMessage.includes('breath') || lowerMessage.includes('breathing')) {
+  //     return aiResponses[3]
+  //   } else if (lowerMessage.includes('sleep') || lowerMessage.includes('tired')) {
+  //     return aiResponses[4]
+  //   } else if (lowerMessage.includes('overthink') || lowerMessage.includes('thinking')) {
+  //     return aiResponses[5]
+  //   } else {
+  //     return `I hear you, and your feelings are valid. Thank you for sharing with me. Remember, it's okay to not be okay sometimes. What would help you feel a little better right now? 💙`
+  //   }
+  // }
 
   const handleSendMessage = async (content: string) => {
-    if (!content.trim()) return
+    if (!content.trim() || isTyping) return;
 
     const userMessage: Message = {
       id: Date.now().toString(),
@@ -108,31 +110,54 @@ export function AIChatInterface({ isOpen, onClose, isMinimized, onToggleMinimize
       timestamp: new Date(),
     }
 
-    setMessages(prev => [...prev, userMessage])
-    setInputValue("")
-    setIsTyping(true)
+    const newMessages = [...messages, userMessage];
 
-    // Simulate AI typing delay
-    setTimeout(() => {
-      const aiResponse: Message = {
+    setMessages([
+      ...newMessages,
+      {
         id: (Date.now() + 1).toString(),
-        content: generateAIResponse(content),
+        content: "",
         sender: "ai",
         timestamp: new Date(),
       }
-      setMessages(prev => [...prev, aiResponse])
-      setIsTyping(false)
-    }, 1500 + Math.random() * 1000)
-  }
+    ]);
+    setInputValue("");
+    setIsTyping(true);
+
+    const result = await continueConversation(
+      newMessages.map((m) => ({
+        role: m.sender === "user" ? "user" : "assistant",
+        content: m.content,
+      }))
+    );
+
+    for await (const contentChunk of readStreamableValue(result)) {
+      if (contentChunk) {
+        setMessages((prev) => {
+          const updated = [...prev];
+          const last = updated[updated.length - 1];
+          if (last.sender === "ai") {
+            updated[updated.length - 1] = {
+              ...last,
+              content: last.content + contentChunk,
+            };
+          }
+          return updated;
+        });
+      }
+    }
+
+    setIsTyping(false);
+  };
 
   const handleQuickSuggestion = (suggestion: string) => {
-    handleSendMessage(suggestion)
+    handleSendMessage(suggestion).then();
   }
 
   const handleKeyPress = (e: React.KeyboardEvent) => {
     if (e.key === 'Enter' && !e.shiftKey) {
       e.preventDefault()
-      handleSendMessage(inputValue)
+      handleSendMessage(inputValue).then()
     }
   }
 
@@ -222,7 +247,11 @@ export function AIChatInterface({ isOpen, onClose, isMinimized, onToggleMinimize
                           : "bg-white dark:bg-gray-800 text-foreground border border-border/50"
                       )}
                     >
-                      <p className="text-sm leading-relaxed">{message.content}</p>
+                      <p className="text-sm leading-relaxed">
+                        <ReactMarkdown>
+                          {message.content}
+                        </ReactMarkdown>
+                      </p>
                       <p className={cn(
                         "text-xs mt-1 opacity-70",
                         message.sender === "user" ? "text-blue-100" : "text-muted-foreground"
@@ -276,7 +305,7 @@ export function AIChatInterface({ isOpen, onClose, isMinimized, onToggleMinimize
                   ref={inputRef}
                   value={inputValue}
                   onChange={(e) => setInputValue(e.target.value)}
-                  onKeyPress={handleKeyPress}
+                  onKeyDown={handleKeyPress}
                   placeholder="Share your thoughts..."
                   className="flex-1 rounded-xl border-border/50 bg-white dark:bg-gray-800 focus:ring-2 focus:ring-purple-200 dark:focus:ring-purple-800"
                   disabled={isTyping}
