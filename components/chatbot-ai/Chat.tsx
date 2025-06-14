@@ -65,7 +65,7 @@ export default function Chat() {
               <div key={i} className={`mb-4 flex ${m.role === "user" ? "justify-end" : "justify-start"}`}>
                 <div className={`max-w-md p-2 rounded-lg ${
                   m.role === "user"
-                    ? "bg-ocean-400 text-white  rounded-br-none"
+                    ? "bg-ocean-400 text-white rounded-br-none"
                     : "bg-neutral-100 text-neutral-800 rounded-bl-none"
                 }`}>
                   <ReactMarkdown>{m.content}</ReactMarkdown>

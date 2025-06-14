@@ -166,15 +166,15 @@ export function AIChatInterface({ isOpen, onClose, isMinimized, onToggleMinimize
   return (
     <div className="fixed bottom-4 right-4 z-50">
       <Card className={cn(
-        "transition-all duration-300 ease-in-out shadow-2xl border-0 bg-gradient-to-br from-purple-50 via-pink-50 to-blue-50 dark:from-purple-950/20 dark:via-pink-950/20 dark:to-blue-950/20",
+        "transition-all duration-300 ease-in-out shadow-2xl bg-white",
         isMinimized ? "w-80 h-16" : "w-96 h-[600px]"
       )}>
         {/* Header */}
-        <CardHeader className="pb-3 border-b border-border/50 bg-gradient-to-r from-purple-100 to-pink-100 dark:from-purple-900/30 dark:to-pink-900/30 rounded-t-lg">
+        <CardHeader className="pb-3 border-b border-border/50 bg-gradient-to-r from-lavender-300/20 to-lavender-500/20 dark:from-purple-900/30 dark:to-pink-900/30 rounded-t-lg">
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-3">
               <div className="relative">
-                <Avatar className="w-10 h-10 bg-gradient-to-br from-purple-500 to-pink-500 border-2 border-white shadow-md">
+                <Avatar className="w-10 h-10 bg-gradient-to-br from-lavender-700/20 to-lavender-500 border-2 border-white shadow-md">
                   <div className="w-full h-full flex items-center justify-center">
                     <Sparkles className="w-5 h-5 text-white" />
                   </div>
@@ -188,7 +188,7 @@ export function AIChatInterface({ isOpen, onClose, isMinimized, onToggleMinimize
                   Aniima AI
                   <Heart className="w-4 h-4 text-purple-500" />
                 </h3>
-                <p className="text-xs text-muted-foreground">Mental Health Companion</p>
+                <p className="text-xs text-muted-foreground dark:text-white">Mental Health Companion</p>
               </div>
             </div>
             <div className="flex items-center gap-2">
@@ -196,7 +196,7 @@ export function AIChatInterface({ isOpen, onClose, isMinimized, onToggleMinimize
                 variant="ghost"
                 size="sm"
                 onClick={onToggleMinimize}
-                className="w-8 h-8 p-0 hover:bg-purple-100 dark:hover:bg-purple-900/30"
+                className="w-8 h-8 p-0 hover:bg-lavender-100"
               >
                 {isMinimized ? <Maximize2 className="w-4 h-4" /> : <Minimize2 className="w-4 h-4" />}
               </Button>
@@ -204,7 +204,7 @@ export function AIChatInterface({ isOpen, onClose, isMinimized, onToggleMinimize
                 variant="ghost"
                 size="sm"
                 onClick={onClose}
-                className="w-8 h-8 p-0 hover:bg-red-100 dark:hover:bg-red-900/30"
+                className="w-8 h-8 p-0 hover:bg-lavender-100"
               >
                 <X className="w-4 h-4" />
               </Button>
@@ -228,8 +228,8 @@ export function AIChatInterface({ isOpen, onClose, isMinimized, onToggleMinimize
                     <Avatar className={cn(
                       "w-8 h-8 flex-shrink-0",
                       message.sender === "ai" 
-                        ? "bg-gradient-to-br from-purple-500 to-pink-500" 
-                        : "bg-gradient-to-br from-blue-500 to-cyan-500"
+                        ? "bg-gradient-to-br from-lavender-700/20 to-lavender-500"
+                        : "bg-gradient-to-br from-cyan-500/30 to-ocean-500"
                     )}>
                       <div className="w-full h-full flex items-center justify-center">
                         {message.sender === "ai" ? (
@@ -241,10 +241,10 @@ export function AIChatInterface({ isOpen, onClose, isMinimized, onToggleMinimize
                     </Avatar>
                     <div
                       className={cn(
-                        "max-w-[80%] rounded-2xl px-4 py-3 shadow-sm",
+                        "max-w-[80%] rounded-xl px-4 py-2 shadow-sm",
                         message.sender === "user"
-                          ? "bg-gradient-to-br from-blue-500 to-cyan-500 text-white"
-                          : "bg-white dark:bg-gray-800 text-foreground border border-border/50"
+                          ? "bg-ocean-400 text-white"
+                          : "bg-neutral-100 text-neutral-800"
                       )}
                     >
                       <p className="text-sm leading-relaxed">
@@ -264,14 +264,14 @@ export function AIChatInterface({ isOpen, onClose, isMinimized, onToggleMinimize
                 
                 {isTyping && (
                   <div className="flex gap-3 animate-fade-in">
-                    <Avatar className="w-8 h-8 bg-gradient-to-br from-purple-500 to-pink-500">
+                    <Avatar className="w-8 h-8 flex items-center justify-center bg-gradient-to-br from-lavender-700/20 to-lavender-500">
                       <Bot className="w-4 h-4 text-white" />
                     </Avatar>
                     <div className="bg-white dark:bg-gray-800 rounded-2xl px-4 py-3 shadow-sm border border-border/50">
                       <div className="flex gap-1">
-                        <div className="w-2 h-2 bg-purple-400 rounded-full animate-bounce"></div>
-                        <div className="w-2 h-2 bg-purple-400 rounded-full animate-bounce" style={{ animationDelay: '0.1s' }}></div>
-                        <div className="w-2 h-2 bg-purple-400 rounded-full animate-bounce" style={{ animationDelay: '0.2s' }}></div>
+                        <div className="w-2 h-2 bg-lavender-400 rounded-full animate-bounce"></div>
+                        <div className="w-2 h-2 bg-lavender-400 rounded-full animate-bounce" style={{ animationDelay: '0.1s' }}></div>
+                        <div className="w-2 h-2 bg-lavender-400 rounded-full animate-bounce" style={{ animationDelay: '0.2s' }}></div>
                       </div>
                     </div>
                   </div>
@@ -281,14 +281,14 @@ export function AIChatInterface({ isOpen, onClose, isMinimized, onToggleMinimize
 
             {/* Quick Suggestions */}
             {messages.length <= 1 && (
-              <div className="p-4 border-t border-border/50 bg-gradient-to-r from-purple-50 to-pink-50 dark:from-purple-950/10 dark:to-pink-950/10">
+              <div className="p-4 border-t border-border/50 bg-gradient-to-r from-lavender-50 to-ocean-50">
                 <p className="text-xs text-muted-foreground mb-3 font-medium">Quick suggestions:</p>
                 <div className="flex flex-wrap gap-2">
                   {quickSuggestions.slice(0, 4).map((suggestion, index) => (
                     <Badge
                       key={index}
                       variant="secondary"
-                      className="cursor-pointer hover:scale-105 transition-transform bg-white dark:bg-gray-800 text-xs py-1 px-3 border border-border/50 hover:bg-purple-50 dark:hover:bg-purple-950/20"
+                      className="cursor-pointer hover:scale-105 transition-transform bg-white dark:bg-neutral-800 text-xs py-1 px-3 border border-border/50"
                       onClick={() => handleQuickSuggestion(suggestion)}
                     >
                       {suggestion}
@@ -299,7 +299,7 @@ export function AIChatInterface({ isOpen, onClose, isMinimized, onToggleMinimize
             )}
 
             {/* Input */}
-            <div className="p-4 border-t border-border/50 bg-gradient-to-r from-purple-50 to-pink-50 dark:from-purple-950/10 dark:to-pink-950/10">
+            <div className="p-4 border-t border-border/50 bg-gradient-to-r from-lavender-50 to-lavender-50 ">
               <div className="flex gap-2">
                 <Input
                   ref={inputRef}
@@ -313,7 +313,7 @@ export function AIChatInterface({ isOpen, onClose, isMinimized, onToggleMinimize
                 <Button
                   onClick={() => handleSendMessage(inputValue)}
                   disabled={!inputValue.trim() || isTyping}
-                  className="rounded-xl bg-gradient-to-r from-purple-500 to-pink-500 hover:from-purple-600 hover:to-pink-600 text-white shadow-md hover:shadow-lg transition-all duration-200 hover:scale-105"
+                  className="rounded-xl bg-gradient-to-r from-lavender-700/20 to-lavender-400 hover:from-lavender-700/40 hover:to-lavender-500 text-white shadow-md hover:shadow-lg transition-all duration-200 hover:scale-105"
                 >
                   <Send className="w-4 h-4" />
                 </Button>
