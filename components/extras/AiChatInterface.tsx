@@ -167,10 +167,10 @@ export function AIChatInterface({ isOpen, onClose, isMinimized, onToggleMinimize
     <div className="fixed bottom-4 right-4 z-50">
       <Card className={cn(
         "transition-all duration-300 ease-in-out shadow-2xl bg-white",
-        isMinimized ? "w-80 h-16" : "w-96 h-[600px]"
+        isMinimized ? "w-96 h-18" : "w-96 h-[600px]"
       )}>
         {/* Header */}
-        <CardHeader className="pb-3 border-b border-border/50 bg-gradient-to-r from-lavender-300/20 to-lavender-500/20 dark:from-purple-900/30 dark:to-pink-900/30 rounded-t-lg">
+        <CardHeader className="pb-3 border-b border-border/50 bg-gradient-to-r from-lavender-300/20 to-lavender-500/20 dark:from-lavender-900/30 dark:to-lavender-900/50 rounded-t-lg">
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-3">
               <div className="relative">
@@ -196,7 +196,7 @@ export function AIChatInterface({ isOpen, onClose, isMinimized, onToggleMinimize
                 variant="ghost"
                 size="sm"
                 onClick={onToggleMinimize}
-                className="w-8 h-8 p-0 hover:bg-lavender-100"
+                className="w-8 h-8 p-0 hover:bg-lavender-400"
               >
                 {isMinimized ? <Maximize2 className="w-4 h-4" /> : <Minimize2 className="w-4 h-4" />}
               </Button>
@@ -204,7 +204,7 @@ export function AIChatInterface({ isOpen, onClose, isMinimized, onToggleMinimize
                 variant="ghost"
                 size="sm"
                 onClick={onClose}
-                className="w-8 h-8 p-0 hover:bg-lavender-100"
+                className="w-8 h-8 p-0 hover:bg-lavender-400 "
               >
                 <X className="w-4 h-4" />
               </Button>
