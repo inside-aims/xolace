@@ -1,35 +1,33 @@
-import { createOpenAICompatible } from '@ai-sdk/openai-compatible';
-import { streamText } from 'ai';
+import { getSupabaseReqResClient } from "@/utils/supabase/reqResClient";
+import { NextRequest } from "next/server";
+// app/api/ai-chat/route.ts (App Router)
+export const runtime = 'edge';
 
-// Allow streaming responses up to 30 seconds
-//export const maxDuration = 30;
+export async function POST(req: NextRequest) {
+  const supabaseEdgeFunctionURL = `${process.env.NEXT_PUBLIC_SUPABASE_URL}/functions/v1/nvidia-api-integration`;
 
-const nim = createOpenAICompatible({
-  name: 'nim',
-  baseURL: 'https://integrate.api.nvidia.com/v1',
-  headers: {
-    Authorization: `Bearer ${process.env.NVIDIA_NIM_API_KEY}`,
-  },
-});
+  const authToken = req.headers.get('authorization'); // forward user JWT from client if needed
+  console.log("token" ,authToken)
+  const { supabase, response: supabaseResponse } = getSupabaseReqResClient({ request: req });
+  const { data } = await supabase.auth.getSession();
+  console.log("data ",data)
+const token = data.session?.access_token ;
+console.log("token ",token)
+  //const incomingBody = await req.text(); // streamable forward
 
-export async function POST(req: Request) {
-  const { messages } = await req.json();
-  console.log(messages);
-
-  const result = streamText({
-    model: nim.chatModel('writer/palmyra-med-70b-32k'),
-    system:
-      "You are Aniima AI, your mental health companion. You are here to listen, support, and guide you through whatever you're experiencing. Do not give advice for crisis situations. Always refer to the user to a mental health professional.",
-    messages,
-    maxTokens: 500,
-    temperature: 0.7,
+  const response = await fetch(supabaseEdgeFunctionURL, {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+      ...(authToken ? { Authorization: authToken } : { Authorization: `Bearer ${token}` }),
+    },
+    body: JSON.stringify(await req.json()),
   });
 
-  //   for await (const textPart of result.textStream) {
-  //     process.stdout.write(textPart);
-  //   }
-
-  console.log(result.toDataStreamResponse({ sendReasoning: false }));
-
-  return result.toDataStreamResponse();
+  return new Response(response.body, {
+    status: response.status,
+    headers: {
+      'Content-Type': 'text/event-stream',
+    },
+  });
 }

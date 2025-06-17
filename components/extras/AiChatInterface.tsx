@@ -1,11 +1,11 @@
-import React, { useState, useRef, useEffect } from "react"
+import React, { useState, useRef, useEffect } from 'react';
 import { useChat } from '@ai-sdk/react';
-import { Button } from "@/components/ui/button"
-import { Input } from "@/components/ui/input"
-import { Card, CardContent, CardHeader } from "@/components/ui/card"
-import { ScrollArea } from "@/components/ui/scroll-area"
-import { Avatar } from "@/components/ui/avatar"
-import { Badge } from "@/components/ui/badge"
+import { Button } from '@/components/ui/button';
+import { Input } from '@/components/ui/input';
+import { Card, CardContent, CardHeader } from '@/components/ui/card';
+import { ScrollArea } from '@/components/ui/scroll-area';
+import { Avatar } from '@/components/ui/avatar';
+import { Badge } from '@/components/ui/badge';
 import {
   Send,
   Bot,
@@ -15,35 +15,35 @@ import {
   X,
   Minimize2,
   Maximize2,
-} from "lucide-react"
-import { cn } from "@/lib/utils"
-import {readStreamableValue} from "ai/rsc";
-import {continueConversation} from "@/app/api/v1/chatbot-ai/route";
-import ReactMarkdown from "react-markdown";
+} from 'lucide-react';
+import { cn } from '@/lib/utils';
+import { readStreamableValue } from 'ai/rsc';
+import { continueConversation } from '@/app/api/v1/chatbot-ai/route';
+import ReactMarkdown from 'react-markdown';
 
 interface Message {
-  id: string
-  content: string
-  sender: "user" | "ai"
-  timestamp: Date
-  type?: "text" | "suggestion"
+  id: string;
+  content: string;
+  sender: 'user' | 'ai';
+  timestamp: Date;
+  type?: 'text' | 'suggestion';
 }
 
 interface AIChatInterfaceProps {
-  isOpen: boolean
-  onClose: () => void
-  isMinimized: boolean
-  onToggleMinimize: () => void
+  isOpen: boolean;
+  onClose: () => void;
+  isMinimized: boolean;
+  onToggleMinimize: () => void;
 }
 
 const quickSuggestions = [
   "I'm feeling anxious today",
-  "Help me manage stress",
-  "I need motivation",
-  "Breathing exercises",
-  "How to improve sleep?",
-  "Dealing with overthinking"
-]
+  'Help me manage stress',
+  'I need motivation',
+  'Breathing exercises',
+  'How to improve sleep?',
+  'Dealing with overthinking',
+];
 
 // const aiResponses = [
 //   "I understand you're feeling anxious. Let's take a moment to breathe together. Try the 4-7-8 breathing technique: inhale for 4, hold for 7, exhale for 8. 🌸",
@@ -54,15 +54,29 @@ const quickSuggestions = [
 //   "Overthinking is like being stuck in a mental loop. Try the 5-4-3-2-1 grounding technique: name 5 things you see, 4 you can touch, 3 you hear, 2 you smell, 1 you taste. 🧘‍♀️"
 // ]
 
-export function AIChatInterface({ isOpen, onClose, isMinimized, onToggleMinimize }: AIChatInterfaceProps) {
-  const { messages, input, handleInputChange, handleSubmit , status} = useChat({
-    api: "/api/v1/chat",
+export function AIChatInterface({
+  isOpen,
+  onClose,
+  isMinimized,
+  onToggleMinimize,
+}: AIChatInterfaceProps) {
+  const {
+    messages,
+    input,
+    handleInputChange,
+    handleSubmit,
+    status,
+    error,
+    reload,
+  } = useChat({
+    api: '/api/v1/chat',
     initialMessages: [
       {
-        id: "1",
-        content: "Hello! I'm Aniima AI, your mental health companion. I'm here to listen, support, and guide you through whatever you're experiencing. How are you feeling today? 💜",
-        role: "assistant",
-      }
+        id: '1',
+        content:
+          "Hello! I'm Aniima AI, your mental health companion. I'm here to listen, support, and guide you through whatever you're experiencing. How are you feeling today? 💜",
+        role: 'assistant',
+      },
     ],
   });
 
@@ -75,42 +89,24 @@ export function AIChatInterface({ isOpen, onClose, isMinimized, onToggleMinimize
   //   }
   // ])
   // const [inputValue, setInputValue] = useState("")
-  const [isTyping, setIsTyping] = useState(false)
-  const scrollAreaRef = useRef<HTMLDivElement>(null)
-  const inputRef = useRef<HTMLInputElement>(null)
+  const [isTyping, setIsTyping] = useState(false);
+  const scrollAreaRef = useRef<HTMLDivElement>(null);
+  const inputRef = useRef<HTMLInputElement>(null);
 
   const scrollToBottom = () => {
     if (scrollAreaRef.current) {
-      const scrollContainer = scrollAreaRef.current.querySelector('[data-radix-scroll-area-viewport]')
+      const scrollContainer = scrollAreaRef.current.querySelector(
+        '[data-radix-scroll-area-viewport]',
+      );
       if (scrollContainer) {
-        scrollContainer.scrollTop = scrollContainer.scrollHeight
+        scrollContainer.scrollTop = scrollContainer.scrollHeight;
       }
     }
-  }
+  };
 
   useEffect(() => {
-    scrollToBottom()
-  }, [messages])
-
-  // const generateAIResponse = (userMessage: string): string => {
-  //   const lowerMessage = userMessage.toLowerCase()
-  //
-  //   if (lowerMessage.includes('anxious') || lowerMessage.includes('anxiety')) {
-  //     return aiResponses[0]
-  //   } else if (lowerMessage.includes('stress')) {
-  //     return aiResponses[1]
-  //   } else if (lowerMessage.includes('motivation') || lowerMessage.includes('motivated')) {
-  //     return aiResponses[2]
-  //   } else if (lowerMessage.includes('breath') || lowerMessage.includes('breathing')) {
-  //     return aiResponses[3]
-  //   } else if (lowerMessage.includes('sleep') || lowerMessage.includes('tired')) {
-  //     return aiResponses[4]
-  //   } else if (lowerMessage.includes('overthink') || lowerMessage.includes('thinking')) {
-  //     return aiResponses[5]
-  //   } else {
-  //     return `I hear you, and your feelings are valid. Thank you for sharing with me. Remember, it's okay to not be okay sometimes. What would help you feel a little better right now? 💙`
-  //   }
-  // }
+    scrollToBottom();
+  }, [messages]);
 
   // const handleSendMessage = async (content: string) => {
   //   if (!content.trim() || isTyping) return;
@@ -164,44 +160,56 @@ export function AIChatInterface({ isOpen, onClose, isMinimized, onToggleMinimize
 
   const handleQuickSuggestion = (suggestion: string) => {
     //handleSubmit(suggestion)
-
-  }
+  };
 
   const handleKeyPress = (e: React.KeyboardEvent) => {
     if (e.key === 'Enter' && !e.shiftKey) {
-      e.preventDefault()
-      handleSubmit()
+      e.preventDefault();
+      handleSubmit();
     }
-  }
+  };
 
-  if (!isOpen) return null
+  if (!isOpen) return null;
+
+  const parsedErrorMessage = (() => {
+    try {
+      const parsed = JSON.parse(error?.message || '');
+      return parsed.error || 'An unknown error occurred.';
+    } catch {
+      return error?.message || 'An unknown error occurred.';
+    }
+  })();
 
   return (
-    <div className="fixed bottom-4 right-4 z-50">
-      <Card className={cn(
-        "transition-all duration-300 ease-in-out shadow-2xl bg-white",
-        isMinimized ? "w-96 h-18" : "w-96 h-[600px]"
-      )}>
+    <div className="fixed right-4 bottom-4 z-50">
+      <Card
+        className={cn(
+          'bg-white shadow-2xl transition-all duration-300 ease-in-out',
+          isMinimized ? 'h-18 w-96' : 'h-[600px] w-96',
+        )}
+      >
         {/* Header */}
-        <CardHeader className="pb-3 border-b border-border/50 bg-gradient-to-r from-lavender-300/20 to-lavender-500/20 dark:from-lavender-900/30 dark:to-lavender-900/50 rounded-t-lg">
+        <CardHeader className="border-border/50 from-lavender-300/20 to-lavender-500/20 dark:from-lavender-900/30 dark:to-lavender-900/50 rounded-t-lg border-b bg-gradient-to-r pb-3">
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-3">
               <div className="relative">
-                <Avatar className="w-10 h-10 bg-gradient-to-br from-lavender-700/20 to-lavender-500 border-2 border-white shadow-md">
-                  <div className="w-full h-full flex items-center justify-center">
-                    <Sparkles className="w-5 h-5 text-white" />
+                <Avatar className="from-lavender-700/20 to-lavender-500 h-10 w-10 border-2 border-white bg-gradient-to-br shadow-md">
+                  <div className="flex h-full w-full items-center justify-center">
+                    <Sparkles className="h-5 w-5 text-white" />
                   </div>
                 </Avatar>
-                <div className="absolute -bottom-1 -right-1 w-4 h-4 bg-green-500 rounded-full border-2 border-white flex items-center justify-center">
-                  <div className="w-2 h-2 bg-green-400 rounded-full animate-pulse"></div>
+                <div className="absolute -right-1 -bottom-1 flex h-4 w-4 items-center justify-center rounded-full border-2 border-white bg-green-500">
+                  <div className="h-2 w-2 animate-pulse rounded-full bg-green-400"></div>
                 </div>
               </div>
               <div>
-                <h3 className="font-semibold text-foreground flex items-center gap-2">
+                <h3 className="text-foreground flex items-center gap-2 font-semibold">
                   Aniima AI
-                  <Heart className="w-4 h-4 text-purple-500" />
+                  <Heart className="h-4 w-4 text-purple-500" />
                 </h3>
-                <p className="text-xs text-muted-foreground dark:text-white">Mental Health Companion</p>
+                <p className="text-muted-foreground text-xs dark:text-white">
+                  Mental Health Companion
+                </p>
               </div>
             </div>
             <div className="flex items-center gap-2">
@@ -209,97 +217,124 @@ export function AIChatInterface({ isOpen, onClose, isMinimized, onToggleMinimize
                 variant="ghost"
                 size="sm"
                 onClick={onToggleMinimize}
-                className="w-8 h-8 p-0 hover:bg-lavender-400"
+                className="hover:bg-lavender-400 h-8 w-8 p-0"
               >
-                {isMinimized ? <Maximize2 className="w-4 h-4" /> : <Minimize2 className="w-4 h-4" />}
+                {isMinimized ? (
+                  <Maximize2 className="h-4 w-4" />
+                ) : (
+                  <Minimize2 className="h-4 w-4" />
+                )}
               </Button>
               <Button
                 variant="ghost"
                 size="sm"
                 onClick={onClose}
-                className="w-8 h-8 p-0 hover:bg-lavender-400 "
+                className="hover:bg-lavender-400 h-8 w-8 p-0"
               >
-                <X className="w-4 h-4" />
+                <X className="h-4 w-4" />
               </Button>
             </div>
           </div>
         </CardHeader>
 
         {!isMinimized && (
-          <CardContent className="p-0 flex flex-col h-[calc(600px-80px)]">
+          <CardContent className="flex h-[calc(600px-80px)] flex-col p-0">
             {/* Messages */}
             <ScrollArea className="flex-1 p-4" ref={scrollAreaRef}>
               <div className="space-y-4">
-                {messages.map((message) => (
+                {messages.map(message => (
                   <div
                     key={message.id}
                     className={cn(
-                      "flex gap-3 animate-fade-in",
-                      message.role === "user" ? "flex-row-reverse" : "flex-row"
+                      'animate-fade-in flex gap-3',
+                      message.role === 'user' ? 'flex-row-reverse' : 'flex-row',
                     )}
                   >
-                    <Avatar className={cn(
-                      "w-8 h-8 flex-shrink-0",
-                      message.role === "assistant" 
-                        ? "bg-gradient-to-br from-lavender-700/20 to-lavender-500"
-                        : "bg-gradient-to-br from-cyan-500/30 to-ocean-500"
-                    )}>
-                      <div className="w-full h-full flex items-center justify-center">
-                        {message.role === "assistant" ? (
-                          <Bot className="w-4 h-4 text-white" />
+                    <Avatar
+                      className={cn(
+                        'h-8 w-8 flex-shrink-0',
+                        message.role === 'assistant'
+                          ? 'from-lavender-700/20 to-lavender-500 bg-gradient-to-br'
+                          : 'to-ocean-500 bg-gradient-to-br from-cyan-500/30',
+                      )}
+                    >
+                      <div className="flex h-full w-full items-center justify-center">
+                        {message.role === 'assistant' ? (
+                          <Bot className="h-4 w-4 text-white" />
                         ) : (
-                          <User className="w-4 h-4 text-white" />
+                          <User className="h-4 w-4 text-white" />
                         )}
                       </div>
                     </Avatar>
                     <div
                       className={cn(
-                        "max-w-[80%] rounded-xl px-4 py-2 shadow-sm text-sm",
-                        message.role === "user"
-                          ? "bg-ocean-400 text-white"
-                          : "bg-neutral-100 text-neutral-800"
+                        'max-w-[80%] rounded-xl px-4 py-2 text-sm shadow-sm',
+                        message.role === 'user'
+                          ? 'bg-ocean-400 text-white'
+                          : 'bg-neutral-100 text-neutral-800',
                       )}
                     >
-                      <ReactMarkdown>
-                        {message.content}
-                      </ReactMarkdown>
-                      <p className={cn(
-                        "text-xs mt-1 opacity-70",
-                        message.role === "user" ? "text-blue-100" : "text-muted-foreground"
-                      )}>
+                      <ReactMarkdown>{message.content}</ReactMarkdown>
+                      <p
+                        className={cn(
+                          'mt-1 text-xs opacity-70',
+                          message.role === 'user'
+                            ? 'text-blue-100'
+                            : 'text-muted-foreground',
+                        )}
+                      >
                         {/* {message.timestamp.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })} */}
                       </p>
                     </div>
                   </div>
                 ))}
-                
+
                 {status === 'submitted' && (
-                  <div className="flex gap-3 animate-fade-in">
-                    <Avatar className="w-8 h-8 flex items-center justify-center bg-gradient-to-br from-lavender-700/20 to-lavender-500">
-                      <Bot className="w-4 h-4 text-white" />
+                  <div className="animate-fade-in flex gap-3">
+                    <Avatar className="from-lavender-700/20 to-lavender-500 flex h-8 w-8 items-center justify-center bg-gradient-to-br">
+                      <Bot className="h-4 w-4 text-white" />
                     </Avatar>
-                    <div className="bg-white dark:bg-gray-800 rounded-2xl px-4 py-3 shadow-sm border border-border/50">
+                    <div className="border-border/50 rounded-2xl border bg-white px-4 py-3 shadow-sm dark:bg-gray-800">
                       <div className="flex gap-1">
-                        <div className="w-2 h-2 bg-lavender-400 rounded-full animate-bounce"></div>
-                        <div className="w-2 h-2 bg-lavender-400 rounded-full animate-bounce" style={{ animationDelay: '0.1s' }}></div>
-                        <div className="w-2 h-2 bg-lavender-400 rounded-full animate-bounce" style={{ animationDelay: '0.2s' }}></div>
+                        <div className="bg-lavender-400 h-2 w-2 animate-bounce rounded-full"></div>
+                        <div
+                          className="bg-lavender-400 h-2 w-2 animate-bounce rounded-full"
+                          style={{ animationDelay: '0.1s' }}
+                        ></div>
+                        <div
+                          className="bg-lavender-400 h-2 w-2 animate-bounce rounded-full"
+                          style={{ animationDelay: '0.2s' }}
+                        ></div>
                       </div>
                     </div>
                   </div>
+                )}
+
+                {error && (
+                  <>
+                    <div className="text-rose-500 text-xs">
+                      {parsedErrorMessage === "Insufficient credits" ? "You’ve used up your free AI chats this month. Please wait for the next cycle or upgrade if available." : parsedErrorMessage}
+                    </div>
+                    <button type="button" onClick={() => reload()}>
+                      Retry
+                    </button>
+                  </>
                 )}
               </div>
             </ScrollArea>
 
             {/* Quick Suggestions */}
             {messages.length <= 1 && (
-              <div className="p-4 border-t border-border/50 bg-gradient-to-r from-lavender-50 to-ocean-50">
-                <p className="text-xs text-muted-foreground mb-3 font-medium">Quick suggestions:</p>
+              <div className="border-border/50 from-lavender-50 to-ocean-50 border-t bg-gradient-to-r p-4">
+                <p className="text-muted-foreground mb-3 text-xs font-medium">
+                  Quick suggestions:
+                </p>
                 <div className="flex flex-wrap gap-2">
                   {quickSuggestions.slice(0, 4).map((suggestion, index) => (
                     <Badge
                       key={index}
                       variant="secondary"
-                      className="cursor-pointer hover:scale-105 transition-transform bg-white dark:bg-neutral-800 text-xs py-1 px-3 border border-border/50"
+                      className="border-border/50 cursor-pointer border bg-white px-3 py-1 text-xs transition-transform hover:scale-105 dark:bg-neutral-800"
                       onClick={() => handleQuickSuggestion(suggestion)}
                     >
                       {suggestion}
@@ -310,7 +345,7 @@ export function AIChatInterface({ isOpen, onClose, isMinimized, onToggleMinimize
             )}
 
             {/* Input */}
-            <div className="p-4 border-t border-border/50 bg-gradient-to-r from-lavender-50 to-lavender-50 ">
+            <div className="border-border/50 from-lavender-50 to-lavender-50 border-t bg-gradient-to-r p-4">
               <form onSubmit={handleSubmit} className="flex gap-2">
                 <Input
                   ref={inputRef}
@@ -318,14 +353,14 @@ export function AIChatInterface({ isOpen, onClose, isMinimized, onToggleMinimize
                   onChange={handleInputChange}
                   onKeyDown={handleKeyPress}
                   placeholder="Share your thoughts..."
-                  className="flex-1 rounded-xl border-border/50 bg-white dark:bg-gray-800 focus:ring-2 focus:ring-purple-200 dark:focus:ring-purple-800"
+                  className="border-border/50 flex-1 rounded-xl bg-white focus:ring-2 focus:ring-purple-200 dark:bg-gray-800 dark:focus:ring-purple-800"
                   disabled={isTyping}
                 />
                 <Button
                   type="submit"
-                  className="rounded-xl bg-gradient-to-r from-lavender-700/20 to-lavender-400 hover:from-lavender-700/40 hover:to-lavender-500 text-white shadow-md hover:shadow-lg transition-all duration-200 hover:scale-105"
+                  className="from-lavender-700/20 to-lavender-400 hover:from-lavender-700/40 hover:to-lavender-500 rounded-xl bg-gradient-to-r text-white shadow-md transition-all duration-200 hover:scale-105 hover:shadow-lg"
                 >
-                  <Send className="w-4 h-4" />
+                  <Send className="h-4 w-4" />
                 </Button>
               </form>
             </div>
@@ -333,5 +368,5 @@ export function AIChatInterface({ isOpen, onClose, isMinimized, onToggleMinimize
         )}
       </Card>
     </div>
-  )
+  );
 }
