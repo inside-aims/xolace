@@ -1,5 +1,5 @@
-import React, { useState, useEffect } from 'react';
-import { Gift, Bell } from 'lucide-react';
+import React, { useState } from 'react';
+import { Gift } from 'lucide-react';
 import { cn } from '@/lib/utils';
 
 interface LiquidGlassNewButtonProps {
