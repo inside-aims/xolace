@@ -188,7 +188,7 @@ const LiquidGlassButton: React.FC<LiquidGlassNewButtonProps> = ({
       ))}
 
       {/* Content */}
-      <div className="relative z-10 flex items-center gap-2 text-white/90 group-hover:text-white transition-colors duration-200">
+      <div className="relative z-10 flex items-center gap-2 text-black dark:text-white/90 group-hover:text-white transition-colors duration-200">
         <div className={cn(config.icon, 'transition-transform duration-200 group-hover:scale-110')}>
           {displayIcon}
         </div>
