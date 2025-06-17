@@ -56,7 +56,7 @@ export default function CarouselPost({
           slideShadows: true,
         }}
         autoplay={{
-          delay: 5000,
+          delay: 120000,
           disableOnInteraction: false,
           pauseOnMouseEnter: true,
         }}
@@ -66,7 +66,7 @@ export default function CarouselPost({
         {slides.map((slide, index) => (
           <SwiperSlide key={index}>
             <div
-              className="relative min-h-[120px] overflow-hidden rounded-2xl bg-gradient-to-br dark:from-bg-dark dark:via-bg-dark dark:to-bg-dark p-4 shadow-inner"
+              className="relative min-h-[120px] overflow-hidden rounded-2xl bg-gradient-to-br dark:from-bg-dark dark:via-bg-dark dark:to-bg-dark from-gray-100  via-gray-100 to-gray-100  p-4 shadow-inner"
               data-swiper-parallax="-100"
               onClick={onClick}
             >
