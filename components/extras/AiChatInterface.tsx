@@ -1,4 +1,5 @@
 import React, { useState, useRef, useEffect } from "react"
+import { useChat } from '@ai-sdk/react';
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Card, CardContent, CardHeader } from "@/components/ui/card"
@@ -54,15 +55,26 @@ const quickSuggestions = [
 // ]
 
 export function AIChatInterface({ isOpen, onClose, isMinimized, onToggleMinimize }: AIChatInterfaceProps) {
-  const [messages, setMessages] = useState<Message[]>([
-    {
-      id: "1",
-      content: "Hello! I'm Aniima AI, your mental health companion. I'm here to listen, support, and guide you through whatever you're experiencing. How are you feeling today? 💜",
-      sender: "ai",
-      timestamp: new Date(),
-    }
-  ])
-  const [inputValue, setInputValue] = useState("")
+  const { messages, input, handleInputChange, handleSubmit , status} = useChat({
+    api: "/api/v1/chat",
+    initialMessages: [
+      {
+        id: "1",
+        content: "Hello! I'm Aniima AI, your mental health companion. I'm here to listen, support, and guide you through whatever you're experiencing. How are you feeling today? 💜",
+        role: "assistant",
+      }
+    ],
+  });
+
+  // const [messages, setMessages] = useState<Message[]>([
+  //   {
+  //     id: "1",
+  //     content: "Hello! I'm Aniima AI, your mental health companion. I'm here to listen, support, and guide you through whatever you're experiencing. How are you feeling today? 💜",
+  //     sender: "ai",
+  //     timestamp: new Date(),
+  //   }
+  // ])
+  // const [inputValue, setInputValue] = useState("")
   const [isTyping, setIsTyping] = useState(false)
   const scrollAreaRef = useRef<HTMLDivElement>(null)
   const inputRef = useRef<HTMLInputElement>(null)
@@ -100,64 +112,65 @@ export function AIChatInterface({ isOpen, onClose, isMinimized, onToggleMinimize
   //   }
   // }
 
-  const handleSendMessage = async (content: string) => {
-    if (!content.trim() || isTyping) return;
+  // const handleSendMessage = async (content: string) => {
+  //   if (!content.trim() || isTyping) return;
 
-    const userMessage: Message = {
-      id: Date.now().toString(),
-      content: content.trim(),
-      sender: "user",
-      timestamp: new Date(),
-    }
+  //   const userMessage: Message = {
+  //     id: Date.now().toString(),
+  //     content: content.trim(),
+  //     sender: "user",
+  //     timestamp: new Date(),
+  //   }
 
-    const newMessages = [...messages, userMessage];
+  //   const newMessages = [...messages, userMessage];
 
-    setMessages([
-      ...newMessages,
-      {
-        id: (Date.now() + 1).toString(),
-        content: "",
-        sender: "ai",
-        timestamp: new Date(),
-      }
-    ]);
-    setInputValue("");
-    setIsTyping(true);
+  //   setMessages([
+  //     ...newMessages,
+  //     {
+  //       id: (Date.now() + 1).toString(),
+  //       content: "",
+  //       sender: "ai",
+  //       timestamp: new Date(),
+  //     }
+  //   ]);
+  //   setInputValue("");
+  //   setIsTyping(true);
 
-    const result = await continueConversation(
-      newMessages.map((m) => ({
-        role: m.sender === "user" ? "user" : "assistant",
-        content: m.content,
-      }))
-    );
+  //   const result = await continueConversation(
+  //     newMessages.map((m) => ({
+  //       role: m.sender === "user" ? "user" : "assistant",
+  //       content: m.content,
+  //     }))
+  //   );
 
-    for await (const contentChunk of readStreamableValue(result)) {
-      if (contentChunk) {
-        setMessages((prev) => {
-          const updated = [...prev];
-          const last = updated[updated.length - 1];
-          if (last.sender === "ai") {
-            updated[updated.length - 1] = {
-              ...last,
-              content: last.content + contentChunk,
-            };
-          }
-          return updated;
-        });
-      }
-    }
+  //   for await (const contentChunk of readStreamableValue(result)) {
+  //     if (contentChunk) {
+  //       setMessages((prev) => {
+  //         const updated = [...prev];
+  //         const last = updated[updated.length - 1];
+  //         if (last.sender === "ai") {
+  //           updated[updated.length - 1] = {
+  //             ...last,
+  //             content: last.content + contentChunk,
+  //           };
+  //         }
+  //         return updated;
+  //       });
+  //     }
+  //   }
 
-    setIsTyping(false);
-  };
+  //   setIsTyping(false);
+  // };
 
   const handleQuickSuggestion = (suggestion: string) => {
-    handleSendMessage(suggestion).then();
+    //handleSubmit(suggestion)
+
   }
 
   const handleKeyPress = (e: React.KeyboardEvent) => {
     if (e.key === 'Enter' && !e.shiftKey) {
       e.preventDefault()
-      handleSendMessage(inputValue).then()
+      handleSubmit()
     }
   }
 
@@ -222,17 +235,17 @@ export function AIChatInterface({ isOpen, onClose, isMinimized, onToggleMinimize
                     key={message.id}
                     className={cn(
                       "flex gap-3 animate-fade-in",
-                      message.sender === "user" ? "flex-row-reverse" : "flex-row"
+                      message.role === "user" ? "flex-row-reverse" : "flex-row"
                     )}
                   >
                     <Avatar className={cn(
                       "w-8 h-8 flex-shrink-0",
-                      message.sender === "ai" 
+                      message.role === "assistant" 
                         ? "bg-gradient-to-br from-lavender-700/20 to-lavender-500"
                         : "bg-gradient-to-br from-cyan-500/30 to-ocean-500"
                     )}>
                       <div className="w-full h-full flex items-center justify-center">
-                        {message.sender === "ai" ? (
+                        {message.role === "assistant" ? (
                           <Bot className="w-4 h-4 text-white" />
                         ) : (
                           <User className="w-4 h-4 text-white" />
@@ -242,7 +255,7 @@ export function AIChatInterface({ isOpen, onClose, isMinimized, onToggleMinimize
                     <div
                       className={cn(
                         "max-w-[80%] rounded-xl px-4 py-2 shadow-sm text-sm",
-                        message.sender === "user"
+                        message.role === "user"
                           ? "bg-ocean-400 text-white"
                           : "bg-neutral-100 text-neutral-800"
                       )}
@@ -252,15 +265,15 @@ export function AIChatInterface({ isOpen, onClose, isMinimized, onToggleMinimize
                       </ReactMarkdown>
                       <p className={cn(
                         "text-xs mt-1 opacity-70",
-                        message.sender === "user" ? "text-blue-100" : "text-muted-foreground"
+                        message.role === "user" ? "text-blue-100" : "text-muted-foreground"
                       )}>
-                        {message.timestamp.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
+                        {/* {message.timestamp.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })} */}
                       </p>
                     </div>
                   </div>
                 ))}
                 
-                {isTyping && (
+                {status === 'submitted' && (
                   <div className="flex gap-3 animate-fade-in">
                     <Avatar className="w-8 h-8 flex items-center justify-center bg-gradient-to-br from-lavender-700/20 to-lavender-500">
                       <Bot className="w-4 h-4 text-white" />
@@ -298,24 +311,23 @@ export function AIChatInterface({ isOpen, onClose, isMinimized, onToggleMinimize
 
             {/* Input */}
             <div className="p-4 border-t border-border/50 bg-gradient-to-r from-lavender-50 to-lavender-50 ">
-              <div className="flex gap-2">
+              <form onSubmit={handleSubmit} className="flex gap-2">
                 <Input
                   ref={inputRef}
-                  value={inputValue}
-                  onChange={(e) => setInputValue(e.target.value)}
+                  value={input}
+                  onChange={handleInputChange}
                   onKeyDown={handleKeyPress}
                   placeholder="Share your thoughts..."
                   className="flex-1 rounded-xl border-border/50 bg-white dark:bg-gray-800 focus:ring-2 focus:ring-purple-200 dark:focus:ring-purple-800"
                   disabled={isTyping}
                 />
                 <Button
-                  onClick={() => handleSendMessage(inputValue)}
-                  disabled={!inputValue.trim() || isTyping}
+                  type="submit"
                   className="rounded-xl bg-gradient-to-r from-lavender-700/20 to-lavender-400 hover:from-lavender-700/40 hover:to-lavender-500 text-white shadow-md hover:shadow-lg transition-all duration-200 hover:scale-105"
                 >
                   <Send className="w-4 h-4" />
                 </Button>
-              </div>
+              </form>
             </div>
           </CardContent>
         )}
