@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { Button } from '@/components/ui/button';
 import { ArrowLeft, ArrowRight } from 'lucide-react';
+import { truncateText } from '@/lib/utils';
 
 interface Slide {
   content: string;
@@ -64,7 +65,7 @@ const SimpleCarouselPost = ({ slides, onClick }: SimpleCarouselPostProps) => {
       {/* Carousel Content */}
       <div className="mb-3 cursor-pointer" onClick={onClick}>
         <p className="text-foreground leading-relaxed whitespace-pre-wrap text-content-label">
-          {slides[currentSlide]?.content || ''}
+          {truncateText(slides[currentSlide]?.content || '', 200)}
         </p>
       </div>
 
