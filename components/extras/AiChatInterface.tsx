@@ -312,7 +312,7 @@ export function AIChatInterface({
 
                 {error && (
                   <>
-                    <div className="text-rose-500 text-xs">
+                    <div className="text-rose-500 text-xs w-1/2">
                       {parsedErrorMessage === "Insufficient credits" ? "You’ve used up your free AI chats this month. Please wait for the next cycle or upgrade if available." : parsedErrorMessage}
                     </div>
                     <button type="button" onClick={() => reload()}>
