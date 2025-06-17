@@ -1,6 +1,7 @@
 "use client"
 
 import * as React from "react"
+import { useRouter } from "next/navigation"
 import {
   // AudioWaveform,
   Blocks,
@@ -15,6 +16,7 @@ import {
   // Sparkles,
   // Trash2,
 } from "lucide-react"
+import LiquidGlassButton from "./shared/LiquidGlassButton"
 
 //import { NavFavorites } from "@/components/nav-favorites"
 import { NavMain } from "@/components/nav-main"
@@ -70,6 +72,7 @@ const data = {
 export function SidebarLeft({
   ...props
 }: React.ComponentProps<typeof Sidebar>) {
+  const router = useRouter()
 
    // get user profile data
    const user = useUserState(state => state.user);
@@ -92,6 +95,9 @@ export function SidebarLeft({
         <NavSecondary items={data.navSecondary} className="mt-auto"/>
       </SidebarContent>
       <SidebarFooter>
+        <div className="px-4">
+          <LiquidGlassButton size="sm" onClick={()=> router.push('/updates')}/>
+        </div>
         <NavUser user={user} roles={roles} />
       </SidebarFooter>
       {/* <SidebarRail /> */}
