@@ -15,6 +15,9 @@ import {
   X,
   Minimize2,
   Maximize2,
+  Copy,
+  RefreshCcw,
+  SquareX,
 } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { readStreamableValue } from 'ai/rsc';
@@ -22,6 +25,7 @@ import { continueConversation } from '@/app/api/v1/chatbot-ai/route';
 import ReactMarkdown from 'react-markdown';
 import { useOnlineStatus } from '@/hooks/use-online-status';
 import { toast } from 'sonner';
+import { MessageAction } from '../prompt-kit/message';
 
 // interface Message {
 //   id: string;
@@ -65,11 +69,12 @@ export function AIChatInterface({
   const {
     messages,
     input,
-    handleInputChange,
+    setInput,
     handleSubmit,
     status,
     error,
     reload,
+    stop
   } = useChat({
     api: '/api/v1/chat',
     initialMessages: [
@@ -156,7 +161,7 @@ export function AIChatInterface({
   // };
 
   const handleQuickSuggestion = (suggestion: string) => {
-    //handleSubmit(suggestion)
+    setInput(suggestion);
   };
 
   const handleKeyPress = (e: React.KeyboardEvent) => {
@@ -309,25 +314,69 @@ export function AIChatInterface({
                         )}
                       </div>
                     </Avatar>
-                    <div
-                      className={cn(
-                        'max-w-[80%] rounded-xl px-4 py-2 text-sm shadow-sm',
-                        message.role === 'user'
-                          ? 'bg-ocean-400 text-white'
-                          : 'bg-neutral-100 text-neutral-800',
-                      )}
-                    >
-                      <ReactMarkdown>{message.content}</ReactMarkdown>
-                      <p
+                    <div>
+                      <div
+                        className={cn(
+                          ' rounded-xl px-4 py-2 text-sm shadow-sm',
+                          message.role === 'user'
+                            ? 'bg-ocean-400 text-white w-full'
+                            : `bg-neutral-100 text-neutral-800 max-w-[80%]`,
+                        )}
+                      >
+                        {/* {message.parts.map((part, index) => {
+                          console.log(message);
+                          // text parts:
+                          if (part.type === 'text') {
+                            return (
+                              <div
+                                className={`${status === 'streaming' && 'animate-fade-in'}`}
+                                key={index}
+                              >
+                                {part.text}
+                              </div>
+                            );
+                          }
+
+                          // reasoning parts:
+                          if (part.type === 'reasoning') {
+                            return (
+                              <pre key={index}>
+                                {part.details.map(detail =>
+                                  detail.type === 'text'
+                                    ? detail.text
+                                    : '<redacted>',
+                                )}
+                              </pre>
+                            );
+                          }
+                        })} */}
+                        <ReactMarkdown>{message.content}</ReactMarkdown>
+                        {/* <p
                         className={cn(
                           'mt-1 text-xs opacity-70',
                           message.role === 'user'
                             ? 'text-blue-100'
                             : 'text-muted-foreground',
                         )}
-                      >
+                      > */}
                         {/* {message.timestamp.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })} */}
-                      </p>
+                        {/* </p> */}
+                      </div>
+
+                      {(message.role != 'user' && status != "streaming") && (
+                        <div className="mt-1 mb-2 flex items-center gap-2">
+                          <MessageAction tooltip="Retry" side="bottom">
+                            <button className="text-gray-400 transition-colors hover:text-gray-600" onClick={()=> reload()}>
+                              <RefreshCcw className="h-4 w-4" />
+                            </button>
+                          </MessageAction>
+                          <MessageAction tooltip="copy" side="bottom">
+                            <button className="text-gray-400 transition-colors hover:text-gray-600">
+                              <Copy className="h-4 w-4" />
+                            </button>
+                          </MessageAction>
+                        </div>
+                      )}
                     </div>
                   </div>
                 ))}
@@ -360,9 +409,11 @@ export function AIChatInterface({
                         ? 'You’ve used up your free AI chats this month. Please wait for the next cycle or upgrade if available.'
                         : parsedErrorMessage}
                     </div>
-                    <button type="button" onClick={() => reload()}>
-                      Retry
-                    </button>
+                    <MessageAction tooltip="Retry" side="bottom">
+                      <button type="button" onClick={() => reload()}>
+                        <RefreshCcw className="h-4 w-4 text-black" />
+                      </button>
+                    </MessageAction>
                   </>
                 )}
               </div>
@@ -395,18 +446,22 @@ export function AIChatInterface({
                 <Input
                   ref={inputRef}
                   value={input}
-                  onChange={handleInputChange}
+                  onChange={(e) => setInput(e.target.value)}
                   onKeyDown={handleKeyPress}
                   placeholder="Share your thoughts..."
                   className="border-border/50 flex-1 rounded-xl bg-white focus:ring-2 focus:ring-purple-200 dark:bg-gray-800 dark:focus:ring-purple-800"
                   disabled={status === 'submitted' || status === 'streaming'}
                 />
                 <Button
-                  type="submit"
-                  disabled={status === 'submitted' || status === 'streaming'}
-                  className="from-lavender-700/20 to-lavender-400 hover:from-lavender-700/40 hover:to-lavender-500 rounded-xl bg-gradient-to-r text-white shadow-md transition-all duration-200 hover:scale-105 hover:shadow-lg"
+                  type={status === 'streaming' ? 'button' : 'submit'}
+                  onClick={() => stop()}
+                  className={`from-lavender-700/20 to-lavender-400 hover:from-lavender-700/40 hover:to-lavender-500 rounded-xl bg-gradient-to-r text-white shadow-md transition-all duration-200 hover:scale-105 hover:shadow-lg ${status === 'streaming' ? 'bg-rose-400' : 'hover:bg-rose-500/70'}`}
                 >
-                  <Send className="h-4 w-4" />
+                  {status === 'streaming' ? (
+                    <SquareX className="h-5 w-5" />
+                  ) : (
+                    <Send className="h-4 w-4" />
+                  )}
                 </Button>
               </form>
             </div>
