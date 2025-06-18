@@ -20,14 +20,16 @@ import { cn } from '@/lib/utils';
 import { readStreamableValue } from 'ai/rsc';
 import { continueConversation } from '@/app/api/v1/chatbot-ai/route';
 import ReactMarkdown from 'react-markdown';
+import { useOnlineStatus } from '@/hooks/use-online-status';
+import { toast } from 'sonner';
 
-interface Message {
-  id: string;
-  content: string;
-  sender: 'user' | 'ai';
-  timestamp: Date;
-  type?: 'text' | 'suggestion';
-}
+// interface Message {
+//   id: string;
+//   content: string;
+//   sender: 'user' | 'ai';
+//   timestamp: Date;
+//   type?: 'text' | 'suggestion';
+// }
 
 interface AIChatInterfaceProps {
   isOpen: boolean;
@@ -79,17 +81,12 @@ export function AIChatInterface({
       },
     ],
   });
+  const toastIdRef = useRef<string | number | null>(null); //  can be a string or number
+  const timeoutRef = useRef<NodeJS.Timeout | null>(null);
 
-  // const [messages, setMessages] = useState<Message[]>([
-  //   {
-  //     id: "1",
-  //     content: "Hello! I'm Aniima AI, your mental health companion. I'm here to listen, support, and guide you through whatever you're experiencing. How are you feeling today? 💜",
-  //     sender: "ai",
-  //     timestamp: new Date(),
-  //   }
-  // ])
-  // const [inputValue, setInputValue] = useState("")
-  const [isTyping, setIsTyping] = useState(false);
+  // browser connection status
+  const isOnline = useOnlineStatus();
+
   const scrollAreaRef = useRef<HTMLDivElement>(null);
   const inputRef = useRef<HTMLInputElement>(null);
 
@@ -171,6 +168,46 @@ export function AIChatInterface({
 
   if (!isOpen) return null;
 
+  useEffect(() => {
+    const cleanup = () => {
+      if (timeoutRef.current) {
+        clearTimeout(timeoutRef.current);
+        timeoutRef.current = null;
+      }
+    };
+
+    if (!isOnline) {
+      // Show loading toast if not already showing
+      if (!toastIdRef.current) {
+        toastIdRef.current = toast.loading('Reconnecting...', {
+          duration: Infinity,
+        });
+      }
+
+      // Set timeout for error message
+      cleanup(); // Clear any existing timeout
+      timeoutRef.current = setTimeout(() => {
+        if (!isOnline && toastIdRef.current) {
+          toast.error('You are offline. Please check your connection.', {
+            id: toastIdRef.current,
+            duration: 5000,
+          });
+          toastIdRef.current = null;
+        }
+      }, 50000);
+    } else if (toastIdRef.current) {
+      // When coming back online
+      cleanup(); // Clear the error timeout
+      toast.success('Reconnected', {
+        id: toastIdRef.current,
+        duration: 2000, // Show for 2 seconds
+      });
+      toastIdRef.current = null;
+    }
+
+    return cleanup;
+  }, [isOnline]);
+
   const parsedErrorMessage = (() => {
     try {
       const parsed = JSON.parse(error?.message || '');
@@ -198,9 +235,15 @@ export function AIChatInterface({
                     <Sparkles className="h-5 w-5 text-white" />
                   </div>
                 </Avatar>
-                <div className="absolute -right-1 -bottom-1 flex h-4 w-4 items-center justify-center rounded-full border-2 border-white bg-green-500">
-                  <div className="h-2 w-2 animate-pulse rounded-full bg-green-400"></div>
-                </div>
+                {isOnline ? (
+                  <div className="absolute -right-1 -bottom-1 flex h-4 w-4 items-center justify-center rounded-full border-2 border-white bg-green-500">
+                    <div className="h-2 w-2 animate-pulse rounded-full bg-green-400"></div>
+                  </div>
+                ) : (
+                  <div className="absolute -right-1 -bottom-1 flex h-4 w-4 items-center justify-center rounded-full border-2 border-white bg-red-500">
+                    <div className="h-2 w-2 rounded-full bg-red-400"></div>
+                  </div>
+                )}
               </div>
               <div>
                 <h3 className="text-foreground flex items-center gap-2 font-semibold">
@@ -312,8 +355,10 @@ export function AIChatInterface({
 
                 {error && (
                   <>
-                    <div className="text-rose-500 text-xs w-1/2">
-                      {parsedErrorMessage === "Insufficient credits" ? "You’ve used up your free AI chats this month. Please wait for the next cycle or upgrade if available." : parsedErrorMessage}
+                    <div className="w-1/2 text-xs text-rose-500">
+                      {parsedErrorMessage === 'Insufficient credits'
+                        ? 'You’ve used up your free AI chats this month. Please wait for the next cycle or upgrade if available.'
+                        : parsedErrorMessage}
                     </div>
                     <button type="button" onClick={() => reload()}>
                       Retry
@@ -354,10 +399,11 @@ export function AIChatInterface({
                   onKeyDown={handleKeyPress}
                   placeholder="Share your thoughts..."
                   className="border-border/50 flex-1 rounded-xl bg-white focus:ring-2 focus:ring-purple-200 dark:bg-gray-800 dark:focus:ring-purple-800"
-                  disabled={isTyping}
+                  disabled={status === 'submitted' || status === 'streaming'}
                 />
                 <Button
                   type="submit"
+                  disabled={status === 'submitted' || status === 'streaming'}
                   className="from-lavender-700/20 to-lavender-400 hover:from-lavender-700/40 hover:to-lavender-500 rounded-xl bg-gradient-to-r text-white shadow-md transition-all duration-200 hover:scale-105 hover:shadow-lg"
                 >
                   <Send className="h-4 w-4" />
