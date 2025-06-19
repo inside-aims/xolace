@@ -414,91 +414,91 @@ Either you or Xolace may terminate your account under certain circumstances.
     },
     {
       id: "ai-usage",
-      title: "AI Usage & Limitations",
-      description: "How artificial intelligence is used on our platform",
+      title: "Our AI Principles",
+      description: "How we ethically integrate artificial intelligence at your digital campfire",
       category: "Technology",
       version: "1.5",
       lastUpdated: "December 3, 2024",
       sections: [
-        { id: "ai-features", title: "AI Features on Xolace", level: 2 },
+        { id: "ai-features", title: "AI Around the Campfire", level: 2 },
         { id: "ai-limitations", title: "Understanding AI Limitations", level: 2 },
         { id: "user-control", title: "User Control and Consent", level: 2 },
         { id: "ai-safety", title: "AI Safety Measures", level: 2 },
       ],
-      content: `## AI Features on Xolace
+      content: `## AI Around the Campfire
+
+At Xolace, artificial intelligence serves as a gentle guide—never the firekeeper. We use AI mindfully to enhance human connection, not replace it.
   
-  Artificial intelligence enhances your Xolace experience in several ways, always with transparency and user control as our priorities.
+**Current AI Capabilities:**  
+- **Shikigami Post Assistant:** Helps you craft thoughtful reflections or responses by weaving your fragments of thought into coherent posts (5 credits per week).  
+- **Aniima AI Assistant:** Provides gentle conversation starters and prompts to help you explore your thoughts and feelings (5 credits per week).
   
-  **Current AI Applications:**
-  * Content moderation to maintain community safety
-  * Personalized resource recommendations
-  * Crisis detection and intervention support
-  * Optional conversation assistance and prompts
+**How AI Helps:**
+- Suggests relevant mental health resources
+- Provides gentle conversation starters
   
-  **How AI Helps:**
-  * Identifies potentially harmful content quickly
-  * Suggests relevant mental health resources
-  * Provides gentle conversation starters
-  * Helps connect users with similar experiences
+<div class="alert alert-info">
+  <div class="alert-icon">ℹ️</div>
+  <div class="alert-content">
+    All AI features are clearly labeled. You start each month with a set number of AI credits—opt in only when you choose.  
+  </div>
+</div>
   
-  :::info
-  All AI features are clearly labeled, and you can opt out of AI-assisted features at any time in your settings.
-  :::
+## Understanding AI Limitations
+
+AI augments, but does not replace, real human connection or professional care.
+
+**What AI Cannot Do:**  
+- Diagnose or treat mental health conditions  
+- Replace licensed professionals or crisis hotlines  
+- Fully grasp context, tone, or cultural nuance  
+- Guarantee 100% accuracy or relevance
   
-  ## Understanding AI Limitations
+**Key Reminders:**  
+- Generated responses are based on learned patterns, not lived experience.  
+- Consult qualified professionals for serious or ongoing mental health concerns.  
+- AI suggestions may occasionally miss the mark—your judgment matters.
+
+<div class="alert alert-warning">
+  <div class="alert-icon">⚠️</div>
+  <div class="alert-content">
+    Never rely solely on AI in an emergency. If you or someone else is in crisis, seek immediate help (e.g., call your local hotline).  
+  </div>
+</div>
   
-  While AI can be helpful, it's important to understand what it cannot do and should not replace.
+## User Control and Consent
   
-  **AI Cannot:**
-  * Replace professional mental health treatment
-  * Provide medical diagnoses or advice
-  * Understand context and nuance like humans
-  * Guarantee accuracy in all situations
+You remain in the driver’s seat—AI is here to assist, not to steer your journey.
+
+**Your AI Settings:**  
+- **Enable/Disable:** Turn each AI feature on or off in Settings → AI.  
+- **Credit Management:** View remaining credits and request additional ones from support if needed.  
   
-  **Important Reminders:**
-  * AI responses are generated based on patterns, not human understanding
-  * Always consult qualified professionals for serious mental health concerns
-  * AI may occasionally make mistakes or provide inappropriate suggestions
-  * Human moderators review AI decisions when needed
+## AI Safety Measures
   
-  :::warning
-  Never rely solely on AI for crisis situations. Always seek immediate professional help if you're experiencing thoughts of self-harm or suicide.
-  :::
+We uphold rigorous standards to keep AI trustworthy, fair, and secure.
   
-  ## User Control and Consent
+**Safety Protocols:**
+* Regular auditing of AI systems for bias and accuracy
+* Human oversight of all AI-generated content
+* Strict guidelines for AI behavior in sensitive situations
+* Continuous monitoring and improvement of AI systems
   
-  You have complete control over how AI interacts with your Xolace experience.
   
-  **Your AI Settings:**
-  * Enable or disable AI-powered recommendations
-  * Choose whether to receive AI-generated prompts
-  * Control AI analysis of your content for personalization
-  * Opt out of AI features entirely if preferred
-  
-  **Consent and Transparency:**
-  * We clearly indicate when AI is involved in your experience
-  * You can see why certain recommendations were made
-  * AI training does not use your personal content without consent
-  * You can request human review of AI decisions
-  
-  ## AI Safety Measures
-  
-  We implement multiple safeguards to ensure AI enhances rather than harms your experience.
-  
-  **Safety Protocols:**
-  * Regular auditing of AI systems for bias and accuracy
-  * Human oversight of all AI-generated content
-  * Strict guidelines for AI behavior in sensitive situations
-  * Continuous monitoring and improvement of AI systems
-  
-  **Crisis Prevention:**
-  * AI systems are trained to recognize signs of distress
-  * Immediate escalation to human moderators for serious concerns
-  * Direct connection to crisis resources when appropriate
-  * Never automated responses to crisis situations
-  
-  **Bias Prevention:**
-  We actively work to identify and eliminate bias in our AI systems to ensure fair treatment for all users regardless of background, identity, or circumstances.`,
+**Privacy & Bias Prevention:**  
+- AI models exclude personal identifiers to preserve anonymity.  
+- Continuous retraining to eliminate biased or harmful patterns.  
+- User feedback loops to correct and improve AI behavior over time.
+
+<div class="alert alert-warning">
+  <div class="alert-icon">⚠️</div>
+  <div class="alert-content">
+    Note that as of this time we do not store any chat or conversation history. 
+  </div>
+</div>
+
+> That explains the chat disappearing on reload of the page.
+`,
     },
     {
       id: "reporting-safety",
