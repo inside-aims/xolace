@@ -1124,14 +1124,14 @@ export function PostForm() {
         <section className="flex flex-col items-center justify-center">
           <div className="flex flex-wrap justify-center gap-2 px-2 pb-4 text-xs text-slate-600/60 dark:text-slate-400/60">
             <span>
-              <Link className="hover:text-slate-200 hover:underline" href="#">
+              <Link className="hover:text-slate-200 hover:underline" href="/polices">
                 Xolace Rules
               </Link>
             </span>
             <span>
               <Link
                 className="hover:text-slate-200 hover:underline"
-                href="/policy"
+                href="/policies"
               >
                 Privacy Policy
               </Link>
@@ -1139,7 +1139,7 @@ export function PostForm() {
             <span>
               <Link
                 className="hover:text-slate-200 hover:underline"
-                href="/policy"
+                href="/policies"
               >
                 User Agreement
               </Link>
