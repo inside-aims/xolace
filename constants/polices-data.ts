@@ -282,92 +282,134 @@ We implement robust security measures to protect your information from unauthori
       version: "2.3",
       lastUpdated: "November 22, 2024",
       sections: [
+        { id: "welcome", title: "Welcome to the Campfire", level: 2 },
         { id: "acceptance-of-terms", title: "Acceptance of Terms", level: 2 },
         { id: "user-responsibilities", title: "User Responsibilities", level: 2 },
         { id: "service-availability", title: "Service Availability", level: 2 },
         { id: "intellectual-property", title: "Intellectual Property", level: 2 },
         { id: "termination", title: "Account Termination", level: 2 },
       ],
-      content: `## Acceptance of Terms
+      content: `## Welcome to the Campfire
+
+By joining Xolace, you're entering a digital sanctuary designed for authentic connection and emotional support. These terms create our shared agreement for keeping this space safe and sacred.
+
+**Our Compact:**
+-  You commit to our community values
+-  We commit to protecting your privacy
+-  Together we maintain a space for healing
+
+## Acceptance of Terms
+
+By accessing or using Xolace (“we,” “us,” or “the Platform”), you agree to these Terms of Service and all applicable laws. If you do not agree, please do not use our services. Continued use after any updates constitutes acceptance of the revised terms.
+
+**Scope of Agreement:**  
+- These Terms apply to all features of Xolace (web and mobile).  
+- We may update these terms; we’ll notify you in‑app or via email and post the new “lastUpdated” date.  
+- Your continued use after notice means you accept the changes.
   
-  By accessing or using Xolace, you agree to be bound by these Terms of Service and all applicable laws and regulations. If you do not agree with any of these terms, you are prohibited from using our services.
+**Age Requirements:**
+- You must be at least 16 to join
+- Minors 13-15 require parental consent
+
+## Sanctuary Rules
+
+### Core Community Values
+1. **Anonymity as Armor**  
+   Protect your identity; never pressure others to reveal theirs
+
+2. **Kindness First**  
+   Assume good intent; respond with compassion
+
+3. **Share Wisely**  
+   Your stories have power, use them to heal, not harm
+
+4. **Professional Respect**  
+   Honor boundaries with mental health guides
   
-  **Agreement Scope:**
-  * These terms apply to all users of Xolace
-  * Terms may be updated with reasonable notice
-  * Continued use constitutes acceptance of updated terms
-  * Additional terms may apply to specific features
+ ## User Responsibilities
+
+As part of our digital campfire community, you agree to:
+
+**Account Integrity:**  
+- Provide a valid email for account creation and recovery.  
+- Keep your login credentials secure.  
+- Not share or transfer your account.
+
+**Community Conduct:**  
+- Follow Xolace’s Community Guidelines at all times.  
+- Communicate with empathy remember the human behind every username.  
+- Respect anonymity: do not solicit or share real‑world identities.
+- Respect growth: People change - allow space for evolution.
+
+**Prohibited Activities:**  
+- Harassment, hate speech, or bullying.  
+- Posting content that encourages self‑harm, eating disorders, or violence.  
+- Impersonating others or misrepresenting affiliation with professionals.  
+- Using bots or scripts to scrape data or automate interactions.
+
+| Violation | Consequence | 
+|-----------|-------------|
+| Identity harassment | Immediate ban |
+| Graphic self-harm promotion | Removal + crisis resources |
+| Hate speech | Permanent termination |
+| Professional solicitation | Suspension + review |
+| Automated scraping | IP ban |
+
+<div class="alert alert-warning">
+  <div class="alert-icon">⚠️</div>
+  <div class="alert-content">
+    Violation of these responsibilities may result in account suspension or termination.
+  </div>
+</div>
+
   
-  **Age Requirements:**
-  You must be at least 16 years old to use Xolace. Users under 18 should have parental guidance when discussing mental health topics.
+## Service Availability
   
-  ## User Responsibilities
+Xolace strives for reliable access, but we cannot guarantee uninterrupted service.
   
-  As a member of the Xolace community, you have certain responsibilities to maintain a safe and supportive environment for everyone.
+**Uptime & Maintenance:**
+- We target 99.9% uptime excluding scheduled maintenance. 
+- Scheduled downtime will be announced in advance.
+- Emergency maintenance may occur without notice.
+- Some features may be temporarily unavailable.
   
-  **Your Commitments:**
-  * Provide accurate information when creating your account
-  * Maintain the security of your login credentials
-  * Respect other users and follow community guidelines
-  * Use the platform only for its intended purposes
-  
-  **Prohibited Activities:**
-  * Creating multiple accounts to circumvent restrictions
-  * Attempting to access other users' accounts
-  * Interfering with the platform's operation
-  * Using automated tools to scrape or harvest data
-  
-  :::warning
-  Violation of these responsibilities may result in account suspension or termination.
-  :::
-  
-  ## Service Availability
-  
-  We strive to provide reliable access to Xolace, but we cannot guarantee uninterrupted service at all times.
-  
-  **Service Expectations:**
-  * We aim for 99.9% uptime but cannot guarantee it
-  * Scheduled maintenance will be announced in advance
-  * Emergency maintenance may occur without notice
-  * Some features may be temporarily unavailable
-  
-  **No Warranty:**
-  Xolace is provided "as is" without warranties of any kind. We do not guarantee that the service will meet your specific needs or be error-free.
+**No Warranty:**  
+- The Platform is provided “as is.”  
+- We disclaim all warranties—express or implied—regarding fitness, reliability, or non‑infringement.
   
   ## Intellectual Property
   
-  Respect for intellectual property rights is fundamental to our community and legal compliance.
+Protecting creators’ rights is core to our community ethos.
   
-  **Your Content:**
-  * You retain ownership of content you create
-  * You grant us a license to display and distribute your content
-  * You are responsible for ensuring you have rights to share content
-  * We may remove content that infringes on others' rights
+**Your Content:**  
+- You retain ownership of posts, comments, and any materials you upload.  
+- You grant Xolace a worldwide, royalty‑free license to host, display, and distribute your content.  
+- Ensure you have rights to share all content you post.  
+- We may remove content that infringes on others' rights.
   
-  **Our Content:**
-  * Xolace's design, features, and branding are our property
-  * You may not copy, modify, or distribute our proprietary content
-  * Our name and logo are protected trademarks
-  * User-generated content remains the property of its creators
+**Xolace IP:**
+- All Platform code, design, logos, and trademarks are our property.
+- You may not copy, modify, or distribute our proprietary content
+- Our name and logo are protected trademarks
+- User-generated content remains the property of its creators
   
   ## Account Termination
   
   Either you or Xolace may terminate your account under certain circumstances.
   
-  **User-Initiated Termination:**
-  * You may delete your account at any time
-  * Account deletion is permanent and cannot be undone
-  * Some information may be retained for legal or safety reasons
-  * You can download your data before deletion
+**User‑Initiated:**  
+- You can delete your account at any time via Settings → Privacy.  
+- Deletion is permanent; download your data beforehand if needed.  
+- Some records (e.g., anonymized logs) may remain for legal compliance.
   
-  **Xolace-Initiated Termination:**
-  * We may suspend or terminate accounts that violate our terms
-  * Serious violations may result in immediate termination
-  * We will provide notice when possible
-  * You may appeal termination decisions
+**Xolace‑Initiated:**  
+- We may suspend or terminate accounts that breach these Terms or Community Guidelines.  
+- Serious violations (e.g., threats of harm) may result in immediate removal.  
+- We’ll notify you when feasible; you may appeal via support@xolace.com.
   
-  **Effect of Termination:**
-  Upon termination, your right to use Xolace ceases immediately, and we may delete your account and associated data in accordance with our data retention policies.`,
+**Post‑Termination:**  
+- Your right to access the Platform ends immediately.  
+- We may retain certain data to comply with legal obligations and protect community safety. `
     },
     {
       id: "ai-usage",
