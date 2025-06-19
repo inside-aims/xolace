@@ -34,7 +34,7 @@ export function PolicyNavigation({
   return (
     <nav
       className={cn(
-        "fixed left-0 top-0 h-full w-80 bg-white/80 dark:bg-slate-900/80 backdrop-blur-xl border-r border-slate-200 dark:border-slate-700 z-40",
+        "fixed left-0 top-0 h-full w-80 bg-white/80 dark:bg-bg-dark/80 backdrop-blur-xl border-r border-slate-200 dark:border-slate-700 z-40",
         className,
       )}
     >
@@ -79,7 +79,7 @@ export function PolicyNavigation({
                   className={cn(
                     "w-full flex items-center gap-3 p-4 rounded-xl text-left transition-all duration-200",
                     isActive
-                      ? "bg-gradient-to-r from-blue-500/10 to-purple-500/10 border border-blue-200 dark:border-blue-800 text-blue-700 dark:text-blue-300"
+                      ? "bg-gradient-to-r from-ocean-500/10 to-lavender-500/10 border border-ocean-200 dark:border-ocean-800 text-ocean-700 dark:text-ocean-300"
                       : "hover:bg-slate-100 dark:hover:bg-slate-800 text-slate-700 dark:text-slate-300",
                   )}
                 >
@@ -87,7 +87,7 @@ export function PolicyNavigation({
                     className={cn(
                       "w-10 h-10 rounded-lg flex items-center justify-center",
                       isActive
-                        ? "bg-gradient-to-br from-blue-500 to-purple-600 text-white"
+                        ? "bg-gradient-to-br from-ocean-500 to-lavender-600 text-white"
                         : "bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-400",
                     )}
                   >

@@ -6,6 +6,11 @@ import { Badge } from "@/components/ui/badge"
 import { Clock, Calendar, PrinterIcon as Print, Share2, BookOpen } from "lucide-react"
 import ReactMarkdown from "react-markdown"
 import { TableOfContents } from "./table-of-content"
+import remarkGfm from "remark-gfm"
+import remarkEmoji from "remark-emoji"
+import rehypeSlug from "rehype-slug"
+import rehypeHighlight from "rehype-highlight"
+import rehypeRaw from "rehype-raw"
 
 interface PolicyContentProps {
   policy: any
@@ -102,7 +107,7 @@ export function PolicyContent({ policy, activeSection, onSectionChange }: Policy
 
       {/* Content */}
       <div className="prose prose-slate dark:prose-invert prose-sm max-w-none">
-        <ReactMarkdown>{policy.content}</ReactMarkdown>
+        <ReactMarkdown remarkPlugins={[remarkGfm, remarkEmoji]} rehypePlugins={[rehypeSlug, rehypeHighlight, rehypeRaw]} >{policy.content}</ReactMarkdown>
       </div>
 
       {/* Footer */}

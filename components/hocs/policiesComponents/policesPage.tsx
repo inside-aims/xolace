@@ -53,7 +53,7 @@ const PolicesPage = () => {
 
   const currentPolicy = policiesData.find(policy => policy.id === activePolicy);
   return (
-    <div className="relative min-h-screen bg-gradient-to-br from-slate-50 via-white to-blue-50 dark:from-slate-900 dark:via-slate-800 dark:to-slate-900">
+    <div className="relative min-h-screen bg-gradient-to-br from-slate-50 via-white to-blue-50 dark:from-bg-dark dark:via-bg-dark/80 dark:to-bg-dark">
       <BackgroundPattern />
 
       {/* Reading Progress */}

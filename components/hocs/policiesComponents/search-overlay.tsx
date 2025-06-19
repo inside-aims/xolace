@@ -84,7 +84,7 @@ export function SearchOverlay({ isOpen, onClose, policies, onPolicySelect }: Sea
   return (
     <div className="fixed inset-0 bg-black/50 backdrop-blur-sm z-50 flex items-start justify-center pt-20">
       <div className="w-full max-w-2xl mx-4">
-        <div className="bg-white dark:bg-slate-900 rounded-2xl shadow-2xl border border-slate-200 dark:border-slate-700 overflow-hidden">
+        <div className="bg-white dark:bg-bg-dark rounded-2xl shadow-2xl border border-slate-200 dark:border-bg-dark/50 overflow-hidden">
           {/* Search Header */}
           <div className="flex items-center gap-4 p-6 border-b border-slate-200 dark:border-slate-700">
             <Search className="w-5 h-5 text-slate-400" />

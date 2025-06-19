@@ -1,50 +1,84 @@
 export const policiesData = [
     {
       id: "community-guidelines",
-      title: "Community Guidelines",
-      description: "Our principles for creating a safe, supportive environment",
+      title: "Campfire Code",
+      description: "How we keep Xolace warm, safe, and supportive for all",
       category: "Community",
       version: "2.1",
       lastUpdated: "December 15, 2024",
       sections: [
-        { id: "respect-and-kindness", title: "Respect and Kindness", level: 2 },
+        { id: "campfire-culture", title: "Campfire Culture", level: 2 },
         { id: "content-standards", title: "Content Standards", level: 2 },
         { id: "harassment-policy", title: "Harassment Policy", level: 2 },
         { id: "reporting-violations", title: "Reporting Violations", level: 2 },
       ],
-      content: `## Respect and Kindness
+      content: `## Campfire Culture
   
-  At Xolace, we believe in the power of respectful communication and genuine kindness. Our community thrives when every member feels valued, heard, and safe to express themselves authentically.
-  
-  **Core Principles:**
-  * Treat all community members with dignity and respect
-  * Practice empathy and understanding in all interactions
-  * Celebrate diversity and different perspectives
-  * Support others in their mental health journey
-  
-  :::info
-  Remember that behind every username is a real person with real feelings, experiences, and struggles.
-  :::
-  
-  ## Content Standards
-  
-  We encourage open, honest sharing while maintaining appropriate boundaries that keep our space safe for everyone.
-  
-  **Acceptable Content:**
-  * Personal experiences and reflections
-  * Supportive messages and encouragement
-  * Mental health resources and tips
-  * Creative expressions that promote wellbeing
-  
-  **Prohibited Content:**
-  * Graphic descriptions of self-harm or suicide methods
-  * Content that promotes eating disorders
-  * Spam, advertising, or promotional material
-  * Hate speech or discriminatory language
-  
-  :::warning
-  Content that violates our standards will be removed, and repeated violations may result in account restrictions.
-  :::
+  At Xolace, we're building a digital campfire where people gather to share experiences, moments , find warmth, and support each other through life's journeys. 
+  These principles keep our fire burning bright: We believe healing begins with empathy, and that means treating one another with respect always. 
+  This space was built to make people feel safe opening up, knowing they’ll be met with understanding, not judgment.
+
+**Our Campfire Ethos:**
+- **Come as you are**: No performance, no filters, just your authentic self
+- **Pass the talking stick**: Listen as much as you speak
+- **Tend the flames together**: Support others without judgment (using supportive language, no shaming, no mockery)
+- **Leave no trace**: Respect privacy (yours and others')
+- Treat all users with dignity and respect regardless of background or belief.
+- Assume good intentions, but be mindful of tone.
+- Remember: sharing vulnerability is courageous. Honor that trust.
+
+> _Picture Xolace as any physical campfire. Speak to others the way you'd want to be spoken to gently, openly, and with care._
+> The most powerful moments happen when we simply say: *"I've been there too."*
+
+## The Sharing Circle
+
+### What We Welcome
+- Personal struggles and triumphs
+- Quiet reflections and daily moments
+- Requests for support or advice
+- Professional insights (from verified helpers)
+- Humor that uplifts rather than wounds
+
+### What We Extinguish
+| Content Type | Reason | Example |
+|--------------|--------|---------|
+| Graphic self-harm methods | Safety | ❌ "Cut vertically down the arm..." |
+| Hate speech | Respect | ❌ Racist/sexist/homophobic remarks |
+| Promotion of disorders | Care | ❌ "Ana tips for skipping meals" |
+| Doxxing/doxing | Privacy | ❌ Sharing real names/locations |
+| Professional solicitation | Trust | ❌ "DM me for paid therapy" (unless in Pro Space) |
+
+<div class="alert alert-warning">
+  <div class="alert-icon">⚠️</div>
+  <div class="alert-content">
+    <strong class="alert-bold-text">Content Warning:</strong> Posts glorifying self-harm will be immediately removed, followed by crisis resource suggestions
+  </div>
+</div>
+
+## Guardians & Professionals
+
+### For All Members
+- Mental health professionals participate as **equal members first**
+- Public comments are **general support**, not medical advice
+- Always verify credentials via badge before private consultations
+
+### For Verified Professionals
+- You may share:
+  - Evidence-based coping strategies
+  - Psychoeducation about mental health
+  - Resource recommendations (books, hotlines)
+- You may not:
+  - Diagnose in public comments
+  - Solicit clients outside Pro Spaces
+  - Guarantee outcomes ("This will cure your depression")
+
+
+<div class="alert alert-tip">
+  <div class="alert-icon">💡</div>
+  <div class="alert-content">
+    Spot a professional giving great support? Nominate them for our "Guardian of the Month" recognition!
+  </div>
+</div>
   
   ## Harassment Policy
   
@@ -58,6 +92,21 @@ export const policiesData = [
   
   **Our Response:**
   We take all reports of harassment seriously and will investigate promptly. Consequences may include content removal, temporary suspension, or permanent account termination.
+
+  ## Fire Safety Protections
+
+### Our Moderation Approach
+1. **Automated watchtowers**: Flag high-risk keywords
+2. **Community sentinels**: Post downvotes threshold 
+3. **Firekeepers**: Moderators review reports within 24hrs
+4. **Crisis responders**: Connect users to help during emergencies
+
+### Your Safety Tools
+| Tool | Use When | Response Time |
+|------|----------|---------------|
+| Report button | Content violates guidelines | <24hrs |
+| Voting Power | Downvote on posts that are not worth being on Xolace | Post Disappears after a certain threshold |
+| Sensitivity cloak | Auto-blurs triggering content | Instant |
   
   ## Reporting Violations
   
@@ -68,14 +117,32 @@ export const policiesData = [
   * Contact our moderation team directly
   * Email support@xolace.com for urgent matters
   
-  All reports are reviewed within 24 hours, and we keep reporter identities confidential.`,
+  All reports are reviewed within 24 hours, and we keep reporter identities confidential.
+  
+  ## Need Help?
+- Urgent support: xolace25@gmail.com (subject: Crisis)
+- Feature requests: xolace25@gmail.com
+- Report professionals: xolace25@gmail.com
+
+<div class="alert alert-tip">
+  <div class="alert-icon">🍃</div>
+  <div class="alert-content">
+    The best healers don't stand above the fire – they sit beside you in the dark.
+  </div>
+</div>
+
+> - Xolace Founding Principle
+  
+  `,
+
+  
     },
     {
       id: "privacy-policy",
-      title: "Privacy Policy",
-      description: "How we collect, use, and protect your personal information",
-      category: "Legal",
-      version: "3.0",
+      title: "Privacy Sanctuary",
+      description: "How we honor and protect your digital vulnerability",
+      category: "Trust & Safety",
+      version: "1.0",
       lastUpdated: "January 8, 2025",
       sections: [
         { id: "information-collection", title: "Information We Collect", level: 2 },
@@ -84,59 +151,81 @@ export const policiesData = [
         { id: "user-rights", title: "Your Rights and Choices", level: 2 },
         { id: "data-security", title: "Data Security", level: 2 },
       ],
-      content: `## Information We Collect
+      content: `## Our Privacy Principles
+
+At Xolace, privacy isn't a feature - it's the foundation of our campfire. We operate by these core beliefs:
+
+**The Campfire Charter:**
+-  **Anonymity as armor**: Your identity belongs to you
+-  **Data minimalism**: We collect only what's essential
+-  **Transparency always**: No hidden agendas
+-  **Mental health first**: Extra safeguards for vulnerable moments
+
+
+> **Unlike other platforms, we never:**  
+> - Sell your data  
+> - Profile you for ads  
+> - Track you across the web
+
+      
+      
+## Information We Collect
   
   We collect information to provide you with a personalized and secure experience on Xolace. We are committed to collecting only what is necessary and being transparent about our practices.
   
-  **Account Information:**
-  * Email address (required for account creation)
-  * Username and display name
-  * Profile information you choose to share
-  * Account preferences and settings
+<div class="alert alert-info">
+  <div class="alert-icon">ℹ️</div>
+  <div class="alert-content">
+    We believe the best privacy and protection is not taking the information at all 
+  </div>
+</div>
+
+### Essential Embers
+| Data Type | Purpose | Retention |
+|-----------|---------|-----------|
+| Account email | Security, recovery & critical notifications  | Until deletion |
+| Username (user-chosen; no real names required) | Community identity | Until changed |
+| Account preferences and settings | Personalize experience | Until changed |
+
+**Platform Activity:**  
+- Posts, comments, and prompt responses you create  
+- Time stamps and metadata for content (e.g., creation date, expiration settings)  
+- Anonymous usage metrics (e.g., active sessions, feature interactions
+- Interactions with other users' content
   
-  **Content and Activity:**
-  * Posts, comments, and messages you create
-  * Interactions with other users' content
-  * Community participation and engagement metrics
-  * Anonymous usage analytics
-  
-  :::info
-  We never collect sensitive personal information like social security numbers, financial data, or detailed health records.
-  :::
+> _We never collect sensitive personal information like social security numbers, financial data, or detailed health records._
+
   
   ## How We Use Your Data
   
   Your data helps us create a better, safer experience for our entire community. We use information responsibly and only for legitimate purposes.
   
-  **Primary Uses:**
-  * Providing and improving our services
-  * Personalizing your experience
-  * Ensuring community safety and moderation
-  * Communicating important updates
+**Primary Purposes:**  
+- **Service Delivery:** Enabling account creation, authentication, and core functionality.  
+- **User Experience:** Personalizing app settings and ensuring your preferences are respected.  
+- **Safety & Moderation:** Detecting abuse, enforcing Community Guidelines, and responding to reports.  
+- **Communication:** Sending important service announcements and critical security alerts.
+
   
-  **Analytics and Improvement:**
-  * Understanding how users interact with our platform
-  * Identifying areas for improvement
-  * Developing new features based on user needs
-  * Measuring the effectiveness of our mental health resources
+**Analytics & Improvement:**  
+- Aggregated, anonymous reports to understand how features are used.  
+- Identifying bugs, performance bottlenecks, and areas for product enhancement.  
+- Informing the development of new mental health resources and community tools.
   
-  We never sell your personal data to third parties or use it for advertising purposes outside of our platform.
-  
-  ## Data Sharing and Disclosure
-  
-  We limit data sharing to essential partners and only when necessary to provide our services or comply with legal requirements.
-  
-  **When We Share Data:**
-  * With service providers who help operate our platform
-  * When required by law or legal process
-  * To protect the safety of our users or the public
-  * In connection with a business transaction (with user notification)
-  
-  **What We Don't Share:**
-  * Personal information for marketing purposes
-  * Individual user data with other users (unless you choose to share)
-  * Content of private messages or anonymous posts
-  * Detailed analytics that could identify individual users
+ We will **never** sell your personal data or use it for third‑party advertising.
+
+  ## Data Sharing and Disclosure 
+
+We limit data sharing to essential partners and only when necessary to provide our services or comply with legal requirements.
+
+#### When We Share (Sacred Exchanges)
+| Scenario | Shared With | Safeguards |
+|----------|-------------|------------|
+| Crisis intervention | Emergency services | Your explicit consent first |
+| Legal requirement | Authorities | Court-ordered warrants only |
+| Service partners | Hosting providers | Strict confidentiality agreements |
+| Professional help | Therapists | Only what you share in sessions |
+
   
   ## Your Rights and Choices
   
@@ -155,19 +244,32 @@ export const policiesData = [
   * Manage data sharing settings
   * Set content filtering preferences
   
-  ## Data Security
+
+### Your Responsibilities
+* Never share passwords
+* Use anonymous usernames
+* Log out on public devices
+* Report suspicious activity
+
+
+## Data Security
   
-  We implement robust security measures to protect your information from unauthorized access, alteration, disclosure, or destruction.
+We implement robust security measures to protect your information from unauthorized access, alteration, disclosure, or destruction.
   
-  **Security Measures:**
+**Security Measures:**
   * End-to-end encryption for sensitive communications
   * Regular security audits and updates
   * Secure data storage with industry-standard protocols
   * Limited access controls for our team members
   
-  :::warning
-  While we implement strong security measures, no system is 100% secure. We encourage users to use strong passwords and report any suspicious activity.
-  :::
+  <div class="alert alert-warning">
+  <div class="alert-icon">⚠️</div>
+  <div class="alert-content">
+    While we implement strong security measures, no system is 100% secure. We encourage users to use strong passwords and report any suspicious activity.
+  </div>
+</div>
+  
+  
   
   **Incident Response:**
   In the unlikely event of a data breach, we will notify affected users within 72 hours and provide clear information about what happened and what steps we're taking.`,

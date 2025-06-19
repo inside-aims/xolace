@@ -704,6 +704,52 @@ code {
       padding-right: 5%;
     }
   }
+
+  /* Alert base styling */
+.alert {
+  padding: 16px;
+  border-radius: 8px;
+  margin: 20px 0;
+  display: flex;
+  align-items: flex-start;
+  border-left: 4px solid;
+}
+
+.alert-icon {
+  font-size: 1.5rem;
+  margin-right: 12px;
+  line-height: 1;
+}
+
+.alert-content {
+  flex: 1;
+  font-size: 12px;
+}
+
+/* Info variant */
+.alert-info {
+  background-color: #e0f2fe;
+  border-color: #0ea5e9;
+  color: #075985;
+}
+
+/* Warning variant */
+.alert-warning {
+  background-color: #fef3c7;
+  border-color: #f59e0b;
+  color: #92400e;
+}
+
+/* Tip variant */
+.alert-tip {
+  background-color: #dcfce7;
+  border-color: #10b981;
+  color: #047857;
+}
+
+.alert-bold-text{
+  color: black;
+}
 }
 
 @layer base {
