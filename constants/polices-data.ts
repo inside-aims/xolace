@@ -508,8 +508,8 @@ We uphold rigorous standards to keep AI trustworthy, fair, and secure.
       title: "Reporting & Safety Tools",
       description: "How to report concerns and stay safe on our platform",
       category: "Safety",
-      version: "1.0",
-      lastUpdated: "January 5, 2025",
+      version: "1.1",
+      lastUpdated: "June 19, 2025",
       sections: [
         { id: "reporting-process", title: "How to Report", level: 2 },
         { id: "safety-tools", title: "Available Safety Tools", level: 2 },
@@ -607,8 +607,8 @@ We publish quarterly reports on report volumes and outcomes always anonymized to
       title: "User Roles & Responsibilities",
       description: "Different types of users and their specific responsibilities",
       category: "Community",
-      version: "1.0",
-      lastUpdated: "October 18, 2024",
+      version: "1.1",
+      lastUpdated: "June 19, 2025",
       sections: [
         { id: "standard-users", title: "Standard Users", level: 2 },
         { id: "verified-professionals", title: "Verified Mental Health Professionals", level: 2 },

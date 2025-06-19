@@ -24,7 +24,7 @@ export function PolicyContent({ policy, activeSection, onSectionChange }: Policy
   useEffect(() => {
     // Calculate reading time (average 200 words per minute)
     const wordCount = policy.content.split(/\s+/).length
-    setReadingTime(Math.ceil(wordCount / 200))
+    setReadingTime(Math.ceil(wordCount / 80))
   }, [policy.content])
 
   const handlePrint = () => {
