@@ -4,12 +4,14 @@ export const policiesData = [
       title: "Campfire Code",
       description: "How we keep Xolace warm, safe, and supportive for all",
       category: "Community",
-      version: "2.1",
-      lastUpdated: "December 15, 2024",
+      version: "1.1",
+      lastUpdated: "June 19, 2025",
       sections: [
         { id: "campfire-culture", title: "Campfire Culture", level: 2 },
-        { id: "content-standards", title: "Content Standards", level: 2 },
+        { id: "the-sharing-circle", title: "The Sharing Circle", level: 2 },
+        { id: "guardians-professionals", title: "Guardians & Professionals", level: 2 },
         { id: "harassment-policy", title: "Harassment Policy", level: 2 },
+        { id: "fire-safety-protections", title: "Fire Safety Protections", level: 2 },
         { id: "reporting-violations", title: "Reporting Violations", level: 2 },
       ],
       content: `## Campfire Culture
@@ -142,11 +144,12 @@ export const policiesData = [
       title: "Privacy Sanctuary",
       description: "How we honor and protect your digital vulnerability",
       category: "Trust & Safety",
-      version: "1.0",
-      lastUpdated: "January 8, 2025",
+      version: "1.1",
+      lastUpdated: "June 19, 2025",
       sections: [
-        { id: "information-collection", title: "Information We Collect", level: 2 },
-        { id: "data-usage", title: "How We Use Your Data", level: 2 },
+        { id: "our-privacy-principles", title: "Our Privacy Principles", level: 2 },
+        {id: "information-we-collect", title: "Information We Collect", level: 2},
+        { id: "how-we-use-your-data", title: "How We Use Your Data", level: 2 },
         { id: "data-sharing", title: "Data Sharing and Disclosure", level: 2 },
         { id: "user-rights", title: "Your Rights and Choices", level: 2 },
         { id: "data-security", title: "Data Security", level: 2 },
@@ -212,7 +215,7 @@ At Xolace, privacy isn't a feature - it's the foundation of our campfire. We ope
 - Identifying bugs, performance bottlenecks, and areas for product enhancement.  
 - Informing the development of new mental health resources and community tools.
   
- We will **never** sell your personal data or use it for third‑party advertising.
+We will **never** sell your personal data or use it for third‑party advertising.
 
   ## Data Sharing and Disclosure 
 
@@ -279,8 +282,8 @@ We implement robust security measures to protect your information from unauthori
       title: "Terms of Service",
       description: "The legal agreement governing your use of Xolace",
       category: "Legal",
-      version: "2.3",
-      lastUpdated: "November 22, 2024",
+      version: "1.1",
+      lastUpdated: "June 19, 2025",
       sections: [
         { id: "welcome", title: "Welcome to the Campfire", level: 2 },
         { id: "acceptance-of-terms", title: "Acceptance of Terms", level: 2 },
@@ -417,8 +420,8 @@ Either you or Xolace may terminate your account under certain circumstances.
       title: "Our AI Principles",
       description: "How we ethically integrate artificial intelligence at your digital campfire",
       category: "Technology",
-      version: "1.5",
-      lastUpdated: "December 3, 2024",
+      version: "1.1",
+      lastUpdated: "June 19, 2025",
       sections: [
         { id: "ai-features", title: "AI Around the Campfire", level: 2 },
         { id: "ai-limitations", title: "Understanding AI Limitations", level: 2 },
@@ -505,7 +508,7 @@ We uphold rigorous standards to keep AI trustworthy, fair, and secure.
       title: "Reporting & Safety Tools",
       description: "How to report concerns and stay safe on our platform",
       category: "Safety",
-      version: "2.0",
+      version: "1.0",
       lastUpdated: "January 5, 2025",
       sections: [
         { id: "reporting-process", title: "How to Report", level: 2 },
@@ -604,7 +607,7 @@ We publish quarterly reports on report volumes and outcomes always anonymized to
       title: "User Roles & Responsibilities",
       description: "Different types of users and their specific responsibilities",
       category: "Community",
-      version: "1.8",
+      version: "1.0",
       lastUpdated: "October 18, 2024",
       sections: [
         { id: "standard-users", title: "Standard Users", level: 2 },
