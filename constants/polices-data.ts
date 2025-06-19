@@ -284,6 +284,7 @@ We implement robust security measures to protect your information from unauthori
       sections: [
         { id: "welcome", title: "Welcome to the Campfire", level: 2 },
         { id: "acceptance-of-terms", title: "Acceptance of Terms", level: 2 },
+        { id: "sanctuary-rules", title: "Sanctuary Rules", level: 2 },
         { id: "user-responsibilities", title: "User Responsibilities", level: 2 },
         { id: "service-availability", title: "Service Availability", level: 2 },
         { id: "intellectual-property", title: "Intellectual Property", level: 2 },
@@ -393,9 +394,9 @@ Protecting creators’ rights is core to our community ethos.
 - Our name and logo are protected trademarks
 - User-generated content remains the property of its creators
   
-  ## Account Termination
+## Account Termination
   
-  Either you or Xolace may terminate your account under certain circumstances.
+Either you or Xolace may terminate your account under certain circumstances.
   
 **User‑Initiated:**  
 - You can delete your account at any time via Settings → Privacy.  
