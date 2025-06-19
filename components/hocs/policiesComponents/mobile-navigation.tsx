@@ -4,9 +4,11 @@ import { Button } from "@/components/ui/button"
 //import { ModeToggle } from "@/components/mode-toggle"
 import { Menu, X, Search, Home, FileText } from "lucide-react"
 import { cn } from "@/lib/utils"
+import { useRouter } from "next/navigation"
+import { Policy } from "@/types"
 
 interface MobileNavigationProps {
-  policies: any[]
+  policies: Policy[]
   activePolicy: string
   onPolicyChange: (policyId: string) => void
   onSearchOpen: () => void
@@ -24,6 +26,7 @@ export function MobileNavigation({
   onToggle,
   className,
 }: MobileNavigationProps) {
+  const router = useRouter()
   const currentPolicy = policies.find((p) => p.id === activePolicy)
 
   return (
@@ -105,11 +108,9 @@ export function MobileNavigation({
 
               {/* Footer */}
               <div className="p-6 border-t border-slate-200 dark:border-slate-700">
-                <Button variant="ghost" className="w-full justify-start" asChild>
-                  <a href="/">
-                    <Home className="w-4 h-4 mr-2" />
-                    Back to Xolace
-                  </a>
+                <Button onClick={() => router.back()} variant="ghost" className="w-full justify-start">
+                  <Home className="w-4 h-4 mr-2" />
+                  Back to Xolace
                 </Button>
               </div>
             </div>

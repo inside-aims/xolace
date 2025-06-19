@@ -5,10 +5,11 @@ import { Button } from "@/components/ui/button"
 import { Search, Home, FileText, Shield, Users, Brain, AlertTriangle, Scale } from "lucide-react"
 import { cn } from "@/lib/utils"
 import { XolaceBadgeV1 } from "@/components/shared/xolace-name-badge"
-
+import { Policy } from "@/types"
+import { useRouter } from "next/navigation"
 
 interface PolicyNavigationProps {
-  policies: any[]
+  policies: Policy[]
   activePolicy: string
   onPolicyChange: (policyId: string) => void
   onSearchOpen: () => void
@@ -31,6 +32,7 @@ export function PolicyNavigation({
   onSearchOpen,
   className,
 }: PolicyNavigationProps) {
+    const router = useRouter()
   return (
     <nav
       className={cn(
@@ -105,11 +107,9 @@ export function PolicyNavigation({
 
         {/* Footer */}
         <div className="p-6 border-t border-slate-200 dark:border-slate-700">
-          <Button variant="ghost" className="w-full justify-start" asChild>
-            <a href="/">
-              <Home className="w-4 h-4 mr-2" />
-              Back to Xolace
-            </a>
+          <Button onClick={() => router.back()} variant="ghost" className="w-full justify-start">
+            <Home className="w-4 h-4 mr-2" />
+            Back to Xolace
           </Button>
         </div>
       </div>

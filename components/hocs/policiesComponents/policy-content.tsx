@@ -11,9 +11,10 @@ import remarkEmoji from "remark-emoji"
 import rehypeSlug from "rehype-slug"
 import rehypeHighlight from "rehype-highlight"
 import rehypeRaw from "rehype-raw"
+import { Policy } from "@/types"
 
 interface PolicyContentProps {
-  policy: any
+  policy: Policy
   activeSection: string
   onSectionChange: (sectionId: string) => void
 }
@@ -117,7 +118,7 @@ export function PolicyContent({ policy, activeSection, onSectionChange }: Policy
             Questions about this policy?
           </h3>
           <p className="text-slate-600 dark:text-slate-400 mb-4">
-            We're here to help. If you have any questions about our policies or need clarification on any point, don't
+            We&apos;re here to help. If you have any questions about our policies or need clarification on any point, don&apos;t
             hesitate to reach out.
           </p>
           <div className="flex flex-wrap gap-3">

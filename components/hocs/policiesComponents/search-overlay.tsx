@@ -1,3 +1,4 @@
+  /*eslint-disable @typescript-eslint/no-explicit-any*/
 "use client"
 
 import { useState, useEffect } from "react"
@@ -5,11 +6,12 @@ import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Badge } from "@/components/ui/badge"
 import { Search, X, FileText } from "lucide-react"
+import { Policy } from "@/types"
 
 interface SearchOverlayProps {
   isOpen: boolean
   onClose: () => void
-  policies: any[]
+  policies: Policy[]
   onPolicySelect: (policyId: string, sectionId?: string) => void
 }
 
@@ -110,7 +112,7 @@ export function SearchOverlay({ isOpen, onClose, policies, onPolicySelect }: Sea
             ) : results.length === 0 ? (
               <div className="p-8 text-center text-slate-500 dark:text-slate-400">
                 <FileText className="w-12 h-12 mx-auto mb-4 opacity-50" />
-                <p>No results found for "{query}"</p>
+                <p>No results found for &quot;{query}&quot;</p>
                 <p className="text-sm mt-2">Try different keywords or browse our policies directly</p>
               </div>
             ) : (
