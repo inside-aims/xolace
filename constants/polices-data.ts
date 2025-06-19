@@ -515,88 +515,89 @@ We uphold rigorous standards to keep AI trustworthy, fair, and secure.
       ],
       content: `## How to Report
   
-  Your safety and the safety of our community is our top priority. We provide multiple ways to report concerns and get help when you need it.
+  Your wellbeing—and the wellbeing of everyone at our digital campfire is our priority. If something feels wrong or unsafe, please let us know immediately.
   
-  **Reporting Methods:**
-  * Use the report button on any post, comment, or message
-  * Contact our safety team directly through the app
-  * Email safety@xolace.com for urgent matters
-  * Use our anonymous reporting form for sensitive issues
+ **Reporting Methods:**  
+- Tap the “Report” icon on any post, comment, or message  
+- Open in‑app Safety → Report an Issue to contact our team  
+- Email xolace25@gmail.com for urgent matters  
+- Submit via our anonymous reporting form for sensitive concerns  
   
-  **What to Report:**
-  * Harassment or bullying behavior
-  * Content that violates community guidelines
-  * Spam or inappropriate advertising
-  * Technical issues that affect safety
-  * Concerns about another user's wellbeing
+**What to Report:**  
+- Harassment, bullying, or hate speech  
+- Posts that break Community Guidelines (self‑harm content, disallowed media, spam)  
+- Suspicious behavior or potential scams  
+- Technical bugs that impede safe use  
+- Worrying signs about another user’s mental health
   
-  :::info
-  All reports are taken seriously and reviewed by trained safety professionals within 24 hours.
-  :::
+  <div class="alert alert-info">
+  <div class="alert-icon">ℹ️</div>
+  <div class="alert-content">
+   All reports are confidential and reviewed by trained safety professionals within 24 hours.  
+  </div>
+</div>
+  
   
   ## Available Safety Tools
   
   We provide comprehensive tools to help you control your experience and stay safe on Xolace.
   
-  **Blocking and Muting:**
-  * Block users to prevent all interaction
-  * Mute users to hide their content from your feed
-  * Temporary muting options for breaks
-  * Mass blocking tools for coordinated harassment
+**Blocking and Muting:**
+- **Block** a user to prevent all interaction  
+- **Mute** a user to hide their content from your feed
+
+**Auto‑Removal on Downvotes:**  
+- Posts that cross a configurable downvote threshold are automatically removed from public view.  
+- Users whose posts are removed will be notified and given an option to appeal.  
+
   
-  **Content Controls:**
-  * Filter content by keywords or topics
-  * Set content warnings for sensitive material
-  * Control who can message you directly
-  * Limit interactions from new accounts
+**Content Controls:**
+- Filter content by keywords or tags
+- Custom content warnings for sensitive material
+
   
-  **Privacy Settings:**
-  * Make your profile private or public
-  * Control who can see your posts and activity
-  * Manage your visibility in search results
-  * Set boundaries for community interactions
+## Crisis Resources
   
-  ## Crisis Resources
+If you or someone you know is in crisis, immediate help is available.
   
-  If you or someone you know is in crisis, immediate help is available.
+**Emergency Lines:**  
+- U.S. National Suicide Prevention Lifeline: 988  
+- Crisis Text Line: Text HOME to 741741  
+- International Suicide Hotlines: https://iasp.info/resources/Crisis_Centres/ 
   
-  **Emergency Contacts:**
-  * National Suicide Prevention Lifeline: 988
-  * Crisis Text Line: Text HOME to 741741
-  * International Association for Suicide Prevention: https://iasp.info/resources/Crisis_Centres/
+**In‑App Crisis Support:**  
+- 24/7 live chat with trained crisis counselors  
+- Immediate escalation when high‑risk language is detected  
+- Follow‑up check‑ins and tailored resource recommendations 
   
-  **Xolace Crisis Support:**
-  * 24/7 crisis chat available in the app
-  * Direct connection to trained crisis counselors
-  * Immediate escalation for users expressing suicidal thoughts
-  * Follow-up support and resource connections
+<div class="alert alert-warning">
+  <div class="alert-icon">⚠️</div>
+  <div class="alert-content">
+    If you’re thinking of self‑harm or suicide, reach out for help right now—you are not alone. 
+  </div>
+</div>
+
   
-  :::warning
-  If you're having thoughts of self-harm or suicide, please reach out for help immediately. You are not alone, and support is available.
-  :::
-  
-  ## Our Response Process
-  
-  We have established clear procedures for handling reports and ensuring appropriate action is taken.
-  
-  **Initial Response (0-2 hours):**
-  * Automated acknowledgment of your report
-  * Immediate action for urgent safety concerns
-  * Escalation to human reviewers for complex issues
-  
-  **Investigation (2-24 hours):**
-  * Thorough review by trained safety professionals
-  * Gathering additional context when needed
-  * Consultation with mental health experts for sensitive cases
-  
-  **Resolution and Follow-up:**
-  * Clear communication about actions taken
-  * Appeals process for disputed decisions
-  * Ongoing monitoring of resolved situations
-  * Support resources provided to affected users
-  
-  **Transparency:**
-  We publish quarterly transparency reports showing the volume and types of reports we receive and how they're resolved, while protecting user privacy.`,
+## Our Response Process
+
+We treat every report as a call to action swiftly and thoughtfully.
+
+**Acknowledge (0–2 hours):**  
+- Instant confirmation you’ve been heard  
+- Emergency flags escalated immediately to on‑call staff  
+
+**Investigate (2–24 hours):**  
+- Detailed review by safety specialists  
+- Consultation with mental health experts for high‑risk cases  
+- Collection of context, messages, and any relevant evidence  
+
+**Resolve & Follow‑Up:**  
+- Clear update on actions taken (content removal, user sanctions, etc.)  
+- Appeals process if you disagree with the outcome  
+- Support offered to affected users, including resources and check‑ins  
+
+**Transparency & Trust:**  
+We publish quarterly reports on report volumes and outcomes always anonymized to protect privacy.`,
     },
     {
       id: "user-roles",
@@ -613,98 +614,100 @@ We uphold rigorous standards to keep AI trustworthy, fair, and secure.
       ],
       content: `## Standard Users
   
-  Standard users are the heart of our community, and every member plays a vital role in maintaining our supportive environment.
+  Standard Users are the heart of our digital campfire your voices, stories, and support keep this community thriving.
   
-  **Rights and Privileges:**
-  * Full access to all community features
-  * Ability to create posts, comments, and messages
-  * Participation in community discussions and events
-  * Access to mental health resources and tools
+**Rights & Privileges:**  
+- Participate fully in discussions, posts, comments, and prompt responses  
+- Access mental health resources, daily prompts, and AI‐enabled tools (with credits)  
+- Customize privacy, notification, and content‑filter settings  
   
-  **Responsibilities:**
-  * Follow all community guidelines and terms of service
-  * Treat other users with respect and kindness
-  * Report concerning behavior or content
-  * Respect others' privacy and boundaries
+**Responsibilities:**  
+- Uphold our Community Guidelines: treat others with empathy and respect  
+- Respect anonymity, never solicit or share personal identities  
+- Report content or behavior that violates safety standards  
+- Contribute constructively, offering encouragement and support 
+
+---
   
-  **Community Participation:**
-  * Share experiences and insights thoughtfully
-  * Offer support and encouragement to others
-  * Engage constructively in discussions
-  * Help maintain a positive community atmosphere
+**Community Participation:**  
+- Share experiences and insights thoughtfully
+- Offer support and encouragement to others
+- Engage constructively in discussions
+- Help maintain a positive community atmosphere
   
-  ## Verified Mental Health Professionals
+## Verified Mental Health Professionals
+
+Licensed therapist and counselors who enrich our campfire with professional insight.
+
+**Verification Requirements:**  
+- Active, valid license in psychology, counseling, psychiatry, or related field  
+- Completion of Xolace’s platform orientation and ethics training  
+- Re‑verification every 24 months  
   
-  Licensed mental health professionals who have completed our verification process have additional capabilities and responsibilities.
+**Additional Privileges:**  
+- Professional badge displayed on profile and posts  
+- Access to private “Providers Lounge” discussion forum  
+- Ability to host live Q&A sessions and resource webinars  
+- Priority response in crisis escalations  
   
-  **Verification Requirements:**
-  * Valid professional license in mental health field
-  * Completion of our platform-specific training
-  * Agreement to additional ethical guidelines
-  * Regular re-verification every two years
+**Enhanced Responsibilities:**  
+- Clearly label professional advice vs. peer support  
+- Maintain strict confidentiality and boundary standards  
+- Refer users to emergency services when appropriate  
+- Collaborate with Xolace safety team on policy development
   
-  **Additional Capabilities:**
-  * Professional badge on profile and posts
-  * Ability to share professional resources
-  * Access to professional discussion areas
-  * Priority in crisis intervention situations
-  
-  **Enhanced Responsibilities:**
-  * Maintain professional boundaries at all times
-  * Clearly distinguish between professional advice and peer support
-  * Report to appropriate authorities when required by law
-  * Participate in ongoing platform safety initiatives
-  
-  :::warning
-  Verified professionals provide general information and support, not individual therapy or treatment. Always seek appropriate professional care for your specific needs.
-  :::
+<div class="alert alert-warning">
+  <div class="alert-icon">⚠️</div>
+  <div class="alert-content">
+    Verified professionals provide general information and support, not individual therapy or treatment. Always seek appropriate professional care for your specific needs.
+</div>
+</div>
   
   ## Community Moderators
   
   Experienced community members who help maintain our standards and support new users.
   
-  **Selection Process:**
-  * Demonstrated positive community engagement
-  * Strong understanding of community guidelines
-  * Completion of moderator training program
-  * Ongoing performance evaluation
+**Selection Criteria:**  
+- Demonstrated positive engagement and empathy  
+- Deep familiarity with Community Guidelines and platform tools  
+- Completion of Xolace moderator training
   
-  **Moderator Powers:**
-  * Remove content that violates guidelines
-  * Issue warnings and temporary restrictions
-  * Escalate serious issues to staff
-  * Guide community discussions
+**Moderator Powers:**
+- Remove content that violates guidelines
+- Issue warnings and temporary restrictions
+- Escalate serious issues to staff
+- Guide community discussions
   
-  **Moderator Responsibilities:**
-  * Apply guidelines fairly and consistently
-  * Communicate clearly with users about actions taken
-  * Participate in regular training and updates
-  * Maintain confidentiality of moderation activities
+**Moderator Responsibilities:**
+- Apply guidelines fairly and consistently
+- Communicate clearly with users about actions taken
+- Participate in regular training and updates
+- Maintain confidentiality of moderation activities
+
+---
   
-  ## Support Advocates
+## Support Advocates
+
+Empathetic volunteers trained to offer immediate, non‑clinical support and resource guidance.
+
+**Training & Certification:**  
+- Mental Health First Aid or equivalent  
+- Crisis intervention and de‑escalation techniques  
+- Xolace specific safety and escalation protocols  
+
+**Role & Functions:**  
+- Offer listening ear and emotional support in chats/posts  
+- Guide users toward appropriate resources (hotlines, articles, professionals)  
+- Conduct follow‑up check‑ins with users after critical incidents  
+- Liaise with Moderators and Professionals for complex needs  
   
-  Specially trained community members who provide additional support and guidance to users in need.
+**Boundaries:**  
+- Cannot provide formal therapy or medical advice  
+- Must escalate any legal or high‑risk situations immediately  
+- Maintain confidentiality; share only as required by law or policy
   
-  **Training Requirements:**
-  * Mental Health First Aid certification
-  * Crisis intervention training
-  * Platform-specific support protocols
-  * Regular continuing education
-  
-  **Support Advocate Role:**
-  * Provide immediate support to users in distress
-  * Connect users with appropriate resources
-  * Follow up with users after crisis situations
-  * Collaborate with professional staff when needed
-  
-  **Boundaries and Limitations:**
-  * Cannot provide professional therapy or counseling
-  * Must refer users to professionals when appropriate
-  * Maintain strict confidentiality
-  * Work within clearly defined scope of practice
-  
-  **Recognition and Support:**
-  Support Advocates receive ongoing training, supervision, and recognition for their valuable contributions to our community's wellbeing.`,
-    },
+**Recognition:**  
+Support Advocates receive ongoing supervision, continuing education, and community recognition for their vital role.`,
+    }
   ]
   
