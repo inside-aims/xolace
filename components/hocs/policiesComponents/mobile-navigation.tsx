@@ -31,7 +31,7 @@ export function MobileNavigation({
       {/* Mobile Header */}
       <header
         className={cn(
-          "sticky top-0 z-40 bg-white/80 dark:bg-slate-900/80 backdrop-blur-xl border-b border-slate-200 dark:border-slate-700",
+          "sticky top-0 z-40 bg-white/80 dark:bg-bg-dark/80 backdrop-blur-xl border-b border-slate-200 dark:border-slate-700",
           className,
         )}
       >
@@ -60,7 +60,7 @@ export function MobileNavigation({
       {isOpen && (
         <div className="fixed inset-0 z-30 bg-black/50 backdrop-blur-sm" onClick={() => onToggle(false)}>
           <div
-            className="fixed left-0 top-0 h-full w-80 bg-white dark:bg-slate-900 shadow-2xl"
+            className="fixed left-0 top-0 h-full w-80 bg-white dark:bg-bg-dark shadow-2xl"
             onClick={(e) => e.stopPropagation()}
           >
             <div className="flex flex-col h-full">
