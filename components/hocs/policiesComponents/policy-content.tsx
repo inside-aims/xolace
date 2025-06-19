@@ -122,7 +122,6 @@ export function PolicyContent({ policy, activeSection, onSectionChange }: Policy
           </p>
           <div className="flex flex-wrap gap-3">
             <Button variant="default">Contact Support</Button>
-            <Button variant="outline">View All Policies</Button>
           </div>
         </div>
       </footer>
