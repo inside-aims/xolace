@@ -28,14 +28,13 @@ export function AIChatButton() {
 
   if (isChatOpen) {
     return (
-      !preferences?.guided_tour_enabled && (
         <AIChatInterface
           isOpen={isChatOpen}
           onClose={handleCloseChat}
           isMinimized={isMinimized}
           onToggleMinimize={handleToggleMinimize}
       />
-    ));
+    );
   }
 
   return (
