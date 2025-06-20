@@ -1,12 +1,10 @@
-create type "public"."post_type" as enum ('single', 'carousel');
+
 
 drop function if exists "public"."create_post_with_tags"(content text, mood post_mood, expires_in_24hr boolean, duration post_duration, expires_at timestamp with time zone, tag_names text[], is_sensitive boolean, is_prompt_response boolean);
 
 alter table "public"."posts" alter column "mood" drop default;
 
-alter type "public"."post_mood" rename to "post_mood__old_version_to_be_dropped";
 
-create type "public"."post_mood" as enum ('neutral', 'confused', 'sad', 'happy', 'angry', 'thoughtful', 'chill', 'grateful', 'laughing', 'inspired', 'peaceful', 'melancholy', 'creative', 'nostalgic', 'motivated', 'excited', 'energetic');
 
 create table "public"."ai_credits" (
     "user_id" uuid not null,
@@ -17,13 +15,6 @@ create table "public"."ai_credits" (
 
 alter table "public"."ai_credits" enable row level security;
 
-create table "public"."post_slides" (
-    "id" uuid not null default gen_random_uuid(),
-    "post_id" uuid not null,
-    "slide_index" integer not null,
-    "content" text not null,
-    "created_at" timestamp with time zone default now()
-);
 
 
 alter table "public"."post_slides" enable row level security;
@@ -32,33 +23,21 @@ alter table "public"."posts" alter column mood type "public"."post_mood" using m
 
 alter table "public"."posts" alter column "mood" set default 'neutral'::post_mood;
 
-drop type "public"."post_mood__old_version_to_be_dropped";
 
 alter table "public"."health_tips" alter column "slug" set not null;
 
-alter table "public"."posts" add column "type" post_type not null default 'single'::post_type;
 
 CREATE UNIQUE INDEX ai_credits_pkey ON public.ai_credits USING btree (user_id);
 
-CREATE INDEX idx_post_slides_post_id ON public.post_slides USING btree (post_id);
 
-CREATE UNIQUE INDEX post_slides_pkey ON public.post_slides USING btree (id);
 
 alter table "public"."ai_credits" add constraint "ai_credits_pkey" PRIMARY KEY using index "ai_credits_pkey";
 
-alter table "public"."post_slides" add constraint "post_slides_pkey" PRIMARY KEY using index "post_slides_pkey";
 
 alter table "public"."ai_credits" add constraint "ai_credits_user_id_fkey" FOREIGN KEY (user_id) REFERENCES profiles(id) not valid;
 
 alter table "public"."ai_credits" validate constraint "ai_credits_user_id_fkey";
 
-alter table "public"."post_slides" add constraint "post_slides_content_max_length_check" CHECK ((length(content) <= 500)) not valid;
-
-alter table "public"."post_slides" validate constraint "post_slides_content_max_length_check";
-
-alter table "public"."post_slides" add constraint "post_slides_post_id_fkey" FOREIGN KEY (post_id) REFERENCES posts(id) ON DELETE CASCADE not valid;
-
-alter table "public"."post_slides" validate constraint "post_slides_post_id_fkey";
 
 set check_function_bodies = off;
 
@@ -347,30 +326,6 @@ as permissive
 for select
 to authenticated
 using (rls_helpers.is_same_user(user_id));
-
-
-create policy "Enable insert for authenticated users only"
-on "public"."feedbacks"
-as permissive
-for insert
-to authenticated
-with check (true);
-
-
-create policy "Enable insert for authenticated users only"
-on "public"."post_slides"
-as permissive
-for insert
-to authenticated
-with check (true);
-
-
-create policy "Enable read access for all authenticatedusers"
-on "public"."post_slides"
-as permissive
-for select
-to authenticated
-using (true);
 
 
 
