@@ -21,7 +21,7 @@ export const metadata: Metadata = {
   description: "Discover different stories , experiences from real and unique individuals as well as the community"
 };
 
-const EnhancedAIChatInterface = dynamic(() => import('@/components/chatbot-ai/enhanced-ai-chat-interface'));
+//const EnhancedAIChatInterface = dynamic(() => import('@/components/chatbot-ai/enhanced-ai-chat-interface'));
 
 // Function to fetch posts with a Supabase client
 // async function fetchPosts(supabase: any) {
@@ -119,7 +119,7 @@ export default async function FeedPage() {
       </div>
 
       {/* Enhanced Chat Interface */}
-      <EnhancedAIChatInterface />
+      {/* <EnhancedAIChatInterface /> */}
       <WelcomeModalCard />
     </TourProvider>
   );
