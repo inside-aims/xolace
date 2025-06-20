@@ -9,7 +9,7 @@ export type ChatMessage = {
     content: string;
   };
   
- export const chatConversation = async (messages: ChatMessage[]) => {
+ export const chatConversation = async () => {
     const nim = createOpenAICompatible({
         name: 'nim',
         baseURL: 'https://integrate.api.nvidia.com/v1',

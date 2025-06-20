@@ -1,4 +1,4 @@
-import React, { useState, useRef, useEffect } from 'react';
+import React, {  useRef, useEffect } from 'react';
 import { useChat } from '@ai-sdk/react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
@@ -20,7 +20,7 @@ import {
 } from 'lucide-react';
 import { cn } from '@/lib/utils';
 // import { readStreamableValue } from 'ai/rsc';
-import { continueConversation } from '@/app/api/v1/chatbot-ai/route';
+// import { continueConversation } from '@/app/api/v1/chatbot-ai/route';
 import ReactMarkdown from 'react-markdown';
 import { useOnlineStatus } from '@/hooks/use-online-status';
 import { toast } from 'sonner';
@@ -171,8 +171,6 @@ export function AIChatInterface({
     }
   };
 
-  if (!isOpen) return null;
-
   useEffect(() => {
     const cleanup = () => {
       if (timeoutRef.current) {
@@ -212,6 +210,10 @@ export function AIChatInterface({
 
     return cleanup;
   }, [isOnline]);
+
+  if (!isOpen) return null;
+
+
 
   const parsedErrorMessage = (() => {
     try {

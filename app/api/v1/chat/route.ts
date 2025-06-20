@@ -8,7 +8,7 @@ export async function POST(req: NextRequest) {
 
   const authToken = req.headers.get('authorization'); // forward user JWT from client if needed
   console.log("token" ,authToken)
-  const { supabase, response: supabaseResponse } = getSupabaseReqResClient({ request: req });
+  const { supabase } = getSupabaseReqResClient({ request: req });
   const { data } = await supabase.auth.getSession();
   console.log("data ",data)
 const token = data.session?.access_token ;

@@ -5,10 +5,12 @@ import { Button } from '@/components/ui/button';
 import { AIChatInterface } from './AiChatInterface';
 import { MessageCircle, Sparkles } from 'lucide-react';
 import { cn } from '@/lib/utils';
+import { usePreferencesStore } from '@/lib/store/preferences-store';
 
 export function AIChatButton() {
   const [isChatOpen, setIsChatOpen] = useState(false);
   const [isMinimized, setIsMinimized] = useState(false);
+  const { preferences } = usePreferencesStore();
 
   const handleOpenChat = () => {
     setIsChatOpen(true);
@@ -26,17 +28,18 @@ export function AIChatButton() {
 
   if (isChatOpen) {
     return (
-      <AIChatInterface
-        isOpen={isChatOpen}
-        onClose={handleCloseChat}
-        isMinimized={isMinimized}
-        onToggleMinimize={handleToggleMinimize}
+      !preferences?.guided_tour_enabled && (
+        <AIChatInterface
+          isOpen={isChatOpen}
+          onClose={handleCloseChat}
+          isMinimized={isMinimized}
+          onToggleMinimize={handleToggleMinimize}
       />
-    );
+    ));
   }
 
   return (
-    <div className="">
+    <div className={preferences?.guided_tour_enabled ? `hidden` : `block`}>
       <div className="relative">
         {/* Floating Action Button */}
         <Button
