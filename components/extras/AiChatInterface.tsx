@@ -26,6 +26,7 @@ import ReactMarkdown from 'react-markdown';
 import { useOnlineStatus } from '@/hooks/use-online-status';
 import { toast } from 'sonner';
 import { MessageAction } from '../prompt-kit/message';
+import BetaBadge from './beta-badge';
 
 // interface Message {
 //   id: string;
@@ -254,6 +255,7 @@ export function AIChatInterface({
                 <h3 className="text-foreground flex items-center gap-2 font-semibold">
                   Aniima AI
                   <Heart className="h-4 w-4 text-purple-500" />
+                  <BetaBadge size='sm' variant='neural' />
                 </h3>
                 <p className="text-muted-foreground text-xs dark:text-white">
                   Mental Health Companion
@@ -370,11 +372,11 @@ export function AIChatInterface({
                               <RefreshCcw className="h-4 w-4" />
                             </button>
                           </MessageAction>
-                          <MessageAction tooltip="copy" side="bottom">
+                          {/* <MessageAction tooltip="copy" side="bottom">
                             <button className="text-gray-400 transition-colors hover:text-gray-600">
                               <Copy className="h-4 w-4" />
                             </button>
-                          </MessageAction>
+                          </MessageAction> */}
                         </div>
                       )}
                     </div>
