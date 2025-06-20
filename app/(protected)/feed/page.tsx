@@ -1,5 +1,5 @@
 import type { Metadata } from 'next';
-import dynamic from 'next/dynamic'
+// import dynamic from 'next/dynamic'
 
 import FeedList from '@/components/shared/FeedList';
 import TourProvider from '@/components/shared/Tour/TourProvider';
