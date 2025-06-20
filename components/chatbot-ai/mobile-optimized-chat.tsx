@@ -28,7 +28,7 @@ export function MobileOptimizedChat() {
   const [isOpen, setIsOpen] = useState(false)
   const { preferences } = usePreferencesStore()
 
-  const { messages, input, setInput, handleSubmit, status, error, reload, stop } = useChat({
+  const { messages, input, setInput, handleSubmit, status, stop } = useChat({
     api: "/api/v1/chat",
     initialMessages: [
       {
