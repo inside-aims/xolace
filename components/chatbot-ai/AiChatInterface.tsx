@@ -15,18 +15,17 @@ import {
   X,
   Minimize2,
   Maximize2,
-  Copy,
   RefreshCcw,
   SquareX,
 } from 'lucide-react';
 import { cn } from '@/lib/utils';
-import { readStreamableValue } from 'ai/rsc';
+// import { readStreamableValue } from 'ai/rsc';
 import { continueConversation } from '@/app/api/v1/chatbot-ai/route';
 import ReactMarkdown from 'react-markdown';
 import { useOnlineStatus } from '@/hooks/use-online-status';
 import { toast } from 'sonner';
 import { MessageAction } from '../prompt-kit/message';
-import BetaBadge from './beta-badge';
+import BetaBadge from '../extras/beta-badge';
 
 // interface Message {
 //   id: string;
@@ -75,7 +74,7 @@ export function AIChatInterface({
     status,
     error,
     reload,
-    stop
+    stop,
   } = useChat({
     api: '/api/v1/chat',
     initialMessages: [
@@ -255,7 +254,7 @@ export function AIChatInterface({
                 <h3 className="text-foreground flex items-center gap-2 font-semibold">
                   Aniima AI
                   <Heart className="h-4 w-4 text-purple-500" />
-                  <BetaBadge size='sm' variant='neural' />
+                  <BetaBadge size="sm" variant="neural" />
                 </h3>
                 <p className="text-muted-foreground text-xs dark:text-white">
                   Mental Health Companion
@@ -319,10 +318,10 @@ export function AIChatInterface({
                     <div>
                       <div
                         className={cn(
-                          ' rounded-xl px-4 py-2 text-sm shadow-sm',
+                          'rounded-xl px-4 py-2 text-sm shadow-sm',
                           message.role === 'user'
-                            ? 'bg-ocean-400 text-white w-full'
-                            : `bg-neutral-100 text-neutral-800 max-w-[80%]`,
+                            ? 'bg-ocean-400 w-full text-white'
+                            : `max-w-[80%] bg-neutral-100 text-neutral-800`,
                         )}
                       >
                         {/* {message.parts.map((part, index) => {
@@ -365,10 +364,13 @@ export function AIChatInterface({
                         {/* </p> */}
                       </div>
 
-                      {(message.role != 'user' && status != "streaming") && (
+                      {message.role != 'user' && status != 'streaming' && (
                         <div className="mt-1 mb-2 flex items-center gap-2">
                           <MessageAction tooltip="Retry" side="bottom">
-                            <button className="text-gray-400 transition-colors hover:text-gray-600" onClick={()=> reload()}>
+                            <button
+                              className="text-gray-400 transition-colors hover:text-gray-600"
+                              onClick={() => reload()}
+                            >
                               <RefreshCcw className="h-4 w-4" />
                             </button>
                           </MessageAction>
@@ -448,7 +450,7 @@ export function AIChatInterface({
                 <Input
                   ref={inputRef}
                   value={input}
-                  onChange={(e) => setInput(e.target.value)}
+                  onChange={e => setInput(e.target.value)}
                   onKeyDown={handleKeyPress}
                   placeholder="Share your thoughts..."
                   className="border-border/50 flex-1 rounded-xl bg-white focus:ring-2 focus:ring-purple-200 dark:bg-gray-800 dark:focus:ring-purple-800"
