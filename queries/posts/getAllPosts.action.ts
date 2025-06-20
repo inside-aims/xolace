@@ -22,7 +22,11 @@ export const getAllPosts = async () => {
           views:views(count),
         collections(
           user_id
-        )  
+        ),
+        post_slides (
+            slide_index,
+            content
+          )  
     `,
     )
     .order('created_at', { ascending: false });

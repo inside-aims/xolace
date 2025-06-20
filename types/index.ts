@@ -34,3 +34,22 @@ export type Frontmatter = {
 };
 
 export type HealthTip = Frontmatter & { id: number };
+
+// interfaces/policy.ts
+
+export interface PolicySection {
+  id: string
+  title: string
+  level: number // e.g., 2 = h2, 3 = h3, etc.
+}
+
+export interface Policy {
+  id: string
+  title: string
+  description: string
+  category: 'Community' | 'Legal' | 'Safety' | 'Technology' | string
+  version: string
+  lastUpdated: string // e.g., "June 19, 2025"
+  sections: PolicySection[]
+  content: string // markdown content or serialized HTML
+}

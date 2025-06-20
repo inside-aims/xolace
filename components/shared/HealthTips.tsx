@@ -184,7 +184,7 @@ export default function HealthTips() {
                 <span>
                   <Link
                     className="hover:text-slate-200 hover:underline"
-                    href="/policy"
+                    href="/policies"
                   >
                     Privacy Policy
                   </Link>

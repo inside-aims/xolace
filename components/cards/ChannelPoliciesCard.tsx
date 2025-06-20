@@ -8,7 +8,7 @@ import { ShieldIcon } from 'lucide-react';
 const ChannelPoliciesCard = () => {
   return (
     <>
-      <Link href="/policy">
+      <Link href="/policies">
         <motion.div
           className="cursor-pointer rounded-lg bg-white p-6 text-center shadow-md transition-shadow duration-200 hover:shadow-lg dark:bg-gray-800"
           whileHover={{ scale: 1.03 }}
