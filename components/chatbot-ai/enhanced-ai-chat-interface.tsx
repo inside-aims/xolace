@@ -146,14 +146,15 @@ export default function EnhancedAIChatInterface() {
 //     return cleanup
 //   }, [isOnline])
 
-  const parsedErrorMessage = (() => {
-    try {
-      const parsed = JSON.parse(error?.message || "")
-      return parsed.error || "An unknown error occurred."
-    } catch {
-      return error?.message || "An unknown error occurred."
-    }
-  })()
+  const parsedErrorMessage = "Insufficient credits"
+//   (() => {
+//     try {
+//       const parsed = JSON.parse(error?.message || "")
+//       return parsed.error || "An unknown error occurred."
+//     } catch {
+//       return error?.message || "An unknown error occurred."
+//     }
+//   })()
 
 //   if (preferences?.guided_tour_enabled) {
 //     return null
