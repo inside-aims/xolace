@@ -173,7 +173,7 @@ export default function EnhancedAIChatInterface() {
       )}
 
       {/* Main Chat Container */}
-      <div className="fixed bottom-10 right-4 w-15  z-50 flex flex-col items-end">
+      <div className="fixed bottom-10 right-4 md:right-9 w-15  z-50 flex flex-col items-end">
         {/* Chat Interface */}
         <div
           className={cn(
@@ -188,7 +188,7 @@ export default function EnhancedAIChatInterface() {
               "bg-white transition-all duration-300 ease-out border-purple-200 overflow-hidden",
               "w-96 max-w-[calc(100vw-2rem)]",
               chatState === "minimized" && "h-16 shadow-lg",
-              chatState === "expanded" && "h-[600px] max-h-[calc(100vh-6rem)] shadow-2xl",
+              chatState === "expanded" && "h-[560px] max-h-[calc(100vh-9rem)] shadow-2xl",
             )}
           >
             {/* Header - Always Visible */}
@@ -264,7 +264,7 @@ export default function EnhancedAIChatInterface() {
 
             {/* Chat Content - Only when expanded */}
             {chatState === "expanded" && (
-              <CardContent className="flex h-[calc(600px-80px)] max-h-[calc(100vh-10rem)] flex-col p-0 overflow-hidden">
+              <CardContent className="flex h-[calc(560px-80px)] max-h-[calc(100vh-10rem)] flex-col p-0 overflow-hidden">
                 {/* Messages */}
                 <ScrollArea className="flex-1 p-4" ref={scrollAreaRef}>
                   <div className="space-y-4">
