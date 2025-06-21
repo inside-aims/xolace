@@ -24,7 +24,7 @@ import {
 } from "lucide-react"
 import { cn } from "@/lib/utils"
 import ReactMarkdown from "react-markdown"
-import { useOnlineStatus } from "@/hooks/use-online-status"
+//import { useOnlineStatus } from "@/hooks/use-online-status"
 import { toast } from "sonner"
 import { MessageAction } from "@/components/prompt-kit/message"
 import BetaBadge from "@/components/extras/beta-badge"
@@ -60,7 +60,7 @@ export default function EnhancedAIChatInterface() {
 
   const toastIdRef = useRef<string | number | null>(null)
   const timeoutRef = useRef<NodeJS.Timeout | null>(null)
-  const isOnline = useOnlineStatus()
+  const isOnline = true
   const scrollAreaRef = useRef<HTMLDivElement>(null)
   const inputRef = useRef<HTMLInputElement>(null)
 
