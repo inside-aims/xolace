@@ -42,6 +42,7 @@ const quickSuggestions = [
 ]
 
 export default function EnhancedAIChatInterface() {
+    console.log("EnhancedAIChatInterface")
   const [chatState, setChatState] = useState<ChatState>("closed")
   const [isAnimating, setIsAnimating] = useState(false)
   //const { preferences } = usePreferencesStore()
@@ -57,6 +58,8 @@ export default function EnhancedAIChatInterface() {
       },
     ],
   })
+
+  console.log("messages ", messages)
 
 //   const toastIdRef = useRef<string | number | null>(null)
 //   const timeoutRef = useRef<NodeJS.Timeout | null>(null)
