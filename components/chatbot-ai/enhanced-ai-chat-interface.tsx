@@ -25,10 +25,10 @@ import {
 import { cn } from "@/lib/utils"
 import ReactMarkdown from "react-markdown"
 //import { useOnlineStatus } from "@/hooks/use-online-status"
-import { toast } from "sonner"
+//import { toast } from "sonner"
 import { MessageAction } from "@/components/prompt-kit/message"
 import BetaBadge from "@/components/extras/beta-badge"
-import { usePreferencesStore } from "@/lib/store/preferences-store"
+//import { usePreferencesStore } from "@/lib/store/preferences-store"
 
 type ChatState = "closed" | "minimized" | "expanded"
 
@@ -44,7 +44,7 @@ const quickSuggestions = [
 export default function EnhancedAIChatInterface() {
   const [chatState, setChatState] = useState<ChatState>("closed")
   const [isAnimating, setIsAnimating] = useState(false)
-  const { preferences } = usePreferencesStore()
+  //const { preferences } = usePreferencesStore()
 
   const { messages, input, setInput, handleSubmit, status, error, reload, stop } = useChat({
     api: "/api/v1/chat",
@@ -58,8 +58,8 @@ export default function EnhancedAIChatInterface() {
     ],
   })
 
-  const toastIdRef = useRef<string | number | null>(null)
-  const timeoutRef = useRef<NodeJS.Timeout | null>(null)
+//   const toastIdRef = useRef<string | number | null>(null)
+//   const timeoutRef = useRef<NodeJS.Timeout | null>(null)
   const isOnline = true
   const scrollAreaRef = useRef<HTMLDivElement>(null)
   const inputRef = useRef<HTMLInputElement>(null)
@@ -109,42 +109,42 @@ export default function EnhancedAIChatInterface() {
     }
   }
 
-  useEffect(() => {
-    const cleanup = () => {
-      if (timeoutRef.current) {
-        clearTimeout(timeoutRef.current)
-        timeoutRef.current = null
-      }
-    }
+//   useEffect(() => {
+//     const cleanup = () => {
+//       if (timeoutRef.current) {
+//         clearTimeout(timeoutRef.current)
+//         timeoutRef.current = null
+//       }
+//     }
 
-    if (!isOnline) {
-      if (!toastIdRef.current) {
-        toastIdRef.current = toast.loading("Reconnecting...", {
-          duration: Number.POSITIVE_INFINITY,
-        })
-      }
+//     if (!isOnline) {
+//       if (!toastIdRef.current) {
+//         toastIdRef.current = toast.loading("Reconnecting...", {
+//           duration: Number.POSITIVE_INFINITY,
+//         })
+//       }
 
-      cleanup()
-      timeoutRef.current = setTimeout(() => {
-        if (!isOnline && toastIdRef.current) {
-          toast.error("You are offline. Please check your connection.", {
-            id: toastIdRef.current,
-            duration: 5000,
-          })
-          toastIdRef.current = null
-        }
-      }, 50000)
-    } else if (toastIdRef.current) {
-      cleanup()
-      toast.success("Reconnected", {
-        id: toastIdRef.current,
-        duration: 2000,
-      })
-      toastIdRef.current = null
-    }
+//       cleanup()
+//       timeoutRef.current = setTimeout(() => {
+//         if (!isOnline && toastIdRef.current) {
+//           toast.error("You are offline. Please check your connection.", {
+//             id: toastIdRef.current,
+//             duration: 5000,
+//           })
+//           toastIdRef.current = null
+//         }
+//       }, 50000)
+//     } else if (toastIdRef.current) {
+//       cleanup()
+//       toast.success("Reconnected", {
+//         id: toastIdRef.current,
+//         duration: 2000,
+//       })
+//       toastIdRef.current = null
+//     }
 
-    return cleanup
-  }, [isOnline])
+//     return cleanup
+//   }, [isOnline])
 
   const parsedErrorMessage = (() => {
     try {
@@ -155,9 +155,9 @@ export default function EnhancedAIChatInterface() {
     }
   })()
 
-  if (preferences?.guided_tour_enabled) {
-    return null
-  }
+//   if (preferences?.guided_tour_enabled) {
+//     return null
+//   }
 
   return (
     <>
