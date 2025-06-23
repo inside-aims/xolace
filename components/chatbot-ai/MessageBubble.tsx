@@ -40,15 +40,13 @@ export const MessageBubble: React.FC<MessageBubbleProps> = ({
         className={`flex max-w-[70%] flex-col ${message.role === 'user' ? 'items-end' : 'items-start'}`}
       >
         <div
-          className={`rounded-2xl px-4 py-3 break-words shadow-sm ${
+          className={`rounded-2xl px-4 py-3 text-xs break-words shadow-sm ${
             message.role === 'user'
               ? 'rounded-br-md bg-gradient-to-r from-purple-500 to-pink-500 text-white'
               : 'rounded-bl-md border border-gray-200 bg-gray-50 text-gray-800'
           } `}
         >
-          <p className="text-sm leading-relaxed">
-            <ReactMarkdown>{message.content}</ReactMarkdown>
-          </p>
+          <ReactMarkdown>{message.content}</ReactMarkdown>
         </div>
         {message.role !== 'user' && status !== 'streaming' && (
           <div className="mt-1 mb-2 flex items-center gap-2">
