@@ -2,13 +2,14 @@ import React, { useRef, useEffect } from 'react';
 import { ScrollArea } from '@/components/ui/scroll-area';
 import { MessageBubble } from './MessageBubble';
 import { TypingIndicator } from './TypingIndicator';
+import { type Message } from '@ai-sdk/react';
 
-interface Message {
-  id: string;
-  role: 'user' | 'assistant';
-  content: string;
-  timestamp: Date;
-}
+// interface Message {
+//   id: string;
+//   role: 'user' | 'assistant';
+//   content: string;
+//   timestamp: Date;
+// }
 
 interface MessageListProps {
   messages: Message[];

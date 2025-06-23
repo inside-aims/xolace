@@ -3,9 +3,8 @@ import { Bot, User } from 'lucide-react';
 
 interface Message {
   id: string;
-  role: 'user' | 'assistant';
+  role: 'user' | 'assistant' | 'data' | 'system';
   content: string;
-  timestamp: Date;
 }
 
 interface MessageBubbleProps {
@@ -39,12 +38,12 @@ export const MessageBubble: React.FC<MessageBubbleProps> = ({ message }) => {
         `}>
           <p className="text-sm leading-relaxed">{message.content}</p>
         </div>
-        <span className="text-xs text-gray-500 mt-1 px-1 opacity-75">
+        {/* <span className="text-xs text-gray-500 mt-1 px-1 opacity-75">
           {message.timestamp.toLocaleTimeString([], { 
             hour: '2-digit', 
             minute: '2-digit' 
           })}
-        </span>
+        </span> */}
       </div>
     </div>
   );
