@@ -47,6 +47,18 @@ export default function EnhancedAIChatInterface() {
   const [isAnimating, setIsAnimating] = useState(false)
   //const { preferences } = usePreferencesStore()
 
+  const [streamingEnabled, setStreamingEnabled] = useState(false)
+
+  useEffect(() => {
+    const hasStreams =
+      typeof window.ReadableStream !== "undefined" &&
+      typeof window.TextEncoderStream !== "undefined" &&
+      typeof window.TextDecoderStream !== "undefined"
+    setStreamingEnabled(hasStreams)
+  }, [])
+
+  console.log("support streaming ", streamingEnabled)
+
   const { messages, input, setInput, handleSubmit, status, error, reload, stop } = useChat({
     api: "/api/v1/chat",
     initialMessages: [
@@ -149,19 +161,21 @@ export default function EnhancedAIChatInterface() {
 //     return cleanup
 //   }, [isOnline])
 
-  const parsedErrorMessage = "Insufficient credits"
-//   (() => {
-//     try {
-//       const parsed = JSON.parse(error?.message || "")
-//       return parsed.error || "An unknown error occurred."
-//     } catch {
-//       return error?.message || "An unknown error occurred."
-//     }
-//   })()
+// More robust error parsing and logging
+const parsedErrorMessage = (() => {
+  if (!error) return null;
 
-//   if (preferences?.guided_tour_enabled) {
-//     return null
-//   }
+  console.error("Chat Error:", error); // Log the full error object to the console
+
+  try {
+    // Attempt to parse a JSON message
+    const parsed = JSON.parse(error.message);
+    return parsed.error || "An unexpected error occurred.";
+  } catch {
+    // Fallback to the raw error message
+    return error.message || "An unexpected error occurred.";
+  }
+})();
 
   return (
     <>
