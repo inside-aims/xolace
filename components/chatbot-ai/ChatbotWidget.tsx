@@ -32,7 +32,7 @@ export default function ChatbotWidget() {
   const timeoutRef = useRef<NodeJS.Timeout | null>(null)
   const isOnline = useOnlineStatus()
 
-  const { messages, input, setInput, handleSubmit, status, error, reload, stop } = useChat({
+  const { messages, input, setInput, handleSubmit } = useChat({
     api: "/api/v1/chat",
     initialMessages: [
       {
