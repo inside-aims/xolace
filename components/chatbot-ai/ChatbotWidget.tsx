@@ -22,7 +22,7 @@ export default function ChatbotWidget() {
   const timeoutRef = useRef<NodeJS.Timeout | null>(null)
   const isOnline = useOnlineStatus()
 
-  const { messages, input, setInput, handleSubmit , status} = useChat({
+  const { messages, input, setInput, handleSubmit , status, error} = useChat({
     api: "/api/v1/chat",
     initialMessages: [
       {
@@ -72,6 +72,23 @@ useEffect(() => {
 
   return cleanup
 }, [isOnline])
+
+// More robust error parsing and logging
+const parsedErrorMessage = (() => {
+  if (!error) return null;
+
+  console.error("Chat Error:", error); // Log the full error object to the console
+
+  try {
+    // Attempt to parse a JSON message
+    const parsed = JSON.parse(error.message);
+    return parsed.error || "An unexpected error occurred.";
+  } catch {
+    console.log("error ", error)
+    // Fallback to the raw error message
+    return error.message || "An unexpected error occurred.";
+  }
+})();
 
   // const handleSubmit = async (e: React.FormEvent) => {
   //   e.preventDefault();
@@ -164,7 +181,7 @@ useEffect(() => {
 
           {!isMinimized && (
             <>
-              <MessageList messages={messages} isTyping={status === "submitted"} />
+              <MessageList messages={messages} isTyping={status === "submitted"} error={parsedErrorMessage}/>
               <ChatInput
                 input={input}
                 setInput={setInput}

@@ -239,6 +239,12 @@
     100% { opacity: 1; }
   }
 
+  @keyframes shake {
+    0%, 100% { transform: translateX(0); }
+    25% { transform: translateX(-5px); }
+    75% { transform: translateX(5px); }
+  }
+
   /* Animation Utilities */
   --animate-accordion-down: accordion-down 0.2s ease-out;
   --animate-accordion-up: accordion-up 0.2s ease-out;
@@ -246,6 +252,7 @@
   --animate-gradient: gradient 8s linear infinite;
   --animate-spin-once: spin-once 0.5s ease-in-out;
   --animate-fade-in: fade-in 0.5s ease-in-out forwards;
+  --animate-shake: shake 0.5s ease-in-out;
 }
 
 @utility btn-depth {

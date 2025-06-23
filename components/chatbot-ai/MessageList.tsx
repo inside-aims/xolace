@@ -14,9 +14,10 @@ import { type Message } from '@ai-sdk/react';
 interface MessageListProps {
   messages: Message[];
   isTyping: boolean;
+  error: string | null;
 }
 
-export const MessageList: React.FC<MessageListProps> = ({ messages, isTyping }) => {
+export const MessageList: React.FC<MessageListProps> = ({ messages, isTyping, error }) => {
   const messagesEndRef = useRef<HTMLDivElement>(null);
 
   const scrollToBottom = () => {
@@ -35,6 +36,12 @@ export const MessageList: React.FC<MessageListProps> = ({ messages, isTyping }) 
         ))}
         
         {isTyping && <TypingIndicator />}
+
+        {error && (
+        <div className="mb-4 p-3 bg-red-50 border border-red-200 rounded-lg animate-shake">
+          <p className="text-red-600 text-sm">{error}</p>
+        </div>
+      )}
         <div ref={messagesEndRef} />
       </div>
     </ScrollArea>
