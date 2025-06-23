@@ -2,7 +2,9 @@
 
 import type React from "react"
 import { useRef, useEffect, useState } from "react"
-import { useChatDummy } from "@/components/extras/useChatDummy"
+import { useOnlineStatus } from "@/hooks/use-online-status"
+import { toast } from "sonner"
+import { useChat } from "@ai-sdk/react"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Card, CardContent } from "@/components/ui/card"
@@ -24,7 +26,6 @@ import {
 } from "lucide-react"
 import { cn } from "@/lib/utils"
 import ReactMarkdown from "react-markdown"
-//import { toast } from "sonner"
 import { MessageAction } from "@/components/prompt-kit/message"
 import BetaBadge from "@/components/extras/beta-badge"
 //import { usePreferencesStore } from "@/lib/store/preferences-store"
@@ -68,7 +69,7 @@ export default function EnhancedAIChatInterface() {
 
   console.log("support streaming ", streamingEnabled)
 
-  const { messages, input, setInput, handleSubmit, status, error, reload, stop } = useChatDummy({
+  const { messages, input, setInput, handleSubmit, status, error, reload, stop } = useChat({
     api: "/api/v1/chat",
     initialMessages: [
       {
@@ -82,9 +83,9 @@ export default function EnhancedAIChatInterface() {
 
   console.log("messages ", messages)
 
-//   const toastIdRef = useRef<string | number | null>(null)
-//   const timeoutRef = useRef<NodeJS.Timeout | null>(null)
-  const isOnline = true
+  const toastIdRef = useRef<string | number | null>(null)
+  const timeoutRef = useRef<NodeJS.Timeout | null>(null)
+  const isOnline = useOnlineStatus()
   const scrollAreaRef = useRef<HTMLDivElement>(null)
   const inputRef = useRef<HTMLInputElement>(null)
 
@@ -133,42 +134,42 @@ export default function EnhancedAIChatInterface() {
     }
   }
 
-//   useEffect(() => {
-//     const cleanup = () => {
-//       if (timeoutRef.current) {
-//         clearTimeout(timeoutRef.current)
-//         timeoutRef.current = null
-//       }
-//     }
+  useEffect(() => {
+    const cleanup = () => {
+      if (timeoutRef.current) {
+        clearTimeout(timeoutRef.current)
+        timeoutRef.current = null
+      }
+    }
 
-//     if (!isOnline) {
-//       if (!toastIdRef.current) {
-//         toastIdRef.current = toast.loading("Reconnecting...", {
-//           duration: Number.POSITIVE_INFINITY,
-//         })
-//       }
+    if (!isOnline) {
+      if (!toastIdRef.current) {
+        toastIdRef.current = toast.loading("Reconnecting...", {
+          duration: Number.POSITIVE_INFINITY,
+        })
+      }
 
-//       cleanup()
-//       timeoutRef.current = setTimeout(() => {
-//         if (!isOnline && toastIdRef.current) {
-//           toast.error("You are offline. Please check your connection.", {
-//             id: toastIdRef.current,
-//             duration: 5000,
-//           })
-//           toastIdRef.current = null
-//         }
-//       }, 50000)
-//     } else if (toastIdRef.current) {
-//       cleanup()
-//       toast.success("Reconnected", {
-//         id: toastIdRef.current,
-//         duration: 2000,
-//       })
-//       toastIdRef.current = null
-//     }
+      cleanup()
+      timeoutRef.current = setTimeout(() => {
+        if (!isOnline && toastIdRef.current) {
+          toast.error("You are offline. Please check your connection.", {
+            id: toastIdRef.current,
+            duration: 5000,
+          })
+          toastIdRef.current = null
+        }
+      }, 50000)
+    } else if (toastIdRef.current) {
+      cleanup()
+      toast.success("Reconnected", {
+        id: toastIdRef.current,
+        duration: 2000,
+      })
+      toastIdRef.current = null
+    }
 
-//     return cleanup
-//   }, [isOnline])
+    return cleanup
+  }, [isOnline])
 
 // More robust error parsing and logging
 const parsedErrorMessage = (() => {
@@ -181,10 +182,12 @@ const parsedErrorMessage = (() => {
     const parsed = JSON.parse(error.message);
     return parsed.error || "An unexpected error occurred.";
   } catch {
+    console.log("error ", error)
     // Fallback to the raw error message
     return error.message || "An unexpected error occurred.";
   }
 })();
+
 
   return (
     <>

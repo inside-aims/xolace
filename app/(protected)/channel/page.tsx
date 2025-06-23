@@ -43,7 +43,7 @@ const ChannelUpdateCard = dynamic(() => import('@/components/cards/ChannelUpdate
   ssr: false,
 });
 
-const EnhancedAIChatInterface = dynamic(() => import('@/components/chatbot-ai/enhanced-ai-chat-interface'), {
+const ChatbotWidget = dynamic(() => import('@/components/chatbot-ai/ChatbotWidget'), {
   ssr: false
 });
 
@@ -131,7 +131,7 @@ const Channel = () => {
           </AnimatePresence>
         </div>
 
-        <EnhancedAIChatInterface />
+        <ChatbotWidget />
       </div>
     </div>
   );
