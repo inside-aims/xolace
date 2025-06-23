@@ -18,21 +18,11 @@ import { useChat } from '@ai-sdk/react';
 export default function ChatbotWidget() {
   const [isOpen, setIsOpen] = useState(false);
   const [isMinimized, setIsMinimized] = useState(false);
-  // const [messages, setMessages] = useState<Message[]>([
-  //   {
-  //     id: '1',
-  //     role: 'assistant',
-  //     content: "Hello! I'm Aniima AI, your mental health companion. How are you feeling today? I'm here to listen and support you.",
-  //     timestamp: new Date(),
-  //   },
-  // ]);
-  // const [input, setInput] = useState('');
-  const [isTyping, setIsTyping] = useState(false);
   const toastIdRef = useRef<string | number | null>(null)
   const timeoutRef = useRef<NodeJS.Timeout | null>(null)
   const isOnline = useOnlineStatus()
 
-  const { messages, input, setInput, handleSubmit } = useChat({
+  const { messages, input, setInput, handleSubmit , status} = useChat({
     api: "/api/v1/chat",
     initialMessages: [
       {
@@ -174,7 +164,7 @@ useEffect(() => {
 
           {!isMinimized && (
             <>
-              <MessageList messages={messages} isTyping={isTyping} />
+              <MessageList messages={messages} isTyping={status === "submitted"} />
               <ChatInput
                 input={input}
                 setInput={setInput}
