@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { MessageCircle } from 'lucide-react';
+import { MessageCircle, Sparkles } from 'lucide-react';
 import { useOnlineStatus } from '@/hooks/use-online-status';
 import { Button } from '@/components/ui/button';
 import { toast } from 'sonner';
@@ -144,13 +144,13 @@ const parsedErrorMessage = (() => {
   };
 
   return (
-    <div className="fixed bottom-4 right-4 z-50 sm:bottom-6 sm:right-6">
+    <div className="fixed bottom-10 right-4 z-50 sm:bottom-6 sm:right-6">
       {/* Floating Action Button */}
       <Button
         onClick={toggleOpen}
         className={`
-          w-14 h-14 sm:w-16 sm:h-16 rounded-full bg-gradient-to-r from-purple-500 to-pink-500 
-          hover:from-purple-600 hover:to-pink-600 shadow-lg hover:shadow-xl 
+          h-12 w-12 sm:w-16 sm:h-16 rounded-full bg-gradient-to-r from-lavender-500 to-pink-500 
+          hover:from-lavender-600 hover:to-pink-600 shadow-lg hover:shadow-xl 
           transition-all duration-300 ease-out
           ${isOpen 
             ? 'scale-75 opacity-60' 
@@ -159,7 +159,10 @@ const parsedErrorMessage = (() => {
         `}
         disabled={isOpen}
       >
-        <MessageCircle className="w-6 h-6 sm:w-8 sm:h-8 text-white" />
+        <div className="relative">
+          <MessageCircle className="w-6 h-6 sm:w-8 sm:h-8 text-white" />
+          <Sparkles className="absolute -top-1 right-1 h-3 w-3 animate-spin text-white/80" />
+        </div>
       </Button>
 
       {/* Chat Interface */}
@@ -177,6 +180,7 @@ const parsedErrorMessage = (() => {
             isOnline={isOnline}
             onMinimize={toggleMinimize}
             onClose={closeChat}
+            isMinimized={isMinimized}
           />
 
           {!isMinimized && (

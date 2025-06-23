@@ -6,12 +6,14 @@ interface ChatHeaderProps {
   isOnline: boolean;
   onMinimize: () => void;
   onClose: () => void;
+  isMinimized: boolean;
 }
 
 export const ChatHeader: React.FC<ChatHeaderProps> = ({
   isOnline,
   onMinimize,
   onClose,
+  isMinimized,
 }) => {
   return (
     <div className="bg-gradient-to-r from-purple-500 to-pink-500 p-3 sm:p-4 flex items-center justify-between flex-shrink-0">
@@ -36,7 +38,7 @@ export const ChatHeader: React.FC<ChatHeaderProps> = ({
           size="sm"
           className="text-white hover:bg-white/20 p-1 h-7 w-7 sm:h-8 sm:w-8"
         >
-          <Minus className="w-3 h-3 sm:w-4 sm:h-4" />
+           <Minus className={`h-4 w-4 transition-transform duration-200 ${isMinimized ? "rotate-90" : "rotate-0"}`} />
         </Button>
         <Button
           onClick={onClose}
