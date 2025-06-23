@@ -1,5 +1,9 @@
 // polyfills.ts
-import {ReadableStream} from 'web-streams-polyfill/ponyfill/es6'
-if (typeof window.ReadableStream === 'undefined')      window.ReadableStream = ReadableStream as any
-
+if (typeof window !== "undefined") {
+    import("web-streams-polyfill/ponyfill/es6").then(({ ReadableStream }) => {
+      if (typeof window.ReadableStream === "undefined") {
+        window.ReadableStream = ReadableStream as any
+      }
+    })
+  }
 

@@ -57,6 +57,16 @@ export default function EnhancedAIChatInterface() {
     setStreamingEnabled(hasStreams)
   }, [])
 
+  console.log(
+    'ReadableStream supported?', 
+    typeof window.ReadableStream !== 'undefined',
+    '\nTextEncoderStream supported?', 
+    typeof window.TextEncoderStream !== 'undefined',
+    '\nTextDecoderStream supported?', 
+    typeof window.TextDecoderStream !== 'undefined'
+  )
+  
+
   console.log("support streaming ", streamingEnabled)
 
   const { messages, input, setInput, handleSubmit, status, error, reload, stop } = useChat({
