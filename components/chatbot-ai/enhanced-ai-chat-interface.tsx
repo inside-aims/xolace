@@ -2,7 +2,8 @@
 
 import type React from "react"
 import { useRef, useEffect, useState } from "react"
-import { useChat } from "@ai-sdk/react"
+//import { useChat } from "@ai-sdk/react"
+import { useChatDummy } from "@/components/extras/useChatDummy"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Card, CardContent } from "@/components/ui/card"
@@ -47,7 +48,7 @@ export default function EnhancedAIChatInterface() {
   const [isAnimating, setIsAnimating] = useState(false)
   //const { preferences } = usePreferencesStore()
 
-  const [streamingEnabled, setStreamingEnabled] = useState(false)
+  const [streamingEnabled, setStreamingEnabled] = useState(true)
 
   useEffect(() => {
     const hasStreams =
@@ -69,7 +70,7 @@ export default function EnhancedAIChatInterface() {
 
   console.log("support streaming ", streamingEnabled)
 
-  const { messages, input, setInput, handleSubmit, status, error, reload, stop } = useChat({
+  const { messages, input, setInput, handleSubmit, status, error, reload, stop } = useChatDummy({
     api: "/api/v1/chat",
     initialMessages: [
       {
