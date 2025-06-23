@@ -15,9 +15,10 @@ interface MessageListProps {
   messages: Message[];
   isTyping: boolean;
   error: string | null;
+  reload: () => void;
 }
 
-export const MessageList: React.FC<MessageListProps> = ({ messages, isTyping, error }) => {
+export const MessageList: React.FC<MessageListProps> = ({ messages, isTyping, error, reload }) => {
   const messagesEndRef = useRef<HTMLDivElement>(null);
 
   const scrollToBottom = () => {
@@ -32,7 +33,7 @@ export const MessageList: React.FC<MessageListProps> = ({ messages, isTyping, er
     <ScrollArea className="flex-1 p-3 sm:p-4 min-h-0">
       <div className="space-y-4">
         {messages.map((message) => (
-          <MessageBubble key={message.id} message={message} />
+          <MessageBubble key={message.id} message={message} reload={reload} />
         ))}
         
         {isTyping && <TypingIndicator />}

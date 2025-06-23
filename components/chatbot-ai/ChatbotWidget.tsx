@@ -22,7 +22,7 @@ export default function ChatbotWidget() {
   const timeoutRef = useRef<NodeJS.Timeout | null>(null)
   const isOnline = useOnlineStatus()
 
-  const { messages, input, setInput, handleSubmit , status, error} = useChat({
+  const { messages, input, setInput, handleSubmit , status, error , stop, reload} = useChat({
     api: "/api/v1/chat",
     initialMessages: [
       {
@@ -181,12 +181,14 @@ const parsedErrorMessage = (() => {
 
           {!isMinimized && (
             <>
-              <MessageList messages={messages} isTyping={status === "submitted"} error={parsedErrorMessage}/>
+              <MessageList messages={messages} isTyping={status === "submitted"} error={parsedErrorMessage} reload={reload}/>
               <ChatInput
                 input={input}
                 setInput={setInput}
                 onSubmit={handleSubmit}
                 isOnline={isOnline}
+                streaming={status === "streaming"}
+                stop={stop}
               />
             </>
           )}
