@@ -8,12 +8,12 @@ import { MessageList } from './MessageList';
 import { ChatInput } from './ChatInput';
 import { useChat } from '@ai-sdk/react';
 
-interface Message {
-  id: string;
-  role: 'user' | 'assistant';
-  content: string;
-  timestamp: Date;
-}
+// interface Message {
+//   id: string;
+//   role: 'user' | 'assistant';
+//   content: string;
+//   timestamp: Date;
+// }
 
 export default function ChatbotWidget() {
   const [isOpen, setIsOpen] = useState(false);
