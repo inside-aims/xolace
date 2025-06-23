@@ -2,7 +2,6 @@
 
 import type React from "react"
 import { useRef, useEffect, useState } from "react"
-//import { useChat } from "@ai-sdk/react"
 import { useChatDummy } from "@/components/extras/useChatDummy"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
@@ -25,7 +24,6 @@ import {
 } from "lucide-react"
 import { cn } from "@/lib/utils"
 import ReactMarkdown from "react-markdown"
-//import { useOnlineStatus } from "@/hooks/use-online-status"
 //import { toast } from "sonner"
 import { MessageAction } from "@/components/prompt-kit/message"
 import BetaBadge from "@/components/extras/beta-badge"
