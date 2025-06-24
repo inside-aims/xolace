@@ -1,7 +1,6 @@
 import React from 'react';
 import { Bot, X, Minus, Circle } from 'lucide-react';
 import { Button } from '@/components/ui/button';
-import BetaBadge from "@/components/extras/beta-badge"
 
 interface ChatHeaderProps {
   isOnline: boolean;
@@ -30,7 +29,6 @@ export const ChatHeader: React.FC<ChatHeaderProps> = ({
         <div>
           <div className='flex items-center gap-2'>
           <h3 className="text-white font-semibold text-base sm:text-lg">Aniima AI</h3>
-          <BetaBadge size="sm" variant="neural"/>
           </div>
           <p className="text-purple-100 text-xs">Your mental health companion</p>
         </div>
