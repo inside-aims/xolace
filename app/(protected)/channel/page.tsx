@@ -43,6 +43,10 @@ const ChannelUpdateCard = dynamic(() => import('@/components/cards/ChannelUpdate
   ssr: false,
 });
 
+const ChatbotWidget = dynamic(() => import('@/components/chatbot-ai/ChatbotWidget'), {
+  ssr: false
+});
+
 const Channel = () => {
   const [activeTab, setActiveTab] = useState('about');
 
@@ -126,6 +130,8 @@ const Channel = () => {
             </motion.div>
           </AnimatePresence>
         </div>
+
+        <ChatbotWidget />
       </div>
     </div>
   );
