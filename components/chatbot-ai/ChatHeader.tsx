@@ -22,7 +22,7 @@ export const ChatHeader: React.FC<ChatHeaderProps> = ({
           <Bot className="w-6 h-6 sm:w-8 sm:h-8 text-white" />
           <Circle 
             className={`absolute -bottom-1 -right-1 w-3 h-3 transition-colors duration-300 ${
-              isOnline ? 'text-green-400 fill-green-400' : 'text-gray-400 fill-gray-400'
+              isOnline ? 'text-green-400 fill-green-400' : 'text-rose-400 fill-rose-400'
             }`} 
           />
         </div>

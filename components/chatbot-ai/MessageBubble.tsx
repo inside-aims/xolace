@@ -60,12 +60,6 @@ export const MessageBubble: React.FC<MessageBubbleProps> = ({
             </MessageAction>
           </div>
         )}
-        {/* <span className="text-xs text-gray-500 mt-1 px-1 opacity-75">
-          {message.timestamp.toLocaleTimeString([], { 
-            hour: '2-digit', 
-            minute: '2-digit' 
-          })}
-        </span> */}
       </div>
     </div>
   );
