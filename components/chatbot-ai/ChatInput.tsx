@@ -49,6 +49,7 @@ export const ChatInput: React.FC<ChatInputProps> = ({
           )}
         </Button>
       </form>
+      <p className="text-[10px] text-gray-500">Aniima AI is not a substitute for professional medical advice, diagnosis, or treatment. It may be bias sometimes so please use carefully</p>
       {!isOnline && (
         <p className="mt-2 text-xs text-red-500">
           You&apos;re currently offline. Please check your connection.

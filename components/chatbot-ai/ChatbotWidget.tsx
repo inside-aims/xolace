@@ -183,7 +183,7 @@ export default function ChatbotWidget() {
       {/* Chat Interface */}
       {isOpen && (
         <div
-          className={`absolute right-0 bottom-16 flex max-h-[90vh] flex-col overflow-hidden rounded-2xl border border-gray-200 bg-white shadow-2xl transition-all duration-300 ease-out sm:bottom-20 ${isMinimized ? 'h-16 w-80 sm:w-96' : 'h-[500px] w-80 sm:h-[600px] sm:w-96'} `}
+          className={`absolute right-0 bottom-16 flex max-h-[90vh] flex-col overflow-hidden rounded-2xl border border-gray-200 bg-white shadow-2xl transition-all duration-300 ease-out sm:bottom-20 ${isMinimized ? 'h-16 w-[90vw] sm:w-96' : 'h-[500px] w-[90vw] sm:h-[600px] sm:w-96'} `}
         >
           <ChatHeader
             isOnline={isOnline}
