@@ -1,4 +1,5 @@
 import type { Metadata } from 'next';
+// import dynamic from 'next/dynamic'
 
 import FeedList from '@/components/shared/FeedList';
 import TourProvider from '@/components/shared/Tour/TourProvider';
@@ -13,11 +14,14 @@ import {
   QueryClient,
 } from '@tanstack/react-query';
 import { getAllPosts } from '@/queries/posts/getAllPosts.action';
+// import { EnhancedAIChatInterface } from '@/components/chatbot-ai/enhanced-ai-chat-interface';
 
 export const metadata: Metadata = {
   title: 'Feed',
   description: "Discover different stories , experiences from real and unique individuals as well as the community"
 };
+
+//const EnhancedAIChatInterface = dynamic(() => import('@/components/chatbot-ai/enhanced-ai-chat-interface'));
 
 // Function to fetch posts with a Supabase client
 // async function fetchPosts(supabase: any) {
@@ -110,9 +114,12 @@ export default async function FeedPage() {
           <FeedList />
         </HealthTipsWrapper>
       </HydrationBoundary>
-      <div className="fixed right-6 bottom-10 z-50 block rounded-full md:right-20 md:bottom-10">
+      <div className="fixed right-6 bottom-10 z-50 block rounded-full md:right-20 md:bottom-10 bg-green-500">
         <TourButton />
       </div>
+
+      {/* Enhanced Chat Interface */}
+      {/* <EnhancedAIChatInterface /> */}
       <WelcomeModalCard />
     </TourProvider>
   );

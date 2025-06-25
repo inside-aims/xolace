@@ -68,4 +68,14 @@ export const logs = [
       '- 🐱 Meet Flex: Xolace’s new friendly mascot!',
     ],
   },
+  {
+    version: '2.1',
+    date: 'June 25, 2025',
+    title: 'Introducing Aniima AI chatbot',
+    changes: [
+      '**Release of Aniima AI chatbot BETA**',
+      '- 🛠️ design: Intrusively designed chat interface ',
+      '- 📲 AI : Aniima AI is your AI companion to help you navigate your thoughts and feelings.',
+    ],
+  },
 ];
