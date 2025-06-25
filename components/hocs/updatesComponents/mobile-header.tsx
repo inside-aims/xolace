@@ -1,7 +1,6 @@
 "use client"
 
-import { Activity, Bell, Settings } from "lucide-react"
-import { Button } from "@/components/ui/button"
+import { Activity } from "lucide-react"
 import { useRouter } from "next/navigation"
 import { ArrowLeft } from "lucide-react"
 

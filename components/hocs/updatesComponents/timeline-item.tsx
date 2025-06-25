@@ -7,11 +7,9 @@ import {
   Calendar,
   Sparkles,
   Rocket,
-  Activity,
   Zap,
   RefreshCw,
   Clock,
-  MessageCircle,
 } from 'lucide-react';
 
 interface TimelineItemProps {
