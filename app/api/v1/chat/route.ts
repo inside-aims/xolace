@@ -7,12 +7,9 @@ export async function POST(req: NextRequest) {
   const supabaseEdgeFunctionURL = `${process.env.NEXT_PUBLIC_SUPABASE_URL}/functions/v1/nvidia-api-integration`;
 
   const authToken = req.headers.get('authorization'); // forward user JWT from client if needed
-  console.log("token" ,authToken)
   const { supabase } = getSupabaseReqResClient({ request: req });
   const { data } = await supabase.auth.getSession();
-  console.log("data ",data)
 const token = data.session?.access_token ;
-console.log("token ",token)
   //const incomingBody = await req.text(); // streamable forward
 
   const response = await fetch(supabaseEdgeFunctionURL, {

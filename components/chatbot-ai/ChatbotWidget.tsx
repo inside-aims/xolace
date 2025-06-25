@@ -78,14 +78,12 @@ export default function ChatbotWidget() {
   const parsedErrorMessage = (() => {
     if (!error) return null;
 
-    console.error('Chat Error:', error); // Log the full error object to the console
 
     try {
       // Attempt to parse a JSON message
       const parsed = JSON.parse(error.message);
       return parsed.error || 'An unexpected error occurred.';
     } catch {
-      console.log('error ', error);
       // Fallback to the raw error message
       return error.message || 'An unexpected error occurred.';
     }
