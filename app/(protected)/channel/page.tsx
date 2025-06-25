@@ -3,11 +3,6 @@
 import React, { useState, useMemo } from 'react';
 import dynamic from 'next/dynamic';
 import { motion, AnimatePresence } from 'framer-motion';
-// import ChannelPoliciesCard from '@/components/cards/ChannelPoliciesCard';
-// import ChannelQuestionsCard from '@/components/cards/ChannelQuestionsCard';
-// import ChannelContributionCard from '@/components/cards/ChannelContributionCard';
-// import ChannelAboutCard from '@/components/cards/ChannelAboutCard';
-// import ChannelUpdateCard from '@/components/cards/ChannelUpdateCard';
 import {
   ImageOffIcon as MaskOffIcon,
   UserIcon,
@@ -15,6 +10,7 @@ import {
   HelpCircleIcon,
   HeartIcon,
 } from 'lucide-react';
+import { useUserState } from '@/lib/store/user';
 
 
 // Dynamically import non-critical components
@@ -48,6 +44,7 @@ const ChatbotWidget = dynamic(() => import('@/components/chatbot-ai/ChatbotWidge
 });
 
 const Channel = () => {
+  const { user } = useUserState();
   const [activeTab, setActiveTab] = useState('about');
 
   // const tabs = [
@@ -131,7 +128,9 @@ const Channel = () => {
           </AnimatePresence>
         </div>
 
-        <ChatbotWidget />
+        {
+          user && !user.is_anonymous && <ChatbotWidget />
+        }
       </div>
     </div>
   );
