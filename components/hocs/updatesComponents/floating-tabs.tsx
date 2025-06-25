@@ -34,7 +34,7 @@ export function FloatingTabs({ activeTab, onTabChange, releasedCount, upcomingCo
   ]
 
   return (
-    <div className="sticky top-16 z-40 px-4 py-3 bg-gray-50/80 backdrop-blur-md dark:bg-gray-900/80">
+    <div className="sticky top-16 z-40  py-3 bg-gray-50/80 backdrop-blur-md dark:bg-bg-dark/80">
       <div className="flex items-center gap-2 overflow-x-auto scrollbar-hide">
         {tabs.map((tab) => (
           <motion.button

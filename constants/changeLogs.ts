@@ -36,7 +36,7 @@ export const updates: UpdateLog[] = [
     version: '1.1',
     date: 'February 25, 2025',
     title: 'New UI and Activities Feature',
-    type: "major",
+    type: "minor",
     status: "released",
     changes: [
       '**New UI**',
@@ -96,6 +96,22 @@ export const updates: UpdateLog[] = [
       '**Release of Aniima AI chatbot BETA**',
       '- 🛠️ design: Intrusively designed chat interface ',
       '- 📲 AI : Aniima AI is your AI companion to help you navigate your thoughts and feelings.',
+    ],
+  },
+  {
+    version: "2.2",
+    date: "March 15, 2025",
+    title: "Community Features & Enhanced Security",
+    type: "major",
+    status: "upcoming",
+    changes: [
+      "**Community Hub**",
+      "- 👥 Group discussions: Create and join topic-based discussion groups.",
+      "- 🏆 Achievement system: Earn badges for wellness milestones.",
+      "- 📊 Community insights: View aggregated wellness trends.",
+      "**Security Enhancements**",
+      "- 🔐 Two-factor authentication: Enhanced account security.",
+      "- 🛡️ Privacy controls: Granular privacy settings for your data.",
     ],
   },
 ];
