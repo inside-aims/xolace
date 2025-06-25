@@ -67,7 +67,7 @@ export function TimelineView({
               On the Horizon
             </h2>
             <p className="text-muted-foreground mx-auto max-w-2xl">
-              Exciting features we're working on to enhance your Digital
+              Exciting features we&apos;re working on to enhance your Digital
               Campfire experience
             </p>
           </div>
