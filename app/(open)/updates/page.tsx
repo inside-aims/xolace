@@ -1,47 +1,95 @@
 "use client"
 
-import React from 'react';
-import { useRouter } from 'next/navigation';
-import { logs } from '@/constants/changeLogs';
-import { ArrowLeft } from 'lucide-react';
+import { Badge } from "@/components/ui/badge"
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
+import { Calendar, Sparkles, Rocket, Activity, Zap, RefreshCw, Clock, MessageCircle } from "lucide-react"
+import { useState } from "react"
+import { getVersionColor } from "@/utils/helpers/updateHelpers";
+import { updates } from "@/constants/changeLogs";
+import { MobileHeader } from "@/components/hocs/updatesComponents/mobile-header";
+import { FloatingTabs } from "@/components/hocs/updatesComponents/floating-tabs"
+import { TimelineView } from "@/components/hocs/updatesComponents/timeline-view"
 
-const UpdatesPage = () => {
-    const router = useRouter()
+const upcomingFeatures = [
+  {
+    title: "AI Wellness Coach",
+    description: "Personalized AI-powered wellness recommendations",
+    eta: "Q2 2025",
+    icon: <Sparkles className="h-5 w-5" />,
+  },
+  {
+    title: "Voice Journaling",
+    description: "Record and transcribe your thoughts with voice notes",
+    eta: "Q3 2025",
+    icon: <MessageCircle className="h-5 w-5" />,
+  },
+  {
+    title: "Wellness Analytics",
+    description: "Advanced insights into your wellness patterns",
+    eta: "Q3 2025",
+    icon: <Activity className="h-5 w-5" />,
+  },
+]
+
+const getVersionIcon = (type: string) => {
+  switch (type) {
+    case "major":
+      return <Rocket className="h-5 w-5" />
+    case "minor":
+      return <Sparkles className="h-5 w-5" />
+    case "patch":
+      return <Zap className="h-5 w-5" />
+    default:
+      return <RefreshCw className="h-5 w-5" />
+  }
+}
+
+
+
+const parseChanges = (changes: string[]) => {
+  return changes.map((change, index) => {
+    if (change.startsWith("**") && change.endsWith("**")) {
+      return (
+        <h4 key={index} className="font-semibold text-lg mt-4 mb-2 text-foreground">
+          {change.replace(/\*\*/g, "")}
+        </h4>
+      )
+    }
+    return (
+      <p key={index} className="text-muted-foreground mb-1 leading-relaxed">
+        {change}
+      </p>
+    )
+  })
+}
+
+export default function UpdatesPage() {
+  const [selectedTab, setSelectedTab] = useState("all")
+
+  const releasedUpdates = updates.filter((update) => update.status === "released")
+  const upcomingUpdates = updates.filter((update) => update.status === "upcoming")
+
+  const getUpdatesForTab = () => {
+    switch (selectedTab) {
+      case "released":
+        return releasedUpdates
+      case "upcoming":
+        return upcomingUpdates
+      default:
+        return updates
+    }
+  }
+
   return (
-    <div className="flex min-h-screen justify-center bg-white dark:bg-black  relative pt-14">
-       <div className="fixed top-0 flex h-12 w-full items-center justify-center bg-white dark:bg-black md:hidden">
-        <div
-          className="absolute left-4 hover:cursor-pointer"
-          onClick={() => router.back()}
-        >
-          <ArrowLeft />
-        </div>
+    <div className="min-h-screen bg-gradient-to-br from-orange-50 via-red-50 to-pink-50 dark:from-gray-900 dark:via-gray-800 dark:to-gray-900">
+      {/* Header */}
+      <MobileHeader />
 
-        <p className="text-center">Updates</p>
-      </div>
-      <div className="mx-auto w-full sm:w-2/3">
-        {logs.map(log => (
-          <div key={log.version} className="px-3 pt-5 sm:px-1 pb-3">
-            <div className="mb-3 flex items-center gap-4">
-              <div className="rounded-md bg-primary-500 px-3 py-1">
-                {log.version}
-              </div>
-              <p className="text-sm text-gray-400">{log.date} </p>
-            </div>
-            <p className="mb-2 text-xl font-bold">{log.title}</p>
-            <div className="pl-10">
-              <ul className="list-disc">
-                {log.changes.map((change, index) => {
-
-                  return change.startsWith("**") ?  <li key={index} className="text-primary-500 list-none pt-2 pb-1 font-bold">{change}</li> : <li key={index}>{change}</li>
-                })}
-              </ul>
-            </div>
-          </div>
-        ))}
+      <div className="container mx-auto px-4 py-12">
+        <FloatingTabs activeTab={selectedTab} onTabChange={setSelectedTab} releasedCount={releasedUpdates.length} upcomingCount={upcomingUpdates.length} />
+        <TimelineView updates={getUpdatesForTab()} showUpcomingFeatures={selectedTab === "upcoming"} />
       </div>
     </div>
-  );
-};
-
-export default UpdatesPage;
+  )
+}
