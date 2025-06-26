@@ -104,8 +104,8 @@ export function DetailCard({
   console.log(post_slides);
   return (
     <>
-      <Card className="mt-5 w-full rounded-none border-0 border-x-0 max-sm:mb-5 md:w-full md:px-8">
-        <CardHeader className="flex-row items-start justify-between px-6 py-2">
+      <Card className="mt-5 w-full rounded-none border-0 border-x-0 max-sm:mb-5 md:w-[calc(100vw-var(--sidebar-width))] md:px-8">
+        <CardHeader className="flex-row items-start justify-between px-3 py-1 md:px-6 md:py-2">
           <div className="flex items-center gap-2 md:gap-3">
             <button
               className="dark:bg-muted-dark hover:bg-muted-dark-hover flex h-8 w-8 cursor-pointer items-center justify-center rounded-full bg-gray-700 max-md:hidden"
@@ -143,7 +143,7 @@ export function DetailCard({
             postCreatedBy={created_by ?? ''}
           />
         </CardHeader>
-        <CardContent className="overflow-x-hidden text-wrap!">
+        <CardContent className="overflow-x-hidden px-3 text-wrap! md:px-6">
           {type === 'carousel' ? (
             <CarouselPost slides={post_slides} postId={postId} />
           ) : (
