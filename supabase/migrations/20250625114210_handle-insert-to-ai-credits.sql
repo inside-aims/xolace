@@ -8,10 +8,6 @@ drop function if exists "public"."create_post_with_tags_v1"(content text, mood p
 
 drop function if exists "public"."create_post_with_tags_v2"(content text, mood post_mood__old_version_to_be_dropped, expires_in_24hr boolean, duration post_duration, expires_at timestamp without time zone, tag_names text[], is_sensitive boolean);
 
-alter table "public"."activity_logs" alter column "user_id" set not null;
-
-alter table "public"."feedbacks" alter column "created_by" set not null;
-
 drop type "public"."post_mood__old_version_to_be_dropped";
 
 alter table "public"."feedbacks" add constraint "feedbacks_created_by_fkey" FOREIGN KEY (created_by) REFERENCES profiles(id) ON UPDATE CASCADE ON DELETE SET DEFAULT not valid;

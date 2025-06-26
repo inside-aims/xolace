@@ -31,7 +31,7 @@ export default function CarouselPost({
   console.log(slides);
 
   return (
-    <div className="group relative w-full lg:w-2/3">
+    <div className="group relative w-full">
       <Swiper
         modules={[Navigation, Pagination, Parallax, EffectCoverflow, Autoplay]}
         spaceBetween={30}

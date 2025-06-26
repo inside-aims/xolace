@@ -485,6 +485,7 @@
     --duration: 1s;
     --bg-size: 200%;
     --ocean-600: 228, 100%, 51%;
+    --sidebar-width: 16rem;
   }
 
   .dark {
@@ -527,6 +528,7 @@
     --duration: 1s;
     --bg-size: 200%;
     --ocean-600: 228, 100%, 51%;
+    --sidebar-width: 16rem;
   }
 }
 
