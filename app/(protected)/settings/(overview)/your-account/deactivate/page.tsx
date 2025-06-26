@@ -6,7 +6,6 @@ import {Button} from "@/components/ui/button";
 import {Avatar, AvatarFallback, AvatarImage} from "@/components/ui/avatar";
 import React from "react";
 import {useUserState} from "@/lib/store/user";
-import DeleteUserAccountCard from "@/components/cards/DeleteUserAccountCard";
 
 
 export default function DeactivatePage() {
