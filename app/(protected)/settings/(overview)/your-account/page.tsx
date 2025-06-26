@@ -1,5 +1,5 @@
 import type { Metadata } from 'next'
-import {User, Lock, Power, MonitorCog,} from 'lucide-react';
+import {User, Lock, Power, MonitorCog,FileX} from 'lucide-react';
 import {SettingsCard, SettingsOptionProps} from "@/components/settings/settings-card";
 import SettingsWrapper from "@/components/settings/settings-wrapper";
 
@@ -39,6 +39,12 @@ const yourAccountSettings: SettingsOptionProps[] = [
     route: '/settings/your-account/deactivate',
     label: 'Deactivate your account',
     description: 'Find out how you can deactivate your account'
+  },
+  {
+    icon: <FileX/>,
+    route: '/settings/your-account/delete',
+    label: 'Delete your account',
+    description: 'Find out how you can delete your account'
   }
 ]
 

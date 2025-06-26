@@ -111,4 +111,16 @@ export const updates: UpdateLog[] = [
       "- 📊 Community insights: View aggregated wellness trends.",
     ],
   },
+  {
+    version: '2.2',
+    date: 'June 26, 2025',
+    type: "patch",
+    status: "released",
+    title: 'Bug fixes & Delete account functionality',
+    changes: [
+      '**Bug fixes & Delete account functionality**',
+      '- 🛠️ Fixed layout distortion at the post details page ',
+      '- ❌ Delete account functionality available now ',
+    ],
+  },
 ];
