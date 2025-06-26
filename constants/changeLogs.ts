@@ -113,7 +113,7 @@ export const updates: UpdateLog[] = [
   },
   {
     version: '2.2',
-    date: 'June 25, 2025',
+    date: 'June 26, 2025',
     type: "patch",
     status: "released",
     title: 'Bug fixes & Delete account functionality',
