@@ -99,9 +99,9 @@ export const updates: UpdateLog[] = [
     ],
   },
   {
-    version: "2.2",
-    date: "March 15, 2025",
-    title: "Community Features & Enhanced Security",
+    version: "3.0",
+    date: "July 15, 2025",
+    title: "Community Features",
     type: "major",
     status: "upcoming",
     changes: [
@@ -109,9 +109,6 @@ export const updates: UpdateLog[] = [
       "- 👥 Group discussions: Create and join topic-based discussion groups.",
       "- 🏆 Achievement system: Earn badges for wellness milestones.",
       "- 📊 Community insights: View aggregated wellness trends.",
-      "**Security Enhancements**",
-      "- 🔐 Two-factor authentication: Enhanced account security.",
-      "- 🛡️ Privacy controls: Granular privacy settings for your data.",
     ],
   },
 ];

@@ -10,8 +10,8 @@ import { TimelineView } from "@/components/hocs/updatesComponents/timeline-view"
 export default function UpdatesPage() {
   const [selectedTab, setSelectedTab] = useState("all")
 
-  const releasedUpdates = updates.filter((update) => update.status === "released")
-  const upcomingUpdates = updates.filter((update) => update.status === "upcoming")
+  const releasedUpdates = updates.sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime()).filter((update) => update.status === "released")
+  const upcomingUpdates = updates.sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime()).filter((update) => update.status === "upcoming")
 
   const getUpdatesForTab = () => {
     switch (selectedTab) {

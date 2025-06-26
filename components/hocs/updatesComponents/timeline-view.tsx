@@ -22,15 +22,15 @@ interface TimelineViewProps {
 
 const upcomingFeatures = [
   {
-    title: 'AI Wellness Coach',
-    description: 'Personalized AI-powered wellness recommendations',
-    eta: 'Q2 2025',
+    title: 'Social Brand',
+    description: 'Building the Social Identity of Xolace',
+    eta: 'Q2 - Q4 2025',
     icon: <Sparkles className="h-4 w-4" />,
   },
   {
-    title: 'Voice Journaling',
+    title: 'Health Care Brand',
     description: 'Record and transcribe your thoughts with voice notes',
-    eta: 'Q3 2025',
+    eta: 'Q1 2026',
     icon: <MessageCircle className="h-4 w-4" />,
   },
   {
@@ -76,7 +76,7 @@ export function TimelineView({
             {upcomingFeatures.map((feature, index) => (
               <Card
                 key={index}
-                className="group border-0 bg-gradient-to-br from-orange-50 to-pink-50 transition-all duration-300 hover:shadow-lg dark:from-orange-900/20 dark:to-pink-900/20"
+                className="group border-0 bg-gradient-to-br from-lavender-50 to-ocean-50 transition-all duration-300 hover:shadow-lg dark:from-lavender-900/20 dark:to-ocean-900/20"
               >
                 <CardContent className="p-6">
                   <div className="mb-4 flex items-center gap-3">
