@@ -228,7 +228,7 @@ const PostDetailsInteraction = ({ post }: { post: DetailPost }) => {
                 <FormControl>
                   <Textarea
                     placeholder="Join the conversation"
-                    className="no-focus! dark:hover:border-muted-dark-hover focus-visible:border-input mb-5 min-h-12 resize-none rounded-lg focus-visible:ring-0 w-full lg:w-2/3"
+                    className="no-focus! dark:hover:border-muted-dark-hover focus-visible:border-input mb-5 min-h-12 resize-none rounded-lg focus-visible:ring-0 w-full"
                     {...field}
                   />
                 </FormControl>
