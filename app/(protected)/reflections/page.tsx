@@ -3,7 +3,7 @@ import React from 'react';
 import type { Metadata } from 'next';
 import HealthTipsWrapper from "@/components/shared/layoutUIs/HealthTipsWrapper";
 import {fetchBunnyVideos} from "@/utils/bunny/bunny";
-import ReflectionsClientView from "@/app/(protected)/reflections/RelectionClientView";
+import ReflectionsClientView from "@/app/(protected)/reflections/ReflectionClientView";
 
 export const metadata: Metadata = {
   title: 'Reflections',

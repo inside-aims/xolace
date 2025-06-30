@@ -51,7 +51,7 @@ const ReflectionsClientView: React.FC<ReflectionsClientViewProps> = ({ videos })
       {filteredVideos.length === 0 ? (
         <div className="flex w-full flex-1 flex-col justify-center items-center gap-5 py-10">
           <NothingInVoid />
-          <p className="text-gray-400 text-sm">No videos match your search or filters.</p>
+          <p className="text-gray-400 text-sm">No video match your search or filters.</p>
         </div>
       ) : (
         <section className="w-full grid grid-cols-1 sm:grid-cols-2 gap-8 mt-4">

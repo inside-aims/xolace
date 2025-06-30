@@ -10,7 +10,7 @@ export default async function VideoDetailsPage({ params }: Props) {
 
   const rawVideo = await fetchBunnyVideoById(videoId);
 
-  console.log("Raw video", rawVideo);
+  //console.log("Raw video", rawVideo);
 
   const video = {
     videoId: rawVideo.videoId,
@@ -39,7 +39,10 @@ export default async function VideoDetailsPage({ params }: Props) {
 
   return (
     <div className="w-full items-start p-4">
-      <VideoDetailsCard video={video} key={videoId} videoId={videoId} />
+      <VideoDetailsCard
+        video={video}
+        key={videoId}
+        videoId={videoId} />
     </div>
   );
 }
