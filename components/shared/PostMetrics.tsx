@@ -26,14 +26,16 @@ const PostMetrics = ({
 }: PostMetricsProps) => {
   const router = useRouter();
   const { mutateVote, isLoading: isVoting, isError } = useVoteMutations();
-  const { data: userVote } = useUserVote(post.id, userId);
+  const { data: userVote, error , isPending, isSuccess} = useUserVote(post.id, userId);
+  console.log("error ",error);
+  console.log("userVote ",userVote);
 
   // Get the current user's vote if it exists
   //const userVote = votes.find(vote => vote.user_id === userId)?.vote_type || null;
 
   const [currentVote, setCurrentVote] = useState<string | null>(userVote);
-  const [upvoteCount, setUpvoteCount] = useState(post.upvotes);
-  const [downvoteCount, setDownvoteCount] = useState(post.downvotes);
+  // const [upvoteCount, setUpvoteCount] = useState(post.upvotes);
+  // const [downvoteCount, setDownvoteCount] = useState(post.downvotes);
   //const [isVoting, setIsVoting] = useState(false);
 
   // Initialize vote state only once when component mounts
@@ -48,10 +50,10 @@ const PostMetrics = ({
     }, [userVote]);
 
   // Update counts from props without affecting currentVote
-  useEffect(() => {
-    setUpvoteCount(post.upvotes);
-    setDownvoteCount(post.downvotes);
-  }, [post.upvotes, post.downvotes]);
+  // useEffect(() => {
+  //   setUpvoteCount(post.upvotes);
+  //   setDownvoteCount(post.downvotes);
+  // }, [post.upvotes, post.downvotes]);
 
   const handleVote = async (voteType: 'upvote' | 'downvote') => {
     if (isVoting) return;
@@ -59,25 +61,26 @@ const PostMetrics = ({
 
     try {
       // Optimistically update UI
-      const isRemovingVote = currentVote === voteType;
+      //const isRemovingVote = currentVote === voteType;
 
       // Update vote counts based on the action
-      if (isRemovingVote) {
-        // Removing vote
-        if (voteType === 'upvote') setUpvoteCount((prev: number) => prev - 1);
-        else setDownvoteCount((prev: number) => prev - 1);
-        setCurrentVote(null);
-      } else {
-        // Adding or changing vote
-        if (voteType === 'upvote') {
-          setUpvoteCount((prev: number) => prev + 1);
-          if (currentVote === 'downvote') setDownvoteCount((prev: number) => prev - 1);
-        } else {
-          setDownvoteCount((prev: number) => prev + 1);
-          if (currentVote === 'upvote') setUpvoteCount((prev: number) => prev - 1);
-        }
-        setCurrentVote(voteType);
-      }
+      // if (isRemovingVote) {
+      //   // Removing vote
+      //   if (voteType === 'upvote') setUpvoteCount((prev: number) => prev - 1);
+      //   else setDownvoteCount((prev: number) => prev - 1);
+      //   setCurrentVote(null);
+      // } else {
+      //   // Adding or changing vote
+      //   if (voteType === 'upvote') {
+      //     setUpvoteCount((prev: number) => prev + 1);
+      //     if (currentVote === 'downvote') setDownvoteCount((prev: number) => prev - 1);
+      //   } else {
+      //     setDownvoteCount((prev: number) => prev + 1);
+      //     if (currentVote === 'upvote') setUpvoteCount((prev: number) => prev - 1);
+      //   }
+      //   setCurrentVote(voteType);
+      // }
+      setCurrentVote(prevVote => (prevVote === voteType ? null : voteType));
 
       // Make server request
       mutateVote({
@@ -91,16 +94,14 @@ const PostMetrics = ({
       if (isError) {
         // Revert changes if server request fails
         setCurrentVote(previousVote);
-        setUpvoteCount(post.upvotes);
-        setDownvoteCount(post.downvotes);
+        // setUpvoteCount(post.upvotes);
+        // setDownvoteCount(post.downvotes);
       }
     } catch (error) {
       // Revert changes on error
       setCurrentVote(previousVote);
-      setUpvoteCount(post.upvotes);
-      setDownvoteCount(post.downvotes);
 
-      console.log(error);
+      console.log("error in catch ",error);
     }
   };
 
@@ -118,10 +119,18 @@ const PostMetrics = ({
     router.push(`post/${post.id}?type=comment`);
   };
 
+  const upvoteCount = post.upvotes;
+  const downvoteCount = post.downvotes;
+
+
   return (
     <div className="flex items-center gap-4">
       <div className="flex items-center gap-1">
-        <button
+        {isPending && <div className='h-5 w-5 bg-gray-500/50 animate-pulse'/>}
+
+       {
+        isSuccess && (
+          <button
           type="button"
           onClick={() => handleVote('upvote')}
           disabled={isVoting}
@@ -137,6 +146,8 @@ const PostMetrics = ({
             )}
           />
         </button>
+        )
+       }
         <AnimatePresence mode="wait">
           <motion.span
             key={upvoteCount}
@@ -150,7 +161,9 @@ const PostMetrics = ({
             {upvoteCount}
           </motion.span>
         </AnimatePresence>
-        <button
+        {isPending && <div className='h-5 w-5 bg-gray-500/50 animate-pulse'/>}
+        {isSuccess && (
+          <button
           type="button"
           onClick={() => handleVote('downvote')}
           disabled={isVoting}
@@ -166,6 +179,7 @@ const PostMetrics = ({
             )}
           />
         </button>
+        )}
         <AnimatePresence mode="wait">
           <motion.span
             key={downvoteCount}

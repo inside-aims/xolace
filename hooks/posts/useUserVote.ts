@@ -12,7 +12,7 @@ export function useUserVote(postId: string, userId: string) {
         .select('vote_type')
         .eq('post_id', postId)
         .eq('user_id', userId)
-        .single();
+        .maybeSingle();
 
       return data?.vote_type || null;
     },

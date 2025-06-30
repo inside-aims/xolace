@@ -29,7 +29,11 @@ export const getAllPosts = async () => {
           )  
     `,
     )
-    .order('created_at', { ascending: false });
+    .order('created_at', { ascending: false })
+    .order('slide_index', {
+      referencedTable: 'post_slides',
+      ascending: true,
+    });
 
   if (error) throw error;
 
