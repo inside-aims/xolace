@@ -2,9 +2,10 @@
 import Image from 'next/image';
 import Link from 'next/link';
 import {useState} from "react";
-import {Copy, Link as LinkIcon, ScanEye} from "lucide-react";
+import {Copy, Link as LinkIcon, ScanEye, ThumbsUp} from "lucide-react";
 import * as React from "react";
 import SaveToCollectionsButton from "@/components/shared/SaveToCollectionsButton";
+import {cleanTitle, createThumbnailLink} from "@/utils/bunny/bunny";
 
 
 const VideoCard = ({
@@ -49,11 +50,12 @@ const VideoCard = ({
     <Link href={`/reflections/${videoId}`} className="relative flex w-full flex-col shadow-lg rounded-xl border">
       <div className="relative flex flex-col">
         <Image
-          src={thumbnail}
-          width={290}
+          src={createThumbnailLink(videoId, thumbnail)}
+          width={250}
           height={100}
           alt="thumbnail"
-          className="w-full h-[250px]"
+          className="w-full h-[250px] rounded-t-xl"
+          unoptimized
         />
         <div className={"absolute bottom-0 right-1 z-50 text-white text-sm"}>
           {duration !== null && (
@@ -83,7 +85,7 @@ const VideoCard = ({
           </figure>
         </div>
         <h2 className={"font-semibold text-lg"}>
-          {title} -{" "}
+          {cleanTitle(title)} - {" "}
           {createdAt.toLocaleDateString("en-US", {
             year: "numeric",
             month: "short",
@@ -91,13 +93,19 @@ const VideoCard = ({
           })}
         </h2>
         <div className={"flex items-center flex-row justify-between"}>
-          <div className="flex items-center gap-2" id="view-btn">
-            <ScanEye className="size-4 text-red-200 sm:size-4"/>
-            <span className="font-button-small">{views}</span>
-          </div>
+          <aside className={"flex items-center gap-4"}>
+            <div className="flex items-center gap-1" id="likes">
+              <ThumbsUp className="size-4  sm:size-4"/>
+              <span className="font-button-small">23</span>
+            </div>
+            <div className="flex items-center gap-1" id="view-btn">
+              <ScanEye className="size-4 text-red-200 sm:size-4"/>
+              <span className="font-button-small">{views}</span>
+            </div>
+          </aside>
           <div id="collection-btn">
             <SaveToCollectionsButton
-              userId={ ''}
+              userId={''}
               createdBy={""}
               postId={videoId}
               postCollections={[]}

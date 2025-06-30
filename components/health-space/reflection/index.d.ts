@@ -81,15 +81,40 @@ declare interface VideoCardProps {
   duration: number | null;
 }
 
-declare interface VideoDetailHeaderProps {
+declare interface VideoDetailProps {
   title: string;
   createdAt: Date;
   userImg: string | null | undefined;
   username?: string;
   videoId: string;
   ownerId: string;
+  views: number;
+  duration: number | null;
   visibility: string;
   thumbnailUrl: string;
+  description: string;
+  category: string;
+  totalWatchTime: number | null;
+  captions: Caption[];
+  averageWatchTime: number | null;
+  hasMP4Fallback: boolean
+  collectionId: string;
+  jitEncodingEnabled: boolean
+  metaTags: {property: string; value: string}[];
+  moments: string[]
+  transcodingMessages: TranscodingMessage[]
+}
+
+declare interface Caption {
+  time: string;
+  text: string;
+}
+declare interface TranscodingMessage {
+  issueCode: number | null;
+  level: number | null;
+  message: string | null;
+  timeStamp: string | null;
+  value: string | null;
 }
 
 declare interface VideoPlayerProps {
