@@ -90,7 +90,7 @@ const VideoDetailsCard = ({video, videoId}: { video: VideoDetailProps, videoId: 
           {/* Mobile: Make the entire video section sticky */}
           <div className="z-40 bg-white dark:bg-dark-2 aboslute top-0 sticky md:static ">
             <div className="flex flex-col items-center gap-2">
-              <div className="aspect-video w-full rounded-lg overflow-hidden">
+              <div className="aspect-video w-full rounded-lg overflow-hidden border">
                 <iframe
                   src={createIframeLink(videoId, startTime || 0)}
                   allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture"

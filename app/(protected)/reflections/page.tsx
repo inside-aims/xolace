@@ -2,9 +2,8 @@
 import React from 'react';
 import type { Metadata } from 'next';
 import HealthTipsWrapper from "@/components/shared/layoutUIs/HealthTipsWrapper";
-import SharedHeader from "@/components/health-space/reflection/shared-header";
-import VideoCard from "@/components/health-space/reflection/video-card";
 import {fetchBunnyVideos} from "@/utils/bunny/bunny";
+import ReflectionsClientView from "@/app/(protected)/reflections/RelectionClientView";
 
 export const metadata: Metadata = {
   title: 'Reflections',
@@ -26,18 +25,9 @@ const ReflectionsPage = async () => {
     createdAt: new Date(video.dateUploaded),
   }));
 
-  console.log("videos", videos);
-
   return (
     <HealthTipsWrapper>
-      <main className="flex flex-col items-center w-full px-4 -mt-5">
-        <SharedHeader />
-        <section className="w-full grid grid-cols-1 sm:grid-cols-2 gap-8 mt-4">
-          {videos.map((video) => (
-            <VideoCard key={video.videoId} {...video} />
-          ))}
-        </section>
-      </main>
+      <ReflectionsClientView videos={videos} />
     </HealthTipsWrapper>
   );
 };
