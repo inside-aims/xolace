@@ -16,6 +16,8 @@ export function useUserVote(postId: string, userId: string) {
 
       return data?.vote_type || null;
     },
+    // ✅ Only run the query if userId is a valid, truthy string
+    enabled: !!userId,
     staleTime: Infinity, // Never stale
   });
 }
