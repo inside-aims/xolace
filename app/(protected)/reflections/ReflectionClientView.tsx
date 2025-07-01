@@ -4,6 +4,7 @@ import React, { useMemo, useState } from 'react';
 import NothingInVoid from '@/components/shared/NotFound/NothingInVoid';
 import SharedHeader from "@/components/health-space/reflection/shared-header";
 import VideoCard from "@/components/health-space/reflection/video-card";
+import {VideoCardProps} from "@/components/health-space/reflection";
 
 interface ReflectionsClientViewProps {
   videos: VideoCardProps[];

@@ -6,7 +6,7 @@ import {Search} from "lucide-react";
 import {Input} from "@/components/ui/input";
 import React, {useState} from "react";
 import {Accordion, AccordionContent, AccordionItem, AccordionTrigger} from "@/components/ui/accordion";
-import { helpFaqs } from "@/constants";
+import { helpFaqs } from "@/utils";
 import GetInTouchDialog from "@/app/(protected)/settings/(overview)/help-center/GetInTouchDialog";
 
 

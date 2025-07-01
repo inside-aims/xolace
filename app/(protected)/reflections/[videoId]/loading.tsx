@@ -1,5 +1,5 @@
 import React from "react";
-import VideoDetailsSkeleton from "@/components/health-space/reflection/video-details-skeleton";
+import {VideoDetailsSkeleton} from "@/components/health-space/reflection/video-skeleton";
 
 const Loading = () => <VideoDetailsSkeleton />;
 

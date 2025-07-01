@@ -15,8 +15,8 @@ import { useUserState } from "@/lib/store/user";
 import { fetchUserStreakAction } from "@/app/actions";
 import { TipsBanner } from "./TipsBanner";
 import { WordRotate } from "../magicui/word-rotate";
-import { tips } from "@/constants";
 import { usePrompt } from "@/hooks/prompts/usePromptData";
+import {tips} from "@/constants";
 
 // interface DailyPromptData {
 //   id: string;

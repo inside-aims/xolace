@@ -5,7 +5,8 @@ import {useState} from "react";
 import {Copy, Link as LinkIcon, ScanEye, ThumbsUp} from "lucide-react";
 import * as React from "react";
 import SaveToCollectionsButton from "@/components/shared/SaveToCollectionsButton";
-import {cleanTitle, createThumbnailLink} from "@/utils/bunny/bunny";
+import {VideoCardProps} from "@/components/health-space/reflection/index";
+import {cleanTitle, createThumbnailLink} from "@/lib/utils";
 
 
 const VideoCard = ({

@@ -4,6 +4,7 @@ import type { Metadata } from 'next';
 import HealthTipsWrapper from "@/components/shared/layoutUIs/HealthTipsWrapper";
 import {fetchBunnyVideos} from "@/utils/bunny/bunny";
 import ReflectionsClientView from "@/app/(protected)/reflections/ReflectionClientView";
+import {VideoCardProps} from "@/components/health-space/reflection";
 
 export const metadata: Metadata = {
   title: 'Reflections',

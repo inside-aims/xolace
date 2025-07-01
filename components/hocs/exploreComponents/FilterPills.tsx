@@ -5,7 +5,7 @@ import React, { useState } from 'react';
 import { motion } from 'framer-motion';
 
 import { formUrlQuery, removeKeyFromQuery } from '@/lib/url';
-import { filters } from '@/constants';
+import { filters } from '@/utils';
 
 const FilterPills: React.FC = () => {
   const router = useRouter();

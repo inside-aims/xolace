@@ -1,7 +1,7 @@
 "use client"
 
 import React from 'react'
-import { aboutLeftSideLinks } from '@/constants';
+import { aboutLeftSideLinks } from '@/utils';
 import { ArrowLeft } from 'lucide-react'
 import Link from 'next/link';
 import { usePathname, useRouter } from 'next/navigation';
