@@ -21,6 +21,7 @@ import { useMediaQuery } from '@/hooks/use-media-query';
  */
 const FeedList = () => {
   const { data: queryPosts, isPending, isError, error } = usePosts();
+  console.log("pending ", isPending)
 
   //const supabase = getSupabaseBrowserClient();
   const router = useRouter();

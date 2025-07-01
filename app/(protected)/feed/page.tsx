@@ -21,53 +21,6 @@ export const metadata: Metadata = {
   description: "Discover different stories , experiences from real and unique individuals as well as the community"
 };
 
-//const EnhancedAIChatInterface = dynamic(() => import('@/components/chatbot-ai/enhanced-ai-chat-interface'));
-
-// Function to fetch posts with a Supabase client
-// async function fetchPosts(supabase: any) {
-//   const { data: postsData, error } = await supabase
-//     .from('posts')
-//     .select(
-//       `
-//        *,
-//        posttags (
-//           tags (
-//             name
-//           )
-//         ),
-//           votes(
-//           user_id,
-//           vote_type
-//           ),
-//           comments:comments(count),
-//           views:views(count),
-//         collections(
-//           user_id
-//         )
-//     `,
-//     )
-//     .order('created_at', { ascending: false });
-
-//   if (error) {
-//     return [];
-//   }
-
-//   return postsData;
-// }
-
-// Cache the posts fetching function
-// const getCachedPosts = unstable_cache(
-//   // eslint-disable-next-line @typescript-eslint/no-explicit-any
-//   async (supabase: any) => {
-//     return fetchPosts(supabase);
-//   },
-//   ['posts-list'],
-//   {
-//     revalidate: 60, // Cache for 1 minute
-//     tags: ['posts'],
-//   },
-// );
-
 export default async function FeedPage() {
   const queryClient = new QueryClient();
 
