@@ -44,9 +44,13 @@ export interface DbUser{
 // New interface based on the activity_logs database schema
 export interface DbActivityLog {
   id: string;
-  user_id: DbUser;
-  related_user_id?: DbUser;
+  user_id: string;
+  related_user_id?: string;
   entity_type: 'post' | 'comment' | 'vote' | 'report' | 'profile' | 'system' | 'view';
+  related_username?: string;
+  related_user_avatar_url?: string;
+  username: string,
+  user_avatar_url: string,
   
   // Entity-specific references
   post_id?: string;
