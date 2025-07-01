@@ -1,4 +1,16 @@
-declare interface User {
+export const BUNNY = {
+  STREAM_BASE_URL: "https://video.bunnycdn.com/library",
+  STORAGE_BASE_URL: "https://sg.storage.bunnycdn.com/snapcast",
+  CDN_URL: "https://snapcast.b-cdn.net",
+  EMBED_URL: "https://iframe.mediadelivery.net/embed",
+  TRANSCRIPT_URL: "https://vz-47a08e64-84d.b-cdn.net",
+};
+
+
+export const MAX_VIDEO_SIZE = 500 * 1024 * 1024;
+export const MAX_THUMBNAIL_SIZE = 10 * 1024 * 1024;
+
+export interface User {
   name: string;
   email: string;
   emailVerified: boolean;
@@ -15,7 +27,7 @@ type VideoFormValues = {
   visibility: "public" | "private";
 };
 
-declare interface FormFieldProps {
+export interface FormFieldProps {
   id: string;
   label: string;
   type?: string;
@@ -28,7 +40,7 @@ declare interface FormFieldProps {
   options?: Array<{ value: string; label: string }>;
 }
 
-declare interface FileInputProps {
+export interface FileInputProps {
   id: string;
   label: string;
   accept: string;
@@ -40,22 +52,22 @@ declare interface FileInputProps {
   type: "video" | "image";
 }
 
-declare interface TranscriptEntry {
+export interface TranscriptEntry {
   time: string;
   text: string;
 }
 
-declare interface VideoFormValues {
+export interface VideoFormValues {
   title: string;
   description: string;
   tags: string;
   visibility: "public" | "private";
 }
-declare interface NavbarProps {
+export interface NavbarProps {
   user: User | undefined;
 }
 
-declare interface SearchResult {
+export interface SearchResult {
   video: {
     id: string;
     videoId: string;
@@ -69,7 +81,7 @@ declare interface SearchResult {
   } | null;
 }
 
-declare interface VideoCardProps {
+export interface VideoCardProps {
   videoId: string;
   title: string;
   thumbnail: string;
@@ -81,7 +93,7 @@ declare interface VideoCardProps {
   duration: number | null;
 }
 
-declare interface VideoDetailProps {
+export interface VideoDetailProps {
   title: string;
   createdAt: Date;
   userImg: string | null | undefined;
@@ -105,11 +117,11 @@ declare interface VideoDetailProps {
   transcodingMessages: TranscodingMessage[]
 }
 
-declare interface Caption {
+export interface Caption {
   time: string;
   text: string;
 }
-declare interface TranscodingMessage {
+export interface TranscodingMessage {
   issueCode: number | null;
   level: number | null;
   message: string | null;
@@ -117,11 +129,11 @@ declare interface TranscodingMessage {
   value: string | null;
 }
 
-declare interface VideoPlayerProps {
+export interface VideoPlayerProps {
   videoId: string;
   className?: string;
 }
-declare interface VideoInfoProps {
+export interface VideoInfoProps {
   transcript?: string;
   title: string;
   createdAt: Date;
@@ -130,7 +142,7 @@ declare interface VideoInfoProps {
   videoUrl: string;
 }
 
-declare interface ImageWithFallbackProps extends Omit<ImageProps, "src"> {
+export interface ImageWithFallbackProps extends Omit<ImageProps, "src"> {
   fallback?: string;
   alt: string;
   src: string | null;
@@ -138,7 +150,7 @@ declare interface ImageWithFallbackProps extends Omit<ImageProps, "src"> {
 
 type Visibility = "public" | "private";
 
-declare interface VideoDetails {
+export interface VideoDetails {
   videoId: string;
   title: string;
   description: string;
@@ -148,17 +160,17 @@ declare interface VideoDetails {
   duration?: number | null;
 }
 
-declare interface BunnyVideoResponse {
+export interface BunnyVideoResponse {
   guid: string;
   status: number;
   encodeProgress?: number;
 }
 
-declare type ApiResponse<T> =
+export type ApiResponse<T> =
   | ({ success: true; error: null } & T)
   | { success: false; error: string };
 
-declare interface ApiFetchOptions {
+export interface ApiFetchOptions {
   method?: string;
   headers?: Record<string, string>;
   body?: object;
@@ -166,30 +178,30 @@ declare interface ApiFetchOptions {
   bunnyType: "stream" | "storage";
 }
 
-declare interface BunnyStreamApiOptions {
+export interface BunnyStreamApiOptions {
   method?: string;
   body?: object;
 }
 
-declare interface VideoUploadUrlResponse {
+export interface VideoUploadUrlResponse {
   videoId: string;
   uploadUrl: string;
   accessKey: string;
 }
 
-declare interface ThumbnailUploadUrlResponse {
+export interface ThumbnailUploadUrlResponse {
   uploadUrl: string;
   cdnUrl: string;
   accessKey: string;
 }
 
-declare interface VideoProcessingStatus {
+export interface VideoProcessingStatus {
   isProcessed: boolean;
   encodingProgress: number;
   status: number;
 }
 
-declare interface VideoWithUserResult {
+export interface VideoWithUserResult {
   video: {
     id: string;
     videoId: string;
@@ -211,7 +223,7 @@ declare interface VideoWithUserResult {
   };
 }
 
-declare interface VideoObject {
+export interface VideoObject {
   id: string;
   videoId: string;
   title: string;
@@ -226,7 +238,7 @@ declare interface VideoObject {
   updatedAt: Date;
 }
 
-declare interface UserWithVideos {
+export interface UserWithVideos {
   user: {
     id: string;
     name: string | null;
@@ -237,62 +249,62 @@ declare interface UserWithVideos {
   count: number;
 }
 
-declare interface ExtendedMediaStream extends MediaStream {
+export interface ExtendedMediaStream extends MediaStream {
   _originalStreams?: MediaStream[];
 }
 
-declare interface SharedHeaderProps {
+export interface SharedHeaderProps {
   subHeader: string;
   title: string;
   userImg?: string;
 }
 
-declare interface SharedHeaderProps {
+export interface SharedHeaderProps {
   subHeader: string;
   title: string;
   userImg?: string;
 }
 
-declare interface Params {
+export interface Params {
   params: Promise<Record<string, string>>;
 }
 
-declare interface SearchParams {
+export interface SearchParams {
   searchParams: Promise<Record<string, string | undefined>>;
 }
 
-declare interface ParamsWithSearch {
+export interface ParamsWithSearch {
   params: Promise<Record<string, string>>;
   searchParams: Promise<Record<string, string | undefined>>;
 }
 
-declare interface DropdownListProps {
+export interface DropdownListProps {
   options: string[];
   selectedOption: string;
   onOptionSelect: (option: string) => void;
   triggerElement: ReactNode;
 }
 
-declare interface EmptyStateProps {
+export interface EmptyStateProps {
   icon: string;
   title: string;
   description: string;
 }
 
-declare interface MediaStreams {
+export interface MediaStreams {
   displayStream: MediaStream;
   micStream: MediaStream | null;
   hasDisplayAudio: boolean;
 }
 
-declare interface BunnyRecordingState {
+export interface BunnyRecordingState {
   isRecording: boolean;
   recordedBlob: Blob | null;
   recordedVideoUrl: string;
   recordingDuration: number;
 }
 
-declare interface ExtendedMediaStream extends MediaStream {
+export interface ExtendedMediaStream extends MediaStream {
   _originalStreams?: MediaStream[];
 }
 
@@ -316,7 +328,7 @@ interface PaginationResult<T> {
   };
 }
 
-declare interface RecordingHandlers {
+export interface RecordingHandlers {
   onDataAvailable: (e: BlobEvent) => void;
   onStop: () => void;
 }

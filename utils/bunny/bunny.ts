@@ -1,26 +1,29 @@
+'use server';
+
+import { headers } from "next/headers";
+import {revalidatePath} from "next/cache";
+import {apiFetch, withErrorHandling} from "@/lib/utils";
+import {BUNNY, BunnyVideoResponse, VideoDetails} from "@/components/health-space/reflection";
+
 const API_KEY = process.env.BUNNY_PUBLIC_API_KEY;
 const LIBRARY_ID = process.env.NEXT_PUBLIC_BUNNY_EMBED_LIBRARY_ID;
-const HOST_NAME = process.env.NEXT_PUBLIC_BUNNY_HOST_NAME;
+const BUNNY_STREAM_ACCESS_KEY = process.env.BUNNY_STREAM_ACCESS_KEY;
+const BUNNY_STORAGE_ACCESS_KEY= process.env.BUNNY_STORAGE_ACCESS_KEY;
 
-export const cleanTitle = (title: string) => {
-  return title.replace(/\.[^/.]+$/, '');
-}
+const VIDEO_STREAM_BASE_URL = BUNNY.STREAM_BASE_URL;
+const THUMBNAIL_STORAGE_BASE_URL = BUNNY.STORAGE_BASE_URL;
+const THUMBNAIL_CDN_URL = BUNNY.CDN_URL;
 
-export function createIframeLink(videoId: string, startTime?: number) {
-  let base = `https://iframe.mediadelivery.net/embed/${LIBRARY_ID}/${videoId}?autoplay=true&preload=true`;
-
-  if (startTime && startTime > 0) {
-    base += `&start=${startTime}`;
-  }
-
-  return base;
-}
-
-
-// default thumbnail URL
-export const createThumbnailLink = (videoId: string, thumbnailFileName: string) => {
-  return `https://${HOST_NAME}/${videoId}/${thumbnailFileName}`;
+const ACCESS_KEYS = {
+  streamAccessKey: `${BUNNY_STREAM_ACCESS_KEY}`,
+  storageAccessKey: `${BUNNY_STORAGE_ACCESS_KEY}`,
 };
+
+// Helper functions with descriptive names
+const revalidatePaths = (paths: string[]) => {
+  paths.forEach((path) => revalidatePath(path));
+};
+
 
 // get all videos
 export async function fetchBunnyVideos() {
@@ -47,3 +50,74 @@ export async function fetchBunnyVideoById(videoId: string) {
   if (!res.ok) throw new Error(`Failed to fetch Bunny video with ID: ${videoId}`);
   return await res.json();
 }
+
+
+const getSessionUserId = async (): Promise<string> => {
+  const session = await auth.api.getSession({ headers: await headers() });
+  if (!session) throw new Error("Unauthenticated");
+  return session.user.id;
+};
+
+
+export const getVideoUploadUrl = withErrorHandling(async () => {
+  await getSessionUserId();
+  const videoResponse = await apiFetch<BunnyVideoResponse>(
+    `${VIDEO_STREAM_BASE_URL}/${LIBRARY_ID}/videos`,
+    {
+      method: "POST",
+      bunnyType: "stream",
+      body: { title: "Temp Title", collectionId: "" },
+    }
+  );
+
+  const uploadUrl = `${VIDEO_STREAM_BASE_URL}/${LIBRARY_ID}/videos/${videoResponse.guid}`;
+  return {
+    videoId: videoResponse.guid,
+    uploadUrl,
+    accessKey: ACCESS_KEYS.streamAccessKey,
+  };
+});
+
+export const getThumbnailUploadUrl = withErrorHandling(
+  async (videoId: string) => {
+    const timestampedFileName = `${Date.now()}-${videoId}-thumbnail`;
+    const uploadUrl = `${THUMBNAIL_STORAGE_BASE_URL}/thumbnails/${timestampedFileName}`;
+    const cdnUrl = `${THUMBNAIL_CDN_URL}/thumbnails/${timestampedFileName}`;
+
+    return {
+      uploadUrl,
+      cdnUrl,
+      accessKey: ACCESS_KEYS.storageAccessKey,
+    };
+  }
+);
+
+export const saveVideoDetails = withErrorHandling(
+  async (videoDetails: VideoDetails) => {
+    const userId = await getSessionUserId();
+    await apiFetch(
+      `${VIDEO_STREAM_BASE_URL}/${LIBRARY_ID}/videos/${videoDetails.videoId}`,
+      {
+        method: "POST",
+        bunnyType: "stream",
+        body: {
+          title: videoDetails.title,
+          description: videoDetails.description,
+        },
+      }
+    );
+
+    const now = new Date();
+    await db.insert(videos).values({
+      ...videoDetails,
+      videoUrl: `${BUNNY.EMBED_URL}/${LIBRARY_ID}/${videoDetails.videoId}`,
+      userId,
+      createdAt: now,
+      updatedAt: now,
+    });
+
+    revalidatePaths(["/"]);
+    return { videoId: videoDetails.videoId };
+  }
+);
+

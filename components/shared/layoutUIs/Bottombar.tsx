@@ -1,10 +1,10 @@
 'use client';
 
-import { sidebarLinks } from '@/constants';
 
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import ThemeSwitch from '../../ui/ThemeSwitch';
+import {sidebarLinks} from "@/constants";
 
 function Bottombar() {
   const pathName = usePathname();

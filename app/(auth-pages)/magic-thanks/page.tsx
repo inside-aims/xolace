@@ -4,7 +4,7 @@ import Link from 'next/link';
 import { motion } from 'framer-motion';
 import { useEffect, useState, use } from 'react';
 
-import { FORM_TYPES } from '@/constants';
+import { FORM_TYPES } from '@/utils';
 import { urlPath } from '@/utils/url-helpers';
 
 const MagicLinkSuccessPage = (props: {

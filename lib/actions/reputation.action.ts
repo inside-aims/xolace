@@ -1,8 +1,8 @@
 'use server';
 
 import { createClient } from '@/utils/supabase/server';
-import { reputationPoints } from '@/constants';
 import { UpdateReputationParams } from '@/types/activity';
+import {reputationPoints} from "@/constants";
 
 export async function updateReputation(params: UpdateReputationParams) {
   const supabase = await createClient();

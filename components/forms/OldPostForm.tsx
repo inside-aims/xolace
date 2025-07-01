@@ -35,7 +35,7 @@ import { toast } from 'sonner';
 //import Loader from '../shared/loaders/Loader';
 import { PostSchema } from '@/validation';
 import { getSupabaseBrowserClient } from '@/utils/supabase/client';
-import { postMoods } from '@/constants';
+import { postMoods } from '@/utils';
 import { Send } from 'lucide-react';
 // import MoodCarousel from '../hocs/createPostComponent/mood-carousel';
 import { Mood } from '@/types';

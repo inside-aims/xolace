@@ -3,7 +3,8 @@
 import {Copy, Link as LinkIcon, ScanEye, Bookmark, ThumbsUp} from "lucide-react";
 import * as React from "react";
 import {ShadowBtn} from "@/components/health-space/reflection/shadow-btn";
-import {cleanTitle, createIframeLink} from "@/utils/bunny/bunny";
+import {VideoDetailProps} from "@/components/health-space/reflection/index";
+import {cleanTitle, createIframeLink} from "@/lib/utils";
 
 //Helper to parse timestamp
 function parseTimestamp(time: string): number {
