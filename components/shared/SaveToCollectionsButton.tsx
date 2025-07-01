@@ -3,13 +3,12 @@
 import { Bookmark } from 'lucide-react';
 import { useState, useTransition, useEffect } from 'react';
 import { saveToCollectionAction, removeFromCollection } from '@/app/actions';
-import { useToast } from '../ui/use-toast';
+import {toast} from "sonner"
 
 export default function SaveToCollectionsButton({ userId, postId, postCollections, createdBy }: { userId: string; postId: string, postCollections: { user_id: string}[] ; createdBy: string }) {
   const saved = postCollections?.some(collection => collection.user_id === userId) || false;
   const [isSaved, setIsSaved] = useState<boolean>(saved);
   const [isPending, startTransition] = useTransition();
-  const { toast } = useToast();
   
 useEffect(() => {
   setIsSaved(saved)
@@ -17,10 +16,7 @@ useEffect(() => {
 
   const handleClick = async () => {
     if (!userId) {
-      toast({
-        variant: 'destructive',
-        title: 'Please login to save posts',
-      });
+      toast.error("Please login to save posts");
       return;
     }
 
@@ -29,36 +25,24 @@ useEffect(() => {
         if (isSaved) {
           const {success, error} = await removeFromCollection(userId, postId);
           if (!success) {
-            toast({
-              variant: 'destructive',
-              title: error || 'Failed to remove from collection',
-            });
+            toast.error(error || 'Failed to remove from collection');
             return;
           }
           setIsSaved(false);
         } else {
           const {success, error} = await saveToCollectionAction(userId, createdBy, postId);
           if (!success) {
-            toast({
-              variant: 'destructive',
-              title: error || 'Failed to save to collection',
-            });
+            toast.error(error || 'Failed to save to collection');
             return;
           }
           setIsSaved(true);
-          toast({
-            variant: 'default',
-            title: 'Successfully saved to collection',
-          });
+          toast.success("Successfully saved to collection");
         }
       });
 
       // eslint-disable-next-line @typescript-eslint/no-unused-vars
     } catch (error) {
-      toast({
-        variant: 'destructive',
-        title: 'An unexpected error occurred',
-      });
+      toast.error("An unexpected error occurred");
     }
   };
 

@@ -109,6 +109,7 @@
     "timeago.js": "^4.0.2",
     "unified": "^11.0.5",
     "vaul": "^1.1.2",
+    "web-streams-polyfill": "3.2.1",
     "zod": "^3.24.4",
     "zustand": "^5.0.4"
   },

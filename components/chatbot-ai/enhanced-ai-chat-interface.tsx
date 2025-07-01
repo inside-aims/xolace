@@ -2,6 +2,8 @@
 
 import type React from "react"
 import { useRef, useEffect, useState } from "react"
+import { useOnlineStatus } from "@/hooks/use-online-status"
+import { toast } from "sonner"
 import { useChat } from "@ai-sdk/react"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
@@ -24,11 +26,9 @@ import {
 } from "lucide-react"
 import { cn } from "@/lib/utils"
 import ReactMarkdown from "react-markdown"
-import { useOnlineStatus } from "@/hooks/use-online-status"
-import { toast } from "sonner"
 import { MessageAction } from "@/components/prompt-kit/message"
 import BetaBadge from "@/components/extras/beta-badge"
-import { usePreferencesStore } from "@/lib/store/preferences-store"
+//import { usePreferencesStore } from "@/lib/store/preferences-store"
 
 type ChatState = "closed" | "minimized" | "expanded"
 
@@ -41,10 +41,33 @@ const quickSuggestions = [
   "Dealing with overthinking",
 ]
 
-export function EnhancedAIChatInterface() {
+export default function EnhancedAIChatInterface() {
+    console.log("EnhancedAIChatInterface")
   const [chatState, setChatState] = useState<ChatState>("closed")
   const [isAnimating, setIsAnimating] = useState(false)
-  const { preferences } = usePreferencesStore()
+  //const { preferences } = usePreferencesStore()
+
+  const [streamingEnabled, setStreamingEnabled] = useState(true)
+
+  useEffect(() => {
+    const hasStreams =
+      typeof window.ReadableStream !== "undefined" &&
+      typeof window.TextEncoderStream !== "undefined" &&
+      typeof window.TextDecoderStream !== "undefined"
+    setStreamingEnabled(hasStreams)
+  }, [])
+
+  console.log(
+    'ReadableStream supported?', 
+    typeof window.ReadableStream !== 'undefined',
+    '\nTextEncoderStream supported?', 
+    typeof window.TextEncoderStream !== 'undefined',
+    '\nTextDecoderStream supported?', 
+    typeof window.TextDecoderStream !== 'undefined'
+  )
+  
+
+  console.log("support streaming ", streamingEnabled)
 
   const { messages, input, setInput, handleSubmit, status, error, reload, stop } = useChat({
     api: "/api/v1/chat",
@@ -57,6 +80,8 @@ export function EnhancedAIChatInterface() {
       },
     ],
   })
+
+  console.log("messages ", messages)
 
   const toastIdRef = useRef<string | number | null>(null)
   const timeoutRef = useRef<NodeJS.Timeout | null>(null)
@@ -146,18 +171,23 @@ export function EnhancedAIChatInterface() {
     return cleanup
   }, [isOnline])
 
-  const parsedErrorMessage = (() => {
-    try {
-      const parsed = JSON.parse(error?.message || "")
-      return parsed.error || "An unknown error occurred."
-    } catch {
-      return error?.message || "An unknown error occurred."
-    }
-  })()
+// More robust error parsing and logging
+const parsedErrorMessage = (() => {
+  if (!error) return null;
 
-  if (preferences?.guided_tour_enabled) {
-    return null
+  console.error("Chat Error:", error); // Log the full error object to the console
+
+  try {
+    // Attempt to parse a JSON message
+    const parsed = JSON.parse(error.message);
+    return parsed.error || "An unexpected error occurred.";
+  } catch {
+    console.log("error ", error)
+    // Fallback to the raw error message
+    return error.message || "An unexpected error occurred.";
   }
+})();
+
 
   return (
     <>
@@ -173,7 +203,7 @@ export function EnhancedAIChatInterface() {
       )}
 
       {/* Main Chat Container */}
-      <div className="fixed bottom-10 right-4 w-15  z-50 flex flex-col items-end">
+      <div className="fixed bottom-10 right-4 md:right-9 w-15  z-50 flex flex-col items-end">
         {/* Chat Interface */}
         <div
           className={cn(
@@ -188,7 +218,7 @@ export function EnhancedAIChatInterface() {
               "bg-white transition-all duration-300 ease-out border-purple-200 overflow-hidden",
               "w-96 max-w-[calc(100vw-2rem)]",
               chatState === "minimized" && "h-16 shadow-lg",
-              chatState === "expanded" && "h-[600px] max-h-[calc(100vh-6rem)] shadow-2xl",
+              chatState === "expanded" && "h-[560px] max-h-[calc(100vh-9rem)] shadow-2xl",
             )}
           >
             {/* Header - Always Visible */}
@@ -264,7 +294,7 @@ export function EnhancedAIChatInterface() {
 
             {/* Chat Content - Only when expanded */}
             {chatState === "expanded" && (
-              <CardContent className="flex h-[calc(600px-80px)] max-h-[calc(100vh-10rem)] flex-col p-0 overflow-hidden">
+              <CardContent className="flex h-[calc(560px-80px)] max-h-[calc(100vh-10rem)] flex-col p-0 overflow-hidden">
                 {/* Messages */}
                 <ScrollArea className="flex-1 p-4" ref={scrollAreaRef}>
                   <div className="space-y-4">

@@ -1,8 +1,20 @@
-export const logs = [
+
+export interface UpdateLog {
+  version: string
+  date: string
+  title: string
+  changes: string[]
+  type?: "major" | "minor" | "patch"
+  status?: "released" | "upcoming"
+}
+
+export const updates: UpdateLog[] = [
   {
     version: '1.0',
     date: 'February 1, 2025',
     title: 'We just started',
+    type: "major",
+    status: "released",
     changes: [
       '**Core Features**',
       '- 🎭 Anonymous posting: Share thoughts without an account!',
@@ -24,6 +36,8 @@ export const logs = [
     version: '1.1',
     date: 'February 25, 2025',
     title: 'New UI and Activities Feature',
+    type: "minor",
+    status: "released",
     changes: [
       '**New UI**',
       '- 🎨 New design: A fresh, modern look for a better user experience.',
@@ -38,6 +52,8 @@ export const logs = [
   {
     version: '1.2',
     date: 'May 4, 2025',
+    type: "major",
+    status: "released",
     title: 'New Settings Page and Preferences',
     changes: [
       '**New Settings Page**',
@@ -50,6 +66,8 @@ export const logs = [
   {
     version: '2.0',
     date: 'June 5, 2025',
+    type: "major",
+    status: "released",
     title: 'Xolace Phase Two',
     changes: [
       '**Platform Enhancements**',
@@ -66,6 +84,43 @@ export const logs = [
       '- 🟢 Online status: Avatars show who’s active in real time.',
       '- 📱 Feed optimization: Smoother content feed, mobile-friendly, accessibility-focused.',
       '- 🐱 Meet Flex: Xolace’s new friendly mascot!',
+    ],
+  },
+  {
+    version: '2.1',
+    date: 'June 25, 2025',
+    type: "major",
+    status: "released",
+    title: 'Introducing Aniima AI chatbot',
+    changes: [
+      '**Release of Aniima AI chatbot BETA**',
+      '- 🛠️ design: Intrusively designed chat interface ',
+      '- 📲 AI : Aniima AI is your AI companion to help you navigate your thoughts and feelings.',
+    ],
+  },
+  {
+    version: "3.0",
+    date: "July 15, 2025",
+    title: "Community Features",
+    type: "major",
+    status: "upcoming",
+    changes: [
+      "**Community Hub**",
+      "- 👥 Group discussions: Create and join topic-based discussion groups.",
+      "- 🏆 Achievement system: Earn badges for wellness milestones.",
+      "- 📊 Community insights: View aggregated wellness trends.",
+    ],
+  },
+  {
+    version: '2.2',
+    date: 'June 26, 2025',
+    type: "patch",
+    status: "released",
+    title: 'Bug fixes & Delete account functionality',
+    changes: [
+      '**Bug fixes & Delete account functionality**',
+      '- 🛠️ Fixed layout distortion at the post details page ',
+      '- ❌ Delete account functionality available now ',
     ],
   },
 ];

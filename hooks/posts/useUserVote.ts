@@ -12,10 +12,12 @@ export function useUserVote(postId: string, userId: string) {
         .select('vote_type')
         .eq('post_id', postId)
         .eq('user_id', userId)
-        .single();
+        .maybeSingle();
 
       return data?.vote_type || null;
     },
+    // ✅ Only run the query if userId is a valid, truthy string
+    enabled: !!userId,
     staleTime: Infinity, // Never stale
   });
 }

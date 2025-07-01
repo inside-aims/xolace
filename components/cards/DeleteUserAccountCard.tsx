@@ -12,47 +12,33 @@ import {
 import { Button } from '@/components/ui/button';
 import { useUserState } from '@/lib/store/user';
 import { deleteUser } from '@/app/actions';
-import { useToast } from '../ui/use-toast';
+import {toast} from 'sonner'
 
 const DeleteUserAccountCard = () => {
   // get user data
   const user = useUserState(state => state.user);
 
-  // destructure toast function
-  const { toast } = useToast();
-
   const handleDeleteUser = async () => {
     if (!user) return;
 
     if (user.is_anonymous) {
-      toast({
-        title: 'Error deleting account',
-        description: 'Anonymous users cannot delete accounts',
-        variant: 'destructive',
-      });
+      toast.error('Anonymous users cannot delete accounts');
       return;
     }
 
     try {
       await deleteUser(user);
-      toast({
-        title: 'Account deleted',
-        description: 'Your account has been successfully deleted.',
-      });
+      toast.success('Account deleted successfully');
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
     } catch (error: any) {
-      toast({
-        title: 'Error deleting account',
-        description: error.message || 'An unexpected error occurred.',
-        variant: 'destructive',
-      });
+      toast.error(error.message || 'An unexpected error occurred.');
     }
   };
 
   return (
-    <div>
+    <div className='w-full'>
       <AlertDialog>
-        <AlertDialogTrigger asChild>
+        <AlertDialogTrigger className='w-full' asChild>
           <Button variant="destructive" className="w-full font-bold uppercase" disabled={user?.is_anonymous}>
             Delete Account
           </Button>
