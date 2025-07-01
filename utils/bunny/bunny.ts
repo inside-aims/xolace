@@ -31,7 +31,7 @@ const revalidatePaths = (paths: string[]) => {
 export async function fetchBunnyVideos() {
   const res = await fetch(`https://video.bunnycdn.com/library/${LIBRARY_ID}/videos`, {
     headers: {
-      AccessKey: STREAM_ACCESS_KEY!,
+      AccessKey: BUNNY_STREAM_ACCESS_KEY!,
     },
     cache: 'no-store',
   });
@@ -45,7 +45,7 @@ export async function fetchBunnyVideos() {
 export async function fetchBunnyVideoById(videoId: string) {
   const res = await fetch(`https://video.bunnycdn.com/library/${LIBRARY_ID}/videos/${videoId}`, {
     headers: {
-      AccessKey: STREAM_ACCESS_KEY!,
+      AccessKey: BUNNY_STREAM_ACCESS_KEY!,
     },
     cache: 'no-store',
   });
@@ -55,15 +55,9 @@ export async function fetchBunnyVideoById(videoId: string) {
 }
 
 
-const getSessionUserId = async (): Promise<string> => {
-  const session = await auth.api.getSession({ headers: await headers() });
-  if (!session) throw new Error("Unauthenticated");
-  return session.user.id;
-};
 
 
 export const getVideoUploadUrl = withErrorHandling(async () => {
-  await getSessionUserId();
   const videoResponse = await apiFetch<BunnyVideoResponse>(
     `${VIDEO_STREAM_BASE_URL}/${LIBRARY_ID}/videos`,
     {
@@ -97,7 +91,6 @@ export const getThumbnailUploadUrl = withErrorHandling(
 
 export const saveVideoDetails = withErrorHandling(
   async (videoDetails: VideoDetails) => {
-    const userId = await getSessionUserId();
     await apiFetch(
       `${VIDEO_STREAM_BASE_URL}/${LIBRARY_ID}/videos/${videoDetails.videoId}`,
       {
@@ -111,13 +104,13 @@ export const saveVideoDetails = withErrorHandling(
     );
 
     const now = new Date();
-    await db.insert(videos).values({
-      ...videoDetails,
-      videoUrl: `${BUNNY.EMBED_URL}/${LIBRARY_ID}/${videoDetails.videoId}`,
-      userId,
-      createdAt: now,
-      updatedAt: now,
-    });
+    // await db.insert(videos).values({
+    //   ...videoDetails,
+    //   videoUrl: `${BUNNY.EMBED_URL}/${LIBRARY_ID}/${videoDetails.videoId}`,
+    //   userId,
+    //   createdAt: now,
+    //   updatedAt: now,
+    // });
 
     revalidatePaths(["/"]);
     return { videoId: videoDetails.videoId };
