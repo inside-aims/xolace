@@ -27,6 +27,12 @@ import {
 } from 'lucide-react';
 
 
+export const BUNNY = {
+  STORAGE_BASE_URL: "https://storage.bunnycdn.com/sample-xolace",
+  CDN_URL: "https://sample-xolacezone.b-cdn.net",
+  TRANSCRIPT_URL: "https://vz-d7087565-e86.b-cdn.net"
+}
+
 
 export const sidebarLinks = [
   {

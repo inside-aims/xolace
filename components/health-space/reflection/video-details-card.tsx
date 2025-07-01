@@ -97,7 +97,8 @@ const VideoDetailsCard = ({video, videoId}: { video: VideoDetailProps, videoId: 
                   allowFullScreen
                   loading="lazy"
                   className="inset-0 w-full h-full border-0"
-                ></iframe>
+                  title="Video player"
+                />
               </div>
 
               {/* Video info */}

@@ -1,6 +1,9 @@
-const API_KEY = process.env.BUNNY_PUBLIC_API_KEY;
-const LIBRARY_ID = process.env.NEXT_PUBLIC_BUNNY_EMBED_LIBRARY_ID;
-const HOST_NAME = process.env.NEXT_PUBLIC_BUNNY_HOST_NAME;
+const API_KEY = process.env.BUNNY_API_KEY;
+const LIBRARY_ID = process.env.BUNNY_EMBED_LIBRARY_ID;
+const HOST_NAME = process.env.BUNNY_HOST_NAME;
+const STREAM_ACCESS_KEY = process.env.BUNNY_STREAM_ACCESS_KEY;
+
+console.log("API_KEY ", API_KEY)
 
 export const cleanTitle = (title: string) => {
   return title.replace(/\.[^/.]+$/, '');
@@ -26,11 +29,12 @@ export const createThumbnailLink = (videoId: string, thumbnailFileName: string) 
 export async function fetchBunnyVideos() {
   const res = await fetch(`https://video.bunnycdn.com/library/${LIBRARY_ID}/videos`, {
     headers: {
-      AccessKey: API_KEY!,
+      AccessKey: STREAM_ACCESS_KEY!,
     },
     cache: 'no-store',
   });
 
+  console.log("res ", res);
   if (!res.ok) throw new Error("Failed to fetch Bunny videos");
   return await res.json();
 }
@@ -39,7 +43,7 @@ export async function fetchBunnyVideos() {
 export async function fetchBunnyVideoById(videoId: string) {
   const res = await fetch(`https://video.bunnycdn.com/library/${LIBRARY_ID}/videos/${videoId}`, {
     headers: {
-      AccessKey: API_KEY!,
+      AccessKey: STREAM_ACCESS_KEY!,
     },
     cache: 'no-store',
   });
