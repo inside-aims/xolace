@@ -4,7 +4,9 @@ import React, { useState, FormEvent, ChangeEvent, useEffect } from "react";
 import {
   Dialog,
   DialogContent,
+  DialogTitle,
 } from '@/components/ui/dialog';
+import { VisuallyHidden } from "@radix-ui/react-visually-hidden";
 
 import { useRouter } from "next/navigation";
 import FileInput from "@/components/health-space/reflection/FileInput";
@@ -13,6 +15,10 @@ import {getThumbnailUploadUrl, getVideoUploadUrl, saveVideoDetails} from "@/util
 import {useFileInput} from "@/utils/bunny/useFileInput";
 import {MAX_THUMBNAIL_SIZE, MAX_VIDEO_SIZE, VideoFormValues} from "@/components/health-space/reflection/index";
 import {Button} from "@/components/ui/button";
+import { useVideoUploadUrlMutation } from "@/hooks/videos/useVideoUploadUrlMutation";
+import { useUploadFileToBunnyMutation } from "@/hooks/videos/useUploadFileToBunnyMutation";
+import { useSaveVideoDetailsMutation } from "@/hooks/videos/useSaveVideoDetailsMutation";
+
 
 const uploadFileToBunny = (
   file: File,
@@ -33,13 +39,19 @@ const uploadFileToBunny = (
 
 const VideoUploadForms = ({open, setOpen }: {open: boolean, setOpen: (open: boolean) => void}) => {
   const router = useRouter();
+
+  // Mutations 
+  const { getVideoUploadUrlAsync } = useVideoUploadUrlMutation();
+  const { uploadFileToBunnyAsync } = useUploadFileToBunnyMutation();
+  const { saveVideoDetailsAsync } = useSaveVideoDetailsMutation();
+
+  // State 
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [videoDuration, setVideoDuration] = useState<number | null>(null);
   const [formData, setFormData] = useState<VideoFormValues>({
     title: "",
     description: "",
-    tags: "",
     visibility: "public",
   });
   const video = useFileInput(MAX_VIDEO_SIZE);
@@ -109,16 +121,17 @@ const VideoUploadForms = ({open, setOpen }: {open: boolean, setOpen: (open: bool
         return;
       }
 
-      const {
-        videoId,
-        uploadUrl: videoUploadUrl,
-        accessKey: videoAccessKey,
-      } = await getVideoUploadUrl();
+      // 1. Await the result of the mutation directly
+      const { videoId, uploadUrl: videoUploadUrl, accessKey: videoAccessKey } = await getVideoUploadUrlAsync();
+
+      // 2. The code will now pause here until the data is fetched.
+      // You can now confidently use the returned data for subsequent steps.
+      console.log("Successfully fetched video upload data: ", { videoId, videoUploadUrl });
 
       if (!videoUploadUrl || !videoAccessKey)
         throw new Error("Failed to get video upload credentials");
 
-      await uploadFileToBunny(video.file, videoUploadUrl, videoAccessKey);
+      await uploadFileToBunnyAsync({file: video.file, uploadUrl: videoUploadUrl, accessKey: videoAccessKey});
 
       const {
         uploadUrl: thumbnailUploadUrl,
@@ -126,23 +139,19 @@ const VideoUploadForms = ({open, setOpen }: {open: boolean, setOpen: (open: bool
         accessKey: thumbnailAccessKey,
       } = await getThumbnailUploadUrl(videoId);
 
+
       if (!thumbnailUploadUrl || !thumbnailCdnUrl || !thumbnailAccessKey)
         throw new Error("Failed to get thumbnail upload credentials");
 
-      await uploadFileToBunny(
-        thumbnail.file,
-        thumbnailUploadUrl,
-        thumbnailAccessKey
-      );
+      await uploadFileToBunnyAsync({file: thumbnail.file, uploadUrl: thumbnailUploadUrl, accessKey: thumbnailAccessKey});
 
-      await saveVideoDetails({
-        videoId,
-        thumbnailUrl: thumbnailCdnUrl,
+      await saveVideoDetailsAsync({
+        video_id: videoId,
+        thumbnail_url: thumbnailCdnUrl,
         ...formData,
         duration: videoDuration,
       });
 
-      router.push(`/video/${videoId}`);
     } catch (error) {
       console.error("Error submitting form:", error);
     } finally {
@@ -158,6 +167,9 @@ const VideoUploadForms = ({open, setOpen }: {open: boolean, setOpen: (open: bool
         onInteractOutside={(event) => event.preventDefault()}
         onEscapeKeyDown={(event) => event.preventDefault()}
       >
+        <VisuallyHidden>
+          <DialogTitle>Upload a video</DialogTitle>
+        </VisuallyHidden>
           {error && <div className="text-sm text-red-500">{error}</div>}
         <form
           className="gap-2 w-full flex flex-col items-start shadow-8"

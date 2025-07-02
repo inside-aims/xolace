@@ -20,9 +20,13 @@ export type Database = {
           metadata: Json | null
           post_id: string | null
           profile_id: string | null
+          related_user_avatar_url: string | null
           related_user_id: string | null
+          related_username: string | null
           report_id: number | null
+          user_avatar_url: string | null
           user_id: string
+          username: string | null
           vote_id: number | null
         }
         Insert: {
@@ -35,9 +39,13 @@ export type Database = {
           metadata?: Json | null
           post_id?: string | null
           profile_id?: string | null
+          related_user_avatar_url?: string | null
           related_user_id?: string | null
+          related_username?: string | null
           report_id?: number | null
+          user_avatar_url?: string | null
           user_id: string
+          username?: string | null
           vote_id?: number | null
         }
         Update: {
@@ -50,9 +58,13 @@ export type Database = {
           metadata?: Json | null
           post_id?: string | null
           profile_id?: string | null
+          related_user_avatar_url?: string | null
           related_user_id?: string | null
+          related_username?: string | null
           report_id?: number | null
+          user_avatar_url?: string | null
           user_id?: string
+          username?: string | null
           vote_id?: number | null
         }
         Relationships: [
@@ -103,6 +115,32 @@ export type Database = {
             columns: ["vote_id"]
             isOneToOne: false
             referencedRelation: "votes"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      ai_credits: {
+        Row: {
+          credits_remaining: number
+          last_reset: string
+          user_id: string
+        }
+        Insert: {
+          credits_remaining?: number
+          last_reset?: string
+          user_id: string
+        }
+        Update: {
+          credits_remaining?: number
+          last_reset?: string
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "ai_credits_user_id_fkey"
+            columns: ["user_id"]
+            isOneToOne: true
+            referencedRelation: "profiles"
             referencedColumns: ["id"]
           },
         ]
@@ -940,6 +978,59 @@ export type Database = {
           },
         ]
       }
+      videos: {
+        Row: {
+          created_at: string
+          description: string
+          duration: number | null
+          id: string
+          thumbnail_url: string
+          title: string
+          updated_at: string
+          user_id: string | null
+          video_id: string
+          video_url: string
+          views: number
+          visibility: Database["public"]["Enums"]["visibility_options"]
+        }
+        Insert: {
+          created_at?: string
+          description: string
+          duration?: number | null
+          id?: string
+          thumbnail_url: string
+          title: string
+          updated_at?: string
+          user_id?: string | null
+          video_id: string
+          video_url: string
+          views?: number
+          visibility?: Database["public"]["Enums"]["visibility_options"]
+        }
+        Update: {
+          created_at?: string
+          description?: string
+          duration?: number | null
+          id?: string
+          thumbnail_url?: string
+          title?: string
+          updated_at?: string
+          user_id?: string | null
+          video_id?: string
+          video_url?: string
+          views?: number
+          visibility?: Database["public"]["Enums"]["visibility_options"]
+        }
+        Relationships: [
+          {
+            foreignKeyName: "videos_user_id_fkey"
+            columns: ["user_id"]
+            isOneToOne: false
+            referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       views: {
         Row: {
           created_at: string
@@ -1140,6 +1231,10 @@ export type Database = {
           id: number
         }[]
       }
+      reset_credits: {
+        Args: Record<PropertyKey, never>
+        Returns: undefined
+      }
       upsert_tags_and_tips_relationship: {
         Args: { tag_names: string[]; tips_id: number }
         Returns: undefined
@@ -1190,6 +1285,7 @@ export type Database = {
       theme_options: "system" | "light" | "dark"
       user_role: "normal_user" | "verified" | "blue_team" | "help_professional"
       verification_method: "manual" | "subscription" | "promo"
+      visibility_options: "public" | "private"
       vote_types: "upvote" | "downvote"
     }
     CompositeTypes: {
@@ -1353,6 +1449,7 @@ export const Constants = {
       theme_options: ["system", "light", "dark"],
       user_role: ["normal_user", "verified", "blue_team", "help_professional"],
       verification_method: ["manual", "subscription", "promo"],
+      visibility_options: ["public", "private"],
       vote_types: ["upvote", "downvote"],
     },
   },

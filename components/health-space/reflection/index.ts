@@ -1,31 +1,17 @@
+import { ImageProps } from "next/image";
+import { ChangeEvent, ReactNode } from "react";
+
 export const BUNNY = {
   STREAM_BASE_URL: "https://video.bunnycdn.com/library",
-  STORAGE_BASE_URL: "https://sg.storage.bunnycdn.com/snapcast",
-  CDN_URL: "https://snapcast.b-cdn.net",
+  STORAGE_BASE_URL: "https://storage.bunnycdn.com/sample-xolace",
+  CDN_URL: "https://sample-xolacezone.b-cdn.net",
+  TRANSCRIPT_URL: "https://vz-d7087565-e86.b-cdn.net",
   EMBED_URL: "https://iframe.mediadelivery.net/embed",
-  TRANSCRIPT_URL: "https://vz-47a08e64-84d.b-cdn.net",
 };
 
 
 export const MAX_VIDEO_SIZE = 500 * 1024 * 1024;
 export const MAX_THUMBNAIL_SIZE = 10 * 1024 * 1024;
-
-export interface User {
-  name: string;
-  email: string;
-  emailVerified: boolean;
-  image?: string | null;
-  createdAt: Date;
-  updatedAt: Date;
-  id: string;
-}
-
-type VideoFormValues = {
-  title: string;
-  description: string;
-  tags: string;
-  visibility: "public" | "private";
-};
 
 export interface FormFieldProps {
   id: string;
@@ -60,11 +46,7 @@ export interface TranscriptEntry {
 export interface VideoFormValues {
   title: string;
   description: string;
-  tags: string;
   visibility: "public" | "private";
-}
-export interface NavbarProps {
-  user: User | undefined;
 }
 
 export interface SearchResult {
@@ -138,7 +120,7 @@ export interface VideoInfoProps {
   title: string;
   createdAt: Date;
   description: string;
-  videoId: string;
+  video_id: string;
   videoUrl: string;
 }
 
@@ -151,11 +133,11 @@ export interface ImageWithFallbackProps extends Omit<ImageProps, "src"> {
 type Visibility = "public" | "private";
 
 export interface VideoDetails {
-  videoId: string;
+  video_id: string;
   title: string;
   description: string;
-  thumbnailUrl: string;
-  tags: string | string[];
+  thumbnail_url: string;
+  tags?: string | string[];
   visibility: Visibility;
   duration?: number | null;
 }
@@ -211,7 +193,7 @@ export interface VideoWithUserResult {
     videoUrl: string;
     userId: string;
     views: number;
-    tags: string[];
+    tags?: string[];
     visibility: Visibility;
     createdAt: Date;
     updatedAt: Date;
@@ -232,7 +214,7 @@ export interface VideoObject {
   videoUrl: string;
   userId: string;
   views: number;
-  tags: string[];
+  tags?: string[];
   visibility: Visibility;
   createdAt: Date;
   updatedAt: Date;

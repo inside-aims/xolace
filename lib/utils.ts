@@ -5,7 +5,6 @@ import {ApiFetchOptions} from "@/components/health-space/reflection";
 
 const BUNNY_STREAM_ACCESS_KEY = process.env.BUNNY_STREAM_ACCESS_KEY;
 const  BUNNY_STORAGE_ACCESS_KEY= process.env.BUNNY_STORAGE_ACCESS_KEY;
-const LIBRARY_ID = process.env.NEXT_PUBLIC_BUNNY_EMBED_LIBRARY_ID;
 const HOST_NAME = process.env.NEXT_PUBLIC_BUNNY_HOST_NAME;
 
 export function cn(...inputs: ClassValue[]) {
@@ -91,8 +90,17 @@ export function generateSlug(title: string) {
   return title.toLowerCase().replace(/\s+/g, "-");
 }
 
+
+
+// Get env helper function
+export const getEnv = (key: string): string => {
+  const value = process.env[key];
+  if (!value) throw new Error(`Missing required env: ${key}`);
+  return value;
+};
+
 export function createIframeLink(videoId: string, startTime?: number) {
-  let base = `https://iframe.mediadelivery.net/embed/${LIBRARY_ID}/${videoId}?autoplay=true&preload=true`;
+  let base = `https://iframe.mediadelivery.net/embed/461900/${videoId}?autoplay=true&preload=true`;
 
   if (startTime && startTime > 0) {
     base += `&start=${startTime}`;

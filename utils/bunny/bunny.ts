@@ -1,15 +1,14 @@
 'use server';
 
 import { headers } from "next/headers";
+import {createClient} from "@/utils/supabase/server";
 import {revalidatePath} from "next/cache";
 import {apiFetch, withErrorHandling} from "@/lib/utils";
 import {BUNNY, BunnyVideoResponse, VideoDetails} from "@/components/health-space/reflection";
+import {getEnv} from "@/lib/utils";
 
-const API_KEY = process.env.BUNNY_API_KEY;
-const LIBRARY_ID = process.env.BUNNY_EMBED_LIBRARY_ID;
-const BUNNY_STREAM_ACCESS_KEY = process.env.BUNNY_STREAM_ACCESS_KEY;
-const BUNNY_STORAGE_ACCESS_KEY= process.env.BUNNY_STORAGE_ACCESS_KEY;
-const HOST_NAME = process.env.BUNNY_HOST_NAME;
+const LIBRARY_ID = getEnv("BUNNY_EMBED_LIBRARY_ID");
+//const HOST_NAME = getEnv("BUNNY_HOST_NAME");
 
 
 const VIDEO_STREAM_BASE_URL = BUNNY.STREAM_BASE_URL;
@@ -17,8 +16,8 @@ const THUMBNAIL_STORAGE_BASE_URL = BUNNY.STORAGE_BASE_URL;
 const THUMBNAIL_CDN_URL = BUNNY.CDN_URL;
 
 const ACCESS_KEYS = {
-  streamAccessKey: `${BUNNY_STREAM_ACCESS_KEY}`,
-  storageAccessKey: `${BUNNY_STORAGE_ACCESS_KEY}`,
+  streamAccessKey: getEnv("BUNNY_STREAM_ACCESS_KEY"),
+  storageAccessKey: getEnv("BUNNY_STORAGE_ACCESS_KEY"),
 };
 
 // Helper functions with descriptive names
@@ -27,11 +26,22 @@ const revalidatePaths = (paths: string[]) => {
 };
 
 
+const getSessionUserId = async () => {
+  const supabase = await createClient();
+  // supabase user session
+  const { data: { user } ,error } = await supabase.auth.getUser();
+  if (!user || error) throw new Error("Unauthenticated")
+  return user?.id;
+};
+
+
+
+// Server Actions 
 // get all videos
 export async function fetchBunnyVideos() {
   const res = await fetch(`https://video.bunnycdn.com/library/${LIBRARY_ID}/videos`, {
     headers: {
-      AccessKey: BUNNY_STREAM_ACCESS_KEY!,
+      AccessKey: ACCESS_KEYS.streamAccessKey!,
     },
     cache: 'no-store',
   });
@@ -43,13 +53,15 @@ export async function fetchBunnyVideos() {
 
 // get single video by ID
 export async function fetchBunnyVideoById(videoId: string) {
+  console.log("library id", LIBRARY_ID)
   const res = await fetch(`https://video.bunnycdn.com/library/${LIBRARY_ID}/videos/${videoId}`, {
     headers: {
-      AccessKey: BUNNY_STREAM_ACCESS_KEY!,
+      AccessKey: ACCESS_KEYS.streamAccessKey!,
     },
     cache: 'no-store',
   });
 
+  console.log("res ", res);
   if (!res.ok) throw new Error(`Failed to fetch Bunny video with ID: ${videoId}`);
   return await res.json();
 }
@@ -58,6 +70,9 @@ export async function fetchBunnyVideoById(videoId: string) {
 
 
 export const getVideoUploadUrl = withErrorHandling(async () => {
+  await getSessionUserId();
+  console.log("initial video upload")
+  console.log(`${VIDEO_STREAM_BASE_URL}/${LIBRARY_ID}/videos`)
   const videoResponse = await apiFetch<BunnyVideoResponse>(
     `${VIDEO_STREAM_BASE_URL}/${LIBRARY_ID}/videos`,
     {
@@ -68,6 +83,8 @@ export const getVideoUploadUrl = withErrorHandling(async () => {
   );
 
   const uploadUrl = `${VIDEO_STREAM_BASE_URL}/${LIBRARY_ID}/videos/${videoResponse.guid}`;
+  console.log("upload url", uploadUrl)
+  console.log("access key", ACCESS_KEYS.streamAccessKey)
   return {
     videoId: videoResponse.guid,
     uploadUrl,
@@ -77,10 +94,13 @@ export const getVideoUploadUrl = withErrorHandling(async () => {
 
 export const getThumbnailUploadUrl = withErrorHandling(
   async (videoId: string) => {
+    console.log("initial thumbnail upload")
     const timestampedFileName = `${Date.now()}-${videoId}-thumbnail`;
     const uploadUrl = `${THUMBNAIL_STORAGE_BASE_URL}/thumbnails/${timestampedFileName}`;
     const cdnUrl = `${THUMBNAIL_CDN_URL}/thumbnails/${timestampedFileName}`;
-
+    console.log("upload url", uploadUrl)
+    console.log("cdn url", cdnUrl)
+    console.log("access key", ACCESS_KEYS.storageAccessKey)
     return {
       uploadUrl,
       cdnUrl,
@@ -91,8 +111,10 @@ export const getThumbnailUploadUrl = withErrorHandling(
 
 export const saveVideoDetails = withErrorHandling(
   async (videoDetails: VideoDetails) => {
+    const supabase = await createClient();
+    await getSessionUserId();
     await apiFetch(
-      `${VIDEO_STREAM_BASE_URL}/${LIBRARY_ID}/videos/${videoDetails.videoId}`,
+      `${VIDEO_STREAM_BASE_URL}/${LIBRARY_ID}/videos/${videoDetails.video_id}`,
       {
         method: "POST",
         bunnyType: "stream",
@@ -103,17 +125,21 @@ export const saveVideoDetails = withErrorHandling(
       }
     );
 
-    const now = new Date();
-    // await db.insert(videos).values({
-    //   ...videoDetails,
-    //   videoUrl: `${BUNNY.EMBED_URL}/${LIBRARY_ID}/${videoDetails.videoId}`,
-    //   userId,
-    //   createdAt: now,
-    //   updatedAt: now,
-    // });
+    const { data, error } = await supabase
+      .from("videos")
+      .insert({
+        ...videoDetails,
+        video_url: `${BUNNY.EMBED_URL}/${LIBRARY_ID}/${videoDetails.video_id}`,
+      })
+      .select("video_id")
+      .single();
 
-    revalidatePaths(["/"]);
-    return { videoId: videoDetails.videoId };
+    if (error) {
+      console.error("Error inserting video into Supabase:", error);
+      throw error;
+    }
+
+    return { videoId: videoDetails.video_id };
   }
 );
 
