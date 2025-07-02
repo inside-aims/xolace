@@ -32,13 +32,47 @@ alter table "public"."activity_logs" add column "user_avatar_url" text;
 
 alter table "public"."activity_logs" add column "username" text;
 
-alter table "public"."activity_logs" alter column "user_id" set not null;
-
-alter table "public"."feedbacks" alter column "created_by" set not null;
-
 alter table "public"."user_preferences" alter column "daily_prompt_enabled" set default true;
 
 set check_function_bodies = off;
+
+
+CREATE OR REPLACE FUNCTION rls_helpers.rls_can_delete_blue_team()
+ RETURNS boolean
+ LANGUAGE plpgsql
+AS $function$
+begin
+  return exists (
+    select 1
+    from user_roles
+    join profiles on profiles.id = user_roles.user_id
+    where profiles.supabase_user = auth.uid()
+      and user_roles.role = 'blue_team'
+  );
+end;
+$function$
+;
+
+CREATE OR REPLACE FUNCTION rls_helpers.can_view_activity(log_user_id uuid, log_related_user_id uuid)
+ RETURNS boolean
+ LANGUAGE plpgsql
+ STABLE
+ SET search_path TO ''
+AS $function$
+DECLARE
+  current_user_profile_id uuid;
+BEGIN
+  -- Get the profile ID of the currently authenticated user once
+  SELECT id INTO current_user_profile_id
+  FROM public.profiles
+  WHERE supabase_user = auth.uid();
+
+  -- Return true if the current user is either the main user or the related user
+  RETURN (current_user_profile_id = log_user_id OR current_user_profile_id = log_related_user_id);
+END;
+$function$
+;
+
 
 CREATE OR REPLACE FUNCTION public.set_activity_user_info()
  RETURNS trigger
@@ -206,41 +240,9 @@ CREATE TRIGGER tr_set_activity_user_info BEFORE INSERT OR UPDATE OF user_id, rel
 
 set check_function_bodies = off;
 
-CREATE OR REPLACE FUNCTION rls_helpers.can_view_activity(log_user_id uuid, log_related_user_id uuid)
- RETURNS boolean
- LANGUAGE plpgsql
- STABLE
- SET search_path TO ''
-AS $function$
-DECLARE
-  current_user_profile_id uuid;
-BEGIN
-  -- Get the profile ID of the currently authenticated user once
-  SELECT id INTO current_user_profile_id
-  FROM public.profiles
-  WHERE supabase_user = auth.uid();
 
-  -- Return true if the current user is either the main user or the related user
-  RETURN (current_user_profile_id = log_user_id OR current_user_profile_id = log_related_user_id);
-END;
-$function$
-;
 
-CREATE OR REPLACE FUNCTION rls_helpers.rls_can_delete_blue_team()
- RETURNS boolean
- LANGUAGE plpgsql
-AS $function$
-begin
-  return exists (
-    select 1
-    from user_roles
-    join profiles on profiles.id = user_roles.user_id
-    where profiles.supabase_user = auth.uid()
-      and user_roles.role = 'blue_team'
-  );
-end;
-$function$
-;
+
 
 
 
