@@ -17,10 +17,6 @@ export function usePosts() {
               name
             )
           ),
-            votes(
-            user_id,
-            vote_type
-            ),
             comments:comments(count),
             views:views(count),
           collections(
