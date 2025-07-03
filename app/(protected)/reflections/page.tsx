@@ -1,12 +1,16 @@
 // app/reflections/page.tsx or wherever your route is
-import React from 'react';
+import React, { Suspense } from 'react';
 import type { Metadata } from 'next';
-import HealthTipsWrapper from "@/components/shared/layoutUIs/HealthTipsWrapper";
-import ReflectionsClientView from "@/app/(protected)/reflections/ReflectionClientView";
+import HealthTipsWrapper from '@/components/shared/layoutUIs/HealthTipsWrapper';
+import ReflectionsClientView from '@/app/(protected)/reflections/ReflectionClientView';
+import SharedHeaderWrapper from '@/components/health-space/reflection/SharedHeaderWrapper';
+import VideoListWrapper from '@/components/health-space/reflection/VideoListWrapper';
+import { VideoSkeleton } from '@/components/health-space/reflection/video-skeleton';
 
 export const metadata: Metadata = {
   title: 'Reflections',
-  description: "Mentor-led video reflections offering perspective, support, and guidance.",
+  description:
+    'Mentor-led video reflections offering perspective, support, and guidance.',
 };
 
 const ReflectionsPage = async () => {

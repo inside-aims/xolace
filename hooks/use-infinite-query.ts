@@ -150,6 +150,7 @@ function createStore<TData extends SupabaseTableData<T>, T extends SupabaseTable
     },
     fetchNextPage,
     initialize,
+    getTrailingQueryRef: () => trailingQuery
   }
 }
 
@@ -182,7 +183,8 @@ function useInfiniteQuery<
       storeRef.current.getState().hasInitialFetch &&
       (props.tableName !== props.tableName ||
         props.columns !== props.columns ||
-        props.pageSize !== props.pageSize)
+        props.pageSize !== props.pageSize) ||
+        props.trailingQuery !== storeRef.current.getTrailingQueryRef()
     ) {
       storeRef.current = createStore<TData, T>(props)
     }
@@ -190,7 +192,7 @@ function useInfiniteQuery<
     if (!state.hasInitialFetch && typeof window !== 'undefined') {
       storeRef.current.initialize()
     }
-  }, [props.tableName, props.columns, props.pageSize, state.hasInitialFetch])
+  }, [props.tableName, props.columns, props.pageSize, state.hasInitialFetch, props.trailingQuery])
 
   return {
     data: state.data,

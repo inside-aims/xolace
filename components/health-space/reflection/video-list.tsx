@@ -5,6 +5,7 @@ import React from 'react';
 import NothingInVoid from '@/components/shared/NotFound/NothingInVoid';
 import VideoCard from "./video-card";
 import { VideoCardProps } from ".";
+import { VideoSkeleton } from './video-skeleton';
 
 interface VideoListProps {
   videos: VideoCardProps[];
@@ -12,6 +13,7 @@ interface VideoListProps {
   isFetching: boolean;
   hasMore: boolean;
   fetchNextPage: () => void;
+  count: number;
 }
 
 const VideoList: React.FC<VideoListProps> = ({
@@ -20,12 +22,13 @@ const VideoList: React.FC<VideoListProps> = ({
   isFetching,
   hasMore,
   fetchNextPage,
+  count
 }) => {
   if (isLoading) {
-    return <p className="mt-10">Loading...</p>;
+    return <VideoSkeleton/>;
   }
 
-  if (videos.length === 0 && !isLoading) {
+  if (count === 0 && !isLoading) {
     return (
       <div className="flex w-full flex-1 flex-col justify-center items-center gap-5 py-10">
         <NothingInVoid />

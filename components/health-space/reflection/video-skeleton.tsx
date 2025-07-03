@@ -5,8 +5,8 @@ import { Skeleton } from "@/components/ui/skeleton";
 
 export const VideoSkeleton = () => {
   return(
-    <main className="flex flex-col items-center w-full px-4 -mt-5">
-      <header className="w-full">
+    <main className="flex flex-col items-center w-full px-4 mt-4">
+      {/* <header className="w-full">
         <section className="w-full mb-2">
           <Skeleton className="h-4 w-24 mb-2"/>
           <Skeleton className="h-6 w-40"/>
@@ -19,7 +19,7 @@ export const VideoSkeleton = () => {
 
           <Skeleton className="h-10 w-[140px] rounded-full"/>
         </section>
-      </header>
+      </header> */}
       <section className="w-full grid grid-cols-1 sm:grid-cols-2 gap-8 mt-4">
         {Array.from({length: 4}).map((_, i) => <ReflectionFallback key={i}/>)}
       </section>

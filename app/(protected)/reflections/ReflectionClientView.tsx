@@ -1,111 +1,60 @@
-// app/(protected)/reflections/ReflectionsView.tsx
-'use client';
+'use client'
+import React, { useState, useCallback } from 'react'
+import { useSearchParams, useRouter, usePathname } from 'next/navigation'
+import SharedHeaderWrapper from '@/components/health-space/reflection/SharedHeaderWrapper'
+import VideoListWrapper from '@/components/health-space/reflection/VideoListWrapper'
+import { Suspense } from 'react'
+import { VideoSkeleton } from '@/components/health-space/reflection/video-skeleton'
 
-import React, { useState, useCallback } from 'react';
-import { useSearchParams, useRouter, usePathname } from 'next/navigation';
+export default function ReflectionsClientView() {
+  const router = useRouter()
+  const pathname = usePathname()
+  const searchParams = useSearchParams()
 
-import { useInfiniteQuery, SupabaseTableData } from '@/hooks/use-infinite-query';
-import SharedHeader from "@/components/health-space/reflection/shared-header";
-import VideoList from '@/components/health-space/reflection/video-list';
+  const [searchQuery, setSearchQuery] = useState(searchParams.get('query') || '')
+  const [filter, setFilter] = useState(searchParams.get('filter') || 'mostRecent')
 
-
-// Define a type for your video data
-type VideoData = SupabaseTableData<'videos'>;
-
-// Helper to translate filter keys to Supabase query options
-const getSortOptions = (filter: string) => {
-  switch (filter) {
-    case 'mostViewed':
-      return { column: 'views', options: { ascending: false } };
-    case 'leastViewed':
-      return { column: 'views', options: { ascending: true } };
-    case 'oldestFirst':
-      return { column: 'created_at', options: { ascending: true } };
-    case 'mostRecent':
-    default:
-      return { column: 'created_at', options: { ascending: false } };
-  }
-};
-
-const ReflectionsClientView = () => {
-  const router = useRouter();
-  const pathname = usePathname();
-  const searchParams = useSearchParams();
-
-  // Initialize state from URL search parameters
-  const [searchQuery, setSearchQuery] = useState(searchParams.get('query') || '');
-  const [filter, setFilter] = useState(searchParams.get('filter') || 'mostRecent');
-
-  // Memoize the query-building function to prevent unnecessary refetches
-  const trailingQuery = useCallback(
-    (queryBuilder: any) => {
-      let modifiedQuery = queryBuilder;
-
-      // Add search logic
-      if (searchQuery.trim()) {
-        modifiedQuery = modifiedQuery.ilike('title', `%${searchQuery.trim()}%`);
-      }
-
-      // Add sorting logic
-      const { column, options } = getSortOptions(filter);
-      modifiedQuery = modifiedQuery.order(column, options);
-
-      return modifiedQuery;
-    },
-    [searchQuery, filter]
-  );
-
-  const {
-    data: videos,
-    isLoading,
-    isFetching,
-    hasMore,
-    fetchNextPage,
-  } = useInfiniteQuery<VideoData>({
-    tableName: 'videos', // Assuming your table is named 'videos'
-    pageSize: 8,
-    trailingQuery,
-  });
-
-  const updateURL = (newValues: { query?: string; filter?: string }) => {
-    const params = new URLSearchParams(searchParams.toString());
+  const updateURL = useCallback((newValues: { query?: string; filter?: string }) => {
+    const params = new URLSearchParams(searchParams.toString())
     if (newValues.query !== undefined) {
-      if (newValues.query) params.set('query', newValues.query);
-      else params.delete('query');
+      if (newValues.query) {
+        params.set('query', newValues.query)
+      } else {
+        params.delete('query')
+      }
     }
     if (newValues.filter) {
-      params.set('filter', newValues.filter);
+      params.set('filter', newValues.filter)
     }
-    window.history.pushState(null, '', `${pathname}?${params.toString()}`);
-  };
+    // Use replace instead of push to avoid polluting browser history
+    router.replace(`${pathname}?${params.toString()}`)
+  }, [pathname, router, searchParams]);
 
-  const handleSearchChange = (query: string) => {
-    setSearchQuery(query);
-    updateURL({ query });
-  };
 
-  const handleFilterChange = (newFilter: string) => {
-    setFilter(newFilter);
-    updateURL({ filter: newFilter });
-  };
+  const handleSearchChange = useCallback((q: string) => {
+    setSearchQuery(q)
+    updateURL({ query: q, filter })
+  }, [updateURL, filter]);
+
+  const handleFilterChange = useCallback((f: string) => {
+    setFilter(f)
+    updateURL({ query: searchQuery, filter: f })
+  }, [updateURL, searchQuery]);
 
   return (
-    <main className="flex w-full flex-col items-center px-4 -mt-5">
-      <SharedHeader
+    <main className='px-2'>
+      <SharedHeaderWrapper
         searchQuery={searchQuery}
         onSearchChange={handleSearchChange}
         selectedFilter={filter}
         onFilterChange={handleFilterChange}
       />
-      <VideoList
-        videos={videos}
-        isLoading={isLoading}
-        isFetching={isFetching}
-        hasMore={hasMore}
-        fetchNextPage={fetchNextPage}
-      />
+      <Suspense fallback={<VideoSkeleton/>}>
+        <VideoListWrapper
+          searchQuery={searchQuery}
+          filter={filter}
+        />
+      </Suspense>
     </main>
-  );
-};
-
-export default ReflectionsClientView;
+  )
+}
