@@ -980,6 +980,8 @@ export type Database = {
       }
       videos: {
         Row: {
+          author_avatar_url: string
+          author_name: string
           created_at: string
           description: string
           duration: number | null
@@ -994,6 +996,8 @@ export type Database = {
           visibility: Database["public"]["Enums"]["visibility_options"]
         }
         Insert: {
+          author_avatar_url: string
+          author_name: string
           created_at?: string
           description: string
           duration?: number | null
@@ -1008,6 +1012,8 @@ export type Database = {
           visibility?: Database["public"]["Enums"]["visibility_options"]
         }
         Update: {
+          author_avatar_url?: string
+          author_name?: string
           created_at?: string
           description?: string
           duration?: number | null

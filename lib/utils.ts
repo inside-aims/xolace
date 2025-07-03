@@ -5,7 +5,7 @@ import {ApiFetchOptions} from "@/components/health-space/reflection";
 
 const BUNNY_STREAM_ACCESS_KEY = process.env.BUNNY_STREAM_ACCESS_KEY;
 const  BUNNY_STORAGE_ACCESS_KEY= process.env.BUNNY_STORAGE_ACCESS_KEY;
-const HOST_NAME = process.env.NEXT_PUBLIC_BUNNY_HOST_NAME;
+const HOST_NAME = process.env.BUNNY_HOST_NAME;
 
 export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs));
@@ -111,7 +111,7 @@ export function createIframeLink(videoId: string, startTime?: number) {
 
 // default thumbnail URL
 export const createThumbnailLink =  (videoId: string, thumbnailFileName: string) => {
-  return `https://${HOST_NAME}/${videoId}/${thumbnailFileName}`;
+  return `https://storage.bunnycdn.com/${videoId}/${thumbnailFileName}`;
 };
 
 // API fetch helper with required Bunny CDN options

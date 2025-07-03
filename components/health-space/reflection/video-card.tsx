@@ -10,12 +10,12 @@ import {cleanTitle, createThumbnailLink} from "@/lib/utils";
 
 
 const VideoCard = ({
-    videoId,
+    video_id,
     title,
-    thumbnail,
-    userImg,
-    username,
-    createdAt,
+    thumbnail_url,
+    author_name,
+    author_avatar_url,
+    created_at,
     views,
     visibility,
     duration,
@@ -25,7 +25,7 @@ const VideoCard = ({
   const handleCopy = (e: React.MouseEvent) => {
     e.stopPropagation();
     e.preventDefault();
-    navigator.clipboard.writeText(`${window.location.origin}/${videoId}`);
+    navigator.clipboard.writeText(`${window.location.origin}/${video_id}`);
     setCopied(true);
     setTimeout(() => {
       setCopied(false);
@@ -48,10 +48,10 @@ const VideoCard = ({
 
 
   return(
-    <Link href={`/reflections/${videoId}`} className="relative flex w-full flex-col shadow-lg rounded-xl border">
+    <Link href={`/reflections/${video_id}`} className="relative flex w-full flex-col shadow-lg rounded-xl border">
       <div className="relative flex flex-col">
         <Image
-          src={createThumbnailLink(videoId, thumbnail)}
+          src={thumbnail_url}
           width={250}
           height={100}
           alt="thumbnail"
@@ -78,7 +78,7 @@ const VideoCard = ({
             </div>
 
             <div className="flex flex-col items-start leading-none m-0 p-0">
-              <span>{username}</span>
+              <span>{author_name}</span>
               <span className="text-sm text-neutral-400">
                 {visibility}
               </span>
@@ -87,11 +87,7 @@ const VideoCard = ({
         </div>
         <h2 className={"font-semibold text-lg"}>
           {cleanTitle(title)} - {" "}
-          {createdAt.toLocaleDateString("en-US", {
-            year: "numeric",
-            month: "short",
-            day: "numeric",
-          })}
+          {created_at}
         </h2>
         <div className={"flex items-center flex-row justify-between"}>
           <aside className={"flex items-center gap-4"}>
@@ -108,7 +104,7 @@ const VideoCard = ({
             <SaveToCollectionsButton
               userId={''}
               createdBy={""}
-              postId={videoId}
+              postId={video_id}
               postCollections={[]}
             />
           </div>

@@ -64,12 +64,12 @@ export interface SearchResult {
 }
 
 export interface VideoCardProps {
-  videoId: string;
+  video_id: string;
   title: string;
-  thumbnail: string;
-  userImg: string;
-  username: string;
-  createdAt: Date;
+  thumbnail_url: string;
+  author_name: string;
+  author_avatar_url: string;
+  created_at: string;
   views: number;
   visibility: Visibility;
   duration: number | null;
@@ -77,7 +77,7 @@ export interface VideoCardProps {
 
 export interface VideoDetailProps {
   title: string;
-  createdAt: Date;
+  created_at: Date;
   userImg: string | null | undefined;
   username?: string;
   videoId: string;
@@ -118,7 +118,7 @@ export interface VideoPlayerProps {
 export interface VideoInfoProps {
   transcript?: string;
   title: string;
-  createdAt: Date;
+  created_at: Date;
   description: string;
   video_id: string;
   videoUrl: string;

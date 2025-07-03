@@ -34,6 +34,14 @@ export const BUNNY = {
   TRANSCRIPT_URL: "https://vz-d7087565-e86.b-cdn.net"
 }
 
+// filter for videos
+export const filterOptions = [
+  {key : "mostViewed", label: "Most Viewed"},
+  {key : "mostRecent", label :"Most Recent"},
+  {key : "oldestFirst", label :"Oldest First"},
+  {key : "leastViewed", label :"Least Viewed"},
+];
+
 
 export const sidebarLinks = [
   {

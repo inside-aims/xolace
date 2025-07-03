@@ -69,3 +69,10 @@ interface BadgeCounts {
   SILVER: number;
   BRONZE: number;
 }
+
+declare interface DropdownListProps {
+  options: string[];
+  selectedOption: string;
+  onOptionSelect: (option: string) => void;
+  triggerElement: ReactNode;
+}

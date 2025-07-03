@@ -1,66 +1,109 @@
+// app/(protected)/reflections/ReflectionsView.tsx
 'use client';
 
-import React, { useMemo, useState } from 'react';
-import NothingInVoid from '@/components/shared/NotFound/NothingInVoid';
+import React, { useState, useCallback } from 'react';
+import { useSearchParams, useRouter, usePathname } from 'next/navigation';
+
+import { useInfiniteQuery, SupabaseTableData } from '@/hooks/use-infinite-query';
 import SharedHeader from "@/components/health-space/reflection/shared-header";
-import VideoCard from "@/components/health-space/reflection/video-card";
-import {VideoCardProps} from "@/components/health-space/reflection";
+import VideoList from '@/components/health-space/reflection/video-list';
 
-interface ReflectionsClientViewProps {
-  videos: VideoCardProps[];
-}
 
-const ReflectionsClientView: React.FC<ReflectionsClientViewProps> = ({ videos }) => {
-  const [searchTerm, setSearchTerm] = useState('');
-  const [currentFilter, setCurrentFilter] = useState('all');
+// Define a type for your video data
+type VideoData = SupabaseTableData<'videos'>;
 
-  const filteredVideos = useMemo(() => {
-    let result = [...videos];
+// Helper to translate filter keys to Supabase query options
+const getSortOptions = (filter: string) => {
+  switch (filter) {
+    case 'mostViewed':
+      return { column: 'views', options: { ascending: false } };
+    case 'leastViewed':
+      return { column: 'views', options: { ascending: true } };
+    case 'oldestFirst':
+      return { column: 'created_at', options: { ascending: true } };
+    case 'mostRecent':
+    default:
+      return { column: 'created_at', options: { ascending: false } };
+  }
+};
 
-    if (searchTerm.trim() !== '') {
-      result = result.filter(video =>
-        video.title.toLowerCase().includes(searchTerm.toLowerCase())
-      );
+const ReflectionsClientView = () => {
+  const router = useRouter();
+  const pathname = usePathname();
+  const searchParams = useSearchParams();
+
+  // Initialize state from URL search parameters
+  const [searchQuery, setSearchQuery] = useState(searchParams.get('query') || '');
+  const [filter, setFilter] = useState(searchParams.get('filter') || 'mostRecent');
+
+  // Memoize the query-building function to prevent unnecessary refetches
+  const trailingQuery = useCallback(
+    (queryBuilder: any) => {
+      let modifiedQuery = queryBuilder;
+
+      // Add search logic
+      if (searchQuery.trim()) {
+        modifiedQuery = modifiedQuery.ilike('title', `%${searchQuery.trim()}%`);
+      }
+
+      // Add sorting logic
+      const { column, options } = getSortOptions(filter);
+      modifiedQuery = modifiedQuery.order(column, options);
+
+      return modifiedQuery;
+    },
+    [searchQuery, filter]
+  );
+
+  const {
+    data: videos,
+    isLoading,
+    isFetching,
+    hasMore,
+    fetchNextPage,
+  } = useInfiniteQuery<VideoData>({
+    tableName: 'videos', // Assuming your table is named 'videos'
+    pageSize: 8,
+    trailingQuery,
+  });
+
+  const updateURL = (newValues: { query?: string; filter?: string }) => {
+    const params = new URLSearchParams(searchParams.toString());
+    if (newValues.query !== undefined) {
+      if (newValues.query) params.set('query', newValues.query);
+      else params.delete('query');
     }
-
-    switch (currentFilter) {
-      case 'mostRecent':
-        result.sort((a, b) => b.createdAt.getTime() - a.createdAt.getTime());
-        break;
-      case 'mostViews':
-        result.sort((a, b) => b.views - a.views);
-        break;
-      case 'mostLikes':
-        result.sort((a, b) => b.views - a.views);
-        break;
-      default:
-        break;
+    if (newValues.filter) {
+      params.set('filter', newValues.filter);
     }
+    window.history.pushState(null, '', `${pathname}?${params.toString()}`);
+  };
 
-    return result;
-  }, [videos, searchTerm, currentFilter]);
+  const handleSearchChange = (query: string) => {
+    setSearchQuery(query);
+    updateURL({ query });
+  };
+
+  const handleFilterChange = (newFilter: string) => {
+    setFilter(newFilter);
+    updateURL({ filter: newFilter });
+  };
 
   return (
-    <main className="flex flex-col items-center w-full px-4 -mt-5">
+    <main className="flex w-full flex-col items-center px-4 -mt-5">
       <SharedHeader
-        searchTerm={searchTerm}
-        onSearchChange={setSearchTerm}
-        currentFilter={currentFilter}
-        onFilterChange={setCurrentFilter}
+        searchQuery={searchQuery}
+        onSearchChange={handleSearchChange}
+        selectedFilter={filter}
+        onFilterChange={handleFilterChange}
       />
-
-      {filteredVideos.length === 0 ? (
-        <div className="flex w-full flex-1 flex-col justify-center items-center gap-5 py-10">
-          <NothingInVoid />
-          <p className="text-gray-400 text-sm">No video match your search or filters.</p>
-        </div>
-      ) : (
-        <section className="w-full grid grid-cols-1 sm:grid-cols-2 gap-8 mt-4">
-          {filteredVideos.map((video) => (
-            <VideoCard key={video.videoId} {...video} />
-          ))}
-        </section>
-      )}
+      <VideoList
+        videos={videos}
+        isLoading={isLoading}
+        isFetching={isFetching}
+        hasMore={hasMore}
+        fetchNextPage={fetchNextPage}
+      />
     </main>
   );
 };
