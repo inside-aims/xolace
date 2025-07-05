@@ -76,3 +76,5 @@ declare interface DropdownListProps {
   onOptionSelect: (option: string) => void;
   triggerElement: ReactNode;
 }
+
+type SupaVideoDetails = Database['public']['Tables']['videos']['Row']

@@ -441,6 +441,23 @@
   .markdown-editor {
     @apply prose prose-p:m-0 max-w-full;
   }
+
+  /* video player */
+  .video-player {
+    @apply relative aspect-video w-full rounded-2xl bg-[#000] flex-none;
+
+    div {
+      @apply absolute inset-0 flex items-center justify-center bg-gray-900 rounded-2xl;
+
+      p {
+        @apply text-white text-lg font-semibold;
+      }
+    }
+
+    iframe {
+      @apply absolute inset-0 h-full w-full rounded-2xl;
+    }
+  }
 }
 
 @layer base {

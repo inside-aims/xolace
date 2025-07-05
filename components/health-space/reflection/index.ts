@@ -140,6 +140,8 @@ export interface VideoDetails {
   tags?: string | string[];
   visibility: Visibility;
   duration?: number | null;
+  author_name?: string;
+  author_avatar_url?: string;
 }
 
 export interface BunnyVideoResponse {
