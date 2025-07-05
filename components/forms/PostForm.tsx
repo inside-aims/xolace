@@ -47,7 +47,7 @@ import { toast } from 'sonner';
 //import Loader from '../shared/loaders/Loader';
 import { PostSchema } from '@/validation';
 import { getSupabaseBrowserClient } from '@/utils/supabase/client';
-import { moods } from '@/utils';
+import { moods } from '@/constants/moods';
 import { Send } from 'lucide-react';
 // import MoodCarousel from '../hocs/createPostComponent/mood-carousel';
 // import ShinyButton from '../ui/shiny-button';
