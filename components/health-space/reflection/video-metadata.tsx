@@ -5,6 +5,7 @@ import { ThumbsUp, ScanEye, Bookmark, Copy, LinkIcon } from 'lucide-react';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { Badge } from '@/components/ui/badge';
 import { SupaVideoDetails } from '@/types/global';
+import { format } from 'timeago.js';
 
 const VideoMetadata = ({ video }: { video: SupaVideoDetails }) => {
   const [copied, setCopied] = useState(false);
@@ -78,6 +79,10 @@ const VideoMetadata = ({ video }: { video: SupaVideoDetails }) => {
             )}
           </button>
         </div>
+      </div>
+      <div className="text-gray-400 text-sm space-y-1 mt-4">
+        <p>Uploaded {format(video.created_at)}</p>
+        {video.description && <p className="text-gray-800 dark:text-gray-300 mt-1 leading-relaxed">{video.description}</p>}
       </div>
     </section>
   );

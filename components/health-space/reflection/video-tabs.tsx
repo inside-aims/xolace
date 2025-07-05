@@ -41,7 +41,7 @@ export function VideoTabs({ video, activeTab, onTabChange }: VideoTabsProps) {
 
         <TabsContent value="metadata" className="mt-6 px-4">
           <div className="space-y-4">
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 text-sm">
+            <div className="grid grid-cols-1 gap-3 text-sm">
               <div className="flex gap-x-2">
                 <p className="text-gray-400 mb-1">Duration:</p>
                 <p className="dark:text-white text-gray-600">

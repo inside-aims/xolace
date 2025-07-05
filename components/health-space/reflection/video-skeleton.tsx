@@ -62,7 +62,7 @@ export const ReflectionFallback = () => {
 
 export const VideoDetailsSkeleton = () => {
   return (
-    <section className="grid grid-cols-12 gap-8 items-start h-full md:h-[calc(100vh-var(--header-height))]">
+    <section className="grid grid-cols-12 gap-8 items-start h-full md:h-[calc(100vh-var(--header-height))] w-full mt-4">
       {/* Left - Video and Info */}
       <div className="col-span-12 md:col-span-8 space-y-4">
         <div className="aspect-video w-full rounded-lg overflow-hidden">

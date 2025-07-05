@@ -5,6 +5,7 @@ import VideoPlayer from './video-player';
 import VideoMetadata from './video-metadata';
 import { VideoTabs } from './video-tabs';
 import { getVideoData } from '@/queries/videos/getVideoData';
+import { VideoDetailsSkeleton } from './video-skeleton';
 
 interface VideoDetailsProps {
   videoId: string;
@@ -20,16 +21,14 @@ export function VideoDetails({ videoId }: VideoDetailsProps) {
   // Handle loading state
   if (isLoading) {
     return (
-      <div className="flex min-h-screen items-center justify-center bg-black text-white">
-        Loading video...
-      </div>
+      <VideoDetailsSkeleton/>
     );
   }
 
   // Handle error state
   if (isError) {
     return (
-      <div className="flex min-h-screen items-center justify-center bg-black text-red-500">
+      <div className="w-full flex min-h-screen items-center justify-center text-red-500">
         Error: {error.message}
       </div>
     );
@@ -38,7 +37,7 @@ export function VideoDetails({ videoId }: VideoDetailsProps) {
   // Handle case where video is not found
   if (!video) {
     return (
-      <div className="flex min-h-screen items-center justify-center bg-black text-white">
+      <div className="w-full flex min-h-screen items-center justify-center text-white">
         Video not found.
       </div>
     );
