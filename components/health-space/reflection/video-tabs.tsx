@@ -26,7 +26,8 @@ export function VideoTabs({ video, activeTab, onTabChange }: VideoTabsProps) {
 
         <TabsContent value="transcript" className="mt-6">
           <div className="space-y-4">
-            {video.transcript ? (
+          <p className="text-gray-400">No transcript available.</p>
+            {/* {video.transcript ? (
               <div className="text-gray-300 leading-relaxed">
                 {video.transcript.split("\n").map((line: string | number | bigint | boolean | ReactElement<unknown, string | JSXElementConstructor<any>> | Iterable<ReactNode> | ReactPortal | Promise<string | number | bigint | boolean | ReactPortal | ReactElement<unknown, string | JSXElementConstructor<any>> | Iterable<ReactNode> | null | undefined> | null | undefined, index: Key | null | undefined) => (
                   <p key={index} className="mb-2">
@@ -36,7 +37,7 @@ export function VideoTabs({ video, activeTab, onTabChange }: VideoTabsProps) {
               </div>
             ) : (
               <p className="text-gray-400">No transcript available.</p>
-            )}
+            )} */}
           </div>
         </TabsContent>
 
@@ -46,20 +47,8 @@ export function VideoTabs({ video, activeTab, onTabChange }: VideoTabsProps) {
               <div className="flex gap-x-2">
                 <p className="text-gray-400 mb-1">Duration:</p>
                 <p className="dark:text-white text-gray-600">
-                  {Math.floor(video.duration / 60)}:{(video.duration % 60).toString().padStart(2, "0")}
+                  {Math.floor(video.duration ? video.duration / 60 : 0)}:{(video.duration ? video.duration % 60 : 0).toString().padStart(2, "0")}
                 </p>
-              </div>
-              <div className="flex gap-x-2">
-                <p className="text-gray-400 mb-1">File Size:</p>
-                <p className="dark:text-white text-gray-600">{video.fileSize || "Unknown"}</p>
-              </div>
-              <div className="flex gap-x-2">
-                <p className="text-gray-400 mb-1">Resolution:</p>
-                <p className="dark:text-white text-gray-600">{video.resolution || "1920x1080"}</p>
-              </div>
-              <div className="flex gap-x-2">
-                <p className="text-gray-400 mb-1">Format:</p>
-                <p className="dark:text-white text-gray-600">{video.format || "MP4"}</p>
               </div>
               <div className="flex gap-x-2">
                 <p className="text-gray-400 mb-1">Upload Date:</p>
