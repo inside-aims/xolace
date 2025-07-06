@@ -18,7 +18,8 @@ import {Button} from "@/components/ui/button";
 import { useVideoUploadUrlMutation } from "@/hooks/videos/useVideoUploadUrlMutation";
 import { useUploadFileToBunnyMutation } from "@/hooks/videos/useUploadFileToBunnyMutation";
 import { useSaveVideoDetailsMutation } from "@/hooks/videos/useSaveVideoDetailsMutation";
-
+import { toast } from 'sonner';
+import { DefaultLoader } from "@/components/shared/loaders/DefaultLoader";
 
 const uploadFileToBunny = (
   file: File,
@@ -152,8 +153,19 @@ const VideoUploadForms = ({open, setOpen }: {open: boolean, setOpen: (open: bool
         duration: videoDuration,
       });
 
+      toast.success("Video uploaded successfully");
+      //clear form 
+      setFormData({
+        title: "",
+        description: "",
+        visibility: "public",
+      });
+      video.resetFile();
+      thumbnail.resetFile();
+      setOpen(false);
     } catch (error) {
       console.error("Error submitting form:", error);
+      toast.error("Failed to upload video");
     } finally {
       setIsSubmitting(false);
     }
@@ -232,7 +244,12 @@ const VideoUploadForms = ({open, setOpen }: {open: boolean, setOpen: (open: bool
             className={"mt-4 w-full flex rounded-lg bg-lavender-500 hover:bg-lavender-600 text-white "}
             disabled={isSubmitting}
           >
-            {isSubmitting ? "Uploading..." : "Upload Video"}
+            {isSubmitting ?(
+              <span className="flex items-center gap-2">
+                <DefaultLoader size={20} />
+                <p>Uploading...</p>
+              </span>
+            ) : "Upload Video"}
           </Button>
         </form>
         {/*<Form {...form}>*/}
