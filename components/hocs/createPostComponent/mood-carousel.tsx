@@ -10,7 +10,7 @@ import {
   CarouselPrevious,
 } from '@/components/ui/carousel';
 //import useEmblaCarousel from 'embla-carousel-react';
-import { postMoods } from '@/utils';
+import { postMoods } from '@/constants';
 import { Mood } from '@/types';
 import Image from 'next/image';
 

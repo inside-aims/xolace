@@ -33,7 +33,7 @@ const PostMetrics = ({
   // Get the current user's vote if it exists
   //const userVote = votes.find(vote => vote.user_id === userId)?.vote_type || null;
 
-  const [currentVote, setCurrentVote] = useState<string | null>(userVote);
+  const [currentVote, setCurrentVote] = useState<"upvote" | "downvote" | null | undefined>(userVote);
   // const [upvoteCount, setUpvoteCount] = useState(post.upvotes);
   // const [downvoteCount, setDownvoteCount] = useState(post.downvotes);
   //const [isVoting, setIsVoting] = useState(false);

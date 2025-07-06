@@ -1,4 +1,4 @@
-import {ApiFetchOptions} from "@/utils/index";
+
 
 /**
  * Returns the Title Case of a given string

@@ -2,6 +2,7 @@
 
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import { SupaVideoDetails } from "@/types/global"
+import { ReactElement, JSXElementConstructor, ReactNode, ReactPortal, Key } from "react"
 
 
 interface VideoTabsProps {
@@ -27,7 +28,7 @@ export function VideoTabs({ video, activeTab, onTabChange }: VideoTabsProps) {
           <div className="space-y-4">
             {video.transcript ? (
               <div className="text-gray-300 leading-relaxed">
-                {video.transcript.split("\n").map((line, index) => (
+                {video.transcript.split("\n").map((line: string | number | bigint | boolean | ReactElement<unknown, string | JSXElementConstructor<any>> | Iterable<ReactNode> | ReactPortal | Promise<string | number | bigint | boolean | ReactPortal | ReactElement<unknown, string | JSXElementConstructor<any>> | Iterable<ReactNode> | null | undefined> | null | undefined, index: Key | null | undefined) => (
                   <p key={index} className="mb-2">
                     {line}
                   </p>
@@ -70,7 +71,7 @@ export function VideoTabs({ video, activeTab, onTabChange }: VideoTabsProps) {
               </div>
             </div>
 
-            {video.tags && video.tags.length > 0 && (
+            {/* {video.tags && video.tags.length > 0 && (
               <div>
                 <p className="text-gray-400 mb-2">Tags</p>
                 <div className="flex flex-wrap gap-2">
@@ -81,7 +82,7 @@ export function VideoTabs({ video, activeTab, onTabChange }: VideoTabsProps) {
                   ))}
                 </div>
               </div>
-            )}
+            )} */}
           </div>
         </TabsContent>
       </Tabs>

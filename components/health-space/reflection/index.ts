@@ -293,14 +293,14 @@ export interface ExtendedMediaStream extends MediaStream {
 }
 
 // Types
-interface VideoQueryResult {
-  video: typeof videos.$inferSelect;
-  user: {
-    id: string;
-    name: string | null;
-    image: string | null;
-  };
-}
+// interface VideoQueryResult {
+//   video: typeof videos.$inferSelect;
+//   user: {
+//     id: string;
+//     name: string | null;
+//     image: string | null;
+//   };
+// }
 
 interface PaginationResult<T> {
   data: T[];

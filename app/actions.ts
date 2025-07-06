@@ -236,7 +236,7 @@ export async function updateViewsAction(postId: string, userId: string, relatedU
 export async function voteAction(
   postId: string,
   voteType: 'upvote' | 'downvote',
-  currentVote: string | null,
+  currentVote: "upvote" | "downvote" | null | undefined,
   user_id: string,
   relatedUserId: string
 ) {

@@ -15,7 +15,7 @@ export function useVoteMutations() {
     }: {
       postId: string;
       voteType: 'upvote' | 'downvote';
-      currentVote: string | null;
+      currentVote: "upvote" | "downvote" | null | undefined;
       user_id: string;
       relatedUserId: string;
     }) => voteAction(postId, voteType, currentVote, user_id, relatedUserId),
