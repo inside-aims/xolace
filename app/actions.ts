@@ -345,7 +345,6 @@ export async function saveVideoToCollectionAction(
   if (!userId) throw new Error('User must be logged in.');
   const supabase = await createClient();
 
-  console.log('video Id -> ', videoId)
 
   try {
       const { data, error } = await supabase
@@ -357,7 +356,6 @@ export async function saveVideoToCollectionAction(
           .single(); // Assuming you want the created record back
 
       if (error) {
-          console.error('Supabase error saving video to collection:', error);
           throw new Error(error.message);
       }
 

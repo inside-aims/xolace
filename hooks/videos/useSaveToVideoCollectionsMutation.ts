@@ -33,13 +33,11 @@ export function useSaveToVideoCollectionsMutation() {
             }
         } else {
              toast.error(result.error || "An unknown error occurred.");
-             console.log("Error ", result.error)
         }
     },
     onError: (error) => {
       // This will handle network errors or if the action throws an unhandled exception
       toast.error(error.message || 'An unexpected error occurred.');
-      console.log("Error ", error)
     },
     onSettled: (data, error, variables) => {
       // This runs after success or error. It's the perfect place to invalidate queries
