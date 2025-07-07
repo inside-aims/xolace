@@ -8,6 +8,7 @@ import { SupaVideoDetails } from '@/types/global';
 import { format } from 'timeago.js';
 import { SaveVideoButton } from './save-video-button';
 import { useUserState } from '@/lib/store/user';
+import LikeVideoButton from './like-video-button';
 
 const VideoMetadata = ({ video }: { video: SupaVideoDetails }) => {
   const { user } = useUserState();
@@ -51,11 +52,7 @@ const VideoMetadata = ({ video }: { video: SupaVideoDetails }) => {
           </div>
         </div>
         <div className="flex w-full items-start justify-between gap-0 md:w-auto md:gap-4">
-          <ShadowBtn
-            key={'likes'}
-            value={23}
-            icon={<ThumbsUp className="size-4 sm:size-4" />}
-          />
+         <LikeVideoButton videoId={video.id} userId={user?.id} likesCount={video.likes_count} bunny_video_id={video.video_id} createdBy={video.user_id}/>
           <ShadowBtn
             key={'view'}
             value={video.views}

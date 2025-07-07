@@ -1,5 +1,5 @@
 export type EntityType = 'post' | 'comment' | 'vote' | 'report' | 'profile' | 'system' | 'view' | 'video';
-export type ActionType = 'created' | 'deleted' | 'updated' | 'commented' | 'reported' | 'upvoted' | 'downvoted' | 'viewed' | 'added';
+export type ActionType = 'created' | 'deleted' | 'updated' | 'commented' | 'reported' | 'upvoted' | 'downvoted' | 'viewed' | 'added' | 'liked';
 
 export interface User {
   id: string;

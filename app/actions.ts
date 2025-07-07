@@ -397,7 +397,7 @@ export async function removeVideoFromCollectionAction(
           throw new Error(error.message);
       }
       
-      revalidatePath(`/video/${videoId}`);
+      revalidatePath(`/reflections/${videoId}`);
       return { success: true };
 
   } catch (error) {
