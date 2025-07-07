@@ -49,6 +49,9 @@ export async function logActivity({
     // Get IP address from headers
     //const headersList = headers();
     const ip = null;
+    if(userId === relatedUserId){
+      relatedUserId = null;
+    }
 
     const { error } = await supabase.from('activity_logs').insert({
       user_id: userId,

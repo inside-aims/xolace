@@ -63,7 +63,8 @@ const VideoMetadata = ({ video }: { video: SupaVideoDetails }) => {
           />
           <SaveVideoButton
             userId={user?.id}
-            videoId={video.video_id}
+            videoId={video.id}
+            bunny_video_id={video.video_id}
             createdBy={video.user_id}
             isInitiallySaved={isInitiallySaved}
           />

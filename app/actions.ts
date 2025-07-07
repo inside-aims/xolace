@@ -339,11 +339,13 @@ export async function removeFromCollection(userId: string, postId: string, colle
 }
 
 export async function saveVideoToCollectionAction(
-  { userId, videoId, createdBy, collectionName = 'favorites' }:
-      { userId: string, videoId: string, createdBy: string | null, collectionName?: string }
+  { userId, videoId, bunny_video_id, createdBy, collectionName = 'favorites' }:
+      { userId: string, videoId: string, bunny_video_id: string, createdBy: string | null, collectionName?: string }
 ) {
   if (!userId) throw new Error('User must be logged in.');
   const supabase = await createClient();
+
+  console.log('video Id -> ', videoId)
 
   try {
       const { data, error } = await supabase
@@ -366,7 +368,7 @@ export async function saveVideoToCollectionAction(
           entityType: ActivityType.VIDEO, // Ensure your enum supports this
           action: 'added',
           videoId: videoId,
-          metadata: { collection_name: collectionName, content_type: "video", link: `/video/${videoId}` }
+          metadata: { collection_name: collectionName, content_type: "video", link: `/reflections/${bunny_video_id}` }
       });
 
       revalidatePath(`/video/${videoId}`);

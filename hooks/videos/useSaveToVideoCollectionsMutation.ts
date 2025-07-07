@@ -8,6 +8,7 @@ interface SaveVideoPayload {
   isCurrentlySaved: boolean;
   userId: string;
   videoId: string;
+  bunny_video_id: string;
   createdBy: string | null;
 }
 
@@ -15,11 +16,11 @@ export function useSaveToVideoCollectionsMutation() {
   const queryClient = useQueryClient();
 
   return useMutation({
-    mutationFn: async ({ isCurrentlySaved, userId, videoId, createdBy }: SaveVideoPayload) => {
+    mutationFn: async ({ isCurrentlySaved, userId, videoId, bunny_video_id, createdBy }: SaveVideoPayload) => {
       if (isCurrentlySaved) {
         return removeVideoFromCollectionAction({ userId, videoId });
       } else {
-        return saveVideoToCollectionAction({ userId, videoId, createdBy });
+        return saveVideoToCollectionAction({ userId, videoId, bunny_video_id, createdBy });
       }
     },
     onSuccess: (result, variables) => {
@@ -32,11 +33,13 @@ export function useSaveToVideoCollectionsMutation() {
             }
         } else {
              toast.error(result.error || "An unknown error occurred.");
+             console.log("Error ", result.error)
         }
     },
     onError: (error) => {
       // This will handle network errors or if the action throws an unhandled exception
       toast.error(error.message || 'An unexpected error occurred.');
+      console.log("Error ", error)
     },
     onSettled: (data, error, variables) => {
       // This runs after success or error. It's the perfect place to invalidate queries
