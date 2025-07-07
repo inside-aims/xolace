@@ -6,7 +6,7 @@ export const ShadowBtn = (
 ) => {
   return(
     <button
-      className={`flex items-center px-4 py-1 shadow-md rounded-2xl border border-neutral-200 text-gray-600 dark:text-white gap-2 cursor-pointer hover:shadow-lg text-sm ${className} ${disabled ? 'opacity-50 cursor-not-allowed' : ''}`}
+      className={`flex items-center px-4 py-1 shadow-md rounded-2xl border border-neutral-200 text-gray-600 dark:text-white gap-2 cursor-pointer hover:shadow-lg text-sm transition-colors ${className} ${disabled ? 'opacity-50 cursor-not-allowed' : ''}`}
       onClick={onClick}
       disabled={disabled}
     >
