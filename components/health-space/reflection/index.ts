@@ -73,6 +73,7 @@ export interface VideoCardProps {
   views: number;
   visibility: Visibility;
   duration: number | null;
+  likes_count: number;
 }
 
 export interface VideoDetailProps {
