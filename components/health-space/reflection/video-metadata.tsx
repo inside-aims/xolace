@@ -6,8 +6,11 @@ import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { Badge } from '@/components/ui/badge';
 import { SupaVideoDetails } from '@/types/global';
 import { format } from 'timeago.js';
+import { SaveVideoButton } from './save-video-button';
+import { useUserState } from '@/lib/store/user';
 
 const VideoMetadata = ({ video }: { video: SupaVideoDetails }) => {
+  const { user } = useUserState();
   const [copied, setCopied] = useState(false);
 
   const copyLink = () => {
@@ -16,6 +19,8 @@ const VideoMetadata = ({ video }: { video: SupaVideoDetails }) => {
     );
     setCopied(true);
   };
+
+  const isInitiallySaved = video.video_collections?.some(collection => collection.user_id === user?.id) || false;
 
   return (
     <section className="">
@@ -56,10 +61,11 @@ const VideoMetadata = ({ video }: { video: SupaVideoDetails }) => {
             value={video.views}
             icon={<ScanEye className="size-4 text-red-200 sm:size-4" />}
           />
-          <ShadowBtn
-            key={'save'}
-            value={'Save'}
-            icon={<Bookmark className="size-4 sm:size-4" />}
+          <SaveVideoButton
+            userId={user?.id}
+            videoId={video.video_id}
+            createdBy={video.user_id}
+            isInitiallySaved={isInitiallySaved}
           />
           <button
             onClick={copyLink}

@@ -16,7 +16,7 @@ export function getVideoData(videoId: string) {
     queryFn: async () => {
       const { data, error } = await supabase
         .from('videos')
-        .select('*') // Selects all columns
+        .select('*, video_collections(user_id)') // Selects all columns
         .eq('video_id', videoId) // Filters for the specific video
         .single(); // Expects a single row, throwing an error if 0 or more than 1 are found.
 

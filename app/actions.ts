@@ -338,6 +338,73 @@ export async function removeFromCollection(userId: string, postId: string, colle
   }
 }
 
+export async function saveVideoToCollectionAction(
+  { userId, videoId, createdBy, collectionName = 'favorites' }:
+      { userId: string, videoId: string, createdBy: string | null, collectionName?: string }
+) {
+  if (!userId) throw new Error('User must be logged in.');
+  const supabase = await createClient();
+
+  try {
+      const { data, error } = await supabase
+          .from('video_collections')
+          .insert([
+              { user_id: userId, video_id: videoId, collection_name: collectionName },
+          ])
+          .select()
+          .single(); // Assuming you want the created record back
+
+      if (error) {
+          console.error('Supabase error saving video to collection:', error);
+          throw new Error(error.message);
+      }
+
+      // Log the activity
+      await logActivity({
+          userId,
+          relatedUserId: createdBy,
+          entityType: ActivityType.VIDEO, // Ensure your enum supports this
+          action: 'added',
+          videoId: videoId,
+          metadata: { collection_name: collectionName, content_type: "video", link: `/video/${videoId}` }
+      });
+
+      revalidatePath(`/video/${videoId}`);
+      return { success: true, data };
+
+  } catch (error) {
+      return { success: false, error: error instanceof Error ? error.message : 'Failed to save video to collection.' };
+  }
+}
+
+export async function removeVideoFromCollectionAction(
+  { userId, videoId, collectionName = 'favorites' }:
+      { userId: string, videoId: string, collectionName?: string }
+) {
+  if (!userId) throw new Error('User must be logged in.');
+  const supabase = await createClient();
+
+  try {
+      const { error } = await supabase
+          .from('video_collections')
+          .delete()
+          .eq('user_id', userId)
+          .eq('video_id', videoId)
+          .eq('collection_name', collectionName);
+
+      if (error) {
+          console.error('Supabase error removing video from collection:', error);
+          throw new Error(error.message);
+      }
+      
+      revalidatePath(`/video/${videoId}`);
+      return { success: true };
+
+  } catch (error) {
+      return { success: false, error: error instanceof Error ? error.message : 'Failed to remove from collection.' };
+  }
+}
+
 // Fetch all posts in a user's collection (with pagination)
 export const fetchCollectionPostsAction = async (
   userId: string,
