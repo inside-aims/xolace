@@ -88,7 +88,10 @@ const VideoCard = ({
           </figure>
         </div>
         <h2 className={'text-lg font-semibold'}>
-          {cleanTitle(title)} - {created_at}
+          {cleanTitle(title)} - {new Date(created_at).toLocaleDateString('en-US', {
+              month: 'short',
+              year: 'numeric',
+            })}
         </h2>
         <div className={'flex flex-row items-center justify-between'}>
           <aside className={'flex items-center gap-4'}>
