@@ -1,6 +1,6 @@
 import React, {useState, useEffect} from 'react'
 import { ShadowBtn } from '@/components/health-space/reflection/shadow-btn';
-import { ThumbsUp } from 'lucide-react';
+import {  Heart } from 'lucide-react';
 import { getVideoLikeStatus } from '@/queries/videos/getVideoLikeStatus';
 import { useVideoLikes } from '@/hooks/videos/useVideoLikesMutation';
 import { toast } from 'sonner';
@@ -59,10 +59,10 @@ const LikeVideoButton = ({videoId, userId, likesCount, bunny_video_id, createdBy
     value={videoLikesCount}
     className={`hover:bg-gray-800 ${
         isHasLiked
-          ? 'text-ocean-500 dark:text-ocean-500! border-ocean-500 dark:border-ocean-500'
+          ? 'text-rose-500 dark:text-rose-500! border-rose-500 dark:border-rose-500'
           : 'text-gray-600 dark:text-white'
       }`}
-    icon={<ThumbsUp className={`size-4 sm:size-4 ${isHasLiked ? 'fill-ocean-500 dark:fill-ocean-500' : ''}`} />}
+    icon={<Heart className={`size-4 sm:size-4 ${isHasLiked ? 'fill-rose-500 dark:fill-rose-500' : ''}`} />}
     onClick={handleClick}
     disabled={isLoading}
   />

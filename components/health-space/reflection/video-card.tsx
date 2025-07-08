@@ -2,7 +2,7 @@
 import Image from 'next/image';
 import Link from 'next/link';
 import { useState } from 'react';
-import { Copy, Link as LinkIcon, ScanEye, ThumbsUp } from 'lucide-react';
+import { Copy, Link as LinkIcon, ScanEye, Heart } from 'lucide-react';
 import * as React from 'react';
 import SaveToCollectionsButton from '@/components/shared/SaveToCollectionsButton';
 import { VideoCardProps } from '@/components/health-space/reflection/index';
@@ -96,7 +96,7 @@ const VideoCard = ({
         <div className={'flex flex-row items-center justify-between'}>
           <aside className={'flex items-center gap-4'}>
             <div className="flex items-center gap-1" id="likes">
-              <ThumbsUp className="size-4 sm:size-4" />
+              <Heart className="size-4 sm:size-4 text-rose-500" />
               <span className="font-button-small">{likes_count}</span>
             </div>
             <div className="flex items-center gap-1" id="view-btn">

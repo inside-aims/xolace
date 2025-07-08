@@ -16,7 +16,7 @@ import {
   AccordionItem,
   AccordionTrigger,
 } from '@/components/ui/accordion';
-import { faqs } from '@/utils';
+import { faqs } from '@/constants';
 import { HelpCircleIcon } from 'lucide-react';
 
 const ChannelQuestionsCard = () => {
