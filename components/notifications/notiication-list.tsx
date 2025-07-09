@@ -23,7 +23,7 @@ const filterOptions: { key: string; label: string }[] = [
   { key: "all", label: "All" },
   { key: "important", label: "Important" },
   { key: "unread", label: "Unread" },
-  { key: "markAllAsRead", label: "Mark all as read" },
+  { key: "read", label: "Read" },
   { key: "clearAll", label: "Clear All" },
 ];
 
@@ -59,6 +59,7 @@ const NotificationList = ({ notifications }: { notifications: NotificationProps[
   const applyFilter = (n: NotificationProps) => {
     if (selectedFilter === "important") return n.important;
     if (selectedFilter === "unread") return n.status === "unread";
+    if (selectedFilter === "read") return n.status === "read";
     return true;
   };
 

@@ -168,7 +168,7 @@ export function SiteHeader() {
       </header>
       { isOpen && (
         <div ref={notificationRef}>
-          <NotificationPanel notifications={notifications}/>
+          <NotificationPanel notifications={notifications} isOpen={isOpen}/>
         </div>
       )}
       {/* <SignoutAlert isOpen={isOpen} setIsOpen={setIsOpen} /> */}
