@@ -1,9 +1,9 @@
 'use client';
 
-import { useEffect } from 'react';
+import {useEffect, useRef, useState} from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
-import { useRouter } from 'next/navigation';
+import {usePathname, useRouter} from 'next/navigation';
 
 import { Button } from '@/components/ui/button';
 //import { Separator } from "@/components/ui/separator"
@@ -16,14 +16,19 @@ import { getSupabaseBrowserClient } from '@/utils/supabase/client';
 import { useUserState } from '@/lib/store/user';
 import { RealtimeAvatarStack } from './realtime-avatar-stack';
 import mascot from '../public/assets/images/x-logo-full.webp';
-import { Menu, PlusIcon } from 'lucide-react';
+import { Menu, PlusIcon, Bell } from 'lucide-react';
+import NotificationPanel from "@/components/notifications/notification-panel";
+import {notifications} from "@/app/(protected)/notifications/(overview)/notifications";
 
 export function SiteHeader() {
   // get user profile data
   const { roles } = useUserState();
   const isProfessional = roles.includes('help_professional');
-  // const [isOpen, setIsOpen] = useState(false);
+  const [isOpen, setIsOpen] = useState(false);
+  const notificationRef = useRef<HTMLDivElement | null>(null);
+  const bellButtonRef = useRef<HTMLDivElement | null>(null);
   const router = useRouter();
+  const pathname = usePathname();
   const supabase = getSupabaseBrowserClient();
   const { toggleSidebar } = useSidebar();
 
@@ -57,6 +62,31 @@ export function SiteHeader() {
       subscription.unsubscribe();
     };
   }, [router, supabase.auth]);
+
+  //Close notification panel when click outside
+  useEffect(() => {
+    const handleClickOutside = (event: MouseEvent) => {
+      if (
+        isOpen &&
+        notificationRef.current && bellButtonRef.current &&
+        !notificationRef.current.contains(event.target as Node) &&
+        !bellButtonRef.current.contains(event.target as Node)
+      ) {
+        setIsOpen(false);
+      }
+    };
+
+    document.addEventListener('mousedown', handleClickOutside);
+    return () => {
+      document.removeEventListener('mousedown', handleClickOutside);
+    };
+  }, [isOpen]);
+
+  //Close panel when route changes
+  useEffect(() => {
+    setIsOpen(false);
+  }, [pathname]);
+
 
   return (
     <>
@@ -122,17 +152,25 @@ export function SiteHeader() {
                 <span className="hidden text-sm md:block">Create</span>
               </Link>
             )}
-            <div className="hidden md:block">
+            <div className="items-center hidden md:flex">
               <ThemeSwitch />
             </div>
-            <div id="online-users">
+            {/*Notification entry section*/}
+            <div className={"flex items-center"} onClick={() => setIsOpen(!isOpen)} ref={bellButtonRef} >
+              <Bell size={22}/>
+            </div>
+            <div id="online-users" className={"flex items-center"}>
               {/* <ProgressBetaBadge progress={30} /> */}
               <RealtimeAvatarStack roomName="break_room" />
             </div>
           </div>
         </div>
       </header>
-
+      { isOpen && (
+        <div ref={notificationRef}>
+          <NotificationPanel notifications={notifications}/>
+        </div>
+      )}
       {/* <SignoutAlert isOpen={isOpen} setIsOpen={setIsOpen} /> */}
     </>
   );
