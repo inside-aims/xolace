@@ -13,7 +13,7 @@ interface VideoTabsProps {
 
 export function VideoTabs({ video, activeTab, onTabChange }: VideoTabsProps) {
   return (
-    <div className="py-4 lg:p-6">
+    <div className="pt-4 pb-10 lg:p-6">
       <Tabs value={activeTab} onValueChange={(value) => onTabChange(value as "transcript" | "metadata")}>
         <TabsList className="grid w-full grid-cols-2 bg-gray-400 dark:bg-gray-800">
           <TabsTrigger value="transcript" className="data-[state=active]:bg-blue-600 dark:data-[state=active]:bg-blue-500 data-[state=inactive]:bg-gray-400 dark:data-[state=inactive]:bg-gray-800  data-[state=active]:text-white data-[state=inactive]:text-gray-600 dark:data-[state=inactive]:text-gray-400 ">

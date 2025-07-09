@@ -6,6 +6,7 @@ import VideoMetadata from './video-metadata';
 import { VideoTabs } from './video-tabs';
 import { getVideoData } from '@/queries/videos/getVideoData';
 import { VideoDetailsSkeleton } from './video-skeleton';
+import BackButton from '@/components/shared/back-button';
 
 interface VideoDetailsProps {
   videoId: string;
@@ -48,6 +49,7 @@ export function VideoDetails({ videoId }: VideoDetailsProps) {
         {/* Mobile Layout */}
         <div className="lg:hidden">
           <div className="sticky top-3 z-10">
+            <BackButton className='mb-2'/>
             <VideoPlayer videoId={videoId} />
           </div>
           <div className="h-[calc(100vh-90.25vw)] overflow-y-auto mt-5  pb-6">
