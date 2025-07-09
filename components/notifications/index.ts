@@ -7,4 +7,6 @@ export interface NotificationProps {
   typeId: string; //when type is a post, the typeId has to be post id
   status: "read" | "unread";
   important: boolean;
+  author_avatar_url: string;
+
 }

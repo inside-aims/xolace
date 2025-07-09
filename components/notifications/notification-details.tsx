@@ -16,6 +16,7 @@ const mockNotification: NotificationProps = {
   typeId: 'abc123',
   status: "unread",
   important: true,
+  author_avatar_url: ""
 };
 
 const NotificationDetails = ({ notificationId }: {notificationId: string}) => {

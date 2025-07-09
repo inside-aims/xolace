@@ -7,11 +7,12 @@ export const notifications: NotificationProps[] = [
     notificationId: "one",
     sender: "Khanllan Allan",
     message: "You have a new message regarding your appointment.",
-    createdAt: "2025-07-06T08:30:00.000Z",
+    createdAt: "2025-07-09T23:22:00.000Z",
     status: "read",
     type: "post",
     typeId: "a1b2c3d4",
     important: true,
+    author_avatar_url: ""
   },
   {
     notificationId: "two",
@@ -22,6 +23,7 @@ export const notifications: NotificationProps[] = [
     type: "system",
     typeId: "sys8743",
     important: false,
+    author_avatar_url: ""
   },
   {
     notificationId: "three",
@@ -32,6 +34,7 @@ export const notifications: NotificationProps[] = [
     type: "system",
     typeId: "sys9921",
     important: true,
+    author_avatar_url: ""
   },
   {
     notificationId: "four",
@@ -42,6 +45,7 @@ export const notifications: NotificationProps[] = [
     type: "post",
     typeId: "post3471",
     important: false,
+    author_avatar_url: ""
   },
   {
     notificationId: "five",
@@ -52,6 +56,7 @@ export const notifications: NotificationProps[] = [
     type: "system",
     typeId: "sys5588",
     important: false,
+    author_avatar_url: ""
   },
   {
     notificationId: "six",
@@ -62,6 +67,7 @@ export const notifications: NotificationProps[] = [
     type: "system",
     typeId: "sys2214",
     important: false,
+    author_avatar_url: ""
   },
   {
     notificationId: "seven",
@@ -72,6 +78,7 @@ export const notifications: NotificationProps[] = [
     type: "post",
     typeId: "pst7892",
     important: false,
+    author_avatar_url: ""
   },
   {
     notificationId: "eight",
@@ -82,6 +89,7 @@ export const notifications: NotificationProps[] = [
     type: "post",
     typeId: "rep5589",
     important: true,
+    author_avatar_url: ""
   },
   {
     notificationId: "nine",
@@ -92,6 +100,7 @@ export const notifications: NotificationProps[] = [
     type: "system",
     typeId: "sys3012",
     important: true,
+    author_avatar_url: ""
   },
   {
     notificationId: "ten",
@@ -102,5 +111,6 @@ export const notifications: NotificationProps[] = [
     type: "system",
     typeId: "sys1903",
     important: false,
+    author_avatar_url: ""
   },
 ];

@@ -2,6 +2,8 @@
 
 import {NotificationProps} from "@/components/notifications/index";
 import {useRouter} from "next/navigation";
+import {Avatar, AvatarFallback, AvatarImage} from "@/components/ui/avatar";
+import * as React from "react";
 
 const NotificationCard = (props: NotificationProps) => {
   const router = useRouter();
@@ -27,9 +29,18 @@ const NotificationCard = (props: NotificationProps) => {
       >
         <div className="w-full flex flex-row gap-4 items-center justify-between" >
           <div className="w-full flex flex-row gap-4 items-start">
-            <p
-              className="h-10 w-10 flex-shrink-0 flex items-center justify-center font-semibold bg-lavender-500 border rounded-full">
-            </p>
+            <Avatar className="border border-neutral-300">
+              <AvatarImage
+                src={
+                  props.type !== "system"
+                    ? props.author_avatar_url
+                    : "/assets/images/x-logo-full.webp"
+                }
+                alt={props.sender}
+                className="object-cover"
+              />
+              <AvatarFallback>{props.sender.charAt(0)}</AvatarFallback>
+            </Avatar>
             <div
               className={`w-full flex flex-col gap-2 hover:underline ${props.status === "read" ? 'text-neutral-400' : ''}`}>
               <div className={"flex flex-col"}>
