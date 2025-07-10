@@ -991,6 +991,7 @@ export type Database = {
       }
       video_collections: {
         Row: {
+          videos: any
           collection_name: string | null
           created_at: string | null
           id: string
