@@ -187,6 +187,7 @@ function useInfiniteQuery<
         props.trailingQuery !== storeRef.current.getTrailingQueryRef()
     ) {
       storeRef.current = createStore<TData, T>(props)
+      storeRef.current.initialize();
     }
 
     if (!state.hasInitialFetch && typeof window !== 'undefined') {

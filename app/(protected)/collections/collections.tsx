@@ -1,55 +1,48 @@
 "use client"
 
-import React, { useEffect, useState} from 'react'
-import CollectionsFeedList from '@/components/hocs/collectionComponents/CollectionsFeedList'
-import { useUserState } from '@/lib/store/user'
-import { fetchCollectionPostsAction } from '@/app/actions'
-import { Post } from '@/types/global'
-import { notFound } from 'next/navigation'
+import { useState } from "react"
+import { CollectionsHeader } from "@/components/hocs/collectionComponents/collections-header"
+import { CollectionsTabs } from "@/components/hocs/collectionComponents/collections-tab"
+import { PostsSection } from "@/components/hocs/collectionComponents/post-section"
+import { VideosSection } from "@/components/hocs/collectionComponents/videos-section"
+import { useUserState } from "@/lib/store/user"
 
-const Collections = () => {
-    const user = useUserState(state => state.user);
-    const [posts, setPosts] = useState<Post[]>([]);
-    const [page, setPage] = useState(1);
-    const [hasMore, setHasMore ] = useState(false)
-    const [isLoading, setIsLoading] = useState(true)
-    const pageSize = 10;
+export type TabType = "posts" | "videos"
+export type CollectionFilter = "all" | "favorites" | "save-for-later" | "inspiration"
 
-    if(!user){
-        return notFound()
-    }
-
-    // eslint-disable-next-line react-hooks/rules-of-hooks
-    useEffect(() => {
-        const loadPosts = async () => {
-            setIsLoading(true);
-          const data = await fetchCollectionPostsAction(user?.id, 'favorites', page, 10);
-          const flatPosts = data.flat()
-          if (page === 1) {
-            setPosts(flatPosts);
-          } else {
-            setPosts(prevPosts => [...prevPosts, ...flatPosts]);
-          }
-          setHasMore(flatPosts.length === pageSize);
-          setIsLoading(false);
-        };
-        loadPosts();
-      }, [page, user]);
+export default function CollectionsPage() {
+  const user = useUserState(state => state.user);
+  const [activeTab, setActiveTab] = useState<TabType>("posts")
+  const [collectionFilter, setCollectionFilter] = useState<CollectionFilter>("all")
 
   return (
-    <>
-        <CollectionsFeedList postsData={posts} isLoading={isLoading} />
+    <div className="min-h-[calc(100vh-var(--header-height))] w-full">
+      <div className="max-w-6xl mx-auto px-3 sm:px-4 lg:px-6 py-4 sm:py-6 space-y-6 sm:space-y-8">
+        <CollectionsHeader />
 
-      {hasMore && (
-        <button
-          onClick={() => setPage(page + 1)}
-          className="w-full py-2 px-4 bg-primary text-primary-foreground hover:bg-primary/90 rounded-md"
-        >
-          Load More
-        </button>
-      )}
-    </>
+        <div className="space-y-0">
+          <CollectionsTabs
+            activeTab={activeTab}
+            onTabChange={setActiveTab}
+            collectionFilter={collectionFilter}
+            onCollectionFilterChange={setCollectionFilter}
+          />
+
+          <div className="relative ">
+            {user ? (
+              activeTab === "posts" ? (
+                <PostsSection userId={user.id} collectionFilter={collectionFilter} />
+              ) : (
+                <VideosSection collectionFilter={collectionFilter} />
+              )
+            ) : (
+                <div className="w-full bg-red-400">
+                  <p>loading...</p>
+                </div>
+            )}
+          </div>
+        </div>
+      </div>
+    </div>
   )
 }
-
-export default Collections

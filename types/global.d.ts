@@ -24,14 +24,13 @@ type Post = Database['public']['Tables']['posts']['Row'] & {
       name: string;
     };
   }[];
-  votes: Database['public']['Tables']['votes']['Row'][];
-  comments: [{
+  comments: {
     count: number;
-  }];
-  views:[{
+  }[];
+  views:{
     count:number
-  }];
-  collections: Database['public']['Tables']['collections']['Row'][];
+  }[];
+  collections: {user_id: string}[];
   post_slides: {
     content: string;
     slide_index: number;

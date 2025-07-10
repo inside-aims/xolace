@@ -170,7 +170,7 @@ export function EnhancedPostCard({ className, post, onClick }: PostCardType) {
                 src={post.author_avatar_url || undefined}
                 alt={post.author_name}
               />
-              <AvatarFallback>{post.author_name.charAt(0)}</AvatarFallback>
+              <AvatarFallback className='bg-gradient-to-br from-[#0536ff] to-[#6a71ea] text-white'>{post.author_name.charAt(0)}</AvatarFallback>
             </Avatar>
             <div className="flex flex-col items-start justify-center">
               <div className="flex items-center gap-2">
