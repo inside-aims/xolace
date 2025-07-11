@@ -16,7 +16,7 @@ const VideoMetadata = ({ video }: { video: SupaVideoDetails }) => {
 
   const copyLink = () => {
     navigator.clipboard.writeText(
-      `${window.location.origin}/video/${video.video_id}`,
+      `${window.location.origin}/reflections/${video.video_id}`,
     );
     setCopied(true);
   };

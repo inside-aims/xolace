@@ -25,7 +25,7 @@ const VideoCard = ({
   const handleCopy = (e: React.MouseEvent) => {
     e.stopPropagation();
     e.preventDefault();
-    navigator.clipboard.writeText(`${window.location.origin}/${video_id}`);
+    navigator.clipboard.writeText(`${window.location.origin}/reflections/${video_id}`);
     setCopied(true);
     setTimeout(() => {
       setCopied(false);
