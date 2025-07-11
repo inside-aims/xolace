@@ -24,7 +24,7 @@ export function PostsFilter({ sortFilter, onSortFilterChange }: PostsFilterProps
   }
 
   return (
-    <div className="flex items-center justify-between">
+    <div className="flex items-center justify-between px-3">
       <h2 className="text-lg sm:text-xl font-semibold text-black dark:text-gray-300">Posts</h2>
 
       <DropdownMenu>

@@ -2,11 +2,12 @@
 import Image from 'next/image';
 import Link from 'next/link';
 import { useState } from 'react';
-import { Copy, Link as LinkIcon, ScanEye, Heart } from 'lucide-react';
+import { Copy, Link as LinkIcon, Heart } from 'lucide-react';
 import * as React from 'react';
-import SaveToCollectionsButton from '@/components/shared/SaveToCollectionsButton';
+//import SaveToCollectionsButton from '@/components/shared/SaveToCollectionsButton';
 import { VideoCardProps } from '@/components/health-space/reflection/index';
-import { cleanTitle, createThumbnailLink } from '@/lib/utils';
+import { cleanTitle } from '@/lib/utils';
+import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 
 const VideoCard = ({
   video_id,
@@ -15,7 +16,6 @@ const VideoCard = ({
   author_name,
   author_avatar_url,
   created_at,
-  views,
   visibility,
   duration,
   likes_count,
@@ -67,11 +67,14 @@ const VideoCard = ({
       <article className={'flex w-full flex-col gap-2 p-4'}>
         <div className="flex w-full items-start justify-between">
           <figure className={'flex w-full flex-row gap-2'}>
-            <div
-              className={
-                'flex h-[36px] w-[36px] items-start rounded-full border bg-neutral-300'
-              }
-            >
+            <Avatar>
+              <AvatarImage src={author_avatar_url} alt={author_name} />
+              <AvatarFallback className="bg-gradient-to-br from-[#0536ff] to-[#6a71ea] text-white">
+                {author_name.slice(0, 2).toUpperCase()}
+              </AvatarFallback>
+            </Avatar>
+
+            <div>
               {/*<Image*/}
               {/*  src={userImg}*/}
               {/*  width={36}*/}
@@ -88,30 +91,31 @@ const VideoCard = ({
           </figure>
         </div>
         <h2 className={'text-lg font-semibold'}>
-          {cleanTitle(title)} - {new Date(created_at).toLocaleDateString('en-US', {
-              month: 'short',
-              year: 'numeric',
-            })}
+          {cleanTitle(title)} -{' '}
+          {new Date(created_at).toLocaleDateString('en-US', {
+            month: 'short',
+            year: 'numeric',
+          })}
         </h2>
         <div className={'flex flex-row items-center justify-between'}>
           <aside className={'flex items-center gap-4'}>
             <div className="flex items-center gap-1" id="likes">
-              <Heart className="size-4 sm:size-4 text-rose-500" />
+              <Heart className="size-4 text-rose-500 sm:size-4" />
               <span className="font-button-small">{likes_count}</span>
             </div>
-            <div className="flex items-center gap-1" id="view-btn">
+            {/* <div className="flex items-center gap-1" id="view-btn">
               <ScanEye className="size-4 text-red-200 sm:size-4" />
               <span className="font-button-small">{views}</span>
-            </div>
+            </div> */}
           </aside>
-          <div id="collection-btn">
+          {/* <div id="collection-btn">
             <SaveToCollectionsButton
               userId={''}
               createdBy={''}
               postId={video_id}
               postCollections={[]}
             />
-          </div>
+          </div> */}
         </div>
       </article>
       <div className="absolute top-4 right-4 z-50 flex flex-col gap-4">

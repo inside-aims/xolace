@@ -185,7 +185,7 @@ const {
 
     console.log("filteredAndSortedPosts ",filteredAndSortedPosts)
   return (
-    <div className="px-3 sm:px-6 py-4 sm:py-6 space-y-4 sm:space-y-6 ">
+    <div className=" sm:px-6 py-4 sm:py-6 space-y-4 sm:space-y-6 ">
       <PostsFilter sortFilter={sortFilter} onSortFilterChange={setSortFilter} />
 
       <div className="space-y-3 sm:space-y-4">

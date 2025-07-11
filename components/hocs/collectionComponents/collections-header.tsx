@@ -2,11 +2,11 @@ import { BookOpen, Sparkles, Star, Zap } from "lucide-react"
 
 export function CollectionsHeader() {
   return (
-    <div className="relative text-center space-y-4 sm:space-y-6 py-4 sm:py-8">
+    <div className="relative text-center space-y-4 sm:space-y-6 py-1 sm:py-2">
       {/* Animated background elements */}
       <div className="absolute inset-0 overflow-hidden pointer-events-none">
         <div className="absolute top-4 left-1/4 w-2 h-2 bg-[#6a71ea] rounded-full animate-pulse opacity-60" />
-        <div className="absolute top-8 right-1/3 w-1 h-1 bg-[#0536ff] rounded-full animate-ping opacity-40" />
+        {/* <div className="absolute top-8 right-1/3 w-1 h-1 bg-[#0536ff] rounded-full animate-ping opacity-40" /> */}
         <div className="absolute bottom-4 left-1/3 w-1.5 h-1.5 bg-[#6a71ea] rounded-full animate-pulse opacity-50" />
         <div className="absolute bottom-8 right-1/4 w-1 h-1 bg-[#0536ff] rounded-full animate-ping opacity-30" />
       </div>
@@ -22,10 +22,10 @@ export function CollectionsHeader() {
             <Sparkles className="w-3 h-3 sm:w-4 sm:h-4 text-[#6a71ea] absolute -top-1 -right-1 animate-pulse" />
           </div>
 
-          <div className="flex flex-col items-center gap-1 sm:gap-2">
+          {/* <div className="flex flex-col items-center gap-1 sm:gap-2">
             <Star className="w-4 h-4 sm:w-5 sm:h-5 text-[#6a71ea] animate-pulse" />
             <Zap className="w-3 h-3 sm:w-4 sm:h-4 text-[#0536ff] animate-bounce" />
-          </div>
+          </div> */}
         </div>
 
         {/* Title with enhanced styling */}

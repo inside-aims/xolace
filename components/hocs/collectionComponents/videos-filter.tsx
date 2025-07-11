@@ -24,7 +24,7 @@ export function VideosFilter({ sortFilter, onSortFilterChange }: VideosFilterPro
   }
 
   return (
-    <div className="flex items-center justify-between">
+    <div className="flex items-center justify-between px-3">
       <h2 className="text-lg sm:text-xl font-semibold text-gray-200">Videos</h2>
 
       <DropdownMenu>
