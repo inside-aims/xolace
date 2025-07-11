@@ -95,8 +95,8 @@ const NotificationList = ({ notifications }: { notifications: NotificationProps[
   );
 
   return (
-    <div className="flex flex-col gap-8">
-      <section className="sticky top-3 z-20 bg-white dark:bg-[#121212]">
+    <div className="h-screen">
+      <section className="sticky top-0 z-20 bg-white dark:bg-[#121212]">
         <ListHeader
           onFilterChange={onFilterChange}
           filterOptions={filterOptions}
@@ -105,9 +105,9 @@ const NotificationList = ({ notifications }: { notifications: NotificationProps[
       </section>
 
       {/* Notification Section */}
-      <section className="w-full mt-4">
+      <section className="w-full mt-4 md:mt-8">
         {/* Time Range Selector */}
-        <section className="w-full bg-white dark:bg-[#121212] flex gap-2 overflow-x-auto">
+        <section className="w-full bg-white dark:bg-[#121212] flex gap-2">
           <DropdownMenu>
             <DropdownMenuTrigger asChild>
               <button className="w-full flex items-center justify-between py-2 px-4 border border-gray-300 dark:border-gray-600 rounded-md text-sm capitalize">
@@ -129,7 +129,7 @@ const NotificationList = ({ notifications }: { notifications: NotificationProps[
             </DropdownMenuContent>
           </DropdownMenu>
         </section>
-        <div className="overflow-y-auto bg-neutral-100 dark:bg-dark-1 rounded-lg mt-2">
+        <div className="bg-neutral-100 dark:bg-dark-1 rounded-lg mt-2">
           {filteredNotifications.length > 0 ? (
             filteredNotifications.map((n) => (
               <NotificationCard key={n.notificationId} {...n} />
