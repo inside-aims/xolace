@@ -54,7 +54,7 @@ export default function VideoListWrapper({
     count
   } = useInfiniteQuery<VideoData>({
     tableName: 'videos',
-    pageSize: 8,
+    pageSize: 20,
     trailingQuery,
   });
 

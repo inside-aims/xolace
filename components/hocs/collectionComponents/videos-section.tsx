@@ -1,7 +1,6 @@
 "use client"
 
 import { useState, useMemo, useCallback, Suspense } from "react"
-import { VideoCard } from "./video-card"
 import { VideosFilter } from "./videos-filter"
 import type { CollectionFilter } from "@/app/(protected)/collections/collections"
 import { useInfiniteQuery } from "@/hooks/use-infinite-query"
@@ -96,7 +95,7 @@ export function VideosSection({ collectionFilter }: VideosSectionProps) {
     trailingQuery: useCallback((query: any) => {
       return query.order('created_at', { ascending: false })
     }, [collectionFilter]),
-    pageSize: 10,
+    pageSize: 20,
   })
 
   console.log("videos ",videos)

@@ -6,6 +6,7 @@ import { CollectionsTabs } from "@/components/hocs/collectionComponents/collecti
 import { PostsSection } from "@/components/hocs/collectionComponents/post-section"
 import { VideosSection } from "@/components/hocs/collectionComponents/videos-section"
 import { useUserState } from "@/lib/store/user"
+import SearchLoader from "@/components/shared/loaders/SearchLoader"
 
 export type TabType = "posts" | "videos"
 export type CollectionFilter = "all" | "favorites" | "save-for-later" | "inspiration"
@@ -13,7 +14,8 @@ export type CollectionFilter = "all" | "favorites" | "save-for-later" | "inspira
 export default function CollectionsPage() {
   const user = useUserState(state => state.user);
   const [activeTab, setActiveTab] = useState<TabType>("posts")
-  const [collectionFilter, setCollectionFilter] = useState<CollectionFilter>("all")
+  //const [collectionFilter, setCollectionFilter] = useState<CollectionFilter>("all")
+  const collectionFilter = "all"
 
   return (
     <div className="min-h-[calc(100vh-var(--header-height))] w-full">
@@ -24,8 +26,6 @@ export default function CollectionsPage() {
           <CollectionsTabs
             activeTab={activeTab}
             onTabChange={setActiveTab}
-            collectionFilter={collectionFilter}
-            onCollectionFilterChange={setCollectionFilter}
           />
 
           <div className="relative ">
@@ -36,8 +36,8 @@ export default function CollectionsPage() {
                 <VideosSection collectionFilter={collectionFilter} />
               )
             ) : (
-                <div className="w-full bg-red-400">
-                  <p>loading...</p>
+                <div className="w-full">
+                  <SearchLoader />  
                 </div>
             )}
           </div>

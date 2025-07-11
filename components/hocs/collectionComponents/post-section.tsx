@@ -7,6 +7,7 @@ import type { CollectionFilter } from "@/app/(protected)/collections/collections
 import { useInfiniteQuery, type SupabaseQueryHandler } from '@/hooks/use-infinite-query';
 import { Post } from "@/types/global"
 import { useRouter } from "next/navigation"
+import FeedSkeletonLoader from "@/components/shared/loaders/FeedSkeletonLoader"
 // import { useInfiniteQuery } from '@/hooks/use-infinite-query'
 
 export type PostSortFilter = "recent" | "most-upvoted" | "most-commented"
@@ -122,6 +123,7 @@ const {
     columns,
     trailingQuery: queryHandler,
     pageSize: 10,
+    idColumn: 'post_id'
   });
 
   console.log("collection posts ",collectionsData)
@@ -196,13 +198,25 @@ const {
          />
         ))}
 
-        {isLoading || isFetching && <p>Loading..........</p>}
+        {isLoading || isFetching && <FeedSkeletonLoader />}
 
         {!isLoading && !isFetching && filteredAndSortedPosts.length === 0 && (
           <div className="text-center py-12 text-gray-500">
             <p>No posts found in this collection.</p>
           </div>
         )}
+
+{hasMore && (
+        <div className="mt-6 flex justify-center">
+          <button
+            onClick={fetchNextPage}
+            disabled={isFetching}
+            className="rounded-lg bg-lavender-500 px-6 py-2 font-semibold text-white hover:bg-lavender-600 disabled:opacity-50"
+          >
+            {isFetching ? 'Loading...' : 'Load More'}
+          </button>
+        </div>
+      )}
       </div>
     </div>
   )

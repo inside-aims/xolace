@@ -13,15 +13,13 @@ import type { TabType, CollectionFilter } from "@/app/(protected)/collections/co
 interface CollectionsTabsProps {
   activeTab: TabType
   onTabChange: (tab: TabType) => void
-  collectionFilter: CollectionFilter
-  onCollectionFilterChange: (filter: CollectionFilter) => void
+  collectionFilter?: CollectionFilter
+  onCollectionFilterChange?: (filter: CollectionFilter) => void
 }
 
 export function CollectionsTabs({
   activeTab,
   onTabChange,
-  collectionFilter,
-  onCollectionFilterChange,
 }: CollectionsTabsProps) {
   return (
     <div className="border-b dark:border-gray-800 sticky top-0 z-10">
@@ -61,7 +59,7 @@ export function CollectionsTabs({
         </div>
 
         {/* Filter dropdown - full width on mobile */}
-        <div className="flex justify-center sm:justify-end">
+        {/* <div className="flex justify-center sm:justify-end">
           <DropdownMenu>
             <DropdownMenuTrigger asChild>
               <Button
@@ -92,7 +90,7 @@ export function CollectionsTabs({
                 <DropdownMenuRadioItem value="favorites" className="text-gray-300 focus:bg-gray-800 focus:text-white">
                   Favorites
                 </DropdownMenuRadioItem>
-                {/* <DropdownMenuRadioItem
+                <DropdownMenuRadioItem
                   value="save-for-later"
                   className="text-gray-300 focus:bg-gray-800 focus:text-white"
                 >
@@ -100,11 +98,11 @@ export function CollectionsTabs({
                 </DropdownMenuRadioItem>
                 <DropdownMenuRadioItem value="inspiration" className="text-gray-300 focus:bg-gray-800 focus:text-white">
                   Inspiration
-                </DropdownMenuRadioItem> */}
+                </DropdownMenuRadioItem>
               </DropdownMenuRadioGroup>
             </DropdownMenuContent>
           </DropdownMenu>
-        </div>
+        </div> */}
       </div>
     </div>
   )
