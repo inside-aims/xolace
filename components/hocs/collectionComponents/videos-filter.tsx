@@ -25,14 +25,14 @@ export function VideosFilter({ sortFilter, onSortFilterChange }: VideosFilterPro
 
   return (
     <div className="flex items-center justify-between px-3">
-      <h2 className="text-lg sm:text-xl font-semibold text-gray-200">Videos</h2>
+      <h2 className="text-lg sm:text-xl font-semibold text-black dark:text-white">Videos</h2>
 
       <DropdownMenu>
         <DropdownMenuTrigger asChild>
           <Button
             variant="outline"
             size="sm"
-            className="gap-2 bg-gray-900/50 border-gray-700 text-gray-300 hover:bg-gray-800 hover:text-white backdrop-blur-sm"
+            className="gap-2 bg-gray-900 border-gray-700 text-gray-300 hover:bg-gray-800 hover:text-white backdrop-blur-sm"
           >
             <ArrowUpDown className="w-4 h-4" />
             <span className="hidden sm:inline">{filterLabels[sortFilter]}</span>

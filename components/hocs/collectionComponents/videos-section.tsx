@@ -14,58 +14,6 @@ interface VideosSectionProps {
   collectionFilter: CollectionFilter
 }
 
-// Dummy data structure based on the provided schemas
-// const dummyVideos = [
-//   {
-//     id: "1",
-//     created_at: "2024-01-15T10:30:00Z",
-//     title: "5-Minute Morning Meditation",
-//     description:
-//       "Start your day with this calming meditation practice designed to center your mind and boost your energy.",
-//     thumbnail_url: "/placeholder.svg?height=200&width=300",
-//     author_name: "MindfulMoments",
-//     author_avatar_url: "/placeholder.svg?height=40&width=40",
-//     views: 1250,
-//     likes_count: 89,
-//     duration: 300,
-//     collection_name: "favorites",
-//   },
-//   {
-//     id: "2",
-//     created_at: "2024-01-12T16:45:00Z",
-//     title: "Breathing Techniques for Anxiety",
-//     description: "Learn powerful breathing exercises that can help manage anxiety and stress in just a few minutes.",
-//     thumbnail_url: "/placeholder.svg?height=200&width=300",
-//     author_name: "WellnessGuru",
-//     author_avatar_url: "/placeholder.svg?height=40&width=40",
-//     views: 2100,
-//     likes_count: 156,
-//     duration: 480,
-//     collection_name: "save-for-later",
-//   },
-//   {
-//     id: "3",
-//     created_at: "2024-01-08T12:20:00Z",
-//     title: "Gratitude Practice for Better Sleep",
-//     description: "End your day with this gentle gratitude meditation to promote restful sleep and positive thoughts.",
-//     thumbnail_url: "/placeholder.svg?height=200&width=300",
-//     author_name: "SleepWell",
-//     author_avatar_url: "/placeholder.svg?height=40&width=40",
-//     views: 890,
-//     likes_count: 67,
-//     duration: 420,
-//     collection_name: "inspiration",
-//   },
-// ]
-
-// useCallback((query: any) => {
-//     let filteredQuery = query
-//     if (collectionFilter !== 'all') {
-//       filteredQuery = filteredQuery.eq('collection_name', collectionFilter)
-//     }
-//     return filteredQuery.order('created_at', { ascending: false })
-//   }, [collectionFilter])
-
 export function VideosSection({ collectionFilter }: VideosSectionProps) {
   const [sortFilter, setSortFilter] = useState<VideoSortFilter>("recent")
 
