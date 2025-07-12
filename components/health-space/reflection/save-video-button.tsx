@@ -25,12 +25,13 @@ export function SaveVideoButton({
 }: SaveVideoButtonProps) {
   // We use local state for the immediate UI feedback, which is part of the optimistic update feel
   const [isSaved, setIsSaved] = useState(isInitiallySaved);
-  const { mutate, isPending, isSuccess } = useSaveToVideoCollectionsMutation();
+  const { mutate, isPending, isError } = useSaveToVideoCollectionsMutation();
 
   // Sync state if the initial prop changes
   useEffect(() => {
     setIsSaved(isInitiallySaved);
   }, [isInitiallySaved]);
+
 
   const handleClick = () => {
     if (!userId) {
@@ -50,6 +51,13 @@ export function SaveVideoButton({
       createdBy,
     });
   };
+
+
+  if (isError) {
+    setIsSaved(!isSaved);
+    toast.error('Failed to save video');
+    return;
+  }
 
   return (
     <ShadowBtn

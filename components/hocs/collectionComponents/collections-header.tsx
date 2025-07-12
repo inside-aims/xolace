@@ -1,4 +1,4 @@
-import { BookOpen, Sparkles, Star, Zap } from "lucide-react"
+import { BookOpen, Sparkles } from "lucide-react"
 
 export function CollectionsHeader() {
   return (

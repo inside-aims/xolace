@@ -8,10 +8,9 @@ import {
 } from '@/components/ui/dialog';
 import { VisuallyHidden } from "@radix-ui/react-visually-hidden";
 
-import { useRouter } from "next/navigation";
 import FileInput from "@/components/health-space/reflection/FileInput";
 import FormField from "@/components/health-space/reflection/FormField";
-import {getThumbnailUploadUrl, getVideoUploadUrl, saveVideoDetails} from "@/utils/bunny/bunny";
+import {getThumbnailUploadUrl } from "@/utils/bunny/bunny";
 import {useFileInput} from "@/utils/bunny/useFileInput";
 import {MAX_THUMBNAIL_SIZE, MAX_VIDEO_SIZE, VideoFormValues} from "@/components/health-space/reflection/index";
 import {Button} from "@/components/ui/button";
@@ -21,25 +20,8 @@ import { useSaveVideoDetailsMutation } from "@/hooks/videos/useSaveVideoDetailsM
 import { toast } from 'sonner';
 import { DefaultLoader } from "@/components/shared/loaders/DefaultLoader";
 
-const uploadFileToBunny = (
-  file: File,
-  uploadUrl: string,
-  accessKey: string
-): Promise<void> =>
-  fetch(uploadUrl, {
-    method: "PUT",
-    headers: {
-      "Content-Type": file.type,
-      AccessKey: accessKey,
-    },
-    body: file,
-  }).then((response) => {
-    if (!response.ok)
-      throw new Error(`Upload failed with status ${response.status}`);
-  });
 
 const VideoUploadForms = ({open, setOpen }: {open: boolean, setOpen: (open: boolean) => void}) => {
-  const router = useRouter();
 
   // Mutations 
   const { getVideoUploadUrlAsync } = useVideoUploadUrlMutation();

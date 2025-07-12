@@ -1,6 +1,4 @@
-import React, { Suspense } from 'react'
 import Collections from './collections'
-import FeedSkeletonLoader from '@/components/shared/loaders/FeedSkeletonLoader'
 
 import type { Metadata } from 'next'
 

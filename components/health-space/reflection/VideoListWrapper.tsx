@@ -1,6 +1,5 @@
 'use client';
 import React from 'react';
-import { useSearchParams } from 'next/navigation';
 import {
   useInfiniteQuery,
   SupabaseTableData,
@@ -34,6 +33,7 @@ export default function VideoListWrapper({
 
 
   const trailingQuery = React.useCallback(
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     (qb: any) => {
       let q = qb;
       if (searchQuery) {

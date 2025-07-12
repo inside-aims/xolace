@@ -26,7 +26,7 @@ const PostMetrics = ({
 }: PostMetricsProps) => {
   const router = useRouter();
   const { mutateVote, isLoading: isVoting, isError } = useVoteMutations();
-  const { data: userVote, error , isPending, isSuccess} = useUserVote(post.id, userId);
+  const { data: userVote, isPending, isSuccess} = useUserVote(post.id, userId);
 
   // Get the current user's vote if it exists
   //const userVote = votes.find(vote => vote.user_id === userId)?.vote_type || null;

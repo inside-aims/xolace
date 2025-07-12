@@ -1,13 +1,5 @@
 "use client"
-import { Filter, FileText, Video } from "lucide-react"
-import { Button } from "@/components/ui/button"
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuRadioGroup,
-  DropdownMenuRadioItem,
-  DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu"
+import { FileText, Video } from "lucide-react"
 import type { TabType, CollectionFilter } from "@/app/(protected)/collections/collections"
 
 interface CollectionsTabsProps {

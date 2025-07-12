@@ -17,50 +17,6 @@ interface PostsSectionProps {
   userId: string
 }
 
-// Dummy data structure based on the provided schemas
-const dummyPosts = [
-  {
-    id: "1",
-    created_at: "2024-01-15T10:30:00Z",
-    author_name: "tester10",
-    content:
-      "Just had an amazing breakthrough in my meditation practice today. The feeling of inner peace is indescribable! 🧘‍♀️✨",
-    mood: "happy" as const,
-    author_avatar_url: "/placeholder.svg?height=40&width=40",
-    upvotes: 12,
-    downvotes: 1,
-    collection_name: "favorites",
-  },
-  {
-    id: "2",
-    created_at: "2024-01-10T14:20:00Z",
-    author_name: "Anonymous69",
-    content:
-      "Prompt: Describe a moment that changed how you see the world. Let's have a blast sharing our transformative experiences.",
-    mood: "neutral" as const,
-    author_avatar_url: "/placeholder.svg?height=40&width=40",
-    upvotes: 8,
-    downvotes: 0,
-    collection_name: "save-for-later",
-  },
-  {
-    id: "3",
-    created_at: "2024-01-08T09:15:00Z",
-    author_name: "tester1",
-    content: "Prompt: This is the prompt for today - what small act of kindness made your day brighter?",
-    mood: "hopeful" as const,
-    author_avatar_url: "/placeholder.svg?height=40&width=40",
-    upvotes: 15,
-    downvotes: 0,
-    collection_name: "inspiration",
-  },
-]
-
-type collectionPost = {
-  post_id: string;
-  collection_name: string | null;
-  posts: Post;
-}
 
 export function PostsSection({ collectionFilter, userId }: PostsSectionProps) {
   const [sortFilter, setSortFilter] = useState<PostSortFilter>("recent")
@@ -162,7 +118,7 @@ const {
   
 
   const filteredAndSortedPosts = useMemo(() => {
-    let filtered = collectionsData.map((item) => item.posts)
+    const filtered = collectionsData.map((item) => item.posts)
     console.log("filtered ",filtered)
 
     return filtered.sort((a, b) => {
@@ -205,6 +161,8 @@ const {
             <p>No posts found in this collection.</p>
           </div>
         )}
+
+        {error && <div className="text-center py-12 "><p className="text-center text-red-500">Error loading posts. Please refresh the page.</p></div>}
 
 {hasMore && (
         <div className="mt-6 flex justify-center">

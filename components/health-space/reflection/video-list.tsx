@@ -14,6 +14,7 @@ interface VideoListProps {
   hasMore: boolean;
   fetchNextPage: () => void;
   count: number;
+  error: Error | null
 }
 
 const VideoList: React.FC<VideoListProps> = ({
@@ -22,7 +23,8 @@ const VideoList: React.FC<VideoListProps> = ({
   isFetching,
   hasMore,
   fetchNextPage,
-  count
+  count,
+  error
 }) => {
   if (isLoading || isFetching) {
     return <VideoSkeleton/>;
@@ -33,6 +35,14 @@ const VideoList: React.FC<VideoListProps> = ({
       <div className="flex w-full flex-1 flex-col justify-center items-center gap-5 py-10">
         <NothingInVoid />
         <p className="text-gray-400 text-sm">No videos match your search or filters.</p>
+      </div>
+    );
+  }
+
+  if (error) {
+    return (
+      <div className="flex w-full flex-1 flex-col justify-center items-center gap-5 py-10">
+        <p className="text-gray-400 text-sm">An error occurred while loading videos. Please refresh the page.</p>
       </div>
     );
   }

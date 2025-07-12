@@ -2,7 +2,6 @@
 
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import { SupaVideoDetails } from "@/types/global"
-import { ReactElement, JSXElementConstructor, ReactNode, ReactPortal, Key } from "react"
 
 
 interface VideoTabsProps {

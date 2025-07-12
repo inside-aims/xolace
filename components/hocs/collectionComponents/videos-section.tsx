@@ -40,9 +40,10 @@ export function VideosSection({ collectionFilter }: VideosSectionProps) {
         video_id
       )
     `,
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     trailingQuery: useCallback((query: any) => {
       return query.order('created_at', { ascending: false })
-    }, [collectionFilter]),
+    }, []),
     pageSize: 20,
   })
 
@@ -50,7 +51,7 @@ export function VideosSection({ collectionFilter }: VideosSectionProps) {
   
 
   const filteredAndSortedVideos = useMemo(() => {
-    let filtered = videos.map((item) => item.videos)
+    const filtered = videos.map((item) => item.videos)
 
     return filtered.sort((a, b) => {
       switch (sortFilter) {
@@ -77,6 +78,7 @@ export function VideosSection({ collectionFilter }: VideosSectionProps) {
       hasMore={hasMore}
       fetchNextPage={fetchNextPage}
       count={count}
+      error={error}
     />
  </Suspense>
     </div>
