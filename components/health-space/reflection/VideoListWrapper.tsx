@@ -51,7 +51,9 @@ export default function VideoListWrapper({
     isFetching,
     hasMore,
     fetchNextPage,
-    count
+    count,
+    error
+  
   } = useInfiniteQuery<VideoData>({
     tableName: 'videos',
     pageSize: 20,
@@ -66,6 +68,7 @@ export default function VideoListWrapper({
       hasMore={hasMore}
       fetchNextPage={fetchNextPage}
       count={count}
+      error={error}
     />
   );
 }

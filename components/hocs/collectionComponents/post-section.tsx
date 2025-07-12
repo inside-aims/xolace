@@ -5,7 +5,6 @@ import { EnhancedPostCard } from "@/components/cards/EnhancedPostCard"
 import { PostsFilter } from "./post-filter"
 import type { CollectionFilter } from "@/app/(protected)/collections/collections"
 import { useInfiniteQuery, type SupabaseQueryHandler } from '@/hooks/use-infinite-query';
-import { Post } from "@/types/global"
 import { useRouter } from "next/navigation"
 import FeedSkeletonLoader from "@/components/shared/loaders/FeedSkeletonLoader"
 // import { useInfiniteQuery } from '@/hooks/use-infinite-query'

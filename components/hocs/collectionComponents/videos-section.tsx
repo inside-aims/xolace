@@ -10,11 +10,11 @@ import { VideoSkeleton } from "@/components/health-space/reflection/video-skelet
 
 export type VideoSortFilter = "recent" | "most-liked" | "most-viewed"
 
-interface VideosSectionProps {
-  collectionFilter: CollectionFilter
-}
+// interface VideosSectionProps {
+//   collectionFilter: CollectionFilter
+// }
 
-export function VideosSection({ collectionFilter }: VideosSectionProps) {
+export function VideosSection() {
   const [sortFilter, setSortFilter] = useState<VideoSortFilter>("recent")
 
   // Commented out Supabase implementation
