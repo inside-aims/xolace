@@ -33,7 +33,7 @@ export default function CollectionsPage() {
               activeTab === "posts" ? (
                 <PostsSection userId={user.id} collectionFilter={collectionFilter} />
               ) : (
-                <VideosSection collectionFilter={collectionFilter} />
+                <VideosSection />
               )
             ) : (
                 <div className="w-full">
