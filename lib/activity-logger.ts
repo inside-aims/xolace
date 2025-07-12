@@ -12,11 +12,12 @@ type ActivityEntityType =
   | 'report'
   | 'profile'
   | 'system'
-  | 'view';
+  | 'view'
+  | 'video';
 
 interface ActivityLogParams {
   userId: string;
-  relatedUserId?: string;
+  relatedUserId?: string | null;
   entityType: ActivityEntityType;
   action: ActionType;
   postId?: string;
@@ -24,6 +25,7 @@ interface ActivityLogParams {
   voteId?: number;
   reportId?: number;
   profileId?: string;
+  videoId?: string;
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   metadata?: Record<string, any>;
 }
@@ -38,6 +40,7 @@ export async function logActivity({
   voteId,
   reportId,
   profileId,
+  videoId,
   metadata = {},
 }: ActivityLogParams) {
   const supabase = await createClient();
@@ -46,6 +49,9 @@ export async function logActivity({
     // Get IP address from headers
     //const headersList = headers();
     const ip = null;
+    if(userId === relatedUserId){
+      relatedUserId = null;
+    }
 
     const { error } = await supabase.from('activity_logs').insert({
       user_id: userId,
@@ -57,6 +63,7 @@ export async function logActivity({
       vote_id: voteId,
       report_id: reportId,
       profile_id: profileId,
+      video_id: videoId,
       metadata,
       ip_address: ip || null,
     });

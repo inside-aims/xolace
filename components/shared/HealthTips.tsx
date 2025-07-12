@@ -144,7 +144,7 @@ export default function HealthTips() {
                         slug={healthTip.slug}
                         title={healthTip.title}
                         author={healthTip.author_name}
-                        author_avatar_url={healthTip.author_avatar_url}
+                        author_avatar_url={healthTip.author_avatar_url ?? ''}
                         content={healthTip.content}
                         date={healthTip.created_at}
                         index={index}

@@ -1,7 +1,7 @@
 "use client";
 
 import { cn, createIframeLink } from "@/lib/utils";
-import { useEffect, useRef, useState } from "react";
+import { useRef } from "react";
 
 interface VideoPlayerProps {
   videoId: string;

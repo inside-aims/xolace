@@ -5,7 +5,7 @@ import {ApiFetchOptions} from "@/components/health-space/reflection";
 
 const BUNNY_STREAM_ACCESS_KEY = process.env.BUNNY_STREAM_ACCESS_KEY;
 const  BUNNY_STORAGE_ACCESS_KEY= process.env.BUNNY_STORAGE_ACCESS_KEY;
-const HOST_NAME = process.env.BUNNY_HOST_NAME;
+// const HOST_NAME = process.env.BUNNY_HOST_NAME;
 
 export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs));

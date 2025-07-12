@@ -2,7 +2,6 @@
 
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import { SupaVideoDetails } from "@/types/global"
-import { ReactElement, JSXElementConstructor, ReactNode, ReactPortal, Key } from "react"
 
 
 interface VideoTabsProps {
@@ -13,13 +12,13 @@ interface VideoTabsProps {
 
 export function VideoTabs({ video, activeTab, onTabChange }: VideoTabsProps) {
   return (
-    <div className="py-4 lg:p-6">
+    <div className="pt-4 pb-10 lg:p-6">
       <Tabs value={activeTab} onValueChange={(value) => onTabChange(value as "transcript" | "metadata")}>
-        <TabsList className="grid w-full grid-cols-2 bg-gray-400 dark:bg-gray-800">
-          <TabsTrigger value="transcript" className="data-[state=active]:bg-blue-600 dark:data-[state=active]:bg-blue-500 data-[state=inactive]:bg-gray-400 dark:data-[state=inactive]:bg-gray-800  data-[state=active]:text-white data-[state=inactive]:text-gray-600 dark:data-[state=inactive]:text-gray-400 ">
+        <TabsList className="grid w-full grid-cols-2 bg-gray-300 dark:bg-gray-800">
+          <TabsTrigger value="transcript" className="data-[state=active]:bg-gradient-to-r from-[#0536ff] to-[#6a71ea] dark:data-[state=active]:bg-gradient-to-r dark:from-[#0536ff] dark:to-[#6a71ea] data-[state=inactive]:bg-gray-300 dark:data-[state=inactive]:bg-gray-800  data-[state=active]:text-white data-[state=inactive]:text-gray-600 dark:data-[state=inactive]:text-gray-400 ">
             Transcript
           </TabsTrigger>
-          <TabsTrigger value="metadata" className="data-[state=active]:bg-blue-600 dark:data-[state=active]:bg-blue-500 data-[state=inactive]:bg-gray-400 dark:data-[state=inactive]:bg-gray-800 data-[state=active]:text-white data-[state=inactive]:text-gray-600 dark:data-[state=inactive]:text-gray-400 ">
+          <TabsTrigger value="metadata" className="data-[state=active]:bg-gradient-to-r from-[#0536ff] to-[#6a71ea] dark:data-[state=active]:bg-gradient-to-r dark:from-[#0536ff] dark:to-[#6a71ea] data-[state=inactive]:bg-gray-300 dark:data-[state=inactive]:bg-gray-800 data-[state=active]:text-white data-[state=inactive]:text-gray-600 dark:data-[state=inactive]:text-gray-400 ">
             Metadata
           </TabsTrigger>
         </TabsList>

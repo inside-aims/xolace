@@ -46,12 +46,12 @@ export default function WelcomeModalCard() {
     localStorage.setItem('welcomePopupDismissed', 'true');
     setIsOpen(false);
 
-    if (!user?.is_anonymous) {
+    if (user && !user.is_anonymous) {
       // Update user profile in Supabase
       await supabase
         .from('profiles')
         .update({ has_seen_welcome: true })
-        .eq('id', user?.id);
+        .eq('id', user.id);
     }
 
     // confetti animation

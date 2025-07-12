@@ -66,8 +66,8 @@ const data = {
               url: "/health-tips",
             },
             {
-              title: "Reflections",
-              url: "/reflections",
+              title: "Glimpse",
+              url: "/glimpse",
             },
           ],
         },]

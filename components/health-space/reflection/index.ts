@@ -73,6 +73,7 @@ export interface VideoCardProps {
   views: number;
   visibility: Visibility;
   duration: number | null;
+  likes_count: number;
 }
 
 export interface VideoDetailProps {
@@ -302,15 +303,6 @@ export interface ExtendedMediaStream extends MediaStream {
 //   };
 // }
 
-interface PaginationResult<T> {
-  data: T[];
-  pagination: {
-    currentPage: number;
-    totalPages: number;
-    totalItems: number;
-    pageSize: number | unknown;
-  };
-}
 
 export interface RecordingHandlers {
   onDataAvailable: (e: BlobEvent) => void;
