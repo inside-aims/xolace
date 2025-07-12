@@ -48,7 +48,7 @@ const VideoCard = ({
 
   return (
     <Link
-      href={`/reflections/${video_id}`}
+      href={`/glimpse/${video_id}`}
       className="relative flex w-full flex-col rounded-xl border shadow-lg"
     >
       <div className="relative flex flex-col">
