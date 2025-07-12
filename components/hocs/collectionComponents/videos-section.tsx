@@ -2,7 +2,6 @@
 
 import { useState, useMemo, useCallback, Suspense } from "react"
 import { VideosFilter } from "./videos-filter"
-import type { CollectionFilter } from "@/app/(protected)/collections/collections"
 import { useInfiniteQuery } from "@/hooks/use-infinite-query"
 // import { useInfiniteQuery } from '@/hooks/use-infinite-query'
 import VideoList from "@/components/health-space/reflection/video-list"
