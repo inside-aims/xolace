@@ -1,7 +1,6 @@
 import React, { useState } from 'react';
 import Image from 'next/image';
-import { ShadowBtn } from '@/components/health-space/reflection/shadow-btn';
-import { ThumbsUp, ScanEye, Bookmark, Copy, LinkIcon } from 'lucide-react';
+import { LinkIcon } from 'lucide-react';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { Badge } from '@/components/ui/badge';
 import { SupaVideoDetails } from '@/types/global';
@@ -53,11 +52,11 @@ const VideoMetadata = ({ video }: { video: SupaVideoDetails }) => {
         </div>
         <div className="flex w-full items-start justify-between gap-0 md:w-auto md:gap-4">
          <LikeVideoButton videoId={video.id} userId={user?.id} likesCount={video.likes_count} bunny_video_id={video.video_id} createdBy={video.user_id}/>
-          <ShadowBtn
+          {/* <ShadowBtn
             key={'view'}
             value={video.views}
             icon={<ScanEye className="size-4 text-red-200 sm:size-4" />}
-          />
+          /> */}
           <SaveVideoButton
             userId={user?.id}
             videoId={video.id}
