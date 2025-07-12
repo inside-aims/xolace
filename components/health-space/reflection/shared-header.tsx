@@ -42,7 +42,7 @@ const SharedHeader: React.FC<SharedHeaderProps> = ({
     <>
       <header className="w-full items-center">
         <section className="w-full">
-          <p><small>Public library</small></p>
+          <p><small>Glimpse: Real stories. Real voices.</small></p>
           <div className="flex items-center justify-between w-full">
             <h3 className="font-semibold text-2xl">All Videos</h3>
             <Button
