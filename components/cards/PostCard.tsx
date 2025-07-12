@@ -135,7 +135,7 @@ export function PostCard({ className, post, onClick }: PostCardType) {
           </div>
         </CardContent>
         <CardFooter className="flex w-full items-center justify-between">
-          <PostMetrics post={post} userId={user?.id || ''} votes={post.votes} />
+          <PostMetrics post={post} userId={user?.id || ''} />
           <div className="flex items-center gap-2" id="view-btn">
             <ScanEye className="size-4 text-red-200 sm:size-4" />
             <span className="font-button-small">

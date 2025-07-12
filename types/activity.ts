@@ -1,5 +1,5 @@
-export type EntityType = 'post' | 'comment' | 'vote' | 'report' | 'profile' | 'system' | 'view';
-export type ActionType = 'created' | 'deleted' | 'updated' | 'commented' | 'reported' | 'upvoted' | 'downvoted' | 'viewed' | 'added';
+export type EntityType = 'post' | 'comment' | 'vote' | 'report' | 'profile' | 'system' | 'view' | 'video';
+export type ActionType = 'created' | 'deleted' | 'updated' | 'commented' | 'reported' | 'upvoted' | 'downvoted' | 'viewed' | 'added' | 'liked';
 
 export interface User {
   id: string;
@@ -31,7 +31,8 @@ export enum ActivityType{
   REPORT = 'report',
   PROFILE = 'profile',
   SYSTEM = 'system',
-  VIEW = 'view'
+  VIEW = 'view',
+  VIDEO = 'video'
 }
 
 //
@@ -58,7 +59,7 @@ export interface DbActivityLog {
   vote_id?: number;
   report_id?: number;
   profile_id?: string;
-  
+  video_id?: string;
   action: ActionType;
   metadata: Record<string, any>;
   created_at: string;
@@ -77,6 +78,6 @@ export interface ReputationInteraction {
 export interface UpdateReputationParams {
   interaction: ReputationInteraction;
   performerId: string; // User ID of the person performing the action
-  authorId?: string; // User ID of the content author (optional, e.g., for self-actions or system actions)
+  authorId?: string | null; // User ID of the content author (optional, e.g., for self-actions or system actions)
   metadata?: Record<string, any>; // Additional metadata (optional)
 }

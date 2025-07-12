@@ -27,6 +27,7 @@ export type Database = {
           user_avatar_url: string | null
           user_id: string
           username: string | null
+          video_id: string | null
           vote_id: number | null
         }
         Insert: {
@@ -46,6 +47,7 @@ export type Database = {
           user_avatar_url?: string | null
           user_id: string
           username?: string | null
+          video_id?: string | null
           vote_id?: number | null
         }
         Update: {
@@ -65,6 +67,7 @@ export type Database = {
           user_avatar_url?: string | null
           user_id?: string
           username?: string | null
+          video_id?: string | null
           vote_id?: number | null
         }
         Relationships: [
@@ -111,6 +114,13 @@ export type Database = {
             referencedColumns: ["id"]
           },
           {
+            foreignKeyName: "activity_logs_video_id_fkey"
+            columns: ["video_id"]
+            isOneToOne: false
+            referencedRelation: "videos"
+            referencedColumns: ["id"]
+          },
+          {
             foreignKeyName: "activity_logs_vote_id_fkey"
             columns: ["vote_id"]
             isOneToOne: false
@@ -147,6 +157,7 @@ export type Database = {
       }
       collections: {
         Row: {
+          posts: any
           collection_name: string | null
           created_at: string | null
           id: string
@@ -978,6 +989,82 @@ export type Database = {
           },
         ]
       }
+      video_collections: {
+        Row: {
+          videos: any
+          collection_name: string | null
+          created_at: string | null
+          id: string
+          user_id: string
+          video_id: string
+        }
+        Insert: {
+          collection_name?: string | null
+          created_at?: string | null
+          id?: string
+          user_id: string
+          video_id?: string
+        }
+        Update: {
+          collection_name?: string | null
+          created_at?: string | null
+          id?: string
+          user_id?: string
+          video_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "video_collections_user_id_fkey"
+            columns: ["user_id"]
+            isOneToOne: false
+            referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "video_collections_video_id_fkey"
+            columns: ["video_id"]
+            isOneToOne: false
+            referencedRelation: "videos"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      video_likes: {
+        Row: {
+          created_at: string
+          id: number
+          user_id: string | null
+          video_id: string
+        }
+        Insert: {
+          created_at?: string
+          id?: number
+          user_id?: string | null
+          video_id: string
+        }
+        Update: {
+          created_at?: string
+          id?: number
+          user_id?: string | null
+          video_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "video_likes_user_id_fkey"
+            columns: ["user_id"]
+            isOneToOne: false
+            referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "video_likes_video_id_fkey"
+            columns: ["video_id"]
+            isOneToOne: false
+            referencedRelation: "videos"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       videos: {
         Row: {
           author_avatar_url: string
@@ -986,6 +1073,7 @@ export type Database = {
           description: string
           duration: number | null
           id: string
+          likes_count: number
           thumbnail_url: string
           title: string
           updated_at: string
@@ -1002,6 +1090,7 @@ export type Database = {
           description: string
           duration?: number | null
           id?: string
+          likes_count?: number
           thumbnail_url: string
           title: string
           updated_at?: string
@@ -1018,6 +1107,7 @@ export type Database = {
           description?: string
           duration?: number | null
           id?: string
+          likes_count?: number
           thumbnail_url?: string
           title?: string
           updated_at?: string
@@ -1140,8 +1230,8 @@ export type Database = {
           content: string
           mood: Database["public"]["Enums"]["post_mood"]
           expires_in_24hr: boolean
-          duration?: Database["public"]["Enums"]["post_duration"] | null
-          expires_at?: string | null
+          duration?: Database["public"]["Enums"]["post_duration"]
+          expires_at?: string
           is_sensitive?: boolean
           is_prompt_response?: boolean
           type?: Database["public"]["Enums"]["post_type"]
@@ -1257,6 +1347,7 @@ export type Database = {
         | "downvoted"
         | "viewed"
         | "added"
+        | "liked"
       entity_types:
         | "post"
         | "comment"
@@ -1265,6 +1356,7 @@ export type Database = {
         | "profile"
         | "system"
         | "view"
+        | "video"
       feedback_status: "open" | "closed"
       post_duration: "6" | "12" | "24"
       post_mood:
@@ -1418,6 +1510,7 @@ export const Constants = {
         "downvoted",
         "viewed",
         "added",
+        "liked",
       ],
       entity_types: [
         "post",
@@ -1427,6 +1520,7 @@ export const Constants = {
         "profile",
         "system",
         "view",
+        "video",
       ],
       feedback_status: ["open", "closed"],
       post_duration: ["6", "12", "24"],

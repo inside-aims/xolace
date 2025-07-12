@@ -42,7 +42,7 @@ export default function ReflectionsClientView() {
   }, [updateURL, searchQuery]);
 
   return (
-    <main className='px-2'>
+    <main className='px-4'>
       <SharedHeaderWrapper
         searchQuery={searchQuery}
         onSearchChange={handleSearchChange}

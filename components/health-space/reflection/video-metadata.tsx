@@ -1,21 +1,26 @@
 import React, { useState } from 'react';
 import Image from 'next/image';
-import { ShadowBtn } from '@/components/health-space/reflection/shadow-btn';
-import { ThumbsUp, ScanEye, Bookmark, Copy, LinkIcon } from 'lucide-react';
+import { LinkIcon } from 'lucide-react';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { Badge } from '@/components/ui/badge';
 import { SupaVideoDetails } from '@/types/global';
 import { format } from 'timeago.js';
+import { SaveVideoButton } from './save-video-button';
+import { useUserState } from '@/lib/store/user';
+import LikeVideoButton from './like-video-button';
 
 const VideoMetadata = ({ video }: { video: SupaVideoDetails }) => {
+  const { user } = useUserState();
   const [copied, setCopied] = useState(false);
 
   const copyLink = () => {
     navigator.clipboard.writeText(
-      `${window.location.origin}/video/${video.video_id}`,
+      `${window.location.origin}/reflections/${video.video_id}`,
     );
     setCopied(true);
   };
+
+  const isInitiallySaved = video.video_collections?.some(collection => collection.user_id === user?.id) || false;
 
   return (
     <section className="">
@@ -46,20 +51,18 @@ const VideoMetadata = ({ video }: { video: SupaVideoDetails }) => {
           </div>
         </div>
         <div className="flex w-full items-start justify-between gap-0 md:w-auto md:gap-4">
-          <ShadowBtn
-            key={'likes'}
-            value={23}
-            icon={<ThumbsUp className="size-4 sm:size-4" />}
-          />
-          <ShadowBtn
+         <LikeVideoButton videoId={video.id} userId={user?.id} likesCount={video.likes_count} bunny_video_id={video.video_id} createdBy={video.user_id}/>
+          {/* <ShadowBtn
             key={'view'}
             value={video.views}
             icon={<ScanEye className="size-4 text-red-200 sm:size-4" />}
-          />
-          <ShadowBtn
-            key={'save'}
-            value={'Save'}
-            icon={<Bookmark className="size-4 sm:size-4" />}
+          /> */}
+          <SaveVideoButton
+            userId={user?.id}
+            videoId={video.id}
+            bunny_video_id={video.video_id}
+            createdBy={video.user_id}
+            isInitiallySaved={isInitiallySaved}
           />
           <button
             onClick={copyLink}
