@@ -46,7 +46,6 @@ export const signUpAction = validatedAction(signUpSchema, async data => {
     }
   }
 
-
   //   get avatar
   let avatarUrl: URL;
   if (type === 'male') {
@@ -71,7 +70,6 @@ export const signUpAction = validatedAction(signUpSchema, async data => {
     .select()
     .single();
 
-
   if (puError) {
     await supabaseAdmin.auth.admin.deleteUser(userData.user.id);
     return {
@@ -85,7 +83,6 @@ export const signUpAction = validatedAction(signUpSchema, async data => {
   const request = {
     url: process.env.NEXT_PUBLIC_BASE_APP_URL,
   };
-
 
   const res = await sendOTPLink(email, 'signup', request);
 
@@ -161,7 +158,7 @@ export const resetPasswordAction = async (formData: FormData) => {
     return encodedRedirect(
       'error',
       '/change-password',
-      'Password must be at least 8 characters long, contain at least 1 uppercase letter, and 1 number'
+      'Password must be at least 8 characters long, contain at least 1 uppercase letter, and 1 number',
     );
   }
 
@@ -189,7 +186,7 @@ export const deleteUser = async (user: User) => {
   );
 
   if (deleteError) {
-    return  {
+    return {
       success: false,
       message: 'Ooops!! Failed to delete your account. Please try again.',
     };
@@ -198,7 +195,13 @@ export const deleteUser = async (user: User) => {
   await signOutAction();
 };
 
-export async function updateViewsAction(postId: string, userId: string, relatedUserId: string | undefined, totalViews: number, content: string) {
+export async function updateViewsAction(
+  postId: string,
+  userId: string,
+  relatedUserId: string | undefined,
+  totalViews: number,
+  content: string,
+) {
   const supabase = await createClient();
 
   try {
@@ -221,18 +224,28 @@ export async function updateViewsAction(postId: string, userId: string, relatedU
       entityType: ActivityType.VIEW,
       action: 'viewed',
       postId,
-      metadata: { view_timestamp: new Date().toISOString(), views : totalViews + 1, content , link : `/post/${postId}` }
+      metadata: {
+        view_timestamp: new Date().toISOString(),
+        views: totalViews + 1,
+        content,
+        link: `/post/${postId}`,
+      },
     });
 
     if (userId !== relatedUserId && relatedUserId) {
       await createNotification({
-          recipient_user_id: relatedUserId, // The video's author gets the notification
-          actor_id: userId, // The user who saved the video
-          type: 'post_viewed',
-          entity_id: postId, // A link to the content
-          metadata: { view_timestamp: new Date().toISOString(), views : totalViews + 1, content , link : `/post/${postId}` }
+        recipient_user_id: relatedUserId, // The video's author gets the notification
+        actor_id: userId, // The user who saved the video
+        type: 'post_viewed',
+        entity_id: postId, // A link to the content
+        metadata: {
+          view_timestamp: new Date().toISOString(),
+          views: totalViews + 1,
+          content,
+          link: `/post/${postId}`,
+        },
       });
-   }
+    }
 
     revalidatePath('/feed');
     revalidatePath('/explore');
@@ -240,16 +253,18 @@ export async function updateViewsAction(postId: string, userId: string, relatedU
 
     return { success: true, data };
   } catch (error) {
-    return error ? { success: false, error: 'Failed to update views' } : { success: false, error: 'Failed to update views, Try again!' };
+    return error
+      ? { success: false, error: 'Failed to update views' }
+      : { success: false, error: 'Failed to update views, Try again!' };
   }
 }
 
 export async function voteAction(
   postId: string,
   voteType: 'upvote' | 'downvote',
-  currentVote: "upvote" | "downvote" | null | undefined,
+  currentVote: 'upvote' | 'downvote' | null | undefined,
   user_id: string,
-  relatedUserId: string
+  relatedUserId: string,
 ) {
   const supabase = await createClient();
 
@@ -278,15 +293,39 @@ export async function voteAction(
       action: voteType === 'upvote' ? 'upvoted' : 'downvoted',
       postId,
       voteId: voteResult.vote,
-      metadata: { vote_type: voteType, action: voteResult.action , content_type: "post", link : `/post/${postId}`}
+      metadata: {
+        vote_type: voteType,
+        action: voteResult.action,
+        content_type: 'post',
+        link: `/post/${postId}`,
+      },
     });
+
+    console.log('action ', voteResult.action);
+
+    if (user_id !== relatedUserId && relatedUserId && voteResult.action === 'added') {
+      await createNotification({
+        recipient_user_id: relatedUserId, // The video's author gets the notification
+        actor_id: user_id, // The user who saved the video
+        type: voteType === 'upvote' ? 'new_upvote' : 'new_downvote',
+        entity_id: postId, // A link to the content
+        metadata: {
+          vote_type: voteType,
+          action: voteResult.action,
+          content_type: 'post',
+          link: `/post/${postId}`,
+        },
+      });
+    }
 
     revalidatePath('/feed', 'page');
     revalidatePath('/explore', 'page');
 
     return { success: true, data: voteResult };
   } catch (error) {
-    return error ? { success: false, error: 'Failed to process vote' } : { success: false, error: 'Failed to process vote, Try again' };
+    return error
+      ? { success: false, error: 'Failed to process vote' }
+      : { success: false, error: 'Failed to process vote, Try again' };
   }
 }
 
@@ -315,18 +354,28 @@ export async function saveToCollectionAction(
       entityType: ActivityType.POST,
       action: 'added',
       postId,
-      metadata: { collection_name: collectionName, content_type: "post" , link : `/post/${postId}`}
+      metadata: {
+        collection_name: collectionName,
+        content_type: 'post',
+        link: `/post/${postId}`,
+      },
     });
 
     revalidatePath('/feed', 'page');
     revalidatePath('/explore', 'page');
     return { success: true, data };
   } catch (error) {
-    return error ? { success: false, error: 'Failed to save to collection' } : { success: false, error: 'Failed to save to collection, Try again' };
+    return error
+      ? { success: false, error: 'Failed to save to collection' }
+      : { success: false, error: 'Failed to save to collection, Try again' };
   }
 }
 
-export async function removeFromCollection(userId: string, postId: string, collectionName: string = 'favorites') {
+export async function removeFromCollection(
+  userId: string,
+  postId: string,
+  collectionName: string = 'favorites',
+) {
   const supabase = await createClient();
 
   try {
@@ -335,9 +384,9 @@ export async function removeFromCollection(userId: string, postId: string, colle
       .delete()
       .eq('user_id', userId)
       .eq('post_id', postId)
-      .eq('collection_name', collectionName)
+      .eq('collection_name', collectionName);
 
-    if (error) return { success: false, error: error.message }; 
+    if (error) return { success: false, error: error.message };
 
     // revalidate cached data
     revalidatePath('/feed', 'page');
@@ -345,74 +394,106 @@ export async function removeFromCollection(userId: string, postId: string, colle
 
     return { success: true };
   } catch (error) {
-    return error ? { success: false, error: 'Failed to remove from collection' } : { success: false, error: 'Failed to remove from collection, Try again!' };
+    return error
+      ? { success: false, error: 'Failed to remove from collection' }
+      : {
+          success: false,
+          error: 'Failed to remove from collection, Try again!',
+        };
   }
 }
 
-export async function saveVideoToCollectionAction(
-  { userId, videoId, bunny_video_id, createdBy, collectionName = 'favorites' }:
-      { userId: string, videoId: string, bunny_video_id: string, createdBy: string | null, collectionName?: string }
-) {
-  if (!userId) throw new Error('User must be logged in.');
-  const supabase = await createClient();
-
-
-  try {
-      const { data, error } = await supabase
-          .from('video_collections')
-          .insert([
-              { user_id: userId, video_id: videoId, collection_name: collectionName },
-          ])
-          .select()
-          .single(); // Assuming you want the created record back
-
-      if (error) {
-          throw new Error(error.message);
-      }
-
-      // Log the activity
-      await logActivity({
-          userId,
-          relatedUserId: createdBy,
-          entityType: ActivityType.VIDEO, // Ensure your enum supports this
-          action: 'added',
-          videoId: videoId,
-          metadata: { collection_name: collectionName, content_type: "video", link: `/reflections/${bunny_video_id}` }
-      });
-
-      revalidatePath(`/video/${videoId}`);
-      return { success: true, data };
-
-  } catch (error) {
-      return { success: false, error: error instanceof Error ? error.message : 'Failed to save video to collection.' };
-  }
-}
-
-export async function removeVideoFromCollectionAction(
-  { userId, videoId, collectionName = 'favorites' }:
-      { userId: string, videoId: string, collectionName?: string }
-) {
+export async function saveVideoToCollectionAction({
+  userId,
+  videoId,
+  bunny_video_id,
+  createdBy,
+  collectionName = 'favorites',
+}: {
+  userId: string;
+  videoId: string;
+  bunny_video_id: string;
+  createdBy: string | null;
+  collectionName?: string;
+}) {
   if (!userId) throw new Error('User must be logged in.');
   const supabase = await createClient();
 
   try {
-      const { error } = await supabase
-          .from('video_collections')
-          .delete()
-          .eq('user_id', userId)
-          .eq('video_id', videoId)
-          .eq('collection_name', collectionName);
+    const { data, error } = await supabase
+      .from('video_collections')
+      .insert([
+        { user_id: userId, video_id: videoId, collection_name: collectionName },
+      ])
+      .select()
+      .single(); // Assuming you want the created record back
 
-      if (error) {
-          console.error('Supabase error removing video from collection:', error);
-          throw new Error(error.message);
-      }
-      
-      revalidatePath(`/reflections/${videoId}`);
-      return { success: true };
+    if (error) {
+      throw new Error(error.message);
+    }
 
+    // Log the activity
+    await logActivity({
+      userId,
+      relatedUserId: createdBy,
+      entityType: ActivityType.VIDEO, // Ensure your enum supports this
+      action: 'added',
+      videoId: videoId,
+      metadata: {
+        collection_name: collectionName,
+        content_type: 'video',
+        link: `/reflections/${bunny_video_id}`,
+      },
+    });
+
+    revalidatePath(`/video/${videoId}`);
+    return { success: true, data };
   } catch (error) {
-      return { success: false, error: error instanceof Error ? error.message : 'Failed to remove from collection.' };
+    return {
+      success: false,
+      error:
+        error instanceof Error
+          ? error.message
+          : 'Failed to save video to collection.',
+    };
+  }
+}
+
+export async function removeVideoFromCollectionAction({
+  userId,
+  videoId,
+  collectionName = 'favorites',
+}: {
+  userId: string;
+  videoId: string;
+  collectionName?: string;
+}) {
+  if (!userId) throw new Error('User must be logged in.');
+  const supabase = await createClient();
+
+  try {
+    const { error } = await supabase
+      .from('video_collections')
+      .delete()
+      .eq('user_id', userId)
+      .eq('video_id', videoId)
+      .eq('collection_name', collectionName);
+
+    if (error) {
+      console.error('Supabase error removing video from collection:', error);
+      throw new Error(error.message);
+    }
+
+    revalidatePath(`/reflections/${videoId}`);
+    return { success: true };
+  } catch (error) {
+    return {
+      success: false,
+      error:
+        error instanceof Error
+          ? error.message
+          : 'Failed to remove from collection.',
+    };
   }
 }
 
@@ -421,12 +502,17 @@ export const fetchCollectionPostsAction = async (
   userId: string,
   collectionName: string = 'favorites',
   page: number = 1,
-  pageSize: number = 10
+  pageSize: number = 10,
 ) => {
-
   const supabase = await createClient();
 
-  const { data, error }: {data: {post_id: string, posts: Post[]}[] | null, error: PostgrestError | null}  = await supabase
+  const {
+    data,
+    error,
+  }: {
+    data: { post_id: string; posts: Post[] }[] | null;
+    error: PostgrestError | null;
+  } = await supabase
     .from('collections')
     .select(
       `
@@ -452,7 +538,7 @@ export const fetchCollectionPostsAction = async (
           user_id
         )
       )
-    `
+    `,
     )
     .eq('user_id', userId)
     .eq('collection_name', collectionName)
@@ -462,25 +548,25 @@ export const fetchCollectionPostsAction = async (
   if (error) throw error;
 
   // Extract and return the nested posts data
-  return data?.map((entry) => entry.posts) || [];
+  return data?.map(entry => entry.posts) || [];
 };
 
 export const fetchTags = async () => {
-
   const supabase = await createClient();
 
-  const { data, error }: {data: Tag[] | null, error: PostgrestError | null}  = await supabase
-    .from('tags')
-    .select(
-      `
+  const { data, error }: { data: Tag[] | null; error: PostgrestError | null } =
+    await supabase
+      .from('tags')
+      .select(
+        `
       *
-    `
-    ).limit(6)
-    .order('post', { ascending: false });
+    `,
+      )
+      .limit(6)
+      .order('post', { ascending: false });
 
   if (error) throw error;
 
-  
   return data || [];
 };
 
@@ -491,12 +577,14 @@ export async function fetchDailyPromptAction() {
   try {
     const { data: promptData, error } = await supabase
       .from('daily_prompts')
-      .select(`
+      .select(
+        `
         id,
         prompt_text,
         created_at,
         active_on
-      `)
+      `,
+      )
       .eq('active_on', today)
       .single();
 
@@ -506,7 +594,9 @@ export async function fetchDailyPromptAction() {
 
     return { success: true, data: promptData };
   } catch (error) {
-    return error ? { success: false, error: 'Failed to fetch daily prompt' } : {success: false, error: 'Failed to fetch daily prompt, Try again'};
+    return error
+      ? { success: false, error: 'Failed to fetch daily prompt' }
+      : { success: false, error: 'Failed to fetch daily prompt, Try again' };
   }
 }
 
@@ -523,14 +613,24 @@ export const fetchUserStreakAction = cache(async (userId: string) => {
       .single();
 
     if (error) {
-      if (error.code === 'PGRST116') { // PGRST116: "Not Found" - user might not have a streak record yet
-        return { success: true, data: { current_streak: 0, last_response_date: null } };
+      if (error.code === 'PGRST116') {
+        // PGRST116: "Not Found" - user might not have a streak record yet
+        return {
+          success: true,
+          data: { current_streak: 0, last_response_date: null },
+        };
       }
       return { success: false, error: error.message, data: null };
     }
-    
+
     return { success: true, data: data };
   } catch (error) {
-    return error ? { success: false, error: 'Failed to fetch user streak', data: null } : { success: false, error: 'Failed to fetch user streak, Try again', data: null };
+    return error
+      ? { success: false, error: 'Failed to fetch user streak', data: null }
+      : {
+          success: false,
+          error: 'Failed to fetch user streak, Try again',
+          data: null,
+        };
   }
-})
+});
