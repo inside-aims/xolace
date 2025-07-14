@@ -8,6 +8,7 @@ import { useRouter } from "next/navigation";
 import { usePanelNotifications , useMarkAllNotificationsAsRead } from '@/hooks/notifications/useNotifications';
 import { useUserState } from '@/lib/store/user';
 import { Button } from "@/components/ui/button";
+import SearchLoader from '../shared/loaders/SearchLoader';
 
 interface NotificationPanelProps {
   isOpen: boolean;
@@ -32,7 +33,7 @@ const NotificationPanel = ({ isOpen }: NotificationPanelProps) => {
   ];
 
   return (
-    <div className="fixed top-[70px] right-0 w-[calc(100%-1rem)] max-w-[80%] md:w-[400px] h-[calc(100vh-70px)] z-[9999] bg-background shadow-lg border rounded-lg flex flex-col overflow-hidden">
+    <div className="fixed top-[70px] right-0 w-[calc(100%-1rem)] max-w-[80%] md:w-[400px] h-[calc(100vh-70px)] z-[9999] bg-bg dark:bg-bg-dark shadow-lg border rounded-lg flex flex-col overflow-hidden ">
         <header className="flex flex-col gap-4 py-2 px-4 border-b">
             <aside className="flex items-center justify-between">
                 <h3>Notification</h3>
@@ -52,7 +53,7 @@ const NotificationPanel = ({ isOpen }: NotificationPanelProps) => {
         </header>
 
         <section className="flex-1 overflow-y-auto">
-            {isLoading && <p className="p-4 text-center text-muted-foreground">Loading...</p>}
+            {isLoading && <SearchLoader/>}
             {error && <p className="p-4 text-center text-red-500">Failed to load notifications.</p>}
             {!isLoading && !error && (
                 notifications && notifications.length > 0 ? (

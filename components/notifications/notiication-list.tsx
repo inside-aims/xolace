@@ -95,7 +95,7 @@ const NotificationList = ({ notifications }: { notifications: NotificationProps[
   );
 
   return (
-    <div className="h-screen">
+    <div className="min-h-[calc(100vh-var(--header-height))]">
       <section className="sticky top-0 z-20 bg-white dark:bg-[#121212]">
         <ListHeader
           onFilterChange={onFilterChange}
