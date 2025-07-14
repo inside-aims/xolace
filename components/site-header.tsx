@@ -1,9 +1,9 @@
 'use client';
 
-import {useEffect, useRef, useState} from 'react';
+import { useEffect, useRef, useState } from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
-import {usePathname, useRouter} from 'next/navigation';
+import { usePathname, useRouter } from 'next/navigation';
 
 import { Button } from '@/components/ui/button';
 //import { Separator } from "@/components/ui/separator"
@@ -17,35 +17,25 @@ import { useUserState } from '@/lib/store/user';
 import { RealtimeAvatarStack } from './realtime-avatar-stack';
 import mascot from '../public/assets/images/x-logo-full.webp';
 import { Menu, PlusIcon, Bell } from 'lucide-react';
-import NotificationPanel from "@/components/notifications/notification-panel";
-import {notifications} from "@/app/(protected)/notifications/(overview)/notifications";
+import NotificationPanel from '@/components/notifications/notification-panel';
+import { notifications } from '@/app/(protected)/notifications/(overview)/notifications';
+import { Badge } from './ui/badge';
+import { useNotificationCount } from '@/hooks/notifications/useNotificationCount';
 
 export function SiteHeader() {
   // get user profile data
-  const { roles } = useUserState();
+  const { roles, user } = useUserState();
   const isProfessional = roles.includes('help_professional');
   const [isOpen, setIsOpen] = useState(false);
   const notificationRef = useRef<HTMLDivElement | null>(null);
-  const bellButtonRef = useRef<HTMLDivElement | null>(null);
+  const bellButtonRef = useRef<HTMLButtonElement | null>(null);
   const router = useRouter();
   const pathname = usePathname();
   const supabase = getSupabaseBrowserClient();
   const { toggleSidebar } = useSidebar();
 
-  //   signout function
-  // const handleSignOut = async (
-  //   e: React.MouseEvent<HTMLButtonElement, MouseEvent>,
-  // ) => {
-  //   e.preventDefault();
-
-  //   if (user?.is_anonymous) {
-  //     setIsOpen(true);
-  //     return;
-  //   }
-
-  //   localStorage.removeItem('welcomePopupDismissed');
-  //   supabase.auth.signOut();
-  // };
+  // ✅ Use the clean, abstracted hook to get the count for the logged-in user.
+  const { count } = useNotificationCount(user?.id);
 
   // Subscribe to sign out event
   useEffect(() => {
@@ -68,7 +58,8 @@ export function SiteHeader() {
     const handleClickOutside = (event: MouseEvent) => {
       if (
         isOpen &&
-        notificationRef.current && bellButtonRef.current &&
+        notificationRef.current &&
+        bellButtonRef.current &&
         !notificationRef.current.contains(event.target as Node) &&
         !bellButtonRef.current.contains(event.target as Node)
       ) {
@@ -87,7 +78,6 @@ export function SiteHeader() {
     setIsOpen(false);
   }, [pathname]);
 
-
   return (
     <>
       <header
@@ -104,7 +94,7 @@ export function SiteHeader() {
               aria-label="Toggle Sidebar"
               id="sidebar-btn"
             >
-             <Menu strokeWidth={1.5} />
+              <Menu strokeWidth={1.5} />
             </Button>
 
             {/* Logo */}
@@ -152,23 +142,41 @@ export function SiteHeader() {
                 <span className="hidden text-sm md:block">Create</span>
               </Link>
             )}
-            <div className="items-center hidden md:flex">
+            <div className="hidden items-center md:flex">
               <ThemeSwitch />
             </div>
             {/*Notification entry section*/}
-            <div className={"flex items-center"} onClick={() => setIsOpen(!isOpen)} ref={bellButtonRef} >
-              <Bell size={22}/>
+            <div className="relative">
+              <button
+                type="button"
+                className={'flex items-center'}
+                onClick={() => setIsOpen(!isOpen)}
+                ref={bellButtonRef}
+              >
+                <Bell size={22} />
+              </button>
+              {
+                count ? count > 0 && (
+                  <Badge
+                  className="absolute -top-2 -right-1 h-4 min-w-4 rounded-full px-1 font-mono tabular-nums"
+                  variant="destructive"
+                >
+                  {count > 9 ? '9+' : count}
+                </Badge>
+                ) : null
+              }
+             
             </div>
-            <div id="online-users" className={"flex items-center"}>
+            <div id="online-users" className={'flex items-center'}>
               {/* <ProgressBetaBadge progress={30} /> */}
               <RealtimeAvatarStack roomName="break_room" />
             </div>
           </div>
         </div>
       </header>
-      { isOpen && (
+      {isOpen && (
         <div ref={notificationRef}>
-          <NotificationPanel notifications={notifications} isOpen={isOpen}/>
+          <NotificationPanel notifications={notifications} isOpen={isOpen} />
         </div>
       )}
       {/* <SignoutAlert isOpen={isOpen} setIsOpen={setIsOpen} /> */}

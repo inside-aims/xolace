@@ -14,6 +14,7 @@ import { PostgrestError } from '@supabase/supabase-js';
 import { logActivity } from '@/lib/activity-logger';
 import { ActivityType } from '@/types/activity';
 import { cache } from 'react';
+import { createNotification } from '@/lib/actions/notifications.action';
 
 export const signUpAction = validatedAction(signUpSchema, async data => {
   const supabaseAdmin = getSupabaseAdminClient();
@@ -222,6 +223,16 @@ export async function updateViewsAction(postId: string, userId: string, relatedU
       postId,
       metadata: { view_timestamp: new Date().toISOString(), views : totalViews + 1, content , link : `/post/${postId}` }
     });
+
+    if (userId !== relatedUserId && relatedUserId) {
+      await createNotification({
+          recipient_user_id: relatedUserId, // The video's author gets the notification
+          actor_id: userId, // The user who saved the video
+          type: 'video_saved',
+          entity_id: postId, // A link to the content
+          metadata: { view_timestamp: new Date().toISOString(), views : totalViews + 1, content , link : `/post/${postId}` }
+      });
+   }
 
     revalidatePath('/feed');
     revalidatePath('/explore');
