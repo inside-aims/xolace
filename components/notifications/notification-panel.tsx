@@ -5,23 +5,25 @@ import NotificationPanelCard from "@/components/notifications/notification-panel
 import { NotificationProps } from "@/components/notifications/index";
 import { useState } from "react";
 import { useRouter } from "next/navigation";
+import { usePanelNotifications , useMarkAllNotificationsAsRead } from '@/hooks/notifications/useNotifications';
+import { useUserState } from '@/lib/store/user';
+import { Button } from "@/components/ui/button";
 
 interface NotificationPanelProps {
-  notifications: NotificationProps[];
   isOpen: boolean;
 }
 
-const NotificationPanel = ({ notifications, isOpen }: NotificationPanelProps) => {
-  const [filter, setFilter] = useState('allNotifications');
+const NotificationPanel = ({ isOpen }: NotificationPanelProps) => {
+  const [filter, setFilter] = useState<'all' | 'important'>('all');
   const router = useRouter();
 
-  const filteredNotifications = notifications.filter(n =>
-    filter === 'important' ? n.important : true
-  );
+  const { user } = useUserState();
+  const { data: notifications, isLoading, error } = usePanelNotifications({ userId: user?.id, filter });
+  const { mutate: markAllAsRead, isPending: isMarkingRead } = useMarkAllNotificationsAsRead();
 
   const headerFilters = [
     { label: "Important", key: "important" },
-    { label: "All Notifications", key: "allNotifications" },
+    { label: "All Notifications", key: "all" },
   ] as const;
 
   const footerActions = [
@@ -30,59 +32,45 @@ const NotificationPanel = ({ notifications, isOpen }: NotificationPanelProps) =>
   ];
 
   return (
-    <div
-      className={`
-        fixed top-[70px] right-0 w-[calc(100%-1rem)] max-w-[80%] md:w-[400px] h-[calc(100vh-70px)]
-        z-[9999] bg-white dark:bg-[#121212] shadow-lg border rounded-lg
-        flex flex-col overflow-hidden
-        transition-transform duration-300
-        ${isOpen ? "translate-x-0 pointer-events-auto" : "translate-x-full pointer-events-none"}
-      `}
-    >
-      <header className="flex flex-col gap-4 py-2 px-4">
-        <aside className="flex items-center justify-between">
-          <h3>Notification</h3>
-          <Settings size={14} />
-        </aside>
+    <div className="fixed top-[70px] right-0 w-[calc(100%-1rem)] max-w-[80%] md:w-[400px] h-[calc(100vh-70px)] z-[9999] bg-background shadow-lg border rounded-lg flex flex-col overflow-hidden">
+        <header className="flex flex-col gap-4 py-2 px-4 border-b">
+            <aside className="flex items-center justify-between">
+                <h3>Notification</h3>
+                <Settings size={14} />
+            </aside>
+            <aside className="flex items-center justify-between text-sm">
+                {headerFilters.map(({ label, key }) => (
+                    <p
+                        key={key}
+                        onClick={() => setFilter(key)}
+                        className={`py-1 px-2 rounded-md cursor-pointer ${filter === key ? "bg-primary text-primary-foreground" : "bg-muted"}`}
+                    >
+                        {label}
+                    </p>
+                ))}
+            </aside>
+        </header>
 
-        <aside className="flex items-center justify-between text-sm">
-          {headerFilters.map(({ label, key }) => (
-            <p
-              key={key}
-              onClick={() => setFilter(key)}
-              className={`py-1 px-2 rounded-md cursor-pointer ${
-                filter === key
-                  ? "bg-lavender-500"
-                  : "bg-neutral-200 dark:bg-neutral-800"
-              }`}
-            >
-              {label}
-            </p>
-          ))}
-        </aside>
-      </header>
+        <section className="flex-1 overflow-y-auto">
+            {isLoading && <p className="p-4 text-center text-muted-foreground">Loading...</p>}
+            {error && <p className="p-4 text-center text-red-500">Failed to load notifications.</p>}
+            {!isLoading && !error && (
+                notifications && notifications.length > 0 ? (
+                    notifications.map((n) => (
+                        <NotificationPanelCard key={n.id} notification={n} />
+                    ))
+                ) : (
+                    <div className="p-4 text-center text-sm text-muted-foreground">No notifications</div>
+                )
+            )}
+        </section>
 
-      <section className="bg-neutral-100 dark:bg-dark-1 flex-1 overflow-y-auto">
-        {filteredNotifications.length > 0 ? (
-          filteredNotifications.slice(0, 8).map((n) => (
-            <NotificationPanelCard key={n.notificationId} {...n} />
-          ))
-        ) : (
-          <div className="text-center text-sm text-gray-500 p-4">No notifications</div>
-        )}
-      </section>
-
-      <footer className="py-2 px-4 flex justify-between text-sm">
-        {footerActions.map(({ label, onClick }) => (
-          <p
-            key={label}
-            onClick={onClick}
-            className="py-1 px-2 hover:bg-neutral-200 dark:hover:bg-neutral-800 cursor-pointer rounded-md"
-          >
-            {label}
-          </p>
-        ))}
-      </footer>
+        <footer className="py-2 px-4 flex justify-between text-sm border-t">
+            <Button variant="link" onClick={() => router.push("/notifications")}>See all</Button>
+            <Button variant="link" onClick={() => markAllAsRead()} disabled={isMarkingRead}>
+                {isMarkingRead ? 'Marking...' : 'Mark all as read'}
+            </Button>
+        </footer>
     </div>
   );
 };

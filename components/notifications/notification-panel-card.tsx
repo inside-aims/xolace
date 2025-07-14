@@ -1,61 +1,80 @@
 'use client';
 
-import {NotificationProps} from "@/components/notifications/index";
-import {useRouter} from "next/navigation";
-import {Avatar, AvatarFallback, AvatarImage} from "@/components/ui/avatar";
+import { useRouter } from "next/navigation";
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import * as React from "react";
-import {formatDistanceToNow} from "date-fns";
+import { formatDistanceToNow } from "date-fns";
+import type { Notification } from "@/types/global";
+import { useNotificationCardLogic } from "@/hooks/notifications/useNotificationCardLogic"; // Import the new hook
+import { useMarkNotificationAsRead } from "@/hooks/notifications/useNotifications";
 
-const NotificationPanelCard = (props: NotificationProps) => {
+const NotificationPanelCard = (props: { notification: Notification }) => {
+  const { notification } = props;
   const router = useRouter();
+  const markNotificationAsRead = useMarkNotificationAsRead(notification);
 
-  const truncate = (text: string, max = 30) => {
-    return text.length > max ? text.slice(0, max) + '...' : text;
-  };
+  // 1. Get all the dynamic content from our custom hook
+  const { icon, message, link } = useNotificationCardLogic(notification);
 
-  const handleCardClick = (type: string, typeId: string) => {
-    if( type && type !== "system" ) {
-      router.push(`/post/${typeId}`);
-    } else {
-      router.push(`/notifications/${typeId}`);
-    }
+  // 2. Create a mutation to mark the notification as read
+  // const markAsReadMutation = useMutation({
+  //     mutationFn: async () => {
+  //         if (!notification.is_read) {
+  //             const { error } = await supabase.rpc('mark_notification_as_read', { notification_id: notification.id });
+  //             if (error) throw new Error(error.message);
+  //         }
+  //     },
+  //     onSuccess: () => {
+  //         // Invalidate queries to update the UI (e.g., the unread count)
+  //         queryClient.invalidateQueries({ queryKey: ['notifications'] });
+  //     },
+  //     // You can add onError for error handling if needed
+  // });
+
+  const handleCardClick = () => {
+    markNotificationAsRead.mutate(); // Trigger the mutation
+    router.push(link); // Navigate to the link
   }
-
 
   return (
     <div
-      className={`w-full flex flex-col border shadow-lg ${props.status == "unread" ? "bg-neutral-100 dark:bg-dark-2" : "bg-white dark:bg-[#121212]"}`}>
+      className={`w-full flex flex-col border-b ${notification.is_read ? "bg-neutral-100 dark:bg-dark-2" : "bg-white dark:bg-[#121212]"}`}
+      onClick={handleCardClick}
+    >
       <div
-        key={props.notificationId}
+        key={notification.id}
         className="w-full p-4 flex items-start justify-between cursor-pointer"
-        onClick={() => handleCardClick(props.type, props.type !== "system" ? props.typeId : props.notificationId)}
       >
         <div className="w-full flex flex-row gap-4 items-start">
-          <Avatar className="border border-neutral-300">
-            <AvatarImage
-              src={
-                props.type !== "system"
-                  ? props.author_avatar_url
-                  : "/assets/images/x-logo-full.webp"
-              }
-              alt={props.sender}
-              className="object-cover"
-            />
-            <AvatarFallback>{props.sender.charAt(0)}</AvatarFallback>
-          </Avatar>
-          <div
-            className={`w-full flex flex-col hover:underline ${props.status === "read" ? 'text-neutral-400' : ''}`}>
-              <span className="font-semibold">
-                {props.sender}
-              </span>
-            <span className="text-sm">
-                {truncate(props.message)}
-              </span>
-            <p className={"w-full text-xs flex items-end justify-end text-gray-400"}>
-              {formatDistanceToNow(new Date(props.createdAt), {addSuffix: true})}
-            </p>
-
+          {/* AVATAR & ICON */}
+          <div className="relative">
+            <Avatar className="border border-neutral-300">
+              <AvatarImage
+                src={notification.author_avatar_url || "/assets/images/x-logo-full.webp"}
+                alt={notification.author_name}
+                className="object-cover"
+              />
+              <AvatarFallback>{notification.author_name.charAt(0)}</AvatarFallback>
+            </Avatar>
+            <div className="absolute -bottom-1 -right-1 bg-background p-0.5 rounded-full">
+                {icon}
+            </div>
           </div>
+          
+          {/* CONTENT */}
+          <div className={`w-full flex flex-col ${notification.is_read ? 'text-neutral-500' : 'text-foreground'}`}>
+            <span className="text-sm">
+              {message}
+            </span>
+            <p className="w-full text-xs text-gray-400 pt-1">
+              {formatDistanceToNow(new Date(notification.created_at), { addSuffix: true })}
+            </p>
+          </div>
+          
+          {/* UNREAD INDICATOR */}
+          {!notification.is_read && (
+              <div className="h-2.5 w-2.5 rounded-full bg-blue-500 self-center shrink-0"></div>
+          )}
         </div>
       </div>
     </div>
