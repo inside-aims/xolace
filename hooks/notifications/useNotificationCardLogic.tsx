@@ -19,7 +19,7 @@ export function useNotificationCardLogic(notification: Notification) {
       }
       // Fallback to building the link from entity_id
       if (notification.entity_id) {
-        if (notification.type.includes('video')) return `/video/${notification.entity_id}`;
+        if (notification.type.includes('video')) return `/glimpse/${notification.entity_id}`;
         if (notification.type.includes('post')) return `/post/${notification.entity_id}`;
       }
       // Final fallback for system announcements or notifications without a link
