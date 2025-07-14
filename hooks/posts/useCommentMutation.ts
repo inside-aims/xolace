@@ -3,6 +3,7 @@ import { getSupabaseBrowserClient } from '@/utils/supabase/client';
 import { Comment, DetailPost } from '@/types/global';
 import { logActivity } from '@/lib/activity-logger';
 import { useUserState } from '@/lib/store/user';
+import { createNotification } from '@/lib/actions/notifications.action';
 
 const supabase = getSupabaseBrowserClient();
 
@@ -57,6 +58,16 @@ export function useCommentMutation(post: DetailPost) {
         postId: postId,
         metadata: { content: commentText, link: `/post/${postId}` },
       });
+
+      if (user?.id !== post.created_by && post.created_by) {
+        await createNotification({
+          recipient_user_id: post.created_by,
+          actor_id: user?.id || null,
+          type: 'new_comment',
+          entity_id: postId,
+          metadata: { content: commentText, link: `/post/${postId}` },
+        });
+      }
 
       return data; // Return the inserted comment data
     },

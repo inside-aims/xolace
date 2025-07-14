@@ -361,6 +361,20 @@ export async function saveToCollectionAction(
       },
     });
 
+    if (userId !== relatedUserId && relatedUserId) {
+      await createNotification({
+        recipient_user_id: relatedUserId, // The video's author gets the notification
+        actor_id: userId, // The user who saved the video
+        type: 'post_saved',
+        entity_id: postId, // A link to the content
+        metadata: {
+          collection_name: collectionName,
+          content_type: 'post',
+          link: `/post/${postId}`,
+        },
+      });
+    }
+
     revalidatePath('/feed', 'page');
     revalidatePath('/explore', 'page');
     return { success: true, data };
@@ -442,9 +456,23 @@ export async function saveVideoToCollectionAction({
       metadata: {
         collection_name: collectionName,
         content_type: 'video',
-        link: `/reflections/${bunny_video_id}`,
+        link: `/glimpse/${bunny_video_id}`,
       },
     });
+
+    if (userId !== createdBy && createdBy) {
+      await createNotification({
+        recipient_user_id: createdBy, // The video's author gets the notification
+        actor_id: userId, // The user who saved the video
+        type: 'video_saved',
+        entity_id: videoId, // A link to the content
+        metadata: {
+          collection_name: collectionName,
+          content_type: 'video',
+          link: `/glimpse/${bunny_video_id}`,
+        },
+      });
+    }
 
     revalidatePath(`/video/${videoId}`);
     return { success: true, data };
@@ -484,7 +512,7 @@ export async function removeVideoFromCollectionAction({
       throw new Error(error.message);
     }
 
-    revalidatePath(`/reflections/${videoId}`);
+    revalidatePath(`/glimpse/${videoId}`);
     return { success: true };
   } catch (error) {
     return {

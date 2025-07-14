@@ -3,6 +3,7 @@
 import { useMemo } from 'react';
 import { ThumbsUp, ThumbsDown, MessageSquare, Bookmark, Eye, Bell, Heart } from 'lucide-react';
 import type { Notification } from '@/types/global'; // Make sure this path is correct
+import { truncateText } from '@/lib/utils';
 
 export function useNotificationCardLogic(notification: Notification) {
   // useMemo will prevent re-calculating this on every render unless the notification object changes.
@@ -45,7 +46,7 @@ export function useNotificationCardLogic(notification: Notification) {
       case 'new_comment':
         return {
           icon: <MessageSquare className="h-5 w-5 text-blue-500" />,
-          message: <>{actorName} commented: "{notification.metadata?.message || '...'}"</>,
+          message: <>{actorName} commented: "{`${truncateText(notification.metadata?.content, 30)}` || '...'}"</>,
           link,
         };
       case 'post_saved':
