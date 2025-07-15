@@ -51,10 +51,10 @@ const NotificationPanelCard = (props: { notification: Notification }) => {
             <Avatar className="border border-neutral-300">
               <AvatarImage
                 src={notification.author_avatar_url || "/assets/images/x-logo-full.webp"}
-                alt={notification.author_name}
+                alt={notification.author_name || 'Xolace Team'}
                 className="object-cover"
               />
-              <AvatarFallback>{notification.author_name.charAt(0)}</AvatarFallback>
+              <AvatarFallback>{notification.author_name?.charAt(0) || 'XO'}</AvatarFallback>
             </Avatar>
             <div className="absolute -bottom-1 -right-1 bg-background p-0.5 rounded-full">
                 {icon}

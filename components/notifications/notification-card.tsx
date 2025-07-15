@@ -31,8 +31,8 @@ const markNotificationAsRead = useMarkNotificationAsRead(notification);
       <div className="w-full flex flex-row gap-4 items-center">
         <div className="relative">
           <Avatar className="h-10 w-10 border border-neutral-300">
-            <AvatarImage src={notification.author_avatar_url || ''} alt={notification.author_name} />
-            <AvatarFallback>{notification.author_name.slice(0, 2).toUpperCase()}</AvatarFallback>
+            <AvatarImage src={notification.author_avatar_url || ''} alt={notification.author_name || 'Xolace Team'} />
+            <AvatarFallback>{notification.author_name?.slice(0, 2).toUpperCase() || 'XO'}</AvatarFallback>
           </Avatar>
           <div className="absolute -bottom-1 -right-1 bg-background p-0.5 rounded-full">{icon}</div>
         </div>
