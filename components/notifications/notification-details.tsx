@@ -1,8 +1,7 @@
 "use client"
 
 import { motion } from "motion/react"
-import { ArrowLeft, Clock, Tag, User, ExternalLink, Share2, Bookmark, MoveLeft } from "lucide-react"
-import Link from "next/link"
+import { Clock, Tag, User, ExternalLink, MoveLeft } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { notFound, useRouter } from "next/navigation"
 import { formatDistanceToNow } from "date-fns"
@@ -71,17 +70,17 @@ export default function NotificationDetails({ notificationId }: { notificationId
     router.back()
   }
 
-  const handleShare = () => {
-    if (navigator.share) {
-      navigator.share({
-        title: metadata?.title,
-        text: metadata?.description,
-        url: window.location.href,
-      })
-    } else {
-      navigator.clipboard.writeText(window.location.href)
-    }
-  }
+  // const handleShare = () => {
+  //   if (navigator.share) {
+  //     navigator.share({
+  //       title: metadata?.title,
+  //       text: metadata?.description,
+  //       url: window.location.href,
+  //     })
+  //   } else {
+  //     navigator.clipboard.writeText(window.location.href)
+  //   }
+  // }
 
   if (isPending) return <SearchLoader/>
 
@@ -93,12 +92,10 @@ export default function NotificationDetails({ notificationId }: { notificationId
     <div className="min-h-screen bg-[#121212]">
       {/* Header */}
       <header className="w-full px-4 sm:px-6">
-        <Link href={"/notifications"}>
-          <Button variant="outline" size="sm" className="rounded-full">
+          <Button variant="outline" size="sm" className="rounded-full" onClick={handleBack}>
             <MoveLeft className="mr-2 h-4 w-4" />
             Back to Notifications
           </Button>
-        </Link>
       </header>
 
       {/* Content */}

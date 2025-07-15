@@ -18,7 +18,6 @@ import { RealtimeAvatarStack } from './realtime-avatar-stack';
 import mascot from '../public/assets/images/x-logo-full.webp';
 import { Menu, PlusIcon, Bell } from 'lucide-react';
 import NotificationPanel from '@/components/notifications/notification-panel';
-import { notifications } from '@/app/(protected)/notifications/(overview)/notifications';
 import { Badge } from './ui/badge';
 import { useNotificationCount } from '@/hooks/notifications/useNotificationCount';
 import { useQueryClient } from '@tanstack/react-query';
@@ -49,7 +48,7 @@ export function SiteHeader() {
         .on(
             'postgres_changes',
             { event: '*', schema: 'public', table: 'notifications', filter: `recipient_user_id=eq.${user.id}` },
-            (payload) => {
+            () => {
                 // When a change occurs, invalidate the queries to refetch fresh data.
                 // Invalidating the root 'notifications' key will refetch both the count and the list.
                 queryClient.invalidateQueries({ queryKey: ['notifications'] });
@@ -60,7 +59,7 @@ export function SiteHeader() {
     return () => {
         supabase.removeChannel(channel);
     };
-}, [queryClient, user]);
+}, [queryClient, user, supabase]);
 
   // Subscribe to sign out event
   useEffect(() => {
@@ -201,7 +200,7 @@ export function SiteHeader() {
       </header>
       {isOpen && (
         <div ref={notificationRef}>
-          <NotificationPanel isOpen={isOpen} />
+          <NotificationPanel />
         </div>
       )}
       {/* <SignoutAlert isOpen={isOpen} setIsOpen={setIsOpen} /> */}

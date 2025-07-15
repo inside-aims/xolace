@@ -2,7 +2,6 @@
 
 import { Settings } from 'lucide-react';
 import NotificationPanelCard from "@/components/notifications/notification-panel-card";
-import { NotificationProps } from "@/components/notifications/index";
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { usePanelNotifications , useMarkAllNotificationsAsRead } from '@/hooks/notifications/useNotifications';
@@ -10,11 +9,11 @@ import { useUserState } from '@/lib/store/user';
 import { Button } from "@/components/ui/button";
 import SearchLoader from '../shared/loaders/SearchLoader';
 
-interface NotificationPanelProps {
-  isOpen: boolean;
-}
+// interface NotificationPanelProps {
+//   isOpen: boolean;
+// }
 
-const NotificationPanel = ({ isOpen }: NotificationPanelProps) => {
+const NotificationPanel = () => {
   const [filter, setFilter] = useState<'all' | 'important'>('all');
   const router = useRouter();
 
@@ -26,11 +25,6 @@ const NotificationPanel = ({ isOpen }: NotificationPanelProps) => {
     { label: "Important", key: "important" },
     { label: "All Notifications", key: "all" },
   ] as const;
-
-  const footerActions = [
-    { label: "See all notifications", onClick: () => router.push("/notifications") },
-    { label: "Mark all as read", onClick: () => console.log("Mark all read") },
-  ];
 
   return (
     <div className="fixed top-[70px] right-0 w-[calc(100%-1rem)] max-w-[80%] md:w-[400px] h-[calc(100vh-70px)] z-[9999] bg-bg dark:bg-bg-dark shadow-lg border rounded-lg flex flex-col overflow-hidden ">
