@@ -5,7 +5,7 @@ import { ThumbsUp, ThumbsDown, MessageSquare, Bookmark, Eye, Bell, Heart } from 
 import type { Notification } from '@/types/global'; // Make sure this path is correct
 import { truncateText } from '@/lib/utils';
 
-interface NotificationMetadataWithLink {
+export interface NotificationMetadataWithLink {
   link?: string; // link might be optional
   content?: string; // for new_comment
   title?: string; // for system_announcement

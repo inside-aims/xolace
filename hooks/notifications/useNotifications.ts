@@ -99,6 +99,20 @@ export function usePanelNotifications({ userId, filter }: UsePanelNotificationsP
   });
 }
 
+export function useNotificationDetails({notificationId}: {notificationId: string}) {
+  const supabase = getSupabaseBrowserClient();
+
+  return useQuery({
+    queryKey: ['notification', notificationId],
+    queryFn: async () => {
+      const { data, error } = await supabase.from('notifications').select('*').eq('id', notificationId).single();
+      if (error) throw new Error(error.message);
+      return data as Notification;
+    },
+    enabled: !!notificationId,
+  });
+}
+
 // 3. Custom hook for the "Mark all as read" mutation
 export function useMarkAllNotificationsAsRead() {
     const queryClient = useQueryClient();

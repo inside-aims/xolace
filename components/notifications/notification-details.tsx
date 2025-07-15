@@ -1,36 +1,98 @@
-"use client";
+"use client"
 
-import React from "react";
-import Link from "next/link";
-import { Button } from "@/components/ui/button";
-import { MoveLeft, Flame, MailOpen, Mail } from "lucide-react";
-import {NotificationProps} from "@/components/notifications/index";
+import { motion } from "motion/react"
+import { ArrowLeft, Clock, Tag, User, ExternalLink, Share2, Bookmark, MoveLeft } from "lucide-react"
+import Link from "next/link"
+import { Button } from "@/components/ui/button"
+import { notFound, useRouter } from "next/navigation"
+import { formatDistanceToNow } from "date-fns"
+import { useNotificationDetails } from "@/hooks/notifications/useNotifications"
+import { NotificationMetadataWithLink } from "@/hooks/notifications/useNotificationCardLogic"
+import SearchLoader from "../shared/loaders/SearchLoader"
 
-// dummy data
-const mockNotification: NotificationProps = {
-  notificationId: "abc123",
-  message: "Critical system alert: CPU usage exceeded 90%. Attention! Attention!! Attention!!",
-  sender: "System Monitor",
-  createdAt: "2025-07-08T10:30:00Z",
-  type: 'system',
-  typeId: 'abc123',
-  status: "unread",
-  important: true,
-  author_avatar_url: ""
-};
+interface SystemNotification {
+  id: string
+  created_at: string
+  type: string
+  metadata: {
+    title: string
+    description: string
+    category: string
+    priority: string
+    action_url?: string
+    icon: string
+    content: string
+    tags: string[]
+    author: string
+    estimated_read_time: string
+  }
+}
 
-const NotificationDetails = ({ notificationId }: {notificationId: string}) => {
-  const notification = mockNotification;
+interface SystemNotificationPageProps {
+  notification: SystemNotification
+}
 
-  const isUnread = notification.status === "unread";
-  const isImportant = notification.important;
+const getPriorityColor = (priority: string) => {
+  switch (priority) {
+    case "high":
+      return "text-red-400 bg-red-900/20 border-red-800/50"
+    case "medium":
+      return "text-yellow-400 bg-yellow-900/20 border-yellow-800/50"
+    case "low":
+      return "text-green-400 bg-green-900/20 border-green-800/50"
+    default:
+      return "text-gray-400 bg-gray-800/20 border-gray-700/50"
+  }
+}
+
+const getCategoryColor = (category: string) => {
+  switch (category) {
+    case "feature_update":
+      return "text-blue-400 bg-blue-900/20 border-blue-800/50"
+    case "policy_update":
+      return "text-purple-400 bg-purple-900/20 border-purple-800/50"
+    case "maintenance":
+      return "text-orange-400 bg-orange-900/20 border-orange-800/50"
+    default:
+      return "text-gray-400 bg-gray-800/20 border-gray-700/50"
+  }
+}
+
+export default function NotificationDetails({ notificationId }: { notificationId: string }) {
+
+  if (!notificationId){
+    return notFound()
+  }
+
+  const router = useRouter()
+  const { data: notification , isPending, error } = useNotificationDetails({notificationId})
+
+  const handleBack = () => {
+    router.back()
+  }
+
+  const handleShare = () => {
+    if (navigator.share) {
+      navigator.share({
+        title: metadata?.title,
+        text: metadata?.description,
+        url: window.location.href,
+      })
+    } else {
+      navigator.clipboard.writeText(window.location.href)
+    }
+  }
+
+  if (isPending) return <SearchLoader/>
+
+  if (error) return <div>Error: {error.message}</div>
+
+  const metadata = notification.metadata as NotificationMetadataWithLink | null;
 
   return (
-    <main
-      id="notification-details"
-      className="flex w-full flex-col px-4 items-start gap-8"
-    >
-      <header className="w-full">
+    <div className="min-h-screen bg-[#121212]">
+      {/* Header */}
+      <header className="w-full px-4 sm:px-6">
         <Link href={"/notifications"}>
           <Button variant="outline" size="sm" className="rounded-full">
             <MoveLeft className="mr-2 h-4 w-4" />
@@ -39,50 +101,146 @@ const NotificationDetails = ({ notificationId }: {notificationId: string}) => {
         </Link>
       </header>
 
-      <section
-        className={`relative w-full max-w-2xl bg-card border rounded-2xl p-4 shadow-lg overflow-hidden transition-all`}
-      >
-        {isImportant && (
-          <div className="absolute inset-0 -z-10 blur-2xl opacity-30 bg-red-500 animate-pulse rounded-2xl pointer-events-none" />
-        )}
+      {/* Content */}
+      <main className="max-w-4xl mx-auto px-4 sm:px-6 py-8">
+        <motion.article
+          initial={{ y: 20, opacity: 0 }}
+          animate={{ y: 0, opacity: 1 }}
+          transition={{ delay: 0.1 }}
+          className="space-y-8"
+        >
+          {/* Hero Section */}
+          <div className="text-center space-y-4">
+            <motion.div
+              initial={{ scale: 0 }}
+              animate={{ scale: 1 }}
+              transition={{ delay: 0.2, type: "spring" }}
+              className="text-6xl mb-4"
+            >
+              {metadata?.icon || ""}
+            </motion.div>
 
-        <div className="flex justify-between items-center mb-4">
-          <span className="text-sm text-muted-foreground">
-            From: <strong>{notification.sender}</strong>
-          </span>
-          <span
-            className={`text-xs font-semibold px-2 py-1 rounded-full flex items-center gap-1 ${
-              isUnread
-                ? "bg-blue-100 text-blue-600"
-                : "bg-gray-100 text-gray-500"
-            }`}
-          >
-            {isUnread ? <Mail className="h-3 w-3" /> : <MailOpen className="h-3 w-3" />}
-            {notification.status.toUpperCase()}
-          </span>
-        </div>
+            <motion.h1
+              initial={{ y: 20, opacity: 0 }}
+              animate={{ y: 0, opacity: 1 }}
+              transition={{ delay: 0.3 }}
+              className="text-2xl sm:text-3xl lg:text-4xl font-bold text-white leading-tight"
+            >
+              {metadata?.title || ""}
+            </motion.h1>
 
-        <h2 className="text-2xl font-semibold mb-2 leading-tight">
-          {notification.message}
-        </h2>
-
-        {isImportant && (
-          <div className="flex items-center gap-2 text-red-600 font-semibold mb-2">
-            <Flame className="h-5 w-5" />
-            <span>Marked as Important</span>
+            <motion.p
+              initial={{ y: 20, opacity: 0 }}
+              animate={{ y: 0, opacity: 1 }}
+              transition={{ delay: 0.4 }}
+              className="text-lg text-gray-400 max-w-2xl mx-auto leading-relaxed"
+            >
+              {metadata?.description || ""}
+            </motion.p>
           </div>
-        )}
 
-        <p className="text-sm text-muted-foreground mt-4">
-          Sent on:{" "}
-          {new Date(notification.createdAt).toLocaleString(undefined, {
-            dateStyle: "medium",
-            timeStyle: "short",
-          })}
-        </p>
-      </section>
-    </main>
-  );
-};
+          {/* Metadata */}
+          <motion.div
+            initial={{ y: 20, opacity: 0 }}
+            animate={{ y: 0, opacity: 1 }}
+            transition={{ delay: 0.5 }}
+            className="flex flex-wrap items-center justify-center gap-4 text-sm"
+          >
+            <div className="flex items-center gap-2 text-gray-400">
+              <User className="w-4 h-4" />
+              <span>{metadata?.author || ""}</span>
+            </div>
 
-export default NotificationDetails;
+            <div className="flex items-center gap-2 text-gray-400">
+              <Clock className="w-4 h-4" />
+              <span>{formatDistanceToNow(new Date(notification.created_at), { addSuffix: true })}</span>
+            </div>
+
+            <div className="flex items-center gap-2 text-gray-400">
+              <span>📖</span>
+              <span>{metadata?.estimated_read_time || ""}</span>
+            </div>
+          </motion.div>
+
+          {/* Tags and Priority */}
+          <motion.div
+            initial={{ y: 20, opacity: 0 }}
+            animate={{ y: 0, opacity: 1 }}
+            transition={{ delay: 0.6 }}
+            className="flex flex-wrap items-center justify-center gap-3"
+          >
+            <span
+              className={`px-3 py-1 rounded-full text-xs font-medium border ${getPriorityColor(
+                metadata?.priority || "",
+              )}`}
+            >
+              {metadata?.priority.toUpperCase()} PRIORITY
+            </span>
+
+            <span
+              className={`px-3 py-1 rounded-full text-xs font-medium border ${getCategoryColor(
+                metadata?.category || "",
+              )}`}
+            >
+              {metadata?.category.replace("_", " ").toUpperCase()}
+            </span>
+          </motion.div>
+
+          {/* Content */}
+          <motion.div
+            initial={{ y: 20, opacity: 0 }}
+            animate={{ y: 0, opacity: 1 }}
+            transition={{ delay: 0.7 }}
+            className="bg-gray-900/50 backdrop-blur-sm rounded-2xl p-6 sm:p-8 border border-gray-800"
+          >
+            <div
+              className="prose prose-invert prose-gray max-w-none"
+              dangerouslySetInnerHTML={{ __html: metadata?.content || "" }}
+            />
+          </motion.div>
+
+          {/* Tags */}
+          <motion.div
+            initial={{ y: 20, opacity: 0 }}
+            animate={{ y: 0, opacity: 1 }}
+            transition={{ delay: 0.8 }}
+            className="space-y-3"
+          >
+            <div className="flex items-center gap-2 text-gray-400">
+              <Tag className="w-4 h-4" />
+              <span className="text-sm font-medium">Tags</span>
+            </div>
+            <div className="flex flex-wrap gap-2">
+              {metadata?.tags?.map((tag: string) => (
+                <span
+                  key={tag}
+                  className="px-3 py-1 bg-gray-800/50 text-gray-300 rounded-full text-sm hover:bg-gray-700/50 transition-colors cursor-pointer"
+                >
+                  #{tag}
+                </span>
+              ))}
+            </div>
+          </motion.div>
+
+          {/* Action Button */}
+          {metadata?.action_url && (
+            <motion.div
+              initial={{ y: 20, opacity: 0 }}
+              animate={{ y: 0, opacity: 1 }}
+              transition={{ delay: 0.9 }}
+              className="text-center pt-4"
+            >
+              <Button
+                className="bg-gradient-to-r from-[#0536ff] to-[#6a71ea] hover:from-[#0536ff]/90 hover:to-[#6a71ea]/90 text-white px-8 py-3 rounded-full font-medium transition-all duration-300 shadow-lg shadow-[#0536ff]/25"
+                onClick={() => router.push(metadata.action_url!)}
+              >
+                <span>Learn More</span>
+                <ExternalLink className="w-4 h-4 ml-2" />
+              </Button>
+            </motion.div>
+          )}
+        </motion.article>
+      </main>
+    </div>
+  )
+}

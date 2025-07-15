@@ -78,8 +78,8 @@ const NotificationList = () => {
             </DropdownMenuContent>
           </DropdownMenu>
         </section>
-        <div className="bg-muted/50 rounded-lg mt-2">
-          {isLoading && <SearchLoader/>}
+        <div className="bg-bg dark:bg-bg-dark rounded-lg mt-2">
+          {isLoading && <SearchLoader title="Loading Notifications..."/>}
           
           {!isLoading && notifications.length > 0 && (
             notifications.map((n) => (
@@ -93,7 +93,7 @@ const NotificationList = () => {
 
           {hasMore && (
             <div className="p-4 text-center">
-              <Button onClick={() => fetchNextPage()} disabled={isFetching}>
+              <Button onClick={() => fetchNextPage()} disabled={isFetching} className="bg-gradient-to-r from-lavender-400 to-lavender-500 hover:from-lavender-500 hover:to-lavender-600 text-white px-8 py-3 rounded-full font-medium transition-all duration-300 shadow-lg shadow-lavender-500/25">
                 {isFetching ? 'Loading...' : 'Load More'}
               </Button>
             </div>
