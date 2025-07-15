@@ -1293,8 +1293,8 @@ export type Database = {
           content: string
           mood: Database["public"]["Enums"]["post_mood"]
           expires_in_24hr: boolean
-          duration?: Database["public"]["Enums"]["post_duration"]
-          expires_at?: string
+          duration?: Database["public"]["Enums"]["post_duration"] | null
+          expires_at?: string | null
           is_sensitive?: boolean
           is_prompt_response?: boolean
           type?: Database["public"]["Enums"]["post_type"]
