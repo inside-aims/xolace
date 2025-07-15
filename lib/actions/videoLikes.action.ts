@@ -5,6 +5,7 @@ import { createClient } from '@/utils/supabase/server';
 import { revalidatePath } from 'next/cache';
 import { logActivity } from '../activity-logger';
 import { ActivityType } from '@/types/activity';
+import { createNotification } from '@/lib/actions/notifications.action';
 
 export async function likeVideoAction(
   userId: string,
@@ -26,8 +27,18 @@ export async function likeVideoAction(
     entityType: ActivityType.VIDEO,
     action: 'liked',
     videoId,
-    metadata: { content_type: 'video', link: `/reflections/${bunny_video_id}` },
+    metadata: { content_type: 'video', link: `/glimpse/${bunny_video_id}` },
   });
+
+  if (relatedUserId && relatedUserId !== userId) {
+    await createNotification({
+      recipient_user_id: relatedUserId,
+      actor_id: userId,
+      type: 'video_liked',
+      entity_id: videoId,
+      metadata: { content_type: 'video', link: `/glimpse/${bunny_video_id}` },
+    });
+  }
 
   revalidatePath('/videos', 'page');
   revalidatePath('/explore', 'page');

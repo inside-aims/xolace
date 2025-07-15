@@ -21,6 +21,7 @@ import NotificationPanel from '@/components/notifications/notification-panel';
 import { notifications } from '@/app/(protected)/notifications/(overview)/notifications';
 import { Badge } from './ui/badge';
 import { useNotificationCount } from '@/hooks/notifications/useNotificationCount';
+import { useQueryClient } from '@tanstack/react-query';
 
 export function SiteHeader() {
   // get user profile data
@@ -33,9 +34,33 @@ export function SiteHeader() {
   const pathname = usePathname();
   const supabase = getSupabaseBrowserClient();
   const { toggleSidebar } = useSidebar();
+  const queryClient = useQueryClient();
 
   // ✅ Use the clean, abstracted hook to get the count for the logged-in user.
   const { count } = useNotificationCount(user?.id);
+
+  // The real-time subscription remains the same.
+  useEffect(() => {
+    // Only subscribe if a user is logged in.
+    if (!user) return;
+
+    const channel = supabase
+        .channel(`realtime-notifications-${user.id}`) // Channel can be user-specific
+        .on(
+            'postgres_changes',
+            { event: '*', schema: 'public', table: 'notifications', filter: `recipient_user_id=eq.${user.id}` },
+            (payload) => {
+                // When a change occurs, invalidate the queries to refetch fresh data.
+                // Invalidating the root 'notifications' key will refetch both the count and the list.
+                queryClient.invalidateQueries({ queryKey: ['notifications'] });
+            }
+        )
+        .subscribe();
+
+    return () => {
+        supabase.removeChannel(channel);
+    };
+}, [queryClient, user]);
 
   // Subscribe to sign out event
   useEffect(() => {
