@@ -19,7 +19,7 @@ const ListHeader: React.FC<ListHeaderProps> = ({filterOptions, selectedFilter, o
         {filterOptions.map((option) => (
           <button
             key={option.key}
-            className={`py-0.5 px-2 rounded-md hover:animate-pulse text-sm capitalize ${selectedFilter === option.key ? "bg-lavender-500" : "bg-neutral-200 dark:bg-neutral-800"}`}
+            className={`py-0.5 px-2 rounded-md hover:animate-pulse text-sm capitalize ${selectedFilter === option.key ? "bg-primary text-primary-foreground" : "bg-muted"}`}
             onClick={() => onFilterChange(option.key)}
           >
             { option.label }
@@ -41,7 +41,7 @@ const ListHeader: React.FC<ListHeaderProps> = ({filterOptions, selectedFilter, o
               <DropdownMenuItem
                 key={filter.key}
                 onClick={() => onFilterChange(filter.key)}
-                className={selectedFilter === filter.key ? "bg-lavender-500" : ""}
+                className={selectedFilter === filter.key ? "bg-primary text-primary-foreground" : ""}
               >
                 {filter.label}
               </DropdownMenuItem>

@@ -198,32 +198,35 @@ export function SiteHeader() {
               <RealtimeAvatarStack roomName="break_room" />
             </div>
           </div>
+          {isOpen && (
+              <AnimatePresence >
+                {isOpen && (
+                  <motion.div
+                    className={"fixed top-[90px] right-0 w-[calc(100%-1rem)] max-w-[80%] h-auto md:w-[400px] max-h-[calc(90vh-70px)] md:max-h-[calc(90vh-40px)] z-[9999] bg-bg dark:bg-bg-dark shadow-lg border rounded-lg flex flex-col"}
+                    initial={{x: 300, opacity: 0, scale: 0.98}}
+                    animate={{x: 0, opacity: 1, scale: 1}}
+                    exit={{x: 300, opacity: 0, scale: 0.98}}
+                    transition={{
+                      x: isOpen
+                        ? {duration: 0.5, ease: [0.25, 0.8, 0.25, 1]}
+                        : {duration: 0.9, ease: [0.25, 0.8, 0.25, 1]},
+                      opacity: isOpen
+                        ? {duration: 0.2, ease: 'easeOut'}
+                        : {duration: 0.5, ease: 'easeIn'},
+                      scale: isOpen
+                        ? {duration: 0.2, ease: 'easeOut'}
+                        : {duration: 0.5, ease: 'easeIn'}
+                    }}
+                  >
+                    <div ref={notificationRef}>
+                      <NotificationPanel/>
+                    </div>
+                  </motion.div>
+                )}
+              </AnimatePresence>
+          )}
         </div>
       </header>
-      <AnimatePresence>
-        {isOpen && (
-          <motion.div
-            initial={{ x: 300, opacity: 0, scale: 0.98 }}
-            animate={{ x: 0, opacity: 1, scale: 1 }}
-            exit={{ x: 300, opacity: 0, scale: 0.98 }}
-            transition={{
-              x: isOpen
-                ? { duration: 0.1, ease: [0.25, 0.8, 0.25, 1] }
-                : { duration: 0.9, ease: [0.25, 0.8, 0.25, 1] },
-              opacity: isOpen
-                ? { duration: 0.2, ease: 'easeOut' }
-                : { duration: 0.5, ease: 'easeIn' },
-              scale: isOpen
-                ? { duration: 0.2, ease: 'easeOut' }
-                : { duration: 0.5, ease: 'easeIn' }
-            }}
-          >
-            <div ref={notificationRef}>
-              <NotificationPanel />
-            </div>
-          </motion.div>
-        )}
-      </AnimatePresence>
 
 
       {/* <SignoutAlert isOpen={isOpen} setIsOpen={setIsOpen} /> */}
