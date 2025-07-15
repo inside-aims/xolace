@@ -20,10 +20,6 @@ create table "public"."videos" (
 
 alter table "public"."videos" enable row level security;
 
-alter table "public"."activity_logs" alter column "user_id" set not null;
-
-alter table "public"."feedbacks" alter column "created_by" set not null;
-
 CREATE UNIQUE INDEX videos_pkey ON public.videos USING btree (id);
 
 alter table "public"."videos" add constraint "videos_pkey" PRIMARY KEY using index "videos_pkey";

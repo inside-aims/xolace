@@ -16,7 +16,7 @@ export default function HealthTipsWrapper({
   return (
     <div
       className={
-        'grid w-full grid-cols-12 md:h-[calc(100vh-var(--header-height))]'
+        'grid w-full grid-cols-12 h-[calc(100vh-var(--header-height))]'
       }
     >
       <div

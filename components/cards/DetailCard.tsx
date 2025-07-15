@@ -116,9 +116,10 @@ export function DetailCard({
             <Avatar>
               <AvatarImage
                 src={author_avatar_url || undefined}
+                alt={author_name}
                 className="max-sm:h-9 max-sm:w-9"
               />
-              <AvatarFallback>XO</AvatarFallback>
+              <AvatarFallback className='bg-gradient-to-br from-[#0536ff] to-[#6a71ea] text-white'>{author_name.slice(0, 2).toUpperCase()}</AvatarFallback>
             </Avatar>
             <div className="flex flex-col items-start justify-center">
               <div className="flex items-center gap-1">

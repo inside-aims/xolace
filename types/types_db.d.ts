@@ -518,6 +518,69 @@ export type Database = {
           },
         ]
       }
+      notifications: {
+        Row: {
+          actor_id: string | null
+          author_avatar_url: string | null
+          author_name: string | null
+          created_at: string
+          entity_id: string | null
+          id: string
+          is_read: boolean
+          metadata: Json | null
+          recipient_user_id: string
+          target_type:
+            | Database["public"]["Enums"]["notification_target_type"]
+            | null
+          type: Database["public"]["Enums"]["notification_type"]
+        }
+        Insert: {
+          actor_id?: string | null
+          author_avatar_url?: string | null
+          author_name?: string | null
+          created_at?: string
+          entity_id?: string | null
+          id?: string
+          is_read?: boolean
+          metadata?: Json | null
+          recipient_user_id: string
+          target_type?:
+            | Database["public"]["Enums"]["notification_target_type"]
+            | null
+          type: Database["public"]["Enums"]["notification_type"]
+        }
+        Update: {
+          actor_id?: string | null
+          author_avatar_url?: string | null
+          author_name?: string | null
+          created_at?: string
+          entity_id?: string | null
+          id?: string
+          is_read?: boolean
+          metadata?: Json | null
+          recipient_user_id?: string
+          target_type?:
+            | Database["public"]["Enums"]["notification_target_type"]
+            | null
+          type?: Database["public"]["Enums"]["notification_type"]
+        }
+        Relationships: [
+          {
+            foreignKeyName: "notifications_actor_id_fkey"
+            columns: ["actor_id"]
+            isOneToOne: false
+            referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "notifications_recipient_user_id_fkey"
+            columns: ["recipient_user_id"]
+            isOneToOne: false
+            referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       post_slides: {
         Row: {
           content: string
@@ -1230,8 +1293,8 @@ export type Database = {
           content: string
           mood: Database["public"]["Enums"]["post_mood"]
           expires_in_24hr: boolean
-          duration?: Database["public"]["Enums"]["post_duration"]
-          expires_at?: string
+          duration?: Database["public"]["Enums"]["post_duration"] | null
+          expires_at?: string | null
           is_sensitive?: boolean
           is_prompt_response?: boolean
           type?: Database["public"]["Enums"]["post_type"]
@@ -1327,6 +1390,14 @@ export type Database = {
           id: number
         }[]
       }
+      mark_all_notifications_as_read: {
+        Args: Record<PropertyKey, never>
+        Returns: undefined
+      }
+      mark_notification_as_read: {
+        Args: { notification_id: string }
+        Returns: undefined
+      }
       reset_credits: {
         Args: Record<PropertyKey, never>
         Returns: undefined
@@ -1358,6 +1429,20 @@ export type Database = {
         | "view"
         | "video"
       feedback_status: "open" | "closed"
+      notification_target_type:
+        | "single_user"
+        | "role_based"
+        | "all_users"
+        | "new_users"
+      notification_type:
+        | "new_upvote"
+        | "new_downvote"
+        | "new_comment"
+        | "post_saved"
+        | "video_saved"
+        | "video_liked"
+        | "system_announcement"
+        | "post_viewed"
       post_duration: "6" | "12" | "24"
       post_mood:
         | "neutral"
@@ -1523,6 +1608,22 @@ export const Constants = {
         "video",
       ],
       feedback_status: ["open", "closed"],
+      notification_target_type: [
+        "single_user",
+        "role_based",
+        "all_users",
+        "new_users",
+      ],
+      notification_type: [
+        "new_upvote",
+        "new_downvote",
+        "new_comment",
+        "post_saved",
+        "video_saved",
+        "video_liked",
+        "system_announcement",
+        "post_viewed",
+      ],
       post_duration: ["6", "12", "24"],
       post_mood: [
         "neutral",

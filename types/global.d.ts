@@ -79,3 +79,5 @@ declare interface DropdownListProps {
 type SupaVideoDetails = Database['public']['Tables']['videos']['Row'] & {
   video_collections: {user_id: string}[];
 }
+
+type Notification = Database['public']['Tables']['notifications']['Row']
