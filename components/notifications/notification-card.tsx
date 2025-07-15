@@ -1,71 +1,53 @@
+// /components/notifications/notification-card.tsx
+
 'use client';
 
-import {NotificationProps} from "@/components/notifications/index";
-import {useRouter} from "next/navigation";
-import {Avatar, AvatarFallback, AvatarImage} from "@/components/ui/avatar";
+import { useRouter } from "next/navigation";
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import * as React from "react";
+import { formatDistanceToNow } from "date-fns";
+import type { Notification } from "@/types/global"; // Your main Notification type
+import { useNotificationCardLogic } from "@/hooks/notifications/useNotificationCardLogic"; // The hook from our previous step
+import { useMarkNotificationAsRead } from "@/hooks/notifications/useNotifications";
 
-const NotificationCard = (props: NotificationProps) => {
+// This component now takes the full notification object as a prop
+const NotificationCard = ({ notification }: { notification: Notification }) => {
   const router = useRouter();
+const markNotificationAsRead = useMarkNotificationAsRead(notification);
 
-  const truncate = (text: string, max = 30) => {
-    return text.length > max ? text.slice(0, max) + '...' : text;
-  };
+  // Use the centralized hook to get the card's content
+  const { icon, message, link } = useNotificationCardLogic(notification);
 
-  const handleCardClick = (type: string, typeId: string) => {
-    if( type && type !== "system" ) {
-      router.push(`/post/${typeId}`);
-    } else {
-      router.push(`/notifications/${typeId}`);
-    }
+  const handleCardClick = () => {
+    markNotificationAsRead.mutate();
+    router.push(link);
   }
 
   return (
-    <div className={`w-full flex flex-col border shadow-lg ${props.status == "unread" ? "bg-neutral-100 dark:bg-dark-2" : "bg-white dark:bg-[#121212]"}`}>
-      <div
-        key={props.notificationId}
-        className="w-full p-4 flex items-start justify-between cursor-pointer"
-        onClick={() => handleCardClick(props.type, props.type !== "system" ? props.typeId : props.notificationId)}
-      >
-        <div className="w-full flex flex-row gap-4 items-center justify-between" >
-          <div className="w-full flex flex-row gap-4 items-start">
-            <Avatar className="border border-neutral-300">
-              <AvatarImage
-                src={
-                  props.type !== "system"
-                    ? props.author_avatar_url
-                    : "/assets/images/x-logo-full.webp"
-                }
-                alt={props.sender}
-                className="object-cover"
-              />
-              <AvatarFallback>{props.sender.charAt(0)}</AvatarFallback>
-            </Avatar>
-            <div
-              className={`w-full flex flex-col gap-2 hover:underline ${props.status === "read" ? 'text-neutral-400' : ''}`}>
-              <div className={"flex flex-col"}>
-              <span className="font-semibold">
-                {props.sender}
-              </span>
-                <p className={"text-xs text-gray-400"}>
-                  {new Date(props.createdAt).toLocaleDateString('en-US', {
-                    month: 'short',
-                    day: '2-digit',
-                    hour: '2-digit',
-                    minute: '2-digit',
-                    hour12: true,
-                  })}
-                </p>
-              </div>
-              <span className="text-sm">
-                {truncate(props.message)}
-              </span>
-            </div>
-          </div>
-          <p className={`lowercase text-sm ${props.status == 'read' && "text-neutral-400" }`}>{props.status}</p>
+    <div
+      onClick={handleCardClick}
+      className={`w-full flex flex-col border-b last:border-b-0 cursor-pointer p-4 md:hover:scale-102 md:hover:shadow-md md:hover:border-x-2 md:hover:border-neutral-300 transition-all ${!notification.is_read ? "bg-white dark:bg-black/40" : "bg-zinc-200/20 dark:bg-dark-2"}`}
+    >
+      <div className="w-full flex flex-row gap-4 items-center">
+        <div className="relative">
+          <Avatar className="h-10 w-10 border border-neutral-300">
+            <AvatarImage src={notification.author_avatar_url || ''} alt={notification.author_name} />
+            <AvatarFallback>{notification.author_name.slice(0, 2).toUpperCase()}</AvatarFallback>
+          </Avatar>
+          <div className="absolute -bottom-1 -right-1 bg-background p-0.5 rounded-full">{icon}</div>
         </div>
+        <div className={`w-full flex flex-col ${notification.is_read ? 'text-muted-foreground' : ''}`}>
+          <span className="text-sm">{message}</span>
+          <p className="text-xs text-muted-foreground pt-1">
+            {formatDistanceToNow(new Date(notification.created_at), { addSuffix: true })}
+          </p>
+        </div>
+        {!notification.is_read && (
+          <div className="h-2.5 w-2.5 rounded-full bg-blue-500 self-center shrink-0"></div>
+        )}
       </div>
     </div>
-  )
+  );
 }
+
 export default NotificationCard;

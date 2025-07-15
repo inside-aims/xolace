@@ -28,7 +28,7 @@ const NotificationDetails = ({ notificationId }: {notificationId: string}) => {
   return (
     <main
       id="notification-details"
-      className="flex w-full min-h-screen flex-col px-4 items-start gap-8"
+      className="flex w-full flex-col px-4 items-start gap-8"
     >
       <header className="w-full">
         <Link href={"/notifications"}>

@@ -3,7 +3,7 @@
 import { getSupabaseBrowserClient } from '@/utils/supabase/client'
 import { PostgrestQueryBuilder } from '@supabase/postgrest-js'
 import { SupabaseClient } from '@supabase/supabase-js'
-import { useEffect, useRef, useSyncExternalStore } from 'react'
+import { useEffect, useRef, useSyncExternalStore, useState } from 'react'
 
 const supabase = getSupabaseBrowserClient()
 
@@ -165,35 +165,39 @@ const initialState: any = {
   hasInitialFetch: false,
 }
 
-function useInfiniteQuery<
-  TData extends SupabaseTableData<T>,
-  T extends SupabaseTableName = SupabaseTableName,
->(props: UseInfiniteQueryProps<T>) {
-  const storeRef = useRef(createStore<TData, T>(props))
+function useInfiniteQuery<TData extends SupabaseTableData<T>, T extends SupabaseTableName = SupabaseTableName>(
+  props: UseInfiniteQueryProps<T>
+) {
+  const propsRef = useRef(props)
+
+  const [store, setStore] = useState(() => createStore<TData, T>(props))
+
+  // This effect will re-create the store if the props that define the query have changed.
+  useEffect(() => {
+    if (
+      propsRef.current.tableName !== props.tableName ||
+      propsRef.current.columns !== props.columns ||
+      propsRef.current.pageSize !== props.pageSize ||
+      propsRef.current.trailingQuery !== props.trailingQuery
+    ) {
+      const newStore = createStore<TData, T>(props)
+      setStore(newStore)
+    }
+    propsRef.current = props
+  }, [props])
+
+  // This effect will initialize the store when it's first created or replaced.
+  useEffect(() => {
+    if (!store.getState().hasInitialFetch) {
+      store.initialize()
+    }
+  }, [store])
 
   const state = useSyncExternalStore(
-    storeRef.current.subscribe,
-    () => storeRef.current.getState(),
+    store.subscribe,
+    () => store.getState(),
     () => initialState as StoreState<TData>
   )
-
-  useEffect(() => {
-    // Recreate store if props change
-    if (
-      storeRef.current.getState().hasInitialFetch &&
-      (props.tableName !== props.tableName ||
-        props.columns !== props.columns ||
-        props.pageSize !== props.pageSize) ||
-        props.trailingQuery !== storeRef.current.getTrailingQueryRef()
-    ) {
-      storeRef.current = createStore<TData, T>(props)
-      storeRef.current.initialize();
-    }
-
-    if (!state.hasInitialFetch && typeof window !== 'undefined') {
-      storeRef.current.initialize()
-    }
-  }, [props.tableName, props.columns, props.pageSize, state.hasInitialFetch, props.trailingQuery])
 
   return {
     data: state.data,
@@ -203,7 +207,7 @@ function useInfiniteQuery<
     isFetching: state.isFetching,
     error: state.error,
     hasMore: state.count > state.data.length,
-    fetchNextPage: storeRef.current.fetchNextPage,
+    fetchNextPage: store.fetchNextPage,
   }
 }
 

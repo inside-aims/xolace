@@ -1,104 +1,53 @@
 "use client";
 
 import React, { useState } from "react";
-import {
-  parseISO,
-  isToday,
-  isYesterday,
-  isThisWeek,
-  isSameWeek,
-  subWeeks,
-  isThisMonth,
-  isSameMonth,
-} from "date-fns";
-import {DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger} from "@/components/ui/dropdown-menu";
-
-import { NotificationProps } from "@/components/notifications/index";
+import { useInfiniteNotifications, type StatusFilter, type TimeFilter } from "@/hooks/notifications/useNotifications";
 import ListHeader from "@/components/notifications/list-header";
-import NotificationCard from "@/components/notifications/notification-card";
-import {ChevronDown} from "lucide-react";
+import NotificationCard from "@/components/notifications/notification-card"; // The updated card
+import { Button } from "@/components/ui/button";
+import { ChevronDown } from "lucide-react";
+import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "@/components/ui/dropdown-menu";
+import { useUserState } from "@/lib/store/user";
+import SearchLoader from "../shared/loaders/SearchLoader";
 
-// Filter options
-const filterOptions: { key: string; label: string }[] = [
+const filterOptions: { key: StatusFilter; label: string }[] = [
   { key: "all", label: "All" },
   { key: "important", label: "Important" },
   { key: "unread", label: "Unread" },
-  { key: "read", label: "Read" },
-  { key: "clearAll", label: "Clear All" },
 ];
 
-// Filter time options
-const timeOptions: { key: string; label: string }[] = [
+const timeOptions: { key: TimeFilter; label: string }[] = [
+  { key: "all", label: "All Time" },
   { key: "today", label: "Today" },
-  { key: "yesterday", label: "Yesterday" },
   { key: "thisWeek", label: "This Week" },
-  { key: "lastWeek", label: "Last Week" },
   { key: "thisMonth", label: "This Month" },
-  { key: "lastMonth", label: "Last Month" },
 ];
 
-const isLastWeek = (date: Date) => {
-  const lastWeekStart = subWeeks(new Date(), 1);
-  return isSameWeek(date, lastWeekStart, { weekStartsOn: 1 });
-};
-
-const isLastMonth = (date: Date) => {
-  const now = new Date();
-  const lastMonth = new Date(now.getFullYear(), now.getMonth() - 1, 1);
-  return isSameMonth(date, lastMonth);
-};
 
 
-const NotificationList = ({ notifications }: { notifications: NotificationProps[] }) => {
-  const [selectedFilter, setSelectedFilter] = useState<string>("all");
-  const [selectedTimeRange, setSelectedTimeRange] = useState<string>("today");
+const NotificationList = () => {
+  const [selectedFilter, setSelectedFilter] = useState<StatusFilter>("all");
+  const [selectedTimeRange, setSelectedTimeRange] = useState<TimeFilter>("all");
+  const { user } = useUserState();
 
-  const onFilterChange = (filter: string) => setSelectedFilter(filter);
-  const onTimeRangeChange = (range: string) => setSelectedTimeRange(range);
-
-  const applyFilter = (n: NotificationProps) => {
-    if (selectedFilter === "important") return n.important;
-    if (selectedFilter === "unread") return n.status === "unread";
-    if (selectedFilter === "read") return n.status === "read";
-    return true;
-  };
-
-  const filterByTime = (n: NotificationProps): boolean => {
-    const date = parseISO(n.createdAt);
-    switch (selectedTimeRange) {
-      case "today":
-        return isToday(date);
-      case "yesterday":
-        return isYesterday(date);
-      case "thisWeek":
-        return (
-          isThisWeek(date, { weekStartsOn: 1 }) &&
-          !isToday(date) &&
-          !isYesterday(date)
-        );
-      case "lastWeek":
-        return isLastWeek(date);
-      case "thisMonth":
-        return (
-          isThisMonth(date) &&
-          !isThisWeek(date, { weekStartsOn: 1 })
-        );
-      case "lastMonth":
-        return isLastMonth(date);
-      default:
-        return true;
-    }
-  };
-
-  const filteredNotifications = notifications.filter(
-    (n) => applyFilter(n) && filterByTime(n)
-  );
+  // The component just calls the hook with the current filter states.
+  const {
+    data: notifications,
+    fetchNextPage,
+    hasMore,
+    isLoading,
+    isFetching,
+  } = useInfiniteNotifications({
+    userId: user?.id,
+    statusFilter: selectedFilter,
+    timeFilter: selectedTimeRange,
+  });
 
   return (
     <div className="min-h-[calc(100vh-var(--header-height))]">
       <section className="sticky top-0 z-20 bg-white dark:bg-[#121212]">
         <ListHeader
-          onFilterChange={onFilterChange}
+          onFilterChange={(filter) => setSelectedFilter(filter as StatusFilter)}
           filterOptions={filterOptions}
           selectedFilter={selectedFilter}
         />
@@ -120,7 +69,7 @@ const NotificationList = ({ notifications }: { notifications: NotificationProps[
               {timeOptions.map((opt) => (
                 <DropdownMenuItem
                   key={opt.key}
-                  onClick={() => onTimeRangeChange(opt.key)}
+                  onClick={() => setSelectedTimeRange(opt.key)}
                   className={`w-full px-3 py-2 text-sm flex items-center justify-start capitalize ${selectedTimeRange === opt.key && ("bg-lavender-500")}`}
                 >
                   {opt.label}
@@ -129,14 +78,24 @@ const NotificationList = ({ notifications }: { notifications: NotificationProps[
             </DropdownMenuContent>
           </DropdownMenu>
         </section>
-        <div className="bg-neutral-100 dark:bg-dark-1 rounded-lg mt-2">
-          {filteredNotifications.length > 0 ? (
-            filteredNotifications.map((n) => (
-              <NotificationCard key={n.notificationId} {...n} />
+        <div className="bg-muted/50 rounded-lg mt-2">
+          {isLoading && <SearchLoader/>}
+          
+          {!isLoading && notifications.length > 0 && (
+            notifications.map((n) => (
+              <NotificationCard key={n.id} notification={n} />
             ))
-          ) : (
-            <div className="text-center text-sm text-gray-500 p-4">
-              No notifications
+          )}
+
+          {!isLoading && notifications.length === 0 && (
+            <div className="text-center text-sm text-gray-500 p-4">No notifications match your filters.</div>
+          )}
+
+          {hasMore && (
+            <div className="p-4 text-center">
+              <Button onClick={() => fetchNextPage()} disabled={isFetching}>
+                {isFetching ? 'Loading...' : 'Load More'}
+              </Button>
             </div>
           )}
         </div>

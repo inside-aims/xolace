@@ -174,7 +174,7 @@ export function SiteHeader() {
             <div className="relative">
               <button
                 type="button"
-                className={'flex items-center'}
+                className={'flex items-center cursor-pointer'}
                 onClick={() => setIsOpen(!isOpen)}
                 ref={bellButtonRef}
               >
