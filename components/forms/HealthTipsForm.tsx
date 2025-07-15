@@ -71,7 +71,7 @@ const HealthTipsForm = () => {
     p_content: data.content,
     p_created_by: user.id,
     p_author_name: user.username,
-    p_author_avatar_url: user.avatar_url,
+    p_author_avatar_url: user.avatar_url || "",
     p_tags: data.tags,
     p_slug: slug
   });
