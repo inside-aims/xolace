@@ -522,7 +522,7 @@ export type Database = {
         Row: {
           actor_id: string | null
           author_avatar_url: string | null
-          author_name: string
+          author_name: string | null
           created_at: string
           entity_id: string | null
           id: string
@@ -537,7 +537,7 @@ export type Database = {
         Insert: {
           actor_id?: string | null
           author_avatar_url?: string | null
-          author_name: string
+          author_name?: string | null
           created_at?: string
           entity_id?: string | null
           id?: string
@@ -552,7 +552,7 @@ export type Database = {
         Update: {
           actor_id?: string | null
           author_avatar_url?: string | null
-          author_name?: string
+          author_name?: string | null
           created_at?: string
           entity_id?: string | null
           id?: string
@@ -1389,6 +1389,14 @@ export type Database = {
         Returns: {
           id: number
         }[]
+      }
+      mark_all_notifications_as_read: {
+        Args: Record<PropertyKey, never>
+        Returns: undefined
+      }
+      mark_notification_as_read: {
+        Args: { notification_id: string }
+        Returns: undefined
       }
       reset_credits: {
         Args: Record<PropertyKey, never>

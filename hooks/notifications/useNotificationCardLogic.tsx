@@ -5,6 +5,14 @@ import { ThumbsUp, ThumbsDown, MessageSquare, Bookmark, Eye, Bell, Heart } from 
 import type { Notification } from '@/types/global'; // Make sure this path is correct
 import { truncateText } from '@/lib/utils';
 
+interface NotificationMetadataWithLink {
+  link?: string; // link might be optional
+  content?: string; // for new_comment
+  title?: string; // for system_announcement
+  // Add other properties you expect in metadata here
+  [key: string]: any; // Allow other arbitrary properties
+}
+
 export function useNotificationCardLogic(notification: Notification) {
   // useMemo will prevent re-calculating this on every render unless the notification object changes.
   const cardContent = useMemo(() => {
@@ -12,11 +20,13 @@ export function useNotificationCardLogic(notification: Notification) {
     const getLink = () => {
       // Prioritize the link from metadata
       //console.log(notification.metadata);
+      // Cast metadata to the expected type for safer access
+      const metadata = notification.metadata as NotificationMetadataWithLink | null;
      
       console.log("notifi ",notification)
       // rather convert from json
-      if (notification.metadata?.link) {
-        return notification.metadata.link as string;
+      if (metadata?.link) {
+        return metadata.link as string;
       }
       // Fallback to building the link from entity_id
       if (notification.entity_id) {
@@ -29,6 +39,10 @@ export function useNotificationCardLogic(notification: Notification) {
     
     const link = getLink();
     const actorName = <strong className="font-semibold">{notification.author_name}</strong>;
+
+    // Cast metadata for content and title as well if they are used from metadata
+    const metadataContent = (notification.metadata as NotificationMetadataWithLink | null)?.content;
+    const metadataTitle = (notification.metadata as NotificationMetadataWithLink | null)?.title;
 
     switch (notification.type) {
       case 'new_upvote':
@@ -46,7 +60,7 @@ export function useNotificationCardLogic(notification: Notification) {
       case 'new_comment':
         return {
           icon: <MessageSquare className="h-5 w-5 text-blue-500" />,
-          message: <>{actorName} commented: "{`${truncateText(notification.metadata?.content, 30)}` || '...'}"</>,
+          message: <>{actorName} commented: "{`${truncateText(metadataContent || '', 30)}` || '...'}"</>,
           link,
         };
       case 'post_saved':
@@ -76,7 +90,7 @@ export function useNotificationCardLogic(notification: Notification) {
       case 'system_announcement':
         return {
           icon: <Bell className="h-5 w-5 text-yellow-500" />,
-          message: <>{notification.metadata?.title || 'A new announcement from Xolace.'}</>,
+          message: <>{metadataTitle || 'A new announcement from Xolace.'}</>,
           link,
         };
       default:

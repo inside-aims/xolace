@@ -26,7 +26,7 @@ const markNotificationAsRead = useMarkNotificationAsRead(notification);
   return (
     <div
       onClick={handleCardClick}
-      className={`w-full flex flex-col border-b last:border-b-0 cursor-pointer p-4 md:hover:scale-102 md:hover:shadow-md md:hover:border-x-2 md:hover:border-neutral-300 transition-all ${!notification.is_read ? "bg-white dark:bg-black/40" : "bg-zinc-200/20 dark:bg-dark-2"}`}
+      className={`w-full flex flex-col border-b last:border-b-0 cursor-pointer p-4 md:hover:scale-102 md:hover:shadow-md dark:md:hover:shadow-none md:hover:border-x-[1px] md:hover:border-neutral-300 dark:md:hover:border-neutral-700 transition-all ${!notification.is_read ? "bg-white dark:bg-black/40" : "bg-zinc-200/20 dark:bg-dark-2"}`}
     >
       <div className="w-full flex flex-row gap-4 items-center">
         <div className="relative">
