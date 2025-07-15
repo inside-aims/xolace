@@ -61,7 +61,11 @@ const Posts = () => {
           views:views(count),
           collections(
           user_id
-          )
+          ),
+          post_slides (
+            slide_index,
+            content
+          )  
     `,
         )
         .eq('created_by', user?.id)
