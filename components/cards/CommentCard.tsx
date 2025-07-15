@@ -37,7 +37,7 @@ const CommentCard = ({ comment, className, headerClassName, contentClassName }: 
           <div className="flex items-center justify-center gap-1">
             <Avatar className='h-8 w-8'>
               <AvatarImage src={comment.author_avatar_url || undefined}/>
-              <AvatarFallback>XO</AvatarFallback>
+              <AvatarFallback className='bg-gradient-to-br from-[#0536ff] to-[#6a71ea] text-white' >{comment.author_name?.slice(0, 2).toUpperCase()}</AvatarFallback>
             </Avatar>
             <div className="flex flex-col items-center justify-center gap-1">
               <h5 className="text-sm text-default-400 tracking-tight">

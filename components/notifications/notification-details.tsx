@@ -3,33 +3,12 @@
 import { motion } from "motion/react"
 import { Clock, Tag, User, ExternalLink, MoveLeft } from "lucide-react"
 import { Button } from "@/components/ui/button"
-import { notFound, useRouter } from "next/navigation"
+import { useRouter } from "next/navigation"
 import { formatDistanceToNow } from "date-fns"
 import { useNotificationDetails } from "@/hooks/notifications/useNotifications"
 import { NotificationMetadataWithLink } from "@/hooks/notifications/useNotificationCardLogic"
 import SearchLoader from "../shared/loaders/SearchLoader"
 
-interface SystemNotification {
-  id: string
-  created_at: string
-  type: string
-  metadata: {
-    title: string
-    description: string
-    category: string
-    priority: string
-    action_url?: string
-    icon: string
-    content: string
-    tags: string[]
-    author: string
-    estimated_read_time: string
-  }
-}
-
-interface SystemNotificationPageProps {
-  notification: SystemNotification
-}
 
 const getPriorityColor = (priority: string) => {
   switch (priority) {
@@ -58,10 +37,6 @@ const getCategoryColor = (category: string) => {
 }
 
 export default function NotificationDetails({ notificationId }: { notificationId: string }) {
-
-  if (!notificationId){
-    return notFound()
-  }
 
   const router = useRouter()
   const { data: notification , isPending, error } = useNotificationDetails({notificationId})
