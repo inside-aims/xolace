@@ -1,7 +1,7 @@
 'use client';
 
 import React, { Dispatch, SetStateAction, useEffect, useRef } from 'react';
-import { navLinks } from '@/utils';
+import { navLinks } from '@/constants';
 import ResponsiveNavLink from './ResponsiveNavLinks';
 import { motion } from 'framer-motion';
 import { useUserState } from '@/lib/store/user';
