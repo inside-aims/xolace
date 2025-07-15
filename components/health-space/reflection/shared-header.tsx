@@ -46,7 +46,7 @@ const SharedHeader: React.FC<SharedHeaderProps> = ({
           <div className="flex items-center justify-between w-full">
             <h3 className="font-semibold text-2xl">All Videos</h3>
             <Button
-              className={"flex flex-row items-center gap-2 border rounded-2xl px-4 h-9 bg-lavender-500 hover:bg-lavender-600 text-white transition-transform duration-300 ease-in-out hover:scale-110"}
+              className={"flex flex-row items-center gap-2 border rounded-3xl px-4 h-10 bg-lavender-500 hover:bg-lavender-600 text-white transition-transform duration-300 ease-in-out hover:scale-110"}
               onClick={() => setOpen(true)}
             >
               <span><Upload className={"h-4 w-4"}/></span>

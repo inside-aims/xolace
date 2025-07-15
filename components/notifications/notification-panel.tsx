@@ -27,7 +27,7 @@ const NotificationPanel = () => {
   ] as const;
 
   return (
-    <div className="fixed top-[70px] right-0 w-[calc(100%-1rem)] max-w-[80%] md:w-[400px] h-[calc(100vh-70px)] z-[9999] bg-bg dark:bg-bg-dark shadow-lg border rounded-lg flex flex-col overflow-hidden ">
+    <div className="fixed top-[90px] right-0 w-[calc(100%-1rem)] max-w-[80%] md:w-[400px] h-[calc(100vh-160px)]  md:h-[calc(100vh-100px)] z-[9999] bg-bg dark:bg-bg-dark shadow-lg border rounded-lg flex flex-col overflow-hidden ">
         <header className="flex flex-col gap-4 py-2 px-4 border-b">
             <aside className="flex items-center justify-between">
                 <h3>Notification</h3>
