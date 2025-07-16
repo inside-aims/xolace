@@ -157,7 +157,7 @@ const VideoUploadForms = ({open, setOpen }: {open: boolean, setOpen: (open: bool
   return (
     <Dialog open={open} onOpenChange={setOpen}>
       <DialogContent
-        className="max-w-[95%] sm:max-w-lg"
+        className="max-w-[95%] sm:max-w-lg max-sm:max-h-[80vh] overflow-y-auto"
         onInteractOutside={(event) => event.preventDefault()}
         onEscapeKeyDown={(event) => event.preventDefault()}
       >
