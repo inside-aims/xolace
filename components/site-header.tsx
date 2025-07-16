@@ -201,7 +201,7 @@ export function SiteHeader() {
           {isOpen && (
               <AnimatePresence >
                   <motion.div
-                    className={"fixed top-[90px] right-0 w-[calc(100%-1rem)] max-w-[80%] h-auto md:w-[400px] max-h-[calc(90vh-var(--header-height)-70px)] md:max-h-[calc(90vh-40px)] z-[9999] bg-bg dark:bg-bg-dark shadow-lg border rounded-lg flex flex-col"}
+                    className={"fixed top-[90px] right-0 w-[calc(100%-1rem)] max-w-[80%] h-auto md:w-[400px] max-h-[calc(90vh-var(--header-height)-70px)] md:max-h-[calc(90vh-40px)] z-[9999] bg-bg dark:bg-[#1b1a1a] shadow-lg border rounded-lg flex flex-col"}
                     initial={{x: 300, opacity: 0, scale: 0.98}}
                     animate={{x: 0, opacity: 1, scale: 1}}
                     exit={{x: 300, opacity: 0, scale: 0.98}}

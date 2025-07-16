@@ -125,7 +125,7 @@ const {
         case "most-upvoted":
           return b.upvotes - a.upvotes
         case "most-commented":
-          return 0 // Would implement comment count comparison
+          return b.comments[0].count - a.comments[0].count
         case "recent":
         default:
           return new Date(b.created_at).getTime() - new Date(a.created_at).getTime()

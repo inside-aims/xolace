@@ -30,7 +30,7 @@ export function CollectionsHeader() {
 
         {/* Title with enhanced styling */}
         <div className="space-y-2 sm:space-y-3">
-          <h1 className="text-2xl sm:text-3xl lg:text-4xl font-bold bg-gradient-to-r from-[#0536ff] via-[#6a71ea] to-[#0536ff] bg-clip-text text-transparent animate-gradient bg-[length:200%_auto]">
+          <h1 className="text-2xl sm:text-3xl lg:text-4xl font-bold bg-gradient-to-r from-[#0536ff] via-[#6a71ea] to-[#0536ff] dark:bg-gradient-to-r dark:from-[#fffffa] dark:via-[#C0C0C0] dark:to-[#fffffa] bg-clip-text text-transparent animate-gradient bg-[length:200%_auto]">
             Your Collections
           </h1>
 
