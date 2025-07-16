@@ -70,7 +70,7 @@ const NotificationList = () => {
                 <DropdownMenuItem
                   key={opt.key}
                   onClick={() => setSelectedTimeRange(opt.key)}
-                  className={`w-full px-3 py-2 text-sm flex items-center justify-start capitalize ${selectedTimeRange === opt.key && ("bg-lavender-500")}`}
+                  className={`w-full px-3 py-2 text-sm flex items-center justify-start capitalize ${selectedTimeRange === opt.key && ("bg-primary text-primary-foreground")}`}
                 >
                   {opt.label}
                 </DropdownMenuItem>

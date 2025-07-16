@@ -7,7 +7,7 @@ import { useInfiniteQuery } from "@/hooks/use-infinite-query"
 import VideoList from "@/components/health-space/reflection/video-list"
 import { VideoSkeleton } from "@/components/health-space/reflection/video-skeleton"
 
-export type VideoSortFilter = "recent" | "most-liked" | "most-viewed"
+export type VideoSortFilter = "recent" | "most-liked" 
 
 // interface VideosSectionProps {
 //   collectionFilter: CollectionFilter
@@ -56,8 +56,6 @@ export function VideosSection() {
       switch (sortFilter) {
         case "most-liked":
           return b.likes_count - a.likes_count
-        case "most-viewed":
-          return b.views - a.views
         case "recent":
         default:
           return new Date(b.created_at).getTime() - new Date(a.created_at).getTime()
