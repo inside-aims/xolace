@@ -99,10 +99,8 @@ export const getEnv = (key: string): string => {
   return value;
 };
 
-const LIBRARY_ID = getEnv("BUNNY_EMBED_LIBRARY_ID");
 export function createIframeLink(videoId: string, startTime?: number) {
-  console.log("library id", LIBRARY_ID)
-  let base = `https://iframe.mediadelivery.net/embed/${LIBRARY_ID}/${videoId}?autoplay=true&preload=true`;
+  let base = `https://iframe.mediadelivery.net/embed/468693/${videoId}?autoplay=true&preload=true`;
 
   if (startTime && startTime > 0) {
     base += `&start=${startTime}`;
