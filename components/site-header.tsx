@@ -200,9 +200,8 @@ export function SiteHeader() {
           </div>
           {isOpen && (
               <AnimatePresence >
-                {isOpen && (
                   <motion.div
-                    className={"fixed top-[90px] right-0 w-[calc(100%-1rem)] max-w-[80%] h-auto md:w-[400px] max-h-[calc(90vh-70px)] md:max-h-[calc(90vh-40px)] z-[9999] bg-bg dark:bg-bg-dark shadow-lg border rounded-lg flex flex-col"}
+                    className={"fixed top-[90px] right-0 w-[calc(100%-1rem)] max-w-[80%] h-auto md:w-[400px] max-h-[calc(90vh-var(--header-height)-70px)] md:max-h-[calc(90vh-40px)] z-[9999] bg-bg dark:bg-bg-dark shadow-lg border rounded-lg flex flex-col"}
                     initial={{x: 300, opacity: 0, scale: 0.98}}
                     animate={{x: 0, opacity: 1, scale: 1}}
                     exit={{x: 300, opacity: 0, scale: 0.98}}
@@ -217,12 +216,10 @@ export function SiteHeader() {
                         ? {duration: 0.2, ease: 'easeOut'}
                         : {duration: 0.5, ease: 'easeIn'}
                     }}
+                    ref={notificationRef}
                   >
-                    <div ref={notificationRef}>
                       <NotificationPanel/>
-                    </div>
                   </motion.div>
-                )}
               </AnimatePresence>
           )}
         </div>

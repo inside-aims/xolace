@@ -27,7 +27,7 @@ const NotificationPanel = () => {
   ] as const;
 
   return (
-    <div className={""}>
+    <>
         <div className="flex flex-col gap-4 py-2 px-4 border-b">
             <aside className="flex items-center justify-between">
                 <h3>Notification</h3>
@@ -66,7 +66,7 @@ const NotificationPanel = () => {
                 {isMarkingRead ? 'Marking...' : 'Mark all as read'}
             </Button>
         </footer>
-    </div>
+    </>
   );
 };
 
