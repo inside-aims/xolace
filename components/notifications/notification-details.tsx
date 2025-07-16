@@ -64,7 +64,7 @@ export default function NotificationDetails({ notificationId }: { notificationId
   const metadata = notification.metadata as NotificationMetadataWithLink | null;
 
   return (
-    <div className="min-h-screen bg-[#121212]">
+    <div className="main-container">
       {/* Header */}
       <header className="w-full px-4 sm:px-6">
           <Button variant="outline" size="sm" className="rounded-full" onClick={handleBack}>
@@ -96,7 +96,7 @@ export default function NotificationDetails({ notificationId }: { notificationId
               initial={{ y: 20, opacity: 0 }}
               animate={{ y: 0, opacity: 1 }}
               transition={{ delay: 0.3 }}
-              className="text-2xl sm:text-3xl lg:text-4xl font-bold text-white leading-tight"
+              className="text-2xl sm:text-3xl lg:text-4xl font-bold leading-tight"
             >
               {metadata?.title || ""}
             </motion.h1>
@@ -163,10 +163,10 @@ export default function NotificationDetails({ notificationId }: { notificationId
             initial={{ y: 20, opacity: 0 }}
             animate={{ y: 0, opacity: 1 }}
             transition={{ delay: 0.7 }}
-            className="bg-gray-900/50 backdrop-blur-sm rounded-2xl p-6 sm:p-8 border border-gray-800"
+            className="bg-gray-400/50 backdrop-blur-sm rounded-2xl p-6 sm:p-8 border border-gray-100 dark:bg-gray-900/50 dark:border-gray-700"
           >
             <div
-              className="prose prose-invert prose-gray max-w-none"
+              className="prose prose-invert prose-gray max-w-none text-black/70 dark:text-gray-300"
               dangerouslySetInnerHTML={{ __html: metadata?.content || "" }}
             />
           </motion.div>
@@ -186,7 +186,7 @@ export default function NotificationDetails({ notificationId }: { notificationId
               {metadata?.tags?.map((tag: string) => (
                 <span
                   key={tag}
-                  className="px-3 py-1 bg-gray-800/50 text-gray-300 rounded-full text-sm hover:bg-gray-700/50 transition-colors cursor-pointer"
+                  className="px-3 py-1 dark:bg-gray-800/50 bg-gray-300/50 text-gray-700 dark:text-gray-300 rounded-full text-sm hover:bg-gray-700/50 transition-colors cursor-pointer"
                 >
                   #{tag}
                 </span>

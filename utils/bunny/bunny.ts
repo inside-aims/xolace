@@ -1,6 +1,5 @@
 'use server';
 
-import { headers } from "next/headers";
 import {createClient} from "@/utils/supabase/server";
 import {revalidatePath} from "next/cache";
 import {apiFetch, withErrorHandling} from "@/lib/utils";
@@ -21,9 +20,9 @@ const ACCESS_KEYS = {
 };
 
 // Helper functions with descriptive names
-const revalidatePaths = (paths: string[]) => {
-  paths.forEach((path) => revalidatePath(path));
-};
+// const revalidatePaths = (paths: string[]) => {
+//   paths.forEach((path) => revalidatePath(path));
+// };
 
 
 const getSessionUserId = async () => {

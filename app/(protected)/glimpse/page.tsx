@@ -6,7 +6,7 @@ import ReflectionsClientView from '@/app/(protected)/glimpse/ReflectionClientVie
 
 
 export const metadata: Metadata = {
-  title: 'Reflections',
+  title: 'Glimpse',
   description:
     'Mentor-led video reflections offering perspective, support, and guidance.',
 };
