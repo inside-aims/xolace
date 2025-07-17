@@ -43,6 +43,7 @@ export function useNotificationCardLogic(notification: Notification) {
     // Cast metadata for content and title as well if they are used from metadata
     const metadataContent = (notification.metadata as NotificationMetadataWithLink | null)?.content;
     const metadataTitle = (notification.metadata as NotificationMetadataWithLink | null)?.title;
+    const metadataDescription = (notification.metadata as NotificationMetadataWithLink | null)?.description;
 
     switch (notification.type) {
       case 'new_upvote':
@@ -87,10 +88,11 @@ export function useNotificationCardLogic(notification: Notification) {
               message: <>{actorName} viewed your post.</>,
               link,
           };
-      case 'system_announcement':
+      case 'system_announcement': // for system notification add description
         return {
           icon: <Bell className="h-5 w-5 text-yellow-500" />,
           message: <>{metadataTitle || 'A new announcement from Xolace.'}</>,
+          description: <>{metadataDescription || 'Check out the latest updates from Xolace.'}</>,
           link,
         };
       default:

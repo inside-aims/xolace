@@ -142,7 +142,7 @@ export default function NotificationDetails({ notificationId }: { notificationId
             className="flex flex-wrap items-center justify-center gap-3"
           >
             <span
-              className={`px-3 py-1 rounded-full text-xs font-medium border ${getPriorityColor(
+              className={`px-3 py-1 rounded-full text-xs font-medium border bg-transparent ${getPriorityColor(
                 metadata?.priority || "",
               )}`}
             >
@@ -150,7 +150,7 @@ export default function NotificationDetails({ notificationId }: { notificationId
             </span>
 
             <span
-              className={`px-3 py-1 rounded-full text-xs font-medium border ${getCategoryColor(
+              className={`px-3 py-1 rounded-full text-xs font-medium border bg-transparent ${getCategoryColor(
                 metadata?.category || "",
               )}`}
             >
