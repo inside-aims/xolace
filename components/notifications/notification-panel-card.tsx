@@ -38,7 +38,7 @@ const NotificationPanelCard = (props: { notification: Notification }) => {
 
   return (
     <div
-      className={`w-full flex flex-col border-b ${notification.is_read ? "bg-neutral-100 dark:bg-dark-2" : "bg-white dark:bg-[#121212]"}`}
+      className={`w-full flex flex-col border-b ${notification.is_read ? "bg-neutral-100 dark:bg-dark-2" : "bg-gray-200 dark:bg-[#121212]"}`}
       onClick={handleCardClick}
     >
       <div

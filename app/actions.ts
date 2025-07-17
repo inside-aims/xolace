@@ -27,6 +27,8 @@ export const signUpAction = validatedAction(signUpSchema, async data => {
       password,
     });
 
+    console.log('user created', userError)
+
   if (userError) {
     const userExists = userError.message.includes('already been registered');
     if (userExists) {
