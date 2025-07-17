@@ -34,6 +34,7 @@ export interface FormFieldProps {
   placeholder?: string;
   as?: "input" | "textarea" | "select";
   options?: Array<{ value: string; label: string }>;
+  labelDescription?: string;
 }
 
 export interface FileInputProps {
@@ -46,6 +47,7 @@ export interface FileInputProps {
   onChange: (e: ChangeEvent<HTMLInputElement>) => void;
   onReset: () => void;
   type: "video" | "image";
+  labelDescription?: string;
 }
 
 export interface TranscriptEntry {

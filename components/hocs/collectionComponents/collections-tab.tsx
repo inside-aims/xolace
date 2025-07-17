@@ -14,7 +14,7 @@ export function CollectionsTabs({
   onTabChange,
 }: CollectionsTabsProps) {
   return (
-    <div className="border-b dark:border-gray-800 sticky top-0 z-10">
+    <div className="sticky top-0 z-10">
       <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between px-3 sm:px-6 py-4 gap-4 sm:gap-0">
         {/* Tab switcher - centered on mobile */}
         <div className="flex items-center justify-center sm:justify-start">

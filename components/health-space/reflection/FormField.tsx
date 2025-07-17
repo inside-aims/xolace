@@ -1,8 +1,8 @@
 import {FormFieldProps} from "@/components/health-space/reflection/index";
 
-const FormField = ({id, label, type = "text", value, onChange, placeholder, as = "input", options = [],}: FormFieldProps) => (
+const FormField = ({id, label, type = "text", value, onChange, placeholder, as = "input", options = [], labelDescription}: FormFieldProps) => (
   <div className="w-full flex flex-col">
-    <label htmlFor={id} className={""}>{label}</label>
+    <label htmlFor={id} className={""}>{label} {labelDescription && <span className="text-sm text-muted-foreground">({labelDescription})</span>}</label>
     {as === "textarea" ? (
       <textarea
         id={id}
