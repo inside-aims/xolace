@@ -90,9 +90,10 @@ const VideoUploadForms = ({open, setOpen }: {open: boolean, setOpen: (open: bool
 
   const onSubmit = async (e: FormEvent) => {
     e.preventDefault();
+    const toastId = toast('Sonner');
 
     setIsSubmitting(true);
-
+    toast.loading("Processing video... This may take a few minutes, please wait", {id: toastId, duration: 0});
     try {
       if (!video.file || !thumbnail.file) {
         setError("Please upload video and thumbnail files.");
@@ -135,7 +136,7 @@ const VideoUploadForms = ({open, setOpen }: {open: boolean, setOpen: (open: bool
         duration: videoDuration,
       });
 
-      toast.success("Video uploaded successfully");
+      toast.success("Video uploaded successfully", {id: toastId});
       //clear form 
       setFormData({
         title: "",
@@ -147,7 +148,7 @@ const VideoUploadForms = ({open, setOpen }: {open: boolean, setOpen: (open: bool
       setOpen(false);
     } catch (error) {
       console.error("Error submitting form:", error);
-      toast.error("Failed to upload video");
+      toast.error("Failed to upload video", {id: toastId});
     } finally {
       setIsSubmitting(false);
     }
@@ -190,6 +191,7 @@ const VideoUploadForms = ({open, setOpen }: {open: boolean, setOpen: (open: bool
           <FileInput
             id="video"
             label="Video"
+            labelDescription="larger videos may take longer to upload"
             accept="video/*"
             file={video.file}
             previewUrl={video.previewUrl}
@@ -214,6 +216,7 @@ const VideoUploadForms = ({open, setOpen }: {open: boolean, setOpen: (open: bool
           <FormField
             id="visibility"
             label="Visibility"
+            labelDescription="public videos are seen by anyone"
             value={formData.visibility}
             onChange={handleInputChange}
             as="select"

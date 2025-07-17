@@ -2,9 +2,9 @@ import Image from "next/image";
 import {FileInputProps} from "@/components/health-space/reflection/index";
 import { CloudUpload } from 'lucide-react';
 
-const FileInput = ({id, label, accept, file, previewUrl, inputRef, onChange, onReset, type,}: FileInputProps) => (
+const FileInput = ({id, label, accept, file, previewUrl, inputRef, onChange, onReset, type, labelDescription}: FileInputProps) => (
   <section className="w-full flex flex-col">
-    <label htmlFor={id} className={""}>{label}</label>
+    <label htmlFor={id} className={""}>{label} {labelDescription && <span className="text-sm text-muted-foreground">({labelDescription})</span>}</label>
     <input
       type="file"
       id={id}
