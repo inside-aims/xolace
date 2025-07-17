@@ -127,7 +127,7 @@ export function ActivityItem({ log, viewType }: ActivityItemProps) {
                     alt={log.username}
                   />
                   <AvatarFallback>
-                    {log.username.substring(0, 2)}
+                    {log.username.substring(0, 2) || "XO"}
                   </AvatarFallback>
                 </Avatar>
                 <span className="font-medium">{getActionText()}</span>
