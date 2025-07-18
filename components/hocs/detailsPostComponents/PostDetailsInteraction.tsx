@@ -196,14 +196,7 @@ const PostDetailsInteraction = ({ post }: { post: DetailPost }) => {
               content={post.content}
             />
 
-            <div>
-              <SaveToCollectionsButton
-                userId={user?.id || ''}
-                createdBy={post.created_by ?? ''}
-                postId={post.id}
-                postCollections={post.collections}
-              />
-            </div>
+
           </div>
         ) : (
           <div className="flex animate-pulse items-center gap-5">

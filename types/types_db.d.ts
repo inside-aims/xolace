@@ -20,9 +20,14 @@ export type Database = {
           metadata: Json | null
           post_id: string | null
           profile_id: string | null
+          related_user_avatar_url: string | null
           related_user_id: string | null
+          related_username: string | null
           report_id: number | null
+          user_avatar_url: string | null
           user_id: string
+          username: string | null
+          video_id: string | null
           vote_id: number | null
         }
         Insert: {
@@ -35,9 +40,14 @@ export type Database = {
           metadata?: Json | null
           post_id?: string | null
           profile_id?: string | null
+          related_user_avatar_url?: string | null
           related_user_id?: string | null
+          related_username?: string | null
           report_id?: number | null
+          user_avatar_url?: string | null
           user_id: string
+          username?: string | null
+          video_id?: string | null
           vote_id?: number | null
         }
         Update: {
@@ -50,9 +60,14 @@ export type Database = {
           metadata?: Json | null
           post_id?: string | null
           profile_id?: string | null
+          related_user_avatar_url?: string | null
           related_user_id?: string | null
+          related_username?: string | null
           report_id?: number | null
+          user_avatar_url?: string | null
           user_id?: string
+          username?: string | null
+          video_id?: string | null
           vote_id?: number | null
         }
         Relationships: [
@@ -99,6 +114,13 @@ export type Database = {
             referencedColumns: ["id"]
           },
           {
+            foreignKeyName: "activity_logs_video_id_fkey"
+            columns: ["video_id"]
+            isOneToOne: false
+            referencedRelation: "videos"
+            referencedColumns: ["id"]
+          },
+          {
             foreignKeyName: "activity_logs_vote_id_fkey"
             columns: ["vote_id"]
             isOneToOne: false
@@ -107,8 +129,35 @@ export type Database = {
           },
         ]
       }
+      ai_credits: {
+        Row: {
+          credits_remaining: number
+          last_reset: string
+          user_id: string
+        }
+        Insert: {
+          credits_remaining?: number
+          last_reset?: string
+          user_id: string
+        }
+        Update: {
+          credits_remaining?: number
+          last_reset?: string
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "ai_credits_user_id_fkey"
+            columns: ["user_id"]
+            isOneToOne: true
+            referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       collections: {
         Row: {
+          posts: any
           collection_name: string | null
           created_at: string | null
           id: string
@@ -463,6 +512,69 @@ export type Database = {
           {
             foreignKeyName: "likes_user_id_fkey"
             columns: ["user_id"]
+            isOneToOne: false
+            referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      notifications: {
+        Row: {
+          actor_id: string | null
+          author_avatar_url: string | null
+          author_name: string | null
+          created_at: string
+          entity_id: string | null
+          id: string
+          is_read: boolean
+          metadata: Json | null
+          recipient_user_id: string
+          target_type:
+            | Database["public"]["Enums"]["notification_target_type"]
+            | null
+          type: Database["public"]["Enums"]["notification_type"]
+        }
+        Insert: {
+          actor_id?: string | null
+          author_avatar_url?: string | null
+          author_name?: string | null
+          created_at?: string
+          entity_id?: string | null
+          id?: string
+          is_read?: boolean
+          metadata?: Json | null
+          recipient_user_id: string
+          target_type?:
+            | Database["public"]["Enums"]["notification_target_type"]
+            | null
+          type: Database["public"]["Enums"]["notification_type"]
+        }
+        Update: {
+          actor_id?: string | null
+          author_avatar_url?: string | null
+          author_name?: string | null
+          created_at?: string
+          entity_id?: string | null
+          id?: string
+          is_read?: boolean
+          metadata?: Json | null
+          recipient_user_id?: string
+          target_type?:
+            | Database["public"]["Enums"]["notification_target_type"]
+            | null
+          type?: Database["public"]["Enums"]["notification_type"]
+        }
+        Relationships: [
+          {
+            foreignKeyName: "notifications_actor_id_fkey"
+            columns: ["actor_id"]
+            isOneToOne: false
+            referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "notifications_recipient_user_id_fkey"
+            columns: ["recipient_user_id"]
             isOneToOne: false
             referencedRelation: "profiles"
             referencedColumns: ["id"]
@@ -940,6 +1052,144 @@ export type Database = {
           },
         ]
       }
+      video_collections: {
+        Row: {
+          videos: any
+          collection_name: string | null
+          created_at: string | null
+          id: string
+          user_id: string
+          video_id: string
+        }
+        Insert: {
+          collection_name?: string | null
+          created_at?: string | null
+          id?: string
+          user_id: string
+          video_id?: string
+        }
+        Update: {
+          collection_name?: string | null
+          created_at?: string | null
+          id?: string
+          user_id?: string
+          video_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "video_collections_user_id_fkey"
+            columns: ["user_id"]
+            isOneToOne: false
+            referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "video_collections_video_id_fkey"
+            columns: ["video_id"]
+            isOneToOne: false
+            referencedRelation: "videos"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      video_likes: {
+        Row: {
+          created_at: string
+          id: number
+          user_id: string | null
+          video_id: string
+        }
+        Insert: {
+          created_at?: string
+          id?: number
+          user_id?: string | null
+          video_id: string
+        }
+        Update: {
+          created_at?: string
+          id?: number
+          user_id?: string | null
+          video_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "video_likes_user_id_fkey"
+            columns: ["user_id"]
+            isOneToOne: false
+            referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "video_likes_video_id_fkey"
+            columns: ["video_id"]
+            isOneToOne: false
+            referencedRelation: "videos"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      videos: {
+        Row: {
+          author_avatar_url: string
+          author_name: string
+          created_at: string
+          description: string
+          duration: number | null
+          id: string
+          likes_count: number
+          thumbnail_url: string
+          title: string
+          updated_at: string
+          user_id: string | null
+          video_id: string
+          video_url: string
+          views: number
+          visibility: Database["public"]["Enums"]["visibility_options"]
+        }
+        Insert: {
+          author_avatar_url: string
+          author_name: string
+          created_at?: string
+          description: string
+          duration?: number | null
+          id?: string
+          likes_count?: number
+          thumbnail_url: string
+          title: string
+          updated_at?: string
+          user_id?: string | null
+          video_id: string
+          video_url: string
+          views?: number
+          visibility?: Database["public"]["Enums"]["visibility_options"]
+        }
+        Update: {
+          author_avatar_url?: string
+          author_name?: string
+          created_at?: string
+          description?: string
+          duration?: number | null
+          id?: string
+          likes_count?: number
+          thumbnail_url?: string
+          title?: string
+          updated_at?: string
+          user_id?: string | null
+          video_id?: string
+          video_url?: string
+          views?: number
+          visibility?: Database["public"]["Enums"]["visibility_options"]
+        }
+        Relationships: [
+          {
+            foreignKeyName: "videos_user_id_fkey"
+            columns: ["user_id"]
+            isOneToOne: false
+            referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       views: {
         Row: {
           created_at: string
@@ -1043,11 +1293,11 @@ export type Database = {
           content: string
           mood: Database["public"]["Enums"]["post_mood"]
           expires_in_24hr: boolean
-          duration: Database["public"]["Enums"]["post_duration"]
-          expires_at: string
-          is_sensitive: boolean
-          is_prompt_response: boolean
-          type: Database["public"]["Enums"]["post_type"]
+          duration?: Database["public"]["Enums"]["post_duration"] | null
+          expires_at?: string | null
+          is_sensitive?: boolean
+          is_prompt_response?: boolean
+          type?: Database["public"]["Enums"]["post_type"]
           tag_names?: string[]
           slide_contents?: string[]
         }
@@ -1140,6 +1390,18 @@ export type Database = {
           id: number
         }[]
       }
+      mark_all_notifications_as_read: {
+        Args: Record<PropertyKey, never>
+        Returns: undefined
+      }
+      mark_notification_as_read: {
+        Args: { notification_id: string }
+        Returns: undefined
+      }
+      reset_credits: {
+        Args: Record<PropertyKey, never>
+        Returns: undefined
+      }
       upsert_tags_and_tips_relationship: {
         Args: { tag_names: string[]; tips_id: number }
         Returns: undefined
@@ -1156,6 +1418,7 @@ export type Database = {
         | "downvoted"
         | "viewed"
         | "added"
+        | "liked"
       entity_types:
         | "post"
         | "comment"
@@ -1164,7 +1427,22 @@ export type Database = {
         | "profile"
         | "system"
         | "view"
+        | "video"
       feedback_status: "open" | "closed"
+      notification_target_type:
+        | "single_user"
+        | "role_based"
+        | "all_users"
+        | "new_users"
+      notification_type:
+        | "new_upvote"
+        | "new_downvote"
+        | "new_comment"
+        | "post_saved"
+        | "video_saved"
+        | "video_liked"
+        | "system_announcement"
+        | "post_viewed"
       post_duration: "6" | "12" | "24"
       post_mood:
         | "neutral"
@@ -1190,6 +1468,7 @@ export type Database = {
       theme_options: "system" | "light" | "dark"
       user_role: "normal_user" | "verified" | "blue_team" | "help_professional"
       verification_method: "manual" | "subscription" | "promo"
+      visibility_options: "public" | "private"
       vote_types: "upvote" | "downvote"
     }
     CompositeTypes: {
@@ -1316,6 +1595,7 @@ export const Constants = {
         "downvoted",
         "viewed",
         "added",
+        "liked",
       ],
       entity_types: [
         "post",
@@ -1325,8 +1605,25 @@ export const Constants = {
         "profile",
         "system",
         "view",
+        "video",
       ],
       feedback_status: ["open", "closed"],
+      notification_target_type: [
+        "single_user",
+        "role_based",
+        "all_users",
+        "new_users",
+      ],
+      notification_type: [
+        "new_upvote",
+        "new_downvote",
+        "new_comment",
+        "post_saved",
+        "video_saved",
+        "video_liked",
+        "system_announcement",
+        "post_viewed",
+      ],
       post_duration: ["6", "12", "24"],
       post_mood: [
         "neutral",
@@ -1353,6 +1650,7 @@ export const Constants = {
       theme_options: ["system", "light", "dark"],
       user_role: ["normal_user", "verified", "blue_team", "help_professional"],
       verification_method: ["manual", "subscription", "promo"],
+      visibility_options: ["public", "private"],
       vote_types: ["upvote", "downvote"],
     },
   },

@@ -24,14 +24,13 @@ type Post = Database['public']['Tables']['posts']['Row'] & {
       name: string;
     };
   }[];
-  votes: Database['public']['Tables']['votes']['Row'][];
-  comments: [{
+  comments: {
     count: number;
-  }];
-  views:[{
+  }[];
+  views:{
     count:number
-  }];
-  collections: Database['public']['Tables']['collections']['Row'][];
+  }[];
+  collections: {user_id: string}[];
   post_slides: {
     content: string;
     slide_index: number;
@@ -69,3 +68,16 @@ interface BadgeCounts {
   SILVER: number;
   BRONZE: number;
 }
+
+declare interface DropdownListProps {
+  options: string[];
+  selectedOption: string;
+  onOptionSelect: (option: string) => void;
+  triggerElement: ReactNode;
+}
+
+type SupaVideoDetails = Database['public']['Tables']['videos']['Row'] & {
+  video_collections: {user_id: string}[];
+}
+
+type Notification = Database['public']['Tables']['notifications']['Row']

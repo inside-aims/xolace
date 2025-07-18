@@ -14,7 +14,6 @@ const nim = createOpenAICompatible({
 
 export async function POST(req: Request) {
   const { messages } = await req.json();
-  console.log(messages);
 
   const result = streamText({
     model: nim.chatModel('writer/palmyra-med-70b-32k'),

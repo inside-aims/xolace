@@ -1,12 +1,21 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
-    experimental: {
-        optimizePackageImports: ['framer-motion'],
+  images: {
+    remotePatterns: [
+      {
+        protocol: 'https',
+        hostname: `${process.env.NEXT_PUBLIC_BUNNY_HOST_NAME}`,
+        pathname: '**',
       },
-      turbopack: {
-        resolveExtensions: ['.mdx', '.tsx', '.ts', '.jsx', '.js', '.mjs', '.json'],
-      },
-      transpilePackages: ['next-mdx-remote']
+    ],
+  },
+  experimental: {
+    optimizePackageImports: ['framer-motion'],
+  },
+  turbopack: {
+    resolveExtensions: ['.mdx', '.tsx', '.ts', '.jsx', '.js', '.mjs', '.json'],
+  },
+  transpilePackages: ['next-mdx-remote']
 };
 
 const withBundleAnalyzer = require('@next/bundle-analyzer')({

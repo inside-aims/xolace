@@ -28,8 +28,6 @@ export default function CarouselPost({
 }: CarouselPostProps) {
   if (!slides || slides.length === 0) return null;
 
-  console.log(slides);
-
   return (
     <div className="group relative w-full">
       <Swiper

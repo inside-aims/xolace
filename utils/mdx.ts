@@ -20,7 +20,7 @@ import rehypeImageToolkit from "rehype-image-toolkit";
 import recmaMdxEscapeMissingComponents from "recma-mdx-escape-missing-components";
 import recmaMdxChangeProps from "recma-mdx-change-props";
 import recmaMdxImportReact from "recma-mdx-import-react";
-import { toTitleCase } from ".";
+import {toTitleCase} from "@/utils/index";
 
 //import { toTitleCase } from ".";
 //import { html } from "./rehype-handlers";

@@ -1,9 +1,9 @@
 'use client';
 
-import { useEffect } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
-import { useRouter } from 'next/navigation';
+import { usePathname, useRouter } from 'next/navigation';
 
 import { Button } from '@/components/ui/button';
 //import { Separator } from "@/components/ui/separator"
@@ -16,31 +16,52 @@ import { getSupabaseBrowserClient } from '@/utils/supabase/client';
 import { useUserState } from '@/lib/store/user';
 import { RealtimeAvatarStack } from './realtime-avatar-stack';
 import mascot from '../public/assets/images/x-logo-full.webp';
-import { Menu, PlusIcon } from 'lucide-react';
+import { Menu, PlusIcon, Bell } from 'lucide-react';
+import NotificationPanel from '@/components/notifications/notification-panel';
+import { Badge } from './ui/badge';
+import { useNotificationCount } from '@/hooks/notifications/useNotificationCount';
+import { useQueryClient } from '@tanstack/react-query';
+import { motion, AnimatePresence } from "framer-motion";
+
 
 export function SiteHeader() {
   // get user profile data
-  const { roles } = useUserState();
+  const { roles, user } = useUserState();
   const isProfessional = roles.includes('help_professional');
-  // const [isOpen, setIsOpen] = useState(false);
+  const [isOpen, setIsOpen] = useState(false);
+  const notificationRef = useRef<HTMLDivElement | null>(null);
+  const bellButtonRef = useRef<HTMLButtonElement | null>(null);
   const router = useRouter();
+  const pathname = usePathname();
   const supabase = getSupabaseBrowserClient();
   const { toggleSidebar } = useSidebar();
+  const queryClient = useQueryClient();
 
-  //   signout function
-  // const handleSignOut = async (
-  //   e: React.MouseEvent<HTMLButtonElement, MouseEvent>,
-  // ) => {
-  //   e.preventDefault();
+  // ✅ Use the clean, abstracted hook to get the count for the logged-in user.
+  const { count } = useNotificationCount(user?.id);
 
-  //   if (user?.is_anonymous) {
-  //     setIsOpen(true);
-  //     return;
-  //   }
+  // The real-time subscription remains the same.
+  useEffect(() => {
+    // Only subscribe if a user is logged in.
+    if (!user) return;
 
-  //   localStorage.removeItem('welcomePopupDismissed');
-  //   supabase.auth.signOut();
-  // };
+    const channel = supabase
+        .channel(`realtime-notifications-${user.id}`) // Channel can be user-specific
+        .on(
+            'postgres_changes',
+            { event: '*', schema: 'public', table: 'notifications', filter: `recipient_user_id=eq.${user.id}` },
+            () => {
+                // When a change occurs, invalidate the queries to refetch fresh data.
+                // Invalidating the root 'notifications' key will refetch both the count and the list.
+                queryClient.invalidateQueries({ queryKey: ['notifications'] });
+            }
+        )
+        .subscribe();
+
+    return () => {
+        supabase.removeChannel(channel);
+    };
+}, [queryClient, user, supabase]);
 
   // Subscribe to sign out event
   useEffect(() => {
@@ -58,6 +79,31 @@ export function SiteHeader() {
     };
   }, [router, supabase.auth]);
 
+  //Close notification panel when click outside
+  useEffect(() => {
+    const handleClickOutside = (event: MouseEvent) => {
+      if (
+        isOpen &&
+        notificationRef.current &&
+        bellButtonRef.current &&
+        !notificationRef.current.contains(event.target as Node) &&
+        !bellButtonRef.current.contains(event.target as Node)
+      ) {
+        setIsOpen(false);
+      }
+    };
+
+    document.addEventListener('mousedown', handleClickOutside);
+    return () => {
+      document.removeEventListener('mousedown', handleClickOutside);
+    };
+  }, [isOpen]);
+
+  //Close panel when route changes
+  useEffect(() => {
+    setIsOpen(false);
+  }, [pathname]);
+
   return (
     <>
       <header
@@ -74,7 +120,7 @@ export function SiteHeader() {
               aria-label="Toggle Sidebar"
               id="sidebar-btn"
             >
-             <Menu strokeWidth={1.5} />
+              <Menu strokeWidth={1.5} />
             </Button>
 
             {/* Logo */}
@@ -122,16 +168,63 @@ export function SiteHeader() {
                 <span className="hidden text-sm md:block">Create</span>
               </Link>
             )}
-            <div className="hidden md:block">
+            <div className="hidden items-center md:flex">
               <ThemeSwitch />
             </div>
-            <div id="online-users">
+            {/*Notification entry section*/}
+            <div className="relative">
+              <button
+                type="button"
+                className={'flex items-center cursor-pointer'}
+                onClick={() => setIsOpen(!isOpen)}
+                ref={bellButtonRef}
+              >
+                <Bell size={22} />
+              </button>
+              {
+                count ? count > 0 && (
+                  <Badge
+                  className="absolute -top-2 -right-1 h-4 min-w-4 rounded-full px-1 font-mono tabular-nums"
+                  variant="destructive"
+                >
+                  {count > 9 ? '9+' : count}
+                </Badge>
+                ) : null
+              }
+             
+            </div>
+            <div id="online-users" className={'flex items-center'}>
               {/* <ProgressBetaBadge progress={30} /> */}
               <RealtimeAvatarStack roomName="break_room" />
             </div>
           </div>
+          {isOpen && (
+              <AnimatePresence >
+                  <motion.div
+                    className={"fixed top-[90px] right-0 w-[calc(100%-1rem)] max-w-[80%] h-auto md:w-[400px] max-h-[calc(90vh-var(--header-height)-70px)] md:max-h-[calc(90vh-40px)] z-[9999] bg-bg dark:bg-[#1b1a1a] shadow-lg border rounded-lg flex flex-col"}
+                    initial={{x: 300, opacity: 0, scale: 0.98}}
+                    animate={{x: 0, opacity: 1, scale: 1}}
+                    exit={{x: 300, opacity: 0, scale: 0.98}}
+                    transition={{
+                      x: isOpen
+                        ? {duration: 0.5, ease: [0.25, 0.8, 0.25, 1]}
+                        : {duration: 0.9, ease: [0.25, 0.8, 0.25, 1]},
+                      opacity: isOpen
+                        ? {duration: 0.2, ease: 'easeOut'}
+                        : {duration: 0.5, ease: 'easeIn'},
+                      scale: isOpen
+                        ? {duration: 0.2, ease: 'easeOut'}
+                        : {duration: 0.5, ease: 'easeIn'}
+                    }}
+                    ref={notificationRef}
+                  >
+                      <NotificationPanel/>
+                  </motion.div>
+              </AnimatePresence>
+          )}
         </div>
       </header>
+
 
       {/* <SignoutAlert isOpen={isOpen} setIsOpen={setIsOpen} /> */}
     </>

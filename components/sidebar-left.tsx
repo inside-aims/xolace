@@ -65,6 +65,10 @@ const data = {
               title: "Health Tips",
               url: "/health-tips",
             },
+            {
+              title: "Glimpse",
+              url: "/glimpse",
+            },
           ],
         },]
 }

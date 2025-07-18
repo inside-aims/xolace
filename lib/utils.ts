@@ -1,6 +1,11 @@
 import { type ClassValue, clsx } from 'clsx';
 import { twMerge } from 'tailwind-merge';
 import { PostDuration } from '@/types';
+import {ApiFetchOptions} from "@/components/health-space/reflection";
+
+const BUNNY_STREAM_ACCESS_KEY = process.env.BUNNY_STREAM_ACCESS_KEY;
+const  BUNNY_STORAGE_ACCESS_KEY= process.env.BUNNY_STORAGE_ACCESS_KEY;
+// const HOST_NAME = process.env.BUNNY_HOST_NAME;
 
 export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs));
@@ -84,3 +89,97 @@ export const seededShuffleArray = <T>(array: T[], seed: number): T[] => {
 export function generateSlug(title: string) {
   return title.toLowerCase().replace(/\s+/g, "-");
 }
+
+
+
+// Get env helper function
+export const getEnv = (key: string): string => {
+  const value = process.env[key];
+  if (!value) throw new Error(`Missing required env: ${key}`);
+  return value;
+};
+
+export function createIframeLink(videoId: string, startTime?: number) {
+  let base = `https://iframe.mediadelivery.net/embed/468693/${videoId}?autoplay=true&preload=true`;
+
+  if (startTime && startTime > 0) {
+    base += `&start=${startTime}`;
+  }
+
+  return base;
+}
+
+// default thumbnail URL
+export const createThumbnailLink =  (videoId: string, thumbnailFileName: string) => {
+  return `https://storage.bunnycdn.com/${videoId}/${thumbnailFileName}`;
+};
+
+// API fetch helper with required Bunny CDN options
+export const apiFetch = async <T = Record<string, unknown>>(
+  url: string,
+  options: Omit<ApiFetchOptions, "bunnyType"> & {
+    bunnyType: "stream" | "storage";
+  }
+): Promise<T> => {
+  const {
+    method = "GET",
+    headers = {},
+    body,
+    expectJson = true,
+    bunnyType,
+  } = options;
+
+  const key = (
+    bunnyType === "stream"
+      ? `${BUNNY_STREAM_ACCESS_KEY}`
+      :`${BUNNY_STORAGE_ACCESS_KEY}`
+  );
+
+  const requestHeaders = {
+    ...headers,
+    AccessKey: key,
+    ...(bunnyType === "stream" && {
+      accept: "application/json",
+      ...(body && { "content-type": "application/json" }),
+    }),
+  };
+
+  const requestOptions: RequestInit = {
+    method,
+    headers: requestHeaders,
+    ...(body && { body: JSON.stringify(body) }),
+  };
+
+  const response = await fetch(url, requestOptions);
+
+  if (!response.ok) {
+    throw new Error(`API error ${response.text()}`);
+  }
+
+  if (method === "DELETE" || !expectJson) {
+    return true as T;
+  }
+
+  return await response.json();
+};
+
+
+export const cleanTitle = async (title: string) => {
+  return title.replace(/\.[^/.]+$/, '');
+}
+
+// Higher order function to handle errors
+export const withErrorHandling = <T, A extends unknown[]>(
+  fn: (...args: A) => Promise<T>
+) => {
+  return async (...args: A): Promise<T> => {
+    try {
+      const result = await fn(...args);
+      return result;
+    } catch (error) {
+      const errorMessage =
+        error instanceof Error ? error.message : "Unknown error occurred";
+      return errorMessage as unknown as T;
+    }
+  };
+};

@@ -27,6 +27,29 @@ import {
 } from 'lucide-react';
 
 
+// export const BUNNY = {
+//   STREAM_BASE_URL: "https://video.bunnycdn.com/library",
+//   STORAGE_BASE_URL: "https://storage.bunnycdn.com/sample-xolace",
+//   CDN_URL: "https://sample-xolacezone.b-cdn.net",
+//   TRANSCRIPT_URL: "https://vz-d7087565-e86.b-cdn.net"
+// }
+
+// prod bunny config
+export const BUNNY = {
+  STREAM_BASE_URL: "https://video.bunnycdn.com/library",
+  STORAGE_BASE_URL: "https://storage.bunnycdn.com/xolace-official",
+  CDN_URL: "https://xolace-official-pull.b-cdn.net",
+  TRANSCRIPT_URL: "https://vz-d4f12807-998.b-cdn.net"
+}
+
+// filter for videos
+export const filterOptions = [
+  {key : "mostViewed", label: "Most Viewed"},
+  {key : "mostRecent", label :"Most Recent"},
+  {key : "oldestFirst", label :"Oldest First"},
+  {key : "leastViewed", label :"Least Viewed"},
+];
+
 
 export const sidebarLinks = [
   {

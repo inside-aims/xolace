@@ -9,12 +9,8 @@ import { useUserState } from '@/lib/store/user';
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 const LikeButton = ({ postId, likes }: any) => {
   const user = useUserState(state => state.user);
-  console.log('State user ', user);
-
-  console.log('initial-> ', likes, postId);
 
   const [isLiked, setIsLiked] = useState(false);
-  console.log('bool -> ', isLiked);
 
   // Update `isLiked` whenever `likes` or `user?.id` changes
   useEffect(() => {
