@@ -120,7 +120,6 @@ export function useCommentMutation(post: DetailPost) {
           comment.id === context?.optimisticComment.id ? newComment : comment,
         ),
       );
-      console.log("optimistic")
       // You might want to show a success toast notification here
     },
     onSettled: (data, error, variables) => {

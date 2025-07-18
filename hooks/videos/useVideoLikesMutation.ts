@@ -30,15 +30,10 @@ export function useVideoLikes() {
 
       return { previousVideo, previousLikedStatus };
     },
-    onSuccess: (data, variables) => {
-      console.log('Like video mutation succeeded:', data);
+    onSuccess: (_ , variables) => {
       // Invalidate queries to refetch updated data
       qc.invalidateQueries({queryKey: ['video', variables.videoId] });
-    },
-    onError: (error) => {
-      console.error('Like video mutation failed:', error);
-      // toast.error('Failed to like video. Please try again.');
-    },
+    }
   });
 
   return {

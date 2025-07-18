@@ -7,6 +7,8 @@ import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigge
 import { Button } from "@/components/ui/button";
 import VideoUploadForms from "./video-upload-form";
 import { filterOptions } from "@/constants";
+import { useUserState } from "@/lib/store/user";
+import { toast } from "sonner";
 
 // Define the props the component will receive
 interface SharedHeaderProps {
@@ -24,6 +26,7 @@ const SharedHeader: React.FC<SharedHeaderProps> = ({
 }) => {
   const [open, setOpen] = useState<boolean>(false);
   const [inputValue, setInputValue] = useState(searchQuery);
+  const { roles } = useUserState();
 
   // Debounce the search input
   useEffect(() => {
@@ -34,6 +37,14 @@ const SharedHeader: React.FC<SharedHeaderProps> = ({
       return () => clearTimeout(debounceTimer);
     }
   }, [inputValue, onSearchChange, searchQuery]);
+
+  const handleUploadButtonClick = () => {
+    if (roles.includes("mentor") || roles.includes("help_professional") || roles.includes("verified")) {
+      setOpen(true);
+    }else{
+      toast.error("You do not have permission, only mentors and professionals can upload videos. If you want to upload a video, please contact support", {duration: 10000});
+    }
+  }
 
   // Find the label for the currently selected filter key
   const selectedFilterLabel = filterOptions.find(f => f.key === selectedFilter)?.label || "Most Recent";
@@ -47,7 +58,7 @@ const SharedHeader: React.FC<SharedHeaderProps> = ({
             <h3 className="font-semibold text-2xl">All Videos</h3>
             <Button
               className={"flex flex-row items-center gap-2 border rounded-3xl px-4 h-10 bg-lavender-500 hover:bg-lavender-600 text-white transition-transform duration-300 ease-in-out hover:scale-110"}
-              onClick={() => setOpen(true)}
+              onClick={handleUploadButtonClick}
             >
               <span><Upload className={"h-4 w-4"}/></span>
               Upload a video

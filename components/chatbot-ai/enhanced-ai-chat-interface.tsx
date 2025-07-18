@@ -42,32 +42,8 @@ const quickSuggestions = [
 ]
 
 export default function EnhancedAIChatInterface() {
-    console.log("EnhancedAIChatInterface")
   const [chatState, setChatState] = useState<ChatState>("closed")
   const [isAnimating, setIsAnimating] = useState(false)
-  //const { preferences } = usePreferencesStore()
-
-  const [streamingEnabled, setStreamingEnabled] = useState(true)
-
-  useEffect(() => {
-    const hasStreams =
-      typeof window.ReadableStream !== "undefined" &&
-      typeof window.TextEncoderStream !== "undefined" &&
-      typeof window.TextDecoderStream !== "undefined"
-    setStreamingEnabled(hasStreams)
-  }, [])
-
-  console.log(
-    'ReadableStream supported?', 
-    typeof window.ReadableStream !== 'undefined',
-    '\nTextEncoderStream supported?', 
-    typeof window.TextEncoderStream !== 'undefined',
-    '\nTextDecoderStream supported?', 
-    typeof window.TextDecoderStream !== 'undefined'
-  )
-  
-
-  console.log("support streaming ", streamingEnabled)
 
   const { messages, input, setInput, handleSubmit, status, error, reload, stop } = useChat({
     api: "/api/v1/chat",
@@ -81,7 +57,6 @@ export default function EnhancedAIChatInterface() {
     ],
   })
 
-  console.log("messages ", messages)
 
   const toastIdRef = useRef<string | number | null>(null)
   const timeoutRef = useRef<NodeJS.Timeout | null>(null)
@@ -174,8 +149,6 @@ export default function EnhancedAIChatInterface() {
 // More robust error parsing and logging
 const parsedErrorMessage = (() => {
   if (!error) return null;
-
-  console.error("Chat Error:", error); // Log the full error object to the console
 
   try {
     // Attempt to parse a JSON message

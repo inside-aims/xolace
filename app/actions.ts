@@ -27,7 +27,6 @@ export const signUpAction = validatedAction(signUpSchema, async data => {
       password,
     });
 
-    console.log('user created', userError)
 
   if (userError) {
     const userExists = userError.message.includes('already been registered');
@@ -303,7 +302,6 @@ export async function voteAction(
       },
     });
 
-    console.log('action ', voteResult.action);
 
     if (user_id !== relatedUserId && relatedUserId && voteResult.action === 'added') {
       await createNotification({

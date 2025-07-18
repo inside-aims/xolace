@@ -45,8 +45,6 @@ export function VideosSection() {
     }, []),
     pageSize: 20,
   })
-
-  console.log("videos ",videos)
   
 
   const filteredAndSortedVideos = useMemo(() => {
