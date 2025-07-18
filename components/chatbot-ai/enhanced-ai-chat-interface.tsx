@@ -44,19 +44,6 @@ const quickSuggestions = [
 export default function EnhancedAIChatInterface() {
   const [chatState, setChatState] = useState<ChatState>("closed")
   const [isAnimating, setIsAnimating] = useState(false)
-  //const { preferences } = usePreferencesStore()
-
-  const [streamingEnabled, setStreamingEnabled] = useState(true)
-
-  useEffect(() => {
-    const hasStreams =
-      typeof window.ReadableStream !== "undefined" &&
-      typeof window.TextEncoderStream !== "undefined" &&
-      typeof window.TextDecoderStream !== "undefined"
-    setStreamingEnabled(hasStreams)
-  }, [])
-  
-
 
   const { messages, input, setInput, handleSubmit, status, error, reload, stop } = useChat({
     api: "/api/v1/chat",
