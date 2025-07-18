@@ -57,7 +57,6 @@ const queryHandler: SupabaseQueryHandler<"collections"> = useCallback(
       let filteredQuery = query.eq("user_id", userId)
       
       if (collectionFilter !== "all") {
-        console.log("collectionFilter ",collectionFilter)
         filteredQuery = filteredQuery.eq("collection_name", collectionFilter)
       }
       return filteredQuery.order("created_at", { ascending: false })
@@ -81,7 +80,6 @@ const {
     idColumn: 'post_id'
   });
 
-  console.log("collection posts ",collectionsData)
   
 
   // Commented out Supabase implementation
@@ -118,7 +116,6 @@ const {
 
   const filteredAndSortedPosts = useMemo(() => {
     const filtered = collectionsData.map((item) => item.posts)
-    console.log("filtered ",filtered)
 
     return filtered.sort((a, b) => {
       switch (sortFilter) {
@@ -138,7 +135,6 @@ const {
       router.push(`/post/${postId}`);
     }, [router]);
 
-    console.log("filteredAndSortedPosts ",filteredAndSortedPosts)
   return (
     <div className=" sm:px-6 py-4 sm:py-6 space-y-4 sm:space-y-6 ">
       <PostsFilter sortFilter={sortFilter} onSortFilterChange={setSortFilter} />

@@ -31,13 +31,7 @@ const uploadFileToBunny = async (
       mutationFn: async ({ file, uploadUrl, accessKey }: UploadFileParams) => {
         await uploadFileToBunny(file, uploadUrl, accessKey);
       },
-      onSuccess: () => {
-        console.log('Upload file to Bunny succeeded.');
-      },
-      onError: (error) => {
-        console.error('Upload file to Bunny failed:', error);
-        // It's often better to let the calling function handle the toast
-        // so the error message is more specific to the context (e.g., "Thumbnail upload failed").
+      onError: () => {
         toast.error('A file upload failed. Please try again.');
       },
     });

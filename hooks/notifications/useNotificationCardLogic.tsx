@@ -23,7 +23,6 @@ export function useNotificationCardLogic(notification: Notification) {
       // Cast metadata to the expected type for safer access
       const metadata = notification.metadata as NotificationMetadataWithLink | null;
      
-      console.log("notifi ",notification)
       // rather convert from json
       if (metadata?.link) {
         return metadata.link as string;

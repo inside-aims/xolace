@@ -45,14 +45,12 @@ export async function fetchBunnyVideos() {
     cache: 'no-store',
   });
 
-  console.log("res ", res);
   if (!res.ok) throw new Error("Failed to fetch Bunny videos");
   return await res.json();
 }
 
 // get single video by ID
 export async function fetchBunnyVideoById(videoId: string) {
-  console.log("library id", LIBRARY_ID)
   const res = await fetch(`https://video.bunnycdn.com/library/${LIBRARY_ID}/videos/${videoId}`, {
     headers: {
       AccessKey: ACCESS_KEYS.streamAccessKey!,
@@ -60,7 +58,6 @@ export async function fetchBunnyVideoById(videoId: string) {
     cache: 'no-store',
   });
 
-  console.log("res ", res);
   if (!res.ok) throw new Error(`Failed to fetch Bunny video with ID: ${videoId}`);
   return await res.json();
 }
@@ -70,8 +67,6 @@ export async function fetchBunnyVideoById(videoId: string) {
 
 export const getVideoUploadUrl = withErrorHandling(async () => {
   await getSessionUserId();
-  console.log("initial video upload")
-  console.log(`${VIDEO_STREAM_BASE_URL}/${LIBRARY_ID}/videos`)
   const videoResponse = await apiFetch<BunnyVideoResponse>(
     `${VIDEO_STREAM_BASE_URL}/${LIBRARY_ID}/videos`,
     {
@@ -82,8 +77,6 @@ export const getVideoUploadUrl = withErrorHandling(async () => {
   );
 
   const uploadUrl = `${VIDEO_STREAM_BASE_URL}/${LIBRARY_ID}/videos/${videoResponse.guid}`;
-  console.log("upload url", uploadUrl)
-  console.log("access key", ACCESS_KEYS.streamAccessKey)
   return {
     videoId: videoResponse.guid,
     uploadUrl,
@@ -93,13 +86,9 @@ export const getVideoUploadUrl = withErrorHandling(async () => {
 
 export const getThumbnailUploadUrl = withErrorHandling(
   async (videoId: string) => {
-    console.log("initial thumbnail upload")
     const timestampedFileName = `${Date.now()}-${videoId}-thumbnail`;
     const uploadUrl = `${THUMBNAIL_STORAGE_BASE_URL}/thumbnails/${timestampedFileName}`;
     const cdnUrl = `${THUMBNAIL_CDN_URL}/thumbnails/${timestampedFileName}`;
-    console.log("upload url", uploadUrl)
-    console.log("cdn url", cdnUrl)
-    console.log("access key", ACCESS_KEYS.storageAccessKey)
     return {
       uploadUrl,
       cdnUrl,
@@ -124,7 +113,7 @@ export const saveVideoDetails = withErrorHandling(
       }
     );
 
-    const { data, error } = await supabase
+    const { error } = await supabase
       .from("videos")
       .insert({
         ...videoDetails,

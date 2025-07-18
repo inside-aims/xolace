@@ -52,7 +52,9 @@ export const updateSession = async (request: NextRequest) => {
       '/collections',
       '/explore',
       '/health-tips',
-      '/create-health-tips'
+      '/create-health-tips',
+      '/glimpse',
+      '/notifications'
     ];
 
     // List of public routes
@@ -70,9 +72,6 @@ export const updateSession = async (request: NextRequest) => {
 
     // If user is not authenticated and trying to access a protected route, redirect to sign-in
     if (isProtectedRoute && user.error) {
-      console.log(
-        `Unauthenticated user attempting to access: ${request.nextUrl.pathname}`,
-      );
       return NextResponse.redirect(new URL('/sign-in', request.url));
     }
 

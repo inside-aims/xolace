@@ -108,10 +108,6 @@ const VideoUploadForms = ({open, setOpen }: {open: boolean, setOpen: (open: bool
       // 1. Await the result of the mutation directly
       const { videoId, uploadUrl: videoUploadUrl, accessKey: videoAccessKey } = await getVideoUploadUrlAsync();
 
-      // 2. The code will now pause here until the data is fetched.
-      // You can now confidently use the returned data for subsequent steps.
-      console.log("Successfully fetched video upload data: ", { videoId, videoUploadUrl });
-
       if (!videoUploadUrl || !videoAccessKey)
         throw new Error("Failed to get video upload credentials");
 
@@ -147,7 +143,6 @@ const VideoUploadForms = ({open, setOpen }: {open: boolean, setOpen: (open: bool
       thumbnail.resetFile();
       setOpen(false);
     } catch (error) {
-      console.error("Error submitting form:", error);
       toast.error("Failed to upload video", {id: toastId});
     } finally {
       setIsSubmitting(false);
