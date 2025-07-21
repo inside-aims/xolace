@@ -23,9 +23,9 @@ import { DetailPost, Comment } from '@/types/global';
 import { Send } from 'lucide-react';
 import PostMetrics from '@/components/shared/PostMetrics';
 import SaveToCollectionsButton from '@/components/shared/SaveToCollectionsButton';
-import CommentCard from '@/components/cards/CommentCard';
 import { useCommentSubscription } from '@/hooks/posts/useCommentSubscription';
 import { DefaultLoader } from '@/components/shared/loaders/DefaultLoader';
+import CommentChart from "@/components/cards/CommentChart";
 // import View from '@/components/hocs/detailsPostComponents/View';
 const View = dynamic(() => import('../../hocs/detailsPostComponents/View'), {
   ssr: false,
@@ -34,6 +34,7 @@ const View = dynamic(() => import('../../hocs/detailsPostComponents/View'), {
 const PostDetailsInteraction = ({ post }: { post: DetailPost }) => {
   // get user data
   const user = useUserState(state => state.user);
+  const [replyingTo, setReplyingTo] = useState<string | null>(null);
 
   // states
   const [comments, setComments] = useState<Comment[]>(post?.comments || []);
@@ -107,6 +108,19 @@ const PostDetailsInteraction = ({ post }: { post: DetailPost }) => {
     },
   });
 
+  const handleReply = (authorName: string, commentId: number) => {
+    const mention = `@${authorName.replace(/\s+/g, '').toLowerCase()} `;
+    form.setValue('comment', mention);
+    setReplyingTo(String(commentId));
+     const textarea = document.querySelector('textarea[name="comment"]') as HTMLTextAreaElement;
+     if (textarea) {
+      textarea.focus();
+      setTimeout(() => {
+        textarea.setSelectionRange(mention.length, mention.length);
+          }, 0);
+     }
+   };
+
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   // useEffect((): any => {
   //   // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -155,66 +169,67 @@ const PostDetailsInteraction = ({ post }: { post: DetailPost }) => {
 
   return (
     <div className="w-full px-13 max-md:hidden">
-      <div className="mt-1 mb-10 px-2">
-        {user ? (
-          <div className="flex items-center gap-5">
-            <PostMetrics
-              post={post}
-              userId={user?.id || ''}
-              votes={post.votes}
-              section="details"
-              commentLength={comments.length}
-            />
+      <div className="relative">
+        <div className="sticky top-0 z-10 bg-white dark:bg-zinc-900 shadow-sm ">
+          {user ? (
+            <div className="flex items-center gap-5">
+              <PostMetrics
+                post={post}
+                userId={user?.id || ''}
+                votes={post.votes}
+                section="details"
+                commentLength={comments.length}
+              />
 
-            <div className="flex items-center justify-center gap-2">
-              {post?.expires_in_24hr && (
-                <div
-                  className={`flex h-6 w-8 items-center justify-center rounded-full bg-zinc-400 dark:bg-zinc-700`}
-                  id="mood-btn"
-                >
+              <div className="flex items-center justify-center gap-2">
+                {post?.expires_in_24hr && (
+                  <div
+                    className={`flex h-6 w-8 items-center justify-center rounded-full bg-zinc-400 dark:bg-zinc-700`}
+                    id="mood-btn"
+                  >
                   <span className="animate-bounce duration-700 ease-in-out">
                     {' '}
                     ⏳
                   </span>
+                  </div>
+                )}
+
+                <div id="collection-btn">
+                  <SaveToCollectionsButton
+                    userId={user?.id || ''}
+                    createdBy={post.created_by ?? ''}
+                    postId={post.id}
+                    postCollections={post.collections}
+                  />
                 </div>
-              )}
-
-              <div id="collection-btn">
-                <SaveToCollectionsButton
-                  userId={user?.id || ''}
-                  createdBy={post.created_by ?? ''}
-                  postId={post.id}
-                  postCollections={post.collections}
-                />
               </div>
+
+              <View
+                id={post.id}
+                createdBy={post.created_by ?? ''}
+                viewsCount={post.views[0].count || 0}
+                content={post.content}
+              />
+
+
             </div>
-
-            <View
-              id={post.id}
-              createdBy={post.created_by ?? ''}
-              viewsCount={post.views[0].count || 0}
-              content={post.content}
-            />
-
-
-          </div>
-        ) : (
-          <div className="flex animate-pulse items-center gap-5">
-            <div className="flex items-center gap-1">
-              <div className="h-5 w-5 rounded bg-gray-200 dark:bg-gray-700"></div>
-              <div className="h-4 w-8 rounded bg-gray-200 dark:bg-gray-700"></div>
-              <div className="h-5 w-5 rounded bg-gray-200 dark:bg-gray-700"></div>
-              <div className="h-4 w-8 rounded bg-gray-200 dark:bg-gray-700"></div>
+          ) : (
+            <div className="flex animate-pulse items-center gap-5">
+              <div className="flex items-center gap-1">
+                <div className="h-5 w-5 rounded bg-gray-200 dark:bg-gray-700"></div>
+                <div className="h-4 w-8 rounded bg-gray-200 dark:bg-gray-700"></div>
+                <div className="h-5 w-5 rounded bg-gray-200 dark:bg-gray-700"></div>
+                <div className="h-4 w-8 rounded bg-gray-200 dark:bg-gray-700"></div>
+              </div>
+              <div className="h-7 w-10 rounded-full bg-gray-200 dark:bg-gray-700"></div>
+              <div className="h-8 w-8 rounded bg-gray-200 dark:bg-gray-700"></div>
             </div>
-            <div className="h-7 w-10 rounded-full bg-gray-200 dark:bg-gray-700"></div>
-            <div className="h-8 w-8 rounded bg-gray-200 dark:bg-gray-700"></div>
-          </div>
-        )}
-      </div>
-      <Form {...form}>
-        <form onSubmit={form.handleSubmit(onSubmit)} className="w-full">
-          <FormField
-            control={form.control}
+          )}
+        </div>
+        <Form {...form}>
+          <form onSubmit={form.handleSubmit(onSubmit)} className="w-full">
+            <FormField
+              control={form.control}
             name="comment"
             render={({ field }) => (
               <FormItem>
@@ -223,6 +238,8 @@ const PostDetailsInteraction = ({ post }: { post: DetailPost }) => {
                     placeholder="Join the conversation"
                     className="no-focus! dark:hover:border-muted-dark-hover focus-visible:border-input mb-5 min-h-12 resize-none rounded-lg focus-visible:ring-0 w-full"
                     {...field}
+                    cols={8}
+                    rows={8}
                   />
                 </FormControl>
                 <FormMessage />
@@ -257,19 +274,26 @@ const PostDetailsInteraction = ({ post }: { post: DetailPost }) => {
           </div>
         </form>
       </Form>
+    </div>
 
-      <div className="mt-10">
-        {comments
-          .map((comment: Comment) => (
-            <CommentCard
-              key={comment.id}
-              comment={comment}
-              className="border-none bg-transparent! p-0!"
-              headerClassName="p-0!"
-              contentClassName="pl-9 pb-0"
-            />
-          ))
-          .reverse()}
+      <div className="mt-8">
+        {/*{comments*/}
+        {/*  .map((comment: Comment) => (*/}
+        {/*    <CommentCard*/}
+        {/*      key={comment.id}*/}
+        {/*      comment={comment}*/}
+        {/*      className="border-none bg-transparent! p-0!"*/}
+        {/*      headerClassName="p-0!"*/}
+        {/*      contentClassName="pl-9 pb-0"*/}
+        {/*    />*/}
+        {/*  ))*/}
+        {/*  .reverse()}*/}
+        {/*<CommentThread comments={SampleComments}/>*/}
+         <CommentChart
+           comments={comments}
+           onReply={handleReply}
+           replyingTo={replyingTo}
+         />
         {comments.length == 0 && (
           <div className="flex flex-col items-center justify-center space-y-4 py-5 text-center">
             <div className="relative">

@@ -24,7 +24,6 @@ import {
   FormItem,
   FormMessage,
 } from '@/components/ui/form';
-import CommentCard from '../cards/CommentCard';
 
 import PostMetrics from '../shared/PostMetrics';
 import { toast } from 'sonner';
@@ -36,12 +35,14 @@ import { VisuallyHidden } from '@radix-ui/react-visually-hidden';
 import { Comment, DetailPost } from '@/types/global';
 import { useCommentMutation } from '@/hooks/posts/useCommentMutation';
 import { useCommentSubscription } from '@/hooks/posts/useCommentSubscription';
+import CommentChart from "@/components/cards/CommentChart";
 
 type Type = string | string[] | undefined;
 
 const PostDetailDrawer = ({ post, type }: { post: DetailPost; type: Type }) => {
   // get user data
   const user = useUserState(state => state.user);
+  const [replyingTo, setReplyingTo] = useState<string | null>(null);
 
   const router = useRouter();
 
@@ -143,6 +144,18 @@ const PostDetailDrawer = ({ post, type }: { post: DetailPost; type: Type }) => {
     }
   });
 
+  const handleReply = (authorName: string, commentId: number) => {
+    const mention = `@${authorName.replace(/\s+/g, '').toLowerCase()} `;
+    form.setValue('comment', mention);
+    setReplyingTo(String(commentId));
+    const textarea = document.querySelector('textarea[name="comment"]') as HTMLTextAreaElement;
+    if (textarea) {
+      textarea.focus();
+      setTimeout(() => {
+        textarea.setSelectionRange(mention.length, mention.length);
+      }, 0);
+    }
+  };
 
   // useEffect((): any => {
   //   // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -286,17 +299,11 @@ const PostDetailDrawer = ({ post, type }: { post: DetailPost; type: Type }) => {
               },
             )}
           >
-            {comments
-              .map((comment: Comment) => (
-                <CommentCard
-                  key={comment.id}
-                  comment={comment}
-                  className="bg-transparent! border-0 pl-0!"
-                  headerClassName="px-0 py-0!"
-                  contentClassName="pl-10 pb-0"
-                />
-              ))
-              .reverse()}
+            <CommentChart
+              comments={comments}
+              onReply={handleReply}
+              replyingTo={replyingTo}
+            />
             {comments.length == 0 && (
               <div className="flex flex-col items-center justify-center space-y-4 py-5 text-center">
                 <div className="relative">
