@@ -1,6 +1,6 @@
 'use client';
 
-import React from 'react';
+import React, { useMemo } from 'react';
 import { useUserState } from '@/lib/store/user';
 import { useState } from 'react';
 import dynamic from 'next/dynamic';
@@ -26,15 +26,43 @@ import SaveToCollectionsButton from '@/components/shared/SaveToCollectionsButton
 import { useCommentSubscription } from '@/hooks/posts/useCommentSubscription';
 import { DefaultLoader } from '@/components/shared/loaders/DefaultLoader';
 import CommentChart from "@/components/cards/CommentChart";
+import { useCommentThread, nestComments } from '@/hooks/posts/use-comment-thread';
 // import View from '@/components/hocs/detailsPostComponents/View';
 const View = dynamic(() => import('../../hocs/detailsPostComponents/View'), {
   ssr: false,
 });
 
+
+// Helper function to find a comment by ID in a nested structure
+const findCommentById = (comments: any[], id: number): any | undefined => {
+  for (const comment of comments) {
+    if (comment.id === id) {
+      return comment;
+    }
+    if (comment.replies && comment.replies.length > 0) {
+      const found = findCommentById(comment.replies, id);
+      if (found) {
+        return found;
+      }
+    }
+  }
+  return undefined;
+};
+
 const PostDetailsInteraction = ({ post }: { post: DetailPost }) => {
   // get user data
   const user = useUserState(state => state.user);
-  const [replyingTo, setReplyingTo] = useState<string | null>(null);
+ // 1. Fetch the entire nested thread using our custom hook
+ const { data: flatComments, isLoading , isFetching , isError} = useCommentThread(post.id);
+ console.log("flat comments ",flatComments)
+
+  const [replyingTo, setReplyingTo] = useState<number | null>(null);
+  const [expandedComments, setExpandedComments] = useState<Set<number>>(new Set());
+
+  // 3. Memoize the conversion from a flat list to a nested tree structure
+  // const nestedComments = useMemo(() => {
+  //   return flatComments ? nestComments(flatComments) : [];
+  // }, [flatComments]);
 
   // states
   const [comments, setComments] = useState<Comment[]>(post?.comments || []);
@@ -71,11 +99,28 @@ const PostDetailsInteraction = ({ post }: { post: DetailPost }) => {
       return;
     }
 
+    let parentId: number | undefined = undefined;
+    let depth = 0;
+
+    // If we are replying, find the parent to determine the correct depth
+    if (replyingTo && flatComments) {
+        parentId = Number(replyingTo);
+        const parentComment = findCommentById(flatComments, parentId);
+        console.log("parent comment ",parentComment)
+        console.log("depth ",depth)
+        if (parentComment) {
+            depth = parentComment.depth + 1;
+            console.log("depth in if",depth)
+        }
+    }
+
     createComment(
       {
         postId: post.id,
         commentText: comment,
         postCreatedBy: post.created_by ?? '',
+        parentId,
+        depth,
       },
       {
         onSuccess: () => {
@@ -111,7 +156,7 @@ const PostDetailsInteraction = ({ post }: { post: DetailPost }) => {
   const handleReply = (authorName: string, commentId: number) => {
     const mention = `@${authorName.replace(/\s+/g, '').toLowerCase()} `;
     form.setValue('comment', mention);
-    setReplyingTo(String(commentId));
+    setReplyingTo(commentId);
      const textarea = document.querySelector('textarea[name="comment"]') as HTMLTextAreaElement;
      if (textarea) {
       textarea.focus();
@@ -120,6 +165,19 @@ const PostDetailsInteraction = ({ post }: { post: DetailPost }) => {
           }, 0);
      }
    };
+
+   // wrap in a useCallback
+   const handleToggleExpanded = React.useCallback((commentId: number) => {
+    setExpandedComments(prev => {
+      const newSet = new Set(prev);
+      if (newSet.has(commentId)) {
+        newSet.delete(commentId);
+      } else {
+        newSet.add(commentId);
+      }
+      return newSet;
+    });
+  }, [setExpandedComments]);
 
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   // useEffect((): any => {
@@ -170,7 +228,7 @@ const PostDetailsInteraction = ({ post }: { post: DetailPost }) => {
   return (
     <div className="w-full px-13 max-md:hidden">
       <div className="relative">
-        <div className="sticky top-0 z-10 bg-white dark:bg-zinc-900 shadow-sm ">
+        <div className="mt-1 mb-10 px-2 ">
           {user ? (
             <div className="flex items-center gap-5">
               <PostMetrics
@@ -289,11 +347,17 @@ const PostDetailsInteraction = ({ post }: { post: DetailPost }) => {
         {/*  ))*/}
         {/*  .reverse()}*/}
         {/*<CommentThread comments={SampleComments}/>*/}
-         <CommentChart
-           comments={comments}
-           onReply={handleReply}
-           replyingTo={replyingTo}
-         />
+        {isLoading && isFetching && <p>Loading comments...</p>}
+        {isError || !flatComments && <p>Error loading comments. Please reload page</p>}
+        {!isLoading && flatComments && flatComments.length > 0 && (
+          <CommentChart
+            comments={flatComments}
+            onReply={handleReply}
+            replyingTo={replyingTo}
+            expandedComments={expandedComments}
+            onToggleExpanded={handleToggleExpanded}
+          />
+        )}
         {comments.length == 0 && (
           <div className="flex flex-col items-center justify-center space-y-4 py-5 text-center">
             <div className="relative">

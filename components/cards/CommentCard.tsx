@@ -11,28 +11,29 @@ import { cn } from '@/lib/utils';
 import PostDropdown from "@/components/shared/PostDropdown";
 import KvngDialogDrawer from "@/components/shared/KvngDialogDrawer";
 import ReportForm from "@/components/forms/ReportForm";
+import { NestedComment } from '@/hooks/posts/use-comment-thread';
 
 interface CommentCardProps {
-  comment: Comment;
-  className?: string;
+  comment: NestedComment;
+  level?: number;
+  isExpanded: boolean;
+  onToggleExpanded: (commentId: number) => void;
+  onReply: (authorName: string, commentId: number) => void;
+  replyingTo?: number | null;
   headerClassName?: string;
   contentClassName?: string;
-  level?: number;
-  isExpanded?: boolean;
-  onToggleExpanded?: (commentId: number) => void;
-  replies?: Comment[];
-  onReply?: (authorName: string, commentId: number) => void;
-  replyingTo?: string | null;
+  className?: string;
+  expandedComments?: Set<number>;
 }
 
-const CommentCard = ({comment, className, headerClassName, contentClassName, level = 0, isExpanded = false, onToggleExpanded, replies = [], onReply, replyingTo}: CommentCardProps) => {
+const CommentCard = ({comment, className, headerClassName, contentClassName, level = 0, isExpanded = false, onToggleExpanded, onReply, replyingTo, expandedComments}: CommentCardProps) => {
   // states
   const [isOpen, setIsOpen] = useState<boolean>(false);
   const [timestamp, setTimestamp] = useState('');
 
-  const hasReplies = replies && replies.length > 0;
-  const marginLeft = level * 48;
-  const isBeingRepliedTo = replyingTo === String(comment.id);
+  const hasReplies = comment.replies && comment.replies.length > 0;
+  const indentPadding = level * 24; // Reduced from 48 to 24 for better visual hierarchy
+  const isBeingRepliedTo = replyingTo === comment.id;
 
   useEffect(() => {
     setTimestamp(format(comment.created_at));
@@ -49,13 +50,13 @@ const CommentCard = ({comment, className, headerClassName, contentClassName, lev
         <ReportForm commentId={comment.id} />
       </KvngDialogDrawer>
 
-      <div className="relative">
+      <div className="relative w-full">
         {/* Connecting line for nested comments */}
         {level > 0 && (
           <div
-            className="absolute top-0 w-0.5 bg-gray-300"
+            className="absolute top-0 w-0.5 bg-gray-300 dark:bg-gray-600"
             style={{
-              left: `${marginLeft - 24}px`,
+              left: `${indentPadding - 12}px`,
               height: hasReplies && isExpanded ? '100%' : '60px',
             }}
           />
@@ -64,25 +65,27 @@ const CommentCard = ({comment, className, headerClassName, contentClassName, lev
         {/* Horizontal line connecting to parent */}
         {level > 0 && (
           <div
-            className="absolute top-12 h-0.5 bg-gray-300"
+            className="absolute top-12 h-0.5 bg-gray-300 dark:bg-gray-600"
             style={{
-              left: `${marginLeft - 24}px`,
-              width: '24px',
+              left: `${indentPadding - 12}px`,
+              width: '12px',
             }}
           />
         )}
 
         <Card
           className={cn(
-            "mb-5 w-full dark:bg-dark-3 md:w-full hover:shadow-md transition-all duration-200 border p-4",
+            "mb-2 w-full dark:bg-dark-3 hover:shadow-md transition-all duration-200 border-0",
             isBeingRepliedTo
               ? "border-blue-500 dark:border-blue-400 bg-blue-50 dark:bg-blue-900/20"
               : "border-gray-200 dark:border-gray-700",
             className
           )}
-          style={{ marginLeft: `${marginLeft}px` }}
         >
-          <CardHeader className={cn("flex-row items-start justify-between", headerClassName)}>
+          <CardHeader 
+            className={cn("flex-row items-start justify-between", headerClassName)}
+            style={{ paddingLeft: `${16 + indentPadding}px` }}
+          >
             <div className="flex items-center justify-center gap-1">
               <Avatar className='h-8 w-8'>
                 <AvatarImage src={comment.author_avatar_url || undefined}/>
@@ -109,7 +112,10 @@ const CommentCard = ({comment, className, headerClassName, contentClassName, lev
             />
           </CardHeader>
 
-          <CardContent className={cn("mt-0", contentClassName)}>
+          <CardContent 
+            className={cn("mt-0", contentClassName)}
+            style={{ paddingLeft: `${16 + indentPadding}px` }}
+          >
             {(() => {
               const match = comment.comment_text.match(/^@(\w+)\s+(.*)/);
               if (match) {
@@ -152,39 +158,31 @@ const CommentCard = ({comment, className, headerClassName, contentClassName, lev
             </div>
 
             {/* Expand/Collapse Button for Replies */}
-            {hasReplies && onToggleExpanded && (
-              <button
-                onClick={() => onToggleExpanded(comment.id)}
-                className="flex items-center space-x-1 mt-3 font-medium text-sm transition-colors"
+            {hasReplies && (
+              <button 
+                onClick={() => onToggleExpanded(comment.id)} 
+                className="flex items-center space-x-1 mt-3 font-medium text-sm text-gray-600 dark:text-gray-400 hover:text-blue-600 transition-colors"
               >
-                {isExpanded ? (
-                  <ChevronDown className="w-4 h-4"/>
-                ) : (
-                  <ChevronRight className="w-4 h-4"/>
-                )}
-                <span>
-                  {isExpanded ? 'Hide' : 'Show'} {replies.length} {replies.length === 1 ? 'reply' : 'replies'}
-                </span>
+                {isExpanded ? <ChevronDown className="w-4 h-4"/> : <ChevronRight className="w-4 h-4"/>}
+                <span>{isExpanded ? 'Hide' : 'Show'} {comment.replies.length} {comment.replies.length === 1 ? 'reply' : 'replies'}</span>
               </button>
             )}
           </CardContent>
         </Card>
 
-        {/* Nested Replies */}
-        {hasReplies && isExpanded && onToggleExpanded && (
-          <div className="mt-4 space-y-4">
-            {replies.map((reply) => (
+        {/* RECURSIVE RENDERING OF REPLIES */}
+        {hasReplies && isExpanded && (
+          <div className="space-y-2">
+            {comment.replies.map((reply) => (
               <CommentCard
                 key={reply.id}
                 comment={reply}
                 level={level + 1}
-                isExpanded={false}
+                isExpanded={expandedComments?.has(reply.id) ?? false}
                 onReply={onReply}
                 replyingTo={replyingTo}
                 onToggleExpanded={onToggleExpanded}
-                className="bg-transparent"
-                headerClassName="px-0 py-0"
-                contentClassName="pl-0 pb-0"
+                expandedComments={expandedComments}
               />
             ))}
           </div>
