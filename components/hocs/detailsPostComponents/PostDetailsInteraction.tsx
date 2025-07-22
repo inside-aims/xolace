@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useMemo } from 'react';
+import React from 'react';
 import { useUserState } from '@/lib/store/user';
 import { useState } from 'react';
 import dynamic from 'next/dynamic';

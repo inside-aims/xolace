@@ -2,11 +2,10 @@
 import * as React from 'react';
 import { useEffect, useState } from 'react';
 import { format } from 'timeago.js';
-import { ChevronDown, ChevronRight, Heart, MessageCircle, Share } from 'lucide-react';
+import { ChevronDown, ChevronRight, MessageCircle } from 'lucide-react';
 
 import { Card, CardContent, CardHeader } from '@/components/ui/card';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
-import { Comment } from '@/types/global';
 import { cn } from '@/lib/utils';
 import PostDropdown from "@/components/shared/PostDropdown";
 import KvngDialogDrawer from "@/components/shared/KvngDialogDrawer";

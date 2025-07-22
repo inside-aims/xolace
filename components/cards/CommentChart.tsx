@@ -1,5 +1,5 @@
 'use client';
-import React, { useState } from 'react';
+import React from 'react';
 import { NestedComment } from '@/types/global';
 import CommentCard from "@/components/cards/CommentCard";
 
