@@ -75,7 +75,7 @@ const CommentCard = ({comment, className, headerClassName, contentClassName, lev
 
         <Card
           className={cn(
-            "mb-2 w-full dark:bg-dark-3 hover:shadow-md transition-all duration-200 border-0",
+            "mb-2 w-full hover:shadow-md transition-all duration-200 border-0",
             isBeingRepliedTo
               ? "border-blue-500 dark:border-blue-400 bg-blue-50 dark:bg-blue-900/20"
               : "border-gray-200 dark:border-gray-700",
@@ -83,7 +83,7 @@ const CommentCard = ({comment, className, headerClassName, contentClassName, lev
           )}
         >
           <CardHeader 
-            className={cn("flex-row items-start justify-between", headerClassName)}
+            className={cn("flex-row items-start justify-between py-2 px-4", headerClassName)}
             style={{ paddingLeft: `${16 + indentPadding}px` }}
           >
             <div className="flex items-center justify-center gap-1">
