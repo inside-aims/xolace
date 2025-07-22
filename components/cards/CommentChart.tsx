@@ -1,10 +1,10 @@
 'use client';
 import React, { useState } from 'react';
-import { Comment } from '@/types/global';
+import { NestedComment } from '@/types/global';
 import CommentCard from "@/components/cards/CommentCard";
 
 interface CommentChartProps {
-  comments: Comment[];
+  comments: NestedComment[];
   onReply: (authorName: string, commentId: number) => void;
   replyingTo?: number | null;
   expandedComments: Set<number>;
