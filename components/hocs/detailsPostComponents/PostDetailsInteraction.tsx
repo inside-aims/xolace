@@ -26,28 +26,16 @@ import SaveToCollectionsButton from '@/components/shared/SaveToCollectionsButton
 import { useCommentSubscription } from '@/hooks/posts/useCommentSubscription';
 import { DefaultLoader } from '@/components/shared/loaders/DefaultLoader';
 import CommentChart from "@/components/cards/CommentChart";
-import { useCommentThread, nestComments } from '@/hooks/posts/use-comment-thread';
+import { useCommentThread } from '@/hooks/posts/use-comment-thread';
+import { findCommentById } from '@/utils/helpers/getCommentById';
+
 // import View from '@/components/hocs/detailsPostComponents/View';
 const View = dynamic(() => import('../../hocs/detailsPostComponents/View'), {
   ssr: false,
 });
 
 
-// Helper function to find a comment by ID in a nested structure
-const findCommentById = (comments: any[], id: number): any | undefined => {
-  for (const comment of comments) {
-    if (comment.id === id) {
-      return comment;
-    }
-    if (comment.replies && comment.replies.length > 0) {
-      const found = findCommentById(comment.replies, id);
-      if (found) {
-        return found;
-      }
-    }
-  }
-  return undefined;
-};
+
 
 const PostDetailsInteraction = ({ post }: { post: DetailPost }) => {
   // get user data
@@ -100,6 +88,7 @@ const PostDetailsInteraction = ({ post }: { post: DetailPost }) => {
     }
 
     let parentId: number | undefined = undefined;
+    let parentAuthorId: string | undefined = undefined;
     let depth = 0;
 
     // If we are replying, find the parent to determine the correct depth
@@ -110,6 +99,7 @@ const PostDetailsInteraction = ({ post }: { post: DetailPost }) => {
         console.log("depth ",depth)
         if (parentComment) {
             depth = parentComment.depth + 1;
+            parentAuthorId = parentComment.created_by;
             console.log("depth in if",depth)
         }
     }
@@ -121,6 +111,7 @@ const PostDetailsInteraction = ({ post }: { post: DetailPost }) => {
         postCreatedBy: post.created_by ?? '',
         parentId,
         depth,
+        parentAuthorId,
       },
       {
         onSuccess: () => {
@@ -348,7 +339,7 @@ const PostDetailsInteraction = ({ post }: { post: DetailPost }) => {
         {/*  .reverse()}*/}
         {/*<CommentThread comments={SampleComments}/>*/}
         {isLoading && isFetching && <p>Loading comments...</p>}
-        {isError || !flatComments && <p>Error loading comments. Please reload page</p>}
+        {isError && <p>Error loading comments. Please reload page</p>}
         {!isLoading && flatComments && flatComments.length > 0 && (
           <CommentChart
             comments={flatComments}

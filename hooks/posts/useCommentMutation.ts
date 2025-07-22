@@ -13,6 +13,7 @@ interface CreateCommentVariables {
   postCreatedBy: string;
   parentId?: number;
   depth?: number;
+  parentAuthorId? : string;
 }
 
 interface CreateCommentContext {
@@ -30,7 +31,7 @@ export function useCommentMutation(post: DetailPost) {
     CreateCommentVariables, // Variables passed to the mutation function
     CreateCommentContext // Context type for onMutate/onError
   >({
-    mutationFn: async ({ postId, commentText, parentId , depth }) => {
+    mutationFn: async ({ postId, commentText, parentId , depth, parentAuthorId  }) => {
       if (!user?.id) {
         throw new Error('User not authenticated');
       }
@@ -68,6 +69,16 @@ export function useCommentMutation(post: DetailPost) {
           recipient_user_id: post.created_by,
           actor_id: user?.id || null,
           type: 'new_comment',
+          entity_id: postId,
+          metadata: { content: commentText, link: `/post/${postId}` },
+        });
+      }
+
+      if(parentAuthorId && user?.id !== parentAuthorId){
+        await createNotification({
+          recipient_user_id: parentAuthorId,
+          actor_id: user?.id || null,
+          type: 'comment_reply',
           entity_id: postId,
           metadata: { content: commentText, link: `/post/${postId}` },
         });

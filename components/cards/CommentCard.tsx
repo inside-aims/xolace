@@ -122,7 +122,7 @@ const CommentCard = ({comment, className, headerClassName, contentClassName, lev
                 const username = match[1];
                 const rest = match[2];
                 return (
-                  <p className="flex text-gray-800 dark:text-gray-200 leading-relaxed mb-2">
+                  <p className=" text-gray-800 dark:text-gray-200 leading-relaxed mb-2">
                     <span className="text-ocean-600 mr-1">@{username}</span>
                     <span>{rest}</span>
                   </p>
@@ -138,10 +138,10 @@ const CommentCard = ({comment, className, headerClassName, contentClassName, lev
 
             {/* Comment Actions */}
             <div className="flex items-center space-x-4">
-              <button className="flex items-center space-x-1 text-gray-500 hover:text-blue-600 transition-colors">
+              {/* <button className="flex items-center space-x-1 text-gray-500 hover:text-blue-600 transition-colors">
                 <Heart className="w-4 h-4"/>
                 <span className="text-sm">Like</span>
-              </button>
+              </button> */}
               <button
                 onClick={() => onReply?.(comment.author_name || 'User', comment.id)}
                 className={cn(
@@ -151,10 +151,10 @@ const CommentCard = ({comment, className, headerClassName, contentClassName, lev
                 <MessageCircle className="w-4 h-4"/>
                 <span className="text-sm">Reply</span>
               </button>
-              <button className="flex items-center space-x-1 text-gray-500 hover:text-blue-600 transition-colors">
+              {/* <button className="flex items-center space-x-1 text-gray-500 hover:text-blue-600 transition-colors">
                 <Share className="w-4 h-4"/>
                 <span className="text-sm">Share</span>
-              </button>
+              </button> */}
             </div>
 
             {/* Expand/Collapse Button for Replies */}

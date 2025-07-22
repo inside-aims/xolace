@@ -64,6 +64,12 @@ export function useNotificationCardLogic(notification: Notification) {
           message: <>{actorName} commented: "{`${truncateText(metadataContent || '', 30)}` || '...'}"</>,
           link,
         };
+        case 'comment_reply':
+        return {
+          icon: <MessageSquare className="h-5 w-5 text-blue-500" />,
+          message: <>{actorName} replied your comment: "{`${truncateText(metadataContent || '', 30)}` || '...'}"</>,
+          link,
+        };
       case 'post_saved':
         return {
           icon: <Bookmark className="h-5 w-5 text-purple-500" />,
