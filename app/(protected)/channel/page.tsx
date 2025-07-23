@@ -2,7 +2,7 @@
 
 import React, { useState, useMemo } from 'react';
 import dynamic from 'next/dynamic';
-import { motion, AnimatePresence } from 'framer-motion';
+import { motion, AnimatePresence } from 'motion/react';
 import {
   ImageOffIcon as MaskOffIcon,
   UserIcon,
@@ -12,36 +12,63 @@ import {
 } from 'lucide-react';
 import { useUserState } from '@/lib/store/user';
 
-
 // Dynamically import non-critical components
-const ChannelAboutCard = dynamic(() => import('@/components/cards/ChannelAboutCard'), {
-  loading: () => <div className="h-[170px] w-full animate-pulse bg-gray-200 dark:bg-gray-800 rounded-lg" />,
-  ssr: false,
-});
+const ChannelAboutCard = dynamic(
+  () => import('@/components/cards/ChannelAboutCard'),
+  {
+    loading: () => (
+      <div className="h-[170px] w-full animate-pulse rounded-lg bg-gray-200 dark:bg-gray-800" />
+    ),
+    ssr: false,
+  },
+);
 
-const ChannelPoliciesCard = dynamic(() => import('@/components/cards/ChannelPoliciesCard'), {
-  loading: () => <div className="h-[170px] w-full animate-pulse bg-gray-200 dark:bg-gray-800 rounded-lg" />,
-  ssr: false,
-});
+const ChannelPoliciesCard = dynamic(
+  () => import('@/components/cards/ChannelPoliciesCard'),
+  {
+    loading: () => (
+      <div className="h-[170px] w-full animate-pulse rounded-lg bg-gray-200 dark:bg-gray-800" />
+    ),
+    ssr: false,
+  },
+);
 
-const ChannelQuestionsCard = dynamic(() => import('@/components/cards/ChannelQuestionsCard'), {
-  loading: () => <div className="h-[170px] w-full animate-pulse bg-gray-200 dark:bg-gray-800 rounded-lg" />,
-  ssr: false,
-});
+const ChannelQuestionsCard = dynamic(
+  () => import('@/components/cards/ChannelQuestionsCard'),
+  {
+    loading: () => (
+      <div className="h-[170px] w-full animate-pulse rounded-lg bg-gray-200 dark:bg-gray-800" />
+    ),
+    ssr: false,
+  },
+);
 
-const ChannelContributionCard = dynamic(() => import('@/components/cards/ChannelContributionCard'), {
-  loading: () => <div className="h-[170px] w-full animate-pulse bg-gray-200 dark:bg-gray-800 rounded-lg" />,
-  ssr: false,
-});
+const ChannelContributionCard = dynamic(
+  () => import('@/components/cards/ChannelContributionCard'),
+  {
+    loading: () => (
+      <div className="h-[170px] w-full animate-pulse rounded-lg bg-gray-200 dark:bg-gray-800" />
+    ),
+    ssr: false,
+  },
+);
 
-const ChannelUpdateCard = dynamic(() => import('@/components/cards/ChannelUpdateCard'), {
-  loading: () => <div className="h-[160px] w-full animate-pulse bg-gray-200 dark:bg-gray-800 rounded-lg" />,
-  ssr: false,
-});
+const ChannelUpdateCard = dynamic(
+  () => import('@/components/cards/ChannelUpdateCard'),
+  {
+    loading: () => (
+      <div className="h-[160px] w-full animate-pulse rounded-lg bg-gray-200 dark:bg-gray-800" />
+    ),
+    ssr: false,
+  },
+);
 
-const ChatbotWidget = dynamic(() => import('@/components/chatbot-ai/ChatbotWidget'), {
-  ssr: false
-});
+const ChatbotWidget = dynamic(
+  () => import('@/components/chatbot-ai/ChatbotWidget'),
+  {
+    ssr: false,
+  },
+);
 
 const Channel = () => {
   const { user } = useUserState();
@@ -70,15 +97,27 @@ const Channel = () => {
   const tabs = useMemo(
     () => [
       { id: 'about', icon: <MaskOffIcon />, component: <ChannelAboutCard /> },
-      { id: 'policies', icon: <ShieldIcon />, component: <ChannelPoliciesCard /> },
-      { id: 'questions', icon: <HelpCircleIcon />, component: <ChannelQuestionsCard /> },
-      { id: 'contribution', icon: <HeartIcon />, component: <ChannelContributionCard /> },
+      {
+        id: 'policies',
+        icon: <ShieldIcon />,
+        component: <ChannelPoliciesCard />,
+      },
+      {
+        id: 'questions',
+        icon: <HelpCircleIcon />,
+        component: <ChannelQuestionsCard />,
+      },
+      {
+        id: 'contribution',
+        icon: <HeartIcon />,
+        component: <ChannelContributionCard />,
+      },
       { id: 'updates', icon: <UserIcon />, component: <ChannelUpdateCard /> },
     ],
     [],
   );
   return (
-    <div className=" w-full p-5 md:p-8">
+    <div className="w-full p-5 md:p-8">
       <div>
         <h1 className="mb-8 text-center text-4xl font-bold text-gray-800 dark:text-gray-100">
           Channel
@@ -128,9 +167,7 @@ const Channel = () => {
           </AnimatePresence>
         </div>
 
-        {
-          user && !user.is_anonymous && <ChatbotWidget />
-        }
+        {user && !user.is_anonymous && <ChatbotWidget />}
       </div>
     </div>
   );

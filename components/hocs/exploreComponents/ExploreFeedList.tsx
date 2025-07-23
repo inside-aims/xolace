@@ -1,18 +1,21 @@
 'use client';
 
-import React, { useEffect , useCallback, useMemo} from 'react';
+import React, { useEffect, useCallback, useMemo } from 'react';
 import dynamic from 'next/dynamic';
-import { motion, AnimatePresence } from 'framer-motion';
+import { motion, AnimatePresence } from 'motion/react';
 //import { PostCard } from '@/components/cards/PostCard';
 import { cn } from '@/lib/utils';
 import { Post } from '@/types/global';
 import { usePathname, useRouter } from 'next/navigation';
 import { FeedSkeletonCard } from '@/components/shared/loaders/FeedSkeletonLoader';
 
-const PostCard = dynamic(() => import('@/components/cards/PostCard').then((mod)=> mod.PostCard ), {
-  ssr: false,
-  loading: () => <FeedSkeletonCard/>, // Placeholder
-});
+const PostCard = dynamic(
+  () => import('@/components/cards/PostCard').then(mod => mod.PostCard),
+  {
+    ssr: false,
+    loading: () => <FeedSkeletonCard />, // Placeholder
+  },
+);
 
 interface Props {
   filteredPosts: Post[];
@@ -44,8 +47,8 @@ const ExploreFeedList = ({ filteredPosts }: Props) => {
         // Wait for animations to complete (500ms) plus a small buffer
         setTimeout(() => {
           window.scrollTo({
-            top: parseInt(scrollPosition,10),
-            behavior: 'instant'
+            top: parseInt(scrollPosition, 10),
+            behavior: 'instant',
           });
           sessionStorage.removeItem('scrollPosition');
         }, 500);
@@ -59,10 +62,13 @@ const ExploreFeedList = ({ filteredPosts }: Props) => {
   //   router.push(`/post/${postId}`);
   // };
 
-  const handlePostClick = useCallback((postId: string) => {
-    sessionStorage.setItem('scrollPosition', window.scrollY.toString());
-    router.push(`/post/${postId}`);
-  }, [router]);
+  const handlePostClick = useCallback(
+    (postId: string) => {
+      sessionStorage.setItem('scrollPosition', window.scrollY.toString());
+      router.push(`/post/${postId}`);
+    },
+    [router],
+  );
 
   const renderedPosts = useMemo(
     () =>
@@ -90,11 +96,12 @@ const ExploreFeedList = ({ filteredPosts }: Props) => {
     [filteredPosts, handlePostClick],
   );
 
-
-
   return (
     <>
-      <motion.div layout className="mt-10 grid grid-cols-1 gap-6 w-full md:px-8">
+      <motion.div
+        layout
+        className="mt-10 grid w-full grid-cols-1 gap-6 md:px-8"
+      >
         <AnimatePresence>
           {renderedPosts}
           {/* {filteredPosts.length > 0 ? (

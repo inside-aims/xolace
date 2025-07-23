@@ -18,7 +18,7 @@ import {
   Timer,
   X,
 } from 'lucide-react';
-import { motion, AnimatePresence } from 'framer-motion';
+import { motion, AnimatePresence } from 'motion/react';
 import debounce from 'lodash.debounce';
 
 import { Button } from '@/components/ui/button';
@@ -604,7 +604,7 @@ export function PostForm() {
               className="w-full space-y-3 lg:mx-auto lg:w-2/3"
             >
               {/* Post Type Dropdown and 24h Expiry Toggle */}
-              <div className="flex items-end justify-between relative">
+              <div className="relative flex items-end justify-between">
                 <FormField
                   control={form.control}
                   name="type"
@@ -654,7 +654,10 @@ export function PostForm() {
                         </SelectContent>
                       </Select>
                       <FormMessage />
-                      <NewBadge size="sm" containerClass="absolute top-0 left-17" />
+                      <NewBadge
+                        size="sm"
+                        containerClass="absolute top-0 left-17"
+                      />
                     </FormItem>
                   )}
                 />
@@ -1124,7 +1127,10 @@ export function PostForm() {
         <section className="flex flex-col items-center justify-center">
           <div className="flex flex-wrap justify-center gap-2 px-2 pb-4 text-xs text-slate-600/60 dark:text-slate-400/60">
             <span>
-              <Link className="hover:text-slate-200 hover:underline" href="/polices">
+              <Link
+                className="hover:text-slate-200 hover:underline"
+                href="/polices"
+              >
                 Xolace Rules
               </Link>
             </span>

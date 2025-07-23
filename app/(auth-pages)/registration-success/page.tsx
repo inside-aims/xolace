@@ -3,26 +3,32 @@ import { use, useState, useEffect } from 'react';
 
 import { urlPath } from '@/utils/url-helpers';
 import Link from 'next/link';
-import { motion } from 'framer-motion';
-import { MailCheck, RotateCw, MessageCircle, Info, FileText } from 'lucide-react';
+import { motion } from 'motion/react';
+import {
+  MailCheck,
+  RotateCw,
+  MessageCircle,
+  Info,
+  FileText,
+} from 'lucide-react';
 import SupportButton from '@/components/shared/support-button';
 
 const supportOptions = [
-    {
-        icon: MessageCircle,
-        label: "@ xolace25@gmail.com",
-    },
-    {
-        icon: Info,
-        label: "About us",
-        href: "/about",
-    },
-    {
-      icon: FileText,
-      label: "Change logs",
-      href: "/updates",
-    }
-]
+  {
+    icon: MessageCircle,
+    label: '@ xolace25@gmail.com',
+  },
+  {
+    icon: Info,
+    label: 'About us',
+    href: '/about',
+  },
+  {
+    icon: FileText,
+    label: 'Change logs',
+    href: '/updates',
+  },
+];
 
 export default function RegistrationSuccessPage(props: {
   searchParams: Promise<{ email: string; id: string }>;
@@ -33,7 +39,10 @@ export default function RegistrationSuccessPage(props: {
   const [countdown, setCountdown] = useState(120);
   const [canResend, setCanResend] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
-  const [resendStatus, setResendStatus] = useState<{ type: 'success' | 'error'; message: string } | null>(null);
+  const [resendStatus, setResendStatus] = useState<{
+    type: 'success' | 'error';
+    message: string;
+  } | null>(null);
 
   useEffect(() => {
     const timer = setInterval(() => {
@@ -52,10 +61,10 @@ export default function RegistrationSuccessPage(props: {
 
   const handleResend = async () => {
     if (!email) return;
-    
+
     setIsLoading(true);
     setResendStatus(null);
-    
+
     try {
       const response = await fetch('/api/v1/auth/resend', {
         method: 'POST',
@@ -65,23 +74,23 @@ export default function RegistrationSuccessPage(props: {
         body: JSON.stringify({ email, id }),
       });
       const data = await response.json();
-      
+
       if (!response.ok) {
         throw new Error(data.error || 'Failed to resend email');
       }
-      
+
       setResendStatus({
         type: 'success',
-        message: 'Verification email resent successfully!'
+        message: 'Verification email resent successfully!',
       });
-      
+
       // Reset the countdown
       setCanResend(false);
       setCountdown(120);
-      
+
       // Start countdown
       const timer = setInterval(() => {
-        setCountdown((prev) => {
+        setCountdown(prev => {
           if (prev <= 1) {
             clearInterval(timer);
             setCanResend(true);
@@ -90,11 +99,13 @@ export default function RegistrationSuccessPage(props: {
           return prev - 1;
         });
       }, 1000);
-      
     } catch (error) {
       setResendStatus({
         type: 'error',
-        message: error instanceof Error ? error.message : 'An unexpected error occurred'
+        message:
+          error instanceof Error
+            ? error.message
+            : 'An unexpected error occurred',
       });
     } finally {
       setIsLoading(false);
@@ -182,7 +193,7 @@ export default function RegistrationSuccessPage(props: {
             className={`mt-2 inline-flex items-center gap-2 rounded-full px-4 py-2 text-sm font-medium transition-all ${
               canResend && !isLoading
                 ? 'bg-purple-600 text-white hover:bg-purple-700'
-                : 'bg-gray-700 text-gray-500 cursor-not-allowed'
+                : 'cursor-not-allowed bg-gray-700 text-gray-500'
             }`}
           >
             {isLoading ? (
@@ -196,9 +207,13 @@ export default function RegistrationSuccessPage(props: {
           </button>
 
           {resendStatus && (
-            <p className={`mt-2 text-sm ${
-              resendStatus.type === 'success' ? 'text-green-400' : 'text-red-400'
-            }`}>
+            <p
+              className={`mt-2 text-sm ${
+                resendStatus.type === 'success'
+                  ? 'text-green-400'
+                  : 'text-red-400'
+              }`}
+            >
               {resendStatus.message}
             </p>
           )}
@@ -217,8 +232,8 @@ export default function RegistrationSuccessPage(props: {
         </Link>
       </motion.div>
 
-       {/* Floating Support Button */}
-      <SupportButton supportOptions={supportOptions}/>
+      {/* Floating Support Button */}
+      <SupportButton supportOptions={supportOptions} />
     </div>
   );
 }

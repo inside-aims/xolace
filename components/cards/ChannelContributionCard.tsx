@@ -2,7 +2,7 @@
 
 import React from 'react';
 import dynamic from 'next/dynamic';
-import { motion } from 'framer-motion';
+import { motion } from 'motion/react';
 import {
   HeartIcon,
   MailPlusIcon,
@@ -22,9 +22,12 @@ import { Button } from '../ui/button';
 //import { KvngSheet } from '../shared/KvngSheet';
 //import FeedbackForm from '../forms/FeedbackForm';
 
-const KvngSheet = dynamic(() => import('../shared/KvngSheet').then((mod => mod.KvngSheet)), {
-  ssr: false,
-});
+const KvngSheet = dynamic(
+  () => import('../shared/KvngSheet').then(mod => mod.KvngSheet),
+  {
+    ssr: false,
+  },
+);
 
 const FeedbackForm = dynamic(() => import('../forms/FeedbackForm'), {
   ssr: false,
@@ -98,7 +101,7 @@ const ChannelContributionCard = () => {
               </p>
               <a
                 href="mailto:xolace25@gmail.com"
-                className="text-blue-500 flex items-center hover:underline"
+                className="flex items-center text-blue-500 hover:underline"
               >
                 <MailPlusIcon className="mr-2 h-5 w-5" />
                 Email Us

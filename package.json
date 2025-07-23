@@ -67,7 +67,6 @@
     "date-fns": "^4.1.0",
     "embla-carousel-react": "^8.6.0",
     "emoji-picker-react": "^4.12.2",
-    "framer-motion": "^12.9.6",
     "geist": "^1.4.1",
     "lodash": "^4.17.21",
     "lodash.debounce": "^4.0.8",
@@ -155,7 +154,8 @@
       "supabase",
       "@vercel/speed-insights",
       "unrs-resolver",
-      "es5-ext"
+      "es5-ext",
+      "@tailwindcss/oxide"
     ]
   }
 }

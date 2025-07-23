@@ -1,7 +1,10 @@
 'use client';
-import { motion } from 'framer-motion';
+import { motion } from 'motion/react';
 
-export default function AnimatedSection({children, className}: {
+export default function AnimatedSection({
+  children,
+  className,
+}: {
   children: React.ReactNode;
   className?: string;
 }) {
