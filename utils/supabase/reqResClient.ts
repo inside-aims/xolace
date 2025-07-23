@@ -17,7 +17,7 @@ export const getSupabaseReqResClient = ({
   //   Supabase server client initialisation
   const supabase = createServerClient(
     process.env.NEXT_PUBLIC_SUPABASE_URL!,
-    process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!,
+    process.env.NEXT_PUBLIC_SUPABASE_PUBLISHABLE_OR_ANON_KEY!,
     {
       cookies: {
         // This function will be used to get all cookies from the request

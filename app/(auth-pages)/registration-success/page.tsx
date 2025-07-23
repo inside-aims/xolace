@@ -159,7 +159,7 @@ export default function RegistrationSuccessPage(props: {
           “Sometimes the quietest voices have the loudest echoes.” — Xolace
         </p>
         <p className="text-blackA11 mb-3 dark:text-gray-300">
-          A new chapter begins. We&apos;ve sent a secret key to{' '}
+          A new chapter begins. We&apos;ve sent a link to{' '}
           <span className="font-semibold text-indigo-500">{email}</span>. Check
           your inbox to activate your space in this community of untold stories
           and healing.

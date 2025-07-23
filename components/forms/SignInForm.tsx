@@ -2,6 +2,7 @@
 
 import React, { useState, useEffect } from 'react';
 import Link from 'next/link';
+import { useSearchParams } from 'next/navigation';
 import mascot from '../../public/assets/images/mas.webp';
 
 import { zodResolver } from '@hookform/resolvers/zod';
@@ -32,7 +33,8 @@ import Image from 'next/image';
 
 const SignInForm = () => {
   const router = useRouter();
-  //const { toast } = useToast();
+  const searchParams = useSearchParams();
+  const nexturl = searchParams.get('nexturl');
   const [showPassword, setShowPassword] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const supabase = getSupabaseBrowserClient();
@@ -89,7 +91,11 @@ const SignInForm = () => {
     } = supabase.auth.onAuthStateChange(event => {
       if (event === 'SIGNED_IN') {
         toast.success(' 😸 Welcome to Xolace! Ready to explore! 🎭');
-        router.push('/feed');
+        if (nexturl) {
+          router.push(nexturl);
+        } else {
+          router.push('/feed');
+        }
       }
     });
 
@@ -108,7 +114,7 @@ const SignInForm = () => {
           width={60}
           height={60}
           priority={true}
-          className="w-auto h-auto"
+          className="h-auto w-auto"
         />
       </div>
       <div className="w-full max-w-md items-start">
@@ -235,7 +241,7 @@ const SignInForm = () => {
             <p className="text-center text-sm md:text-left">
               Don’t have an account?{' '}
               <Link
-                href={'/sign-up'}
+                href={nexturl ? `/sign-up?nexturl=${nexturl}` : '/sign-up'}
                 className="text-lavender-400 hover:text-lavender-500 ml-1 font-medium hover:underline"
               >
                 Create one
