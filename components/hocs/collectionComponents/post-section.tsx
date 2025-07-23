@@ -55,8 +55,7 @@ export function PostsSection({ collectionFilter, userId }: PostsSectionProps) {
 //WRAP IN USECALLBACK
 const queryHandler: SupabaseQueryHandler<"collections"> = useCallback(
     (query) => {
-      // eslint-disable-next-line @typescript-eslint/no-explicit-any
-      let filtered: PostgrestFilterBuilder<any, any, any, any> = query.eq("user_id", userId);
+      let filtered = query.eq("user_id", userId);
       
       if (collectionFilter !== "all") {
         filtered = filtered.eq("collection_name", collectionFilter)
