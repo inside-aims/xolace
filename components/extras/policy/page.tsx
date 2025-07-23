@@ -1,7 +1,7 @@
 'use client';
 
 import { useState } from 'react';
-import { motion } from 'framer-motion';
+import { motion } from 'motion/react';
 import { ChevronLeft } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 
@@ -24,14 +24,14 @@ export default function PolicyPage() {
           1. Anonymity and Personal Information
         </h2>
         <p className="mb-4">
-          At Xolace, we prioritize user privacy and anonymity. We don&apos;t require
-          users to provide identifiable information such as their real names,
-          phone numbers. We use unique identifiers (like usernames or encrypted
-          identifiers) to maintain a safe, anonymous environment. Your privacy
-          is our top priority, and no personally identifiable information is
-          stored or shared with others. Users are strongly urged not to provide
-          a real identity information about themselves when entering their
-          username.
+          At Xolace, we prioritize user privacy and anonymity. We don&apos;t
+          require users to provide identifiable information such as their real
+          names, phone numbers. We use unique identifiers (like usernames or
+          encrypted identifiers) to maintain a safe, anonymous environment. Your
+          privacy is our top priority, and no personally identifiable
+          information is stored or shared with others. Users are strongly urged
+          not to provide a real identity information about themselves when
+          entering their username.
           <span className="font-semibold text-amber-600">
             NB: We will not be held responsible for carelessness
           </span>
@@ -39,10 +39,10 @@ export default function PolicyPage() {
 
         <h2 className="mb-4 text-2xl font-bold">2. Data Collection and Use</h2>
         <p className="mb-4">
-          We collect only limited information to ensure the app&apos;s functionality,
-          such as device data (for troubleshooting) and anonymous usage data
-          (for improving features). This data is never shared with third parties
-          or used for marketing purposes.
+          We collect only limited information to ensure the app&apos;s
+          functionality, such as device data (for troubleshooting) and anonymous
+          usage data (for improving features). This data is never shared with
+          third parties or used for marketing purposes.
         </p>
         <p className="mb-4 font-bold">
           NOTE: In creating an account with Xolace a working email will be
@@ -107,8 +107,8 @@ export default function PolicyPage() {
           Xolace is a peer-support space but not a replacement for professional
           advice or therapy. If you&apos;re in crisis, we encourage seeking
           professional help. For users interested in further guidance, Xolace
-          offers a &quot;Help Section&quot; where you can connect with professionals for
-          counseling or business advice via subscription.
+          offers a &quot;Help Section&quot; where you can connect with
+          professionals for counseling or business advice via subscription.
         </p>
 
         <h2 className="mb-4 text-2xl font-bold">
@@ -174,13 +174,13 @@ export default function PolicyPage() {
       <Button
         variant="outline"
         size="icon"
-        className="fixed left-4 top-4 z-50 bg-blackA11 shadow-md hover:bg-gray-100 dark:bg-white"
+        className="bg-blackA11 fixed top-4 left-4 z-50 shadow-md hover:bg-gray-100 dark:bg-white"
         onClick={() => window.history.back()}
       >
         <ChevronLeft className="h-4 w-4 text-white dark:text-black" />
       </Button>
 
-      <div className="mx-auto max-w-4xl overflow-hidden rounded-lg bg-gray-200 shadow-xl dark:bg-black max-sm:max-w-5xl">
+      <div className="mx-auto max-w-4xl overflow-hidden rounded-lg bg-gray-200 shadow-xl max-sm:max-w-5xl dark:bg-black">
         <div className="p-8">
           <h1 className="mb-8 text-center text-4xl font-bold text-indigo-600">
             Xolace&quot;s Policies

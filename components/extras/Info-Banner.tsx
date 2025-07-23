@@ -1,6 +1,6 @@
 'use client';
 
-import { motion, useScroll, useTransform } from 'framer-motion';
+import { motion, useScroll, useTransform } from 'motion/react';
 
 export function InfoBanner() {
   const { scrollY } = useScroll();
@@ -9,7 +9,7 @@ export function InfoBanner() {
 
   return (
     <motion.div
-      className="fixed left-0 right-0 top-20 z-40 text-primary-foreground"
+      className="text-primary-foreground fixed top-20 right-0 left-0 z-40"
       style={{ opacity, y }}
     >
       <div className="container mx-auto px-4">

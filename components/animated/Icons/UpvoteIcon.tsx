@@ -1,6 +1,6 @@
 'use client';
 
-import { motion, useAnimation } from 'framer-motion';
+import { motion, useAnimation } from 'motion/react';
 
 interface UpvoteIconProps {
   filled: boolean;
@@ -12,7 +12,7 @@ const UpvoteIcon: React.FC<UpvoteIconProps> = ({ filled, onClick }) => {
 
   return (
     <div
-      className="flex cursor-pointer select-none items-center justify-center rounded-md p-2 transition-colors duration-200"
+      className="flex cursor-pointer items-center justify-center rounded-md p-2 transition-colors duration-200 select-none"
       onMouseEnter={() => controls.start('animate')}
       onMouseLeave={() => controls.start('normal')}
       onClick={onClick}

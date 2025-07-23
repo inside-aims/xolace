@@ -21,8 +21,7 @@ import NotificationPanel from '@/components/notifications/notification-panel';
 import { Badge } from './ui/badge';
 import { useNotificationCount } from '@/hooks/notifications/useNotificationCount';
 import { useQueryClient } from '@tanstack/react-query';
-import { motion, AnimatePresence } from "framer-motion";
-
+import { motion, AnimatePresence } from 'motion/react';
 
 export function SiteHeader() {
   // get user profile data
@@ -46,22 +45,27 @@ export function SiteHeader() {
     if (!user) return;
 
     const channel = supabase
-        .channel(`realtime-notifications-${user.id}`) // Channel can be user-specific
-        .on(
-            'postgres_changes',
-            { event: '*', schema: 'public', table: 'notifications', filter: `recipient_user_id=eq.${user.id}` },
-            () => {
-                // When a change occurs, invalidate the queries to refetch fresh data.
-                // Invalidating the root 'notifications' key will refetch both the count and the list.
-                queryClient.invalidateQueries({ queryKey: ['notifications'] });
-            }
-        )
-        .subscribe();
+      .channel(`realtime-notifications-${user.id}`) // Channel can be user-specific
+      .on(
+        'postgres_changes',
+        {
+          event: '*',
+          schema: 'public',
+          table: 'notifications',
+          filter: `recipient_user_id=eq.${user.id}`,
+        },
+        () => {
+          // When a change occurs, invalidate the queries to refetch fresh data.
+          // Invalidating the root 'notifications' key will refetch both the count and the list.
+          queryClient.invalidateQueries({ queryKey: ['notifications'] });
+        },
+      )
+      .subscribe();
 
     return () => {
-        supabase.removeChannel(channel);
+      supabase.removeChannel(channel);
     };
-}, [queryClient, user, supabase]);
+  }, [queryClient, user, supabase]);
 
   // Subscribe to sign out event
   useEffect(() => {
@@ -175,23 +179,22 @@ export function SiteHeader() {
             <div className="relative">
               <button
                 type="button"
-                className={'flex items-center cursor-pointer'}
+                className={'flex cursor-pointer items-center'}
                 onClick={() => setIsOpen(!isOpen)}
                 ref={bellButtonRef}
               >
                 <Bell size={22} />
               </button>
-              {
-                count ? count > 0 && (
-                  <Badge
-                  className="absolute -top-2 -right-1 h-4 min-w-4 rounded-full px-1 font-mono tabular-nums"
-                  variant="destructive"
-                >
-                  {count > 9 ? '9+' : count}
-                </Badge>
-                ) : null
-              }
-             
+              {count
+                ? count > 0 && (
+                    <Badge
+                      className="absolute -top-2 -right-1 h-4 min-w-4 rounded-full px-1 font-mono tabular-nums"
+                      variant="destructive"
+                    >
+                      {count > 9 ? '9+' : count}
+                    </Badge>
+                  )
+                : null}
             </div>
             <div id="online-users" className={'flex items-center'}>
               {/* <ProgressBetaBadge progress={30} /> */}
@@ -199,32 +202,33 @@ export function SiteHeader() {
             </div>
           </div>
           {isOpen && (
-              <AnimatePresence >
-                  <motion.div
-                    className={"fixed top-[90px] right-0 w-[calc(100%-1rem)] max-w-[80%] h-auto md:w-[400px] max-h-[calc(90vh-var(--header-height)-70px)] md:max-h-[calc(90vh-40px)] z-[9999] bg-bg dark:bg-[#1b1a1a] shadow-lg border rounded-lg flex flex-col"}
-                    initial={{x: 300, opacity: 0, scale: 0.98}}
-                    animate={{x: 0, opacity: 1, scale: 1}}
-                    exit={{x: 300, opacity: 0, scale: 0.98}}
-                    transition={{
-                      x: isOpen
-                        ? {duration: 0.5, ease: [0.25, 0.8, 0.25, 1]}
-                        : {duration: 0.9, ease: [0.25, 0.8, 0.25, 1]},
-                      opacity: isOpen
-                        ? {duration: 0.2, ease: 'easeOut'}
-                        : {duration: 0.5, ease: 'easeIn'},
-                      scale: isOpen
-                        ? {duration: 0.2, ease: 'easeOut'}
-                        : {duration: 0.5, ease: 'easeIn'}
-                    }}
-                    ref={notificationRef}
-                  >
-                      <NotificationPanel/>
-                  </motion.div>
-              </AnimatePresence>
+            <AnimatePresence>
+              <motion.div
+                className={
+                  'bg-bg fixed top-[90px] right-0 z-[9999] flex h-auto max-h-[calc(90vh-var(--header-height)-70px)] w-[calc(100%-1rem)] max-w-[80%] flex-col rounded-lg border shadow-lg md:max-h-[calc(90vh-40px)] md:w-[400px] dark:bg-[#1b1a1a]'
+                }
+                initial={{ x: 300, opacity: 0, scale: 0.98 }}
+                animate={{ x: 0, opacity: 1, scale: 1 }}
+                exit={{ x: 300, opacity: 0, scale: 0.98 }}
+                transition={{
+                  x: isOpen
+                    ? { duration: 0.5, ease: [0.25, 0.8, 0.25, 1] }
+                    : { duration: 0.9, ease: [0.25, 0.8, 0.25, 1] },
+                  opacity: isOpen
+                    ? { duration: 0.2, ease: 'easeOut' }
+                    : { duration: 0.5, ease: 'easeIn' },
+                  scale: isOpen
+                    ? { duration: 0.2, ease: 'easeOut' }
+                    : { duration: 0.5, ease: 'easeIn' },
+                }}
+                ref={notificationRef}
+              >
+                <NotificationPanel />
+              </motion.div>
+            </AnimatePresence>
           )}
         </div>
       </header>
-
 
       {/* <SignoutAlert isOpen={isOpen} setIsOpen={setIsOpen} /> */}
     </>

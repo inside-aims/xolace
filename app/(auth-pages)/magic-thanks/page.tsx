@@ -1,7 +1,7 @@
 'use client';
 
 import Link from 'next/link';
-import { motion } from 'framer-motion';
+import { motion } from 'motion/react';
 import { useEffect, useState, use } from 'react';
 
 import { FORM_TYPES } from '@/constants';

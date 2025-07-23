@@ -1,7 +1,7 @@
 'use client';
 
 import React, { useState } from 'react';
-import { motion } from 'framer-motion';
+import { motion } from 'motion/react';
 
 export default function XolaceBetaBadge() {
   const [isHovered, setIsHovered] = useState(false);
@@ -20,7 +20,7 @@ export default function XolaceBetaBadge() {
         transition={{ duration: 2, ease: 'linear', repeat: Infinity }}
       />
       <motion.div
-        className="relative z-10 rounded-full bg-black px-3 py-1 text-sm font-bold uppercase tracking-wider text-white"
+        className="relative z-10 rounded-full bg-black px-3 py-1 text-sm font-bold tracking-wider text-white uppercase"
         initial={{ scale: 1 }}
         animate={{ scale: isHovered ? 1.1 : 1 }}
         transition={{ type: 'spring', stiffness: 300, damping: 10 }}
@@ -28,7 +28,7 @@ export default function XolaceBetaBadge() {
         Xolace Beta
       </motion.div>
       <motion.div
-        className="absolute -right-1 -top-1 h-3 w-3 rounded-full bg-blue"
+        className="bg-blue absolute -top-1 -right-1 h-3 w-3 rounded-full"
         animate={{
           scale: [1, 1.2, 1],
         }}
