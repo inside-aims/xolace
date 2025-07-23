@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useState, useActionState } from 'react';
+import React, { useState, useActionState, useRef, useEffect } from 'react';
 import Link from 'next/link';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useForm } from 'react-hook-form';
@@ -20,7 +20,8 @@ import { Input } from '@/components/ui/input';
 import { Checkbox } from '@/components/ui/checkbox';
 import ToggleEyeIcon from '../ui/ToggleEyeIcon';
 import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group';
-import { useToast } from '@/components/ui/use-toast';
+//import { useToast } from '@/components/ui/use-toast';
+import { toast } from 'sonner';
 import { signUpSchema } from '@/validation';
 import { signUpAction } from '@/app/actions';
 import { ActionState } from '@/lib/auth/middleware';
@@ -35,7 +36,7 @@ const female = 'female' as const;
 const emailRegex = /^\S+@\S+$/;
 
 const SignUpForm = () => {
-  const { toast } = useToast();
+  const toastIdRef = useRef<string | number | null>(null);
   const [showPassword, setShowPassword] = useState(false);
   const [state, formAction, pending] = useActionState<ActionState, FormData>(
     signUpAction,
@@ -64,17 +65,27 @@ const SignUpForm = () => {
 
   //
   const handleClick = () => {
+    const toastId = toast('Signup');
+    toastIdRef.current = toastId;
     if (
       username.length >= 2 &&
       password.length >= 8 &&
       emailRegex.test(email)
     ) {
-      toast({
-        variant: 'default',
-        title: ' ➰ Creating account and profile in a moment 🧐',
-      });
+      toast.loading(' ➰ Creating account and profile in a moment 🧐', { id: toastIdRef.current });
     }
   };
+
+  useEffect(() => {
+    if (!state.success && state.message && toastIdRef.current) {
+      toast.error(state.message, {
+        id: toastIdRef.current,
+      });
+  
+      // Optional: Clear the toast ID after error update
+      toastIdRef.current = null;
+    }
+  }, [state]);
 
   // error message
   const errorMessage = {

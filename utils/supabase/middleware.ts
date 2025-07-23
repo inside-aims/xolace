@@ -14,7 +14,7 @@ export const updateSession = async (request: NextRequest) => {
 
     const supabase = createServerClient(
       process.env.NEXT_PUBLIC_SUPABASE_URL!,
-      process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!,
+      process.env.NEXT_PUBLIC_SUPABASE_PUBLISHABLE_OR_ANON_KEY!,
       {
         cookies: {
           getAll() {
@@ -37,7 +37,15 @@ export const updateSession = async (request: NextRequest) => {
 
     // This will refresh session if expired - required for Server Components
     // https://supabase.com/docs/guides/auth/server-side/nextjs
-    const user = await supabase.auth.getUser();
+    // const user = await supabase.auth.getUser();
+    // Do not run code between createServerClient and
+    // supabase.auth.getClaims(). A simple mistake could make it very hard to debug
+    // issues with users being randomly logged out.
+
+    // IMPORTANT: If you remove getClaims() and you use server-side rendering
+    // with the Supabase client, your users may be randomly logged out.
+    const { data } = await supabase.auth.getClaims();
+    const user = data?.claims;
 
     // List of protected routes
     const protectedRoutes = [
@@ -54,7 +62,7 @@ export const updateSession = async (request: NextRequest) => {
       '/health-tips',
       '/create-health-tips',
       '/glimpse',
-      '/notifications'
+      '/notifications',
     ];
 
     // List of public routes
@@ -71,8 +79,11 @@ export const updateSession = async (request: NextRequest) => {
     );
 
     // If user is not authenticated and trying to access a protected route, redirect to sign-in
-    if (isProtectedRoute && user.error) {
-      return NextResponse.redirect(new URL('/sign-in', request.url));
+    if (isProtectedRoute && !user) {
+      // add a nexturl search params of the protected route so we can redirect when we sign in
+      return NextResponse.redirect(
+        new URL('/sign-in?nexturl=' + request.nextUrl.pathname, request.url),
+      );
     }
 
     // Redirect authenticated user from home page to '/feed' (or any default page)
@@ -80,7 +91,7 @@ export const updateSession = async (request: NextRequest) => {
       (request.nextUrl.pathname === '/' ||
         request.nextUrl.pathname === '/sign-in' ||
         request.nextUrl.pathname === '/sign-up') &&
-      !user.error
+      user
     ) {
       return NextResponse.redirect(new URL('/feed', request.url));
     }
