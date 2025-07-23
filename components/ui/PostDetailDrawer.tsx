@@ -45,7 +45,6 @@ const PostDetailDrawer = ({ post, type }: { post: DetailPost; type: Type }) => {
   // get user data
   const user = useUserState(state => state.user);
   const { data: flatComments, isLoading , isFetching , isError} = useCommentThread(post.id);
-   console.log("flat comments ",flatComments)
   
   const [replyingTo, setReplyingTo] = useState<number | null>(null);
   const [expandedComments, setExpandedComments] = useState<Set<number>>(new Set());
@@ -120,14 +119,10 @@ const PostDetailDrawer = ({ post, type }: { post: DetailPost; type: Type }) => {
         // If we are replying, find the parent to determine the correct depth
         if (replyingTo && flatComments) {
             parentId = Number(replyingTo);
-            console.log("parent id ", parentId)
             const parentComment = findCommentById(flatComments, parentId);
-            console.log("parent comment ",parentComment)
-            console.log("depth ",depth)
             if (parentComment) {
                 depth = parentComment.depth + 1;
                 parentAuthorId = parentComment.created_by;
-                console.log("depth in if",depth)
             }
         }
 
