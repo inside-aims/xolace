@@ -47,9 +47,6 @@ export const updateSession = async (request: NextRequest) => {
   const { data } = await supabase.auth.getClaims();
   const user = data?.claims;
 
-  console.log("data claims: ", data);
-  console.log("user: ", user);
-
     // List of protected routes
     const protectedRoutes = [
       '/feed',
@@ -76,7 +73,6 @@ export const updateSession = async (request: NextRequest) => {
       request.nextUrl.pathname.startsWith(route),
     );
 
-    console.log("pathname: ", request.nextUrl.pathname);
 
     // Check if the request path matches any protected route
     const isProtectedRoute = protectedRoutes.some(route =>
