@@ -7,6 +7,7 @@ import type { CollectionFilter } from "@/app/(protected)/collections/collections
 import { useInfiniteQuery, type SupabaseQueryHandler } from '@/hooks/use-infinite-query';
 import { useRouter } from "next/navigation"
 import FeedSkeletonLoader from "@/components/shared/loaders/FeedSkeletonLoader"
+import { PostgrestFilterBuilder } from "@supabase/postgrest-js"
 // import { useInfiniteQuery } from '@/hooks/use-infinite-query'
 
 export type PostSortFilter = "recent" | "most-upvoted" | "most-commented"
@@ -54,7 +55,7 @@ export function PostsSection({ collectionFilter, userId }: PostsSectionProps) {
 //WRAP IN USECALLBACK
 const queryHandler: SupabaseQueryHandler<"collections"> = useCallback(
     (query) => {
-      let filteredQuery = query.eq("user_id", userId)
+      let filteredQuery: PostgrestFilterBuilder<any, any, any> = query.eq("user_id", userId)
       
       if (collectionFilter !== "all") {
         filteredQuery = filteredQuery.eq("collection_name", collectionFilter)
