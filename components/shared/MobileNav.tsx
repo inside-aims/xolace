@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { useAnimate } from 'motion/react;
+import { useAnimate } from 'motion/react';
 
 import { Menu } from './Menu';
 import { MenuToggle } from '../ui/MenuToggle';
