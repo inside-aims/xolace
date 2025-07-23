@@ -9,7 +9,7 @@ import { getSupabaseBrowserClient } from '@/utils/supabase/client';
 //import BlurFade from '@/components/ui/blur-fade';
 import { Post } from '@/types/global';
 import { useToast } from '@/components/ui/use-toast';
-import {domAnimation, LazyMotion} from "framer-motion";
+import {domAnimation, LazyMotion} from "motion/react";
 
 // Dynamic imports for non-critical components
 const PostCard = dynamic(

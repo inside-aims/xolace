@@ -1,7 +1,7 @@
 'use client';
 
-import type { Variants } from 'framer-motion';
-import { motion, useAnimation } from 'framer-motion';
+import type { Variants } from 'motion/react';
+import { motion, useAnimation } from 'motion/react';
 
 interface LogoutIconProps {
   className?: string;
@@ -28,7 +28,7 @@ const LogoutIcon = ({
 
   return (
     <div
-      className={`flex cursor-pointer select-none items-center justify-center rounded-md transition-colors duration-200 hover:bg-accent ${className}`}
+      className={`hover:bg-accent flex cursor-pointer items-center justify-center rounded-md transition-colors duration-200 select-none ${className}`}
       onMouseEnter={() => controls.start('animate')}
       onMouseLeave={() => controls.start('normal')}
       onClick={() => controls.start('animate')}

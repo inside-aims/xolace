@@ -1,4 +1,3 @@
-
 'use client';
 
 import { useEffect, useState } from 'react';
@@ -8,7 +7,7 @@ import { EnhancedPostCard } from '../cards/EnhancedPostCard';
 //import FeedSkeletonLoader from './loaders/FeedSkeletonLoader';
 import BlurFade from '../ui/blur-fade';
 //import { Post } from '@/types/global';
-import { LazyMotion, domAnimation } from 'framer-motion';
+import { LazyMotion, domAnimation } from 'motion/react';
 import { usePosts } from '@/hooks/posts/usePostsData';
 import { useRealtimePosts } from '@/hooks/posts/useRealTimePosts';
 import FeedSkeletonLoader from './loaders/FeedSkeletonLoader';

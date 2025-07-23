@@ -2,7 +2,7 @@
 
 import { useRouter, useSearchParams } from 'next/navigation';
 import React, { useState } from 'react';
-import { motion } from 'framer-motion';
+import { motion } from 'motion/react';
 
 import { formUrlQuery, removeKeyFromQuery } from '@/lib/url';
 import { filters } from '@/constants';
@@ -35,7 +35,7 @@ const FilterPills: React.FC = () => {
     });
   };
   return (
-    <div className="mt-6 flex flex-wrap justify-center gap-3 w-full">
+    <div className="mt-6 flex w-full flex-wrap justify-center gap-3">
       {filters.map(filter => (
         <motion.button
           key={filter.name}

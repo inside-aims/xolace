@@ -3,17 +3,21 @@
 // import { Button } from "@/components/ui/button"
 import { HelpCircle } from 'lucide-react';
 import { useTour } from '@reactour/tour';
-import { motion } from 'framer-motion';
+import { motion } from 'motion/react';
 import { usePreferencesStore } from '@/lib/store/preferences-store';
 
 export default function TourButton() {
-  const {preferences} = usePreferencesStore();
+  const { preferences } = usePreferencesStore();
   const { setIsOpen } = useTour();
   return (
     <>
       <motion.button
         onClick={() => setIsOpen(true)}
-        className={preferences?.guided_tour_enabled ? `bg-blue relative flex h-10 w-10 items-center justify-center rounded-full text-white shadow-lg transition-transform hover:scale-110 md:hidden` : `hidden`}
+        className={
+          preferences?.guided_tour_enabled
+            ? `bg-blue relative flex h-10 w-10 items-center justify-center rounded-full text-white shadow-lg transition-transform hover:scale-110 md:hidden`
+            : `hidden`
+        }
         whileHover={{ scale: 1.1 }}
         whileTap={{ scale: 0.9 }}
       >
@@ -22,7 +26,7 @@ export default function TourButton() {
         {/* <Binoculars size={20} strokeWidth={2.25} color="#342adb" /> */}
         {/* Pulsating Effect */}
         <motion.span
-          className="bg-sky-500 absolute h-full w-full rounded-full opacity-60"
+          className="absolute h-full w-full rounded-full bg-sky-500 opacity-60"
           animate={{
             scale: [1, 1.5, 1],
             opacity: [0.5, 0],
@@ -38,17 +42,20 @@ export default function TourButton() {
 
       <motion.button
         onClick={() => setIsOpen(true)}
-        className={preferences?.guided_tour_enabled ? `relative hidden items-center justify-center rounded-full bg-sky-500 h-12 w-32 font-bold text-white shadow-lg transition-colors duration-200 hover:bg-sky-600 md:flex` : `hidden`}
+        className={
+          preferences?.guided_tour_enabled
+            ? `relative hidden h-12 w-32 items-center justify-center rounded-full bg-sky-500 font-bold text-white shadow-lg transition-colors duration-200 hover:bg-sky-600 md:flex`
+            : `hidden`
+        }
         whileHover={{ scale: 1.1 }}
         whileTap={{ scale: 0.9 }}
       >
         <HelpCircle className="mr-2" />
         Start Tour
-
         <motion.span
-          className="bg-sky-500 absolute h-full w-full rounded-full opacity-50"
+          className="absolute h-full w-full rounded-full bg-sky-500 opacity-50"
           animate={{
-            scale: [1, 1.5 , 1],
+            scale: [1, 1.5, 1],
             opacity: [0.5, 0],
           }}
           transition={{

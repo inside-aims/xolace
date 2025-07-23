@@ -2,7 +2,7 @@
 
 import React from 'react';
 import dynamic from 'next/dynamic';
-import { motion } from 'framer-motion';
+import { motion } from 'motion/react';
 import { ImageOffIcon as MaskOffIcon } from 'lucide-react';
 import {
   Dialog,
@@ -15,9 +15,12 @@ import {
 } from '@/components/ui/dialog';
 //import GradientTextLink from '../shared/GradientText/GradientTextLink';
 
-const GradientTextLink = dynamic(() => import('../shared/GradientText/GradientTextLink'), {
-  ssr: false,
-});
+const GradientTextLink = dynamic(
+  () => import('../shared/GradientText/GradientTextLink'),
+  {
+    ssr: false,
+  },
+);
 
 const ChannelAboutCard = () => {
   return (
@@ -29,7 +32,7 @@ const ChannelAboutCard = () => {
             whileHover={{ scale: 1.03 }}
             whileTap={{ scale: 0.98 }}
           >
-            <MaskOffIcon className="text-blue-500 dark:text-blue-400 mb-4 h-12 w-12" />
+            <MaskOffIcon className="mb-4 h-12 w-12 text-blue-500 dark:text-blue-400" />
             <h2 className="mb-2 text-xl font-semibold text-gray-800 dark:text-gray-100">
               About Xolace
             </h2>
