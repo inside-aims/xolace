@@ -23,17 +23,33 @@ import { DetailPost, Comment } from '@/types/global';
 import { Send } from 'lucide-react';
 import PostMetrics from '@/components/shared/PostMetrics';
 import SaveToCollectionsButton from '@/components/shared/SaveToCollectionsButton';
-import CommentCard from '@/components/cards/CommentCard';
 import { useCommentSubscription } from '@/hooks/posts/useCommentSubscription';
 import { DefaultLoader } from '@/components/shared/loaders/DefaultLoader';
+import CommentChart from "@/components/cards/CommentChart";
+import { useCommentThread } from '@/hooks/posts/use-comment-thread';
+import { findCommentById } from '@/utils/helpers/getCommentById';
+
 // import View from '@/components/hocs/detailsPostComponents/View';
 const View = dynamic(() => import('../../hocs/detailsPostComponents/View'), {
   ssr: false,
 });
 
+
+
+
 const PostDetailsInteraction = ({ post }: { post: DetailPost }) => {
   // get user data
   const user = useUserState(state => state.user);
+ // 1. Fetch the entire nested thread using our custom hook
+ const { data: flatComments, isLoading , isFetching , isError} = useCommentThread(post.id);
+
+  const [replyingTo, setReplyingTo] = useState<number | null>(null);
+  const [expandedComments, setExpandedComments] = useState<Set<number>>(new Set());
+
+  // 3. Memoize the conversion from a flat list to a nested tree structure
+  // const nestedComments = useMemo(() => {
+  //   return flatComments ? nestComments(flatComments) : [];
+  // }, [flatComments]);
 
   // states
   const [comments, setComments] = useState<Comment[]>(post?.comments || []);
@@ -70,11 +86,28 @@ const PostDetailsInteraction = ({ post }: { post: DetailPost }) => {
       return;
     }
 
+    let parentId: number | undefined = undefined;
+    let parentAuthorId: string | undefined = undefined;
+    let depth = 0;
+
+    // If we are replying, find the parent to determine the correct depth
+    if (replyingTo && flatComments) {
+        parentId = Number(replyingTo);
+        const parentComment = findCommentById(flatComments, parentId);
+        if (parentComment) {
+            depth = parentComment.depth + 1;
+            parentAuthorId = parentComment.created_by;
+        }
+    }
+
     createComment(
       {
         postId: post.id,
         commentText: comment,
         postCreatedBy: post.created_by ?? '',
+        parentId,
+        depth,
+        parentAuthorId,
       },
       {
         onSuccess: () => {
@@ -106,6 +139,32 @@ const PostDetailsInteraction = ({ post }: { post: DetailPost }) => {
       setComments(prev => prev.filter(comment => comment.id !== deletedId));
     },
   });
+
+  const handleReply = (authorName: string, commentId: number) => {
+    const mention = `@${authorName.replace(/\s+/g, '').toLowerCase()} `;
+    form.setValue('comment', mention);
+    setReplyingTo(commentId);
+     const textarea = document.querySelector('textarea[name="comment"]') as HTMLTextAreaElement;
+     if (textarea) {
+      textarea.focus();
+      setTimeout(() => {
+        textarea.setSelectionRange(mention.length, mention.length);
+          }, 0);
+     }
+   };
+
+   // wrap in a useCallback
+   const handleToggleExpanded = React.useCallback((commentId: number) => {
+    setExpandedComments(prev => {
+      const newSet = new Set(prev);
+      if (newSet.has(commentId)) {
+        newSet.delete(commentId);
+      } else {
+        newSet.add(commentId);
+      }
+      return newSet;
+    });
+  }, [setExpandedComments]);
 
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   // useEffect((): any => {
@@ -155,66 +214,67 @@ const PostDetailsInteraction = ({ post }: { post: DetailPost }) => {
 
   return (
     <div className="w-full px-13 max-md:hidden">
-      <div className="mt-1 mb-10 px-2">
-        {user ? (
-          <div className="flex items-center gap-5">
-            <PostMetrics
-              post={post}
-              userId={user?.id || ''}
-              votes={post.votes}
-              section="details"
-              commentLength={comments.length}
-            />
+      <div className="relative">
+        <div className="mt-1 mb-10 px-2 ">
+          {user ? (
+            <div className="flex items-center gap-5">
+              <PostMetrics
+                post={post}
+                userId={user?.id || ''}
+                votes={post.votes}
+                section="details"
+                commentLength={comments.length}
+              />
 
-            <div className="flex items-center justify-center gap-2">
-              {post?.expires_in_24hr && (
-                <div
-                  className={`flex h-6 w-8 items-center justify-center rounded-full bg-zinc-400 dark:bg-zinc-700`}
-                  id="mood-btn"
-                >
+              <div className="flex items-center justify-center gap-2">
+                {post?.expires_in_24hr && (
+                  <div
+                    className={`flex h-6 w-8 items-center justify-center rounded-full bg-zinc-400 dark:bg-zinc-700`}
+                    id="mood-btn"
+                  >
                   <span className="animate-bounce duration-700 ease-in-out">
                     {' '}
                     ⏳
                   </span>
+                  </div>
+                )}
+
+                <div id="collection-btn">
+                  <SaveToCollectionsButton
+                    userId={user?.id || ''}
+                    createdBy={post.created_by ?? ''}
+                    postId={post.id}
+                    postCollections={post.collections}
+                  />
                 </div>
-              )}
-
-              <div id="collection-btn">
-                <SaveToCollectionsButton
-                  userId={user?.id || ''}
-                  createdBy={post.created_by ?? ''}
-                  postId={post.id}
-                  postCollections={post.collections}
-                />
               </div>
+
+              <View
+                id={post.id}
+                createdBy={post.created_by ?? ''}
+                viewsCount={post.views[0].count || 0}
+                content={post.content}
+              />
+
+
             </div>
-
-            <View
-              id={post.id}
-              createdBy={post.created_by ?? ''}
-              viewsCount={post.views[0].count || 0}
-              content={post.content}
-            />
-
-
-          </div>
-        ) : (
-          <div className="flex animate-pulse items-center gap-5">
-            <div className="flex items-center gap-1">
-              <div className="h-5 w-5 rounded bg-gray-200 dark:bg-gray-700"></div>
-              <div className="h-4 w-8 rounded bg-gray-200 dark:bg-gray-700"></div>
-              <div className="h-5 w-5 rounded bg-gray-200 dark:bg-gray-700"></div>
-              <div className="h-4 w-8 rounded bg-gray-200 dark:bg-gray-700"></div>
+          ) : (
+            <div className="flex animate-pulse items-center gap-5">
+              <div className="flex items-center gap-1">
+                <div className="h-5 w-5 rounded bg-gray-200 dark:bg-gray-700"></div>
+                <div className="h-4 w-8 rounded bg-gray-200 dark:bg-gray-700"></div>
+                <div className="h-5 w-5 rounded bg-gray-200 dark:bg-gray-700"></div>
+                <div className="h-4 w-8 rounded bg-gray-200 dark:bg-gray-700"></div>
+              </div>
+              <div className="h-7 w-10 rounded-full bg-gray-200 dark:bg-gray-700"></div>
+              <div className="h-8 w-8 rounded bg-gray-200 dark:bg-gray-700"></div>
             </div>
-            <div className="h-7 w-10 rounded-full bg-gray-200 dark:bg-gray-700"></div>
-            <div className="h-8 w-8 rounded bg-gray-200 dark:bg-gray-700"></div>
-          </div>
-        )}
-      </div>
-      <Form {...form}>
-        <form onSubmit={form.handleSubmit(onSubmit)} className="w-full">
-          <FormField
-            control={form.control}
+          )}
+        </div>
+        <Form {...form}>
+          <form onSubmit={form.handleSubmit(onSubmit)} className="w-full">
+            <FormField
+              control={form.control}
             name="comment"
             render={({ field }) => (
               <FormItem>
@@ -223,6 +283,8 @@ const PostDetailsInteraction = ({ post }: { post: DetailPost }) => {
                     placeholder="Join the conversation"
                     className="no-focus! dark:hover:border-muted-dark-hover focus-visible:border-input mb-5 min-h-12 resize-none rounded-lg focus-visible:ring-0 w-full"
                     {...field}
+                    cols={8}
+                    rows={8}
                   />
                 </FormControl>
                 <FormMessage />
@@ -257,19 +319,32 @@ const PostDetailsInteraction = ({ post }: { post: DetailPost }) => {
           </div>
         </form>
       </Form>
+    </div>
 
-      <div className="mt-10">
-        {comments
-          .map((comment: Comment) => (
-            <CommentCard
-              key={comment.id}
-              comment={comment}
-              className="border-none bg-transparent! p-0!"
-              headerClassName="p-0!"
-              contentClassName="pl-9 pb-0"
-            />
-          ))
-          .reverse()}
+      <div className="mt-8">
+        {/*{comments*/}
+        {/*  .map((comment: Comment) => (*/}
+        {/*    <CommentCard*/}
+        {/*      key={comment.id}*/}
+        {/*      comment={comment}*/}
+        {/*      className="border-none bg-transparent! p-0!"*/}
+        {/*      headerClassName="p-0!"*/}
+        {/*      contentClassName="pl-9 pb-0"*/}
+        {/*    />*/}
+        {/*  ))*/}
+        {/*  .reverse()}*/}
+        {/*<CommentThread comments={SampleComments}/>*/}
+        {isLoading && isFetching && <p>Loading comments...</p>}
+        {isError && <p>Error loading comments. Please reload page</p>}
+        {!isLoading && flatComments && flatComments.length > 0 && (
+          <CommentChart
+            comments={flatComments}
+            onReply={handleReply}
+            replyingTo={replyingTo}
+            expandedComments={expandedComments}
+            onToggleExpanded={handleToggleExpanded}
+          />
+        )}
         {comments.length == 0 && (
           <div className="flex flex-col items-center justify-center space-y-4 py-5 text-center">
             <div className="relative">

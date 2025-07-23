@@ -1353,6 +1353,20 @@ export type Database = {
         }
         Returns: string
       }
+      get_comments_with_replies: {
+        Args: { post_id_param: string }
+        Returns: {
+          author_avatar_url: string | null
+          author_name: string | null
+          comment_text: string
+          created_at: string
+          created_by: string | null
+          depth: number
+          id: number
+          parent_id: number | null
+          post: string
+        }[]
+      }
       get_user_stats: {
         Args: { profile_id: string }
         Returns: {
@@ -1443,6 +1457,7 @@ export type Database = {
         | "video_liked"
         | "system_announcement"
         | "post_viewed"
+        | "comment_reply"
       post_duration: "6" | "12" | "24"
       post_mood:
         | "neutral"
@@ -1623,6 +1638,7 @@ export const Constants = {
         "video_liked",
         "system_announcement",
         "post_viewed",
+        "comment_reply",
       ],
       post_duration: ["6", "12", "24"],
       post_mood: [

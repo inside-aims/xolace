@@ -11,6 +11,9 @@ interface CreateCommentVariables {
   postId: string;
   commentText: string;
   postCreatedBy: string;
+  parentId?: number;
+  depth?: number;
+  parentAuthorId? : string;
 }
 
 interface CreateCommentContext {
@@ -28,7 +31,7 @@ export function useCommentMutation(post: DetailPost) {
     CreateCommentVariables, // Variables passed to the mutation function
     CreateCommentContext // Context type for onMutate/onError
   >({
-    mutationFn: async ({ postId, commentText }) => {
+    mutationFn: async ({ postId, commentText, parentId , depth, parentAuthorId  }) => {
       if (!user?.id) {
         throw new Error('User not authenticated');
       }
@@ -38,6 +41,8 @@ export function useCommentMutation(post: DetailPost) {
         .insert({
           post: postId,
           comment_text: commentText,
+          parent_id: parentId ? Number(parentId) : null,
+          depth: depth ? depth : 0,
         })
         .select()
         .single();
@@ -69,9 +74,19 @@ export function useCommentMutation(post: DetailPost) {
         });
       }
 
+      if(parentAuthorId && user?.id !== parentAuthorId){
+        await createNotification({
+          recipient_user_id: parentAuthorId,
+          actor_id: user?.id || null,
+          type: 'comment_reply',
+          entity_id: postId,
+          metadata: { content: commentText, link: `/post/${postId}` },
+        });
+      }
+
       return data; // Return the inserted comment data
     },
-    onMutate: async ({ postId, commentText }) => {
+    onMutate: async ({ postId, commentText, parentId, depth }) => {
       // Cancel any outgoing refetches for the comments query
       await queryClient.cancelQueries({ queryKey: ['comments', postId] });
 
@@ -90,8 +105,8 @@ export function useCommentMutation(post: DetailPost) {
         created_by: user?.id || '', // Use current user ID
         author_name: user?.username || 'Anonymous', // Use current username
         author_avatar_url: user?.avatar_url || null,
-        depth: 0,
-        parent_id: null
+        depth: depth ? depth : 0,
+        parent_id: parentId ? Number(parentId) : null,
       };
 
       // Optimistically update the comments list
