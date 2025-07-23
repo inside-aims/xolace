@@ -74,7 +74,7 @@ const CommentCard = ({comment, className, headerClassName, contentClassName, lev
 
         <Card
           className={cn(
-            "mb-2 w-full hover:shadow-md transition-all duration-200 border-0",
+            "mb-2 w-full transition-all duration-200 border-0",
             isBeingRepliedTo
               ? "border-blue-500 dark:border-blue-400 bg-blue-50 dark:bg-blue-900/20"
               : "border-gray-200 dark:border-gray-700",
