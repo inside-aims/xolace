@@ -2,6 +2,7 @@ import type { Metadata } from 'next';
 import Image from 'next/image';
 import SignInForm from '@/components/forms/SignInForm';
 import signIn from "../../../public/assets/images/auth/sign-in.png"
+import { Suspense } from 'react';
 
 export const metadata: Metadata = {
   title: 'Sign-in',
@@ -15,7 +16,9 @@ export default async function Login() {
       <div className="w-full grid grid-cols-12 min-h-screen">
         {/*form section*/}
         <div className="p-2 col-span-12 md:col-span-7 flex items-center justify-center w-full lg:mx-[-8%]">
-          <SignInForm/>
+          <Suspense fallback={null}>
+            <SignInForm />
+          </Suspense>
         </div>
 
         {/*image section*/}
