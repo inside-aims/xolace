@@ -22,6 +22,7 @@ export const updateSession = async (request: NextRequest) => {
           sameSite: 'lax',
           secure: true,
           domain: `.xolace.app`,
+          maxAge: 60 * 60 * 24 * 30,
         },
         cookies: {
           getAll() {
@@ -35,16 +36,15 @@ export const updateSession = async (request: NextRequest) => {
             //   request,
             // });
             cookiesToSet.forEach(({ name, value, options }) =>{
-              const newOptions = {
-                ...options, // Spread original options first
-                domain: '.xolace.app', // FORCE the domain
-                path: '/',
-                secure: true,
-                sameSite: 'lax' as const,
-              };
+              // const newOptions = {
+              //   ...options, // Spread original options first
+              //   domain: '.xolace.app', // FORCE the domain
+              //   path: '/',
+              //   secure: true,
+              //   sameSite: 'lax' as const,
+              // };
 
-              console.log('Setting cookie with options:', newOptions);
-              response.cookies.set(name, value, newOptions)
+              response.cookies.set(name, value, options)
             });
           },
         },
