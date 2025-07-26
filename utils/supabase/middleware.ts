@@ -42,6 +42,8 @@ export const updateSession = async (request: NextRequest) => {
                 secure: true,
                 sameSite: 'lax' as const,
               };
+
+              console.log('Setting cookie with options:', newOptions);
               response.cookies.set(name, value, newOptions)
             });
           },
