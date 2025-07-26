@@ -35,7 +35,14 @@ export const updateSession = async (request: NextRequest) => {
             //   request,
             // });
             cookiesToSet.forEach(({ name, value, options }) =>{
-              response.cookies.set(name, value, options)
+              const newOptions = {
+                ...options, // Spread original options first
+                domain: '.xolace.app', // FORCE the domain
+                path: '/',
+                secure: true,
+                sameSite: 'lax' as const,
+              };
+              response.cookies.set(name, value, newOptions)
             });
           },
         },
