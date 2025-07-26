@@ -21,7 +21,7 @@ export const updateSession = async (request: NextRequest) => {
           path: '/',
           sameSite: 'lax',
           secure: true,
-          domain: process.env.NODE_ENV === 'production' ? `.${process.env.ROOT_DOMAIN}` : undefined,
+          domain: `.xolace.app`,
         },
         cookies: {
           getAll() {
@@ -35,15 +35,7 @@ export const updateSession = async (request: NextRequest) => {
               request,
             });
             cookiesToSet.forEach(({ name, value, options }) =>{
-              const cookieOptions = {
-                ...options,
-                // Only set domain for production/preview, not localhost
-                ...(process.env.NODE_ENV === 'production' && { domain: `.${process.env.ROOT_DOMAIN}` }),
-                secure: process.env.NODE_ENV === 'production',
-                sameSite: 'lax' as const,
-                path: '/',
-              }
-              response.cookies.set(name, value, cookieOptions)
+              response.cookies.set(name, value, options)
             });
           },
         },
