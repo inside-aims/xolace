@@ -5,7 +5,7 @@ import Link from 'next/link';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useForm } from 'react-hook-form';
 import { z } from 'zod';
-import { useRouter } from 'next/navigation';
+import { useRouter, useSearchParams } from 'next/navigation';
 
 import { Button } from '@/components/ui/button';
 import {
@@ -38,6 +38,8 @@ const emailRegex = /^\S+@\S+$/;
 
 const SignUpForm = () => {
   const router = useRouter()
+  const searchParams = useSearchParams();
+    const nexturl = searchParams.get('nexturl');
   const toastIdRef = useRef<string | number | null>(null);
   const [showPassword, setShowPassword] = useState(false);
   const [state, formAction, pending] = useActionState<ActionState, FormData>(
@@ -320,7 +322,7 @@ const SignUpForm = () => {
             <p className="text-sm text-center md:text-left">
               Already registered?{' '}
               <Link
-                href={"/sign-in"}
+                href={nexturl ? `/sign-in?nexturl=${nexturl}` : '/sign-in'}
                 className="font-semibold ml-1 text-lavender-500 hover:text-lavender-600 hover:underline"
               >
                 Sign In

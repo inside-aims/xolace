@@ -8,7 +8,6 @@ import mascot from '../../public/assets/images/mas.webp';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useForm } from 'react-hook-form';
 import { z } from 'zod';
-//import { useToast } from '../ui/use-toast';
 import { toast } from 'sonner';
 import { useRouter } from 'next/navigation';
 
@@ -31,12 +30,18 @@ import { Separator } from '@/components/ui/separator';
 import AnonymousSignIn from '../ui/AnonymousSignIn';
 import Image from 'next/image';
 
+// Import the new reusable components
+import CookieAlert from '../extras/CookieAlert';
+import CookieInstructionsModal from '../extras/CookieInstructionModal';
+
 const SignInForm = () => {
   const router = useRouter();
   const searchParams = useSearchParams();
   const nexturl = searchParams.get('nexturl');
   const [showPassword, setShowPassword] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
+  const [showCookieAlert, setShowCookieAlert] = useState(true);
+  const [showCookieModal, setShowCookieModal] = useState(false);
   const supabase = getSupabaseBrowserClient();
 
   // 1. Define your form.
@@ -51,8 +56,6 @@ const SignInForm = () => {
 
   // 2. Define a submit handler.
   async function onSubmit(values: z.infer<typeof signinSchema>) {
-    // Do something with the form values.
-    // ✅ This will be type-safe and validated.
     setIsLoading(true);
     const { email, password } = values;
 
@@ -74,7 +77,6 @@ const SignInForm = () => {
           form.reset();
         });
 
-      // eslint-disable-next-line @typescript-eslint/no-unused-vars
     } catch (error) {
       toast.error(' 😿 Something must have gone wrong, Please try again');
     }
@@ -83,9 +85,7 @@ const SignInForm = () => {
   }
 
   // Subscribe to the signin event from supabase to help redirect
-  // to feed when user is authenticated
   useEffect(() => {
-    // listen for sign in events from the server(supabase)
     const {
       data: { subscription },
     } = supabase.auth.onAuthStateChange(event => {
@@ -99,7 +99,6 @@ const SignInForm = () => {
       }
     });
 
-    // end subscription event
     return () => {
       subscription.unsubscribe();
     };
@@ -117,12 +116,23 @@ const SignInForm = () => {
           className="h-auto w-auto"
         />
       </div>
+
       <div className="w-full max-w-md items-start">
-        <h2 className="text-4xl font-bold sm:text-5xl">Holla 👋,</h2>
+        <div className="flex items-center gap-2">
+          <h2 className="text-4xl font-bold sm:text-5xl">Holla 👋,</h2>
+        </div>
         <h2 className="text-4xl font-bold sm:text-5xl">Welcome Back</h2>
       </div>
 
       <div className="w-full max-w-md">
+        {/* Cookie Alert - positioned after header but before form */}
+        {showCookieAlert && (
+          <CookieAlert
+            onDismiss={() => setShowCookieAlert(false)}
+            onSeeHow={() => setShowCookieModal(true)}
+          />
+        )}
+
         <Form {...form}>
           <form
             onSubmit={form.handleSubmit(onSubmit)}
@@ -230,16 +240,16 @@ const SignInForm = () => {
 
             {/* OR Divider */}
             <div className="flex items-center justify-center gap-3">
-              <Separator className="flex-1 bg-black" />
+              <Separator className="flex-1 bg-black dark:bg-gray-600" />
               <span className="text-sm">OR</span>
-              <Separator className="flex-1 bg-black" />
+              <Separator className="flex-1 bg-black dark:bg-gray-600" />
             </div>
 
             <AnonymousSignIn />
 
             {/* Register Redirect */}
             <p className="text-center text-sm md:text-left">
-              Don’t have an account?{' '}
+              Don't have an account?{' '}
               <Link
                 href={nexturl ? `/sign-up?nexturl=${nexturl}` : '/sign-up'}
                 className="text-lavender-400 hover:text-lavender-500 ml-1 font-medium hover:underline"
@@ -250,6 +260,12 @@ const SignInForm = () => {
           </form>
         </Form>
       </div>
+
+      {/* Cookie Instructions Modal */}
+      <CookieInstructionsModal
+        isOpen={showCookieModal}
+        onClose={() => setShowCookieModal(false)}
+      />
     </div>
   );
 };
