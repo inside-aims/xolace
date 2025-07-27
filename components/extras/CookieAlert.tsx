@@ -5,9 +5,10 @@ import { AlertTriangle, X } from 'lucide-react';
 interface CookieAlertProps {
   onDismiss: () => void;
   onSeeHow: () => void;
+  onLearnWhy: () => void;
 }
 
-const CookieAlert = ({ onDismiss, onSeeHow }: CookieAlertProps) => {
+const CookieAlert = ({ onDismiss, onSeeHow, onLearnWhy }: CookieAlertProps) => {
   return (
     <Card className="border-amber-200 bg-amber-50 dark:border-amber-800 dark:bg-amber-950/20 mb-5 py-0">
       <CardContent className="p-4">
@@ -24,12 +25,20 @@ const CookieAlert = ({ onDismiss, onSeeHow }: CookieAlertProps) => {
                 <p className="text-sm text-amber-700 dark:text-amber-300 mb-1">
                   We apologize for the inconvenience. Clearing your browser cookies might resolve this issue.
                 </p>
-                <button
-                  onClick={onSeeHow}
-                  className="text-sm font-medium text-amber-800 dark:text-amber-200 hover:text-amber-900 dark:hover:text-amber-100 underline underline-offset-2 hover:no-underline transition-colors"
-                >
-                  See how to clear cookies
-                </button>
+                <div className="flex flex-wrap gap-3">
+                  <button
+                    onClick={onLearnWhy}
+                    className="text-sm font-medium text-amber-800 dark:text-amber-200 hover:text-amber-900 dark:hover:text-amber-100 underline underline-offset-2 hover:no-underline transition-colors"
+                  >
+                    Learn why
+                  </button>
+                  <button
+                    onClick={onSeeHow}
+                    className="text-sm font-medium text-amber-800 dark:text-amber-200 hover:text-amber-900 dark:hover:text-amber-100 underline underline-offset-2 hover:no-underline transition-colors"
+                  >
+                    See how to clear cookies
+                  </button>
+                </div>
               </div>
               <button
                 onClick={onDismiss}

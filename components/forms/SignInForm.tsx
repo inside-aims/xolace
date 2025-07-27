@@ -3,6 +3,7 @@
 import React, { useState, useEffect } from 'react';
 import Link from 'next/link';
 import { useSearchParams } from 'next/navigation';
+import dynamic from 'next/dynamic';
 import mascot from '../../public/assets/images/mas.webp';
 
 import { zodResolver } from '@hookform/resolvers/zod';
@@ -30,9 +31,9 @@ import { Separator } from '@/components/ui/separator';
 import AnonymousSignIn from '../ui/AnonymousSignIn';
 import Image from 'next/image';
 
-// Import the new reusable components
-import CookieAlert from '../extras/CookieAlert';
-import CookieInstructionsModal from '../extras/CookieInstructionModal';
+const CookieInstructionsModal = dynamic(() => import('../extras/CookieInstructionModal'), { ssr: false });
+const CookieAlert = dynamic(() => import('../extras/CookieAlert'), { ssr: false });
+const LearnWhyModal = dynamic(() => import('../extras/LearnWhyModal'), { ssr: false });
 
 const SignInForm = () => {
   const router = useRouter();
@@ -42,6 +43,7 @@ const SignInForm = () => {
   const [isLoading, setIsLoading] = useState(false);
   const [showCookieAlert, setShowCookieAlert] = useState(true);
   const [showCookieModal, setShowCookieModal] = useState(false);
+  const [showLearnWhyModal, setShowLearnWhyModal] = useState(false);
   const supabase = getSupabaseBrowserClient();
 
   // 1. Define your form.
@@ -130,6 +132,7 @@ const SignInForm = () => {
           <CookieAlert
             onDismiss={() => setShowCookieAlert(false)}
             onSeeHow={() => setShowCookieModal(true)}
+            onLearnWhy={() => setShowLearnWhyModal(true)}
           />
         )}
 
@@ -265,6 +268,16 @@ const SignInForm = () => {
       <CookieInstructionsModal
         isOpen={showCookieModal}
         onClose={() => setShowCookieModal(false)}
+      />
+
+      {/* Learn Why Modal */}
+      <LearnWhyModal
+        isOpen={showLearnWhyModal}
+        onClose={() => setShowLearnWhyModal(false)}
+        onProceedToInstructions={() => {
+          setShowLearnWhyModal(false);
+          setShowCookieModal(true);
+        }}
       />
     </div>
   );
