@@ -99,7 +99,13 @@ export const signUpAction = validatedAction(signUpSchema, async data => {
   }
 
   const safeUserId = encodeURIComponent(userData.user.id);
-  redirect(`/registration-success?id=${safeUserId}&email=${safeEmailString}`);
+  // redirect(`/registration-success?id=${safeUserId}&email=${safeEmailString}`);
+
+  return {
+    success: true,
+    message: 'Account created successfully! Redirecting...',
+    redirectUrl: `/registration-success?id=${safeUserId}&email=${safeEmailString}`,
+  };
 });
 
 export const forgotPasswordAction = async (formData: FormData) => {

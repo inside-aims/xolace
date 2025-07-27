@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { Suspense } from 'react';
 import type { Metadata } from 'next';
 import Image from 'next/image';
 import SignUpForm from '@/components/forms/SignUpForm';
@@ -30,7 +30,9 @@ export default function Signup() {
 
         {/*form section*/}
         <div className="p-2 col-span-12 md:col-span-7 flex items-center justify-center w-full">
-          <SignUpForm/>
+          <Suspense fallback={null}>
+            <SignUpForm/>
+          </Suspense>
         </div>
       </div>
     </div>
