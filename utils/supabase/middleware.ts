@@ -18,7 +18,7 @@ export const updateSession = async (request: NextRequest) => {
       process.env.NEXT_PUBLIC_SUPABASE_PUBLISHABLE_OR_ANON_KEY!,
       {
         cookieOptions:{
-          domain: `.${process.env.ROOT_DOMAIN}`,
+          domain: `.xolace.app`,
         },
         cookies: {
           getAll() {
@@ -58,6 +58,7 @@ export const updateSession = async (request: NextRequest) => {
     // with the Supabase client, your users may be randomly logged out.
     const { data } = await supabase.auth.getClaims();
     const user = data?.claims;
+    console.log(user)
 
     // List of protected routes
     const protectedRoutes = [
