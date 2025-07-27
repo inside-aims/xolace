@@ -77,7 +77,7 @@ const SignInForm = () => {
           form.reset();
         });
 
-    } catch (error) {
+    } catch (_) {
       toast.error(' 😿 Something must have gone wrong, Please try again');
     }
 
@@ -102,7 +102,7 @@ const SignInForm = () => {
     return () => {
       subscription.unsubscribe();
     };
-  }, [router, supabase]);
+  }, [router, supabase, nexturl]);
 
   return (
     <div className="flex w-full flex-col items-center justify-center gap-8 p-4">
@@ -249,7 +249,7 @@ const SignInForm = () => {
 
             {/* Register Redirect */}
             <p className="text-center text-sm md:text-left">
-              Don't have an account?{' '}
+              Don&apos;t have an account?{' '}
               <Link
                 href={nexturl ? `/sign-up?nexturl=${nexturl}` : '/sign-up'}
                 className="text-lavender-400 hover:text-lavender-500 ml-1 font-medium hover:underline"
