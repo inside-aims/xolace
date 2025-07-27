@@ -18,11 +18,7 @@ export const updateSession = async (request: NextRequest) => {
       process.env.NEXT_PUBLIC_SUPABASE_PUBLISHABLE_OR_ANON_KEY!,
       {
         cookieOptions:{
-          path: '/',
-          sameSite: 'lax',
-          secure: true,
           domain: `.xolace.app`,
-          maxAge: 60 * 60 * 24 * 30,
         },
         cookies: {
           getAll() {

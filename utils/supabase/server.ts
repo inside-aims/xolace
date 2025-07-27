@@ -19,9 +19,6 @@ export const createClient = async () => {
                 ...options,
                 // Only set domain for production/preview, not localhost
                 ...(process.env.NODE_ENV === 'production' && { domain: `.${process.env.ROOT_DOMAIN}` }),
-                secure: process.env.NODE_ENV === 'production',
-                sameSite: 'lax' as const,
-                path: '/',
               }
               cookieStore.set(name, value, cookieOptions)
             });
