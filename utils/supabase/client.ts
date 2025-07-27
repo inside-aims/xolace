@@ -7,7 +7,7 @@ export const getSupabaseBrowserClient = () =>
     process.env.NEXT_PUBLIC_SUPABASE_PUBLISHABLE_OR_ANON_KEY!,
     {
       cookieOptions: {
-        ...(process.env.NODE_ENV === 'production' && { domain: `.${process.env.ROOT_DOMAIN}` }), // This is KEY for browser client
+        domain: `.${process.env.ROOT_DOMAIN}`,
       },
     }
   );

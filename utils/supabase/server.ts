@@ -17,8 +17,7 @@ export const createClient = async () => {
             cookiesToSet.forEach(({ name, value, options }) =>{
               const cookieOptions = {
                 ...options,
-                // Only set domain for production/preview, not localhost
-                ...(process.env.NODE_ENV === 'production' && { domain: `.${process.env.ROOT_DOMAIN}` }),
+                domain: `.${process.env.ROOT_DOMAIN}`,
               }
               cookieStore.set(name, value, cookieOptions)
             });
