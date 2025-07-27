@@ -18,7 +18,7 @@ export const updateSession = async (request: NextRequest) => {
       process.env.NEXT_PUBLIC_SUPABASE_PUBLISHABLE_OR_ANON_KEY!,
       {
         cookieOptions:{
-          ...(process.env.NODE_ENV === 'production' && { domain: `.${process.env.ROOT_DOMAIN}` }),
+          domain: `.${process.env.ROOT_DOMAIN}`,
         },
         cookies: {
           getAll() {
