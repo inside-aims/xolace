@@ -75,7 +75,7 @@ const LearnWhyModal = ({ isOpen, onClose, onProceedToInstructions }: { isOpen: b
               How does clearing cookies help?
             </div>
             <p className="text-sm text-gray-600 dark:text-gray-400 leading-relaxed">
-              Clearing cookies removes the conflicting old data and allows our new authentication system to work properly with a fresh start. It's like giving your browser a clean slate.
+              Clearing cookies removes the conflicting old data and allows our new authentication system to work properly with a fresh start. It&apos;s like giving your browser a clean slate.
             </p>
           </div>
 
@@ -88,7 +88,7 @@ const LearnWhyModal = ({ isOpen, onClose, onProceedToInstructions }: { isOpen: b
                   Is it safe?
                 </p>
                 <p className="text-sm text-green-700 dark:text-green-300">
-                  Yes! Clearing cookies is completely safe and commonly recommended by tech support. You'll just need to sign back into other websites, but no personal data or passwords are lost.
+                  Yes! Clearing cookies is completely safe and commonly recommended by tech support. You&apos;ll just need to sign back into other websites, but no personal data or passwords are lost.
                 </p>
               </div>
             </div>
@@ -97,7 +97,7 @@ const LearnWhyModal = ({ isOpen, onClose, onProceedToInstructions }: { isOpen: b
           {/* Temporary issue note */}
           <div className="bg-blue-50 dark:bg-blue-950/20 border border-blue-200 dark:border-blue-800 rounded-lg p-3">
             <p className="text-sm text-blue-800 dark:text-blue-200">
-              <strong>Good news:</strong> This is a temporary issue that affects some users during our transition. Once you clear cookies and sign in successfully, you shouldn't experience this problem again.
+              <strong>Good news:</strong> This is a temporary issue that affects some users during our transition. Once you clear cookies and sign in successfully, you shouldn&apos;t experience this problem again.
             </p>
           </div>
 
