@@ -26,7 +26,7 @@ export default async function ProtectedLayout({
   const supabase = await createClient();
 
   const supabase_user_id: string | null =
-    (await supabase.auth.getUser()).data?.user?.id ?? null;
+    (await supabase.auth.getClaims()).data?.claims?.sub?? null;
   if (!supabase_user_id) {
     return <></>;
   }

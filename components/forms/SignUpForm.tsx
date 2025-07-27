@@ -5,6 +5,7 @@ import Link from 'next/link';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useForm } from 'react-hook-form';
 import { z } from 'zod';
+import { useRouter } from 'next/navigation';
 
 import { Button } from '@/components/ui/button';
 import {
@@ -36,6 +37,7 @@ const female = 'female' as const;
 const emailRegex = /^\S+@\S+$/;
 
 const SignUpForm = () => {
+  const router = useRouter()
   const toastIdRef = useRef<string | number | null>(null);
   const [showPassword, setShowPassword] = useState(false);
   const [state, formAction, pending] = useActionState<ActionState, FormData>(
@@ -77,15 +79,30 @@ const SignUpForm = () => {
   };
 
   useEffect(() => {
-    if (!state.success && state.message && toastIdRef.current) {
+    if (!toastIdRef.current || !state.message) return;
+
+    if (state.success) {
+      // Handle success
+      toast.success(state.message, {
+        id: toastIdRef.current,
+      });
+      // Redirect after a short delay for better UX
+      if (state.redirectUrl) {
+        setTimeout(() => {
+          router.push(state.redirectUrl as string);
+        }, 1500); // 1.5 second delay
+      }
+    } else {
+      // Handle error
       toast.error(state.message, {
         id: toastIdRef.current,
       });
-  
-      // Optional: Clear the toast ID after error update
-      toastIdRef.current = null;
     }
-  }, [state]);
+
+    // Clear the ref after handling the toast to prevent re-firing
+    toastIdRef.current = null;
+    
+  }, [state, router]);
 
   // error message
   const errorMessage = {
@@ -277,7 +294,7 @@ const SignUpForm = () => {
                 )}
               />
 
-              {state?.message && <SubmitFormMessage message={errorMessage}/>}
+              {state?.message && !state?.success && <SubmitFormMessage message={errorMessage}/>}
             </div>
 
             {/* submit button */}
