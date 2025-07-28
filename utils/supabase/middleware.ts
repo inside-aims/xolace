@@ -4,7 +4,6 @@ import { type NextRequest, NextResponse } from 'next/server';
 export const updateSession = async (request: NextRequest) => {
   // This `try/catch` block is only here for the interactive tutorial.
   // Feel free to remove once you have Supabase connected.
-  console.log(process.env.ROOT_DOMAIN)
   try {
     // Create an unmodified response
     let response = NextResponse.next({
@@ -18,7 +17,7 @@ export const updateSession = async (request: NextRequest) => {
       process.env.NEXT_PUBLIC_SUPABASE_PUBLISHABLE_OR_ANON_KEY!,
       {
         cookieOptions:{
-          domain: `.${process.env.ROOT_DOMAIN}`,
+          domain: `.xolace.app`,
         },
         cookies: {
           getAll() {

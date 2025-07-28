@@ -7,7 +7,7 @@ export const getSupabaseBrowserClient = () =>
     process.env.NEXT_PUBLIC_SUPABASE_PUBLISHABLE_OR_ANON_KEY!,
     {
       cookieOptions: {
-        domain: `.${process.env.ROOT_DOMAIN}`,
+        domain: `.xolace.app`,
       },
     }
   );
