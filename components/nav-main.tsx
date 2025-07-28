@@ -7,7 +7,7 @@ import Link from "next/link";
 import { sidebarLinks } from "@/constants"
 import { useSidebar } from "@/components/ui/sidebar";
 import LinkLoadingIndicator from "./shared/loaders/LinkLoadingIndicator";
-
+import { NewBadge } from "./shared/NewBadge";
 import {
   SidebarMenu,
   SidebarMenuButton,
@@ -19,6 +19,7 @@ interface SidebarLinkInterface{
   icon: React.JSX.Element,
   route: string;
   label: string;
+  new?: boolean;
 }
 
 export function NavMain() {
@@ -37,7 +38,7 @@ export function NavMain() {
               <Link href={item.route}
                 key={item.label}>
                 {item.icon}
-                <span className="text-sidebar-label mr-2">{item.label}</span> <LinkLoadingIndicator/>
+                <span className="text-sidebar-label mr-2">{item.label}</span> {item.new && <NewBadge variant="glow"  size="sm" />} <LinkLoadingIndicator/>
               </Link>
             </SidebarMenuButton>
           </SidebarMenuItem>

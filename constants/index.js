@@ -24,6 +24,7 @@ import {
   Music,
   Camera,
   Palette,
+  Mailbox,
 } from 'lucide-react';
 
 
@@ -88,6 +89,12 @@ export const sidebarLinks = [
     route: '/collections',
     label: 'Collections',
   },
+  {
+    icon: <Mailbox className='size-5!'/>,
+    route: 'https://messaging.xolace.app/dashboard',
+    label: 'Confide',
+    new: true,
+  }
   // {
   //   imgURL: "/assets/community.svg",
   //   route: "/communities",

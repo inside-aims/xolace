@@ -4,7 +4,6 @@ import { type NextRequest, NextResponse } from 'next/server';
 export const updateSession = async (request: NextRequest) => {
   // This `try/catch` block is only here for the interactive tutorial.
   // Feel free to remove once you have Supabase connected.
-  console.log(process.env.ROOT_DOMAIN)
   try {
     // Create an unmodified response
     let response = NextResponse.next({
@@ -58,7 +57,6 @@ export const updateSession = async (request: NextRequest) => {
     // with the Supabase client, your users may be randomly logged out.
     const { data } = await supabase.auth.getClaims();
     const user = data?.claims;
-    console.log(user)
 
     // List of protected routes
     const protectedRoutes = [
