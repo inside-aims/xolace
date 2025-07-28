@@ -21,7 +21,7 @@ function Bottombar() {
             <Link
               href={link.route}
               key={link.label}
-              className={`bottombar_link ${isActive && 'bg-primary-500'} ${link.route === '/profile' && 'max-md:hidden'} ${link.route === '/channel' && 'max-md:hidden'} ${link.route === '/explore' && 'max-md:hidden'} ${link.route === '/collections' && 'max-md:hidden'} ${link.route === 'messaging.xolace.app/dashboard' && 'max-md:hidden'} `}
+              className={`bottombar_link ${isActive && 'bg-primary-500'} ${link.route === '/profile' && 'max-md:hidden'} ${link.route === '/channel' && 'max-md:hidden'} ${link.route === '/explore' && 'max-md:hidden'} ${link.route === '/collections' && 'max-md:hidden'} ${link.route === 'https://messaging.xolace.app/dashboard' && 'max-md:hidden'} `}
             >
               {link.icon}
               <p className="text-subtle-medium text-light-1 max-sm:hidden">
