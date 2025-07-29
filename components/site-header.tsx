@@ -156,7 +156,7 @@ export function SiteHeader() {
 
           {/* Theme switcher */}
           <div
-            className={`flex items-center max-sm:justify-center ${isProfessional ? 'gap-x-2 md:w-50 md:gap-x-5' : 'gap-x-5 md:w-30'}`}
+            className={`flex items-center max-sm:justify-center ${isProfessional ? 'gap-x-2 md:gap-x-5' : 'gap-x-5'}`}
           >
             {/* link to navigate create-health-tips */}
             {/* design like a button */}
@@ -172,6 +172,7 @@ export function SiteHeader() {
             <div className="hidden items-center md:flex">
               <ThemeSwitch />
             </div>
+            
             {/*Notification entry section*/}
             <div className="relative">
               <button
@@ -193,6 +194,7 @@ export function SiteHeader() {
                   )
                 : null}
             </div>
+
             {/* <div id="online-users" className={'flex items-center'}>
               <RealtimeAvatarStack roomName="break_room" />
             </div> */}
