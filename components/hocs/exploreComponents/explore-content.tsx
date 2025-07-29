@@ -1,4 +1,4 @@
-'use client'
+'use client';
 
 import React, { useMemo } from 'react';
 
@@ -11,7 +11,6 @@ import { ExploreHeader } from '@/components/hocs/exploreComponents/explore-heade
 import { Post } from '@/types/global';
 import { usePosts } from '@/hooks/posts/usePostsData';
 import FeedSkeletonLoader from '@/components/shared/loaders/FeedSkeletonLoader';
-
 
 interface ExploreContentProps {
   query: string;
@@ -38,59 +37,86 @@ interface Mood {
 // }
 
 const filterPosts = (posts: Post[], filter: string) => {
-    const today = new Date()
-    const seed = today.getFullYear() * 10000 + (today.getMonth() + 1) * 100 + today.getDate()
-  
-    switch (filter) {
-      case "popular":
-        return [...posts].sort((a, b) => b.upvotes - a.upvotes)
-      case "spicy":
-        return [...posts].sort((a, b) => b.upvotes + b.downvotes - (a.upvotes + a.downvotes))
-      case "fresh":
-        return [...posts].sort((a, b) => new Date(b.created_at).getTime() - new Date(a.created_at).getTime())
-      case "trending":
-        return [...posts].sort((a, b) => {
-          const scoreA = a.upvotes / Math.max(Date.now() - new Date(a.created_at).getTime(), 1)
-          const scoreB = b.upvotes / Math.max(Date.now() - new Date(b.created_at).getTime(), 1)
-          return scoreB - scoreA
-        })
-      default:
-        return seededShuffleArray(posts, seed)
-    }
+  const today = new Date();
+  const seed =
+    today.getFullYear() * 10000 +
+    (today.getMonth() + 1) * 100 +
+    today.getDate();
+
+  switch (filter) {
+    case 'popular':
+      return [...posts].sort((a, b) => (b.upvotes ?? 0) - (a.upvotes ?? 0));
+    case 'controversial':
+      return [...posts].sort((a, b) => {
+        const scoreA =
+          (a.upvotes ?? 0) * 0.5 +
+          (a.downvotes ?? 0) * 1.5 +
+          (a.comments[0]?.count ?? 0) * 2;
+        const scoreB =
+          (b.upvotes ?? 0) * 0.5 +
+          (b.downvotes ?? 0) * 1.5 +
+          (b.comments[0]?.count ?? 0) * 2;
+        return scoreB - scoreA;
+      });
+    case 'recent':
+      return [...posts].sort(
+        (a, b) =>
+          new Date(b.created_at).getTime() - new Date(a.created_at).getTime(),
+      );
+    case 'trending':
+      return [...posts].sort((a, b) => {
+        const gravity = 1.8;
+        const ageA = (Date.now() - new Date(a.created_at).getTime()) / 3600000; // age in hours
+        const scoreA =
+          ((a.upvotes ?? 0) +
+            (a.views[0]?.count ?? 0) * 0.2 +
+            (a.comments[0]?.count ?? 0) * 1.5) /
+          Math.pow(ageA + 2, gravity);
+
+        const ageB = (Date.now() - new Date(b.created_at).getTime()) / 3600000; // age in hours
+        const scoreB =
+          ((b.upvotes ?? 0) +
+            (b.views[0]?.count ?? 0) * 0.2 +
+            (b.comments[0]?.count ?? 0) * 1.5) /
+          Math.pow(ageB + 2, gravity);
+
+        return scoreB - scoreA;
+      });
+    default:
+      return seededShuffleArray(posts, seed);
   }
+};
 
-const ExploreContent = ({query, filter}: ExploreContentProps) => {
- const { data: queryPosts, isPending, isError, error } = usePosts();
+const ExploreContent = ({ query, filter }: ExploreContentProps) => {
+  const { data: queryPosts, isPending, isError, error } = usePosts();
 
+  //   let filteredPosts = queryPosts.filter(post => {
+  //     const matchQuery =
+  //       query?.toLowerCase() === '' ||
+  //       post.author_name.toLowerCase().includes(query?.toLowerCase()) ||
+  //       post.content.toLowerCase().includes(query?.toLowerCase());
 
-//   let filteredPosts = queryPosts.filter(post => {
-//     const matchQuery =
-//       query?.toLowerCase() === '' ||
-//       post.author_name.toLowerCase().includes(query?.toLowerCase()) ||
-//       post.content.toLowerCase().includes(query?.toLowerCase());
+  //     const matchFilter = filter ? true : true;
 
-//     const matchFilter = filter ? true : true;
-
-//     return matchQuery && matchFilter;
-//   });
+  //     return matchQuery && matchFilter;
+  //   });
 
   const filteredPosts = useMemo(() => {
     if (!queryPosts) return;
-    const filtered = queryPosts.filter((post) => {
+    const filtered = queryPosts.filter(post => {
       const matchQuery =
-        query.toLowerCase() === "" ||
+        query.toLowerCase() === '' ||
         post.author_name.toLowerCase().includes(query.toLowerCase()) ||
-        post.content.toLowerCase().includes(query.toLowerCase())
+        post.content.toLowerCase().includes(query.toLowerCase());
 
-      return matchQuery
-    })
+      return matchQuery;
+    });
 
-    return filterPosts(filtered, filter)
-  }, [queryPosts, query, filter])
+    return filterPosts(filtered, filter);
+  }, [queryPosts, query, filter]);
 
   return (
-    <div className="space-y-6 sm:space-y-8 w-full">
-
+    <div className="w-full space-y-6 sm:space-y-8">
       <LocalSearch
         placeholder="Search posts..."
         otherClasses="flex-1"
@@ -98,17 +124,11 @@ const ExploreContent = ({query, filter}: ExploreContentProps) => {
       />
 
       <FilterPills />
-{
-    isPending && <FeedSkeletonLoader />
-}
+      {isPending && <FeedSkeletonLoader />}
 
-{
-    isError && <div>{error.message}</div>
-}
-{
-    !isPending && !isError && !filteredPosts && <div>No posts found.</div>
-}
-     {filteredPosts && <ExploreFeedList filteredPosts={filteredPosts} />}
+      {isError && <div>{error.message}</div>}
+      {!isPending && !isError && !filteredPosts && <div>No posts found.</div>}
+      {filteredPosts && <ExploreFeedList filteredPosts={filteredPosts} />}
     </div>
   );
 };
