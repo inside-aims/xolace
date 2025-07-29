@@ -1,5 +1,4 @@
 import type { Metadata } from 'next';
-// import dynamic from 'next/dynamic'
 
 import FeedList from '@/components/shared/FeedList';
 import TourProvider from '@/components/shared/Tour/TourProvider';
@@ -14,7 +13,6 @@ import {
   QueryClient,
 } from '@tanstack/react-query';
 import { getAllPosts } from '@/queries/posts/getAllPosts.action';
-// import { EnhancedAIChatInterface } from '@/components/chatbot-ai/enhanced-ai-chat-interface';
 
 export const metadata: Metadata = {
   title: 'Feed',
@@ -29,34 +27,6 @@ export default async function FeedPage() {
     queryKey: ['posts'],
     queryFn: getAllPosts,
   });
-
-  // Create Supabase client with cookies outside the cached function
-  // const supabase = await createClient();
-
-  // Pass the Supabase client to the cached function
-  //const initialPosts = await getCachedPosts(supabase);
-  // const { data: postsData } = await supabase
-  //   .from('posts')
-  //   .select(
-  //     `
-  //      *,
-  //      posttags (
-  //         tags (
-  //           name
-  //         )
-  //       ),
-  //         votes(
-  //         user_id,
-  //         vote_type
-  //         ),
-  //         comments:comments(count),
-  //         views:views(count),
-  //       collections(
-  //         user_id
-  //       )
-  //   `,
-  //   )
-  //   .order('created_at', { ascending: false });
 
   return (
     <TourProvider steps={FeedSteps}>
