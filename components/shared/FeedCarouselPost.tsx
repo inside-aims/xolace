@@ -18,7 +18,7 @@ const FeedCarouselPost = ({ slides, postId, onClick }: CarouselPostProps) => {
   return (
     <div className="mb-4">
     {/* Enhanced Swiper Carousel */}
-    <div className="relative rounded-xl overflow-hidden bg-gradient-to-br from-purple-50 to-pink-50 dark:from-purple-950/20 dark:to-pink-950/20 p-6">
+    <div className="relative rounded-xl overflow-hidden bg-gradient-to-br from-lavender-50 to-ocean-50 dark:from-lavender-950/20 dark:to-ocean-950/20 p-6">
       <Swiper
         modules={[Navigation, Pagination, EffectCoverflow]}
         spaceBetween={30}
@@ -44,7 +44,7 @@ const FeedCarouselPost = ({ slides, postId, onClick }: CarouselPostProps) => {
       >
         {slides?.map((slide, index) => (
           <SwiperSlide key={index}>
-            <div onClick={onClick} className="bg-card rounded-lg p-6 shadow-sm border border-border/50 min-h-[120px] flex items-center">
+            <div onClick={onClick} className="bg-card dark:bg-bg-dark rounded-lg p-6 shadow-sm border border-border/50 min-h-[120px] flex items-center">
               <p className="text-foreground leading-relaxed whitespace-pre-wrap text-center w-full">
                 {truncateText(slide.content, 200)}
               </p>

@@ -416,10 +416,10 @@ export const getMoodLabelStyle = mood => {
 };
 
 export const filters = [
-  { name: 'trending', label: 'Trending', icon: <Zap size={16} /> },
-  { name: 'popular', label: 'Popular', icon: <ThumbsUp size={16} /> },
-  { name: 'controversial', label: 'Spicy', icon: <Flame size={16} /> },
-  { name: 'recent', label: 'Fresh', icon: <Clock size={16} /> },
+  { name: 'trending', label: 'Trending', icon: <Zap size={16} />, description: "Hot topics right now", },
+  { name: 'popular', label: 'Popular', icon: <ThumbsUp size={16} />, description: "Most upvoted posts", },
+  { name: 'controversial', label: 'Spicy', icon: <Flame size={16} />,description: "Controversial discussions" },
+  { name: 'recent', label: 'Fresh', icon: <Clock size={16} />,description: "Latest posts" },
 ];
 
 export   const tips = [

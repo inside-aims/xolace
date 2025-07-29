@@ -22,6 +22,8 @@ import { ArrowLeft } from 'lucide-react';
 import { useRouter } from 'next/navigation';
 import { moodColors, moodIcons } from '@/constants/moods';
 import CarouselPost from '../shared/CarouselPost';
+import { Badge } from '@/components/ui/badge';
+
 // Dynamically import non-critical components
 const PostDropdown = dynamic(() => import('../shared/PostDropdown'), {
   ssr: false,
@@ -100,8 +102,12 @@ export function DetailCard({
     mood,
     type,
     post_slides,
+    author_roles,
   } = post;
-  console.log(post_slides);
+
+  const isProfessional = author_roles.includes('help_professional');
+  const isMentor = author_roles.includes('mentor');
+  const isVerified = author_roles.includes('verified');
   return (
     <>
       <Card className="mt-5 w-full rounded-none border-0 border-x-0 max-sm:mb-5 md:w-[calc(100vw-var(--sidebar-width))] md:px-8">
@@ -132,9 +138,14 @@ export function DetailCard({
                   {moodIcons[mood]}
                 </div>
               </div>
+              <div className="flex items-center gap-2">
               <small className="text-sm text-zinc-500 dark:text-gray-400">
                 {format(created_at, 'short-en')}
               </small>
+              {isProfessional && <Badge variant="minimal" className="text-[8px] py-[1px] text-green-400 bg-green-900/90 dark:bg-green-900/20 border-green-800/50">PROFESSIONAL</Badge>}
+              {isMentor && <Badge variant="minimal" className="text-[8px] py-[1px] text-orange-400 bg-orange-900/90 dark:bg-orange-900/20 border-orange-800/50">MENTOR</Badge>}
+              {isVerified && <Badge variant="minimal" className="text-[8px] py-[1px] text-blue-400 bg-blue-900/90 dark:bg-blue-900/20 border-blue-800/50">VERIFIED</Badge>}
+              </div>
             </div>
           </div>
           <PostDropdown

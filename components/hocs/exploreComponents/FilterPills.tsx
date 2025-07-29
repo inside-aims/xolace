@@ -6,6 +6,7 @@ import { motion } from 'motion/react';
 
 import { formUrlQuery, removeKeyFromQuery } from '@/lib/url';
 import { filters } from '@/constants';
+import { Sparkles } from 'lucide-react';
 
 const FilterPills: React.FC = () => {
   const router = useRouter();
@@ -35,23 +36,41 @@ const FilterPills: React.FC = () => {
     });
   };
   return (
-    <div className="mt-6 flex w-full flex-wrap justify-center gap-3">
-      {filters.map(filter => (
-        <motion.button
-          key={filter.name}
-          className={`flex items-center gap-2 rounded-full px-4 py-2 text-sm font-medium transition-colors duration-300 ${
-            active === filter.name
-              ? 'bg-primary text-primary-foreground'
-              : 'bg-secondary hover:bg-secondary/80'
-          }`}
-          whileHover={{ scale: 1.05 }}
-          whileTap={{ scale: 0.95 }}
-          onClick={() => handleTypeClick(filter.name)}
-        >
-          {filter.icon}
-          {filter.label}
-        </motion.button>
-      ))}
+    <div className="space-y-4">
+      {/* Filter pills container */}
+      <div className="flex flex-wrap justify-center gap-3 sm:gap-4">
+        {filters.map((filter) => (
+          <motion.button
+            key={filter.name}
+            className={`group relative flex items-center gap-2 px-4 sm:px-6 py-3 rounded-full text-sm font-medium transition-all duration-300 backdrop-blur-sm ${
+              active === filter.name
+                ? "bg-gradient-to-r from-[#0536ff] to-[#6a71ea] text-white shadow-lg shadow-[#0536ff]/25"
+                : "dark:bg-gray-900/50 dark:text-gray-300 dark:border dark:border-gray-700 dark:hover:border-[#6a71ea]/50 dark:hover:text-white dark:hover:bg-gray-800/50 border border-gray-700 hover:border-[#6a71ea]/50 hover:text-white hover:bg-gradient-to-r from-ocean-400 to-lavender-400"
+            }`}
+            whileHover={{ scale: 1.05 }}
+            whileTap={{ scale: 0.95 }}
+            onClick={() => handleTypeClick(filter.name)}
+          >
+            {/* Glow effect for active filter */}
+            {active === filter.name && (
+              <div className="absolute inset-0 bg-gradient-to-r from-[#0536ff] to-[#6a71ea] rounded-full blur-lg opacity-30 -z-10" />
+            )}
+
+            {filter.icon}
+            <span className="hidden sm:inline">{filter.label}</span>
+
+            {/* Active indicator */}
+            {active === filter.name && <Sparkles className="w-3 h-3 animate-pulse" />}
+          </motion.button>
+        ))}
+      </div>
+
+      {/* Active filter description */}
+      {active && (
+        <motion.div initial={{ opacity: 0, y: -10 }} animate={{ opacity: 1, y: 0 }} className="text-center">
+          <p className="text-sm text-gray-400">{filters.find((f) => f.name === active)?.description}</p>
+        </motion.div>
+      )}
     </div>
   );
 };
