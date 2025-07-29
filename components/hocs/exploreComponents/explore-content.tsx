@@ -6,8 +6,6 @@ import FilterPills from '@/components/hocs/exploreComponents/FilterPills';
 import { seededShuffleArray } from '@/lib/utils';
 import LocalSearch from '@/components/shared/search/LocalSearch';
 import ExploreFeedList from '@/components/hocs/exploreComponents/ExploreFeedList';
-import { createClient } from '@/utils/supabase/server';
-import { ExploreHeader } from '@/components/hocs/exploreComponents/explore-header';
 import { Post } from '@/types/global';
 import { usePosts } from '@/hooks/posts/usePostsData';
 import FeedSkeletonLoader from '@/components/shared/loaders/FeedSkeletonLoader';
@@ -17,24 +15,6 @@ interface ExploreContentProps {
   filter: string;
 }
 
-interface Mood {
-  emoji: string;
-  style: string;
-  name: string;
-}
-
-// interface Post {
-//   id: string;
-//   author_name: string;
-//   author_avatar_url: string;
-//   content: string;
-//   timestamp: string;
-//   mood: Mood;
-//   expires_in_24hr: boolean;
-//   upvotes: number;
-//   downvotes: number;
-//   comments: number;
-// }
 
 const filterPosts = (posts: Post[], filter: string) => {
   const today = new Date();
@@ -89,17 +69,6 @@ const filterPosts = (posts: Post[], filter: string) => {
 
 const ExploreContent = ({ query, filter }: ExploreContentProps) => {
   const { data: queryPosts, isPending, isError, error } = usePosts();
-
-  //   let filteredPosts = queryPosts.filter(post => {
-  //     const matchQuery =
-  //       query?.toLowerCase() === '' ||
-  //       post.author_name.toLowerCase().includes(query?.toLowerCase()) ||
-  //       post.content.toLowerCase().includes(query?.toLowerCase());
-
-  //     const matchFilter = filter ? true : true;
-
-  //     return matchQuery && matchFilter;
-  //   });
 
   const filteredPosts = useMemo(() => {
     if (!queryPosts) return;

@@ -12,6 +12,11 @@ interface PageHeaderProps {
     via?: string
     to: string
   }
+  darkGradient?: {
+    from: string
+    via?: string
+    to: string
+  }
   customContent?: ReactNode
   className?: string
 }
@@ -23,6 +28,7 @@ export function PageHeader({
   icon: Icon,
   decorativeElements,
   gradient = { from: "#0536ff", via: "#6a71ea", to: "#0536ff" },
+  darkGradient = { from: "#fffffa", via: "#C0C0C0", to: "#fffffa" },
   customContent,
   className = "",
 }: PageHeaderProps) {
@@ -61,10 +67,7 @@ export function PageHeader({
         {/* Title section */}
         <div className="space-y-2 sm:space-y-3">
           <h1
-            className="text-2xl sm:text-3xl lg:text-4xl font-bold bg-clip-text text-transparent animate-gradient bg-[length:200%_auto] dark:bg-gradient-to-r dark:from-[#fffffa]! dark:via-[#C0C0C0]! dark:to-[#fffffa]!"
-            style={{
-              backgroundImage: `linear-gradient(to right, ${gradient.from}, ${gradient.via || gradient.to}, ${gradient.to})`,
-            }}
+            className={`text-2xl sm:text-3xl lg:text-4xl font-bold bg-clip-text text-transparent animate-gradient bg-[length:200%_auto] bg-gradient-to-r from-[${gradient.from}] via-[${gradient.via || gradient.to}] to-[${gradient.to}] dark:bg-gradient-to-r dark:from-[${darkGradient.from}] dark:via-[${darkGradient.via || darkGradient.to}] dark:to-[${darkGradient.to}]`}
           >
             {title}
           </h1>

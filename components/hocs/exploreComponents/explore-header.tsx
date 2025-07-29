@@ -38,6 +38,7 @@ export function ExploreHeader() {
       decorativeElements={decorativeElements}
       customContent={customContent}
       gradient={{ from: "#0536ff", via: "#6a71ea", to: "#8b5cf6" }}
+      darkGradient={{ from: "#fffffa", via: "#C0C0C0", to: "#fffffa" }}
     />
   )
 }
