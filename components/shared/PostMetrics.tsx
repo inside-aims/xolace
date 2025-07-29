@@ -86,7 +86,7 @@ const PostMetrics = ({
         voteType,
         currentVote: previousVote,
         user_id: userId,
-        relatedUserId: post.created_by ?? "",
+        relatedUserId: post.created_by   ?? "",
       });
 
       if (isError) {
