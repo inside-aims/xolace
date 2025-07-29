@@ -255,6 +255,7 @@ export type Database = {
       }
       collections: {
         Row: {
+          posts: any
           collection_name: string | null
           created_at: string | null
           id: string
