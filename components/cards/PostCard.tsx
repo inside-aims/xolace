@@ -1,6 +1,7 @@
 'use client';
 import * as React from 'react';
 import { useEffect, useState } from 'react';
+import Image from 'next/image';
 import { format } from 'timeago.js';
 import { formatDistanceToNow } from 'date-fns';
 import { Clock } from 'lucide-react';
@@ -27,6 +28,7 @@ import { ScanEye } from 'lucide-react';
 import { moodColors, moodIcons } from '@/constants/moods';
 import { Badge } from '../ui/badge';
 import FeedCarouselPost from '../shared/FeedCarouselPost';
+import profBadge from "../../public/assets/images/user-role-badges/consellors-badge.webp"
 
 type PostCardType = {
   className?: string;
@@ -61,6 +63,11 @@ export function PostCard({ className, post, onClick }: PostCardType) {
       })
     : null;
 
+    //
+    const isProfessional = post.author_roles.includes('help_professional');
+    const isMentor = post.author_roles.includes('mentor');
+    const isVerified = post.author_roles.includes('verified');
+
   return (
     <>
       {/* dialog or drawer to report post */}
@@ -92,12 +99,16 @@ export function PostCard({ className, post, onClick }: PostCardType) {
                 >
                   {moodIcons[post.mood]}
                 </div>
+                <span className="text-xs">{isProfessional && <Image src={profBadge} alt="professional badge" width={20} height={20} />}</span>
               </div>
 
               <div className="text-muted-foreground flex items-center gap-2 text-sm">
                 <small className="text-[13px] text-zinc-500 dark:text-gray-400">
                   {timestamp}
                 </small>
+                {isProfessional && <Badge variant="minimal" className="text-[8px] py-[1px] text-green-400 bg-green-900/90 dark:bg-green-900/20 border-green-800/50">PROFESSIONAL</Badge>}
+                {isMentor && <Badge variant="minimal" className="text-[8px] py-[1px] text-orange-400 bg-orange-900/90 dark:bg-orange-900/20 border-orange-800/50">MENTOR</Badge>}
+                {isVerified && <Badge variant="minimal" className="text-[8px] py-[1px] text-blue-400 bg-blue-900/90 dark:bg-blue-900/20 border-blue-800/50">VERIFIED</Badge>}
                 {timeLeft && (
                   <Badge variant="secondary" className="text-[10px] py-[1px] hover:bg-secondary/50">
                     <Clock className="mr-1 h-3 w-3" />

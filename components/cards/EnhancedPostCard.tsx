@@ -198,14 +198,14 @@ export function EnhancedPostCard({ className, post, onClick }: PostCardType) {
                 <small className="text-[13px] text-zinc-500 dark:text-gray-400">
                   {timestamp}
                 </small>
-                {isProfessional && <Badge variant="minimal" className="text-[10px] py-[1px] text-green-400 bg-green-900/90 dark:bg-green-900/20 border-green-800/50">
-                    <span className="text-[10px]">PROFESSIONAL</span>
+                {isProfessional && <Badge variant="minimal" className="text-[8px] py-[1px] text-green-400 bg-green-900/90 dark:bg-green-900/20 border-green-800/50">
+                    PROFESSIONAL
                   </Badge>}
-                {isMentor && <Badge variant="minimal" className="text-[10px] py-[1px] text-orange-400 bg-orange-900/90 dark:bg-orange-900/20 border-orange-800/50">
-                    <span className="text-[10px]">MENTOR</span>
+                {isMentor && <Badge variant="minimal" className="text-[8px] py-[1px] text-orange-400 bg-orange-900/90 dark:bg-orange-900/20 border-orange-800/50">
+                    MENTOR
                   </Badge>}
-                {isVerified && <Badge variant="minimal" className="text-[10px] py-[1px] text-blue-400 bg-blue-900/90 dark:bg-blue-900/20 border-blue-800/50">
-                    <span className="text-[10px]">VERIFIED</span>
+                {isVerified && <Badge variant="minimal" className="text-[8px] py-[1px] text-blue-400 bg-blue-900/90 dark:bg-blue-900/20 border-blue-800/50">
+                    VERIFIED
                   </Badge>}
                 {timeLeft && (
                   <Badge variant="secondary" className="text-[10px] py-[1px] hover:bg-secondary/50">

@@ -84,7 +84,7 @@ const ExploreFeedList = ({ filteredPosts }: Props) => {
             <PostCard
               post={post}
               className={cn(
-                'mb-5 w-full overflow-hidden transition-colors duration-300',
+                'mb-3 w-full overflow-hidden transition-colors duration-300',
               )}
               onClick={() => handlePostClick(post.id)}
             />
