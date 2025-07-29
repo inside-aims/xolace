@@ -153,7 +153,6 @@ export function EnhancedPostCard({ className, post, onClick }: PostCardType) {
       })
     : null;
 
-    console.log(post.created_by)
   // Determine badge eligibility
   const isProfessional = post.author_roles.includes('help_professional');
   const isMentor = post.author_roles.includes('mentor');

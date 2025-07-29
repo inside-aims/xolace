@@ -9,11 +9,19 @@ import { Post } from '@/types/global';
 import { usePathname, useRouter } from 'next/navigation';
 import { FeedSkeletonCard } from '@/components/shared/loaders/FeedSkeletonLoader';
 
+
 const PostCard = dynamic(
   () => import('@/components/cards/PostCard').then(mod => mod.PostCard),
   {
     ssr: false,
     loading: () => <FeedSkeletonCard />, // Placeholder
+  },
+);
+
+const SearchLoader = dynamic(
+  () => import('@/components/shared/loaders/SearchLoader'),
+  {
+    ssr: false,
   },
 );
 
@@ -91,7 +99,7 @@ const ExploreFeedList = ({ filteredPosts }: Props) => {
           </motion.div>
         ))
       ) : (
-        <p className="text-center text-gray-500">No posts found.</p>
+        <SearchLoader title='No posts found' description='Try adjusting your search or filters'/>
       ),
     [filteredPosts, handlePostClick],
   );
@@ -100,7 +108,7 @@ const ExploreFeedList = ({ filteredPosts }: Props) => {
     <>
       <motion.div
         layout
-        className="mt-10 grid w-full grid-cols-1 gap-6 md:px-8"
+        className="mt-10 mb-10 grid w-full grid-cols-1 gap-6 md:px-8"
       >
         <AnimatePresence>
           {renderedPosts}

@@ -104,7 +104,6 @@ export function DetailCard({
     post_slides,
     author_roles,
   } = post;
-  console.log(author_roles);
 
   const isProfessional = author_roles.includes('help_professional');
   const isMentor = author_roles.includes('mentor');
