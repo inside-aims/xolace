@@ -27,11 +27,9 @@ export function PageHeader({
   className = "",
 }: PageHeaderProps) {
   return (
-    <div className={`relative text-center space-y-4 sm:space-y-6 py-4 sm:py-8 ${className}`}>
+    <div className={`relative text-center space-y-4 sm:space-y-6 py-1 sm:py-3 ${className}`}>
       {/* Animated background elements */}
       <div className="absolute inset-0 overflow-hidden pointer-events-none">
-        <div className="absolute top-4 left-1/4 w-2 h-2 bg-[#6a71ea] rounded-full animate-pulse opacity-60" />
-        <div className="absolute top-8 right-1/3 w-1 h-1 bg-[#0536ff] rounded-full animate-ping opacity-40" />
         <div className="absolute bottom-4 left-1/3 w-1.5 h-1.5 bg-[#6a71ea] rounded-full animate-pulse opacity-50" />
         <div className="absolute bottom-8 right-1/4 w-1 h-1 bg-[#0536ff] rounded-full animate-ping opacity-30" />
         {decorativeElements}
@@ -63,7 +61,7 @@ export function PageHeader({
         {/* Title section */}
         <div className="space-y-2 sm:space-y-3">
           <h1
-            className="text-2xl sm:text-3xl lg:text-4xl font-bold bg-clip-text text-transparent animate-gradient bg-[length:200%_auto]"
+            className="text-2xl sm:text-3xl lg:text-4xl font-bold bg-clip-text text-transparent animate-gradient bg-[length:200%_auto] dark:bg-gradient-to-r dark:from-[#fffffa]! dark:via-[#C0C0C0]! dark:to-[#fffffa]!"
             style={{
               backgroundImage: `linear-gradient(to right, ${gradient.from}, ${gradient.via || gradient.to}, ${gradient.to})`,
             }}

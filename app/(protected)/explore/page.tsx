@@ -6,6 +6,7 @@ import { seededShuffleArray } from '@/lib/utils';
 import LocalSearch from '@/components/shared/search/LocalSearch';
 import ExploreFeedList from '@/components/hocs/exploreComponents/ExploreFeedList';
 import { createClient } from '@/utils/supabase/server';
+import { ExploreHeader } from '@/components/hocs/exploreComponents/explore-header';
 
 export const metadata: Metadata = {
   title: 'Explore',
@@ -140,13 +141,9 @@ if(!postsData) {
 
   return (
     <div className="container-spacing w-full">
-      <section className="w-full">
-        <h1 className="mb-8 text-center text-4xl font-bold">
-          Explore the Shadows
-        </h1>
-      </section>
+      <ExploreHeader />
 
-      <section className="mt-12 w-full">
+      <section className="mt-5 w-full">
         <LocalSearch
           placeholder="Search posts..."
           otherClasses="flex-1"
