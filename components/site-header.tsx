@@ -9,12 +9,9 @@ import { Button } from '@/components/ui/button';
 //import { Separator } from "@/components/ui/separator"
 import { useSidebar } from '@/components/ui/sidebar';
 import ThemeSwitch from './ui/ThemeSwitch';
-//import { ProgressBetaBadge } from './shared/ProgressBetaBadge';
-//import { LogoutIcon } from './animated/Icons/LogoutIcon';
 import { getSupabaseBrowserClient } from '@/utils/supabase/client';
-//import SignoutAlert from './shared/SignoutAlert';
 import { useUserState } from '@/lib/store/user';
-import { RealtimeAvatarStack } from './realtime-avatar-stack';
+// import { RealtimeAvatarStack } from './realtime-avatar-stack';
 import mascot from '../public/assets/images/x-logo-full.webp';
 import { Menu, PlusIcon, Bell } from 'lucide-react';
 import NotificationPanel from '@/components/notifications/notification-panel';
@@ -196,10 +193,9 @@ export function SiteHeader() {
                   )
                 : null}
             </div>
-            <div id="online-users" className={'flex items-center'}>
-              {/* <ProgressBetaBadge progress={30} /> */}
+            {/* <div id="online-users" className={'flex items-center'}>
               <RealtimeAvatarStack roomName="break_room" />
-            </div>
+            </div> */}
           </div>
           {isOpen && (
             <AnimatePresence>
