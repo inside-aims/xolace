@@ -1,4 +1,4 @@
-import { Compass, Sparkles, TrendingUp, Zap } from "lucide-react"
+import { Compass, TrendingUp, Zap , Telescope} from "lucide-react"
 import { PageHeader } from "@/components/shared/page-header"
 
 export function ExploreHeader() {
@@ -18,7 +18,7 @@ export function ExploreHeader() {
         </div>
 
         <div className="flex flex-col items-center gap-1 sm:gap-2">
-          <Sparkles className="w-4 h-4 sm:w-5 sm:h-5 text-[#0536ff]" />
+          <Telescope className="w-4 h-4 sm:w-5 sm:h-5 text-[#0536ff]" />
           <span className="text-xs text-gray-500">Discover</span>
         </div>
 
