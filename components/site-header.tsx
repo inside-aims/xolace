@@ -143,16 +143,6 @@ export function SiteHeader() {
             </div>
           </div>
 
-          {/* <div className="block md:hidden" id="sign-out">
-            <Button
-              variant={'ghost'}
-              className="shad-button_ghost"
-              onClick={e => handleSignOut(e)}
-              aria-label="Sign out"
-            >
-              <LogoutIcon height="23" />
-            </Button>
-          </div> */}
 
           {/* Theme switcher */}
           <div
@@ -203,7 +193,7 @@ export function SiteHeader() {
             <AnimatePresence>
               <motion.div
                 className={
-                  'bg-bg fixed top-[90px] right-0 z-[9999] flex h-auto max-h-[calc(90vh-var(--header-height)-70px)] w-[calc(100%-1rem)] max-w-[80%] flex-col rounded-lg border shadow-lg md:max-h-[calc(90vh-40px)] md:w-[400px] dark:bg-[#1b1a1a]'
+                  'bg-bg fixed top-[var(--header-height)] right-0 z-[9999] flex h-auto max-h-[calc(90vh-var(--header-height)-70px)] w-[calc(100%-1rem)] max-w-[80%] flex-col rounded-lg border shadow-lg md:max-h-[calc(90vh-40px)] md:w-[400px] dark:bg-[#1b1a1a]'
                 }
                 initial={{ x: 300, opacity: 0, scale: 0.98 }}
                 animate={{ x: 0, opacity: 1, scale: 1 }}
