@@ -123,4 +123,41 @@ export const updates: UpdateLog[] = [
       '- ❌ Delete account functionality available now ',
     ],
   },
+  {
+    version: '2.3',
+    date: 'July 19, 2025',
+    title: 'Introducing Glimpse: Your New Source of Perspective',
+    type: "major",
+    status: "released",
+    changes: [
+      '**Glimpse Video Feature**',
+      '- ✨ Glimpse: Watch short, inspiring videos from mentors, therapists, and counselors on Xolace.',
+      '- 🌍 Real stories: Gain perspective through authentic experiences and grounded mental health advice.',
+      '- 🧠 Mental wellness boost: Daily doses of support to help you feel seen and centered.',
+      '**Contributor Access**',
+      '- 🧑‍⚕️ Verified voices: Video creation is currently limited to verified mentors and professionals to maintain a safe space.',
+      '- 📩 Want to contribute? Reach out to our support team—we’d love to hear your story.',
+      '**Looking Ahead**',
+      '- 🚀 Expansion plans: Video sharing may open to all users soon—stay tuned!',
+    ]
+  },
+  {
+    version: '2.4',
+    date: 'July 28, 2025',
+    title: 'New Feature Alert: Anonymous Messages Just Got Real',
+    type: "major",
+    status: "released",
+    changes: [
+      '**Anonymous Message Links**',
+      '- 🔗 Share a unique link and receive anonymous messages from friends or complete strangers.',
+      '- 💌 From confessions to compliments, now’s your time to hear it all raw and real.',
+      '- 👻 Their identity stays hidden. Yours stays safe. Always.',
+      '**Complete Customization**',
+      '- 🎨 You control the design, prompt wording, and message vibe people see when they click your link.',
+      '- ✍️ Create different themes for different moods.',
+      '**Freedom to Reply or Ignore**',
+      '- 🚫 Not feeling a message? No pressure. No one will know.',
+    ]
+  }
+  
 ];
