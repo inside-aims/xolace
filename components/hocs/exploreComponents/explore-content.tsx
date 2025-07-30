@@ -87,7 +87,7 @@ const ExploreContent = ({ query, filter }: ExploreContentProps) => {
   return (
     <div className="w-full space-y-6 sm:space-y-8">
       <LocalSearch
-        placeholder="Search posts..."
+        placeholder="Search posts, authors, or topics..."
         otherClasses="flex-1"
         route="/explore"
       />

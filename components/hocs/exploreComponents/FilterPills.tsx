@@ -6,7 +6,6 @@ import { motion } from 'motion/react';
 
 import { formUrlQuery, removeKeyFromQuery } from '@/lib/url';
 import { filters } from '@/constants';
-import { Sparkles } from 'lucide-react';
 
 const FilterPills: React.FC = () => {
   const router = useRouter();
@@ -60,7 +59,7 @@ const FilterPills: React.FC = () => {
             <span className="hidden sm:inline">{filter.label}</span>
 
             {/* Active indicator */}
-            {active === filter.name && <Sparkles className="w-3 h-3 animate-pulse" />}
+            {/* {active === filter.name && <Sparkles className="w-3 h-3 animate-pulse" />} */}
           </motion.button>
         ))}
       </div>

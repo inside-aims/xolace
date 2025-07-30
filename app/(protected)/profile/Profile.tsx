@@ -9,11 +9,13 @@ import {TopTags} from "@/components/profile/top-tags";
 import {Stats} from "@/components/profile/stats";
 import {Tabs, TabsList, TabsContent, TabsTrigger} from '@/components/ui/tabs'
 import Posts from "@/components/profile/posts";
+import { Badge } from '@/components/ui/badge';
 
 const Profile = () => {
   // get user profile data
   const router = useRouter();
   const user = useUserState(state => state.user);
+  const {roles} = useUserState()
   const [selectedCategory, setSelectedCategory] = useState<string>("stats")
   const scrollRef = useRef<HTMLDivElement>(null);
 
@@ -36,6 +38,12 @@ const Profile = () => {
     {key: 'posts', name: 'Your Posts', children: <Posts/> },
   ]
 
+  console.log(roles)
+    // Determine badge eligibility
+    const isProfessional = roles.includes('help_professional');
+    const isMentor = roles.includes('mentor');
+    const isVerified = roles.includes('verified');
+
   return (
       <div className="w-full grid grid-cols-12 md:h-screen pb-12 md:pb-0">
         <div
@@ -56,7 +64,22 @@ const Profile = () => {
                 <h3 className={"font-semibold leading-tight text-xl"}>
                   {user?.username}
                 </h3>
-                <span className={"lowercase"}>{`@${user?.username}`}</span>
+                <div className='flex items-center gap-x-2'>
+                  <span className={"lowercase"}>{`@${user?.username}`}</span>
+                  <Badge variant="minimal" className="text-[8px] py-[1px] text-amber-400 bg-amber-900/90 dark:bg-amber-900/20 border-amber-800/50">
+                    CAMPER 🔥
+                  </Badge>
+                  {isProfessional && <Badge variant="minimal" className="text-[8px] py-[1px] text-green-400 bg-green-900/90 dark:bg-green-900/20 border-green-800/50">
+                    PROFESSIONAL
+                  </Badge>}
+                {isMentor && <Badge variant="minimal" className="text-[8px] py-[1px] text-orange-400 bg-orange-900/90 dark:bg-orange-900/20 border-orange-800/50">
+                    MENTOR
+                  </Badge>}
+                {isVerified && <Badge variant="minimal" className="text-[8px] py-[1px] text-blue-400 bg-blue-900/90 dark:bg-blue-900/20 border-blue-800/50">
+                    VERIFIED
+                  </Badge>}
+                
+                </div>
               </div>
               <div className={"w-full flex flex-row flex-wrap items-center gap-4 "}>
                 <p className={"flex items-center flex-row gap-1"}>
