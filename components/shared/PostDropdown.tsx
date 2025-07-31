@@ -125,6 +125,7 @@ const PostDropdown: React.FC<DropdownMenuProp> = ({
                 pinComment({ commentId, pinLevel: 'professional' })
               }
             >
+              <Pin />
               {commentPinnedStatus === 'professional'
                 ? 'Unpin as Professional'
                 : 'Pin as Professional'}
