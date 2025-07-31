@@ -343,6 +343,7 @@ const PostDetailsInteraction = ({ post }: { post: DetailPost }) => {
             replyingTo={replyingTo}
             expandedComments={expandedComments}
             onToggleExpanded={handleToggleExpanded}
+            postCreatedBy={post.created_by}
           />
         )}
         {comments.length == 0 && (

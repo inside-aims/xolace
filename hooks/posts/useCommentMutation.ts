@@ -107,6 +107,7 @@ export function useCommentMutation(post: DetailPost) {
         author_avatar_url: user?.avatar_url || null,
         depth: depth ? depth : 0,
         parent_id: parentId ? Number(parentId) : null,
+        pinned_status: 'none',
       };
 
       // Optimistically update the comments list
