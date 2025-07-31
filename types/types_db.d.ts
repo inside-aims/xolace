@@ -303,6 +303,7 @@ export type Database = {
           depth: number
           id: number
           parent_id: number | null
+          pinned_status: Database["public"]["Enums"]["comment_pin_type"]
           post: string
         }
         Insert: {
@@ -314,6 +315,7 @@ export type Database = {
           depth?: number
           id?: number
           parent_id?: number | null
+          pinned_status?: Database["public"]["Enums"]["comment_pin_type"]
           post: string
         }
         Update: {
@@ -325,6 +327,7 @@ export type Database = {
           depth?: number
           id?: number
           parent_id?: number | null
+          pinned_status?: Database["public"]["Enums"]["comment_pin_type"]
           post?: string
         }
         Relationships: [
@@ -1465,6 +1468,7 @@ export type Database = {
           depth: number
           id: number
           parent_id: number | null
+          pinned_status: Database["public"]["Enums"]["comment_pin_type"]
           post: string
         }[]
       }
@@ -1532,6 +1536,13 @@ export type Database = {
         Args: { notification_id: string }
         Returns: undefined
       }
+      pin_comment: {
+        Args: {
+          comment_id_to_pin: number
+          pin_level: Database["public"]["Enums"]["comment_pin_type"]
+        }
+        Returns: undefined
+      }
       reset_credits: {
         Args: Record<PropertyKey, never>
         Returns: undefined
@@ -1553,6 +1564,7 @@ export type Database = {
         | "viewed"
         | "added"
         | "liked"
+      comment_pin_type: "none" | "author" | "professional"
       entity_types:
         | "post"
         | "comment"
@@ -1749,6 +1761,7 @@ export const Constants = {
         "added",
         "liked",
       ],
+      comment_pin_type: ["none", "author", "professional"],
       entity_types: [
         "post",
         "comment",
