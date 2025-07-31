@@ -6,11 +6,7 @@ drop policy "Enable insert for authenticated users only" on "public"."health_tip
 
 drop policy "Users can view their own roles, mods see all" on "public"."user_roles";
 
-alter table "public"."activity_logs" alter column "user_id" set not null;
-
 alter table "public"."comments" add column "pinned_status" comment_pin_type not null default 'none'::comment_pin_type;
-
-alter table "public"."feedbacks" alter column "created_by" set not null;
 
 alter table "public"."user_roles" enable row level security;
 
