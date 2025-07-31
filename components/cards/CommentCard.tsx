@@ -2,7 +2,7 @@
 import * as React from 'react';
 import { useEffect, useState } from 'react';
 import { format } from 'timeago.js';
-import { ChevronDown, ChevronRight, MessageCircle } from 'lucide-react';
+import { ChevronDown, ChevronRight, MessageCircle, Pin } from 'lucide-react';
 
 import { Card, CardContent, CardHeader } from '@/components/ui/card';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
@@ -23,9 +23,10 @@ interface CommentCardProps {
   contentClassName?: string;
   className?: string;
   expandedComments?: Set<number>;
+  postCreatedBy: string | null
 }
 
-const CommentCard = ({comment, className, headerClassName, contentClassName, level = 0, isExpanded = false, onToggleExpanded, onReply, replyingTo, expandedComments}: CommentCardProps) => {
+const CommentCard = ({comment, className, headerClassName, contentClassName, level = 0, isExpanded = false, onToggleExpanded, onReply, replyingTo, expandedComments, postCreatedBy}: CommentCardProps) => {
   // states
   const [isOpen, setIsOpen] = useState<boolean>(false);
   const [timestamp, setTimestamp] = useState('');
@@ -82,7 +83,7 @@ const CommentCard = ({comment, className, headerClassName, contentClassName, lev
           )}
         >
           <CardHeader 
-            className={cn("flex-row items-start justify-between py-2 px-4", headerClassName)}
+            className={cn("flex-row items-start justify-between py-2 px-4 ", headerClassName)}
             style={{ paddingLeft: `${16 + indentPadding}px` }}
           >
             <div className="flex items-center justify-center gap-1">
@@ -101,6 +102,20 @@ const CommentCard = ({comment, className, headerClassName, contentClassName, lev
                 {timestamp}
               </small>
             </div>
+
+            <div className='flex items-center gap-x-3'>
+
+            {comment.pinned_status !== 'none' && (
+                    <div className="flex items-center gap-1 text-xs text-gray-500">
+                        <Pin className={`h-3 w-3 ${comment.pinned_status === 'professional' ? 'text-moss-600': 'text-lavender-600' }`} />
+                        <span className=' hidden sm:inline'>
+                            {comment.pinned_status === 'professional' 
+                                ? 'Pinned by a Professional' 
+                                : 'Pinned by Author'}
+                        </span>
+                    </div>
+                )}
+
             <PostDropdown
               postId={comment.post}
               comment={true}
@@ -108,7 +123,10 @@ const CommentCard = ({comment, className, headerClassName, contentClassName, lev
               commentCreatedBy={comment.created_by ?? ''}
               onOpenChange={setIsOpen}
               content={comment.comment_text}
+              postCreatedBy={postCreatedBy ?? ''}
+              commentPinnedStatus={comment.pinned_status}
             />
+            </div>
           </CardHeader>
 
           <CardContent 
@@ -182,6 +200,7 @@ const CommentCard = ({comment, className, headerClassName, contentClassName, lev
                 replyingTo={replyingTo}
                 onToggleExpanded={onToggleExpanded}
                 expandedComments={expandedComments}
+                postCreatedBy={postCreatedBy ?? ''}
               />
             ))}
           </div>

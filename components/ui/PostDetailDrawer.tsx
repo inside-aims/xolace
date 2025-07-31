@@ -343,6 +343,7 @@ const PostDetailDrawer = ({ post, type }: { post: DetailPost; type: Type }) => {
             replyingTo={replyingTo}
             expandedComments={expandedComments}
             onToggleExpanded={handleToggleExpanded}
+            postCreatedBy={post.created_by}
           />
         )}
             {comments.length == 0 && (

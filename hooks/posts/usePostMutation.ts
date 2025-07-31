@@ -78,7 +78,7 @@ export function usePostMutations() {
     onSuccess: (_, variables) => {
       toast.success('Comment deleted successfully!');
       // Invalidate queries that might show comments, e.g., post details
-      //queryClient.invalidateQueries({ queryKey: ['comments'] }); // Assuming a 'comments' query key exists
+      queryClient.invalidateQueries({ queryKey: ['comments', variables.postId] }); // Assuming a 'comments' query key exists
       //queryClient.invalidateQueries({ queryKey: ['post', variables.postId] }); // Invalidate specific post details
     },
     onError: error => {
