@@ -24,7 +24,7 @@ export const FinishedState = () => {
 
   return (
     <div
-      className="relative flex flex-col bg-white rounded-2xl w-full max-w-5xl h-[70vh] md:h-[60vh] overflow-hidden items-center justify-center p-8 gap-6 text-center">
+      className="relative flex flex-col bg-white rounded-2xl w-full max-w-5xl h-[70vh] md:h-[60vh] overflow-hidden items-center justify-center p-8 gap-6 text-center dark:bg-gray-600 text-foreground ">
 
       <div className="flex flex-col items-center justify-center gap-4">
         <div className="animate-bounce-scale">
@@ -38,16 +38,16 @@ export const FinishedState = () => {
         </div>
 
         {!isSubmitted ? (
-          <span className="text-lg text-neutral-500 font-medium tracking-wide">
+          <span className="text-lg text-neutral-500 dark:text-neutral-300 font-medium tracking-wide">
             Submitting<span className="inline-block animate-dots ml-1">.</span>
           </span>
         ) : (
           <>
-            <span className="text-2xl font-semibold text-neutral-700">Done!</span>
-            <span className="text-lg text-neutral-500">Thank you for joining our circle.</span>
+            <span className="text-2xl font-semibold text-neutral-700 dark:text-neutral-300">Done!</span>
+            <span className="text-lg text-neutral-500 dark:text-neutral-300">Thank you for joining our circle.</span>
             <Button
               onClick={handleNavigation}
-              className="group relative overflow-hidden border sm:w-auto px-6 sm:px-8 py-3 sm:py-4 bg-lavender-500 text-white hover:text-white rounded-lg font-medium text-sm sm:text-base transition-colors duration-300 ease-in-out"
+              className="group relative overflow-hidden border sm:w-auto px-6 sm:px-8 py-3 sm:py-4 bg-lavender-500 dark:bg-lavender-500 dark:border-lavender-500 text-white hover:text-white rounded-lg font-medium text-sm sm:text-base transition-colors duration-300 ease-in-out"
               variant="outline"
             >
               <span

@@ -830,7 +830,7 @@ code {
     margin-right: 0.5rem;
   }
   .custom-phone-input {
-    @apply items-center flex bg-slate-50;
+    @apply items-center flex bg-slate-50 dark:bg-bg-dark;
   }
 
 }

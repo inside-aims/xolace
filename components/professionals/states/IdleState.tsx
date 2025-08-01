@@ -10,7 +10,7 @@ export const IdleState = ({onJoinCircle} : {onJoinCircle: () => void}) =>
   (
     <>
       <div
-        className="relative flex flex-col bg-white rounded-2xl w-full max-w-5xl h-[70vh] md:h-[60vh] overflow-hidden items-start justify-start p-8 gap-2">
+        className="relative flex flex-col bg-white rounded-2xl w-full max-w-5xl h-[70vh] md:h-[60vh] overflow-hidden items-start justify-start p-8 gap-2 dark:bg-gray-600 text-foreground">
         <Image
           src={"/assets/images/mas.webp"}
           alt={"xolace logo"}
@@ -21,11 +21,11 @@ export const IdleState = ({onJoinCircle} : {onJoinCircle: () => void}) =>
 
         <div className="w-full flex flex-col md:flex-row items-start justify-center gap-8 md:gap-4">
           <div className="flex flex-col justify-center items-start w-full md:w-1/2">
-            <h1 className="text-3xl font-semibold tracking-tight text-gray-800">
+            <h1 className="text-3xl font-semibold tracking-tight text-gray-800 dark:text-gray-100">
               Welcome to <span
-              className="text-lavender-600 bg-gradient-to-r from-indigo-600 via-lavender-600 to-teal-500 bg-clip-text text-transparent">Xolace</span>
+              className="text-lavender-600 bg-gradient-to-r from-indigo-600 dark:from-pink-600 via-lavender-600 dark:via-yellow-600 to-teal-500 bg-clip-text text-transparent">Xolace</span>
             </h1>
-            <p className="mt-2 text-gray-600 w-full md:w-[70%] text-base">
+            <p className="mt-2 w-full md:w-[70%] text-base text-gray-600 dark:text-neutral-300">
               Your voice. Our fire. Speak freely.
             </p>
           </div>
@@ -34,7 +34,7 @@ export const IdleState = ({onJoinCircle} : {onJoinCircle: () => void}) =>
             <h2 className="text-2xl font-semibold tracking-tight ">
               Your Expertise. Our Platform.
             </h2>
-            <p className="text-gray-600 mt-2 w-full md:w-[70%] text-base">
+            <p className="text-gray-600 dark:text-neutral-300 mt-2 w-full md:w-[70%] text-base">
               Join a trusted platform to offer thoughtful, private support
               where empathy meets modern connection.
             </p>
@@ -43,7 +43,7 @@ export const IdleState = ({onJoinCircle} : {onJoinCircle: () => void}) =>
         <div className="absolute bottom-8 right-8">
           <Button
             onClick={onJoinCircle}
-            className="group relative overflow-hidden border sm:w-auto px-6 sm:px-8 py-3 sm:py-4 bg-lavender-500 text-white hover:text-white rounded-lg font-medium text-sm sm:text-base transition-colors duration-300 ease-in-out"
+            className="group relative overflow-hidden border dark:border-lavender-500 sm:w-auto px-6 sm:px-8 py-3 sm:py-4 bg-lavender-500 dark:bg-lavender-500 text-white hover:text-white rounded-lg font-medium text-sm sm:text-base transition-colors duration-300 ease-in-out"
             variant="outline"
           >
               <span

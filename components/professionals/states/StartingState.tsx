@@ -6,6 +6,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { z, ZodType } from "zod";
 import { HelpCircle, Grid3X3 } from "lucide-react";
 import {Textarea} from "@/components/ui/textarea";
+import { Checkbox } from "@/components/ui/checkbox"
 
 import {
   Select,
@@ -29,6 +30,7 @@ import { Separator } from "@/components/ui/separator";
 import {OnboardingState} from "@/components/professionals/onboarding";
 import {XolacePhoneNumberInput} from "@/components/shared/XolacePhoneNumberInput";
 import {isValidPhoneNumber} from "libphonenumber-js";
+import {fieldsByStep} from "@/components/professionals/states/index";
 
 // Step 1 Schema
 const StepOneSchema = z.object({
@@ -52,61 +54,36 @@ const StepTwoSchema = z.object({
 
 // Step 3 Schema
 const StepThreeSchema = z.object({
+  email: z.string().min(1, "Enter a valid email").email("Email is required"),
   bio: z.string().min(10, {message: "Bio is must be at least 10 characters."}),
   avatar: z.string().url().optional(),
 });
 
+// Step 4 Schema
+const StepFourSchema = z.object({
+  confirmAccuracy: z.literal(true, { errorMap: () => ({ message: "You must confirm the information." }) }),
+  understandReview: z.literal(true, { errorMap: () => ({ message: "You must acknowledge data review." }) }),
+  agreeTerms: z.literal(true, { errorMap: () => ({ message: "You must agree to the terms." }) }),
+  consentProcessing: z.literal(true, { errorMap: () => ({ message: "You must consent to processing." }) }),
+});
+
+
 type StepOneType = z.infer<typeof StepOneSchema>;
 type StepTwoType = z.infer<typeof StepTwoSchema>;
 type StepThreeType = z.infer<typeof StepThreeSchema>;
-type FullFormType = StepOneType & StepTwoType & StepThreeType;
+type StepFourType = z.infer<typeof StepFourSchema>;
+type FullFormType = StepOneType & StepTwoType & StepThreeType & StepFourType;
 
 //eslint-disable-next-line
-const stepSchemas: ZodType<any>[] = [StepOneSchema, StepTwoSchema, StepThreeSchema];
+const stepSchemas: ZodType<any>[] = [StepOneSchema, StepTwoSchema, StepThreeSchema, StepFourSchema];
 
-type FieldDefinition = {
+export type FieldDefinition = {
   name: keyof FullFormType;
   label: string;
-  type: "input" | "select" | "file" | "textarea" | "phone";
+  type: "input" | "select" | "file" | "textarea" | "phone" | "checkbox";
   options?: { label: string; value: string }[];
+  placeholder: string;
 };
-
-const fieldsByStep: FieldDefinition[][] = [
-  [
-    { name: "fullName", label: "Full Name", type: "input" },
-    { name: "title", label: "Professional Title", type: "input" },
-    { name: "field", label: "Field of Expertise", type: "input" },
-    {
-      name: "experience",
-      label: "Years of Experience",
-      type: "select",
-      options: [
-        { label: "1 year", value: "1" },
-        { label: "2 years", value: "2" },
-        { label: "3 years", value: "3" },
-        { label: "5+ years", value: "5" },
-        { label: "10+ years", value: "10" },
-      ],
-    },
-  ],
-  [
-    { name: "languages", label: "Languages Spoken", type: "input" },
-    { name: "location", label: "Location", type: "input" },
-    { name: "preferredContact", label: "Preferred Communication", type: "select",
-      options: [
-        { label: "Email", value: "email" },
-        { label: "Phone Call", value: "phoneCall" },
-        { label: "Direct Message", value: "directMessage" },
-        { label: "Via video", value: "video" },
-      ],
-    },
-    { name: "contact", label: "Contact Info (Optional)", type: "phone" },
-  ],
-  [
-    { name: "avatar", label: "Profile Picture (Optional)", type: "file" },
-    { name: "bio", label: "Short Bio", type: "textarea" },
-  ],
-];
 
 interface StartingStateProps {
   setState: (state: OnboardingState) => void;
@@ -146,17 +123,17 @@ export default function StartingState({setState}: StartingStateProps ) {
   };
 
   return (
-    <div className="relative flex flex-col bg-white w-full min-h-screen overflow-x-hidden" style={{ margin: 0}}>
-      <nav className="w-full border-b shadow-md border-gray-200 bg-white">
+    <div className="relative flex flex-col bg-white dark:bg-bg-dark bg-bg text-foreground w-full min-h-screen overflow-x-hidden" style={{ margin: 0}}>
+      <nav className="w-full border-b border-gray-200 bg-white dark:bg-bg-dark">
         <div className="flex items-center justify-between px-6 py-4">
           <div className="flex items-center"></div>
 
           <div className="flex items-center gap-4">
-            <button className="p-2 rounded-full hover:bg-gray-100 transition-colors">
-              <HelpCircle className="w-6 h-6 text-gray-600" />
+            <button className="p-2 rounded-full hover:bg-gray-100 transition-colors dark:hover:bg-gray-800">
+              <HelpCircle className="w-6 h-6 text-gray-600 dark:text-gray-100" />
             </button>
-            <button className="p-2 rounded-full hover:bg-gray-100 transition-colors">
-              <Grid3X3 className="w-6 h-6 text-gray-600" />
+            <button className="p-2 rounded-full hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors">
+              <Grid3X3 className="w-6 h-6 text-gray-600 dark:text-gray-100" />
             </button>
           </div>
         </div>
@@ -164,11 +141,12 @@ export default function StartingState({setState}: StartingStateProps ) {
           {step === 0 && (<span>Professional Identify</span>)}
           {step === 1 && (<span>Communication & Reachability</span>)}
           {step === 2 && (<span>Personal Touch & Bio</span>)}
+          {step === 3 && (<span>Consent & Agreement</span>)}
         </div>
       </nav>
 
       <div className="flex flex-col items-start justify-center md:flex-1">
-        <div className="w-full p-4 md:px-8 mx-0 md:mx-[18%] max-w-2xl flex items-start justify-start border-0 md:border">
+        <div className="w-full p-4 md:px-8 mx-0 md:mx-[18%] max-w-2xl flex items-start justify-start border-0 md:border border-gray-200">
           {/* Form Section */}
           <div className="w-full p-0 md:px-8 ">
             <h2 className="text-2xl font-semibold mb-4">Step {step + 1} of {stepSchemas.length}</h2>
@@ -176,31 +154,33 @@ export default function StartingState({setState}: StartingStateProps ) {
 
             <Form {...form}>
               <form onSubmit={form.handleSubmit(handleFinalSubmit)} className="flex flex-col gap-4 w-full">
-                {fieldsByStep[step].map(({ name, label, type, options }) => (
+                {fieldsByStep[step].map(({ name, label, type, options, placeholder }) => (
                   <FormField
                     key={name}
                     control={form.control}
                     name={name}
                     render={({ field }) => (
                       <FormItem className="w-full">
-                        <FormLabel className="text-left">{label}</FormLabel>
+                        {type !== 'checkbox' && (
+                          <FormLabel className="text-left">{label}</FormLabel>
+                        )}
                         <FormControl>
                           <div>
                             {type === "input" && (
                               <Input
                                 {...field}
-                                value={field.value ?? ""}
-                                placeholder={label}
+                                value={typeof field.value === "string" ? field.value : ""}
+                                placeholder={placeholder}
                                 className="px-2 h-10 w-full bg-slate-50 border border-slate-300"
                               />
                             )}
                             {type === "select" && (
                               <Select
                                 onValueChange={field.onChange}
-                                defaultValue={field.value}
+                                defaultValue={typeof field.value === "string" ? field.value : ""}
                               >
                                 <SelectTrigger className="px-2 h-10 w-full bg-slate-50 border border-slate-300">
-                                  <SelectValue placeholder="Select" />
+                                  <SelectValue placeholder={placeholder} />
                                 </SelectTrigger>
                                 <SelectContent>
                                   {options?.map((opt) => (
@@ -215,6 +195,7 @@ export default function StartingState({setState}: StartingStateProps ) {
                               <Input
                                 type="file"
                                 accept="image/*"
+                                placeholder={placeholder}
                                 onChange={(e) => {
                                   const file = e.target.files?.[0];
                                   if (file) {
@@ -228,7 +209,8 @@ export default function StartingState({setState}: StartingStateProps ) {
                             {type === "textarea" && (
                               <Textarea
                                 {...field}
-                                placeholder={"Tell us a little about yourself"}
+                                value={typeof field.value === "string" ? field.value : ""}
+                                placeholder={placeholder}
                                 className="px-2 h-10 w-full bg-slate-50 border border-slate-300"
                               />
                             )}
@@ -236,8 +218,18 @@ export default function StartingState({setState}: StartingStateProps ) {
                               <XolacePhoneNumberInput
                                 control={form.control}
                                 name={name}
-                                placeholder="Enter your phone number"
+                                placeholder={placeholder}
                               />
+                            )}
+                            {type === "checkbox" && (
+                              <div className="flex items-start space-x-2 mt-2">
+                                <Checkbox
+                                  checked={!!field.value}
+                                  onCheckedChange={(checked) => field.onChange(checked === true)}
+                                  className="mt-1 h-4 w-4 border-gray-300 rounded"
+                                />
+                                <label className="text-left">{label}</label>
+                              </div>
                             )}
                           </div>
                         </FormControl>
@@ -252,7 +244,7 @@ export default function StartingState({setState}: StartingStateProps ) {
                     <Button
                       type="button"
                       variant="outline"
-                      className="rounded-lg"
+                      className="rounded-lg dark:text-white"
                       onClick={goBack}
                     >
                       Back
@@ -263,13 +255,13 @@ export default function StartingState({setState}: StartingStateProps ) {
                     {step === stepSchemas.length - 1 ? (
                       <Button
                         type={"submit"}
-                        className="bg-lavender-500 rounded-lg hover:bg-lavender-600">
+                        className="bg-lavender-500 rounded-lg hover:bg-lavender-600 dark:text-white">
                         Submit
                       </Button>
                     ) : (
                       <Button
                         onClick={form.handleSubmit(handleContinue)}
-                        className="bg-lavender-500 rounded-lg hover:bg-lavender-600">
+                        className="bg-lavender-500 rounded-lg hover:bg-lavender-600 dark:text-white">
                         Continue
                       </Button>
                     )}

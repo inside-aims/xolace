@@ -4,7 +4,7 @@ import React from "react";
 export const ProceedingState = () => {
   return (
     <div
-      className="relative flex flex-col bg-white rounded-2xl w-full max-w-5xl h-[70vh] md:h-[60vh] overflow-hidden items-center justify-center p-8 gap-6 text-center">
+      className="relative flex flex-col bg-white rounded-2xl w-full max-w-5xl h-[70vh] md:h-[60vh] overflow-hidden items-center justify-center p-8 gap-6 text-center dark:bg-gray-600 text-foreground ">
       {/* Glowing image + message */}
       <div className="flex flex-col items-center justify-center gap-4">
         <div className="animate-bounce-scale">
@@ -16,7 +16,7 @@ export const ProceedingState = () => {
             className="w-48 h-48"
           />
         </div>
-        <span className="text-lg text-neutral-500 font-medium tracking-wide">
+        <span className="text-lg text-neutral-500 font-medium tracking-wide dark:text-neutral-300">
          {"Thanks for joining, your seat by the fire is almost ready"}
           <span className="inline-block animate-dots ml-1">.</span>
         </span>
