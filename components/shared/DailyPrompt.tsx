@@ -179,7 +179,7 @@ const DailyPrompt = () => {
         initial={{ opacity: 0, y: -20 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.6, ease: 'anticipate' }}
-        className="float-animation"
+        className=""
       >
         <Card className="to-lavender-700 dark:from-ocean-700/80 dark:to-lavender-800/80 relative overflow-hidden border-none bg-gradient-to-br from-purple-600 text-white shadow-xl">
           {/* Decorative Glows */}
