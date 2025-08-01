@@ -290,6 +290,9 @@ export async function voteAction(
       return { success: false, error: voteError.message };
     }
 
+    if(!voteResult.success){
+      return { success: false, error: voteResult.error };
+    }
     const relatedUser = relatedUserId === user_id ? undefined : relatedUserId;
 
     // Log the vote activity
