@@ -27,6 +27,7 @@
     "@ai-sdk/openai-compatible": "^0.2.16",
     "@ai-sdk/react": "^1.2.12",
     "@hookform/resolvers": "^5.1.1",
+    "@lottiefiles/dotlottie-react": "^0.14.4",
     "@mdxeditor/editor": "^3.40.0",
     "@next/bundle-analyzer": "^15.4.3",
     "@radix-ui/colors": "^3.0.0",
