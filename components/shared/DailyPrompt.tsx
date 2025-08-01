@@ -3,6 +3,7 @@
 'use client';
 
 import React, { useState, useEffect } from 'react';
+import dynamic from 'next/dynamic';
 import { useRouter } from 'next/navigation';
 import { Button } from '@/components/ui/button';
 import { Card } from '@/components/ui/card';
@@ -17,7 +18,7 @@ import { TipsBanner } from './TipsBanner';
 import { WordRotate } from '../magicui/word-rotate';
 import { usePrompt } from '@/hooks/prompts/usePromptData';
 import { tips } from '@/constants';
-import { DotLottieReact } from '@lottiefiles/dotlottie-react';
+// import { DotLottieReact } from '@lottiefiles/dotlottie-react';
 
 // interface DailyPromptData {
 //   id: string;
@@ -25,6 +26,15 @@ import { DotLottieReact } from '@lottiefiles/dotlottie-react';
 //   created_at: string;
 //   active_on: string;
 // }
+
+
+const DotLottieReact = dynamic(
+  () => import('@lottiefiles/dotlottie-react').then(mod => mod.DotLottieReact),
+  {
+    ssr: false,
+    loading: () => <p className="bg-gray-300 dark:bg-gray-600 h-3 w-3 animate-pulse rounded-full"></p>,
+  },
+);
 
 const DailyPrompt = () => {
   const { preferences } = usePreferencesStore();
@@ -169,7 +179,7 @@ const DailyPrompt = () => {
         initial={{ opacity: 0, y: -20 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.6, ease: 'anticipate' }}
-        className="float-animation"
+        className=""
       >
         <Card className="to-lavender-700 dark:from-ocean-700/80 dark:to-lavender-800/80 relative overflow-hidden border-none bg-gradient-to-br from-purple-600 text-white shadow-xl">
           {/* Decorative Glows */}
@@ -186,6 +196,7 @@ const DailyPrompt = () => {
               </div>
 
               <div className="flex items-center gap-1">
+
               <DotLottieReact
                   src="https://lottie.host/8586490e-8c75-47c6-afc2-c8f2a6f10682/hYjxZaYm6a.lottie"
                   loop
