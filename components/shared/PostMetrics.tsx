@@ -58,30 +58,10 @@ const PostMetrics = ({
     const previousVote = currentVote;
 
     try {
-      // Optimistically update UI
-      //const isRemovingVote = currentVote === voteType;
-
-      // Update vote counts based on the action
-      // if (isRemovingVote) {
-      //   // Removing vote
-      //   if (voteType === 'upvote') setUpvoteCount((prev: number) => prev - 1);
-      //   else setDownvoteCount((prev: number) => prev - 1);
-      //   setCurrentVote(null);
-      // } else {
-      //   // Adding or changing vote
-      //   if (voteType === 'upvote') {
-      //     setUpvoteCount((prev: number) => prev + 1);
-      //     if (currentVote === 'downvote') setDownvoteCount((prev: number) => prev - 1);
-      //   } else {
-      //     setDownvoteCount((prev: number) => prev + 1);
-      //     if (currentVote === 'upvote') setUpvoteCount((prev: number) => prev - 1);
-      //   }
-      //   setCurrentVote(voteType);
-      // }
       setCurrentVote(prevVote => (prevVote === voteType ? null : voteType));
 
       // Make server request
-      mutateVote({
+      await mutateVote({
         postId: post.id,
         voteType,
         currentVote: previousVote,
@@ -95,11 +75,9 @@ const PostMetrics = ({
         // setUpvoteCount(post.upvotes);
         // setDownvoteCount(post.downvotes);
       }
-    } catch (error) {
+    } catch (_) {
       // Revert changes on error
       setCurrentVote(previousVote);
-
-      console.log("error in catch ",error);
     }
   };
 

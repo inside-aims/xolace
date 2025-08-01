@@ -40,7 +40,7 @@ export function useVoteMutations() {
   });
 
   return {
-    mutateVote: voteMutation.mutate,
+    mutateVote: voteMutation.mutateAsync,
     isLoading: voteMutation.isPending,
     isError: voteMutation.isError,
   };

@@ -6,7 +6,7 @@ import React, { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import { Button } from '@/components/ui/button';
 import { Card } from '@/components/ui/card';
-import { ArrowRight, Flame, Sparkles, CalendarDays } from 'lucide-react';
+import { ArrowRight, Sparkles, CalendarDays } from 'lucide-react';
 import { usePreferencesStore } from '@/lib/store/preferences-store';
 import { motion } from 'motion/react';
 import qs from 'query-string';
@@ -17,6 +17,7 @@ import { TipsBanner } from './TipsBanner';
 import { WordRotate } from '../magicui/word-rotate';
 import { usePrompt } from '@/hooks/prompts/usePromptData';
 import { tips } from '@/constants';
+import { DotLottieReact } from '@lottiefiles/dotlottie-react';
 
 // interface DailyPromptData {
 //   id: string;
@@ -183,14 +184,23 @@ const DailyPrompt = () => {
                   Prompt of the Day
                 </h3>
               </div>
+
+              <div className="flex items-center gap-1">
+              <DotLottieReact
+                  src="https://lottie.host/8586490e-8c75-47c6-afc2-c8f2a6f10682/hYjxZaYm6a.lottie"
+                  loop
+                  autoplay
+                  style={{width: "30px", height: "30px"}}
+                />
               <div
-                className="flex cursor-pointer items-center gap-1 rounded-full bg-white/10 px-3 py-1.5 transition-transform hover:scale-105 dark:bg-black/20"
+                className={`flex cursor-pointer items-center gap-1 rounded-full bg-white/10 px-2 py-1 transition-transform hover:scale-105 dark:bg-black/20 ${isFlameRotating ? 'rotate-animation' : ''}`}
                 onMouseEnter={handleStreakHover}
                 title={`${streakData?.current_streak} day streak! Keep it up!`}
               >
-                <Flame
+                {/* <Flame
                   className={`h-5 w-5 text-orange-400 ${isFlameRotating ? 'rotate-animation' : ''}`}
-                />{' '}
+                />{' '} */}
+               
                 {showUrgencyIndicator && (
                   <span className="animate-bounce duration-700 ease-in-out">
                     ⏳
@@ -204,6 +214,7 @@ const DailyPrompt = () => {
                     {streakData?.current_streak <= 1 ? 'day' : 'days'}
                   </span>
                 )}
+              </div>
               </div>
             </div>
             <p className="mb-3 flex items-center text-xs text-purple-200 dark:text-purple-300">
