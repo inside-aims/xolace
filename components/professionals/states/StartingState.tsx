@@ -31,6 +31,8 @@ import {OnboardingState} from "@/components/professionals/onboarding";
 import {XolacePhoneNumberInput} from "@/components/shared/XolacePhoneNumberInput";
 import {isValidPhoneNumber} from "libphonenumber-js";
 import {fieldsByStep} from "@/components/professionals/states/index";
+import { onBoardingFlowAction } from "@/app/actions";
+import { toast } from "sonner";
 
 // Step 1 Schema
 const StepOneSchema = z.object({
@@ -72,7 +74,7 @@ type StepOneType = z.infer<typeof StepOneSchema>;
 type StepTwoType = z.infer<typeof StepTwoSchema>;
 type StepThreeType = z.infer<typeof StepThreeSchema>;
 type StepFourType = z.infer<typeof StepFourSchema>;
-type FullFormType = StepOneType & StepTwoType & StepThreeType & StepFourType;
+export type FullFormType = StepOneType & StepTwoType & StepThreeType & StepFourType;
 
 //eslint-disable-next-line
 const stepSchemas: ZodType<any>[] = [StepOneSchema, StepTwoSchema, StepThreeSchema, StepFourSchema];
@@ -92,6 +94,7 @@ interface StartingStateProps {
 export default function StartingState({setState}: StartingStateProps ) {
   const [step, setStep] = useState(0);
   const [collectedData, setCollectedData] = useState<Partial<FullFormType>>({});
+  const [isSubmitting, setIsSubmitting] = useState(false);
 
   const currentSchema = stepSchemas[step];
 
@@ -111,10 +114,28 @@ export default function StartingState({setState}: StartingStateProps ) {
     }
   };
 
-  const handleFinalSubmit: SubmitHandler<FullFormType> = (data) => {
+  const handleFinalSubmit: SubmitHandler<FullFormType> = async (data) => {
     const updatedData = { ...collectedData, ...data };
     setState("finished");
     console.log("Final data submitted:", updatedData);
+    
+    setIsSubmitting(true);
+    const toastId = toast.loading('Submitting your information...');
+
+    try {
+      const result = await onBoardingFlowAction(updatedData);
+      if (result.success) {
+        toast.success(result.message, { id: toastId });
+        setState("finished");
+      } else {
+        toast.error(result.message || 'An unknown error occurred.', { id: toastId });
+      }
+    } catch (error) {
+      toast.error('Failed to submit form. Please try again.', { id: toastId });
+      console.error(error);
+    } finally {
+      setIsSubmitting(false);
+    }
   };
 
 

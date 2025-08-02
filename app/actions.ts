@@ -15,6 +15,7 @@ import { logActivity } from '@/lib/activity-logger';
 import { ActivityType } from '@/types/activity';
 import { cache } from 'react';
 import { createNotification } from '@/lib/actions/notifications.action';
+import { FullFormType } from '@/components/professionals/states/StartingState';
 
 export const signUpAction = validatedAction(signUpSchema, async data => {
   const supabaseAdmin = getSupabaseAdminClient();
@@ -26,7 +27,6 @@ export const signUpAction = validatedAction(signUpSchema, async data => {
       email,
       password,
     });
-
 
   if (userError) {
     const userExists = userError.message.includes('already been registered');
@@ -107,6 +107,135 @@ export const signUpAction = validatedAction(signUpSchema, async data => {
     redirectUrl: `/registration-success?id=${safeUserId}&email=${safeEmailString}`,
   };
 });
+
+export const onBoardingFlowAction = async (data: FullFormType) => {
+  const supabaseAdmin = getSupabaseAdminClient();
+  const {
+    email,
+    fullName,
+    field,
+    bio,
+    experience,
+    title,
+    languages,
+    location,
+    contact,
+    confirmAccuracy,
+    understandReview,
+    agreeTerms,
+    consentProcessing,
+  } = data;
+
+  // 1. Generate a random default password
+  const defaultPassword = Math.random().toString(36).slice(-12);
+
+  // 2. Create the user
+  const { data: userData, error: userError } =
+    await supabaseAdmin.auth.admin.createUser({
+      email,
+      password: defaultPassword,
+      email_confirm: true, // Auto-confirm email as we are verifying via password reset
+    });
+
+  if (userError) {
+    return {
+      success: false,
+      message: userError.message.includes('already been registered')
+        ? 'A user with this email already exists.'
+        : 'Failed to create user. Please try again.',
+    };
+  }
+
+  const userId = userData.user.id;
+
+  // 3. Create the user profile
+  const {data: profileData, error: profileError } = await supabaseAdmin.from('profiles').insert({
+    supabase_user: userId,
+    username: fullName, // Using full name as username, can be changed later
+    email: email,
+    avatar_url: `https://avatar.iran.liara.run/public/boy?username=${encodeURIComponent(fullName)}`,
+  }).select()
+  .single();
+
+  if (profileError || !profileData) {
+    // Clean up created user if profile creation fails
+    await supabaseAdmin.auth.admin.deleteUser(userId);
+    return {
+      success: false,
+      message: 'Failed to create profile. Please try again.',
+    };
+  }
+
+  // 4. Create the health professional record
+  const { error: professionalError } = await supabaseAdmin
+    .from('health_professionals')
+    .insert({
+      id: profileData.id,
+      field,
+      bio,
+      years_of_experience: parseInt(experience, 10),
+      title,
+      language: languages,
+      location,
+      contact,
+      confirm_accuracy: confirmAccuracy,
+      understand_review: understandReview,
+      agree_terms: agreeTerms,
+      consent_processing: consentProcessing,
+    });
+
+  if (professionalError) {
+    // Clean up created user and profile if this step fails
+    await supabaseAdmin.auth.admin.deleteUser(userId);
+    // The profile will be deleted via cascade from the user deletion
+    return {
+      success: false,
+      message: 'Failed to create health professional record. Please try again.',
+    };
+  }
+
+  const {success: otpSuccess, message: otpMessage} = await sendSupabaseOTP(email);
+
+  if (!otpSuccess) {
+    return {
+      success: false,
+      message: otpMessage,
+    };
+  }
+
+  return {
+    success: true,
+    message:
+      'Onboarding complete! Please check your email to set your password and log in.',
+  };
+};
+
+/**
+ * Sends a verification OTP using Supabase's built-in auth.
+ * This is used after a user has already been created.
+ * @param {string} email - The recipient's email address.
+ * @returns {Promise<{success: boolean, message: string}>}
+ */
+export async function sendSupabaseOTP(email: string) {
+  const supabase = await createClient();
+
+  // This sends the OTP code to the user's email.
+  const { error } = await supabase.auth.signInWithOtp({
+    email,
+    options: {
+      // Set to false because the user is already created in your signUpAction.
+      // If OTP was the FIRST step of signup, you'd set this to true.
+      shouldCreateUser: false,
+    },
+  });
+
+  if (error) {
+    console.error('Supabase OTP Error:', error);
+    return { success: false, message: error.message };
+  }
+
+  return { success: true, message: 'OTP has been sent successfully.' };
+}
 
 export const forgotPasswordAction = async (formData: FormData) => {
   const email = formData.get('email')?.toString();
@@ -308,8 +437,11 @@ export async function voteAction(
       },
     });
 
-
-    if (user_id !== relatedUserId && relatedUserId && voteResult.action === 'added') {
+    if (
+      user_id !== relatedUserId &&
+      relatedUserId &&
+      voteResult.action === 'added'
+    ) {
       await createNotification({
         recipient_user_id: relatedUserId, // The video's author gets the notification
         actor_id: user_id, // The user who saved the video
