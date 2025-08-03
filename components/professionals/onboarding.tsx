@@ -14,7 +14,7 @@ const ProfessionalsOnboarding = () => {
 
   const handleJoinCircle = () => {
     setState("proceeding");
-    setTimeout(() => setState("starting"), 10000);
+    setTimeout(() => setState("starting"), 5000);
   }
 
   return (

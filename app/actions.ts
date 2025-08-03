@@ -203,10 +203,14 @@ export const onBoardingFlowAction = async (data: FullFormType) => {
     };
   }
 
+  const safeEmailString = encodeURIComponent(email);
+
   return {
     success: true,
     message:
-      'Onboarding complete! Please check your email to set your password and log in.',
+      'Onboarding complete! Please check your email for OTP',
+    redirectUrl: `/professionals/verify-otp?email=${safeEmailString}`,
+
   };
 };
 
@@ -235,6 +239,39 @@ export async function sendSupabaseOTP(email: string) {
   }
 
   return { success: true, message: 'OTP has been sent successfully.' };
+}
+
+export const verifyOTPAction = async (data: {email: string, otp_code: string}) => {
+  const {email, otp_code} = data;
+  const supabase = await createClient();
+  
+  const {
+    data: { session },
+    error,
+  } = await supabase.auth.verifyOtp({
+    email,
+    token: otp_code,
+    type: 'email',
+  })
+
+  if (error) {
+    return {
+      success: false,
+      message: error.message,
+    };
+  }
+
+  if(session) {
+    return {
+      success: true,
+      message: 'OTP has been verified successfully. Please set new password. Redirecting...',
+    };
+  }
+
+  return {
+    success: false,
+    message: 'Failed to verify OTP.',
+  }
 }
 
 export const forgotPasswordAction = async (formData: FormData) => {

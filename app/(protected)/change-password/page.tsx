@@ -7,7 +7,7 @@ import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 
 export const metadata: Metadata = {
-  title: 'Explore',
+  title: 'Change Password',
 }
 
 export default async function ChangePasswordPage(props: {

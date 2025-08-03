@@ -1,6 +1,7 @@
 "use client";
 
 import React, { useState } from "react";
+import { useRouter } from "next/navigation";
 import { useForm, SubmitHandler } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z, ZodType } from "zod";
@@ -92,6 +93,7 @@ interface StartingStateProps {
 }
 
 export default function StartingState({setState}: StartingStateProps ) {
+  const router = useRouter();
   const [step, setStep] = useState(0);
   const [collectedData, setCollectedData] = useState<Partial<FullFormType>>({});
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -125,8 +127,12 @@ export default function StartingState({setState}: StartingStateProps ) {
     try {
       const result = await onBoardingFlowAction(updatedData);
       if (result.success) {
-        toast.success(result.message, { id: toastId });
-        setState("finished");
+        toast.success(result.message, { id: toastId , duration: 5000});
+        if (result.redirectUrl) {
+          router.push(result.redirectUrl);
+        } else {
+          router.push(`/professionals/verify-otp?email=${updatedData.email}`);
+        }
       } else {
         toast.error(result.message || 'An unknown error occurred.', { id: toastId });
       }
