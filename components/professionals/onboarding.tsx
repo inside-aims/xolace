@@ -6,8 +6,9 @@ import {IdleState} from "@/components/professionals/states/IdleState";
 import {ProceedingState} from "@/components/professionals/states/ProceedingState";
 import StartingState from "@/components/professionals/states/StartingState";
 import {FinishedState} from "@/components/professionals/states/FinishedState";
+import {VerifyingState} from "@/components/professionals/states/VerifyingState";
 
-export type OnboardingState = "idle" | "proceeding" | "starting" | "finished";
+export type OnboardingState = "idle" | "proceeding" | "starting" | "verifying" | "finished";
 
 const ProfessionalsOnboarding = () => {
   const [state, setState] = React.useState<OnboardingState>("idle");
@@ -22,6 +23,7 @@ const ProfessionalsOnboarding = () => {
       {state === "idle" && <IdleState onJoinCircle={handleJoinCircle}/>}
       {state === "proceeding" && <ProceedingState/>}
       {state === "starting" && <StartingState setState={setState}/>}
+      {state === "verifying" && <VerifyingState setState={setState}/>}
       {state === "finished" && <FinishedState/>}
     </div>
   )

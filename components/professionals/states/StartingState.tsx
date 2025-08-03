@@ -101,7 +101,7 @@ export default function StartingState({setState}: StartingStateProps ) {
     mode: "onTouched"
   });
 
-  //eslint-disable-next-line
+
   const handleContinue: SubmitHandler<FullFormType> = (data) => {
     const updatedData = { ...collectedData, ...data };
     setCollectedData(updatedData);
@@ -113,8 +113,12 @@ export default function StartingState({setState}: StartingStateProps ) {
 
   const handleFinalSubmit: SubmitHandler<FullFormType> = (data) => {
     const updatedData = { ...collectedData, ...data };
-    setState("finished");
-    console.log("Final data submitted:", updatedData);
+    console.log("Updated data", updatedData);
+    const responseUUid = "lslslslkwklalssls" //assume success status returns uuid
+    
+    localStorage.setItem("otp_uuid", JSON.stringify(responseUUid));
+    setState("verifying"); //after success with uuid 
+    //console.log("Final data submitted:", updatedData);
   };
 
 
