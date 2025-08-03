@@ -17,7 +17,7 @@ export const createClient = async () => {
             cookiesToSet.forEach(({ name, value, options }) =>{
               const cookieOptions = {
                 ...options,
-                // domain: `.xolace.app`,
+                domain: `.xolace.app`,
               }
               cookieStore.set(name, value, cookieOptions)
             });
