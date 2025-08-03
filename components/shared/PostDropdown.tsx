@@ -12,8 +12,9 @@ import {
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu';
 import { useUserState } from '@/lib/store/user';
-import { Trash2, Telescope, Flag } from 'lucide-react';
+import { Trash2, Telescope, Flag, Pin } from 'lucide-react';
 import { usePostMutations } from '@/hooks/posts/usePostMutation';
+import { usePinComment } from '@/hooks/posts/usePinComment';
 
 type DropdownMenuProp = {
   comment?: boolean;
@@ -24,6 +25,7 @@ type DropdownMenuProp = {
   postCreatedBy?: string;
   commentId?: number;
   commentCreatedBy?: string | number;
+  commentPinnedStatus?: string;
   onOpenChange: React.Dispatch<React.SetStateAction<boolean>>;
 };
 
@@ -37,16 +39,21 @@ const PostDropdown: React.FC<DropdownMenuProp> = ({
   commentCreatedBy,
   onOpenChange,
   content,
+  commentPinnedStatus,
 }) => {
   const router = useRouter();
   const user = useUserState(state => state.user);
 
   const roles = useUserState(state => state.roles);
   const isModerator = roles.includes('blue_team');
+  const isHealthProfessional =
+    roles.includes('help_professional') && user?.id === commentCreatedBy;
+  const canAuthorPin = user?.id === postCreatedBy;
 
   // Use the new hook
   const { deletePost, isDeletingPost, deleteComment, isDeletingComment } =
     usePostMutations();
+  const { mutate: pinComment } = usePinComment(postId);
 
   // open sheet
   const handleReportClick = () => {
@@ -97,9 +104,34 @@ const PostDropdown: React.FC<DropdownMenuProp> = ({
             <path d="M6 10a2 2 0 11-4 0 2 2 0 014 0zM12 10a2 2 0 11-4 0 2 2 0 014 0zM16 12a2 2 0 100-4 2 2 0 000 4z" />
           </svg>
         </DropdownMenuTrigger>
-        <DropdownMenuContent align="end">
+        <DropdownMenuContent align="end" className="bg-bg dark:bg-bg-dark">
           <DropdownMenuLabel>Actions</DropdownMenuLabel>
           <DropdownMenuSeparator />
+
+          {canAuthorPin && commentId && (
+            <DropdownMenuItem
+              onClick={() => pinComment({ commentId, pinLevel: 'author' })}
+            >
+              <Pin />
+              {commentPinnedStatus === 'author'
+                ? 'Unpin Comment'
+                : 'Pin as Author'}
+            </DropdownMenuItem>
+          )}
+
+          {isHealthProfessional && commentId && (
+            <DropdownMenuItem
+              onClick={() =>
+                pinComment({ commentId, pinLevel: 'professional' })
+              }
+            >
+              <Pin />
+              {commentPinnedStatus === 'professional'
+                ? 'Unpin as Professional'
+                : 'Pin as Professional'}
+            </DropdownMenuItem>
+          )}
+
           {(isCommentAuthor || isModerator) && comment && (
             <DropdownMenuItem
               className="text-red-400 hover:cursor-pointer"

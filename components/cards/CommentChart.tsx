@@ -9,9 +9,10 @@ interface CommentChartProps {
   replyingTo?: number | null;
   expandedComments: Set<number>;
   onToggleExpanded: (commentId: number) => void;
+  postCreatedBy: string | null;
 }
 
-const CommentChart: React.FC<CommentChartProps> = ({ comments, onReply, replyingTo, expandedComments, onToggleExpanded }) => {
+const CommentChart: React.FC<CommentChartProps> = ({ comments, onReply, replyingTo, expandedComments, onToggleExpanded, postCreatedBy }) => {
   // const [expandedComments, setExpandedComments] = useState<Set<string>>(new Set());
 
   // const toggleExpanded = (commentId: number) => {
@@ -78,6 +79,7 @@ const CommentChart: React.FC<CommentChartProps> = ({ comments, onReply, replying
                     isExpanded={expandedComments.has(comment.id)}
                     onToggleExpanded={onToggleExpanded}
                     expandedComments={expandedComments}
+                    postCreatedBy={postCreatedBy}
                 />
             ))}
     </div>
