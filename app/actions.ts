@@ -16,6 +16,7 @@ import { ActivityType } from '@/types/activity';
 import { cache } from 'react';
 import { createNotification } from '@/lib/actions/notifications.action';
 import { FullFormType } from '@/components/professionals/states/StartingState';
+import { uploadImageToBucket } from '@/utils/helpers/uploadImageToBucket';
 
 export const signUpAction = validatedAction(signUpSchema, async data => {
   const supabaseAdmin = getSupabaseAdminClient();
@@ -108,7 +109,7 @@ export const signUpAction = validatedAction(signUpSchema, async data => {
   };
 });
 
-export const onBoardingFlowAction = async (data: FullFormType) => {
+export const onBoardingFlowAction = async (data: FullFormType, selectedFile: File | null) => {
   const supabaseAdmin = getSupabaseAdminClient();
   const {
     email,
@@ -124,6 +125,7 @@ export const onBoardingFlowAction = async (data: FullFormType) => {
     understandReview,
     agreeTerms,
     consentProcessing,
+    avatar
   } = data;
 
   // 1. Generate a random default password
@@ -148,12 +150,22 @@ export const onBoardingFlowAction = async (data: FullFormType) => {
 
   const userId = userData.user.id;
 
+  // 2. Upload avatar
+  const {success: avatarSuccess, path: avatarPath, message: avatarMessage} = await uploadImageToBucket({file: avatar, bucketName: 'professionals.bucket', supabase: supabaseAdmin, selectedFile, folder: 'avatars', owner: userId, bucketType: 'private'});
+
+  console.log("avatarSuccess", avatarSuccess)
+  console.log("avatarMessage", avatarMessage)
+  let avatarUrl;
+  if (avatarSuccess) {
+    avatarUrl = avatarPath;
+  }
+
   // 3. Create the user profile
   const {data: profileData, error: profileError } = await supabaseAdmin.from('profiles').insert({
     supabase_user: userId,
     username: fullName, // Using full name as username, can be changed later
     email: email,
-    avatar_url: `https://avatar.iran.liara.run/public/boy?username=${encodeURIComponent(fullName)}`,
+    avatar_url: avatarUrl || `https://avatar.iran.liara.run/public/boy?username=${encodeURIComponent(fullName)}`,
   }).select()
   .single();
 

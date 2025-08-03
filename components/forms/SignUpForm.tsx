@@ -69,13 +69,13 @@ const SignUpForm = () => {
 
   //
   const handleClick = () => {
-    const toastId = toast('Signup');
-    toastIdRef.current = toastId;
     if (
       username.length >= 2 &&
       password.length >= 8 &&
       emailRegex.test(email)
     ) {
+      const toastId = toast('Signup');
+      toastIdRef.current = toastId;
       toast.loading(' ➰ Creating account and profile in a moment 🧐', { id: toastIdRef.current });
     }
   };

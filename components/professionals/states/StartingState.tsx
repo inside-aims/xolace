@@ -59,23 +59,27 @@ const StepTwoSchema = z.object({
 const StepThreeSchema = z.object({
   email: z.string().min(1, "Enter a valid email").email("Email is required"),
   bio: z.string().min(10, {message: "Bio is must be at least 10 characters."}),
-  avatar: z.string().url().optional(),
+  avatar: z.string().optional(),
 });
 
 // Step 4 Schema
 const StepFourSchema = z.object({
-  confirmAccuracy: z.literal(true, { errorMap: () => ({ message: "You must confirm the information." }) }),
-  understandReview: z.literal(true, { errorMap: () => ({ message: "You must acknowledge data review." }) }),
-  agreeTerms: z.literal(true, { errorMap: () => ({ message: "You must agree to the terms." }) }),
-  consentProcessing: z.literal(true, { errorMap: () => ({ message: "You must consent to processing." }) }),
+  confirmAccuracy: z.boolean().refine((val) => val === true, { message: "You must confirm the information." }),
+  understandReview: z.boolean().refine((val) => val === true, { message: "You must acknowledge data review." }),
+  agreeTerms: z.boolean().refine((val) => val === true, { message: "You must agree to the terms." }),
+  consentProcessing: z.boolean().refine((val) => val === true, { message: "You must consent to processing." }),
 });
 
+const FullFormSchema = StepOneSchema.merge(StepTwoSchema)
+  .merge(StepThreeSchema)
+  .merge(StepFourSchema);
 
-type StepOneType = z.infer<typeof StepOneSchema>;
-type StepTwoType = z.infer<typeof StepTwoSchema>;
-type StepThreeType = z.infer<typeof StepThreeSchema>;
-type StepFourType = z.infer<typeof StepFourSchema>;
-export type FullFormType = StepOneType & StepTwoType & StepThreeType & StepFourType;
+
+// type StepOneType = z.infer<typeof StepOneSchema>;
+// type StepTwoType = z.infer<typeof StepTwoSchema>;
+// type StepThreeType = z.infer<typeof StepThreeSchema>;
+// type StepFourType = z.infer<typeof StepFourSchema>;
+export type FullFormType = z.infer<typeof FullFormSchema>;
 
 //eslint-disable-next-line
 const stepSchemas: ZodType<any>[] = [StepOneSchema, StepTwoSchema, StepThreeSchema, StepFourSchema];
@@ -96,36 +100,58 @@ export default function StartingState({setState}: StartingStateProps ) {
   const router = useRouter();
   const [step, setStep] = useState(0);
   const [collectedData, setCollectedData] = useState<Partial<FullFormType>>({});
+  const [selectedFile, setSelectedFile] = useState<File | null>(null);
   const [isSubmitting, setIsSubmitting] = useState(false);
 
-  const currentSchema = stepSchemas[step];
-
   const form = useForm<FullFormType>({
-    resolver: zodResolver(currentSchema),
-    defaultValues: collectedData as FullFormType,
+    resolver: zodResolver(FullFormSchema),
+    defaultValues: {
+      // It's good practice to define all keys here
+      fullName: '',
+      title: '',
+      field: '',
+      experience: '',
+      languages: '',
+      location: '',
+      contact: '',
+      preferredContact: '',
+      email: '',
+      bio: '',
+      avatar: '',
+      confirmAccuracy: false,
+      understandReview: false,
+      agreeTerms: false,
+      consentProcessing: false,
+    },
     mode: "onTouched"
   });
 
   //eslint-disable-next-line
-  const handleContinue: SubmitHandler<FullFormType> = (data) => {
-    const updatedData = { ...collectedData, ...data };
-    setCollectedData(updatedData);
+  const handleContinue = async () => {
+    // const updatedData = { ...collectedData, ...data };
+    // setCollectedData(updatedData);
 
-    if (step < stepSchemas.length - 1) {
-      setStep((prev) => prev + 1);
+    const fieldsToValidate = fieldsByStep[step].map(f => f.name);
+
+    // Trigger validation for only those fields. It returns a boolean.
+    const isValid = await form.trigger(fieldsToValidate as (keyof FullFormType)[]);
+
+    if (isValid) {
+      if (step < stepSchemas.length - 1) {
+        setStep((prev) => prev + 1);
+      }
     }
   };
 
   const handleFinalSubmit: SubmitHandler<FullFormType> = async (data) => {
     const updatedData = { ...collectedData, ...data };
-    setState("finished");
     console.log("Final data submitted:", updatedData);
     
     setIsSubmitting(true);
     const toastId = toast.loading('Submitting your information...');
 
     try {
-      const result = await onBoardingFlowAction(updatedData);
+      const result = await onBoardingFlowAction(updatedData, selectedFile);
       if (result.success) {
         toast.success(result.message, { id: toastId , duration: 5000});
         if (result.redirectUrl) {
@@ -226,8 +252,10 @@ export default function StartingState({setState}: StartingStateProps ) {
                                 onChange={(e) => {
                                   const file = e.target.files?.[0];
                                   if (file) {
-                                    const url = URL.createObjectURL(file);
-                                    field.onChange(url);
+                                    setSelectedFile(file);
+                                    const fileName = `${Date.now()}_${file.name}`;
+                                    console.log("file name ", fileName)
+                                    field.onChange(fileName);
                                   }
                                 }}
                                 className="px-2 h-10 w-full bg-slate-50 border border-slate-300"
@@ -287,7 +315,8 @@ export default function StartingState({setState}: StartingStateProps ) {
                       </Button>
                     ) : (
                       <Button
-                        onClick={form.handleSubmit(handleContinue)}
+                      type="button" // Important: change to "button"
+                      onClick={handleContinue}
                         className="bg-lavender-500 rounded-lg hover:bg-lavender-600 dark:text-white">
                         Continue
                       </Button>
