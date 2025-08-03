@@ -92,14 +92,10 @@ export type FieldDefinition = {
   placeholder: string;
 };
 
-interface StartingStateProps {
-  setState: (state: OnboardingState) => void;
-}
 
-export default function StartingState({setState}: StartingStateProps ) {
+export default function StartingState() {
   const router = useRouter();
   const [step, setStep] = useState(0);
-  const [collectedData, setCollectedData] = useState<Partial<FullFormType>>({});
   const [selectedFile, setSelectedFile] = useState<File | null>(null);
   const [isSubmitting, setIsSubmitting] = useState(false);
 
@@ -126,7 +122,7 @@ export default function StartingState({setState}: StartingStateProps ) {
     mode: "onTouched"
   });
 
-  //eslint-disable-next-line
+
   const handleContinue = async () => {
     // const updatedData = { ...collectedData, ...data };
     // setCollectedData(updatedData);
@@ -144,7 +140,7 @@ export default function StartingState({setState}: StartingStateProps ) {
   };
 
   const handleFinalSubmit: SubmitHandler<FullFormType> = async (data) => {
-    const updatedData = { ...collectedData, ...data };
+    const updatedData = { ...data };
     console.log("Final data submitted:", updatedData);
     
     setIsSubmitting(true);
@@ -310,8 +306,9 @@ export default function StartingState({setState}: StartingStateProps ) {
                     {step === stepSchemas.length - 1 ? (
                       <Button
                         type={"submit"}
+                        disabled={isSubmitting}
                         className="bg-lavender-500 rounded-lg hover:bg-lavender-600 dark:text-white">
-                        Submit
+                       {isSubmitting ? "Submitting..." : "Submit"}
                       </Button>
                     ) : (
                       <Button

@@ -1,7 +1,6 @@
 "use client";
 
-import React, {useEffect, useRef, useState} from "react";
-import { useSearchParams } from "next/navigation";
+import React, {useEffect, useRef, useState, use} from "react";
 import {OnboardingState} from "@/components/professionals/onboarding";
 import {Controller, useForm} from "react-hook-form";
 import {InputOTP, InputOTPGroup, InputOTPSlot} from "@/components/ui/input-otp";
@@ -20,9 +19,12 @@ interface OTPForm{
   otp_code: string;
 }
 
-export const VerifyOTP = () => {
-  const searchParams = useSearchParams();
-  const email = searchParams.get("email");
+export const VerifyOTP = ({
+    searchParams,
+  }: {
+    searchParams: Promise<{ [key: string]: string | undefined }>
+  }) => {
+  const email = use(searchParams).email
   const router = useRouter();
   const [timeLeft, setTimeLeft] = useState(120);
   const timerRef = useRef<NodeJS.Timeout | null>(null);
