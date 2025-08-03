@@ -28,7 +28,6 @@ import {
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { Separator } from "@/components/ui/separator";
-import {OnboardingState} from "@/components/professionals/onboarding";
 import {XolacePhoneNumberInput} from "@/components/shared/XolacePhoneNumberInput";
 import {isValidPhoneNumber} from "libphonenumber-js";
 import {fieldsByStep} from "@/components/professionals/states/index";
