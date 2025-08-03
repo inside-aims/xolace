@@ -21,6 +21,7 @@ import ToggleEyeIcon from '@/components/ui/ToggleEyeIcon';
 import { Button } from '@/components/ui/button';
 import { toast } from 'sonner';
 import Loader from '@/components/shared/loaders/Loader';
+import { SecurityAlert } from '@/components/shared/xolace-alert';
 
 export default function ChangePassword({ from }: { from: string | undefined }) {
   const [showPassword, setShowPassword] = useState(false);
@@ -49,14 +50,6 @@ export default function ChangePassword({ from }: { from: string | undefined }) {
   ]);
 
   const handleClick = () => {
-    // if (
-    //   username.length >= 2 &&
-    //   password.length >= 8 &&
-    //   emailRegex.test(email)
-    // ) {
-    //   toast.loading(' ➰ Creating account and profile in a moment 🧐', { id: toastIdRef.current });
-    // }
-
     // Validate password strength
     const passwordRegex = /^(?=.*[A-Z])(?=.*\d).{8,}$/;
     if (newPassword === confirmNewPassword && passwordRegex.test(newPassword)) {
@@ -91,6 +84,16 @@ export default function ChangePassword({ from }: { from: string | undefined }) {
   return (
     <>
       {/*  will show an alert if the from is equal to "professional-onboarding"*/}
+      {from === 'professional-onboarding' && (
+        <div className="px-3 pt-3 sm:px-0">
+          <SecurityAlert
+            title="Welcome to Your Professional Account!"
+            description="For security, we recommend changing your temporary password to something personal and secure."
+            supportingText="This helps protect your professional data and client information"
+            className="mb-6"
+          />
+        </div>
+      )}
 
       <Form {...form}>
         <form
