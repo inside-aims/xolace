@@ -21,7 +21,7 @@ const ProfessionalsOnboarding = () => {
     <div className={`w-full flex flex-col items-center justify-center dark:bg-bg-dark bg-bg text-foreground bg-lavender-50 min-h-screen gap-2 md:px-0 ${state !== "starting" && ("px-2 md:px-0")}`}>
       {state === "idle" && <IdleState onJoinCircle={handleJoinCircle}/>}
       {state === "proceeding" && <ProceedingState/>}
-      {state === "starting" && <StartingState setState={setState}/>}
+      {state === "starting" && <StartingState />}
       {state === "finished" && <FinishedState/>}
     </div>
   )
