@@ -5,6 +5,7 @@ import { useUserState } from './user';
 import { Profile } from '@/types/global';
 import { getSupabaseBrowserClient } from '@/utils/supabase/client';
 import { initializePreferences } from './preferences-store';
+import { getSingleSignedUrl } from '@/lib/actions/storage.actions';
 
 // Function to fetch additional roles from the database
 async function fetchAdditionalRoles(userId: string): Promise<string[]> {
@@ -28,12 +29,11 @@ async function fetchAdditionalRoles(userId: string): Promise<string[]> {
 }
 
 export default function InitUser({ user }: { user: Profile | undefined }) {
-  const setRoles = useUserState((state) => state.setRoles);
   const initState = useRef(false);
 
   useEffect(() => {
     if (!initState.current) {
-      useUserState.setState({ user });
+      
 
       async function initializeUser() {
         if(user){
@@ -41,7 +41,22 @@ export default function InitUser({ user }: { user: Profile | undefined }) {
         const additionalRoles = await fetchAdditionalRoles(user.id);
         // Combine them and store in Zustand
         const roles = Array.from(new Set([...additionalRoles]));
-        setRoles(roles);
+
+        // Check if the user is a professional and has a path-based avatar URL
+        const isProfessional = roles.includes('help_professional');
+        const hasPathAvatar = user.avatar_url && !user.avatar_url.startsWith('http');
+
+        if (isProfessional && hasPathAvatar) {
+          // Fetch the signed URL for the avatar
+          const signedUrl = await getSingleSignedUrl(user.avatar_url);
+          if (signedUrl) {
+            // If successful, replace the path with the full signed URL
+            user.avatar_url = signedUrl;
+          }
+        }
+
+        // Now, set the state with the fully prepared user object and roles
+        useUserState.setState({ user, roles });
 
          // Initialize preferences after user data is set
          await initializePreferences();

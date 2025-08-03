@@ -52,3 +52,27 @@ export async function getBatchSignedUrls(
     return {};
   }
 }
+
+/**
+ * Gets a single signed URL from a private bucket.
+ * @param path - The file path within the bucket.
+ * @returns A promise that resolves to the signed URL string, or null if it fails.
+ */
+export async function getSingleSignedUrl(
+    path: string | null,
+  ): Promise<string | null> {
+    const supabase = await createClient();
+    if (!path) return null;
+  
+    // Set the URL to be valid for 1 hour
+    const { data, error } = await supabase.storage
+      .from('professionals.bucket')
+      .createSignedUrl(path, 3600);
+  
+    if (error) {
+      console.error('Error creating single signed URL:', error);
+      return null;
+    }
+  
+    return data.signedUrl;
+  }
