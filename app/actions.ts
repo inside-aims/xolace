@@ -5,7 +5,7 @@ import { createClient } from '@/utils/supabase/server';
 import { headers } from 'next/headers';
 import { redirect } from 'next/navigation';
 import { getSupabaseAdminClient } from '@/utils/supabase/adminClient';
-import { signUpSchema } from '@/validation';
+import { signUpSchema, ResetPasswordSchema } from '@/validation';
 import { validatedAction } from '@/lib/auth/middleware';
 import { sendOTPLink } from '@/utils/sendOTPLink';
 import { Post, Tag, User } from '@/types/global';
@@ -307,44 +307,29 @@ export const forgotPasswordAction = async (formData: FormData) => {
   );
 };
 
-export const resetPasswordAction = async (formData: FormData) => {
+export const resetPasswordAction = validatedAction(ResetPasswordSchema, async data => {
   const supabase = await createClient();
 
-  const password = formData.get('password') as string;
-  const confirmPassword = formData.get('confirmPassword') as string;
-
-  if (!password || !confirmPassword) {
-    encodedRedirect(
-      'error',
-      '/change-password',
-      'Password and confirm password are required',
-    );
-  }
-
-  if (password !== confirmPassword) {
-    encodedRedirect('error', '/change-password', 'Passwords do not match');
-  }
-
-  // Validate password strength
-  const passwordRegex = /^(?=.*[A-Z])(?=.*\d).{8,}$/;
-  if (!passwordRegex.test(password)) {
-    return encodedRedirect(
-      'error',
-      '/change-password',
-      'Password must be at least 8 characters long, contain at least 1 uppercase letter, and 1 number',
-    );
-  }
+  const { newPassword, confirmNewPassword } = data;
 
   const { error } = await supabase.auth.updateUser({
-    password: password,
+    password: newPassword,
   });
 
   if (error) {
-    encodedRedirect('error', '/change-password', 'Password update failed');
+    return {
+      success: false,
+      message: 'Failed to update password',
+      newPassword,
+      confirmNewPassword,
+    };
   }
 
-  encodedRedirect('success', '/change-password', 'Password updated');
-};
+  return {
+    success: true,
+    message: 'Password updated successfully',
+  };
+});
 
 export const signOutAction = async () => {
   const supabase = await createClient();

@@ -8,11 +8,25 @@ export interface SignupFormData {
   type: string;
 }
 
+export interface ResetPasswordFormData {
+  newPassword: string;
+  confirmNewPassword: string;
+}
+
 export type ActionState = {
   message?: string;
   success?: boolean;
   errors?: {
     [K in keyof SignupFormData]?: string[];
+  };
+  [key: string]: any; // This allows for additional properties
+};
+
+export type ResetPasswordActionState = {
+  message?: string;
+  success?: boolean;
+  errors?: {
+    [K in keyof ResetPasswordFormData]?: string[];
   };
   [key: string]: any; // This allows for additional properties
 };
@@ -26,7 +40,7 @@ export function validatedAction<S extends z.ZodType<any, any>, T>(
   schema: S,
   action: ValidatedActionFunction<S, T>,
 ) {
-  return async (prevState: ActionState, formData: FormData): Promise<T> => {
+  return async (prevState: ActionState | ResetPasswordActionState, formData: FormData): Promise<T> => {
     const result = schema.safeParse(Object.fromEntries(formData));
     if (!result.success) {
       return {

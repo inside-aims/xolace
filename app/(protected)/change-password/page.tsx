@@ -1,43 +1,19 @@
 import type { Metadata } from 'next';
 
-import { resetPasswordAction } from '@/app/actions';
-import { FormMessage, Message } from '@/components/shared/form-message';
-import { SubmitButton } from '@/components/extras/submit-button';
-import { Input } from '@/components/ui/input';
-import { Label } from '@/components/ui/label';
+import ChangePassword from './ChangePassword';
 
 export const metadata: Metadata = {
   title: 'Change Password',
 }
 
-export default async function ChangePasswordPage(props: {
-  searchParams: Promise<Message>;
+export default async function ChangePasswordPage({
+  searchParams,
+}: {
+  searchParams: Promise<{ [key: string]: string | undefined }>
 }) {
-  const searchParams = await props.searchParams;
+
+  const from = (await searchParams).from;
   return (
-    <form className="flex w-full max-w-md flex-col gap-2 p-4 [&>input]:mb-4">
-      <h1 className="text-2xl font-medium">Change Password</h1>
-      <p className="text-sm text-foreground/60">
-        Please enter your new password below.
-      </p>
-      <Label htmlFor="password">New password</Label>
-      <Input
-        type="password"
-        name="password"
-        placeholder="New password"
-        required
-      />
-      <Label htmlFor="confirmPassword">Confirm password</Label>
-      <Input
-        type="password"
-        name="confirmPassword"
-        placeholder="Confirm password"
-        required
-      />
-      <SubmitButton formAction={resetPasswordAction}>
-        Reset password
-      </SubmitButton>
-      <FormMessage message={searchParams} />
-    </form>
+    <ChangePassword from={from}/>
   );
 }
