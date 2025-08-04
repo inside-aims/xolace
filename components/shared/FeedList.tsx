@@ -12,6 +12,7 @@ import { usePosts } from '@/hooks/posts/usePostsData';
 import { useRealtimePosts } from '@/hooks/posts/useRealTimePosts';
 import FeedSkeletonLoader from './loaders/FeedSkeletonLoader';
 import { useMediaQuery } from '@/hooks/use-media-query';
+import { useSignedAvatarUrls } from '@/hooks/storage/useSignedUrl';
 
 /**
  * A component that displays a list of posts, with real-time updates and scroll restoration.
@@ -20,6 +21,9 @@ import { useMediaQuery } from '@/hooks/use-media-query';
  */
 const FeedList = () => {
   const { data: queryPosts, isPending, isError, error } = usePosts();
+
+  // 👇 Use the hook here. It will run after usePosts provides the data.
+  const { data: signedUrls } = useSignedAvatarUrls(queryPosts);
 
   //const supabase = getSupabaseBrowserClient();
   const router = useRouter();
@@ -151,6 +155,7 @@ const FeedList = () => {
                     post={post}
                     onClick={() => handlePostClick(post.id)}
                     className="bg-bg dark:bg-bg-dark mb-5 w-full rounded-none border-x-0 md:w-full dark:ring-zinc-800 dark:hover:ring-zinc-700 dark:focus-visible:ring-[#193a47]"
+                    signedUrls={signedUrls}
                   />
                 </BlurFade>
               ))}

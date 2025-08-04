@@ -122,6 +122,7 @@ type PostCardType = {
   post: Post;
   section?: 'profile';
   onClick?: () => void;
+  signedUrls?: Record<string, string>;
 };
 
 export interface TagProps {
@@ -130,7 +131,7 @@ export interface TagProps {
   };
 }
 
-export function EnhancedPostCard({ className, post, onClick }: PostCardType) {
+export function EnhancedPostCard({ className, post, onClick, signedUrls }: PostCardType) {
   // get user data
   const user = useUserState(state => state.user);
   const { preferences } = usePreferencesStore();
@@ -158,6 +159,14 @@ export function EnhancedPostCard({ className, post, onClick }: PostCardType) {
   const isMentor = post.author_roles.includes('mentor');
   const isVerified = post.author_roles.includes('verified');
 
+   // 👇 This logic determines the correct avatar source
+   const avatarSrc =
+   (post.author_avatar_url && signedUrls?.[post.author_avatar_url]) || // Use signed URL if available
+   post.author_avatar_url || // Fallback to the original URL (for non-professionals)
+   undefined; // Final fallback
+
+   console.log("avatarSrc", post.author_avatar_url && signedUrls?.[post.author_avatar_url])
+
   return (
     <>
       {/* dialog or drawer to report post */}
@@ -174,7 +183,7 @@ export function EnhancedPostCard({ className, post, onClick }: PostCardType) {
           <div className="flex items-center gap-3 md:gap-7">
             <Avatar>
               <AvatarImage
-                src={post.author_avatar_url || undefined}
+                src={avatarSrc}
                 alt={post.author_name}
               />
               <AvatarFallback className='bg-gradient-to-br from-[#0536ff] to-[#6a71ea] text-white'>{post.author_name.slice(0, 2).toUpperCase()}</AvatarFallback>

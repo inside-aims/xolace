@@ -171,6 +171,52 @@ export const SettingsPasswordSchema = z
     path: ['confirmNewPassword'], // path of error
   });
 
+
+  export const ResetPasswordSchema = z
+  .object({
+    newPassword: z
+      .string()
+      .min(8, { message: 'Password must be at least 8 characters long.' })
+      .refine(
+        value => {
+          const hasUppercase = /[A-Z]/.test(value);
+          const hasNumber = /[0-9]/.test(value);
+          if (!hasUppercase || !hasNumber) {
+            return false;
+          }
+          return true;
+        },
+        {
+          message:
+            'Password must contain at least one uppercase letter and one number.',
+        },
+      ),
+
+    confirmNewPassword: z
+      .string()
+      .min(8, {
+        message: 'Please confirm your new password with at least 8 characters.',
+      })
+      .refine(
+        value => {
+          const hasUppercase = /[A-Z]/.test(value);
+          const hasNumber = /[0-9]/.test(value);
+          if (!hasUppercase || !hasNumber) {
+            return false;
+          }
+          return true;
+        },
+        {
+          message:
+            'Confirm Password must contain at least one uppercase letter and one number.',
+        },
+      ),
+  })
+  .refine(data => data.newPassword === data.confirmNewPassword, {
+    message: "New passwords don't match",
+    path: ['confirmNewPassword'], // path of error
+  });
+
 export const UpdateUsernameSchema = z.object({
   username: z
     .string()

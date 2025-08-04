@@ -776,6 +776,63 @@ code {
 .alert-bold-text{
   color: black;
 }
+
+  @keyframes slide {
+    0% {
+      transform: translateX(-100%);
+    }
+    100% {
+      transform: translateX(100%);
+    }
+  }
+
+  .animate-slide {
+    animation: slide 2s linear infinite;
+  }
+
+  @keyframes bounceScale {
+    0%, 100% {
+      transform: scale(1);
+    }
+    50% {
+      transform: scale(1.05);
+    }
+  }
+
+  .animate-bounce-scale {
+    animation: bounceScale 2.5s ease-in-out infinite;
+  }
+
+  @keyframes dots {
+    0% { content: "."; }
+    33% { content: ".."; }
+    66% { content: "..."; }
+    100% { content: "."; }
+  }
+
+  .animate-dots::after {
+    content: ".";
+    animation: dots 1.2s steps(3, end) infinite;
+  }
+
+  .PhoneInput input {
+    border: none !important;
+    box-shadow: none !important;
+  }
+  .custom-phone-input input {
+    border: none !important;
+    outline: none !important;
+    box-shadow: none !important;
+    background-color: transparent !important;
+    width: 100%;
+  }
+  .custom-phone-input .PhoneInputCountry {
+    margin-right: 0.5rem;
+  }
+  .custom-phone-input {
+    @apply items-center flex bg-slate-50 dark:bg-bg-dark;
+  }
+
 }
 
 @layer base {

@@ -5,7 +5,7 @@ import { createClient } from '@/utils/supabase/server';
 import { headers } from 'next/headers';
 import { redirect } from 'next/navigation';
 import { getSupabaseAdminClient } from '@/utils/supabase/adminClient';
-import { signUpSchema } from '@/validation';
+import { signUpSchema, ResetPasswordSchema } from '@/validation';
 import { validatedAction } from '@/lib/auth/middleware';
 import { sendOTPLink } from '@/utils/sendOTPLink';
 import { Post, Tag, User } from '@/types/global';
@@ -15,6 +15,8 @@ import { logActivity } from '@/lib/activity-logger';
 import { ActivityType } from '@/types/activity';
 import { cache } from 'react';
 import { createNotification } from '@/lib/actions/notifications.action';
+import { FullFormType } from '@/components/professionals/states/StartingState';
+import { uploadImageToBucket } from '@/utils/helpers/uploadImageToBucket';
 
 export const signUpAction = validatedAction(signUpSchema, async data => {
   const supabaseAdmin = getSupabaseAdminClient();
@@ -26,7 +28,6 @@ export const signUpAction = validatedAction(signUpSchema, async data => {
       email,
       password,
     });
-
 
   if (userError) {
     const userExists = userError.message.includes('already been registered');
@@ -108,6 +109,183 @@ export const signUpAction = validatedAction(signUpSchema, async data => {
   };
 });
 
+export const onBoardingFlowAction = async (data: FullFormType, selectedFile: File | null) => {
+  const supabaseAdmin = getSupabaseAdminClient();
+  const {
+    email,
+    fullName,
+    field,
+    bio,
+    experience,
+    title,
+    languages,
+    location,
+    contact,
+    confirmAccuracy,
+    understandReview,
+    agreeTerms,
+    consentProcessing,
+    avatar
+  } = data;
+
+  // 1. Generate a random default password
+  const defaultPassword = Math.random().toString(36).slice(-12);
+
+  // 2. Create the user
+  const { data: userData, error: userError } =
+    await supabaseAdmin.auth.admin.createUser({
+      email,
+      password: defaultPassword,
+      email_confirm: true, // Auto-confirm email as we are verifying via password reset
+    });
+
+  if (userError) {
+    return {
+      success: false,
+      message: userError.message.includes('already been registered')
+        ? 'A user with this email already exists.'
+        : 'Failed to create user. Please try again.',
+    };
+  }
+
+  const userId = userData.user.id;
+
+  // 2. Upload avatar
+  const {success: avatarSuccess, path: avatarPath, message: avatarMessage} = await uploadImageToBucket({file: avatar, bucketName: 'professionals.bucket', supabase: supabaseAdmin, selectedFile, folder: 'avatars', owner: userId, bucketType: 'private'});
+
+  console.log("avatarSuccess", avatarSuccess)
+  console.log("avatarMessage", avatarMessage)
+  let avatarUrl;
+  if (avatarSuccess) {
+    avatarUrl = avatarPath;
+  }
+
+  // 3. Create the user profile
+  const {data: profileData, error: profileError } = await supabaseAdmin.from('profiles').insert({
+    supabase_user: userId,
+    username: fullName, // Using full name as username, can be changed later
+    email: email,
+    avatar_url: avatarUrl || `https://avatar.iran.liara.run/public/boy?username=${encodeURIComponent(fullName)}`,
+  }).select()
+  .single();
+
+  if (profileError || !profileData) {
+    // Clean up created user if profile creation fails
+    await supabaseAdmin.auth.admin.deleteUser(userId);
+    return {
+      success: false,
+      message: 'Failed to create profile. Please try again.',
+    };
+  }
+
+  // 4. Create the health professional record
+  const { error: professionalError } = await supabaseAdmin
+    .from('health_professionals')
+    .insert({
+      id: profileData.id,
+      field,
+      bio,
+      years_of_experience: parseInt(experience, 10),
+      title,
+      language: languages,
+      location,
+      contact,
+      confirm_accuracy: confirmAccuracy,
+      understand_review: understandReview,
+      agree_terms: agreeTerms,
+      consent_processing: consentProcessing,
+    });
+
+  if (professionalError) {
+    // Clean up created user and profile if this step fails
+    await supabaseAdmin.auth.admin.deleteUser(userId);
+    // The profile will be deleted via cascade from the user deletion
+    return {
+      success: false,
+      message: 'Failed to create health professional record. Please try again.',
+    };
+  }
+
+  const {success: otpSuccess, message: otpMessage} = await sendSupabaseOTP(email);
+
+  if (!otpSuccess) {
+    return {
+      success: false,
+      message: otpMessage,
+    };
+  }
+
+  const safeEmailString = encodeURIComponent(email);
+
+  return {
+    success: true,
+    message:
+      'Onboarding complete! Please check your email for OTP',
+    redirectUrl: `/professionals/verify-otp?email=${safeEmailString}`,
+
+  };
+};
+
+/**
+ * Sends a verification OTP using Supabase's built-in auth.
+ * This is used after a user has already been created.
+ * @param {string} email - The recipient's email address.
+ * @returns {Promise<{success: boolean, message: string}>}
+ */
+export async function sendSupabaseOTP(email: string) {
+  const supabase = await createClient();
+
+  // This sends the OTP code to the user's email.
+  const { error } = await supabase.auth.signInWithOtp({
+    email,
+    options: {
+      // Set to false because the user is already created in your signUpAction.
+      // If OTP was the FIRST step of signup, you'd set this to true.
+      shouldCreateUser: false,
+    },
+  });
+
+  if (error) {
+    console.error('Supabase OTP Error:', error);
+    return { success: false, message: error.message };
+  }
+
+  return { success: true, message: 'OTP has been sent successfully.' };
+}
+
+export const verifyOTPAction = async (data: {email: string, otp_code: string}) => {
+  const {email, otp_code} = data;
+  const supabase = await createClient();
+  
+  const {
+    data: { session },
+    error,
+  } = await supabase.auth.verifyOtp({
+    email,
+    token: otp_code,
+    type: 'email',
+  })
+
+  if (error) {
+    return {
+      success: false,
+      message: error.message,
+    };
+  }
+
+  if(session) {
+    return {
+      success: true,
+      message: 'OTP has been verified successfully. Please set new password. Redirecting...',
+    };
+  }
+
+  return {
+    success: false,
+    message: 'Failed to verify OTP.',
+  }
+}
+
 export const forgotPasswordAction = async (formData: FormData) => {
   const email = formData.get('email')?.toString();
   const supabase = await createClient();
@@ -141,44 +319,29 @@ export const forgotPasswordAction = async (formData: FormData) => {
   );
 };
 
-export const resetPasswordAction = async (formData: FormData) => {
+export const resetPasswordAction = validatedAction(ResetPasswordSchema, async data => {
   const supabase = await createClient();
 
-  const password = formData.get('password') as string;
-  const confirmPassword = formData.get('confirmPassword') as string;
-
-  if (!password || !confirmPassword) {
-    encodedRedirect(
-      'error',
-      '/change-password',
-      'Password and confirm password are required',
-    );
-  }
-
-  if (password !== confirmPassword) {
-    encodedRedirect('error', '/change-password', 'Passwords do not match');
-  }
-
-  // Validate password strength
-  const passwordRegex = /^(?=.*[A-Z])(?=.*\d).{8,}$/;
-  if (!passwordRegex.test(password)) {
-    return encodedRedirect(
-      'error',
-      '/change-password',
-      'Password must be at least 8 characters long, contain at least 1 uppercase letter, and 1 number',
-    );
-  }
+  const { newPassword, confirmNewPassword } = data;
 
   const { error } = await supabase.auth.updateUser({
-    password: password,
+    password: newPassword,
   });
 
   if (error) {
-    encodedRedirect('error', '/change-password', 'Password update failed');
+    return {
+      success: false,
+      message: 'Failed to update password',
+      newPassword,
+      confirmNewPassword,
+    };
   }
 
-  encodedRedirect('success', '/change-password', 'Password updated');
-};
+  return {
+    success: true,
+    message: 'Password updated successfully',
+  };
+});
 
 export const signOutAction = async () => {
   const supabase = await createClient();
@@ -311,8 +474,11 @@ export async function voteAction(
       },
     });
 
-
-    if (user_id !== relatedUserId && relatedUserId && voteResult.action === 'added') {
+    if (
+      user_id !== relatedUserId &&
+      relatedUserId &&
+      voteResult.action === 'added'
+    ) {
       await createNotification({
         recipient_user_id: relatedUserId, // The video's author gets the notification
         actor_id: user_id, // The user who saved the video
