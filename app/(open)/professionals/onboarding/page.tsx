@@ -1,5 +1,6 @@
 import ProfessionalsOnboarding from "@/components/professionals/onboarding";
 import InviteError from "@/components/professionals/inviteError";
+import { createClient } from '@/utils/supabase/server';
 
 const OnboardingPage = async ({
   searchParams,
@@ -9,9 +10,22 @@ const OnboardingPage = async ({
 
   const inviteCode = (await searchParams).invite;
 
+  if (inviteCode === undefined) {
+    return <InviteError />;
+  }
+
+  const supabase = await createClient();
+
+  // check code from professionals_invite_codes table to see if inviteCode is present in the table and expired is false , it should only check when inviteCode is defined 
+  const { data: inviteCodeData } = await supabase
+    .from('professionals_invite_codes')
+    .select('*')
+    .eq('code', inviteCode)
+    .single();
+
   return (
     <main>
-      {inviteCode ? <ProfessionalsOnboarding/> : <InviteError/>}
+      {inviteCodeData && inviteCodeData.expired === false ? <ProfessionalsOnboarding/> : <InviteError/>}
     </main>
   );
 };
