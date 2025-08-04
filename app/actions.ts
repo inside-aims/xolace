@@ -109,7 +109,7 @@ export const signUpAction = validatedAction(signUpSchema, async data => {
   };
 });
 
-export const onBoardingFlowAction = async (data: FullFormType, selectedFile: File | null) => {
+export const onBoardingFlowAction = async (data: FullFormType, selectedFile: File | null, inviteCode: string) => {
   const supabaseAdmin = getSupabaseAdminClient();
   const {
     email,
@@ -214,6 +214,16 @@ export const onBoardingFlowAction = async (data: FullFormType, selectedFile: Fil
       message: otpMessage,
     };
   }
+
+  // 5. Update invite code as used
+await supabaseAdmin
+    .from('professionals_invite_codes')
+    .update({
+      expired: true,
+      expired_at: new Date(),
+      professional: profileData.id,
+    })
+    .eq('code', inviteCode);
 
   const safeEmailString = encodeURIComponent(email);
 

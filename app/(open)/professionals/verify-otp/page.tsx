@@ -102,7 +102,7 @@ export const VerifyOTP = ({
   };
 
   return (
-   <main className="min-h-screen flex items-center justify-center">
+   <main className="min-h-screen flex items-center justify-center px-3">
      <div
       className="relative flex flex-col bg-white rounded-2xl w-full max-w-5xl h-[70vh] md:h-[60vh] overflow-hidden items-center justify-center p-8 gap-6 text-center dark:bg-gray-600 text-foreground ">
 
