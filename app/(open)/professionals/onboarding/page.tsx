@@ -25,7 +25,7 @@ const OnboardingPage = async ({
 
   return (
     <main>
-      {inviteCodeData && inviteCodeData.expired === false ? <ProfessionalsOnboarding/> : <InviteError/>}
+      {inviteCodeData && inviteCodeData.expired === false ? <ProfessionalsOnboarding inviteCode={inviteCode}/> : <InviteError/>}
     </main>
   );
 };

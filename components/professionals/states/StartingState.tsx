@@ -92,7 +92,7 @@ export type FieldDefinition = {
 };
 
 
-export default function StartingState() {
+export default function StartingState({inviteCode}: {inviteCode: string}) {
   const router = useRouter();
   const [step, setStep] = useState(0);
   const [selectedFile, setSelectedFile] = useState<File | null>(null);
@@ -146,7 +146,7 @@ export default function StartingState() {
     const toastId = toast.loading('Submitting your information...');
 
     try {
-      const result = await onBoardingFlowAction(updatedData, selectedFile);
+      const result = await onBoardingFlowAction(updatedData, selectedFile, inviteCode);
       if (result.success) {
         toast.success(result.message, { id: toastId , duration: 5000});
         if (result.redirectUrl) {

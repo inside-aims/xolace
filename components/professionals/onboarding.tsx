@@ -9,7 +9,7 @@ import {FinishedState} from "@/components/professionals/states/FinishedState";
 
 export type OnboardingState = "idle" | "proceeding" | "starting" | "finished";
 
-const ProfessionalsOnboarding = () => {
+const ProfessionalsOnboarding = ({inviteCode}: {inviteCode: string}) => {
   const [state, setState] = React.useState<OnboardingState>("idle");
 
   const handleJoinCircle = () => {
@@ -21,7 +21,7 @@ const ProfessionalsOnboarding = () => {
     <div className={`w-full flex flex-col items-center justify-center dark:bg-bg-dark bg-bg text-foreground min-h-screen gap-2 md:px-0 ${state !== "starting" && ("px-2 md:px-0")}`}>
       {state === "idle" && <IdleState onJoinCircle={handleJoinCircle}/>}
       {state === "proceeding" && <ProceedingState/>}
-      {state === "starting" && <StartingState />}
+      {state === "starting" && <StartingState inviteCode={inviteCode} />}
       {state === "finished" && <FinishedState/>}
     </div>
   )
