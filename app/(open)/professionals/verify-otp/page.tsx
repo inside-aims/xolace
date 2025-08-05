@@ -81,7 +81,6 @@ export const VerifyOTP = ({
 
   const onFormSubmit = async (data: OTPForm) => {
     setSubmitting(true);
-    console.log("data", data);
     if (!email) {
       toast.error("Email is required");
       return;
@@ -91,9 +90,11 @@ export const VerifyOTP = ({
         if (success) {
             toast.success(message);
             router.push(`/change-password?from=professional-onboarding`);
+        }else{
+          toast.error(message);
         }
-    } catch (error) {
-        console.log("error", error);
+    } catch (_) {
+        toast.error("Invalid OTP code");
     } finally {
       setSubmitting(false);
       reset();

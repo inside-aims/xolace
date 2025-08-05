@@ -90,7 +90,7 @@ export default function RegistrationSuccessPage(props: {
     setVerificationStatus({ type: 'idle', message: '' });
 
     try {
-      const response = await fetch('/api/v1/auth/resend-otp', {
+      const response = await fetch('/api/v1/auth/resend', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -155,6 +155,8 @@ export default function RegistrationSuccessPage(props: {
           setTimeout(() => {
             router.push(nexturl || '/feed');
           }, 2000);
+       }else{
+        toast.error(message);
        }
     } catch (error) {
       setVerificationStatus({
