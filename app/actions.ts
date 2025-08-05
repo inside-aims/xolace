@@ -7,7 +7,7 @@ import { redirect } from 'next/navigation';
 import { getSupabaseAdminClient } from '@/utils/supabase/adminClient';
 import { signUpSchema, ResetPasswordSchema } from '@/validation';
 import { validatedAction } from '@/lib/auth/middleware';
-import { sendOTPLink } from '@/utils/sendOTPLink';
+import { sendOTPCode } from '@/utils/sendOTPCode';
 import { Post, Tag, User } from '@/types/global';
 import { revalidatePath } from 'next/cache';
 import { PostgrestError } from '@supabase/supabase-js';
@@ -82,11 +82,7 @@ export const signUpAction = validatedAction(signUpSchema, async data => {
     };
   }
 
-  const request = {
-    url: process.env.NEXT_PUBLIC_BASE_APP_URL,
-  };
-
-  const res = await sendOTPLink(email, 'signup', request);
+  const res = await sendOTPCode(email, 'signup');
 
   if (!res) {
     await supabaseAdmin.auth.admin.deleteUser(userData.user.id);

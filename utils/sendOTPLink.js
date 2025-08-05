@@ -16,7 +16,7 @@ export async function sendOTPLink(email, type, request) {
   }
 
   // extracting the hashed_token from the link
-  const { hashed_token } = linkData.properties;
+  const { hashed_token , email_otp} = linkData.properties;
 
   // let extractedRequest;
 
