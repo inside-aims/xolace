@@ -54,9 +54,6 @@ export default function PasswordResetOTPPage(props: {
         }
         return { success: true, message: data.message };
       },
-    onSuccess: (data) => {
-      // Store verification token for password reset step
-    },
     onError: (error) => {
       console.error('Password reset verification failed:', error);
       // Could redirect back to forgot password page on certain errors

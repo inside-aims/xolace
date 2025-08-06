@@ -29,7 +29,7 @@ export interface OTPVerificationConfig {
   nextUrl?: string;
   onSuccess?: (data?: {success: boolean, message: string}) => void;
   onError?: (error: string) => void;
-  verifyAction: (params: { email: string; otp_code: string; id?: string; }) => Promise<{ success: boolean; message: string; data?: any }>;
+  verifyAction: (params: { email: string; otp_code: string; id?: string; }) => Promise<{ success: boolean; message: string; }>;
   resendAction?: (params: { email: string; id?: string ; type: 'signup' | 'recovery' | 'login' }) => Promise<{ success: boolean; message: string }>;
 }
 
@@ -203,7 +203,7 @@ export default function OTPVerification({ config, className = '' }: OTPVerificat
         toast.success(result.message);
 
         if (config.onSuccess) {
-          config.onSuccess(result.data);
+          config.onSuccess(result);
         }
 
         // Redirect after successful verification
