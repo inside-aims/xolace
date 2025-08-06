@@ -90,7 +90,7 @@ export default function RegistrationSuccessPage(props: {
     setVerificationStatus({ type: 'idle', message: '' });
 
     try {
-      const response = await fetch('/api/v1/auth/resend', {
+      const response = await fetch('/api/v1/auth/resend-otp', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
