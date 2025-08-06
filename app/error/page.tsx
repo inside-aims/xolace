@@ -1,7 +1,7 @@
 import { urlPath } from '@/utils/url-helpers';
 import Link from 'next/link';
 import Alert from '@/components/shared/xolace-alert';
-import { ArrowLeft, RefreshCw, Mail, HelpCircle } from 'lucide-react';
+import { ArrowLeft, Mail } from 'lucide-react';
 
 // Error configuration with enhanced UX messaging
 const errorConfig = {
@@ -75,13 +75,13 @@ export default async function ErrorPage(props: {
     'register_unknown',
   ];
 
-  const knownErrors = [
-    'login-failed',
-    'invalid_magiclink',
-    'magiclink',
-    'recovery',
-    ...knownRegistrationErrors,
-  ];
+  // const knownErrors = [
+  //   'login-failed',
+  //   'invalid_magiclink',
+  //   'magiclink',
+  //   'recovery',
+  //   ...knownRegistrationErrors,
+  // ];
 
   const backLink = knownRegistrationErrors.includes(type)
     ? urlPath('/sign-up')

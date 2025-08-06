@@ -9,7 +9,6 @@ import {
 } from '@/components/ui/dialog';
 import { 
   InfoIcon, 
-  CookieIcon, 
   RefreshCw, 
   ShieldCheck,
   AlertCircle

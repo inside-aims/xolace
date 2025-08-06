@@ -7,7 +7,6 @@ import type { CollectionFilter } from "@/app/(protected)/collections/collections
 import { useInfiniteQuery, type SupabaseQueryHandler } from '@/hooks/use-infinite-query';
 import { useRouter } from "next/navigation"
 import FeedSkeletonLoader from "@/components/shared/loaders/FeedSkeletonLoader"
-import { PostgrestFilterBuilder } from "@supabase/postgrest-js"
 // import { useInfiniteQuery } from '@/hooks/use-infinite-query'
 
 export type PostSortFilter = "recent" | "most-upvoted" | "most-commented"

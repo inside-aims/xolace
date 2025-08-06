@@ -108,7 +108,7 @@ const SignUpForm = () => {
     // Clear the ref after handling the toast to prevent re-firing
     toastIdRef.current = null;
     
-  }, [state, router]);
+  }, [state, router, nexturl]);
 
   // error message
   const errorMessage = {

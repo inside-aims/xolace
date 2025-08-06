@@ -10,11 +10,6 @@ import { verifyOTPAction } from "@/app/actions";
 import { toast } from "sonner";
 import { useRouter } from "next/navigation";
 
-
-interface VerifyingStateProps {
-  setState: (state: OnboardingState) => void;
-}
-
 interface OTPForm{
   otp_code: string;
 }
@@ -157,7 +152,7 @@ export const VerifyOTP = ({
             <Button
               type="submit"
               className="w-full bg-lavender-500 dark:bg-lavender-500 text-white font-semibold hover:text-white rounded-lg hover:bg-lavender-600 transition duration-300 ease-in-out hover:bg-lavender-600 dark:text-white hover:scale-102"
-              disabled={watch("otp_code").length < 6}
+              disabled={watch("otp_code").length < 6 || submitting}
             >Submit OTP</Button>
           )}
         </form>

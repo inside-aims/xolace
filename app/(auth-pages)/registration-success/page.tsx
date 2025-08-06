@@ -403,7 +403,7 @@ export default function RegistrationSuccessPage(props: {
         </div>
 
         <p className="mb-6 text-sm text-gray-700 dark:text-gray-500">
-          PS: If the code takes unexpectedly long, don't worry our servers are just
+          PS: If the code takes unexpectedly long, don&apos;t worry our servers are just
           hot <span className="inline-block animate-pulse">♨️</span>
         </p>
 
