@@ -66,7 +66,6 @@ export async function sendOTPCode(email, type) {
             padding: 0;
             font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
             background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            min-height: 100vh;
         }
         
         .container {
@@ -252,7 +251,7 @@ export async function sendOTPCode(email, type) {
         <div class="container">
             <div class="header">
                 <div class="logo">
-                    <div class="brand-text">X</div>
+                    <img alt="Xolace" height="80" src="https://www.xolace.app/_next/image?url=%2F_next%2Fstatic%2Fmedia%2Fx-logo-full.ed0794df.webp&w=128&q=75" style="display:block;outline:none;border:none;text-decoration:none" width="80" />
                 </div>
                 <h1 class="header-title">${welcomeMessage}</h1>
                 <p class="header-subtitle">Enter the code below to ${actionDescription}</p>

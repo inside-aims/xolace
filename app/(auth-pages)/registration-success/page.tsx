@@ -266,30 +266,30 @@ export default function RegistrationSuccessPage(props: {
                 <InputOTPGroup className="gap-3">
                   <InputOTPSlot 
                     index={0} 
-                    className="h-12 w-12 text-lg font-bold border-2 border-gray-600 bg-gray-900/80 text-white hover:border-purple-400 focus:border-purple-500 focus:bg-gray-800/90 transition-all duration-200 shadow-lg backdrop-blur-sm" 
+                    className=" h-10 w-10 sm:h-12 sm:w-12 text-lg font-bold border-2 border-gray-600 bg-gray-900/80 text-white hover:border-purple-400 focus:border-purple-500 focus:bg-gray-800/90 transition-all duration-200 shadow-lg backdrop-blur-sm" 
                   />
                   <InputOTPSlot 
                     index={1} 
-                    className="h-12 w-12 text-lg font-bold border-2 border-gray-600 bg-gray-900/80 text-white hover:border-purple-400 focus:border-purple-500 focus:bg-gray-800/90 transition-all duration-200 shadow-lg backdrop-blur-sm" 
+                    className="h-10 w-10 sm:h-12 sm:w-12 text-lg font-bold border-2 border-gray-600 bg-gray-900/80 text-white hover:border-purple-400 focus:border-purple-500 focus:bg-gray-800/90 transition-all duration-200 shadow-lg backdrop-blur-sm" 
                   />
                   <InputOTPSlot 
                     index={2} 
-                    className="h-12 w-12 text-lg font-bold border-2 border-gray-600 bg-gray-900/80 text-white hover:border-purple-400 focus:border-purple-500 focus:bg-gray-800/90 transition-all duration-200 shadow-lg backdrop-blur-sm" 
+                    className="h-10 w-10 sm:h-12 sm:w-12 text-lg font-bold border-2 border-gray-600 bg-gray-900/80 text-white hover:border-purple-400 focus:border-purple-500 focus:bg-gray-800/90 transition-all duration-200 shadow-lg backdrop-blur-sm" 
                   />
                 </InputOTPGroup>
                 <InputOTPSeparator className="text-purple-400 mx-2" />
                 <InputOTPGroup className="gap-3">
                   <InputOTPSlot 
                     index={3} 
-                    className="h-12 w-12 text-lg font-bold border-2 border-gray-600 bg-gray-900/80 text-white hover:border-purple-400 focus:border-purple-500 focus:bg-gray-800/90 transition-all duration-200 shadow-lg backdrop-blur-sm" 
+                    className="h-10 w-10 sm:h-12 sm:w-12 text-lg font-bold border-2 border-gray-600 bg-gray-900/80 text-white hover:border-purple-400 focus:border-purple-500 focus:bg-gray-800/90 transition-all duration-200 shadow-lg backdrop-blur-sm" 
                   />
                   <InputOTPSlot 
                     index={4} 
-                    className="h-12 w-12 text-lg font-bold border-2 border-gray-600 bg-gray-900/80 text-white hover:border-purple-400 focus:border-purple-500 focus:bg-gray-800/90 transition-all duration-200 shadow-lg backdrop-blur-sm" 
+                    className="h-10 w-10 sm:h-12 sm:w-12 text-lg font-bold border-2 border-gray-600 bg-gray-900/80 text-white hover:border-purple-400 focus:border-purple-500 focus:bg-gray-800/90 transition-all duration-200 shadow-lg backdrop-blur-sm" 
                   />
                   <InputOTPSlot 
                     index={5} 
-                    className="h-12 w-12 text-lg font-bold border-2 border-gray-600 bg-gray-900/80 text-white hover:border-purple-400 focus:border-purple-500 focus:bg-gray-800/90 transition-all duration-200 shadow-lg backdrop-blur-sm" 
+                    className="h-10 w-10 sm:h-12 sm:w-12 text-lg font-bold border-2 border-gray-600 bg-gray-900/80 text-white hover:border-purple-400 focus:border-purple-500 focus:bg-gray-800/90 transition-all duration-200 shadow-lg backdrop-blur-sm" 
                   />
                 </InputOTPGroup>
               </InputOTP>
