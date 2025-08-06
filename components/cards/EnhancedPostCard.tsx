@@ -165,7 +165,6 @@ export function EnhancedPostCard({ className, post, onClick, signedUrls }: PostC
    post.author_avatar_url || // Fallback to the original URL (for non-professionals)
    undefined; // Final fallback
 
-   console.log("avatarSrc", post.author_avatar_url && signedUrls?.[post.author_avatar_url])
 
   return (
     <>
