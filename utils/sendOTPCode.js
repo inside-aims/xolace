@@ -1,7 +1,7 @@
 import { getSupabaseAdminClient } from './supabase/adminClient';
 import nodemailer from 'nodemailer';
 
-export async function sendOTPCode(email, type, request) {
+export async function sendOTPCode(email, type) {
   const supabaseAdmin = getSupabaseAdminClient();
 
   const { data: linkData, error: glError } =
@@ -20,12 +20,12 @@ export async function sendOTPCode(email, type, request) {
   // initialize the mailing transport
   const transporter = nodemailer.createTransport({
     host: process.env.RESEND_MAIL_HOST,
-    secure: true,
+    // secure: true,
     port: process.env.RESEND_MAIL_PORT,
-    auth: {
-      user: process.env.RESEND_USERNAME,
-      pass: process.env.RESEND_API_KEY,
-    }
+    // auth: {
+    //   user: process.env.RESEND_USERNAME,
+    //   pass: process.env.RESEND_API_KEY,
+    // }
   });
 
   let mailSubject = '';
