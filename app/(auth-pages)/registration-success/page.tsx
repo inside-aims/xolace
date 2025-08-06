@@ -361,7 +361,7 @@ export default function RegistrationSuccessPage(props: {
           <div className="flex items-center justify-center gap-2 mb-2">
             <MailCheck className="h-4 w-4 text-purple-400" />
             <p className="text-sm text-gray-300">
-              Didn't receive the code?
+              Didn't receive the code? Resend new code in 10 mins
             </p>
           </div>
           <button
