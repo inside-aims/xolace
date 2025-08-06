@@ -1,7 +1,7 @@
 import { getSupabaseAdminClient } from './supabase/adminClient';
 import nodemailer from 'nodemailer';
 
-export async function sendOTPCode(email, type) {
+export async function sendOTPCode(email, type, request) {
   const supabaseAdmin = getSupabaseAdminClient();
 
   const { data: linkData, error: glError } =
@@ -65,18 +65,16 @@ export async function sendOTPCode(email, type) {
             margin: 0;
             padding: 0;
             font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            background-color: #667eea;
         }
         
         .container {
             max-width: 600px;
-            margin: 0 auto;
+            margin: 20px auto;
             background: white;
             border-radius: 16px;
             overflow: hidden;
             box-shadow: 0 20px 40px rgba(0,0,0,0.1);
-            margin-top: 40px;
-            margin-bottom: 40px;
         }
         
         .header {
@@ -222,8 +220,12 @@ export async function sendOTPCode(email, type) {
         }
 
         @media only screen and (max-width: 640px) {
+            body {
+                background-color: #667eea !important;
+            }
+            
             .container {
-                margin: 10px;
+                margin: 10px !important;
                 border-radius: 12px;
             }
             
@@ -247,7 +249,7 @@ export async function sendOTPCode(email, type) {
     </style>
 </head>
 <body>
-    <div style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); min-height: 100vh; padding: 20px 0;">
+    <div style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); padding: 20px; margin: 0;">
         <div class="container">
             <div class="header">
                 <div class="logo">
