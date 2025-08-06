@@ -235,7 +235,7 @@ export default function RegistrationSuccessPage(props: {
           Welcome to <span className="text-ocean-600">Xolace</span>!
         </h1>
         <p className="mb-4 text-sm text-gray-400 italic">
-          "Sometimes the quietest voices have the loudest echoes." — Xolace
+          &quot;Sometimes the quietest voices have the loudest echoes.&quot; — Xolace
         </p>
         <p className="text-blackA11 mb-6 dark:text-gray-300">
           A new chapter begins. We&apos;ve sent a verification code to{' '}
@@ -361,7 +361,7 @@ export default function RegistrationSuccessPage(props: {
           <div className="flex items-center justify-center gap-2 mb-2">
             <MailCheck className="h-4 w-4 text-purple-400" />
             <p className="text-sm text-gray-300">
-              Didn't receive the code? Resend new code in 10 mins
+              Didn&apos;t receive the code? Resend new code in 10 mins
             </p>
           </div>
           <button
