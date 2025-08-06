@@ -91,7 +91,11 @@ const SignUpForm = () => {
       // Redirect after a short delay for better UX
       if (state.redirectUrl) {
         setTimeout(() => {
-          router.push(state.redirectUrl as string);
+          if(nexturl){
+            router.push(`${state.redirectUrl}&nexturl=${nexturl}`);
+          }else{
+            router.push(state.redirectUrl as string);
+          }
         }, 1500); // 1.5 second delay
       }
     } else {
@@ -104,7 +108,7 @@ const SignUpForm = () => {
     // Clear the ref after handling the toast to prevent re-firing
     toastIdRef.current = null;
     
-  }, [state, router]);
+  }, [state, router, nexturl]);
 
   // error message
   const errorMessage = {
