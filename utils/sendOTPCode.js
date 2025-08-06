@@ -70,7 +70,7 @@ export async function sendOTPCode(email, type, request) {
         
         .container {
             max-width: 600px;
-            margin: 20px auto;
+            margin: 10px auto;
             background: white;
             border-radius: 16px;
             overflow: hidden;
@@ -249,7 +249,7 @@ export async function sendOTPCode(email, type, request) {
     </style>
 </head>
 <body>
-    <div style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); padding: 20px; margin: 0;">
+    <div style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); padding: 10px; margin: 0;">
         <div class="container">
             <div class="header">
                 <div class="logo">
