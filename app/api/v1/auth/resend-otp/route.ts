@@ -6,11 +6,12 @@ import { NextResponse } from 'next/server';
 interface ResendRequest {
     email: string;
     id: string;
+    type: 'signup' | 'recovery' | 'login';
   }
   
   export async function POST(request: Request) {
     try {
-      const { email, id } = await request.json() as ResendRequest;
+      const { email, id, type } = await request.json() as ResendRequest;
 
     const isNonEmptyString = (value: string | null): value is string =>
       typeof value === 'string' && value.trim().length > 0;
@@ -18,14 +19,14 @@ interface ResendRequest {
     const emailRegex = /^\S+@\S+$/;
     if (!isNonEmptyString(email) || !emailRegex.test(email)) {
       return NextResponse.json(
-        { error: 'Invalid email address' },
+        { success: false, message: 'Invalid email address' },
         { status: 400 },
       );
     }
 
     if (!isNonEmptyString(id)) {
       return NextResponse.json(
-        { error: 'Invalid user ID' },
+        { success: false, message: 'Invalid user ID' },
         { status: 400 },
       );
     }
@@ -37,7 +38,7 @@ interface ResendRequest {
 
     if (userError || !userData) {
       return NextResponse.json(
-        { error: 'No account found with this email' },
+        { success: false, message: 'No account found with this email' },
         { status: 404 },
       );
     }
@@ -45,29 +46,29 @@ interface ResendRequest {
     // If user is already confirmed
     if (userData.user.email_confirmed_at) {
       return NextResponse.json(
-        { error: 'Email is already verified' },
+        { success: false, message: 'Email is already verified' },
         { status: 400 },
       );
     }
 
     // Send new verification email
-    const emailSent = await sendOTPCode(email, 'signup');
+    const emailSent = await sendOTPCode(email, type);
 
     if (!emailSent) {
       return NextResponse.json(
-        { error: 'Failed to send verification email' },
+        { success: false, message: 'Failed to send verification email' },
         { status: 500 },
       );
     }
 
     return NextResponse.json(
-      { message: 'Verification email resent successfully' },
+      { success: true, message: 'Verification email resent successfully' },
       { status: 200 },
     );
   } catch (error) {
     console.error('Error in resend verification:', error);
     return NextResponse.json(
-      { error: 'An unexpected error occurred' },
+      { success: false, message: 'An unexpected error occurred' },
       { status: 500 },
     );
   }

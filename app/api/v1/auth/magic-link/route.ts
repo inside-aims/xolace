@@ -1,6 +1,6 @@
 import { NextResponse } from 'next/server';
 import { builderUrl } from '@/utils/url-helpers';
-import { sendOTPLink } from '@/utils/sendOTPLink';
+import { sendOTPCode } from '@/utils/sendOTPCode';
 
 export async function POST(request: Request) {
   const formData = await request.formData();
@@ -11,11 +11,16 @@ export async function POST(request: Request) {
   const errorUrl = builderUrl(`/error?type=${type}`, request);
   const thanksUrl = builderUrl(`/magic-thanks?type=${type}`, request);
 
-  const otpSuccess = await sendOTPLink(email, type, request);
+  let otpUrl;
+  if(type === 'recovery'){
+    otpUrl = builderUrl(`/password-reset-otp?email=${email}`, request);
+  }
+
+  const otpSuccess = await sendOTPCode(email, type);
 
   if (!otpSuccess) {
     return NextResponse.redirect(errorUrl, 302);
   } else {
-    return NextResponse.redirect(thanksUrl, 302);
+    return NextResponse.redirect(otpUrl || thanksUrl, 302);
   }
 }

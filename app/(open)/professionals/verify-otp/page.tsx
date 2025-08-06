@@ -1,7 +1,6 @@
 "use client";
 
 import React, {useEffect, useRef, useState, use} from "react";
-import {OnboardingState} from "@/components/professionals/onboarding";
 import {Controller, useForm} from "react-hook-form";
 import {InputOTP, InputOTPGroup, InputOTPSlot} from "@/components/ui/input-otp";
 import { cn } from "@/lib/utils";
