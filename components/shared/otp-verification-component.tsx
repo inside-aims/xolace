@@ -89,7 +89,7 @@ export default function OTPVerification({ config, className = '' }: OTPVerificat
   const IconComponent = typeConfig.icon;
 
   const [countdown, setCountdown] = useState(3600); // 1 hour expiration
-  const [resendCountdown, setResendCountdown] = useState(0);
+  const [resendCountdown, setResendCountdown] = useState(300);
   const [isLoading, setIsLoading] = useState(false);
   const [isVerifying, setIsVerifying] = useState(false);
   const [otpValue, setOtpValue] = useState('');
