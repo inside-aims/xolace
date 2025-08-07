@@ -91,8 +91,8 @@ export function SidebarLeft({
     <Sidebar  className="top-(--header-height) h-[calc(100svh-var(--header-height))]! border-r-0" {...props}>
       <SidebarHeader className=" relative">
         {/* <UserInfo user={user}/> */}
-        <div className="absolute top-0 -right-9 w-9 h-10 rounded-r-full bg-bg dark:bg-bg-dark border-gray-300 dark:border-gray-600/40 border-[1px] hidden md:flex items-center justify-center cursor-pointer" onClick={toggleSidebar}>
-          {open ? <ChevronLeft className=" size-7"/> : <ChevronRight className=" size-7"/>}
+        <div className="absolute top-0 -right-9 w-9 h-10 rounded-r-full bg-bg dark:bg-bg-dark border-gray-300 dark:border-gray-600/40 border-r-[1px] border-b-[1px] hidden md:flex items-center justify-center cursor-pointer" onClick={toggleSidebar}>
+          {open ? <ChevronLeft className=" size-6"/> : <ChevronRight className=" size-6"/>}
         </div>
         <NavMain/>
       </SidebarHeader>
@@ -108,7 +108,7 @@ export function SidebarLeft({
         <NavSecondary items={data.navSecondary} className="mt-auto"/>
       </SidebarContent>
       <SidebarFooter>
-        <div className="px-4">
+        <div className={`px-4 ${!open && 'hidden' }`}>
           <LiquidGlassButton size="sm" onClick={()=> router.push('/updates')}/>
         </div>
         <NavUser user={user} roles={roles} />
