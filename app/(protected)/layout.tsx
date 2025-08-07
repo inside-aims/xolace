@@ -45,7 +45,7 @@ export default async function ProtectedLayout({
       >
         <SiteHeader />
         <div className="flex flex-1">
-          <SidebarLeft />
+          <SidebarLeft collapsible='icon' />
           <SidebarInset>
             {/* <header className="sticky top-0 flex h-14 shrink-0 items-center gap-2 dark:bg-bg-dark bg-bg ">
             <div className="flex flex-1 items-center gap-2 px-3">
