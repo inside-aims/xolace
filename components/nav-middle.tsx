@@ -25,12 +25,14 @@ export function NavMiddle({
   items,
 }: {
   items: {
+    key: string;
     title: string;
     url: string;
     icon?: LucideIcon;
     isActive?: boolean;
     items?: {
-      title: string;
+      key: string;
+      title: string | React.ReactNode;
       url: string;
     }[];
   }[];
@@ -42,7 +44,7 @@ export function NavMiddle({
       <SidebarMenu>
         {items.map(item => (
           <Collapsible
-            key={item.title}
+            key={item.key}
             asChild
             defaultOpen={item.isActive}
             className="group/collapsible"
@@ -69,7 +71,7 @@ export function NavMiddle({
                       pathName == subItem.url;
 
                     return (
-                      <SidebarMenuSubItem key={subItem.title}>
+                      <SidebarMenuSubItem key={subItem.key}>
                         <SidebarMenuSubButton
                           asChild
                           className="py-5 relative"
@@ -80,7 +82,7 @@ export function NavMiddle({
                             <span className="text-sidebar-label">
                               {subItem.title}
                             </span>
-                            <NewBadge size="sm" />
+                            {/*<NewBadge size="sm" />*/}
                           </Link>
                         </SidebarMenuSubButton>
                       </SidebarMenuSubItem>
