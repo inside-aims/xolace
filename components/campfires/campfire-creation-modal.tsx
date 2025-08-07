@@ -75,13 +75,12 @@ const StepThreeSchema = z.object({
   banner_url: z.string().optional(),
 });
 
-const FullFormSchema = StepOneSchema.merge(StepTwoSchema)
-  .merge(StepThreeSchema);
+const FullFormSchema = StepOneSchema.merge(StepTwoSchema).merge(StepThreeSchema);
+
+// Individual step schemas for step-by-step validation
+const stepSchemas = [StepOneSchema, StepTwoSchema, StepThreeSchema];
 
 export type FullFormType = z.infer<typeof FullFormSchema>;
-
-//eslint-disable-next-line
-const stepSchemas: ZodType<any>[] = [StepOneSchema, StepTwoSchema, StepThreeSchema];
 
 interface CreateCampfireModalProps {
   open: boolean;
@@ -90,10 +89,9 @@ interface CreateCampfireModalProps {
 
 const stepTitles = [
   "Start your Campfire - Name & Describe",
-  "Define the Rules & Visibility",
+  "Define the Rules & Visibility", 
   "Customize Your Campfire Appearance",
 ];
-
 
 const CreateCampfireModal = ({ open, onOpenChange }: CreateCampfireModalProps) => {
   const [step, setStep] = useState(1);
@@ -113,7 +111,7 @@ const CreateCampfireModal = ({ open, onOpenChange }: CreateCampfireModalProps) =
     mode: "onTouched"
   });
 
-  const onSubmit: SubmitHandler<FullFormType> = (data) => {
+  const handleFinalSubmit = async (data: FullFormType) => {
     console.log('Campfire Created:', data);
     form.reset();
     setStep(1);
@@ -146,6 +144,10 @@ const CreateCampfireModal = ({ open, onOpenChange }: CreateCampfireModalProps) =
   };
 
   const handleOpenChange = (newOpen: boolean) => {
+    if (!newOpen) {
+      form.reset();
+      setStep(1);
+    }
     onOpenChange(newOpen);
   };
 
@@ -182,7 +184,6 @@ const CreateCampfireModal = ({ open, onOpenChange }: CreateCampfireModalProps) =
     return 'Growth';
   };
 
-
   return (
     <Dialog open={open} onOpenChange={handleOpenChange}>
       <DialogContent
@@ -195,7 +196,8 @@ const CreateCampfireModal = ({ open, onOpenChange }: CreateCampfireModalProps) =
         </DialogHeader>
 
         <Form {...form}>
-          <form onSubmit={() => ''} className="w-full space-y-4">
+          {/* REMOVE onSubmit from the form element - this is the key fix */}
+          <div className="w-full space-y-4">
             <div className="grid grid-cols-1 md:grid-cols-12 gap-x-6 gap-y-8 items-start">
               <div className="col-span-1 md:col-span-7 order-2 md:order-1">
                 {campfireFieldsByStep[step - 1].map(({ name, label, type, placeholder, options }) => (
@@ -246,7 +248,7 @@ const CreateCampfireModal = ({ open, onOpenChange }: CreateCampfireModalProps) =
                             {name === "rules" && type === "checkbox" && (
                               <Popover modal={false}>
                                 <PopoverTrigger asChild>
-                                  <Button variant="outline" className="w-full justify-start">
+                                  <Button type='button' variant="outline" className="w-full justify-start">
                                     {field.value?.length
                                       ? RULE_OPTIONS.filter((r) => field.value?.includes(r.id)).map((r) => r.label).join(', ')
                                       : 'Select rules'}
@@ -340,7 +342,7 @@ const CreateCampfireModal = ({ open, onOpenChange }: CreateCampfireModalProps) =
               </div>
               <div className="flex space-x-4 justify-between mt-4">
                 {step > 1 && (
-                  <Button variant="outline" className={"rounded-full px-8"} onClick={prevStep}>
+                  <Button type='button' variant="outline" className={"rounded-full px-8"} onClick={prevStep}>
                     Back
                   </Button>
                 )}
@@ -354,15 +356,16 @@ const CreateCampfireModal = ({ open, onOpenChange }: CreateCampfireModalProps) =
                   </Button>
                 ) : (
                   <Button
-                    type="submit"
+                    type="button"
                     className={"bg-lavender-500 hover:bg-lavender-600 rounded-full px-8"}
+                    onClick={() => form.handleSubmit(handleFinalSubmit)()}
                   >
                     Create
                   </Button>
                 )}
               </div>
             </div>
-          </form>
+          </div>
         </Form>
       </DialogContent>
     </Dialog>
