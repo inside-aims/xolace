@@ -1,5 +1,11 @@
 import React from "react";
+import { Metadata } from "next";
 import HealthTipForm from "@/components/forms/HealthTipsForm";
+
+export const metadata: Metadata = {
+  title: 'Create Health Tip',
+  description: "Create and share your health tip with a caring community offering support, advice, and encouragement for mental wellness and personal growth."
+};
 
 const CreateHealthTip = () => {
   return (

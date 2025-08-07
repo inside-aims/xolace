@@ -3,13 +3,12 @@
 import { zodResolver } from "@hookform/resolvers/zod";
 import { MDXEditorMethods } from "@mdxeditor/editor";
 import React, { useRef, useState } from "react";
+import dynamic from "next/dynamic";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 
 import { AddHealthTipsSchema } from "@/validation";
 
-import HelathTipTagCard from "../cards/HelathTipTagCard";
-import Editor from "../editor";
 import { Button } from "../ui/button";
 import {
   Form,
@@ -26,6 +25,10 @@ import { useUserState } from "@/lib/store/user";
 import { generateSlug } from "@/lib/utils";
 import { toast } from "sonner";
 import { DefaultLoader } from "../shared/loaders/DefaultLoader";
+import { Skeleton } from "../ui/skeleton";
+
+const Editor = dynamic(() => import('../editor'), { ssr: false , loading: () => <Skeleton className="h-[100px] w-full" />})
+const TagCard = dynamic(() => import('../cards/HelathTipTagCard'), { ssr: false})
 
 const HealthTipsForm = () => {
   const supabase = getSupabaseBrowserClient();
@@ -202,7 +205,7 @@ const HealthTipsForm = () => {
                   {field.value.length > 0 && (
                     <div className="flex items-start mt-2.5 flex-wrap gap-2.5 ">
                       {field.value.map((tag: string) => (
-                        <HelathTipTagCard
+                        <TagCard
                           key={tag}
                           _id={tag}
                           name={tag}
