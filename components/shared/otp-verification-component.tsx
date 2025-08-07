@@ -200,7 +200,7 @@ export default function OTPVerification({ config, className = '' }: OTPVerificat
           message: typeConfig.successMessage,
         });
 
-        toast.success(result.message);
+        toast.success(typeConfig.successMessage);
 
         if (config.onSuccess) {
           config.onSuccess(result);
