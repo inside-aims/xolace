@@ -231,7 +231,7 @@ const CreateCampfireModal = ({ open, onOpenChange }: CreateCampfireModalProps) =
                         <FormLabel>{label}</FormLabel>
                         <FormControl>
                           <div>
-                            {type === "input" && (<Input placeholder={placeholder} {...field} />)}
+                            {type === "input" && (<Input className='border-border rounded-xl border-2 border-dashed bg-transparent dark:bg-input/30' placeholder={placeholder} {...field} />)}
 
                             {type === "textarea" && name === "description" ? (
                               <>
