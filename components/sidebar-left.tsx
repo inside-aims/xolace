@@ -4,8 +4,13 @@ import * as React from "react"
 import { useRouter } from "next/navigation"
 import {
   // AudioWaveform,
-  Blocks, Flame,
-  HandHelping, Plus,
+ Flame,
+  Plus,
+  Blocks,
+  HandHelping,
+  ChevronLeft,
+  ChevronRight,
+  TvMinimalPlay,
   // Calendar,
   // Command,
   // Home,
@@ -28,6 +33,7 @@ import {
   SidebarContent,
   SidebarHeader,
   SidebarFooter,
+  useSidebar
 } from "@/components/ui/sidebar"
 import { NavUser } from "./nav-user"
 //import UserInfo from "./user-info"
@@ -43,6 +49,7 @@ export function SidebarLeft({
 }: React.ComponentProps<typeof Sidebar>) {
   const router = useRouter()
   const [isModalOpen, setIsModalOpen] = React.useState(false)
+  const { toggleSidebar , open} = useSidebar();
 
    // get user profile data
    const user = useUserState(state => state.user);
@@ -77,14 +84,9 @@ export function SidebarLeft({
         items: [
           {
             key: "createCampfire",
-            title: <Button
-              className={"flex flex-row gap-2"}
-              variant={"ghost"} size={"sm"}
-              onClick={() => setIsModalOpen(true)}
-            >
-              <Plus size={18}/> Create Campfire
-            </Button>,
-            url: "",
+            title: "Create Campfire",
+            onClick: () => setIsModalOpen(true),
+            icon: Plus
           },
         ],
       },],
@@ -105,6 +107,7 @@ export function SidebarLeft({
             key: "glimpse",
             title: "Glimpse",
             url: "/glimpse",
+            icon: TvMinimalPlay
           },
         ],
       },]
@@ -112,38 +115,42 @@ export function SidebarLeft({
 
 
   return (
-    <div>
-      <Sidebar  className="top-(--header-height) h-[calc(100svh-var(--header-height))]! border-r-0" {...props}>
-        <SidebarHeader>
-          {/* <UserInfo user={user}/> */}
-          <NavMain/>
-        </SidebarHeader>
-        <SidebarContent>
-          {/*Health tips to display on mobile drawer*/}
-          {/* <div className={"flex  mx-4 mt-8 md:hidden"}>
+<>
+    <Sidebar  className="top-(--header-height) h-[calc(100svh-var(--header-height))]! border-r-0" {...props}>
+      <SidebarHeader className=" relative">
+        {/* <UserInfo user={user}/> */}
+        <div className="absolute top-0 -right-5 w-10 h-10 rounded-full bg-bg dark:bg-bg-dark border-gray-300 dark:border-gray-600/40 border-r-[1px] border-b-[0px] hidden md:flex items-center justify-center cursor-pointer" onClick={toggleSidebar}>
+          {open ? <ChevronLeft className=" size-5"/> : <ChevronRight className=" size-5"/>}
+        </div>
+        <NavMain/>
+      </SidebarHeader>
+      <SidebarContent>
+        {/*Health tips to display on mobile drawer*/}
+        {/* <div className={"flex  mx-4 mt-8 md:hidden"}>
           <HealthTips/>
         </div> */}
-          <Separator className="w-[90%] mt-1 mx-auto"/>
+        <Separator className="w-[90%] mt-1 mx-auto"/>
           <NavMiddle items={data.campfireNav}/>
 
-          <Separator className="w-[90%] mt-1 mx-auto"/>
-          <NavMiddle items={data.navMiddle}/>
-          {/* <NavFavorites favorites={data.favorites} /> */}
-          {/* <NavWorkspaces workspaces={data.workspaces} /> */}
-          <NavSecondary items={data.navSecondary} className="mt-auto"/>
-        </SidebarContent>
-        <SidebarFooter>
-          <div className="px-4">
-            <LiquidGlassButton size="sm" onClick={()=> router.push('/updates')}/>
-          </div>
-          <NavUser user={user} roles={roles} />
-        </SidebarFooter>
-        {/* <SidebarRail /> */}
-      </Sidebar>
-      <CreateCampfireModal
+        <Separator className="w-[90%] mx-auto"/>
+        <NavMiddle items={data.navMiddle}/>
+        {/* <NavFavorites favorites={data.favorites} /> */}
+        {/* <NavWorkspaces workspaces={data.workspaces} /> */}
+        <NavSecondary items={data.navSecondary} className="mt-auto"/>
+      </SidebarContent>
+      <SidebarFooter>
+        <div className={`px-4 ${!open && 'hidden' }`}>
+          <LiquidGlassButton size="sm" onClick={()=> router.push('/updates')}/>
+        </div>
+        <NavUser user={user} roles={roles} />
+      </SidebarFooter>
+      {/* <SidebarRail /> */}
+    </Sidebar>
+
+     <CreateCampfireModal
         open={isModalOpen}
         onOpenChange={setIsModalOpen}
       />
-    </div>
+</>
   )
 }

@@ -51,20 +51,21 @@ export function NavMain() {
               isActive={isActive}
               className={`${isActive && 'bg-lavender-500!'} hover:bg-lavender-700/40 py-5`}
               onClick={() => setOpenMobile(false)}
+              tooltip={item.label}
             >
-              <Link href={item.route} key={item.label} className="relative">
+              <Link href={item.route} key={item.label} className="relative flex items-center">
                 {item.useLottieIcon ? (
                   <DotLottieReact
                     src={item.lottieLink}
                     loop
                     autoplay
-                    className="absolute -bottom-[1px] left-0 size-14"
+                    className=" size-14 bg-red-400"
                   />
                 ) : (
                   item.icon
                 )}
                 <span
-                  className={`text-sidebar-label mr-2 ${item.useLottieIcon ? 'ml-7' : ''}`}
+                  className={`text-sidebar-label mr-2 ${item.useLottieIcon ? '' : ''}`}
                 >
                   {item.label}
                 </span>{' '}
