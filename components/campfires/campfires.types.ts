@@ -6,6 +6,13 @@ export enum CampfirePurpose {
   Creative = "Creative",
 }
 
+export interface CampfireRule {
+  id: number
+  title: string
+  description: string | null
+  display_order: number
+}
+
 export enum CampfireVisibility {
   Public = "Public",
  // Private = "Private",
@@ -34,7 +41,6 @@ export const campfireFieldsByStep: CampfireFieldDefinition[][] = [
     { name: "visibility", label: "Visibility", type: "select", placeholder: "Select visibility",
       options: Object.values(CampfireVisibility).map((val) => ({ value: val, label: val })),
     },
-    { name: "rules", label: "Rules", type: "checkbox"},
   ],
 
   // Step 3
