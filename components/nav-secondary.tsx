@@ -30,7 +30,7 @@ export function NavSecondary({
         <SidebarMenu>
           {items.map((item) => (
             <SidebarMenuItem key={item.title}>
-              <SidebarMenuButton asChild onClick={()=> setOpenMobile(false)}>
+              <SidebarMenuButton asChild tooltip={item.title} onClick={()=> setOpenMobile(false)}>
                 <Link href={item.url}>
                   <item.icon />
                   <span>{item.title}</span>
