@@ -91,8 +91,8 @@ export function SidebarLeft({
     <Sidebar  className="top-(--header-height) h-[calc(100svh-var(--header-height))]! border-r-0" {...props}>
       <SidebarHeader className=" relative">
         {/* <UserInfo user={user}/> */}
-        <div className="absolute top-0 -right-9 w-9 h-10 rounded-r-full bg-bg dark:bg-bg-dark border-gray-300 dark:border-gray-600/40 border-r-[1px] border-b-[1px] hidden md:flex items-center justify-center cursor-pointer" onClick={toggleSidebar}>
-          {open ? <ChevronLeft className=" size-6"/> : <ChevronRight className=" size-6"/>}
+        <div className="absolute top-0 -right-5 w-10 h-10 rounded-full bg-bg dark:bg-bg-dark border-gray-300 dark:border-gray-600/40 border-r-[1px] border-b-[0px] hidden md:flex items-center justify-center cursor-pointer" onClick={toggleSidebar}>
+          {open ? <ChevronLeft className=" size-5"/> : <ChevronRight className=" size-5"/>}
         </div>
         <NavMain/>
       </SidebarHeader>

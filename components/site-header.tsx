@@ -19,6 +19,7 @@ import { Badge } from './ui/badge';
 import { useNotificationCount } from '@/hooks/notifications/useNotificationCount';
 import { useQueryClient } from '@tanstack/react-query';
 import { motion, AnimatePresence } from 'motion/react';
+import XolaceText from './icons/XolaceText';
 
 export function SiteHeader() {
   // get user profile data
@@ -112,7 +113,7 @@ export function SiteHeader() {
         id="navbar"
       >
         <div className="relative flex h-(--header-height) w-full items-center justify-between ps-3 pe-3 sm:pe-10">
-          <div className="flex items-center gap-1">
+          <div className="flex items-center">
             <Button
               className="h-8 w-8 block md:hidden"
               variant="ghost"
@@ -126,7 +127,7 @@ export function SiteHeader() {
 
             {/* Logo */}
             <div>
-              <Link href="/feed" className="flex items-center gap-4">
+              <Link href="/feed" className="flex items-center">
                 <Image
                   src={mascot}
                   alt="logo"
@@ -135,7 +136,9 @@ export function SiteHeader() {
                   priority={true}
                   loading="eager"
                 />
+                <XolaceText />
               </Link>
+              
 
               {/* <div className="md:hidden">
             <ProgressBetaBadge progress={30} />

@@ -51,6 +51,7 @@ export function NavMain() {
               isActive={isActive}
               className={`${isActive && 'bg-lavender-500!'} hover:bg-lavender-700/40 py-5`}
               onClick={() => setOpenMobile(false)}
+              tooltip={item.label}
             >
               <Link href={item.route} key={item.label} className="relative flex items-center">
                 {item.useLottieIcon ? (
