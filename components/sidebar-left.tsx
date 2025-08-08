@@ -11,6 +11,7 @@ import {
   ChevronLeft,
   ChevronRight,
   TvMinimalPlay,
+  HeartPulse,
   // Calendar,
   // Command,
   // Home,
@@ -41,8 +42,8 @@ import { NavUser } from "./nav-user"
 import { useUserState } from "@/lib/store/user"
 import { NavMiddle } from "./nav-middle"
 import { Separator } from "./ui/separator"
-import {Button} from "@/components/ui/button";
 import CreateCampfireModal from "@/components/campfires/campfire-creation-modal";
+import { Tooltip, TooltipContent,TooltipTrigger } from "@/components/ui/tooltip";
 
 export function SidebarLeft({
   ...props
@@ -102,6 +103,7 @@ export function SidebarLeft({
             key: "healthTips",
             title: "Health Tips",
             url: "/health-tips",
+            icon: HeartPulse
           },
           {
             key: "glimpse",
@@ -119,9 +121,23 @@ export function SidebarLeft({
     <Sidebar  className="top-(--header-height) h-[calc(100svh-var(--header-height))]! border-r-0" {...props}>
       <SidebarHeader className=" relative">
         {/* <UserInfo user={user}/> */}
-        <div className="absolute top-0 -right-5 w-10 h-10 rounded-full bg-bg dark:bg-bg-dark border-gray-300 dark:border-gray-600/40 border-r-[1px] border-b-[0px] hidden md:flex items-center justify-center cursor-pointer" onClick={toggleSidebar}>
+        {/* wrap around tooltip */}
+      
+
+        <Tooltip>
+        <TooltipTrigger asChild>
+          <div className="absolute top-0 -right-5 w-10 h-10 rounded-full bg-bg dark:bg-bg-dark border-gray-300 dark:border-gray-600/40 border-r-[1px] border-b-[0px] hidden md:flex items-center justify-center cursor-pointer hover:border-gray-600 dark:hover:border-gray-200" onClick={toggleSidebar}>
           {open ? <ChevronLeft className=" size-5"/> : <ChevronRight className=" size-5"/>}
         </div>
+        </TooltipTrigger>
+        <TooltipContent
+          side="right"
+          align="center"
+          className="bg-black text-white dark:bg-white dark:text-black "
+        >
+          <p>{open ? "Collapse Navigation" : "Expand Navigation"}</p>
+        </TooltipContent>
+      </Tooltip>
         <NavMain/>
       </SidebarHeader>
       <SidebarContent>
