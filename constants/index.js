@@ -25,6 +25,7 @@ import {
   Camera,
   Palette,
   Mailbox,
+  FlameKindling
 } from 'lucide-react';
 
 
@@ -54,11 +55,11 @@ export const filterOptions = [
 
 export const sidebarLinks = [
   {
-    icon: <HomeIcon className='size-5!' />,
+    icon: <FlameKindling className='size-5!' />,
     route: '/feed',
     label: 'Fireside',
     lottieLink: 'https://lottie.host/2628117a-6b74-42f3-8328-d746c8961829/TLz4Sl2ilg.lottie',
-    useLottieIcon: true
+    useLottieIcon: false
   },
 
   // {

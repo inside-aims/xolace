@@ -114,7 +114,7 @@ export function SiteHeader() {
         <div className="relative flex h-(--header-height) w-full items-center justify-between ps-3 pe-3 sm:pe-10">
           <div className="flex items-center gap-1">
             <Button
-              className="h-8 w-8"
+              className="h-8 w-8 block md:hidden"
               variant="ghost"
               size="icon"
               onClick={toggleSidebar}

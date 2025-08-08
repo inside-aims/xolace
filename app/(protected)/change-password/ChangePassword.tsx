@@ -95,6 +95,17 @@ export default function ChangePassword({ from }: { from: string | undefined }) {
         </div>
       )}
 
+      {from === 'forgot-password' && (
+        <div className="px-3 pt-3 sm:px-0">
+          <SecurityAlert
+            title="Password Reset"
+            description="It is highly recommended to reset your password before leaving this page."
+            supportingText="This helps protect your account and data from unauthorized access."
+            className="mb-6"
+          />
+        </div>
+      )}
+
       <Form {...form}>
         <form
           className="flex w-full max-w-md flex-col gap-2 p-4 [&>input]:mb-4"

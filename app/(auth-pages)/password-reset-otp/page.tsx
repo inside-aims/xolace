@@ -32,7 +32,7 @@ export default function PasswordResetOTPPage(props: {
     type: 'recovery',
     email,
     id: token,
-    nextUrl: `/change-password?email=${encodeURIComponent(email)}&token=${token}`,
+    nextUrl: `/change-password?email=${encodeURIComponent(email)}&from=forgot-password&token=${token}`,
     verifyAction: async ({ email, otp_code }) => {
       return await verifyOTPAction({ 
         email, 
@@ -55,7 +55,7 @@ export default function PasswordResetOTPPage(props: {
         return { success: true, message: data.message };
       },
     onError: (error) => {
-      console.error('Password reset verification failed:', error);
+      // console.error('Password reset verification failed:', error);
       // Could redirect back to forgot password page on certain errors
       if (error.includes('expired') || error.includes('invalid token')) {
         setTimeout(() => {
