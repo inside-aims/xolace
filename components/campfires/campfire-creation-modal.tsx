@@ -1,7 +1,7 @@
 'use client';
 
-import { useState } from 'react';
-import {SubmitHandler, useForm} from 'react-hook-form';
+import React, { useState } from 'react';
+import {useForm} from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import * as z from 'zod';
 
@@ -38,7 +38,7 @@ import {
 import {campfireFieldsByStep, CampfirePurpose, CampfireVisibility} from '@/components/campfires/campfires.types';
 import { cn } from '@/lib/utils';
 import TagCard from "@/components/cards/TagCard";
-import {ZodType} from "zod";
+import Image from "next/image";
 
 const MAX_WORDS = 20;
 const MAX_RULES = 4;
@@ -77,9 +77,6 @@ const StepThreeSchema = z.object({
 
 const FullFormSchema = StepOneSchema.merge(StepTwoSchema).merge(StepThreeSchema);
 
-// Individual step schemas for step-by-step validation
-const stepSchemas = [StepOneSchema, StepTwoSchema, StepThreeSchema];
-
 export type FullFormType = z.infer<typeof FullFormSchema>;
 
 interface CreateCampfireModalProps {
@@ -95,6 +92,8 @@ const stepTitles = [
 
 const CreateCampfireModal = ({ open, onOpenChange }: CreateCampfireModalProps) => {
   const [step, setStep] = useState(1);
+  const [wordCount, setWordCount] = useState<number>(0);
+
   const TOTAL_STEPS = campfireFieldsByStep.length;
 
   const form = useForm<FullFormType>({
@@ -112,7 +111,16 @@ const CreateCampfireModal = ({ open, onOpenChange }: CreateCampfireModalProps) =
   });
 
   const handleFinalSubmit = async (data: FullFormType) => {
-    console.log('Campfire Created:', data);
+    const payload = {
+      name: `x/${data.name}`,
+      description: data.description,
+      purpose: data.purpose,
+      visibility: data.visibility,
+      rules: data.rules,
+      icon_url: data.icon_url,
+      banner_url: data.banner_url,
+    }
+    console.log("Submitted data", payload);
     form.reset();
     setStep(1);
     onOpenChange(false);
@@ -122,11 +130,7 @@ const CreateCampfireModal = ({ open, onOpenChange }: CreateCampfireModalProps) =
     const currentStepFields = campfireFieldsByStep[step - 1];
     const fieldsToValidate = currentStepFields.map((f) => f.name);
 
-    console.log(`Validating step ${step} fields:`, fieldsToValidate);
-
     const isValid = await form.trigger(fieldsToValidate as (keyof FullFormType)[]);
-
-    console.log(`Step ${step} validation result:`, isValid);
 
     if (isValid) {
       if (step < TOTAL_STEPS) {
@@ -184,12 +188,29 @@ const CreateCampfireModal = ({ open, onOpenChange }: CreateCampfireModalProps) =
     return 'Growth';
   };
 
+  const getIconUrl = (): string | null => {
+    const url = form.watch('icon_url');
+    return url && url.trim() ? url : null;
+  };
+
+  const getBannerUrl = (): string | null => {
+    const url = form.watch('banner_url');
+    return url && url.trim() ? url : null;
+  };
+
+
+  const  truncateText =(text: string, maxLength = 20) => {
+    if (!text) return '';
+    return text.length > maxLength ? text.slice(0, maxLength) + '...' : text;
+  }
+
+
   return (
     <Dialog open={open} onOpenChange={handleOpenChange}>
       <DialogContent
         onEscapeKeyDown={(e) => e.preventDefault()}
         onPointerDownOutside={(e) => e.preventDefault()}
-        className="w-full max-w-[95vw] sm:max-w-[600px]"
+        className="w-full max-w-[95vw] sm:max-w-[650px]"
       >
         <DialogHeader>
           <DialogTitle>{stepTitles[step - 1]}</DialogTitle>
@@ -199,7 +220,7 @@ const CreateCampfireModal = ({ open, onOpenChange }: CreateCampfireModalProps) =
           {/* REMOVE onSubmit from the form element - this is the key fix */}
           <div className="w-full space-y-4">
             <div className="grid grid-cols-1 md:grid-cols-12 gap-x-6 gap-y-8 items-start">
-              <div className="col-span-1 md:col-span-7 order-2 md:order-1">
+              <div className="col-span-1 md:col-span-7 order-2 md:order-1 space-y-4">
                 {campfireFieldsByStep[step - 1].map(({ name, label, type, placeholder, options }) => (
                   <FormField
                     key={name}
@@ -210,21 +231,35 @@ const CreateCampfireModal = ({ open, onOpenChange }: CreateCampfireModalProps) =
                         <FormLabel>{label}</FormLabel>
                         <FormControl>
                           <div>
-                            {type === "input" && ( <Input placeholder={placeholder} {...field} />)}
+                            {type === "input" && (<Input placeholder={placeholder} {...field} />)}
 
                             {type === "textarea" && name === "description" ? (
+                              <>
+                                <Textarea
+                                  placeholder={placeholder}
+                                  value={field.value}
+                                  className={`border-border rounded-xl border-2 border-dashed bg-transparent text-base leading-relaxed transition-all duration-200 focus:border-purple-400 focus:ring-0 focus-visible:ring-0`}
+                                  onChange={(e) => {
+                                    const value = e.target.value;
+                                    const words = value.trim().split(/\s+/).filter(Boolean);
+
+                                    if (words.length <= MAX_WORDS) {
+                                      field.onChange(e);
+                                      setWordCount(words.length);
+                                    } else {
+                                      const truncated = words.slice(0, MAX_WORDS).join(" ");
+                                      field.onChange(truncated);
+                                      setWordCount(MAX_WORDS);
+                                    }
+                                  }}
+                                />
+                              </>
+                            ) : type === "textarea" ? (
                               <Textarea
                                 placeholder={placeholder}
                                 {...field}
-                                onChange={(e) => {
-                                  const words = e.target.value.trim().split(/\s+/);
-                                  if (words.length <= MAX_WORDS) {
-                                    field.onChange(e);
-                                  }
-                                }}
+                                className={`border-border rounded-xl border-2 border-dashed bg-transparent text-base leading-relaxed transition-all duration-200 focus:border-purple-400 focus:ring-0 focus-visible:ring-0`}
                               />
-                            ) : type === "textarea" ? (
-                              <Textarea placeholder={placeholder} {...field} />
                             ) : null}
 
                             {type === "select" && options && (
@@ -233,7 +268,7 @@ const CreateCampfireModal = ({ open, onOpenChange }: CreateCampfireModalProps) =
                                 value={typeof field.value === "string" ? field.value : ""}
                               >
                                 <SelectTrigger>
-                                  <SelectValue placeholder={placeholder} />
+                                  <SelectValue placeholder={placeholder}/>
                                 </SelectTrigger>
                                 <SelectContent>
                                   {options.map((opt) => (
@@ -248,11 +283,18 @@ const CreateCampfireModal = ({ open, onOpenChange }: CreateCampfireModalProps) =
                             {name === "rules" && type === "checkbox" && (
                               <Popover modal={false}>
                                 <PopoverTrigger asChild>
-                                  <Button type='button' variant="outline" className="w-full justify-start">
-                                    {field.value?.length
-                                      ? RULE_OPTIONS.filter((r) => field.value?.includes(r.id)).map((r) => r.label).join(', ')
-                                      : 'Select rules'}
+                                  <Button
+                                    type="button"
+                                    variant="outline"
+                                    className="w-full justify-start items-start p-2 text-left whitespace-normal h-auto min-h-[2.5rem]"
+                                  >
+                                    <div className="w-full whitespace-normal break-words text-left">
+                                      {field.value?.length
+                                        ? RULE_OPTIONS.filter((r) => field.value?.includes(r.id)).map((r) => r.label).join(', ')
+                                        : 'Select rules'}
+                                    </div>
                                   </Button>
+
                                 </PopoverTrigger>
                                 <PopoverContent className="w-[var(--radix-popover-trigger-width)] p-2">
                                   <div className="flex flex-col gap-2">
@@ -286,9 +328,33 @@ const CreateCampfireModal = ({ open, onOpenChange }: CreateCampfireModalProps) =
                                 </PopoverContent>
                               </Popover>
                             )}
+                            {type === "file" && (
+                              <Input
+                                type="file"
+                                accept="image/*"
+                                placeholder={placeholder}
+                                onChange={(e) => {
+                                  const file = e.target.files?.[0];
+                                  if (file) {
+                                    const previewUrl = URL.createObjectURL(file);
+                                    field.onChange(previewUrl);
+                                  }
+                                }}
+                                className="px-2 h-10 w-full bg-slate-50 border border-slate-300"
+                              />
+                            )}
                           </div>
                         </FormControl>
-                        <FormMessage />
+                        <div className="flex items-center justify-between">
+                          <div className="text-xs text-destructive flex-1">
+                            <FormMessage/>
+                          </div>
+                          {type === "textarea" && name === "description" && (
+                            <p className="text-xs text-muted-foreground text-right ">
+                              {wordCount} / {MAX_WORDS} words
+                            </p>
+                          )}
+                        </div>
                       </FormItem>
                     )}
                   />
@@ -296,20 +362,36 @@ const CreateCampfireModal = ({ open, onOpenChange }: CreateCampfireModalProps) =
               </div>
 
               {/*profile card*/}
-              <div className={`col-span-1 md:col-span-5 order-1 md:order-2 rounded-2xl shadow-lg ${step !== 3 && "pt-2 border"}`}>
+              <div
+                className={`col-span-1 md:col-span-5 order-1 md:order-2 rounded-2xl shadow-lg ${step !== 3 && "pt-2 border"}`}>
                 <div className={"flex flex-col items-start justify-start gap-2 pb-2"}>
                   {step === 3 && (
-                    <p className={"h-6 w-full flex bg-lavender-300 rounded-t-2xl "}></p>
+                    getBannerUrl() ? (
+                      <div
+                        className="h-8 w-full rounded-t-2xl bg-cover bg-center"
+                        style={{ backgroundImage: `url(${getBannerUrl()})` }}
+                      />
+                    ) : (
+                      <div className="h-8 w-full flex bg-lavender-300 rounded-t-2xl" />
+                    )
                   )}
                   <div className={"flex flex-row gap-2 px-4"}>
                     {step === 3 && (
-                      <p
-                        className={"w-10 h-10 flex items-center justify-center border border-lavender-500 font-semibold text-white rounded-full"}>
-                        <span
-                          className={"w-9 h-9 flex items-center justify-center bg-lavender-500 font-semibold text-white rounded-full"}>
-                          x/
-                        </span>
-                      </p>
+                      getIconUrl() ? (
+                        <Image
+                          src={getIconUrl()!}
+                          height={20}
+                          width={20}
+                          alt="Campfire icon"
+                          className="w-10 h-10 rounded-full border border-lavender-500 object-cover"
+                        />
+                      ) : (
+                        <p className="w-10 h-10 flex items-center justify-center border border-lavender-500 font-semibold text-white rounded-full">
+                          <span className="w-9 h-9 flex items-center justify-center bg-lavender-500 font-semibold text-white rounded-full">
+                            x/
+                          </span>
+                        </p>
+                      )
                     )}
                     <div className={"flex flex-col items-start "}>
                       {getDisplayName()}
@@ -320,7 +402,7 @@ const CreateCampfireModal = ({ open, onOpenChange }: CreateCampfireModalProps) =
                     </div>
                   </div>
                   <p className={"px-4 tex-sm flex text-neutral-500"}>
-                    {getDisplayDescription()}
+                    {truncateText(getDisplayDescription())}
                   </p>
                   {step !== 1 && (
                     <p className={"w-full flex  items-end justify-end px-4 text-sm"}>
@@ -332,7 +414,7 @@ const CreateCampfireModal = ({ open, onOpenChange }: CreateCampfireModalProps) =
             </div>
 
             <div className={"flex w-full items-center justify-between"}>
-              <div className="flex justify-center space-x-2">
+              <div className="flex items-center justify-center space-x-2">
                 {Array.from({length: TOTAL_STEPS}).map((_, i) => (
                   <div
                     key={i}
@@ -340,7 +422,7 @@ const CreateCampfireModal = ({ open, onOpenChange }: CreateCampfireModalProps) =
                   />
                 ))}
               </div>
-              <div className="flex space-x-4 justify-between mt-4">
+              <div className="flex space-x-4 items-center justify-between mt-4">
                 {step > 1 && (
                   <Button type='button' variant="outline" className={"rounded-full px-8"} onClick={prevStep}>
                     Back

@@ -8,13 +8,13 @@ export enum CampfirePurpose {
 
 export enum CampfireVisibility {
   Public = "Public",
-  Private = "Private",
+ // Private = "Private",
 }
 
 export type CampfireFieldDefinition = {
   name: keyof FullFormType;
   label: string;
-  type: "input" | "textarea" | "select" | "checkbox";
+  type: "input" | "textarea" | "select" | "checkbox" | "file";
   placeholder?: string;
   options?: { value: string; label: string }[];
 };
@@ -28,30 +28,18 @@ export const campfireFieldsByStep: CampfireFieldDefinition[][] = [
 
   // Step 2
   [
-    {
-      name: "purpose",
-      label: "Purpose",
-      type: "select",
-      placeholder: "Select purpose",
+    { name: "purpose", label: "Purpose", type: "select", placeholder: "Select purpose",
       options: Object.values(CampfirePurpose).map((val) => ({ value: val, label: val })),
     },
-    {
-      name: "visibility",
-      label: "Visibility",
-      type: "select",
-      placeholder: "Select visibility",
+    { name: "visibility", label: "Visibility", type: "select", placeholder: "Select visibility",
       options: Object.values(CampfireVisibility).map((val) => ({ value: val, label: val })),
     },
-    {
-      name: "rules",
-      label: "Rules",
-      type: "checkbox"
-    },
+    { name: "rules", label: "Rules", type: "checkbox"},
   ],
 
   // Step 3
   [
-    { name: "icon_url", label: "Icon URL", type: "input", placeholder: "Optional icon image URL" },
-    { name: "banner_url", label: "Banner URL", type: "input", placeholder: "Optional banner image URL" },
+    { name: "icon_url", label: "Icon URL", type: "file", placeholder: "Optional icon image URL" },
+    { name: "banner_url", label: "Banner URL", type: "file", placeholder: "Optional banner image URL" },
   ],
 ];
