@@ -20,6 +20,7 @@ import { useNotificationCount } from '@/hooks/notifications/useNotificationCount
 import { useQueryClient } from '@tanstack/react-query';
 import { motion, AnimatePresence } from 'motion/react';
 import XolaceText from './icons/XolaceText';
+import XolaceTextSm from './icons/XolaceTextSm';
 
 export function SiteHeader() {
   // get user profile data
@@ -136,7 +137,7 @@ export function SiteHeader() {
                   priority={true}
                   loading="eager"
                 />
-                <XolaceText />
+                <XolaceTextSm className="h-7 w-24 hidden md:block" />
               </Link>
               
 
