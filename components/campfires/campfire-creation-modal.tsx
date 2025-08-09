@@ -231,7 +231,19 @@ const CreateCampfireModal = ({ open, onOpenChange }: CreateCampfireModalProps) =
                         <FormLabel>{label}</FormLabel>
                         <FormControl>
                           <div>
-                            {type === "input" && (<Input className='border-border rounded-xl border-2 border-dashed bg-transparent dark:bg-input/30' placeholder={placeholder} {...field} />)}
+                            {type === "input" && (
+                              <Input
+                                className='border-border rounded-xl border-2 border-dashed bg-transparent dark:bg-input/30'
+                                placeholder={placeholder}
+                                {...field}
+                                onChange={(e) => {
+                                  const noSpaces = e.target.value.replace(/\s+/g, '');
+                                  const pascalCase = noSpaces
+                                    .replace(/(^\w|[A-Z]|\b\w)/g, (char) => char.toUpperCase())
+                                    .replace(/[^a-zA-Z0-9]/g, '');
+                                  field.onChange(pascalCase);
+                                }}
+                              />)}
 
                             {type === "textarea" && name === "description" ? (
                               <>
@@ -382,7 +394,7 @@ const CreateCampfireModal = ({ open, onOpenChange }: CreateCampfireModalProps) =
                           src={getIconUrl()!}
                           height={20}
                           width={20}
-                          alt="Campfire icon"
+                          alt="CampfiresList icon"
                           className="w-10 h-10 rounded-full border border-lavender-500 object-cover"
                         />
                       ) : (

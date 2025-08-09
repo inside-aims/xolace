@@ -4,14 +4,14 @@ import * as React from "react"
 import { useRouter } from "next/navigation"
 import {
   // AudioWaveform,
- Flame,
+  Flame,
   Plus,
   Blocks,
   HandHelping,
   ChevronLeft,
   ChevronRight,
   TvMinimalPlay,
-  HeartPulse,
+  HeartPulse, List,
   // Calendar,
   // Command,
   // Home,
@@ -88,6 +88,12 @@ export function SidebarLeft({
             title: "Create Campfire",
             onClick: () => setIsModalOpen(true),
             icon: Plus
+          },
+          {
+            key: "manageCampfire",
+            title: "Manage Campfire",
+            url: "/x",
+            icon: List
           },
         ],
       },],
