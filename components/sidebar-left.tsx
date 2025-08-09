@@ -91,7 +91,7 @@ export function SidebarLeft({
           },
           {
             key: "manageCampfire",
-            title: "Manage Campfire",
+            title: "Manage Campfires",
             url: "/x",
             icon: List
           },

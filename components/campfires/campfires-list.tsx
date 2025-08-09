@@ -7,6 +7,7 @@ import React, {useState} from "react";
 import {CampfirePurpose} from "@/components/campfires/campfires.types";
 import CampfireCard from "@/components/campfires/campfire-card";
 import {FilterByPurpose} from "@/components/campfires/filtered-purpose";
+import CampfireWrapper from "@/components/shared/layoutUIs/CampfireWrapper";
 
 export interface CampfiresProps {
   campfireId: string;
@@ -82,7 +83,7 @@ const campfires: CampfiresProps[] = [
   {
     campfireId: "8",
     name: "x/ArtVibe",
-    description: "A vibrant community for sharing art inspirations and tutorials.",
+    description: "Hey htere what are you doing maut w so wsl os wo slow s owo slso vwowow sow slw owloww ",
     members: 1920,
     purpose: CampfirePurpose.Creative,
     isMember: false,
@@ -148,7 +149,7 @@ const CampfiresList = () => {
 
 
   return (
-    <HealthTipsWrapper>
+    <CampfireWrapper>
       <div className="w-full flex items-center flex-col gap-4 px-4">
 
         {/* Page Heading */}
@@ -201,7 +202,7 @@ const CampfiresList = () => {
           }
         </div>
       </div>
-    </HealthTipsWrapper>
+    </CampfireWrapper>
   );
 };
 export default CampfiresList;

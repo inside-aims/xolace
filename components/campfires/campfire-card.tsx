@@ -45,51 +45,53 @@ const CampfireCard = (campfire: CampfireCardProps) => {
 
 
   return(
-    <Link href={`/${campfire.name}`} className="hover:shadow-lg rounded-lg">
-      <Card key={campfire.campfireId} className="h-full flex flex-col">
-        <CardHeader className="items-start">
-          <div className="w-full flex items-start justify-between gap-4 ">
-            <CardTitle className={"text-xl"}>{campfire.name}</CardTitle>
-            {
-              campfire.iconURL ? (
-                <Image
-                  src={campfire.iconURL}
-                  height={20}
-                  width={20}
-                  alt="CampfiresList icon"
-                  className={`w-8 h-8 rounded-full border object-cover`}
-                />
-              ) : (
-                <p className={`w-8 h-8 flex items-center justify-center border border-lavender-500 font-semibold text-white rounded-full`}>
-                  <span className={`w-7 h-7 flex items-center justify-center bg-lavender-500 font-semibold text-white rounded-full`}>x/</span>
-                </p>
-              )
-            }
-          </div>
-          <CardDescription>{campfire.description}</CardDescription>
-        </CardHeader>
-        <CardContent>
-          <Badge className={`${getBgSeverity(campfire.purpose)} font-normal`}>
-            {`${campfire.purpose} circle`}
-          </Badge>
-        </CardContent>
+      <Card
+        key={campfire.campfireId}
+        className="h-full flex flex-col rounded-lg transition-shadow hover:shadow-lg dark:hover:shadow-[0_4px_14px_rgba(255,255,255,0.2)]"
+      >
+        <Link href={`/${campfire.name}`}>
+          <CardHeader className="items-start">
+            <div className="w-full flex items-start justify-between gap-4 ">
+              <CardTitle className={"text-lg"}>{campfire.name}</CardTitle>
+              {
+                campfire.iconURL ? (
+                  <Image
+                    src={campfire.iconURL}
+                    height={20}
+                    width={20}
+                    alt="CampfiresList icon"
+                    className={`w-8 h-8 rounded-full border object-cover`}
+                  />
+                ) : (
+                  <p className={`w-8 h-8 flex items-center justify-center border border-lavender-500 font-semibold text-white rounded-full`}>
+                    <span className={`w-7 h-7 flex items-center justify-center bg-lavender-500 font-semibold text-white rounded-full`}>x/</span>
+                  </p>
+                )
+              }
+            </div>
+            <CardDescription>{campfire.description}</CardDescription>
+          </CardHeader>
+          <CardContent>
+            <Badge className={`${getBgSeverity(campfire.purpose)} font-normal`}>
+              {`${campfire.purpose} circle`}
+            </Badge>
+          </CardContent>
+        </Link>
         <CardFooter className="flex justify-between items-center mt-auto">
         <span className="text-sm text-muted-foreground">
           {formatMembers(campfire.members)} members
         </span>
-          { !campfire.isMember && (
-              <Button
-                onClick={campfire.onJoin}
-                size="sm"
-                className={"px-4 rounded-lg items-center"}
-              >
-                Join
-              </Button>
-            )
-          }
+          {!campfire.isMember && (
+            <Button
+              onClick={() =>  campfire.onJoin?.()}
+              size="sm"
+              className={"px-4 rounded-lg items-center bg-lavender-500 hover:bg-lavender-600 text-white"}
+            >
+              Join
+            </Button>
+          )}
         </CardFooter>
       </Card>
-    </Link>
   )
 }
 export default CampfireCard;

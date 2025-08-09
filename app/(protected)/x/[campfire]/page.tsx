@@ -1,6 +1,7 @@
 import HealthTipsWrapper from "@/components/shared/layoutUIs/HealthTipsWrapper";
 import React from "react";
 import { Metadata } from "next";
+import CampfireDetails from "@/components/campfires/campfire-details";
 
 interface Props {
   params: Promise<{ campfire: string }>;
@@ -30,11 +31,9 @@ const CampfirePage = async ({ params }: Props) => {
   const { campfire } = await params;
 
   return (
-    <HealthTipsWrapper>
-      <div className="flex w-full flex-col px-4 items-start gap-4">
-        {campfire}
-      </div>
-    </HealthTipsWrapper>
+    <main className="w-full flex items-center justify-center">
+      <CampfireDetails/>
+    </main>
   );
 };
 export default CampfirePage;
