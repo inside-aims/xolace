@@ -49,6 +49,10 @@ import ImageCropper from '../shared/image-cropper';
 import RulesEditor from './rules-editor';
 import { WarningAlert } from '../shared/xolace-alert';
 import Link from 'next/link';
+import { toFile } from '@/utils/helpers/uploadImageToBucket';
+import {toast} from 'sonner'
+import { createCampfire } from '@/lib/actions/campfireCreation.action';
+import { generateCampfireSlug } from '@/lib/utils';
 
 const MAX_WORDS = 20;
 const MAX_RULES = 4;
@@ -107,10 +111,13 @@ const CreateCampfireModal = ({
 }: CreateCampfireModalProps) => {
   const [step, setStep] = useState(1);
   const [wordCount, setWordCount] = useState<number>(0);
+  const [isSubmitting, setIsSubmitting] = useState(false);
 
   // style
   const [bannerBlob, setBannerBlob] = React.useState<Blob | null>(null);
   const [iconBlob, setIconBlob] = React.useState<Blob | null>(null);
+  const [bannerBlobType , setBannerBlobType] = React.useState<string>('');
+  const [iconBlobType , setIconBlobType] = React.useState<string>('');
 
   const [rules, setRules] = React.useState<CampfireRule[]>([]);
 
@@ -133,19 +140,37 @@ const CreateCampfireModal = ({
   const { banner_url, icon_url } = form.watch();
 
   const handleFinalSubmit = async (data: FullFormType) => {
-    const payload = {
-      name: `x/${data.name}`,
-      description: data.description,
-      purpose: data.purpose,
-      visibility: data.visibility,
-      rules: rules,
-      icon_url: data.icon_url,
-      banner_url: data.banner_url,
-    };
-    console.log('Submitted data', payload);
-    form.reset();
-    setStep(1);
-    onOpenChange(false);
+    setIsSubmitting(true);
+    try {
+      const formData = new FormData();
+      formData.append('name', `x/${data.name}`);
+      formData.append('description', data.description);
+      formData.append('purpose', data.purpose);
+      formData.append('visibility', data.visibility);
+      formData.append('rules', JSON.stringify(rules));
+      formData.append('slug', generateCampfireSlug(data.name));
+      if (iconBlob) {
+        formData.append('icon', toFile(iconBlob, `icon_${Date.now()}`, iconBlobType));
+      }
+      if (bannerBlob) {
+        formData.append('banner', toFile(bannerBlob, `banner_${Date.now()}`, bannerBlobType));
+      }
+
+      const result = await createCampfire(formData);
+
+      if (result.success) {
+        toast.success("Your campfire has been ignited! 🔥");
+        form.reset();
+        setStep(1);
+        onOpenChange(false);
+      } else {
+        toast.error("Failed to ignite campfire");
+      }
+    } catch (error) {
+      toast.error("Failed to ignite campfire");
+    } finally {
+      setIsSubmitting(false);
+    }
   };
 
   const nextStep = async () => {
@@ -210,10 +235,11 @@ const CreateCampfireModal = ({
         [CampfirePurpose.Creative]: 'Creative',
         [CampfirePurpose.Support]: 'Support',
         [CampfirePurpose.Growth]: 'Growth',
+        [CampfirePurpose.General]: 'General',
       };
-      return purposeMap[purpose] || 'Growth';
+      return purposeMap[purpose] || 'General';
     }
-    return 'Growth';
+    return 'General';
   };
 
   const getIconUrl = (): string | null => {
@@ -415,6 +441,7 @@ const CreateCampfireModal = ({
                                         onChange={e => {
                                           const file = e.target.files?.[0];
                                           if (file) {
+                                            setBannerBlobType(file.type)
                                             const previewUrl =
                                               URL.createObjectURL(file);
                                             field.onChange(previewUrl);
@@ -516,6 +543,7 @@ const CreateCampfireModal = ({
                                         onChange={e => {
                                           const file = e.target.files?.[0];
                                           if (file) {
+                                            setIconBlobType(file.type)
                                             const previewUrl =
                                               URL.createObjectURL(file);
                                             field.onChange(previewUrl);
@@ -761,12 +789,13 @@ const CreateCampfireModal = ({
                 ) : (
                   <Button
                     type="button"
+                    disabled={isSubmitting}
                     className={
                       'bg-lavender-500 hover:bg-lavender-600 rounded-full px-8'
                     }
                     onClick={() => form.handleSubmit(handleFinalSubmit)()}
                   >
-                    Create
+                    {isSubmitting ? 'Creating...' : 'Create'}
                   </Button>
                 )}
               </div>
