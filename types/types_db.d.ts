@@ -157,6 +157,7 @@ export type Database = {
       }
       anonymous_messages: {
         Row: {
+          posts: any
           content: string
           created_at: string
           id: string
@@ -381,6 +382,7 @@ export type Database = {
       }
       collections: {
         Row: {
+          posts: any
           collection_name: string | null
           created_at: string | null
           id: string
@@ -566,8 +568,8 @@ export type Database = {
           title: string
           understand_review: boolean
           updated_at: string | null
-          verified_by_admin: boolean
-          years_of_experience: number
+          verified_by_admin: boolean | null
+          years_of_experience: number | null
         }
         Insert: {
           agree_terms?: boolean
@@ -1352,6 +1354,7 @@ export type Database = {
       }
       video_collections: {
         Row: {
+          videos: any
           collection_name: string | null
           created_at: string | null
           id: string
@@ -1590,8 +1593,8 @@ export type Database = {
           content: string
           mood: Database["public"]["Enums"]["post_mood"]
           expires_in_24hr: boolean
-          duration?: Database["public"]["Enums"]["post_duration"]
-          expires_at?: string
+          duration?: Database["public"]["Enums"]["post_duration"] | null
+          expires_at?: string | null
           is_sensitive?: boolean
           is_prompt_response?: boolean
           type?: Database["public"]["Enums"]["post_type"]
