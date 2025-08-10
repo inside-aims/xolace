@@ -7,6 +7,12 @@ const nextConfig = {
         hostname: `${process.env.NEXT_PUBLIC_BUNNY_HOST_NAME}`,
         pathname: '**',
       },
+      {
+        protocol: 'http',
+        hostname: '127.0.0.1',
+        port: '54321',
+        pathname: '**',
+      }
     ],
   },
   turbopack: {
