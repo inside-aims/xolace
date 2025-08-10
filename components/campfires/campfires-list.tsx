@@ -1,6 +1,5 @@
 'use client';
 
-import HealthTipsWrapper from '@/components/shared/layoutUIs/HealthTipsWrapper';
 import { Search } from 'lucide-react';
 import { Input } from '@/components/ui/input';
 import React, { useState } from 'react';
@@ -9,6 +8,7 @@ import CampfireCard from '@/components/campfires/campfire-card';
 import { FilterByPurpose } from '@/components/campfires/filtered-purpose';
 import CampfireWrapper from '@/components/shared/layoutUIs/CampfireWrapper';
 import { useAllPublicCampfires } from '@/queries/campfires/getAllPublicCampfires';
+import { useJoinCampfireMutation } from '@/hooks/campfires/useJoinCampfireMutation';
 import { useUserState } from '@/lib/store/user';
 
 const CampfiresList = () => {
@@ -17,12 +17,12 @@ const CampfiresList = () => {
   const [selectedPurposes, setSelectedPurposes] = useState<CampfirePurpose[]>(
     [],
   );
-  const { data: campfires, isLoading, isError } = useAllPublicCampfires(user?.id);
+  const { data: campfires, isPending, isError } = useAllPublicCampfires(user?.id);
+  const joinCampfireMutation = useJoinCampfireMutation();
 
   // Helper function for join campfire
   const handleJoinClick = (campfireId: string) => {
-    //Logic goes here
-    return () => console.log(campfireId);
+    joinCampfireMutation.mutate(campfireId);
   };
 
   // Helper for campfires search and filtering
@@ -68,8 +68,8 @@ const CampfiresList = () => {
         </div>
 
         {/* Campfire list */}
-        <div className="grid grid-cols-1 items-stretch gap-6 pt-4 md:grid-cols-2 lg:grid-cols-2 xl:grid-cols-3">
-          {isLoading ? (
+        <div className="grid grid-cols-1 items-stretch gap-6 pt-4 pb-5 md:grid-cols-2 lg:grid-cols-2 xl:grid-cols-3 w-full">
+          {isPending ? (
             <div className={'flex w-full text-center text-neutral-400'}>
               Loading campfires...
             </div>

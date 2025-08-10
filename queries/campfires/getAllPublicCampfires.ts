@@ -21,10 +21,9 @@ export function useAllPublicCampfires(userId?: string) {
   return useQuery<Campfire[], Error>({
     queryKey: ['campfires', 'public'],
     queryFn: async () => {
-
       // @ts-ignore
-    const { data, error } = await supabase
-      .from('campfires')
+      const { data, error } = await supabase
+        .from('campfires')
         .select(
           `
           id,
@@ -47,7 +46,7 @@ export function useAllPublicCampfires(userId?: string) {
         return [];
       }
 
-      console.log(data)
+      console.log(data);
 
       // The type assertion is needed here because the dynamic select with join
       // isn't fully typed by Supabase's generator. We are confident in the shape
@@ -69,7 +68,9 @@ export function useAllPublicCampfires(userId?: string) {
         members: campfire.member_count,
         purpose: campfire.purpose,
         iconURL: campfire.icon_url || undefined,
-        isMember: userId ? campfire.campfire_members.some(m => m.user_id === userId) : false,
+        isMember: userId
+          ? campfire.campfire_members.some(m => m.user_id === userId)
+          : false,
       }));
     },
     staleTime: QUERY_STALE_TIME,

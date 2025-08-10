@@ -52,10 +52,10 @@ const CampfireCard = (campfire: CampfireCardProps) => {
   return (
     <Card
       key={campfire.campfireId}
-      className="flex h-full flex-col rounded-[30px] border-0 bg-zinc-800/80 transition-shadow hover:shadow-lg dark:hover:shadow-[0_4px_14px_rgba(255,255,255,0.2)]"
+      className="flex h-full flex-col rounded-[30px] bg-slate-400/20 border-0 dark:bg-zinc-800/80 transition-shadow hover:shadow-lg dark:hover:shadow-[0_4px_14px_rgba(255,255,255,0.2)]"
     >
       <Link href={`/${campfire.name}`}>
-        <CardHeader className="items-start">
+        <CardHeader className="items-start space-y-1 max-sm:pb-3">
           <div className="flex w-full items-start justify-between gap-4">
             <CardTitle className={'text-lg'}>{campfire.name}</CardTitle>
             {campfire.iconURL ? (
@@ -80,9 +80,9 @@ const CampfireCard = (campfire: CampfireCardProps) => {
           </div>
           <CardDescription>{campfire.description}</CardDescription>
         </CardHeader>
-        <CardContent>
+        <CardContent className="pb-2">
           <Badge className={`${getBgSeverity(campfire.purpose)} font-normal`}>
-            {`${campfire.purpose} circle`}
+            {`${campfire.purpose.replace('_', ' ')}`}
           </Badge>
         </CardContent>
       </Link>

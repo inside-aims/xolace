@@ -50,7 +50,7 @@ import RulesEditor from './rules-editor';
 import { WarningAlert } from '../shared/xolace-alert';
 import Link from 'next/link';
 import { toFile } from '@/utils/helpers/uploadImageToBucket';
-import {toast} from 'sonner'
+import { toast } from 'sonner';
 import { createCampfire } from '@/lib/actions/campfireCreation.action';
 import { generateCampfireSlug } from '@/lib/utils';
 
@@ -116,8 +116,8 @@ const CreateCampfireModal = ({
   // style
   const [bannerBlob, setBannerBlob] = React.useState<Blob | null>(null);
   const [iconBlob, setIconBlob] = React.useState<Blob | null>(null);
-  const [bannerBlobType , setBannerBlobType] = React.useState<string>('');
-  const [iconBlobType , setIconBlobType] = React.useState<string>('');
+  const [bannerBlobType, setBannerBlobType] = React.useState<string>('');
+  const [iconBlobType, setIconBlobType] = React.useState<string>('');
 
   const [rules, setRules] = React.useState<CampfireRule[]>([]);
 
@@ -150,24 +150,30 @@ const CreateCampfireModal = ({
       formData.append('rules', JSON.stringify(rules));
       formData.append('slug', generateCampfireSlug(data.name));
       if (iconBlob) {
-        formData.append('icon', toFile(iconBlob, `icon_${Date.now()}`, iconBlobType));
+        formData.append(
+          'icon',
+          toFile(iconBlob, `icon_${Date.now()}`, iconBlobType),
+        );
       }
       if (bannerBlob) {
-        formData.append('banner', toFile(bannerBlob, `banner_${Date.now()}`, bannerBlobType));
+        formData.append(
+          'banner',
+          toFile(bannerBlob, `banner_${Date.now()}`, bannerBlobType),
+        );
       }
 
       const result = await createCampfire(formData);
 
       if (result.success) {
-        toast.success("Your campfire has been ignited! 🔥");
+        toast.success('Your campfire has been ignited! 🔥');
         form.reset();
         setStep(1);
         onOpenChange(false);
       } else {
-        toast.error("Failed to ignite campfire");
+        toast.error('Failed to ignite campfire');
       }
     } catch (error) {
-      toast.error("Failed to ignite campfire");
+      toast.error('Failed to ignite campfire');
     } finally {
       setIsSubmitting(false);
     }
@@ -271,7 +277,6 @@ const CreateCampfireModal = ({
         <Form {...form}>
           {/* REMOVE onSubmit from the form element - this is the key fix */}
           <div className="w-full space-y-4">
-
             <div className="grid grid-cols-1 items-start gap-x-6 gap-y-8 md:grid-cols-12">
               <div className="order-2 col-span-1 max-h-[50vh] space-y-4 overflow-y-auto sm:max-h-[72vh] md:order-1 md:col-span-7">
                 {step < 4 &&
@@ -441,7 +446,7 @@ const CreateCampfireModal = ({
                                         onChange={e => {
                                           const file = e.target.files?.[0];
                                           if (file) {
-                                            setBannerBlobType(file.type)
+                                            setBannerBlobType(file.type);
                                             const previewUrl =
                                               URL.createObjectURL(file);
                                             field.onChange(previewUrl);
@@ -543,7 +548,7 @@ const CreateCampfireModal = ({
                                         onChange={e => {
                                           const file = e.target.files?.[0];
                                           if (file) {
-                                            setIconBlobType(file.type)
+                                            setIconBlobType(file.type);
                                             const previewUrl =
                                               URL.createObjectURL(file);
                                             field.onChange(previewUrl);
