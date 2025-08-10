@@ -1,4 +1,3 @@
-import HealthTipsWrapper from "@/components/shared/layoutUIs/HealthTipsWrapper";
 import React from "react";
 import { Metadata } from "next";
 import CampfireDetails from "@/components/campfires/campfire-details";

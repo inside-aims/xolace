@@ -486,7 +486,7 @@ const CreateCampfireModal = ({
                                   label === 'Banner URL' &&
                                   bannerBlob && (
                                     <div className="relative overflow-hidden rounded-lg border">
-                                      <img
+                                      <Image
                                         src={
                                           URL.createObjectURL(bannerBlob) ||
                                           '/placeholder.svg'
@@ -588,7 +588,7 @@ const CreateCampfireModal = ({
                                   label === 'Icon URL' &&
                                   iconBlob && (
                                     <div className="flex items-center gap-4">
-                                      <img
+                                      <Image
                                         src={
                                           URL.createObjectURL(iconBlob) ||
                                           '/placeholder.svg'
