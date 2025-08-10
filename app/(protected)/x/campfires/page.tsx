@@ -1,6 +1,6 @@
 import {Metadata} from "next";
 import CampfiresList from "@/components/campfires/campfires-list";
-import CampfiresListSkeleton from "@/components/campfires/campfires-list-skeleton";
+
 
 export const metadata: Metadata = {
   title: 'Campfires',
@@ -11,7 +11,6 @@ const CampfiresPage = () => {
   return(
     <main>
       <CampfiresList/>
-      {/*<CampfiresListSkeleton/>*/}
     </main>
   )
 }

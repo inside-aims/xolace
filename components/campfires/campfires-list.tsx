@@ -10,6 +10,7 @@ import CampfireWrapper from '@/components/shared/layoutUIs/CampfireWrapper';
 import { useAllPublicCampfires } from '@/queries/campfires/getAllPublicCampfires';
 import { useJoinCampfireMutation } from '@/hooks/campfires/useJoinCampfireMutation';
 import { useUserState } from '@/lib/store/user';
+import CampfiresListSkeleton from "@/components/campfires/campfires-list-skeleton";
 
 const CampfiresList = () => {
   const user = useUserState(state => state.user);
@@ -70,9 +71,7 @@ const CampfiresList = () => {
         {/* Campfire list */}
         <div className="grid grid-cols-1 items-stretch gap-6 pt-4 pb-5 md:grid-cols-2 lg:grid-cols-2 xl:grid-cols-3 w-full">
           {isPending ? (
-            <div className={'flex w-full text-center text-neutral-400'}>
-              Loading campfires...
-            </div>
+            <CampfiresListSkeleton/>
           ) : isError ? (
             <div className={'flex w-full text-center text-red-500'}>
               Error fetching campfires. Please try again later.

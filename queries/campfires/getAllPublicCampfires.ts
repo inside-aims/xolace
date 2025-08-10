@@ -35,7 +35,8 @@ export function useAllPublicCampfires(userId?: string) {
           campfire_members!left(user_id)
         `,
         )
-        .eq('visibility', 'public');
+        .eq('visibility', 'public')
+        .order('member_count', { ascending: false });
 
       if (error) {
         console.error('Error fetching public campfires:', error);

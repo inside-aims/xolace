@@ -30,19 +30,19 @@ export default function CampfiresListSkeleton() {
   const skeletonCount = 6;
 
   return (
-    <HealthTipsWrapper>
+    <>
       <div className="w-full flex flex-col gap-4 px-4">
         {/* Heading Skeleton */}
-        <div className="text-center space-y-2">
+        {/* <div className="text-center space-y-2">
           <Skeleton className="h-6 w-48 mx-auto"/>
           <Skeleton className="h-4 w-72 mx-auto"/>
-        </div>
+        </div> */}
 
         {/* Search & Filter Skeleton */}
-        <div className="flex w-full items-center max-w-xl gap-4 justify-center">
+        {/* <div className="flex w-full items-center max-w-xl gap-4 justify-center">
           <Skeleton className="h-10 w-full sm:w-2/3 rounded-lg"/>
           <Skeleton className="h-10 w-40 rounded-lg"/>
-        </div>
+        </div> */}
 
         {/* Card Skeleton Grid */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 xl:grid-cols-3 gap-4 pt-4">
@@ -51,6 +51,6 @@ export default function CampfiresListSkeleton() {
           ))}
         </div>
       </div>
-    </HealthTipsWrapper>
+    </>
   );
 }
