@@ -25,13 +25,17 @@ export function NavMiddle({
   items,
 }: {
   items: {
+    key: string;
     title: string;
     url: string;
     icon?: LucideIcon;
     isActive?: boolean;
     items?: {
-      title: string;
-      url: string;
+      key: string;
+      title: string | React.ReactNode;
+      url?: string;
+      icon?: LucideIcon;
+      onClick?: () => void;
     }[];
   }[];
 }) {
@@ -42,7 +46,7 @@ export function NavMiddle({
       <SidebarMenu>
         {items.map(item => (
           <Collapsible
-            key={item.title}
+            key={item.key}
             asChild
             defaultOpen={item.isActive}
             className="group/collapsible"
@@ -63,25 +67,37 @@ export function NavMiddle({
               <CollapsibleContent>
                 <SidebarMenuSub>
                   {item.items?.map(subItem => {
-                    const isActive =
-                      (pathName.includes(subItem.url) &&
-                        subItem.url.length > 1) ||
-                      pathName == subItem.url;
+
+                    let isActive = false;
+                    if(subItem.url){
+                      isActive =
+                        (pathName.includes(subItem.url) &&
+                          subItem.url.length > 1) ||
+                        pathName == subItem.url;
+                    }
 
                     return (
-                      <SidebarMenuSubItem key={subItem.title}>
+                      <SidebarMenuSubItem key={subItem.key}>
                         <SidebarMenuSubButton
                           asChild
                           className="py-5 relative"
                           isActive={isActive}
-                          onClick={() => setOpenMobile(false)}
+                          onClick={subItem.onClick ? subItem.onClick : () => setOpenMobile(false)}
                         >
+                          {subItem.url ?
                           <Link href={subItem.url} className='flex justify-start items-center'>
-                            <span className="text-sidebar-label">
+                            <span className="text-sidebar-label flex items-center gap-2">
+                              {subItem.icon && <subItem.icon size={16} />}
                               {subItem.title}
                             </span>
-                            <NewBadge size="sm" />
+                            {/*<NewBadge size="sm" />*/}
                           </Link>
+                        : 
+                        <span className="text-sidebar-label cursor-pointer flex items-center">
+                          {subItem.icon && <subItem.icon size={16} />}
+                          {subItem.title}
+                        </span>
+                        }
                         </SidebarMenuSubButton>
                       </SidebarMenuSubItem>
                     );

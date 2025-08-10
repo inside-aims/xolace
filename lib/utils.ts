@@ -90,6 +90,23 @@ export function generateSlug(title: string) {
   return title.toLowerCase().replace(/\s+/g, "-");
 }
 
+export function generateCampfireSlug(text: string) {
+  return text
+    .toString()
+    .trim()
+    .toLowerCase()
+    // Replace accented characters (e.g., é → e)
+    .normalize("NFD").replace(/[\u0300-\u036f]/g, "")
+    // Replace spaces & underscores with hyphens
+    .replace(/[\s_]+/g, "-")
+    // Remove invalid chars (anything not a-z, 0-9, or hyphen)
+    .replace(/[^a-z0-9-]/g, "")
+    // Remove multiple hyphens
+    .replace(/-+/g, "-")
+    // Remove leading/trailing hyphens
+    .replace(/^-+|-+$/g, "");
+}
+
 
 
 // Get env helper function
