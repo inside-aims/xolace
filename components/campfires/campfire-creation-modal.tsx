@@ -8,6 +8,7 @@ import * as z from 'zod';
 import {
   Dialog,
   DialogContent,
+  DialogDescription,
   DialogHeader,
   DialogTitle,
 } from '@/components/ui/dialog';
@@ -99,9 +100,26 @@ interface CreateCampfireModalProps {
 }
 
 const stepTitles = [
-  'Start your Campfire - Name & Describe',
-  'Define the Rules & Visibility',
-  'Customize Your Campfire Appearance',
+  {
+    title: 'Start your Campfire',
+    description: 'A name and description to help people understand what your campfire is all about.',
+  },
+  {
+    title: 'Define the Purpose & Visibility',
+    description: 'Purpose of your campfire help campers understand what to expect from your campfire.',
+  },
+  {
+    title: 'Customize Your Campfire Appearance',
+    description: 'Customize the appearance of your Campfire.',
+  },
+  {
+    title: 'Add Rules',
+    description: 'Set expectations or regulations for your campfire. You can always edit these rules later.',
+  },
+  {
+    title: 'Confirm your Campfire',
+    description: 'Review your campfire details and confirm before creating.',
+  }
 ];
 
 const CreateCampfireModal = ({
@@ -264,10 +282,11 @@ const CreateCampfireModal = ({
       <DialogContent
         onEscapeKeyDown={e => e.preventDefault()}
         onPointerDownOutside={e => e.preventDefault()}
-        className="w-full max-w-[95vw] sm:max-w-[750px]"
+        className="w-full max-w-[95vw] sm:max-w-[750px] rounded-2xl!  sm:rounded-3xl"
       >
-        <DialogHeader>
-          <DialogTitle>{stepTitles[step - 1]}</DialogTitle>
+        <DialogHeader className={`${step === 4 ? 'mb-5' : 'mb-3'}`}>
+          <DialogTitle>{stepTitles[step - 1].title}</DialogTitle>
+          <DialogDescription>{stepTitles[step - 1].description}</DialogDescription>
         </DialogHeader>
 
         <Form {...form}>
@@ -651,20 +670,20 @@ const CreateCampfireModal = ({
 
                 {step === 4 && (
                   <div className="space-y-6">
-                    <div className="space-y-2">
+                    {/* <div className="space-y-2">
                       <h3 className="text-xl font-medium">Rules</h3>
                       <p className="text-muted-foreground text-sm">
                         Set expectations for your campfire. You can always edit
                         these later.
                       </p>
-                    </div>
+                    </div> */}
                     <RulesEditor rules={rules} onChange={setRules} />
                   </div>
                 )}
 
                 {step === 5 && (
                   <div className="space-y-6">
-                    <div className="space-y-2">
+                    {/* <div className="space-y-2">
                       <h3 className="text-xl font-medium">
                         Confirm your campfire
                       </h3>
@@ -672,7 +691,7 @@ const CreateCampfireModal = ({
                         Review your campfire details and confirm before
                         creating.
                       </p>
-                    </div>
+                    </div> */}
 
                     <WarningAlert
                       title="Important Notice"
@@ -685,7 +704,7 @@ const CreateCampfireModal = ({
 
               {/*profile card*/}
               <div
-                className={`order-1 col-span-1 rounded-2xl shadow-lg md:order-2 md:col-span-5 ${step < 3 && 'border pt-2'}`}
+                className={`order-1 col-span-1 rounded-2xl shadow-lg dark:shadow-black/80 md:order-2 md:col-span-5 ${step < 3 && 'border pt-2'}`}
               >
                 <div
                   className={
