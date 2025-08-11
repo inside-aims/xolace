@@ -5,15 +5,15 @@ import { Skeleton } from "@/components/ui/skeleton";
 
 function CampfireCardSkeleton() {
   return (
-    <Card className="w-full flex flex-col">
+    <Card className="w-full flex flex-col rounded-[20px]">
       <CardHeader className="flex items-start justify-between">
-        <div className="w-full flex items-center justify-between gap-2">
+        <div className="w-full flex items-center justify-between gap-1">
           <Skeleton className="h-5 w-32" />
           <Skeleton className="w-8 h-8 rounded-full" />
         </div>
         <Skeleton className="h-5 w-20 rounded-full" />
       </CardHeader>
-      <CardContent>
+      <CardContent className="pb-2">
         <Skeleton className="h-4 w-full mb-2" />
         <Skeleton className="h-4 w-full" />
       </CardContent>

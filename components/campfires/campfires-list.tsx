@@ -84,9 +84,11 @@ const CampfiresList = () => {
         </div>
 
         {/* Campfire list */}
-        <div className="grid w-full grid-cols-1 items-stretch gap-6 pt-4 pb-5 md:grid-cols-2 lg:grid-cols-2 xl:grid-cols-3">
+        <div className="w-full">
           {isPending ? (
-            <CampfiresListSkeleton />
+            <div className="w-full">
+              <CampfiresListSkeleton />
+            </div>
           ) : isError ? (
             <div className="flex w-full flex-col items-center gap-4 px-4">
               <Alert variant="destructive" className="max-w-md">
@@ -118,7 +120,8 @@ const CampfiresList = () => {
                 )}
               </div>
           ) : (
-            filteredCampfires?.map(campfire => (
+            <div className="grid w-full grid-cols-1 items-stretch gap-6 pt-4 pb-5 md:grid-cols-2 lg:grid-cols-2 xl:grid-cols-3">
+            {filteredCampfires?.map(campfire => (
               <CampfireCard
                 key={campfire.campfireId}
                 campfireId={campfire.campfireId}
@@ -130,7 +133,8 @@ const CampfiresList = () => {
                 onJoin={() => handleJoinClick(campfire.campfireId)}
                 isMember={campfire.isMember}
               />
-            ))
+            ))}
+          </div>
           )}
         </div>
       </div>
