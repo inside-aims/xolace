@@ -1,8 +1,8 @@
 'use client';
 
-import { Search } from 'lucide-react';
+import { AlertCircle, RefreshCw, Search } from 'lucide-react';
 import { Input } from '@/components/ui/input';
-import React, { useState } from 'react';
+import React, { useCallback, useState } from 'react';
 import { CampfirePurpose } from '@/components/campfires/campfires.types';
 import CampfireCard from '@/components/campfires/campfire-card';
 import { FilterByPurpose } from '@/components/campfires/filtered-purpose';
@@ -10,7 +10,9 @@ import CampfireWrapper from '@/components/shared/layoutUIs/CampfireWrapper';
 import { useAllPublicCampfires } from '@/queries/campfires/getAllPublicCampfires';
 import { useJoinCampfireMutation } from '@/hooks/campfires/useJoinCampfireMutation';
 import { useUserState } from '@/lib/store/user';
-import CampfiresListSkeleton from "@/components/campfires/campfires-list-skeleton";
+import CampfiresListSkeleton from '@/components/campfires/campfires-list-skeleton';
+import { Alert, AlertDescription } from '@/components/ui/alert';
+import { Button } from '@/components/ui/button';
 
 const CampfiresList = () => {
   const user = useUserState(state => state.user);
@@ -18,13 +20,26 @@ const CampfiresList = () => {
   const [selectedPurposes, setSelectedPurposes] = useState<CampfirePurpose[]>(
     [],
   );
-  const { data: campfires, isPending, isError } = useAllPublicCampfires(user?.id);
+
+
+  const {
+    data: campfires,
+    isPending,
+    isError,
+    refetch,
+  } = useAllPublicCampfires(user?.id);
   const joinCampfireMutation = useJoinCampfireMutation();
 
   // Helper function for join campfire
   const handleJoinClick = (campfireId: string) => {
     joinCampfireMutation.mutate(campfireId);
   };
+
+  // Clear filters
+  const handleClearFilters = useCallback(() => {
+    setSearchTerm('');
+    setSelectedPurposes([]);
+  }, []);
 
   // Helper for campfires search and filtering
   const filteredCampfires = campfires?.filter(option => {
@@ -69,17 +84,39 @@ const CampfiresList = () => {
         </div>
 
         {/* Campfire list */}
-        <div className="grid grid-cols-1 items-stretch gap-6 pt-4 pb-5 md:grid-cols-2 lg:grid-cols-2 xl:grid-cols-3 w-full">
+        <div className="grid w-full grid-cols-1 items-stretch gap-6 pt-4 pb-5 md:grid-cols-2 lg:grid-cols-2 xl:grid-cols-3">
           {isPending ? (
-            <CampfiresListSkeleton/>
+            <CampfiresListSkeleton />
           ) : isError ? (
-            <div className={'flex w-full text-center text-red-500'}>
-              Error fetching campfires. Please try again later.
+            <div className="flex w-full flex-col items-center gap-4 px-4">
+              <Alert variant="destructive" className="max-w-md">
+                <AlertCircle className="h-4 w-4" />
+                <AlertDescription>
+                  Failed to load campfires. Please check your connection and try
+                  again.
+                </AlertDescription>
+              </Alert>
+              <Button onClick={() => refetch()} variant="outline">
+                <RefreshCw className="mr-2 h-4 w-4" />
+                Retry
+              </Button>
             </div>
           ) : filteredCampfires && filteredCampfires.length === 0 ? (
-            <div className={'flex w-full text-center text-neutral-400'}>
-              No result match your search
-            </div>
+            <div className="flex flex-col items-center justify-center py-12 text-center">
+                <div className="text-6xl mb-4">🔥</div>
+                <h3 className="text-lg font-medium mb-2">No campfires found</h3>
+                <p className="text-muted-foreground mb-4">
+                  {searchTerm || selectedPurposes.length > 0
+                    ? "Try adjusting your search or filters"
+                    : "Be the first to create a campfire!"
+                  }
+                </p>
+                {(searchTerm || selectedPurposes.length > 0) && (
+                  <Button onClick={handleClearFilters} variant="outline">
+                    Clear Filters
+                  </Button>
+                )}
+              </div>
           ) : (
             filteredCampfires?.map(campfire => (
               <CampfireCard
