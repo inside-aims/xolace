@@ -11,7 +11,7 @@ import {
   ChevronLeft,
   ChevronRight,
   TvMinimalPlay,
-  HeartPulse, List,
+  HeartPulse, Users, Search
   // Calendar,
   // Command,
   // Home,
@@ -91,10 +91,16 @@ export function SidebarLeft({
           },
           {
             key: "manageCampfire",
-            title: "Manage Campfires",
-            url: "/x",
-            icon: List
+            title: "Manage Campfire",
+            url: `/user/${user?.username.toLowerCase()}/campfires`,
+            icon: Users
           },
+          {
+            key: "discoverCampfires",
+            title: "Discover Campfires",
+            url: "/campfires",
+            icon: Search
+          }
         ],
       },],
     navMiddle: [

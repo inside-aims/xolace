@@ -113,7 +113,7 @@ const CampfireDetails = () => {
         <div className="col-span-8">
           <CampfireHighlight />
         </div>
-        <div className="col-span-4">
+        <div className="col-span-4 sticky top-8">
           <CampfireAbout />
         </div>
       </div>
@@ -129,7 +129,7 @@ const CampfireDetails = () => {
                 onClick={() => setSelectedTab(campfire.key)}
                 size={"sm"}
                 variant="ghost"
-                className={`rounded-full hover:bg-neutral-100 dark:bg-neutral-600 ${activeTab ? "bg-neutral-200 dark:bg-neutral-800 border border-neutral-400" : ""}`}
+                className={`rounded-full  ${activeTab ? "bg-neutral-200 dark:bg-neutral-800 border border-neutral-400" : ""}`}
               > {campfire.label}
               </Button>
             )}

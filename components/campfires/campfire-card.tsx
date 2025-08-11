@@ -2,7 +2,7 @@ import {Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle} f
 import {Badge} from "@/components/ui/badge";
 import {Button} from "@/components/ui/button";
 import React from "react";
-import {CampfirePurpose} from "@/components/campfires/campfires.types";
+import {CampfirePurpose, formatMembers} from "@/components/campfires/campfires.types";
 import Image from "next/image";
 import Link from 'next/link';
 
@@ -31,18 +31,6 @@ const CampfireCard = (campfire: CampfireCardProps) => {
         return "bg-neutral-200 text-neutral-800";
     }
   };
-
-  // Handle members count to human readable
-  function formatMembers(count: number): string {
-    if (count >= 1_000_000) {
-      return (count / 1_000_000).toFixed(1).replace(/\.0$/, '') + 'M';
-    }
-    if (count >= 1_000) {
-      return (count / 1_000).toFixed(1).replace(/\.0$/, '') + 'k';
-    }
-    return count.toString();
-  }
-
 
   return(
       <Card
