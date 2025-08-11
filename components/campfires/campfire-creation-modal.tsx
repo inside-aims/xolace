@@ -147,7 +147,7 @@ const CreateCampfireModal = ({
     defaultValues: {
       name: '',
       description: '',
-      purpose: undefined,
+      purpose: CampfirePurpose.General,
       visibility: CampfireVisibility.Public,
       rules: [],
       icon_url: '',
@@ -156,7 +156,7 @@ const CreateCampfireModal = ({
     mode: 'onTouched',
   });
 
-  const { banner_url, icon_url } = form.watch();
+  const { banner_url, icon_url, name, description } = form.watch();
 
   const handleFinalSubmit = async (data: FullFormType) => {
     const formData = new FormData();
@@ -230,7 +230,6 @@ const CreateCampfireModal = ({
 
   // Helper function to get display name
   const getDisplayName = () => {
-    const name = form.watch('name');
     if (name && name.trim()) {
       return `x/${name.trim()}`;
     }
@@ -239,7 +238,6 @@ const CreateCampfireModal = ({
 
   // Helper function to get display description
   const getDisplayDescription = () => {
-    const description = form.watch('description');
     if (description && description.trim()) {
       return description.trim();
     }
@@ -799,6 +797,7 @@ const CreateCampfireModal = ({
                     Back
                   </Button>
                 )}
+                {/* disable button when form per step is not yet valid */}
                 {step < TOTAL_STEPS ? (
                   <Button
                     type="button"
@@ -806,6 +805,7 @@ const CreateCampfireModal = ({
                       'bg-lavender-500 hover:bg-lavender-600 rounded-full px-8'
                     }
                     onClick={nextStep}
+                    disabled={step === 1 && name.length < 2 || description.length < 5}
                   >
                     Next
                   </Button>
