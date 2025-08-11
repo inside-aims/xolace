@@ -9,7 +9,7 @@ export const metadata: Metadata = {
 
 const CampfiresPage = () => {
   return(
-    <main>
+    <main className="w-full">
       <CampfiresList/>
     </main>
   )

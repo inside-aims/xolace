@@ -104,7 +104,7 @@ const CampfiresList = () => {
               </Button>
             </div>
           ) : filteredCampfires && filteredCampfires.length === 0 ? (
-            <div className="flex flex-col items-center justify-center py-12 text-center">
+            <div className="flex flex-col items-center justify-center py-12 text-center w-full">
                 <div className="text-6xl mb-4">🔥</div>
                 <h3 className="text-lg font-medium mb-2">No campfires found</h3>
                 <p className="text-muted-foreground mb-4">
