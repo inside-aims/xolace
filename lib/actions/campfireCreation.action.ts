@@ -105,6 +105,7 @@ export const createCampfire = async (formData: FormData) => {
   return { success: true, data: campfire };
 };
 
+// Join a campfire
 export async function joinCampfire(
   campfireId: string,
   userId: string,
@@ -121,6 +122,28 @@ export async function joinCampfire(
     }
   } catch (error) {
     console.error('Error joining campfire:', error);
+    throw error;
+  }
+}
+
+// Leave a campfire
+export async function leaveCampfire(
+  campfireId: string,
+  userId: string,
+): Promise<void> {
+  const supabase = await createClient();
+  try {
+    const { error } = await supabase
+        .from('campfire_members')
+        .delete()
+        .eq('campfire_id', campfireId)
+        .eq('user_id', userId);
+
+    if (error) {
+      throw new Error(`Failed to leave campfire: ${error.message}`);
+    }
+  } catch (error) {
+    console.error('Error leaving campfire:', error);
     throw error;
   }
 }
