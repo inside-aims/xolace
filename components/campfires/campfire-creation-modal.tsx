@@ -492,6 +492,8 @@ const CreateCampfireModal = ({
                                           '/placeholder.svg'
                                         }
                                         alt="Banner preview"
+                                        height={128}
+                                        width={1028}
                                         className="h-28 w-full object-cover"
                                       />
                                       <div className="flex items-center gap-2 p-2">
@@ -593,6 +595,8 @@ const CreateCampfireModal = ({
                                           URL.createObjectURL(iconBlob) ||
                                           '/placeholder.svg'
                                         }
+                                        height={64}
+                                        width={64}
                                         alt="Icon preview"
                                         className="h-16 w-16 rounded-md border object-cover"
                                       />
@@ -681,14 +685,14 @@ const CreateCampfireModal = ({
 
               {/*profile card*/}
               <div
-                className={`order-1 col-span-1 rounded-2xl shadow-lg md:order-2 md:col-span-5 ${step !== 3 && 'border pt-2'}`}
+                className={`order-1 col-span-1 rounded-2xl shadow-lg md:order-2 md:col-span-5 ${step < 3 && 'border pt-2'}`}
               >
                 <div
                   className={
                     'flex flex-col items-start justify-start gap-2 pb-2'
                   }
                 >
-                  {step === 3 &&
+                  {step >= 3 &&
                     (getBannerUrl() ? (
                       <div
                         className="h-8 w-full rounded-t-2xl bg-cover bg-center"
@@ -698,7 +702,7 @@ const CreateCampfireModal = ({
                       <div className="bg-lavender-300 flex h-8 w-full rounded-t-2xl" />
                     ))}
                   <div className={'flex flex-row gap-2 px-4'}>
-                    {step === 3 &&
+                    {step >= 3 &&
                       (getIconUrl() ? (
                         <Image
                           src={getIconUrl()!}

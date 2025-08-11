@@ -10,8 +10,8 @@ import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import React from 'react';
 import { CampfirePurpose } from '@/components/campfires/campfires.types';
-import Image from 'next/image';
 import Link from 'next/link';
+import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 
 interface CampfireCardProps {
   campfireId: string;
@@ -52,20 +52,21 @@ const CampfireCard = (campfire: CampfireCardProps) => {
   return (
     <Card
       key={campfire.campfireId}
-      className="flex h-full flex-col rounded-[30px] bg-slate-400/20 border-0 dark:bg-zinc-800/80 transition-shadow hover:shadow-lg dark:hover:shadow-[0_4px_14px_rgba(255,255,255,0.2)]"
+      className="flex h-full flex-col rounded-[20px] bg-slate-400/20 border-0 dark:bg-zinc-800/80 transition-shadow hover:shadow-lg dark:hover:shadow-[0_4px_14px_rgba(255,255,255,0.2)]"
     >
       <Link href={`/${campfire.name}`}>
-        <CardHeader className="items-start space-y-1 max-sm:pb-3">
+        <CardHeader className="items-start space-y-1 pb-3">
           <div className="flex w-full items-start justify-between gap-4">
             <CardTitle className={'text-lg'}>{campfire.name}</CardTitle>
             {campfire.iconURL ? (
-              <Image
-                src={campfire.iconURL}
-                height={20}
-                width={20}
-                alt="CampfiresList icon"
-                className={`h-8 w-8 rounded-full border object-cover`}
-              />
+              <Avatar>
+              <AvatarImage className="h-8 w-8 rounded-full" src={campfire.iconURL || undefined} alt={campfire.name} />
+              <AvatarFallback className="border-lavender-500 flex h-8 w-8 items-center justify-center rounded-full border font-semibold text-white"><span
+                  className={`bg-lavender-500 flex h-7 w-7 items-center justify-center rounded-full font-semibold text-white`}
+                >
+                  x/
+                </span></AvatarFallback>
+            </Avatar>
             ) : (
               <p
                 className={`border-lavender-500 flex h-8 w-8 items-center justify-center rounded-full border font-semibold text-white`}
