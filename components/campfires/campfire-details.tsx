@@ -113,7 +113,7 @@ const CampfireDetails = () => {
         <div className="col-span-8">
           <CampfireHighlight />
         </div>
-        <div className="col-span-4 sticky top-8">
+        <div className="col-span-4 sm:sticky sm:top-[calc(var(--header-height) + 1rem)] sm:max-h-[calc(100vh-var(--header-height)-2rem)] sm:overflow-y-auto sm:overflow-x-hidden scroll-smooth">
           <CampfireAbout />
         </div>
       </div>
