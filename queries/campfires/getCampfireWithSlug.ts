@@ -1,3 +1,4 @@
+// queries/campfires/getCampfireWithSlug.ts
 import { useQuery } from '@tanstack/react-query';
 import { getSupabaseBrowserClient } from '@/utils/supabase/client';
 import { CampfirePurpose } from '@/components/campfires/campfires.types';
@@ -12,19 +13,22 @@ export interface CampfireDetails {
   iconURL?: string;
   bannerUrl?: string;
   isMember: boolean;
+  createdAt: string;
+  createdBy: string;
+  visibility: 'public' | 'private' | 'restricted' | 'secret';
 }
 
 const QUERY_STALE_TIME = 5 * 60 * 1000; // 5 minutes
 const QUERY_CACHE_TIME = 10 * 60 * 1000; // 10 minutes
 
-export function getCampfireWithSlug(slug : string, userId?: string ) {
+export function getCampfireWithSlug(slug: string, userId?: string) {
   const supabase = getSupabaseBrowserClient();
 
   return useQuery<CampfireDetails, Error>({
-    queryKey: ['campfires', 'public', slug],
+    queryKey: ['campfires', 'public', slug, userId],
     queryFn: async () => {
-      // @ts-ignore
-      const { data, error } = await supabase
+      // Build the query with conditional left join for membership
+      let query = supabase
         .from('campfires')
         .select(
           `
@@ -36,56 +40,70 @@ export function getCampfireWithSlug(slug : string, userId?: string ) {
           purpose,
           icon_url,
           banner_url,
-          campfire_members!left(user_id)
+          visibility,
+          created_at,
+          created_by
         `,
         )
         .eq('visibility', 'public')
         .eq('slug', slug)
         .single();
 
-      if (error) {
-        console.error('Error fetching campfire details:', error);
-        throw new Error(error.message);
+      const { data: campfireData, error: campfireError } = await query;
+
+      if (campfireError) {
+        console.error('Error fetching campfire details:', campfireError);
+        throw new Error(campfireError.message);
       }
 
-    //   if (!data) {
-    //     return {};
-    //   }
+      if (!campfireData) {
+        throw new Error('Campfire not found');
+      }
 
-      console.log(data);
+      // Check membership separately if user is provided
+      let isMember = false;
+      if (userId) {
+        const { data: membershipData, error: membershipError } = await supabase
+          .from('campfire_members')
+          .select('id')
+          .eq('campfire_id', campfireData.id)
+          .eq('user_id', userId)
+          .single();
 
-      // The type assertion is needed here because the dynamic select with join
-      // isn't fully typed by Supabase's generator. We are confident in the shape
-      // of the data we are receiving from our query.
-      const typedData = data as unknown as {
-        id: string;
-        name: string;
-        slug: string;
-        description: string | null;
-        member_count: number;
-        purpose: CampfirePurpose;
-        icon_url: string | null;
-        banner_url: string| null;
-        campfire_members: Array<{ user_id: string }>;
-      };
+        if (membershipError && membershipError.code !== 'PGRST116') {
+          console.error('Error checking membership:', membershipError);
+        }
+
+        isMember = !!membershipData;
+      }
+
+      console.log('Campfire data:', campfireData);
 
       return {
-        campfireId: typedData.id,
-        name: typedData.name,
-        slug: typedData.slug,
-        description: typedData.description || '',
-        members: typedData.member_count,
-        purpose: typedData.purpose,
-        iconURL: typedData.icon_url || undefined,
-        bannerUrl: typedData.banner_url || undefined,
-        isMember: userId
-          ? typedData.campfire_members.some(m => m.user_id === userId)
-          : false,
-      };
+        campfireId: campfireData.id,
+        name: campfireData.name,
+        slug: campfireData.slug,
+        description: campfireData.description || '',
+        members: campfireData.member_count || 0,
+        purpose: campfireData.purpose,
+        iconURL: campfireData.icon_url || undefined,
+        bannerUrl: campfireData.banner_url || undefined,
+        createdAt: campfireData.created_at,
+        createdBy: campfireData.created_by,
+        visibility: campfireData.visibility,
+        isMember,
+      } as CampfireDetails;
     },
     staleTime: QUERY_STALE_TIME,
     gcTime: QUERY_CACHE_TIME,
-    enabled: !!userId,
+    enabled: !!slug, // Only require slug, not userId
     refetchOnWindowFocus: false,
+    retry: (failureCount, error) => {
+      // Don't retry if campfire not found
+      if (error.message.includes('not found')) {
+        return false;
+      }
+      return failureCount < 3;
+    },
   });
 }

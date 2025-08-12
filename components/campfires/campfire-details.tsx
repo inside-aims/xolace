@@ -11,6 +11,7 @@ import { getCampfireWithSlug } from "@/queries/campfires/getCampfireWithSlug";
 import { useUserState } from "@/lib/store/user";
 import CampfireDetailsSkeleton from "./campfire-details-skeleton";
 import {toast} from 'sonner'
+import { Badge } from "../ui/badge";
 import { useJoinCampfireMutation } from "@/hooks/campfires/useJoinCampfireMutation";
 import { useLeaveCampfireMutation } from "@/hooks/campfires/useLeaveCampfireMutation";
 
@@ -71,6 +72,20 @@ const CampfireDetails = ({slug}: {slug : string}) => {
     toast.info("Notification preferences updated");
   };
 
+  const handleShareCampfire = async () => {
+    try {
+      await navigator.share({
+        title: campfire?.name || "Check out this campfire!",
+        text: campfire?.description || "Join this amazing community",
+        url: window.location.href,
+      });
+    } catch (error) {
+      // Fallback to copying URL
+      navigator.clipboard.writeText(window.location.href);
+      toast.success("Campfire link copied to clipboard!");
+    }
+  };
+
   const tabOptions: {key: string, label: string, children: React.ReactNode}[] = [
     {
       key: "feed",
@@ -115,16 +130,29 @@ const CampfireDetails = ({slug}: {slug : string}) => {
     <div className="flex w-full flex-col items-center justify-center max-w-5xl mt-1">
       <div className="flex w-full h-[128px] bg-cover bg-center relative border rounded-none md:rounded-lg"
         style={{backgroundImage: `url('${campfire.bannerUrl}')`}}>
+
+          {/* Overlay for better text readability */}
+        <div className="absolute inset-0 bg-black/20 rounded-none md:rounded-lg" />
+        
         {/* Profile logo overlap */}
         <div
           className="absolute bottom-[-40px] left-4 md:left-8 w-20 h-20 z-20">
-          <Image
-            src="/assets/images/mas.webp"
-            alt="mas"
-            height={60}
-            width={60}
-            className={"hidden md:flex w-full h-full rounded-full border border-neutral-400"}
-          />
+          <div className="relative w-full h-full">
+            <Image
+              src={campfire.iconURL || "/assets/images/mas.webp"}
+              alt={campfire.name}
+              height={60}
+              width={60}
+              className="hidden md:flex rounded-full border-4 border-white dark:border-gray-800 object-cover"
+            />
+          </div>
+        </div>
+
+        {/* Purpose badge */}
+        <div className="absolute top-4 right-4">
+          <Badge variant="secondary" className="bg-white/90 text-black">
+            {campfire.purpose.replace('_', ' ')}
+          </Badge>
         </div>
       </div>
 
@@ -162,11 +190,13 @@ const CampfireDetails = ({slug}: {slug : string}) => {
             <Plus size={16}/> <span> Create Post</span>
           </Button>
           <Button
-            size={"sm"}
-            variant={"outline"}
-            className={"items-center rounded-full border border-neutral-400"}
+            size="sm"
+            variant="outline"
+            className="items-center rounded-full border border-neutral-400"
+            onClick={handleNotificationToggle}
+            disabled={!campfire.isMember}
           >
-            <Bell size={14}/>
+            <Bell size={14} />
           </Button>
 
           <Button
@@ -186,12 +216,12 @@ const CampfireDetails = ({slug}: {slug : string}) => {
           </Button>
 
           <Button
-            size={"sm"}
-            variant={"outline"}
-            className={"rounded-full border border-neutral-400"}
-            onClick={() => ""}
+            size="sm"
+            variant="outline"
+            className="rounded-full border border-neutral-400"
+            onClick={handleShareCampfire}
           >
-            <Ellipsis size={14}/>
+            <Ellipsis size={14} />
           </Button>
         </div>
       </div>
