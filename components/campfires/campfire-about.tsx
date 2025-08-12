@@ -10,7 +10,9 @@ import CampfireAvatar from "@/components/campfires/campfire-avatar";
 import Link from 'next/link';
 import {CampfireDetails} from "@/queries/campfires/getCampfireWithSlug";
 import CampfireAboutSkeleton from "./campfire-about-skeleton";
-import { Badge } from "../ui/badge";
+import { useUserState } from "@/lib/store/user";
+import { useCampfireRules } from "@/hooks/campfires/useCampfireRules";
+import { Skeleton } from "../ui/skeleton";
 
 // Dummy data for rules
 const rules: { id: string; question: string; answer: string }[] = [
@@ -60,6 +62,13 @@ interface CampfireAboutProps {
 
 
 const CampfireAbout = ({campfire}: CampfireAboutProps) => {
+  const user = useUserState(state => state.user);
+
+  // Fetch campfire rules
+  const { 
+    data: rules = [], 
+    isLoading: rulesLoading 
+  } = useCampfireRules(campfire?.campfireId);
 
   if (!campfire) {
     return <CampfireAboutSkeleton />;
@@ -99,7 +108,7 @@ const CampfireAbout = ({campfire}: CampfireAboutProps) => {
     <div
       className="flex items-start flex-col py-4 gap-4 bg-neutral-50 dark:bg-neutral-800 rounded-lg text-sm text-neutral-500 dark:text-neutral-300">
       {/*about the campfire section*/}
-      <div className="flex items-start flex-col gap-4 px-2 py-2">
+      <div className="flex items-start flex-col gap-4 px-2 py-2 w-full">
         <h2 className={"uppercase font-semibold"}>About {campfire.name}</h2>
         <div className="flex flex-col gap-2">
           <p className="text-neutral-700 dark:text-neutral-200 font-medium">
@@ -152,47 +161,74 @@ const CampfireAbout = ({campfire}: CampfireAboutProps) => {
           </div>
         </div>
       </div>
-      <Separator className="border dark:border-neutral-100"/>
+      <Separator className="border dark:border-neutral-700"/>
 
-      {/*user section*/}
-      <div className={"flex flex-col gap-4 py-2 px-4"}>
-        <CampfireAvatar
-          avatarUrl={"https://i.pravatar.cc/150?img=3"}
-          username={"x/user-faire-123"}
-          userRoute={"/"}
-          assignedRole={"The Janitor"}
-          title={"user flair"}
-        />
-      </div>
-      <Separator className="border dark:border-neutral-100"/>
+      {/* User section - show current user's role if they're a member */}
+      {user && campfire.isMember && (
+        <>
+          <div className="flex flex-col gap-4 py-2 px-4">
+            <CampfireAvatar
+              avatarUrl={user.avatar_url || `https://api.dicebear.com/7.x/avataaars/svg?seed=${user.id}`}
+              username={user.username || 'Anonymous'}
+              userRoute={`/profile/${user.username}`}
+              assignedRole="Camper" // This would come from the membership data
+              title="Your role in this campfire"
+            />
+          </div>
+          <Separator className="border dark:border-neutral-600 " />
+        </>
+      )}
 
       {/*campfire rules section*/}
-      <div className={"flex flex-col gap-4 py-2 px-4"}>
-        <h2 className={"uppercase font-semibold"}>x/ghana rules</h2>
-        <Accordion
-          type="single"
-          collapsible
-          className="w-full"
-          defaultValue={rules[0]?.id}
-        >
-          {rules.map((rule, index) => (
-            <AccordionItem
-              value={rule.id}
-              key={rule.id}
-              className={`px-2 py-1 border-none hover:bg-neutral-200 dark:hover:bg-neutral-700 rounded-md transition-colors`}
-            >
-              <AccordionTrigger className="w-full flex items-center justify-between gap-2 py-1">
-                <span className="flex items-start font-bold mr-2">{index + 1}.</span>
-                <span className="flex-1 text-left">{rule.question}</span>
-              </AccordionTrigger>
-              <AccordionContent className="pt-1 pb-2">
-                {rule.answer}
-              </AccordionContent>
-            </AccordionItem>
-          ))}
-        </Accordion>
+       {/* Campfire rules section */}
+       <div className="flex flex-col gap-4 py-2 px-4 w-full">
+        <h2 className="uppercase font-semibold text-neutral-900 dark:text-neutral-100">
+          {campfire.name} Rules
+        </h2>
+        
+        {rulesLoading ? (
+          <div className="space-y-2">
+            {[1, 2, 3].map(i => (
+              <Skeleton key={i} className="h-12 w-full rounded-md" />
+            ))}
+          </div>
+        ) : rules.length > 0 ? (
+          <Accordion
+            type="single"
+            collapsible
+            className="w-full"
+            defaultValue={rules[0]?.id.toString()}
+          >
+            {rules.map((rule, index) => (
+              <AccordionItem
+                value={rule.id.toString()}
+                key={rule.id}
+                className="px-2 py-1 border-none hover:bg-neutral-200 dark:hover:bg-neutral-700 rounded-md transition-colors"
+              >
+                <AccordionTrigger className="w-full flex items-center justify-between gap-2 py-2 text-left">
+                  <span className="flex items-center gap-2 font-bold text-sm">
+                    <span className="text-neutral-600 dark:text-neutral-400">
+                      {index + 1}.
+                    </span>
+                    <span className="text-neutral-900 dark:text-neutral-100">
+                      {rule.title}
+                    </span>
+                  </span>
+                </AccordionTrigger>
+                <AccordionContent className="pt-1 pb-2 text-neutral-600 dark:text-neutral-300">
+                  {rule.description || "Please follow this community guideline."}
+                </AccordionContent>
+              </AccordionItem>
+            ))}
+          </Accordion>
+        ) : (
+          <div className="text-center py-4 text-neutral-500">
+            <p>No specific rules have been set for this campfire.</p>
+            <p className="text-xs mt-1">General community guidelines apply.</p>
+          </div>
+        )}
       </div>
-      <Separator className="border dark:border-neutral-100"/>
+      <Separator className="border dark:border-neutral-700"/>
 
       {/*fire starters section*/}
       <div className={"flex flex-col gap-4 py-2 px-4"}>
