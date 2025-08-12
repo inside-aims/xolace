@@ -16,46 +16,6 @@ import { Skeleton } from "../ui/skeleton";
 import { useCampfireMembers } from "@/hooks/campfires/useCampfireMembers";
 import { getSignedProfileAvatarUrls } from "@/hooks/storage/getSignedProfileAvatarUrl";
 
-// Dummy data for rules
-const rules: { id: string; question: string; answer: string }[] = [
-  { id: "rule-1", question: "Follow community guidelines", answer: "Always follow the rules and respect other members." },
-  { id: "rule-2", question: "No hate speech or bullying", answer: "We have zero tolerance for hate speech or personal attacks." },
-  { id: "rule-3", question: "Stay on topic", answer: "All posts should be related to Ghana and its community." },
-  { id: "rule-4", question: "No spam or self-promotion", answer: "Do not spam links, ads, or unrelated promotions." },
-  { id: "rule-5", question: "Use descriptive titles", answer: "Make sure your post titles clearly reflect the content." },
-];
-
-// Dummy data for fire starters in a certain campfire
-const fireStarters: CampfireAvatarInterface[] = [
-  {
-    avatarUrl: "https://i.pravatar.cc/150?img=1",
-    username: "ember_maven",
-    userRoute: "/user/ember_maven",
-    assignedRole: "The Keeper"
-  },
-  {
-    avatarUrl: "https://i.pravatar.cc/150?img=2",
-    username: "flame_tamer",
-    userRoute: "/user/flame_tamer",
-  },
-  {
-    avatarUrl: "https://i.pravatar.cc/150?img=4",
-    username: "story_spark",
-    userRoute: "/user/story_spark",
-    assignedRole: "The Storyteller"
-  },
-  {
-    avatarUrl: "https://i.pravatar.cc/150?img=3",
-    username: "log_master",
-    userRoute: "/user/log_master",
-  },
-  {
-    avatarUrl: "https://i.pravatar.cc/150?img=5",
-    username: "marshmallow_chief",
-    userRoute: "/user/marshmallow_chief",
-    assignedRole: "Overseer"
-  }
-];
 
 interface CampfireAboutProps {
   campfire: CampfireDetails | undefined;

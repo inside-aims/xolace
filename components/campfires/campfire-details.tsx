@@ -1,7 +1,6 @@
 'use client';
 
 import React, { useState } from "react";
-import Image from 'next/image';
 import {Button} from "@/components/ui/button";
 import {Plus, Bell, Ellipsis, Globe, Users} from "lucide-react";
 import CampfireAbout from "@/components/campfires/campfire-about";
@@ -81,7 +80,7 @@ const CampfireDetails = ({slug}: {slug : string}) => {
         text: campfire?.description || "Join this amazing community",
         url: window.location.href,
       });
-    } catch (error) {
+    } catch (_) {
       // Fallback to copying URL
       navigator.clipboard.writeText(window.location.href);
       toast.success("Campfire link copied to clipboard!");
@@ -115,7 +114,7 @@ const CampfireDetails = ({slug}: {slug : string}) => {
             Campfire not found
           </h2>
           <p className="text-gray-500 dark:text-gray-400 mt-2">
-            The campfire you're looking for doesn't exist or has been removed.
+            The campfire you&apos;re looking for doesn&apos;t exist or has been removed.
           </p>
         </div>
         <Button onClick={() => router.push("/campfires/discover")} variant="outline">
