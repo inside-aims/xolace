@@ -5,7 +5,13 @@ import Link from 'next/link';
 import {Avatar, AvatarFallback, AvatarImage} from "@/components/ui/avatar";
 import {CampfireAvatarInterface} from "@/components/campfires/campfires.types";
 
-const CampfireAvatar = ({avatarUrl, userRoute, username, assignedRole, title}: CampfireAvatarInterface) => {
+const CampfireAvatar = ({avatarUrl, userRoute, username, assignedRole, title, signedUrls}: CampfireAvatarInterface) => {
+
+   // 👇 This logic determines the correct avatar source
+   const avatarSrc =
+   (avatarUrl && signedUrls?.[avatarUrl]) || // Use signed URL if available
+   avatarUrl || // Fallback to the original URL (for non-professionals)
+   undefined; // Final fallback
 
   return(
     <div className={"flex flex-col items-start gap-4"}>
@@ -17,7 +23,7 @@ const CampfireAvatar = ({avatarUrl, userRoute, username, assignedRole, title}: C
       <p className={"flex flex-row gap-2 items-center text-sm"}>
         <Avatar className="w-8 h-8">
           <AvatarImage
-            src={avatarUrl ?? undefined}
+            src={avatarSrc ?? undefined}
             className="w-full h-full object-cover object-center rounded-full border"
           />
           <AvatarFallback className="text-lg border border-neutral-300">

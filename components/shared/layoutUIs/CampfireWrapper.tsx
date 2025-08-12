@@ -4,7 +4,7 @@ import { ReactNode } from 'react';
 Wrapper class to display campfire only on
 desktop device. It takes children component
  */
-export default function CampfireWrapper({children, isLoading,}: {
+export default function CampfireWrapper({children}: {
   children: ReactNode;
   isLoading?: boolean;
 }) {

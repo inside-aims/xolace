@@ -1653,6 +1653,19 @@ export type Database = {
         }
         Returns: string
       }
+      get_campfire_members_by_roles: {
+        Args: {
+          p_campfire_id: string
+          p_roles: Database["public"]["Enums"]["campfire_role"][]
+          p_limit?: number
+        }
+        Returns: {
+          user_id: string
+          username: string
+          avatar_url: string
+          role: Database["public"]["Enums"]["campfire_role"]
+        }[]
+      }
       get_comments_with_replies: {
         Args: { post_id_param: string }
         Returns: {

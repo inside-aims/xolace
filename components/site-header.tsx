@@ -19,7 +19,6 @@ import { Badge } from './ui/badge';
 import { useNotificationCount } from '@/hooks/notifications/useNotificationCount';
 import { useQueryClient } from '@tanstack/react-query';
 import { motion, AnimatePresence } from 'motion/react';
-import XolaceText from './icons/XolaceText';
 import XolaceTextSm from './icons/XolaceTextSm';
 
 export function SiteHeader() {
