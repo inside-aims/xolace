@@ -3,7 +3,7 @@
 import React, { useState } from "react";
 import Image from 'next/image';
 import {Button} from "@/components/ui/button";
-import {Plus, Bell, Ellipsis} from "lucide-react";
+import {Plus, Bell, Ellipsis, Globe, Users} from "lucide-react";
 import CampfireAbout from "@/components/campfires/campfire-about";
 import CampfireHighlight from "@/components/campfires/campfire-highlight";
 import { useRouter } from "next/navigation";
@@ -14,6 +14,8 @@ import {toast} from 'sonner'
 import { Badge } from "../ui/badge";
 import { useJoinCampfireMutation } from "@/hooks/campfires/useJoinCampfireMutation";
 import { useLeaveCampfireMutation } from "@/hooks/campfires/useLeaveCampfireMutation";
+import { formatMembers } from "./campfires.types";
+import { Avatar, AvatarFallback, AvatarImage } from "../ui/avatar";
 
 const CampfireDetails = ({slug}: {slug : string}) => {
   const user = useUserState(state => state.user);
@@ -133,7 +135,7 @@ const CampfireDetails = ({slug}: {slug : string}) => {
 
           {/* Overlay for better text readability */}
         <div className="absolute inset-0 bg-black/20 rounded-none md:rounded-lg" />
-        
+
         {/* Profile logo overlap */}
         <div
           className="absolute bottom-[-40px] left-4 md:left-8 w-20 h-20 z-20">
@@ -157,30 +159,41 @@ const CampfireDetails = ({slug}: {slug : string}) => {
       </div>
 
       {/* Name and CTA buttons */}
-      <div className="w-full flex flex-col gap-4 md:gap-0 md:flex-row items-start md:items-center justify-between ml-0 md:pl-12 px-4 mt-4 md:mt-0">
+      <div className="w-full flex flex-col gap-4 md:gap-0 md:flex-row items-start md:items-center justify-between ml-0 md:pl-15 px-4 mt-4 md:mt-0 bg-red-500">
         {/* Name and logo */}
-        <div className="flex flex-row gap-4 md:gap-0 items-center justify-center md:text-left">
-          <div
-            className="w-16 h-16">
-            <Image
-              src="/assets/images/mas.webp"
-              alt="mas"
-              height={60}
-              width={60}
-              className={"flex md:hidden w-full h-full rounded-full border border-neutral-400"}
-            />
+        <div className="flex flex-row gap-4 md:gap-0 items-center justify-center md:text-left bg-blue-500">
+          <div className=" md:hidden bg-pink-500">
+          <Avatar>
+              <AvatarImage className=" rounded-full border border-neutral-400 object-contain" src={campfire.iconURL || undefined} alt={campfire.name} />
+              <AvatarFallback className="border-lavender-500 flex h-8 w-8 items-center justify-center rounded-full border font-semibold text-white"><span
+                  className={`bg-lavender-500 flex h-7 w-7 items-center justify-center rounded-full font-semibold text-white`}
+                >
+                  x/
+                </span></AvatarFallback>
+            </Avatar>
           </div>
-          <div className={"flex flex-col items-start md:items-center gap-2"}>
-            <h1 className="text-xl font-semibold">{campfire.name}</h1>
-            <p className={"flex md:hidden"}>
-              <span className="text-gray-500">98k Members • 42 Online</span>
-            </p>
+          <div className="flex flex-col items-start md:items-center gap-1">
+            <div className="flex items-center gap-2 md:gap-0">
+              <h1 className="text-xl font-semibold">{campfire.name}</h1>
+              <Globe size={16} className="text-green-500" />
+            </div>
+            
+            <div className="flex md:hidden items-center gap-4 text-sm text-gray-500">
+              <span className="flex items-center gap-1">
+                <Users size={14} />
+                {formatMembers(campfire.members)} Members
+              </span>
+              <span className="flex items-center gap-1">
+                <div className="w-2 h-2 rounded-full bg-green-500 animate-pulse" />
+                Online
+              </span>
+            </div>
           </div>
         </div>
 
         {/* Right CTA buttons */}
         <div
-          className="w-full max-w-full flex items-start md:items-end justify-start md:justify-end space-x-4 mt-2 md:mt-0">
+          className="w-full max-w-full flex items-start md:items-end justify-start md:justify-end space-x-4 md:mt-0 bg-amber-500">
           <Button
             className={"flex flex-row gap-1 items-center rounded-full"}
             size="sm"
