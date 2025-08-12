@@ -1,18 +1,21 @@
+// hooks/campfires/useLeaveCampfireMutation.ts
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { leaveCampfire } from '@/lib/actions/campfireCreation.action';
 import { useUserState } from '@/lib/store/user';
 import { Campfire } from '@/queries/campfires/getAllPublicCampfires';
+import { CampfireDetails } from '@/queries/campfires/getCampfireWithSlug';
 import { toast } from 'sonner';
 
-interface JoinCampfireContext {
+interface LeaveCampfireContext {
   previousCampfires: Campfire[] | undefined;
+  previousCampfireDetails: CampfireDetails | undefined;
 }
 
-export function useJoinCampfireMutation() {
+export function useLeaveCampfireMutation() {
   const queryClient = useQueryClient();
   const user = useUserState(state => state.user);
 
-  return useMutation<void, Error, string, JoinCampfireContext>({
+  return useMutation<void, Error, string, LeaveCampfireContext>({
     mutationFn: async campfireId => {
       if (!user?.id) {
         throw new Error('User not authenticated');
@@ -20,38 +23,77 @@ export function useJoinCampfireMutation() {
       await leaveCampfire(campfireId, user.id);
     },
     onMutate: async campfireId => {
-      await queryClient.cancelQueries({ queryKey: ['campfires', 'public'] });
+      // Cancel any outgoing refetches
+      await queryClient.cancelQueries({ queryKey: ['campfires'] });
 
+      // Snapshot the previous values
       const previousCampfires = queryClient.getQueryData<Campfire[]>([
         'campfires',
         'public',
       ]);
 
+      const previousCampfireDetails = queryClient.getQueryData<CampfireDetails>([
+        'campfires',
+        'public',
+        campfireId,
+      ]);
+
+      // Optimistically update public campfires list
       queryClient.setQueryData<Campfire[]>(['campfires', 'public'], old => {
         if (!old) return [];
         return old.map(campfire =>
           campfire.campfireId === campfireId
-            ? { ...campfire, isMember: false, members: campfire.members - 1 }
+            ? { ...campfire, isMember: false, members: Math.max(0, campfire.members - 1) }
             : campfire,
         );
       });
 
-      return { previousCampfires };
+      // Optimistically update campfire details
+      if (previousCampfireDetails) {
+        queryClient.setQueryData<CampfireDetails>(
+          ['campfires', 'public', campfireId],
+          {
+            ...previousCampfireDetails,
+            isMember: false,
+            members: Math.max(0, previousCampfireDetails.members - 1),
+          }
+        );
+      }
+
+      return { previousCampfires, previousCampfireDetails };
     },
     onError: (err, campfireId, context) => {
+      // Rollback optimistic updates
       if (context?.previousCampfires) {
         queryClient.setQueryData(
           ['campfires', 'public'],
           context.previousCampfires,
         );
       }
+      
+      if (context?.previousCampfireDetails) {
+        queryClient.setQueryData(
+          ['campfires', 'public', campfireId],
+          context.previousCampfireDetails,
+        );
+      }
+
       toast.error('Failed to leave campfire. Please try again.');
       console.error('Failed to leave campfire:', err);
     },
-    onSuccess: () => {
-      toast.success('Successfully left campfire! Kindly send us your feedback.');
+    onSuccess: (_, campfireId) => {
+      toast.success('Successfully left campfire! We hope to see you again soon.');
+      
+      // Invalidate related queries to ensure fresh data
+      queryClient.invalidateQueries({ 
+        queryKey: ['campfires', 'public', campfireId] 
+      });
+      queryClient.invalidateQueries({ 
+        queryKey: ['campfire', 'members', campfireId] 
+      });
     },
     onSettled: () => {
+      // Always refetch the campfires list
       queryClient.invalidateQueries({ queryKey: ['campfires', 'public'] });
     },
   });

@@ -6,18 +6,70 @@ import {Button} from "@/components/ui/button";
 import {Plus, Bell, Ellipsis} from "lucide-react";
 import CampfireAbout from "@/components/campfires/campfire-about";
 import CampfireHighlight from "@/components/campfires/campfire-highlight";
+import { useRouter } from "next/navigation";
+import { getCampfireWithSlug } from "@/queries/campfires/getCampfireWithSlug";
+import { useUserState } from "@/lib/store/user";
+import CampfireDetailsSkeleton from "./campfire-details-skeleton";
+import {toast} from 'sonner'
+import { useJoinCampfireMutation } from "@/hooks/campfires/useJoinCampfireMutation";
+import { useLeaveCampfireMutation } from "@/hooks/campfires/useLeaveCampfireMutation";
 
-const CampfireDetails = () => {
+const CampfireDetails = ({slug}: {slug : string}) => {
+  const user = useUserState(state => state.user);
+  const router = useRouter()
   const [selectedTab, setSelectedTab] = useState("feed");
 
+  // fetch campfire details
+  const {
+    data: campfire,
+    isPending,
+    isError,
+    refetch,
+  } = getCampfireWithSlug(slug,user?.id);
+
+  // Mutations for joining/leaving campfire
+  const joinMutation = useJoinCampfireMutation();
+  const leaveMutation = useLeaveCampfireMutation();
+
   const handleCreatePost = () => {
-    return () => '';
-  }
+    if (!user) {
+      toast.error("Please sign in to create a post");
+      router.push("/sign-in");
+      return;
+    }
+    router.push(`/create-post?submit=${slug}`);
+  };
 
   //Helper for join action
-  const handleJoin = () => {
-    return () => '';
-  }
+  const handleJoinToggle = async () => {
+    if (!user) {
+      toast.error("Please sign in to join this campfire");
+      router.push("/sign-in");
+      return;
+    }
+
+    if (!campfire) return;
+
+    try {
+      if (campfire.isMember) {
+        await leaveMutation.mutateAsync(campfire.campfireId);
+      } else {
+        await joinMutation.mutateAsync(campfire.campfireId);
+      }
+      // Refetch to get updated data
+      refetch();
+    } catch (error) {
+      console.error("Error toggling membership:", error);
+    }
+  };
+
+  const handleNotificationToggle = () => {
+    if (!campfire?.isMember) {
+      toast.info("Join this campfire to receive notifications");
+      return;
+    }
+    toast.info("Notification preferences updated");
+  };
 
   const tabOptions: {key: string, label: string, children: React.ReactNode}[] = [
     {
@@ -32,10 +84,37 @@ const CampfireDetails = () => {
     }
   ];
 
+   // Loading state
+   if (isPending) {
+    return <CampfireDetailsSkeleton />;
+  }
+
+  // Error state
+  if (isError || !campfire) {
+    return (
+      <div className="flex flex-col items-center justify-center min-h-[400px] space-y-4">
+        <div className="text-center">
+          <h2 className="text-2xl font-bold text-gray-900 dark:text-gray-100">
+            Campfire not found
+          </h2>
+          <p className="text-gray-500 dark:text-gray-400 mt-2">
+            The campfire you're looking for doesn't exist or has been removed.
+          </p>
+        </div>
+        <Button onClick={() => router.push("/campfires/discover")} variant="outline">
+          Browse all campfires
+        </Button>
+      </div>
+    );
+  }
+
+  // loading for mutations
+  const isProcessingMembership = joinMutation.isPending || leaveMutation.isPending;
+
   return (
     <div className="flex w-full flex-col items-center justify-center max-w-5xl mt-1">
       <div className="flex w-full h-[128px] bg-cover bg-center relative border rounded-none md:rounded-lg"
-        style={{backgroundImage: "url('/assets/images/auth/sign-in.png')"}}>
+        style={{backgroundImage: `url('${campfire.bannerUrl}')`}}>
         {/* Profile logo overlap */}
         <div
           className="absolute bottom-[-40px] left-4 md:left-8 w-20 h-20 z-20">
@@ -64,7 +143,7 @@ const CampfireDetails = () => {
             />
           </div>
           <div className={"flex flex-col items-start md:items-center gap-2"}>
-            <h1 className="text-xl font-semibold">x/ghana</h1>
+            <h1 className="text-xl font-semibold">{campfire.name}</h1>
             <p className={"flex md:hidden"}>
               <span className="text-gray-500">98k Members • 42 Online</span>
             </p>
@@ -89,14 +168,23 @@ const CampfireDetails = () => {
           >
             <Bell size={14}/>
           </Button>
+
           <Button
-            size={'sm'}
-            variant={"outline"}
-            onClick={handleJoin}
-            className={"rounded-full border border-neutral-400"}
+            size="sm"
+            variant={campfire.isMember ? "default" : "outline"}
+            onClick={handleJoinToggle}
+            disabled={isProcessingMembership}
+            className="rounded-full border border-neutral-400 min-w-[70px]"
           >
-            Joined
+            {isProcessingMembership ? (
+              <div className="w-4 h-4 border-2 border-gray-300 border-t-transparent rounded-full animate-spin" />
+            ) : campfire.isMember ? (
+              "Joined"
+            ) : (
+              "Join"
+            )}
           </Button>
+
           <Button
             size={"sm"}
             variant={"outline"}

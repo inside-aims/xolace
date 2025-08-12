@@ -31,7 +31,7 @@ const CampfirePage = async ({ params }: Props) => {
 
   return (
     <main className="w-full flex items-center justify-center">
-      <CampfireDetails/>
+      <CampfireDetails slug={campfire}/>
     </main>
   );
 };
