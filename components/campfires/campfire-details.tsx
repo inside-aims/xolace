@@ -140,13 +140,14 @@ const CampfireDetails = ({slug}: {slug : string}) => {
         <div
           className="absolute bottom-[-40px] left-4 md:left-8 w-20 h-20 z-20">
           <div className="relative w-full h-full">
-            <Image
-              src={campfire.iconURL || "/assets/images/mas.webp"}
-              alt={campfire.name}
-              height={60}
-              width={60}
-              className="hidden md:flex rounded-full border-4 border-white dark:border-gray-800 object-cover"
-            />
+          <Avatar className="hidden md:flex rounded-full border-4 border-white dark:border-gray-800 h-20 w-20">
+              <AvatarImage className="rounded-full border border-neutral-400 object-contain" src={campfire.iconURL || undefined} alt={campfire.name} />
+              <AvatarFallback className="border-lavender-500 flex h-8 w-8 items-center justify-center rounded-full border font-semibold text-white"><span
+                  className={`bg-lavender-500 flex h-7 w-7 items-center justify-center rounded-full font-semibold text-white`}
+                >
+                  x/
+                </span></AvatarFallback>
+            </Avatar>
           </div>
         </div>
 
@@ -161,7 +162,7 @@ const CampfireDetails = ({slug}: {slug : string}) => {
       {/* Name and CTA buttons */}
       <div className="w-full flex flex-col gap-4 md:gap-0 md:flex-row items-start md:items-center justify-between ml-0 md:pl-15 px-4 mt-4 md:mt-0 bg-red-500">
         {/* Name and logo */}
-        <div className="flex flex-row gap-4 md:gap-0 items-center justify-center md:text-left bg-blue-500">
+        <div className="flex flex-row gap-4 md:gap-0 items-center justify-start md:justify-start md:pl-15 md:text-left bg-blue-500 w-[70%]">
           <div className=" md:hidden bg-pink-500">
           <Avatar>
               <AvatarImage className=" rounded-full border border-neutral-400 object-contain" src={campfire.iconURL || undefined} alt={campfire.name} />
@@ -174,7 +175,7 @@ const CampfireDetails = ({slug}: {slug : string}) => {
           </div>
           <div className="flex flex-col items-start md:items-center gap-1">
             <div className="flex items-center gap-2 md:gap-0">
-              <h1 className="text-xl font-semibold">{campfire.name}</h1>
+              <h1 className="text-xl md:text-2xl font-semibold">{campfire.name}</h1>
               <Globe size={16} className="text-green-500" />
             </div>
             
