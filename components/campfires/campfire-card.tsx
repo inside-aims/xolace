@@ -16,6 +16,7 @@ import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 interface CampfireCardProps {
   campfireId: string;
   name: string;
+  slug: string;
   description: string;
   members: number;
   purpose: CampfirePurpose;
@@ -54,7 +55,7 @@ const CampfireCard = (campfire: CampfireCardProps) => {
       key={campfire.campfireId}
       className="flex h-full flex-col rounded-[20px] bg-slate-400/20 border-0 dark:bg-zinc-800/80 transition-shadow hover:shadow-lg dark:hover:shadow-[0_4px_14px_rgba(255,255,255,0.2)]"
     >
-      <Link href={`/${campfire.name}`}>
+      <Link href={`/x/${campfire.slug}`}>
         <CardHeader className="items-start space-y-1 pb-3">
           <div className="flex w-full items-start justify-between gap-4">
             <CardTitle className={'text-lg'}>{campfire.name}</CardTitle>

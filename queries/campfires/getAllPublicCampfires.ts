@@ -5,6 +5,7 @@ import { CampfirePurpose } from '@/components/campfires/campfires.types';
 export interface Campfire {
   campfireId: string;
   name: string;
+  slug: string;
   description: string;
   members: number;
   purpose: CampfirePurpose;
@@ -28,6 +29,7 @@ export function useAllPublicCampfires(userId?: string) {
           `
           id,
           name,
+          slug,
           description,
           member_count,
           purpose,
@@ -55,6 +57,7 @@ export function useAllPublicCampfires(userId?: string) {
       const typedData = data as unknown as Array<{
         id: string;
         name: string;
+        slug: string;
         description: string | null;
         member_count: number;
         purpose: CampfirePurpose;
@@ -65,6 +68,7 @@ export function useAllPublicCampfires(userId?: string) {
       return typedData.map(campfire => ({
         campfireId: campfire.id,
         name: campfire.name,
+        slug: campfire.slug,
         description: campfire.description || '',
         members: campfire.member_count,
         purpose: campfire.purpose,

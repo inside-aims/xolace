@@ -130,6 +130,7 @@ const CampfiresList = () => {
                 members={campfire.members}
                 purpose={campfire.purpose}
                 iconURL={campfire.iconURL}
+                slug={campfire.slug}
                 onJoin={() => handleJoinClick(campfire.campfireId)}
                 isMember={campfire.isMember}
               />

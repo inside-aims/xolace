@@ -33,7 +33,7 @@ const CampfireDetails = () => {
   ];
 
   return (
-    <div className="flex w-full flex-col items-center justify-center max-w-4xl mt-4">
+    <div className="flex w-full flex-col items-center justify-center max-w-5xl mt-1">
       <div className="flex w-full h-[128px] bg-cover bg-center relative border rounded-none md:rounded-lg"
         style={{backgroundImage: "url('/assets/images/auth/sign-in.png')"}}>
         {/* Profile logo overlap */}
@@ -113,7 +113,7 @@ const CampfireDetails = () => {
         <div className="col-span-8">
           <CampfireHighlight />
         </div>
-        <div className="col-span-4">
+        <div className="col-span-4 sm:sticky sm:top-[calc(var(--header-height) + 1rem)] sm:max-h-[calc(100vh-var(--header-height)-2rem)] sm:overflow-y-auto sm:overflow-x-hidden scroll-smooth">
           <CampfireAbout />
         </div>
       </div>
@@ -129,7 +129,7 @@ const CampfireDetails = () => {
                 onClick={() => setSelectedTab(campfire.key)}
                 size={"sm"}
                 variant="ghost"
-                className={`rounded-full hover:bg-neutral-100 dark:bg-neutral-600 ${activeTab ? "bg-neutral-200 dark:bg-neutral-800 border border-neutral-400" : ""}`}
+                className={`rounded-full  ${activeTab ? "bg-neutral-200 dark:bg-neutral-800 border border-neutral-400" : ""}`}
               > {campfire.label}
               </Button>
             )}
