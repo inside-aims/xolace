@@ -130,17 +130,17 @@ const CampfireDetails = ({slug}: {slug : string}) => {
 
   return (
     <div className="flex w-full flex-col items-center justify-center max-w-5xl mt-1">
-      <div className="flex w-full h-[128px] bg-cover bg-center relative border rounded-none md:rounded-lg"
+      <div className="flex w-full h-[128px] bg-cover bg-center relative border rounded-none lg:rounded-lg"
         style={{backgroundImage: `url('${campfire.bannerUrl}')`}}>
 
           {/* Overlay for better text readability */}
-        <div className="absolute inset-0 bg-black/20 rounded-none md:rounded-lg" />
+        <div className="absolute inset-0 bg-black/20 rounded-none lg:rounded-lg" />
 
         {/* Profile logo overlap */}
         <div
-          className="absolute bottom-[-40px] left-4 md:left-8 w-20 h-20 z-20">
+          className="absolute bottom-[-40px] left-4 lg:left-8 w-20 h-20 z-20">
           <div className="relative w-full h-full">
-          <Avatar className="hidden md:flex rounded-full border-4 border-white dark:border-gray-800 h-20 w-20">
+          <Avatar className="hidden lg:flex rounded-full border-4 border-white dark:border-gray-800 h-20 w-20">
               <AvatarImage className="rounded-full border border-neutral-400 object-contain" src={campfire.iconURL || undefined} alt={campfire.name} />
               <AvatarFallback className="border-lavender-500 flex h-8 w-8 items-center justify-center rounded-full border font-semibold text-white"><span
                   className={`bg-lavender-500 flex h-7 w-7 items-center justify-center rounded-full font-semibold text-white`}
@@ -160,10 +160,10 @@ const CampfireDetails = ({slug}: {slug : string}) => {
       </div>
 
       {/* Name and CTA buttons */}
-      <div className="w-full flex flex-col gap-4 md:gap-0 md:flex-row items-start md:items-center justify-between ml-0 md:pl-15 px-4 mt-4 md:mt-0 bg-red-500">
+      <div className="w-full flex flex-col gap-4 lg:gap-0 lg:flex-row items-start lg:items-center justify-between ml-0 lg:pl-15 px-4 mt-4 lg:mt-0 bg-red-500">
         {/* Name and logo */}
-        <div className="flex flex-row gap-4 md:gap-0 items-center justify-start md:justify-start md:pl-15 md:text-left bg-blue-500 w-[70%]">
-          <div className=" md:hidden bg-pink-500">
+        <div className="flex flex-row gap-4 lg:gap-0 items-center justify-start lg:justify-start lg:pl-15 lg:text-left bg-blue-500 w-[70%]">
+          <div className=" lg:hidden bg-pink-500">
           <Avatar>
               <AvatarImage className=" rounded-full border border-neutral-400 object-contain" src={campfire.iconURL || undefined} alt={campfire.name} />
               <AvatarFallback className="border-lavender-500 flex h-8 w-8 items-center justify-center rounded-full border font-semibold text-white"><span
@@ -173,13 +173,13 @@ const CampfireDetails = ({slug}: {slug : string}) => {
                 </span></AvatarFallback>
             </Avatar>
           </div>
-          <div className="flex flex-col items-start md:items-center gap-1">
-            <div className="flex items-center gap-2 md:gap-0">
-              <h1 className="text-xl md:text-2xl font-semibold">{campfire.name}</h1>
+          <div className="flex flex-col items-start lg:items-center gap-1">
+            <div className="flex items-center gap-2 lg:gap-0">
+              <h1 className="text-xl lg:text-2xl font-semibold">{campfire.name}</h1>
               <Globe size={16} className="text-green-500" />
             </div>
             
-            <div className="flex md:hidden items-center gap-4 text-sm text-gray-500">
+            <div className="flex lg:hidden items-center gap-4 text-sm text-gray-500">
               <span className="flex items-center gap-1">
                 <Users size={14} />
                 {formatMembers(campfire.members)} Members
@@ -194,7 +194,7 @@ const CampfireDetails = ({slug}: {slug : string}) => {
 
         {/* Right CTA buttons */}
         <div
-          className="w-full max-w-full flex items-start md:items-end justify-start md:justify-end space-x-4 md:mt-0 bg-amber-500">
+          className="w-full max-w-full flex items-start lg:items-end justify-start lg:justify-end space-x-4 lg:mt-0 bg-amber-500">
           <Button
             className={"flex flex-row gap-1 items-center rounded-full"}
             size="sm"
@@ -241,7 +241,7 @@ const CampfireDetails = ({slug}: {slug : string}) => {
       </div>
 
       {/* Desktop layout */}
-      <div className="hidden w-full md:grid grid-cols-12 gap-4 p-4 mt-4">
+      <div className="hidden w-full lg:grid grid-cols-12 gap-4 p-4 mt-4">
         <div className="col-span-8">
           <CampfireHighlight />
         </div>
@@ -251,7 +251,7 @@ const CampfireDetails = ({slug}: {slug : string}) => {
       </div>
 
       {/* Mobile layout */}
-      <div className="flex md:hidden flex-col w-full mt-4 gap-4 px-4">
+      <div className="flex lg:hidden flex-col w-full mt-4 gap-4 px-4">
         <div className="flex flex-row gap-4 items-start">
           {tabOptions.map((campfire) => {
             const activeTab = selectedTab === campfire.key;
