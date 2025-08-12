@@ -33,7 +33,7 @@ const CampfireDetails = () => {
   ];
 
   return (
-    <div className="flex w-full flex-col items-center justify-center max-w-4xl mt-4">
+    <div className="flex w-full flex-col items-center justify-center max-w-5xl mt-1">
       <div className="flex w-full h-[128px] bg-cover bg-center relative border rounded-none md:rounded-lg"
         style={{backgroundImage: "url('/assets/images/auth/sign-in.png')"}}>
         {/* Profile logo overlap */}
