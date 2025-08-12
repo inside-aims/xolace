@@ -189,7 +189,7 @@ const CampfireAbout = ({campfire}: CampfireAboutProps) => {
         {rulesLoading ? (
           <div className="space-y-2">
             {[1, 2, 3].map(i => (
-              <Skeleton key={i} className="h-12 w-full rounded-md" />
+              <Skeleton key={i} className="h-12 w-full rounded-md bg-neutral-200 dark:bg-neutral-700" />
             ))}
           </div>
         ) : rules.length > 0 ? (

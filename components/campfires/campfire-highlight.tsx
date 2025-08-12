@@ -29,7 +29,7 @@ const CampfireHighlight = () => {
             <div className="border border-neutral-300 w-full h-16 hover:bg-neutral-50 dark:hover:bg-neutral-500 rounded-lg text-sm text-neutral-500 dark:text-neutral-300 px-4">
             </div>
           )}
-          <Separator className="border dark:border-neutral-100"/>
+          <Separator className="border dark:border-neutral-500"/>
           <FeedList/>
         </div>
       </div>
