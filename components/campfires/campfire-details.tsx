@@ -251,8 +251,8 @@ const CampfireDetails = ({slug}: {slug : string}) => {
       </div>
 
       {/* Mobile layout */}
-      <div className="flex lg:hidden flex-col w-full mt-4 gap-4 px-4">
-        <div className="flex flex-row gap-4 items-start">
+      <div className="flex lg:hidden flex-col w-full mt-4 gap-4">
+        <div className="flex flex-row gap-4 items-start px-4">
           {tabOptions.map((campfire) => {
             const activeTab = selectedTab === campfire.key;
             return(

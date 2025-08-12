@@ -24,9 +24,9 @@ const CampfireHighlight = () => {
           </span>
           {showHighlight ? <ChevronUp size={16}/> : <ChevronDown size={16}/>}
         </Button>
-        <div className={"flex flex-col items-center  gap-2 px-4"}>
+        <div className={"flex flex-col items-center  gap-2"}>
           {showHighlight && (
-            <div className="border border-neutral-300 w-full h-16 hover:bg-neutral-50 dark:hover:bg-neutral-500 rounded-lg text-sm text-neutral-500 dark:text-neutral-300">
+            <div className="border border-neutral-300 w-full h-16 hover:bg-neutral-50 dark:hover:bg-neutral-500 rounded-lg text-sm text-neutral-500 dark:text-neutral-300 px-4">
             </div>
           )}
           <Separator className="border dark:border-neutral-100"/>
