@@ -25,7 +25,7 @@ export type Database = {
           related_username: string | null
           report_id: number | null
           user_avatar_url: string | null
-          user_id: string
+          user_id: string | null
           username: string | null
           video_id: string | null
           vote_id: number | null
@@ -45,7 +45,7 @@ export type Database = {
           related_username?: string | null
           report_id?: number | null
           user_avatar_url?: string | null
-          user_id: string
+          user_id?: string | null
           username?: string | null
           video_id?: string | null
           vote_id?: number | null
@@ -65,7 +65,7 @@ export type Database = {
           related_username?: string | null
           report_id?: number | null
           user_avatar_url?: string | null
-          user_id?: string
+          user_id?: string | null
           username?: string | null
           video_id?: string | null
           vote_id?: number | null
@@ -253,6 +253,133 @@ export type Database = {
           },
         ]
       }
+      campfire_members: {
+        Row: {
+          campfire_id: string
+          id: string
+          joined_at: string
+          role: Database["public"]["Enums"]["campfire_role"]
+          user_id: string
+        }
+        Insert: {
+          campfire_id: string
+          id?: string
+          joined_at?: string
+          role?: Database["public"]["Enums"]["campfire_role"]
+          user_id: string
+        }
+        Update: {
+          campfire_id?: string
+          id?: string
+          joined_at?: string
+          role?: Database["public"]["Enums"]["campfire_role"]
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "campfire_members_campfire_id_fkey"
+            columns: ["campfire_id"]
+            isOneToOne: false
+            referencedRelation: "campfires"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "campfire_members_user_id_fkey"
+            columns: ["user_id"]
+            isOneToOne: false
+            referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      campfire_rules: {
+        Row: {
+          campfire_id: string
+          created_at: string
+          description: string | null
+          display_order: number
+          id: number
+          title: string
+        }
+        Insert: {
+          campfire_id: string
+          created_at?: string
+          description?: string | null
+          display_order?: number
+          id?: number
+          title: string
+        }
+        Update: {
+          campfire_id?: string
+          created_at?: string
+          description?: string | null
+          display_order?: number
+          id?: number
+          title?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "campfire_rules_campfire_id_fkey"
+            columns: ["campfire_id"]
+            isOneToOne: false
+            referencedRelation: "campfires"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      campfires: {
+        Row: {
+          banner_url: string | null
+          created_at: string
+          created_by: string
+          description: string | null
+          icon_url: string | null
+          id: string
+          member_count: number
+          name: string
+          purpose: Database["public"]["Enums"]["campfire_purpose"]
+          slug: string
+          updated_at: string
+          visibility: Database["public"]["Enums"]["campfire_visibility"]
+        }
+        Insert: {
+          banner_url?: string | null
+          created_at?: string
+          created_by: string
+          description?: string | null
+          icon_url?: string | null
+          id?: string
+          member_count?: number
+          name: string
+          purpose?: Database["public"]["Enums"]["campfire_purpose"]
+          slug: string
+          updated_at?: string
+          visibility?: Database["public"]["Enums"]["campfire_visibility"]
+        }
+        Update: {
+          banner_url?: string | null
+          created_at?: string
+          created_by?: string
+          description?: string | null
+          icon_url?: string | null
+          id?: string
+          member_count?: number
+          name?: string
+          purpose?: Database["public"]["Enums"]["campfire_purpose"]
+          slug?: string
+          updated_at?: string
+          visibility?: Database["public"]["Enums"]["campfire_visibility"]
+        }
+        Relationships: [
+          {
+            foreignKeyName: "campfires_created_by_fkey"
+            columns: ["created_by"]
+            isOneToOne: false
+            referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       collections: {
         Row: {
           posts: any
@@ -393,7 +520,7 @@ export type Database = {
         Row: {
           area: string | null
           created_at: string
-          created_by: string
+          created_by: string | null
           description: string | null
           id: number
           status: Database["public"]["Enums"]["feedback_status"]
@@ -401,7 +528,7 @@ export type Database = {
         Insert: {
           area?: string | null
           created_at?: string
-          created_by?: string
+          created_by?: string | null
           description?: string | null
           id?: number
           status?: Database["public"]["Enums"]["feedback_status"]
@@ -409,7 +536,7 @@ export type Database = {
         Update: {
           area?: string | null
           created_at?: string
-          created_by?: string
+          created_by?: string | null
           description?: string | null
           id?: number
           status?: Database["public"]["Enums"]["feedback_status"]
@@ -426,37 +553,61 @@ export type Database = {
       }
       health_professionals: {
         Row: {
+          agree_terms: boolean
           bio: string | null
+          confirm_accuracy: boolean
+          consent_processing: boolean
           consultation_link: string | null
+          contact: string | null
           created_at: string | null
           field: string
           id: string
+          language: string | null
           license_number: string | null
+          location: string | null
+          title: string
+          understand_review: boolean
           updated_at: string | null
           verified_by_admin: boolean | null
           years_of_experience: number | null
         }
         Insert: {
+          agree_terms?: boolean
           bio?: string | null
+          confirm_accuracy?: boolean
+          consent_processing?: boolean
           consultation_link?: string | null
+          contact?: string | null
           created_at?: string | null
           field: string
           id: string
+          language?: string | null
           license_number?: string | null
+          location?: string | null
+          title: string
+          understand_review?: boolean
           updated_at?: string | null
-          verified_by_admin?: boolean | null
-          years_of_experience?: number | null
+          verified_by_admin?: boolean
+          years_of_experience: number
         }
         Update: {
+          agree_terms?: boolean
           bio?: string | null
+          confirm_accuracy?: boolean
+          consent_processing?: boolean
           consultation_link?: string | null
+          contact?: string | null
           created_at?: string | null
           field?: string
           id?: string
+          language?: string | null
           license_number?: string | null
+          location?: string | null
+          title?: string
+          understand_review?: boolean
           updated_at?: string | null
-          verified_by_admin?: boolean | null
-          years_of_experience?: number | null
+          verified_by_admin?: boolean
+          years_of_experience?: number
         }
         Relationships: [
           {
@@ -719,6 +870,7 @@ export type Database = {
           author_avatar_url: string | null
           author_name: string
           author_roles: Database["public"]["Enums"]["user_role"][]
+          campfire_id: string | null
           content: string
           created_at: string
           created_by: string | null
@@ -737,6 +889,7 @@ export type Database = {
           author_avatar_url?: string | null
           author_name: string
           author_roles?: Database["public"]["Enums"]["user_role"][]
+          campfire_id?: string | null
           content: string
           created_at?: string
           created_by?: string | null
@@ -755,6 +908,7 @@ export type Database = {
           author_avatar_url?: string | null
           author_name?: string
           author_roles?: Database["public"]["Enums"]["user_role"][]
+          campfire_id?: string | null
           content?: string
           created_at?: string
           created_by?: string | null
@@ -770,6 +924,13 @@ export type Database = {
           upvotes?: number
         }
         Relationships: [
+          {
+            foreignKeyName: "posts_campfire_id_fkey"
+            columns: ["campfire_id"]
+            isOneToOne: false
+            referencedRelation: "campfires"
+            referencedColumns: ["id"]
+          },
           {
             foreignKeyName: "posts_created_by_fkey"
             columns: ["created_by"]
@@ -811,6 +972,41 @@ export type Database = {
             columns: ["tag"]
             isOneToOne: false
             referencedRelation: "tags"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      professionals_invite_codes: {
+        Row: {
+          code: string
+          created_at: string
+          expired: boolean
+          expired_at: string | null
+          id: number
+          professional: string | null
+        }
+        Insert: {
+          code: string
+          created_at?: string
+          expired?: boolean
+          expired_at?: string | null
+          id?: number
+          professional?: string | null
+        }
+        Update: {
+          code?: string
+          created_at?: string
+          expired?: boolean
+          expired_at?: string | null
+          id?: number
+          professional?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "professionals_invite_codes_professional_fkey"
+            columns: ["professional"]
+            isOneToOne: false
+            referencedRelation: "profiles"
             referencedColumns: ["id"]
           },
         ]
@@ -1564,6 +1760,13 @@ export type Database = {
         | "viewed"
         | "added"
         | "liked"
+      campfire_purpose:
+        | "support_circle"
+        | "growth_group"
+        | "creative_outlet"
+        | "general_discussion"
+      campfire_role: "camper" | "firekeeper" | "firestarter"
+      campfire_visibility: "public" | "restricted" | "private" | "secret"
       comment_pin_type: "none" | "author" | "professional"
       entity_types:
         | "post"
@@ -1761,6 +1964,14 @@ export const Constants = {
         "added",
         "liked",
       ],
+      campfire_purpose: [
+        "support_circle",
+        "growth_group",
+        "creative_outlet",
+        "general_discussion",
+      ],
+      campfire_role: ["camper", "firekeeper", "firestarter"],
+      campfire_visibility: ["public", "restricted", "private", "secret"],
       comment_pin_type: ["none", "author", "professional"],
       entity_types: [
         "post",

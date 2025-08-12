@@ -2,14 +2,23 @@ import {FullFormType} from "@/components/campfires/campfire-creation-modal";
 
 //Campfire purpose options - type enum
 export enum CampfirePurpose {
-  Support = "Support",
-  Growth = "Growth",
-  Creative = "Creative",
+  Support = "support_circle",
+  Growth = "growth_group",
+  Creative = "creative_outlet",
+  General = "general_discussion"
+}
+//support_circle, growth_group, creative_outlet, general_discussion
+
+export interface CampfireRule {
+  id: number
+  title: string
+  description: string | null
+  display_order: number
 }
 
 //Campfire definition visibility options - type enum
 export enum CampfireVisibility {
-  Public = "Public",
+  Public = "public",
  // Private = "Private",
 }
 
@@ -44,12 +53,11 @@ export const campfireFieldsByStep: CampfireFieldDefinition[][] = [
   // Step 2
   [
     { name: "purpose", label: "Purpose", type: "select", placeholder: "Select purpose",
-      options: Object.values(CampfirePurpose).map((val) => ({ value: val, label: val })),
+      options: Object.values(CampfirePurpose).map((val) => ({ value: val, label: val.replace('_', ' ').toUpperCase() })),
     },
     { name: "visibility", label: "Visibility", type: "select", placeholder: "Select visibility",
-      options: Object.values(CampfireVisibility).map((val) => ({ value: val, label: val })),
+      options: Object.values(CampfireVisibility).map((val) => ({ value: val, label: val.replace('_', ' ').toUpperCase() })),
     },
-    { name: "rules", label: "Rules", type: "checkbox"},
   ],
 
   // Step 3
