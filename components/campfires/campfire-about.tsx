@@ -8,6 +8,9 @@ import React from "react";
 import {CampfireAvatarInterface, formatMembers} from "@/components/campfires/campfires.types";
 import CampfireAvatar from "@/components/campfires/campfire-avatar";
 import Link from 'next/link';
+import {CampfireDetails} from "@/queries/campfires/getCampfireWithSlug";
+import CampfireAboutSkeleton from "./campfire-about-skeleton";
+import { Badge } from "../ui/badge";
 
 // Dummy data for rules
 const rules: { id: string; question: string; answer: string }[] = [
@@ -50,27 +53,71 @@ const fireStarters: CampfireAvatarInterface[] = [
   }
 ];
 
+interface CampfireAboutProps {
+  campfire: CampfireDetails | undefined;
+}
 
-const CampfireAbout = () => {
+
+
+const CampfireAbout = ({campfire}: CampfireAboutProps) => {
+
+  if (!campfire) {
+    return <CampfireAboutSkeleton />;
+  }
+
+  const formatDate = (dateString: string) => {
+    return new Date(dateString).toLocaleDateString('en-US', {
+      year: 'numeric',
+      month: 'short',
+      day: 'numeric'
+    });
+  };
+
+  const getPurposeDescription = (purpose: string) => {
+    const descriptions: Record<string, string> = {
+      general_discussion: "Open conversations and community discussions",
+      support: "Peer support and mental health resources",
+      education: "Learning and educational content sharing",
+      professional: "Professional networking and career development",
+      hobby: "Shared interests and hobby discussions",
+      local_community: "Location-based community engagement"
+    };
+    return descriptions[purpose] || "Community discussions and engagement";
+  };
+
+  const getRankInfo = (memberCount: number) => {
+    if (memberCount >= 10000) return { rank: "Top 1%", color: "text-yellow-600" };
+    if (memberCount >= 5000) return { rank: "Top 2%", color: "text-orange-600" };
+    if (memberCount >= 1000) return { rank: "Top 5%", color: "text-blue-600" };
+    if (memberCount >= 500) return { rank: "Top 10%", color: "text-green-600" };
+    return { rank: "Growing", color: "text-gray-600" };
+  };
+
+  const rankInfo = getRankInfo(campfire.members);
 
   return (
     <div
       className="flex items-start flex-col py-4 gap-4 bg-neutral-50 dark:bg-neutral-800 rounded-lg text-sm text-neutral-500 dark:text-neutral-300">
       {/*about the campfire section*/}
       <div className="flex items-start flex-col gap-4 px-2 py-2">
-        <h2 className={"uppercase font-semibold"}>About campfire</h2>
-        <p className="flex flex-col gap-1 ">
-          <span className={"font-semibold"}> Community dedicated for ghana and related news</span>
-          <span>This is sub news for all Ghana and related activities campfire post.</span>
-        </p>
-        <p className="flex flex-col gap-1">
-        <span className={"flex items-center flex-row gap-1"}>
-        <TicketCheck size={16}/> Created Jun 22, 2011
-        </span>
-          <span className={"flex items-center flex-row gap-1"}>
-        <Globe size={16}/> Public
+        <h2 className={"uppercase font-semibold"}>About {campfire.name}</h2>
+        <div className="flex flex-col gap-2">
+          <p className="text-neutral-700 dark:text-neutral-200 font-medium">
+            {campfire.description || getPurposeDescription(campfire.purpose)}
+          </p>
+        </div>
+        <div className="flex flex-col gap-2 text-xs">
+          <span className="flex items-center gap-2">
+            <TicketCheck size={16} />
+            Created {formatDate(campfire.createdAt || new Date().toISOString())}
           </span>
-        </p>
+          <span className="flex items-center gap-2 uppercase">
+            <Globe size={16} />
+            {campfire.visibility} Community
+          </span>
+        </div>
+
+
         <Button
           size={"sm"}
           variant={"outline"}
@@ -78,22 +125,31 @@ const CampfireAbout = () => {
         >
           Campfire Guide
         </Button>
-        <div className={"w-full flex flex-row items-center justify-between text-xs"}>
-          <p className={"flex flex-col items-start"}>
-           <span className={"font-semibold"}> {formatMembers(7929)}</span>
-            Members
-          </p>
-          <p className={"flex flex-col items-start"}>
-            <span className={"font-semibold"}>{formatMembers(2000)}</span>
-            <span className={"flex flex-row gap-1 items-center"}>
-              <span className={"w-2 h-2 rounded-full bg-green-500 animate-pulse"}></span>
+
+
+        <div className="w-full flex flex-row items-center justify-between text-xs">
+          <div className="flex flex-col items-start">
+            <span className="font-semibold text-neutral-900 dark:text-neutral-100">
+              {formatMembers(campfire.members)}
+            </span>
+            <span>Members</span>
+          </div>
+          
+          <div className="flex flex-col items-start">
+            <span className="font-semibold text-neutral-900 dark:text-neutral-100 flex items-center gap-1">
+              <div className="w-2 h-2 rounded-full bg-green-500 animate-pulse" />
+              {/* {Math.floor(campfire.members * 0.05)} Approximate online users */}
               Online
             </span>
-          </p>
-          <p className={"flex flex-col items-start"}>
-            <span className={"font-semibold"}>Top 2%</span>
-            Rank by size
-          </p>
+            {/* <span>Online</span> */}
+          </div>
+          
+          <div className="flex flex-col items-start">
+            <span className={`font-semibold ${rankInfo.color}`}>
+              {rankInfo.rank}
+            </span>
+            <span>Rank by size</span>
+          </div>
         </div>
       </div>
       <Separator className="border dark:border-neutral-100"/>

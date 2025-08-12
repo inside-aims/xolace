@@ -97,7 +97,7 @@ const CampfireDetails = ({slug}: {slug : string}) => {
     {
       key: "about",
       label: "About",
-      children: <CampfireAbout/>
+      children: <CampfireAbout campfire={campfire}/>
     }
   ];
 
@@ -246,7 +246,7 @@ const CampfireDetails = ({slug}: {slug : string}) => {
           <CampfireHighlight />
         </div>
         <div className="col-span-4 sm:sticky sm:top-[calc(var(--header-height) + 1rem)] sm:max-h-[calc(100vh-var(--header-height)-2rem)] sm:overflow-y-auto sm:overflow-x-hidden scroll-smooth">
-          <CampfireAbout />
+          <CampfireAbout campfire={campfire} />
         </div>
       </div>
 
