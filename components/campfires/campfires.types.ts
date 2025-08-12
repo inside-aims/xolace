@@ -73,4 +73,5 @@ export interface CampfireAvatarInterface {
   userRoute?: string;
   assignedRole?: string;
   title?: string;
+  signedUrls?: Record<string, string>;
 }

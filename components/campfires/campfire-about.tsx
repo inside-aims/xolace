@@ -1,6 +1,6 @@
 'use client';
 
-import {Globe, TicketCheck} from "lucide-react";
+import {Crown, Globe, TicketCheck} from "lucide-react";
 import {Button} from "@/components/ui/button";
 import {Separator} from "@/components/ui/separator";
 import {Accordion, AccordionContent, AccordionItem, AccordionTrigger} from "@/components/ui/accordion";
@@ -13,6 +13,8 @@ import CampfireAboutSkeleton from "./campfire-about-skeleton";
 import { useUserState } from "@/lib/store/user";
 import { useCampfireRules } from "@/hooks/campfires/useCampfireRules";
 import { Skeleton } from "../ui/skeleton";
+import { useCampfireMembers } from "@/hooks/campfires/useCampfireMembers";
+import { getSignedProfileAvatarUrls } from "@/hooks/storage/getSignedProfileAvatarUrl";
 
 // Dummy data for rules
 const rules: { id: string; question: string; answer: string }[] = [
@@ -69,6 +71,14 @@ const CampfireAbout = ({campfire}: CampfireAboutProps) => {
     data: rules = [], 
     isLoading: rulesLoading 
   } = useCampfireRules(campfire?.campfireId);
+
+  // Fetch campfire members (fire starters - moderators and admins)
+  const { 
+    data: fireStarters = [], 
+    isLoading: membersLoading 
+  } = useCampfireMembers(campfire?.campfireId, ['firestarter', 'firekeeper'], 5); // Limit to 5 for display
+
+  const { data: signedUrls } = getSignedProfileAvatarUrls(fireStarters);
 
   if (!campfire) {
     return <CampfireAboutSkeleton />;
@@ -230,32 +240,56 @@ const CampfireAbout = ({campfire}: CampfireAboutProps) => {
       </div>
       <Separator className="border dark:border-neutral-700"/>
 
-      {/*fire starters section*/}
-      <div className={"flex flex-col gap-4 py-2 px-4"}>
-        <h2 className={"uppercase font-semibold"}>Fire starters</h2>
-        <div className={"w-full flex flex-col gap-2 items-start"}>
-          {fireStarters.slice(0,4).map((fireStarter) => (
-            <CampfireAvatar
-              key={`${fireStarter.username}${fireStarter.avatarUrl}`}
-              avatarUrl={fireStarter.avatarUrl}
-              username={fireStarter.username}
-              userRoute={fireStarter.userRoute}
-              assignedRole={fireStarter.assignedRole}
-            />
-          ))}
-        </div>
-        {/*show view all fire starters button with more than 5*/}
-        {/*link path not set yet */}
+      {/* Fire starters section */}
+      <div className="flex flex-col gap-4 py-2 px-4">
+        <h2 className="uppercase font-semibold text-neutral-900 dark:text-neutral-100 flex items-center gap-2">
+          <Crown size={16} />
+          Fire Starters
+        </h2>
+        
+        {membersLoading ? (
+          <div className="space-y-3">
+            {[1, 2, 3].map(i => (
+              <div key={i} className="flex items-center gap-3">
+                <Skeleton className="h-8 w-8 rounded-full" />
+                <div className="space-y-1">
+                  <Skeleton className="h-4 w-24" />
+                  <Skeleton className="h-3 w-16" />
+                </div>
+              </div>
+            ))}
+          </div>
+        ) : fireStarters.length > 0 ? (
+          <div className="w-full flex flex-col gap-2 items-start">
+            {fireStarters.slice(0, 4).map((fireStarter) => (
+              <CampfireAvatar
+                key={fireStarter.user_id}
+                avatarUrl={fireStarter.avatar_url || `https://api.dicebear.com/7.x/avataaars/svg?seed=${fireStarter.user_id}`}
+                username={fireStarter.username}
+                userRoute={`/profile/${fireStarter.username}`}
+                assignedRole={fireStarter.role === 'firestarter' ? 'Firestarter' : 'Firekeeper'}
+                signedUrls={signedUrls}
+              />
+            ))}
+          </div>
+        ) : (
+          <div className="text-center py-4 text-neutral-500">
+            <p>No moderators assigned yet.</p>
+          </div>
+        )}
+
+        {/* Show view all button if there are more fire starters */}
         {fireStarters.length >= 5 && (
-         <Link href={"/"}>
-           <Button
-             size={"sm"}
-             variant={"outline"}
-             className={"w-full items-center  h-8 bg-neutral-300 dark:bg-neutral-900 border border-neutral-400 rounded-full"}
-           >
-             View all fire starters
-           </Button>
-         </Link>
+          <Button
+            size="sm"
+            variant="outline"
+            className="w-full h-8 bg-neutral-300 dark:bg-neutral-900 border border-neutral-400 rounded-full"
+            asChild
+          >
+            <Link href={`/campfires/${campfire.slug}/members`}>
+              View all fire starters
+            </Link>
+          </Button>
         )}
       </div>
     </div>

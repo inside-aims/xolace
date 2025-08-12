@@ -6,65 +6,45 @@ const QUERY_STALE_TIME = 10 * 60 * 1000; // 10 minutes
 const QUERY_CACHE_TIME = 30 * 60 * 1000; // 30 minutes
 
 export interface CampfireMember {
-  id: string;
-  campfire_id: string;
   user_id: string;
-  role: 'camper' | 'moderator' | 'admin';
-  joined_at: string;
   username: string;
-  profile_pic: string | null;
-  display_name: string | null;
+  avatar_url: string;
+  role: 'firestarter' | 'firekeeper' | 'camper';
 }
 
-export function useCampfireMembers(campfireId?: string, limit?: number) {
+/**
+ * Fetches members of a campfire by a list of roles and an optional limit.
+ *
+ * @param campfireId The UUID of the campfire.
+ * @param roles An array of roles to filter by.
+ * @param limit An optional number to limit the results.
+ */
+export function useCampfireMembers(
+  campfireId?: string,
+  roles: ('firestarter' | 'firekeeper')[] = ['firestarter', 'firekeeper'],
+  limit = 6
+) {
   const supabase = getSupabaseBrowserClient();
 
   return useQuery<CampfireMember[], Error>({
-    queryKey: ['campfire', 'members', campfireId, limit],
+    queryKey: ['campfire', 'members', campfireId, roles, limit],
     queryFn: async () => {
-      if (!campfireId) throw new Error('Campfire ID is required');
-
-      let query = supabase
-        .from('campfire_members')
-        .select(`
-          id,
-          campfire_id,
-          user_id,
-          role,
-          joined_at,
-          profiles!campfire_members_user_id_fkey (
-            username,
-            profile_pic,
-            display_name
-          )
-        `)
-        .eq('campfire_id', campfireId)
-        .order('joined_at', { ascending: true });
-
-      if (limit) {
-        query = query.limit(limit);
+      if (!campfireId) {
+        throw new Error('Campfire ID is required');
       }
 
-      const { data, error } = await query;
+      const { data, error } = await supabase.rpc('get_campfire_members_by_roles', {
+        p_campfire_id: campfireId,
+        p_roles: roles,
+        p_limit: limit,
+      });
 
       if (error) {
         console.error('Error fetching campfire members:', error);
         throw new Error(error.message);
       }
 
-      // Transform the data to flatten the profile information
-      const transformedData = (data || []).map((member: any) => ({
-        id: member.id,
-        campfire_id: member.campfire_id,
-        user_id: member.user_id,
-        role: member.role,
-        joined_at: member.joined_at,
-        username: member.profiles?.username || 'Anonymous',
-        profile_pic: member.profiles?.profile_pic,
-        display_name: member.profiles?.display_name,
-      }));
-
-      return transformedData;
+      return data as unknown as CampfireMember[];
     },
     enabled: !!campfireId,
     staleTime: QUERY_STALE_TIME,
