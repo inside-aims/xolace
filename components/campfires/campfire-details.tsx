@@ -140,8 +140,8 @@ const CampfireDetails = ({slug}: {slug : string}) => {
         <div
           className="absolute bottom-[-40px] left-4 lg:left-8 w-20 h-20 z-20">
           <div className="relative w-full h-full">
-          <Avatar className="hidden lg:flex rounded-full border-4 border-white dark:border-gray-800 h-20 w-20">
-              <AvatarImage className="rounded-full border border-neutral-400 object-contain" src={campfire.iconURL || undefined} alt={campfire.name} />
+          <Avatar className="hidden lg:flex rounded-full border-3 border-white dark:border-black/80 h-20 w-20">
+              <AvatarImage className="rounded-full object-contain" src={campfire.iconURL || undefined} alt={campfire.name} />
               <AvatarFallback className="border-lavender-500 flex h-8 w-8 items-center justify-center rounded-full border font-semibold text-white"><span
                   className={`bg-lavender-500 flex h-7 w-7 items-center justify-center rounded-full font-semibold text-white`}
                 >
@@ -160,10 +160,10 @@ const CampfireDetails = ({slug}: {slug : string}) => {
       </div>
 
       {/* Name and CTA buttons */}
-      <div className="w-full flex flex-col gap-4 lg:gap-0 lg:flex-row items-start lg:items-center justify-between ml-0 lg:pl-15 px-4 mt-4 lg:mt-0 bg-red-500">
+      <div className="w-full flex flex-col gap-4 lg:gap-0 lg:flex-row items-start lg:items-center justify-between ml-0 lg:pl-15 px-4 mt-4 lg:mt-2">
         {/* Name and logo */}
-        <div className="flex flex-row gap-4 lg:gap-0 items-center justify-start lg:justify-start lg:pl-15 lg:text-left bg-blue-500 w-[70%]">
-          <div className=" lg:hidden bg-pink-500">
+        <div className="flex flex-row gap-4 lg:gap-0 items-center justify-start lg:justify-start lg:pl-15 lg:text-left w-[70%]">
+          <div className=" lg:hidden">
           <Avatar>
               <AvatarImage className=" rounded-full border border-neutral-400 object-contain" src={campfire.iconURL || undefined} alt={campfire.name} />
               <AvatarFallback className="border-lavender-500 flex h-8 w-8 items-center justify-center rounded-full border font-semibold text-white"><span
@@ -174,7 +174,7 @@ const CampfireDetails = ({slug}: {slug : string}) => {
             </Avatar>
           </div>
           <div className="flex flex-col items-start lg:items-center gap-1">
-            <div className="flex items-center gap-2 lg:gap-0">
+            <div className="flex items-center gap-2 lg:gap-2">
               <h1 className="text-xl lg:text-2xl font-semibold">{campfire.name}</h1>
               <Globe size={16} className="text-green-500" />
             </div>
@@ -194,7 +194,7 @@ const CampfireDetails = ({slug}: {slug : string}) => {
 
         {/* Right CTA buttons */}
         <div
-          className="w-full max-w-full flex items-start lg:items-end justify-start lg:justify-end space-x-4 lg:mt-0 bg-amber-500">
+          className="w-full max-w-full flex items-start lg:items-end justify-start lg:justify-end space-x-4 lg:mt-0">
           <Button
             className={"flex flex-row gap-1 items-center rounded-full"}
             size="sm"
