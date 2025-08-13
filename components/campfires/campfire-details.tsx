@@ -15,6 +15,7 @@ import { useJoinCampfireMutation } from "@/hooks/campfires/useJoinCampfireMutati
 import { useLeaveCampfireMutation } from "@/hooks/campfires/useLeaveCampfireMutation";
 import { formatMembers } from "./campfires.types";
 import { Avatar, AvatarFallback, AvatarImage } from "../ui/avatar";
+import CampfireActionsPopover from "./campfire-actions-popover";
 
 const CampfireDetails = ({slug}: {slug : string}) => {
   const user = useUserState(state => state.user);
@@ -232,14 +233,14 @@ const CampfireDetails = ({slug}: {slug : string}) => {
             )}
           </Button>
 
-          <Button
-            size="sm"
-            variant="outline"
-            className="rounded-full border border-neutral-400"
-            onClick={handleShareCampfire}
-          >
-            <Ellipsis size={14} />
-          </Button>
+          <CampfireActionsPopover
+            campfire={{
+              name: campfire.name,
+              description: campfire.description,
+              slug: campfire.slug,
+              isMember: campfire.isMember,
+            }}
+          />
         </div>
       </div>
 
