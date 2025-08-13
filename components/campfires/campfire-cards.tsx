@@ -123,7 +123,9 @@ export const CampfireMobileCard = (campfire: CampfireCardProps) => {
       )}
 
       <div className="flex-1 min-w-0">
+        <Link href={`/x/${campfire.slug}`}>
         <h3 className="font-semibold truncate">{campfire.name}</h3>
+        </Link>
         <p className="text-muted-foreground truncate">
           {campfire.description}
         </p>
@@ -132,7 +134,7 @@ export const CampfireMobileCard = (campfire: CampfireCardProps) => {
             <span><Info size={14}/></span>
             {campfire.purpose.replace("_", " ")}
           </Badge>
-          <p className={"flex items-center justify-between"}>
+          <p className={"flex items-center justify-between w-full"}>
             <span className="text-sm text-muted-foreground">
             {formatMembers(campfire.members)} members
             </span>

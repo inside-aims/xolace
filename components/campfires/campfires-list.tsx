@@ -94,11 +94,11 @@ const CampfiresList = ({isDiscover = true}: CampfireListProps) => {
         {/* Campfire list */}
         <div className="w-full">
           {isPending ? (
-            <div className="w-full">
+            <div className="w-full" key="skeleton">
               <CampfiresListSkeleton />
             </div>
           ) : isError ? (
-            <div className="flex w-full flex-col items-center gap-4 px-4">
+            <div className="flex w-full flex-col items-center gap-4 px-4" key="error">
               <Alert variant="destructive" className="max-w-md">
                 <AlertCircle className="h-4 w-4" />
                 <AlertDescription>
@@ -130,10 +130,9 @@ const CampfiresList = ({isDiscover = true}: CampfireListProps) => {
           ) : (
             <>
               <div
-                className="grid md:hidden w-full grid-cols-1 items-stretch gap-1 pt-2 pb-5 md:grid-cols-2 lg:grid-cols-2 xl:grid-cols-3">
+                className="grid md:hidden w-full grid-cols-1 items-stretch gap-1 pt-2 pb-5">
                 {filteredCampfires?.map(campfire => (
                  <>
-                   <Separator/>
                    <CampfireMobileCard
                      key={campfire.campfireId}
                      campfireId={campfire.campfireId}
