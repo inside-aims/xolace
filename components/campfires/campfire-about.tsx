@@ -76,10 +76,10 @@ const CampfireAbout = ({campfire}: CampfireAboutProps) => {
 
   return (
     <div
-      className="flex items-start flex-col py-4 gap-4 bg-neutral-50 dark:bg-neutral-800 rounded-lg text-sm text-neutral-500 dark:text-neutral-300">
+      className="flex items-start flex-col pt-4 pb-16 md:py-4 gap-4 bg-neutral-100 dark:bg-neutral-800 rounded-lg text-sm text-neutral-500 dark:text-neutral-300">
       {/*about the campfire section*/}
       <div className="flex items-start flex-col gap-4 px-2 py-2 w-full">
-        <h2 className={"uppercase font-semibold"}>About {campfire.name}</h2>
+        <h2 className={" font-semibold"}><span className="uppercase">About</span> {campfire.name}</h2>
         <div className="flex flex-col gap-2">
           <p className="text-neutral-700 dark:text-neutral-200 font-medium">
             {campfire.description || getPurposeDescription(campfire.purpose)}
@@ -100,7 +100,7 @@ const CampfireAbout = ({campfire}: CampfireAboutProps) => {
         <Button
           size={"sm"}
           variant={"outline"}
-          className={"w-full items-center  h-8 bg-neutral-300 dark:bg-neutral-900 border border-neutral-400 rounded-full"}
+          className={"w-full items-center  h-8 bg-neutral-100 dark:bg-neutral-900  text-black dark:text-white border border-neutral-400 rounded-full"}
         >
           Campfire Guide
         </Button>
@@ -141,7 +141,7 @@ const CampfireAbout = ({campfire}: CampfireAboutProps) => {
               avatarUrl={user.avatar_url || `https://api.dicebear.com/7.x/avataaars/svg?seed=${user.id}`}
               username={user.username || 'Anonymous'}
               userRoute={`/profile/${user.username}`}
-              assignedRole="Camper" // This would come from the membership data
+              assignedRole={campfire.memberRole} // This would come from the membership data
               title="Your role in this campfire"
             />
           </div>
@@ -204,7 +204,7 @@ const CampfireAbout = ({campfire}: CampfireAboutProps) => {
       <div className="flex flex-col gap-4 py-2 px-4">
         <h2 className="uppercase font-semibold text-neutral-900 dark:text-neutral-100 flex items-center gap-2">
           <Crown size={16} />
-          Fire Starters
+          Moderators
         </h2>
         
         {membersLoading ? (
