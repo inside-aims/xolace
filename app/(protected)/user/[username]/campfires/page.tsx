@@ -10,7 +10,7 @@ const ManageCampfiresPage = () => {
   return(
     <main>
       {/*for demonstration purpose*/}
-      <CampfiresList/>
+      <CampfiresList isDiscover={false}/>
       {/*<CampfiresListSkeleton/>*/}
     </main>
   )

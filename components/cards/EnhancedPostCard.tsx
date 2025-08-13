@@ -1,3 +1,4 @@
+// Updated EnhancedPostCard component
 'use client';
 import * as React from 'react';
 import { useEffect, useState } from 'react';
@@ -45,16 +46,8 @@ import {
 } from 'lucide-react';
 import { Badge } from '../ui/badge';
 import { SinglePost } from '../shared/SinglePost';
-//import { CarouselPost } from '../shared/CarouselPost';
 import SimpleCarouselPost from '../shared/Tour/SimpleCorouselPost';
 import profBadge from "../../public/assets/images/user-role-badges/consellors-badge.webp"
-
-// const CarouselPost = dynamic(() => import('../shared/CarouselPost'), {
-//   ssr: false,
-//   loading: () => <DefaultLoader />,
-// });
-
-
 
 const moodIcons: Record<string, React.JSX.Element> = {
   happy: <Smile className="h-4 w-4" />,
@@ -114,8 +107,14 @@ const customLocale: LocaleFunc = (
     ['%s mos ago', 'in %s mos'],
     ['1 yr ago', 'in 1 yr'],
     ['%s yrs ago', 'in %s yrs'],
-  ][index] as [string, string]; // This assertion ensures TypeScript understands it's a tuple
+  ][index] as [string, string];
 };
+
+interface CampfireOverride {
+  name: string;
+  iconUrl?: string | null;
+  slug?: string;
+}
 
 type PostCardType = {
   className?: string;
@@ -123,6 +122,7 @@ type PostCardType = {
   section?: 'profile';
   onClick?: () => void;
   signedUrls?: Record<string, string>;
+  campfireOverride?: CampfireOverride; // New prop for campfire context
 };
 
 export interface TagProps {
@@ -131,19 +131,25 @@ export interface TagProps {
   };
 }
 
-export function EnhancedPostCard({ className, post, onClick, signedUrls }: PostCardType) {
-  // get user data
+export function EnhancedPostCard({ 
+  className, 
+  post, 
+  onClick, 
+  signedUrls, 
+  campfireOverride 
+}: PostCardType) {
+  // Get user data
   const user = useUserState(state => state.user);
   const { preferences } = usePreferencesStore();
 
-  // states
+  // States
   const [timestamp, setTimestamp] = useState('');
   const [isOpen, setIsOpen] = useState<boolean>(false);
 
-  // Register the custom locale with an ID (e.g. 'short-en')
+  // Register the custom locale
   register('short-en', customLocale);
 
-  // convert created_at
+  // Convert created_at
   useEffect(() => {
     setTimestamp(format(post.created_at, 'short-en'));
   }, [post.created_at]);
@@ -159,16 +165,27 @@ export function EnhancedPostCard({ className, post, onClick, signedUrls }: PostC
   const isMentor = post.author_roles.includes('mentor');
   const isVerified = post.author_roles.includes('verified');
 
-   // 👇 This logic determines the correct avatar source
-   const avatarSrc =
-   (post.author_avatar_url && signedUrls?.[post.author_avatar_url]) || // Use signed URL if available
-   post.author_avatar_url || // Fallback to the original URL (for non-professionals)
-   undefined; // Final fallback
+  // Determine display values (campfire override or original author)
+  const displayName = campfireOverride?.name || post.author_name;
+  const displayAvatarUrl = campfireOverride?.iconUrl || post.author_avatar_url;
+  
+  // Avatar source logic with campfire support
+  const avatarSrc = campfireOverride?.iconUrl || 
+    (post.author_avatar_url && signedUrls?.[post.author_avatar_url]) || 
+    post.author_avatar_url || 
+    undefined;
 
+  // Generate fallback initials
+  const fallbackInitials = campfireOverride 
+    ? displayName.slice(0, 2).toUpperCase() 
+    : post.author_name.slice(0, 2).toUpperCase();
+
+  // Show original author info when in campfire context
+  const showOriginalAuthor = !!campfireOverride;
 
   return (
     <>
-      {/* dialog or drawer to report post */}
+      {/* Dialog or drawer to report post */}
       <KvngDialogDrawer
         title="Report Post"
         isDialogDrawerOpen={isOpen}
@@ -183,37 +200,58 @@ export function EnhancedPostCard({ className, post, onClick, signedUrls }: PostC
             <Avatar>
               <AvatarImage
                 src={avatarSrc}
-                alt={post.author_name}
+                alt={displayName}
               />
-              <AvatarFallback className='bg-gradient-to-br from-[#0536ff] to-[#6a71ea] text-white'>{post.author_name.slice(0, 2).toUpperCase()}</AvatarFallback>
+              <AvatarFallback className='bg-gradient-to-br from-[#0536ff] to-[#6a71ea] text-white'>
+                {fallbackInitials}
+              </AvatarFallback>
             </Avatar>
             <div className="flex flex-col items-start justify-center">
               <div className="flex items-center gap-2">
                 <h4 className="text-foreground font-semibold">
-                  {post.author_name}
+                  {displayName}
                 </h4>
                 <div
                   className={`h-5 w-5 ${moodColors[post.mood]} flex items-center justify-center rounded-full text-white`}
                 >
                   {moodIcons[post.mood]}
                 </div>
-                <span className="text-xs">{isProfessional && <Image src={profBadge} alt="professional badge" width={20} height={20} />}</span>
-
+                <span className="text-xs">
+                  {isProfessional && !campfireOverride && (
+                    <Image src={profBadge} alt="professional badge" width={20} height={20} />
+                  )}
+                </span>
               </div>
 
               <div className="text-muted-foreground flex items-center gap-2 text-sm">
+                {showOriginalAuthor && (
+                  <small className="text-[11px] text-zinc-400 dark:text-gray-500">
+                    by {post.author_name} • 
+                  </small>
+                )}
                 <small className="text-[13px] text-zinc-500 dark:text-gray-400">
                   {timestamp}
                 </small>
-                {isProfessional && <Badge variant="minimal" className="text-[8px] py-[1px] text-green-400 bg-green-900/90 dark:bg-green-900/20 border-green-800/50">
+                {isProfessional && !campfireOverride && (
+                  <Badge variant="minimal" className="text-[8px] py-[1px] text-green-400 bg-green-900/90 dark:bg-green-900/20 border-green-800/50">
                     PROFESSIONAL
-                  </Badge>}
-                {isMentor && <Badge variant="minimal" className="text-[8px] py-[1px] text-orange-400 bg-orange-900/90 dark:bg-orange-900/20 border-orange-800/50">
+                  </Badge>
+                )}
+                {isMentor && !campfireOverride && (
+                  <Badge variant="minimal" className="text-[8px] py-[1px] text-orange-400 bg-orange-900/90 dark:bg-orange-900/20 border-orange-800/50">
                     MENTOR
-                  </Badge>}
-                {isVerified && <Badge variant="minimal" className="text-[8px] py-[1px] text-blue-400 bg-blue-900/90 dark:bg-blue-900/20 border-blue-800/50">
+                  </Badge>
+                )}
+                {isVerified && !campfireOverride && (
+                  <Badge variant="minimal" className="text-[8px] py-[1px] text-blue-400 bg-blue-900/90 dark:bg-blue-900/20 border-blue-800/50">
                     VERIFIED
-                  </Badge>}
+                  </Badge>
+                )}
+                {campfireOverride && (
+                  <Badge variant="minimal" className="text-[8px] py-[1px] text-purple-400 bg-purple-900/90 dark:bg-purple-900/20 border-purple-800/50">
+                    CAMPFIRE
+                  </Badge>
+                )}
                 {timeLeft && (
                   <Badge variant="secondary" className="text-[10px] py-[1px] hover:bg-secondary/50">
                     <Clock className="mr-1 h-3 w-3" />
@@ -231,14 +269,14 @@ export function EnhancedPostCard({ className, post, onClick, signedUrls }: PostC
           />
         </CardHeader>
 
-        <CardContent className="cursor-pointer" >
-        {/* <div className="px-6 mb-2">
-        {post.type === "single" ? <SinglePost content={truncateText(post.content, 200)} /> : <CarouselPost slides={post.post_slides || []} />}
-      </div> */}
-      {post.type === "single" ? <SinglePost content={truncateText(post.content, 200)} onClick={onClick} /> : <SimpleCarouselPost slides={post.post_slides || []} onClick={onClick} />}
-          {/* <div className="mb-2">{truncateText(post.content, 200)}</div> */}
+        <CardContent className="cursor-pointer">
+          {post.type === "single" ? (
+            <SinglePost content={truncateText(post.content, 200)} onClick={onClick} />
+          ) : (
+            <SimpleCarouselPost slides={post.post_slides || []} onClick={onClick} />
+          )}
           <div className="mt-2 flex flex-wrap gap-2">
-            {post.posttags && // check if post has tags
+            {post.posttags &&
               post.posttags.map((tag: TagProps, index: number) => (
                 <TagCard
                   key={`${tag.tags.name}_${index}`}
@@ -248,6 +286,7 @@ export function EnhancedPostCard({ className, post, onClick, signedUrls }: PostC
               ))}
           </div>
         </CardContent>
+
         <CardFooter className="flex w-full items-center justify-between">
           <PostMetrics post={post} userId={user?.id || ''} />
           <div className="flex items-center gap-2" id="view-btn">
@@ -256,20 +295,16 @@ export function EnhancedPostCard({ className, post, onClick, signedUrls }: PostC
           </div>
 
           <div className="flex items-center justify-center gap-2">
-          {post?.expires_in_24hr && (
-            <div
-              className={`flex h-6 w-8 items-center justify-center rounded-full bg-zinc-400 dark:bg-zinc-700 `}
-              id="mood-btn"
-            >
-
-              
+            {post?.expires_in_24hr && (
+              <div
+                className={`flex h-6 w-8 items-center justify-center rounded-full bg-zinc-400 dark:bg-zinc-700`}
+                id="mood-btn"
+              >
                 <span className="animate-bounce duration-700 ease-in-out">
-                  {' '}
                   ⏳
                 </span>
-             
-            </div>
-             )}
+              </div>
+            )}
 
             <div id="collection-btn">
               <SaveToCollectionsButton

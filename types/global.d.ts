@@ -55,6 +55,16 @@ type DetailPost = Database['public']['Tables']['posts']['Row'] & {
   }[];
 };
 
+// types/campfire.ts - New types for campfire functionality
+export interface CampfirePost extends Post {
+  campfire_id: string;
+  campfires: {
+    name: string;
+    icon_url?: string;
+    slug: string;
+  };
+}
+
 type User = Database['public']['Tables']['profiles']['Row']
 
 type Comment = Database['public']['Tables']['comments']['Row']
