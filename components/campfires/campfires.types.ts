@@ -75,3 +75,16 @@ export interface CampfireAvatarInterface {
   title?: string;
   signedUrls?: Record<string, string>;
 }
+
+export const getBgSeverity = (purpose: string) => {
+  switch (purpose) {
+    case CampfirePurpose.Creative:
+      return 'bg-green-200 text-green-800';
+    case CampfirePurpose.Growth:
+      return 'bg-orange-200 text-orange-800';
+    case CampfirePurpose.Support:
+      return 'bg-yellow-200 text-yellow-800';
+    default:
+      return 'bg-neutral-200 text-neutral-800';
+  }
+};

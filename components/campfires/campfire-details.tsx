@@ -2,7 +2,7 @@
 
 import React, { useState } from "react";
 import {Button} from "@/components/ui/button";
-import {Plus, Bell, Ellipsis, Globe, Users} from "lucide-react";
+import {Plus, Bell, Ellipsis, Globe, Users, Info} from "lucide-react";
 import CampfireAbout from "@/components/campfires/campfire-about";
 import CampfireHighlight from "@/components/campfires/campfire-highlight";
 import { useRouter } from "next/navigation";
@@ -13,7 +13,7 @@ import {toast} from 'sonner'
 import { Badge } from "../ui/badge";
 import { useJoinCampfireMutation } from "@/hooks/campfires/useJoinCampfireMutation";
 import { useLeaveCampfireMutation } from "@/hooks/campfires/useLeaveCampfireMutation";
-import { formatMembers } from "./campfires.types";
+import { formatMembers, getBgSeverity } from "./campfires.types";
 import { Avatar, AvatarFallback, AvatarImage } from "../ui/avatar";
 import CampfireActionsPopover from "./campfire-actions-popover";
 
@@ -72,20 +72,6 @@ const CampfireDetails = ({slug}: {slug : string}) => {
       return;
     }
     toast.info("Notification preferences updated");
-  };
-
-  const handleShareCampfire = async () => {
-    try {
-      await navigator.share({
-        title: campfire?.name || "Check out this campfire!",
-        text: campfire?.description || "Join this amazing community",
-        url: window.location.href,
-      });
-    } catch (_) {
-      // Fallback to copying URL
-      navigator.clipboard.writeText(window.location.href);
-      toast.success("Campfire link copied to clipboard!");
-    }
   };
 
   const tabOptions: {key: string, label: string, children: React.ReactNode}[] = [
@@ -156,9 +142,10 @@ const CampfireDetails = ({slug}: {slug : string}) => {
         </div>
 
         {/* Purpose badge */}
-        <div className="absolute top-4 right-4">
-          <Badge variant="secondary" className="bg-white/90 text-black">
-            {campfire.purpose.replace('_', ' ')}
+        <div className="absolute top-2 right-2 md:top-4 md:right-4">
+        <Badge className={`${getBgSeverity(campfire.purpose)} flex gap-1 rounded-full capitalize`}>
+            <span><Info size={14}/></span>
+            {campfire.purpose.replace("_", " ")}
           </Badge>
         </div>
       </div>
