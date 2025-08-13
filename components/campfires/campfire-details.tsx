@@ -91,7 +91,11 @@ const CampfireDetails = ({slug}: {slug : string}) => {
     {
       key: "feed",
       label: "Feed",
-      children: <CampfireHighlight/>
+      children: <CampfireHighlight 
+      campfireId={campfire?.campfireId || ''} 
+      campfireName={campfire?.name}
+      campfireIconUrl={campfire?.iconURL}
+    />
     },
     {
       key: "about",
@@ -242,7 +246,11 @@ const CampfireDetails = ({slug}: {slug : string}) => {
       {/* Desktop layout */}
       <div className="hidden w-full lg:grid grid-cols-12 gap-4 p-4 mt-4">
         <div className="col-span-8">
-          <CampfireHighlight />
+          <CampfireHighlight 
+            campfireId={campfire.campfireId}
+            campfireName={campfire.name}
+            campfireIconUrl={campfire.iconURL}
+          />
         </div>
         <div className="col-span-4 sm:sticky sm:top-[calc(var(--header-height) + 1rem)] sm:max-h-[calc(100vh-var(--header-height)-2rem)] sm:overflow-y-auto sm:overflow-x-hidden scroll-smooth">
           <CampfireAbout campfire={campfire} />
