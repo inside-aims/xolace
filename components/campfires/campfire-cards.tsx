@@ -123,9 +123,11 @@ export const CampfireMobileCard = (campfire: CampfireCardProps) => {
       )}
 
       <div className="flex-1 min-w-0">
-        <Link href={`/x/${campfire.slug}`}>
-        <h3 className="font-semibold truncate">{campfire.name}</h3>
-        </Link>
+        <div className="w-fit">
+          <Link href={`/x/${campfire.slug}`} className="active:underline active:text-lavender-400">
+          <h3 className="font-semibold truncate w-fit">{campfire.name}</h3>
+          </Link>
+        </div>
         <p className="text-muted-foreground truncate">
           {campfire.description}
         </p>
