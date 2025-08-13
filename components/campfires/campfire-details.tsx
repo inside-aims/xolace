@@ -2,7 +2,7 @@
 
 import React, { useState } from "react";
 import {Button} from "@/components/ui/button";
-import {Plus, Bell, Ellipsis, Globe, Users, Info} from "lucide-react";
+import {Plus, Bell, Globe, Users, Info} from "lucide-react";
 import CampfireAbout from "@/components/campfires/campfire-about";
 import CampfireHighlight from "@/components/campfires/campfire-highlight";
 import { useRouter } from "next/navigation";
