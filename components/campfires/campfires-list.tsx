@@ -133,6 +133,8 @@ const CampfiresList = ({isDiscover = true}: CampfireListProps) => {
                 className="grid md:hidden w-full grid-cols-1 items-stretch gap-1 pt-2 pb-5">
                 {filteredCampfires?.map(campfire => (
                  <>
+                 {/* only show seperator above for the first in the list, use css */}
+                 <Separator className=' first:block hidden' />
                    <CampfireMobileCard
                      key={campfire.campfireId}
                      campfireId={campfire.campfireId}
@@ -145,6 +147,7 @@ const CampfiresList = ({isDiscover = true}: CampfireListProps) => {
                      onJoin={() => handleJoinClick(campfire.campfireId)}
                      isMember={campfire.isMember}
                    />
+                   <Separator />
                  </>
                 ))}
               </div>
