@@ -167,7 +167,7 @@ export function EnhancedPostCard({
 
   // Determine display values (campfire override or original author)
   const displayName = campfireOverride?.name || post.author_name;
-  const displayAvatarUrl = campfireOverride?.iconUrl || post.author_avatar_url;
+  // const displayAvatarUrl = campfireOverride?.iconUrl || post.author_avatar_url;
   
   // Avatar source logic with campfire support
   const avatarSrc = campfireOverride?.iconUrl || 

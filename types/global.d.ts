@@ -53,6 +53,11 @@ type DetailPost = Database['public']['Tables']['posts']['Row'] & {
     content: string;
     slide_index: number;
   }[];
+  campfires: {
+    name: string;
+    icon_url?: string;
+    slug: string;
+  };
 };
 
 // types/campfire.ts - New types for campfire functionality
