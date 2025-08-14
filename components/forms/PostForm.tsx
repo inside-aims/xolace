@@ -259,7 +259,7 @@ export function PostForm() {
         handleInput(savedDraft);
       }
     }
-  }, [searchParams, setValue, preferences?.auto_save_drafts, handleInput]);
+  }, [searchParams, setValue, preferences?.auto_save_drafts, handleInput, userCampfires]);
 
   useEffect(() => {
     if (preferences?.auto_save_drafts) {
