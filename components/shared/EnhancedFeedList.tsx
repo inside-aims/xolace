@@ -5,7 +5,6 @@ import { useRouter, usePathname } from 'next/navigation';
 import { useInView } from 'react-intersection-observer';
 import { LazyMotion, domAnimation } from 'motion/react';
 
-import { EnhancedPostCard } from '../cards/EnhancedPostCard';
 import BlurFade from '../ui/blur-fade';
 import FeedSkeletonLoader from './loaders/FeedSkeletonLoader';
 import { useMediaQuery } from '@/hooks/use-media-query';
@@ -14,7 +13,7 @@ import { getEnhancedFeedPosts } from '@/queries/posts/getEnhancedFeed';
 import { useUserState } from '@/lib/store/user';
 import { useEnhancedRealtimePosts } from '@/hooks/posts/useEnhancedRealtimePosts';
 import { DefaultLoader } from './loaders/DefaultLoader';
-import { AlertCircle, Users, Clock } from 'lucide-react';
+import { AlertCircle, Users} from 'lucide-react';
 import { FeedEnhancedPostCard } from '../cards/FeedEnhancedPostCard';
 
 /**
@@ -93,7 +92,7 @@ const EnhancedFeedList = () => {
 
             sessionStorage.removeItem('feedViewContext');
           }, 600);
-        } catch (error) {
+        } catch (_) {
           sessionStorage.removeItem('feedViewContext');
         }
       }
@@ -224,7 +223,7 @@ const EnhancedFeedList = () => {
               )}
               {!hasNextPage && posts.length > 0 && (
                 <div className="text-center text-muted-foreground">
-                  <p>You've reached the end!</p>
+                  <p>You&apos;ve reached the end!</p>
                   <p className="text-sm mt-1">No more posts to load.</p>
                 </div>
               )}
