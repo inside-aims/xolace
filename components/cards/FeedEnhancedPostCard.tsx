@@ -166,11 +166,11 @@ export function FeedEnhancedPostCard({
   const isVerified = post.author_roles.includes('verified');
 
   // Determine display values (campfire override or original author)
-  const displayName = campfireOverride?.name || post.author_name;
+  const displayName = post.campfire_name || post.author_name;
   // const displayAvatarUrl = campfireOverride?.iconUrl || post.author_avatar_url;
   
   // Avatar source logic with campfire support
-  const avatarSrc = campfireOverride?.iconUrl || 
+  const avatarSrc = post.campfire_icon_url || 
     (post.author_avatar_url && signedUrls?.[post.author_avatar_url]) || 
     post.author_avatar_url || 
     undefined;
@@ -260,7 +260,7 @@ export function FeedEnhancedPostCard({
                     VERIFIED
                   </Badge>
                 )}
-                {campfireOverride && (
+                {post.is_campfire_post && (
                   <Badge variant="minimal" className="text-[8px] py-[1px] text-purple-400 bg-purple-900/90 dark:bg-purple-900/20 border-purple-800/50">
                     CAMPFIRE
                   </Badge>
