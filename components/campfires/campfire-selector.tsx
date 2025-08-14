@@ -3,6 +3,7 @@ import { Button } from "@/components/ui/button";
 import { Home, Users, ChevronDown } from "lucide-react";
 import { CampfirePurpose } from "./campfires.types";
 import { DefaultLoader } from "../shared/loaders/DefaultLoader";
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 
 export interface UserCampfire {
     campfireId: string;
@@ -48,11 +49,13 @@ export const CampfireSelector = ({
           {selectedCampfire ? (
             <>
               {selectedCampfire.iconURL ? (
-                <img 
-                  src={selectedCampfire.iconURL} 
-                  alt={selectedCampfire.name}
-                  className="h-6 w-6 rounded-full object-cover"
-                />
+                <Avatar className="h-6 w-6">
+                <AvatarImage className="rounded-full" src={selectedCampfire.iconURL || undefined} alt={selectedCampfire.name} />
+                <AvatarFallback className="border-lavender-500 flex h-8 w-8 items-center justify-center rounded-full border font-semibold text-white">
+                  <span className={`bg-lavender-500 flex h-6 w-6 items-center justify-center rounded-full font-semibold text-white`}>x/
+                  </span>
+                </AvatarFallback>
+              </Avatar>
               ) : (
                 <div className="h-6 w-6 bg-gradient-to-br from-purple-400 to-purple-600 rounded-full flex items-center justify-center">
                   <Users className="h-3 w-3 text-white" />
@@ -128,11 +131,13 @@ export const CampfireSelector = ({
             >
               <div className="flex items-center gap-3">
                 {campfire.iconURL ? (
-                  <img 
-                    src={campfire.iconURL} 
-                    alt={campfire.name}
-                    className="h-8 w-8 rounded-full object-cover"
-                  />
+                  <Avatar className="h-8 w-8">
+                  <AvatarImage className="rounded-full" src={campfire.iconURL || undefined} alt={campfire.name} />
+                  <AvatarFallback className="border-lavender-500 flex h-8 w-8 items-center justify-center rounded-full border font-semibold text-white">
+                    <span className={`bg-lavender-500 flex h-8 w-8 items-center justify-center rounded-full font-semibold text-white`}>x/
+                    </span>
+                  </AvatarFallback>
+                </Avatar>
                 ) : (
                   <div className="h-8 w-8 bg-gradient-to-br from-purple-400 to-purple-600 rounded-full flex items-center justify-center">
                     <Users className="h-4 w-4 text-white" />
