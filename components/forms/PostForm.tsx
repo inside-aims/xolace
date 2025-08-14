@@ -64,6 +64,8 @@ import { Card, CardContent } from '@/components/ui/card';
 import { Switch } from '@/components/ui/switch';
 import { DefaultLoader } from '../shared/loaders/DefaultLoader';
 import { NewBadge } from '../shared/NewBadge';
+import { CampfireSelector, UserCampfire } from '../campfires/campfire-selector';
+import { getUserCampfires } from '@/queries/campfires/getUserCampfires';
 
 // Dynamic Imports
 const EmojiPicker = dynamic(() => import('emoji-picker-react'), {
@@ -118,6 +120,13 @@ export function PostForm() {
   const [animating, setAnimating] = useState(false);
   const [currentPlaceholder, setCurrentPlaceholder] = useState(0);
   const [showConsent, setShowConsent] = useState(false);
+  const [selectedCampfire, setSelectedCampfire] = useState<UserCampfire | null>(
+    null,
+  );
+  const [showCampfireSelector, setShowCampfireSelector] = useState(false);
+
+  const { data: userCampfires = [], isLoading: loadingCampfires } =
+    getUserCampfires(user?.id);
 
   const intervalRef = useRef<NodeJS.Timeout | null>(null);
   const startAnimation = () => {
@@ -145,27 +154,6 @@ export function PostForm() {
       document.removeEventListener('visibilitychange', handleVisibilityChange);
     };
   }, [handleVisibilityChange]);
-
-  // get mood boolean value
-  // const isNeutral = selectedMood?.value === 'neutral';
-  // const isHappy = selectedMood?.value === 'happy';
-  // const isSad = selectedMood?.value === 'sad';
-  // const isAngry = selectedMood?.value === 'angry';
-  // const isConfused = selectedMood?.value === 'confused';
-
-  // Memoized mood boolean values
-  // const moodClasses = useMemo(() => {
-  //   const moodColors = {
-  //     neutral: 'border-pink-500 dark:border-pink-400',
-  //     happy: 'border-green-500 dark:border-green-400',
-  //     sad: 'border-blue dark:border-sky-400',
-  //     angry: 'border-red-500 dark:border-red-400',
-  //     confused: 'border-yellow-500 dark:border-yellow-400',
-  //   };
-  //   return selectedMood
-  //     ? moodColors[selectedMood.id as keyof typeof moodColors] || ''
-  //     : '';
-  // }, [selectedMood]);
 
   //  form
   const form = useForm<z.infer<typeof PostSchema>>({
@@ -243,6 +231,15 @@ export function PostForm() {
   // Effect to load draft or prefill from prompt on component mount
   useEffect(() => {
     const promptTextQuery = searchParams.get('prompt');
+    const submitToSlug = searchParams.get('submit');
+
+    // Handle submit parameter - pre-select campfire
+    if (submitToSlug && userCampfires.length > 0) {
+      const targetCampfire = userCampfires.find(c => c.slug === submitToSlug);
+      if (targetCampfire) {
+        setSelectedCampfire(targetCampfire);
+      }
+    }
 
     if (promptTextQuery) {
       //const decodedPromptText = decodeURIComponent(promptTextQuery);
@@ -501,6 +498,7 @@ export function PostForm() {
             tag_names: tags,
             type,
             slide_contents: slidesWithoutTags,
+            campfire_id: selectedCampfire?.campfireId || null,
           },
         );
 
@@ -603,155 +601,173 @@ export function PostForm() {
               onSubmit={form.handleSubmit(onSubmit)}
               className="w-full space-y-3 lg:mx-auto lg:w-2/3"
             >
-              {/* Post Type Dropdown and 24h Expiry Toggle */}
-              <div className="relative flex items-end justify-between">
-                <FormField
-                  control={form.control}
-                  name="type"
-                  render={({ field }) => (
-                    <FormItem className="relative flex-1">
-                      <FormLabel className="text-foreground text-sm font-medium">
-                        Post Type
-                      </FormLabel>
-                      <Select
-                        onValueChange={field.onChange}
-                        defaultValue={field.value}
-                      >
-                        <FormControl>
-                          <SelectTrigger className="w-48 rounded-xl border-0">
-                            <SelectValue />
-                          </SelectTrigger>
-                        </FormControl>
-                        <SelectContent className="bg-background border-border rounded-xl border shadow-xl">
-                          <SelectItem
-                            value="single"
-                            className="hover:bg-muted cursor-pointer rounded-lg p-3"
-                          >
-                            <div className="flex items-center gap-3">
-                              <div className="flex h-3 w-3 items-center justify-center rounded-full bg-green-500">
-                                <div className="h-1.5 w-1.5 rounded-full bg-white"></div>
-                              </div>
-                              <div className="flex items-center gap-2">
-                                <FileText className="text-muted-foreground h-4 w-4" />
-                                <span className="font-medium">Single Post</span>
-                              </div>
-                            </div>
-                          </SelectItem>
-                          <SelectItem
-                            value="carousel"
-                            className="hover:bg-muted cursor-pointer rounded-lg p-3"
-                          >
-                            <div className="flex items-center gap-3">
-                              <div className="flex h-3 w-3 items-center justify-center rounded-full bg-blue-500">
-                                <div className="h-1.5 w-1.5 rounded-full bg-white"></div>
-                              </div>
-                              <div className="flex items-center gap-2">
-                                <ImageIcon className="text-muted-foreground h-4 w-4" />
-                                <span className="font-medium">Carousel</span>
-                              </div>
-                            </div>
-                          </SelectItem>
-                        </SelectContent>
-                      </Select>
-                      <FormMessage />
-                      <NewBadge
-                        size="sm"
-                        containerClass="absolute top-0 left-17"
-                      />
-                    </FormItem>
-                  )}
-                />
+              <div className="space-y-4">
+                {/* Community Selector */}
+                <div className="space-y-2">
+                  <label className="text-foreground text-sm font-medium">
+                    Post to
+                  </label>
+                  <CampfireSelector
+                    selectedCampfire={selectedCampfire}
+                    setSelectedCampfire={setSelectedCampfire}
+                    showCampfireSelector={showCampfireSelector}
+                    setShowCampfireSelector={setShowCampfireSelector}
+                    userCampfires={userCampfires}
+                    loadingCampfires={loadingCampfires}
+                  />
+                </div>
 
-                <Popover>
-                  <PopoverTrigger asChild>
-                    <Button
-                      type="button"
-                      variant="outline"
-                      size="sm"
-                      className={`mb-2 rounded-xl transition-all duration-200 ${
-                        is24HourPost
-                          ? 'border-purple-200 bg-purple-50 text-purple-700 dark:border-purple-800 dark:bg-purple-950 dark:text-purple-300'
-                          : 'hover:bg-muted'
-                      }`}
-                    >
-                      <PaintRoller className="mr-2 h-4 w-4" />
-                      Tools
-                      {is24HourPost && (
-                        <div className="ml-2 h-2 w-2 animate-pulse rounded-full bg-purple-500"></div>
-                      )}
-                    </Button>
-                  </PopoverTrigger>
-                  <PopoverContent
-                    className="bg-background border-border w-80 rounded-xl border p-0 shadow-xl"
-                    align="end"
-                  >
-                    <div className="p-4">
-                      <div className="mb-4 flex items-center gap-2">
-                        <PaintRoller className="text-foreground h-5 w-5" />
-                        <h3 className="text-foreground font-semibold">
-                          Post Tools
-                        </h3>
-                      </div>
-
-                      {/* tools popover */}
-                      <div className="space-y-4">
-                        {/* 24h Expiry Setting */}
-                        <FormField
-                          control={form.control}
-                          name="is24HourPost"
-                          render={({ field }) => (
-                            <FormItem>
-                              <div className="border-border hover:bg-muted/50 flex items-center justify-between rounded-lg border p-3 transition-colors">
-                                <div className="flex items-center gap-3">
-                                  <div
-                                    className={`rounded-lg p-2 ${
-                                      field.value
-                                        ? 'bg-purple-100 text-purple-600 dark:bg-purple-900 dark:text-purple-400'
-                                        : 'bg-muted text-muted-foreground'
-                                    }`}
-                                  >
-                                    <Timer className="h-4 w-4" />
-                                  </div>
-                                  <div>
-                                    <FormLabel className="text-foreground cursor-pointer text-sm font-medium">
-                                      24h Auto-Delete
-                                    </FormLabel>
-                                    <p className="text-muted-foreground text-xs">
-                                      Post will disappear after 24 hours
-                                    </p>
-                                  </div>
+                {/* Post Type Dropdown and 24h Expiry Toggle */}
+                <div className="relative flex items-end justify-between">
+                  <FormField
+                    control={form.control}
+                    name="type"
+                    render={({ field }) => (
+                      <FormItem className="relative flex-1">
+                        <FormLabel className="text-foreground text-sm font-medium">
+                          Post Type
+                        </FormLabel>
+                        <Select
+                          onValueChange={field.onChange}
+                          defaultValue={field.value}
+                        >
+                          <FormControl>
+                            <SelectTrigger className="w-48 rounded-xl border-0">
+                              <SelectValue />
+                            </SelectTrigger>
+                          </FormControl>
+                          <SelectContent className="bg-background border-border rounded-xl border shadow-xl">
+                            <SelectItem
+                              value="single"
+                              className="hover:bg-muted cursor-pointer rounded-lg p-3"
+                            >
+                              <div className="flex items-center gap-3">
+                                <div className="flex h-3 w-3 items-center justify-center rounded-full bg-green-500">
+                                  <div className="h-1.5 w-1.5 rounded-full bg-white"></div>
                                 </div>
-                                <FormControl>
-                                  <Switch
-                                    checked={field.value}
-                                    onCheckedChange={field.onChange}
-                                    className="data-[state=checked]:bg-purple-500"
-                                  />
-                                </FormControl>
+                                <div className="flex items-center gap-2">
+                                  <FileText className="text-muted-foreground h-4 w-4" />
+                                  <span className="font-medium">
+                                    Single Post
+                                  </span>
+                                </div>
                               </div>
-                            </FormItem>
-                          )}
+                            </SelectItem>
+                            <SelectItem
+                              value="carousel"
+                              className="hover:bg-muted cursor-pointer rounded-lg p-3"
+                            >
+                              <div className="flex items-center gap-3">
+                                <div className="flex h-3 w-3 items-center justify-center rounded-full bg-blue-500">
+                                  <div className="h-1.5 w-1.5 rounded-full bg-white"></div>
+                                </div>
+                                <div className="flex items-center gap-2">
+                                  <ImageIcon className="text-muted-foreground h-4 w-4" />
+                                  <span className="font-medium">Carousel</span>
+                                </div>
+                              </div>
+                            </SelectItem>
+                          </SelectContent>
+                        </Select>
+                        <FormMessage />
+                        <NewBadge
+                          size="sm"
+                          containerClass="absolute top-0 left-17"
                         />
+                      </FormItem>
+                    )}
+                  />
 
-                        {/* Future Settings Placeholder */}
-                        <div className="space-y-2">
-                          <div className="border-border flex items-center justify-between rounded-lg border border-dashed p-3 opacity-50">
-                            <div className="flex items-center gap-3">
-                              <div className="bg-muted text-muted-foreground rounded-lg p-2">
-                                <Globe className="h-4 w-4" />
-                              </div>
-                              <div>
-                                <div className="text-muted-foreground text-sm font-medium">
-                                  Visibility
+                  <Popover>
+                    <PopoverTrigger asChild>
+                      <Button
+                        type="button"
+                        variant="outline"
+                        size="sm"
+                        className={`mb-2 rounded-xl transition-all duration-200 ${
+                          is24HourPost
+                            ? 'border-purple-200 bg-purple-50 text-purple-700 dark:border-purple-800 dark:bg-purple-950 dark:text-purple-300'
+                            : 'hover:bg-muted'
+                        }`}
+                      >
+                        <PaintRoller className="mr-2 h-4 w-4" />
+                        Tools
+                        {is24HourPost && (
+                          <div className="ml-2 h-2 w-2 animate-pulse rounded-full bg-purple-500"></div>
+                        )}
+                      </Button>
+                    </PopoverTrigger>
+                    <PopoverContent
+                      className="bg-background border-border w-80 rounded-xl border p-0 shadow-xl"
+                      align="end"
+                    >
+                      <div className="p-4">
+                        <div className="mb-4 flex items-center gap-2">
+                          <PaintRoller className="text-foreground h-5 w-5" />
+                          <h3 className="text-foreground font-semibold">
+                            Post Tools
+                          </h3>
+                        </div>
+
+                        {/* tools popover */}
+                        <div className="space-y-4">
+                          {/* 24h Expiry Setting */}
+                          <FormField
+                            control={form.control}
+                            name="is24HourPost"
+                            render={({ field }) => (
+                              <FormItem>
+                                <div className="border-border hover:bg-muted/50 flex items-center justify-between rounded-lg border p-3 transition-colors">
+                                  <div className="flex items-center gap-3">
+                                    <div
+                                      className={`rounded-lg p-2 ${
+                                        field.value
+                                          ? 'bg-purple-100 text-purple-600 dark:bg-purple-900 dark:text-purple-400'
+                                          : 'bg-muted text-muted-foreground'
+                                      }`}
+                                    >
+                                      <Timer className="h-4 w-4" />
+                                    </div>
+                                    <div>
+                                      <FormLabel className="text-foreground cursor-pointer text-sm font-medium">
+                                        24h Auto-Delete
+                                      </FormLabel>
+                                      <p className="text-muted-foreground text-xs">
+                                        Post will disappear after 24 hours
+                                      </p>
+                                    </div>
+                                  </div>
+                                  <FormControl>
+                                    <Switch
+                                      checked={field.value}
+                                      onCheckedChange={field.onChange}
+                                      className="data-[state=checked]:bg-purple-500"
+                                    />
+                                  </FormControl>
                                 </div>
-                                <p className="text-muted-foreground text-xs">
-                                  Coming soon
-                                </p>
+                              </FormItem>
+                            )}
+                          />
+
+                          {/* Future Settings Placeholder */}
+                          <div className="space-y-2">
+                            <div className="border-border flex items-center justify-between rounded-lg border border-dashed p-3 opacity-50">
+                              <div className="flex items-center gap-3">
+                                <div className="bg-muted text-muted-foreground rounded-lg p-2">
+                                  <Globe className="h-4 w-4" />
+                                </div>
+                                <div>
+                                  <div className="text-muted-foreground text-sm font-medium">
+                                    Visibility
+                                  </div>
+                                  <p className="text-muted-foreground text-xs">
+                                    Coming soon
+                                  </p>
+                                </div>
                               </div>
                             </div>
-                          </div>
 
-                          {/* <div className="border-border flex items-center justify-between rounded-lg border border-dashed p-3 opacity-50">
+                            {/* <div className="border-border flex items-center justify-between rounded-lg border border-dashed p-3 opacity-50">
                             <div className="flex items-center gap-3">
                               <div className="bg-muted text-muted-foreground rounded-lg p-2">
                                 <Eye className="h-4 w-4" />
@@ -766,12 +782,12 @@ export function PostForm() {
                               </div>
                             </div>
                           </div> */}
+                          </div>
                         </div>
                       </div>
-                    </div>
-                  </PopoverContent>
-                </Popover>
-                {/* <FormField
+                    </PopoverContent>
+                  </Popover>
+                  {/* <FormField
                   control={form.control}
                   name="is24HourPost"
                   render={({ field }) => (
@@ -792,6 +808,7 @@ export function PostForm() {
                     </FormItem>
                   )}
                 /> */}
+                </div>
               </div>
 
               {/* Content Input */}
