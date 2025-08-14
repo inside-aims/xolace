@@ -1,4 +1,5 @@
 import React, { useRef, useEffect } from "react";
+import { motion, AnimatePresence } from "motion/react";
 import { Button } from "@/components/ui/button";
 import { Home, Users, ChevronDown } from "lucide-react";
 import { CampfirePurpose } from "./campfires.types";
@@ -12,7 +13,7 @@ export interface UserCampfire {
     description: string;
     iconURL?: string;
     purpose: CampfirePurpose;
-    role: 'firekeeper' | 'firestarter' | 'camper';
+    role: 'firestarter' | 'firekeeper' | 'camper';
     memberCount: number;
   }
 
@@ -97,90 +98,118 @@ export const CampfireSelector = ({
                             </div>
                         </>
                     )}
-                    <ChevronDown className="h-4 w-4 text-muted-foreground" />
+                    <motion.div
+                        animate={{ rotate: showCampfireSelector ? 180 : 0 }}
+                        transition={{ duration: 0.2, ease: "easeInOut" }}
+                    >
+                        <ChevronDown className="h-4 w-4 text-muted-foreground" />
+                    </motion.div>
                 </div>
             </Button>
 
-            {showCampfireSelector && (
-                <div className="absolute top-full left-0 right-0 z-50 mt-2 bg-bg dark:bg-bg-dark border border-border rounded-xl shadow-xl max-h-80 overflow-y-auto w-[60%] min-w-[70%] max-w-[80%] md:w-[50%] md:min-w-[50%] md:max-w-[60%] ">
-                    {/* Your Profile Option */}
-                    <button
-                        type="button"
-                        onClick={() => {
-                            setSelectedCampfire(null);
-                            setShowCampfireSelector(false);
-                        }}
-                        className={`w-full p-4 text-left hover:bg-muted/50 transition-colors border-b border-border ${
-                            !selectedCampfire ? 'bg-purple-50 dark:bg-purple-950/50' : ''
-                        }`}
+            <AnimatePresence>
+                {showCampfireSelector && (
+                    <motion.div
+                        initial={{ opacity: 0, y: -10, scale: 0.95 }}
+                        animate={{ opacity: 1, y: 0, scale: 1 }}
+                        exit={{ opacity: 0, y: -10, scale: 0.95 }}
+                        transition={{ duration: 0.15, ease: "easeOut" }}
+                        className="absolute top-full left-0 right-0 z-50 mt-2 bg-bg dark:bg-bg-dark border border-border rounded-xl shadow-xl max-h-80 overflow-y-auto w-[60%] min-w-[70%] max-w-[80%] md:w-[50%] md:min-w-[50%] md:max-w-[60%] "
                     >
-                        <div className="flex items-center gap-3">
-                            <div className="h-8 w-8 bg-gradient-to-br from-gray-400 to-gray-600 rounded-full flex items-center justify-center">
-                                <Home className="h-4 w-4 text-white" />
-                            </div>
-                            <div>
-                                <div className="font-medium text-sm">Your Profile</div>
-                                <div className="text-xs text-muted-foreground">Post to your timeline</div>
-                            </div>
-                        </div>
-                    </button>
-
-                    {/* Loading State */}
-                    {loadingCampfires && (
-                        <div className="p-4 text-center text-muted-foreground">
-                            <DefaultLoader size={20} />
-                        </div>
-                    )}
-
-                    {/* Campfires List */}
-                    {userCampfires.map(campfire => (
-                        <button
-                            key={campfire.campfireId}
+                        {/* Your Profile Option */}
+                        <motion.button
                             type="button"
                             onClick={() => {
-                                setSelectedCampfire(campfire);
+                                setSelectedCampfire(null);
                                 setShowCampfireSelector(false);
                             }}
-                            className={`w-full p-4 text-left hover:bg-muted/50 transition-colors ${
-                                selectedCampfire?.campfireId === campfire.campfireId 
-                                    ? 'bg-purple-50 dark:bg-purple-950/50' 
-                                    : ''
+                            className={`w-full p-4 text-left hover:bg-muted/50 transition-colors border-b border-border ${
+                                !selectedCampfire ? 'bg-purple-50 dark:bg-purple-950/50' : ''
                             }`}
+                            whileHover={{ x: 2 }}
+                            whileTap={{ scale: 0.98 }}
+                            transition={{ duration: 0.1 }}
                         >
                             <div className="flex items-center gap-3">
-                                {campfire.iconURL ? (
-                                    <Avatar className="h-8 w-8">
-                                        <AvatarImage className="rounded-full" src={campfire.iconURL || undefined} alt={campfire.name} />
-                                        <AvatarFallback className="border-lavender-500 flex h-8 w-8 items-center justify-center rounded-full border font-semibold text-white">
-                                            <span className={`bg-lavender-500 flex h-8 w-8 items-center justify-center rounded-full font-semibold text-white`}>x/
-                                            </span>
-                                        </AvatarFallback>
-                                    </Avatar>
-                                ) : (
-                                    <div className="h-8 w-8 bg-gradient-to-br from-purple-400 to-purple-600 rounded-full flex items-center justify-center">
-                                        <Users className="h-4 w-4 text-white" />
-                                    </div>
-                                )}
-                                <div className="flex-1">
-                                    <div className="font-medium text-sm">{campfire.name}</div>
-                                    <div className="text-xs text-muted-foreground">
-                                        {campfire.memberCount.toLocaleString()} members • {campfire.role}
-                                    </div>
+                                <div className="h-8 w-8 bg-gradient-to-br from-gray-400 to-gray-600 rounded-full flex items-center justify-center">
+                                    <Home className="h-4 w-4 text-white" />
+                                </div>
+                                <div>
+                                    <div className="font-medium text-sm">Your Profile</div>
+                                    <div className="text-xs text-muted-foreground">Post to your timeline</div>
                                 </div>
                             </div>
-                        </button>
-                    ))}
+                        </motion.button>
 
-                    {/* Empty State */}
-                    {!loadingCampfires && userCampfires.length === 0 && (
-                        <div className="p-6 text-center">
-                            <Users className="h-8 w-8 text-muted-foreground mx-auto mb-2" />
-                            <div className="text-sm font-medium text-muted-foreground">No campfires joined</div>
-                            <div className="text-xs text-muted-foreground">Join some campfires to post in them</div>
-                        </div>
-                    )}
-                </div>
-            )}
+                        {/* Loading State */}
+                        {loadingCampfires && (
+                            <motion.div 
+                                className="p-4 text-center text-muted-foreground"
+                                initial={{ opacity: 0 }}
+                                animate={{ opacity: 1 }}
+                                transition={{ delay: 0.1 }}
+                            >
+                                <DefaultLoader size={20} />
+                            </motion.div>
+                        )}
+
+                        {/* Campfires List */}
+                        {userCampfires.map((campfire) => (
+                            <motion.button
+                                key={campfire.campfireId}
+                                type="button"
+                                onClick={() => {
+                                    setSelectedCampfire(campfire);
+                                    setShowCampfireSelector(false);
+                                }}
+                                className={`w-full p-4 text-left hover:bg-muted/50 transition-colors ${
+                                    selectedCampfire?.campfireId === campfire.campfireId 
+                                        ? 'bg-purple-50 dark:bg-purple-950/50' 
+                                        : ''
+                                }`}
+                                whileHover={{ x: 2 }}
+                                whileTap={{ scale: 0.98 }}
+                            >
+                                <div className="flex items-center gap-3">
+                                    {campfire.iconURL ? (
+                                        <Avatar className="h-8 w-8">
+                                            <AvatarImage className="rounded-full" src={campfire.iconURL || undefined} alt={campfire.name} />
+                                            <AvatarFallback className="border-lavender-500 flex h-8 w-8 items-center justify-center rounded-full border font-semibold text-white">
+                                                <span className={`bg-lavender-500 flex h-8 w-8 items-center justify-center rounded-full font-semibold text-white`}>x/
+                                                </span>
+                                            </AvatarFallback>
+                                        </Avatar>
+                                    ) : (
+                                        <div className="h-8 w-8 bg-gradient-to-br from-purple-400 to-purple-600 rounded-full flex items-center justify-center">
+                                            <Users className="h-4 w-4 text-white" />
+                                        </div>
+                                    )}
+                                    <div className="flex-1">
+                                        <div className="font-medium text-sm">{campfire.name}</div>
+                                        <div className="text-xs text-muted-foreground">
+                                            {campfire.memberCount.toLocaleString()} members • {campfire.role}
+                                        </div>
+                                    </div>
+                                </div>
+                            </motion.button>
+                        ))}
+
+                        {/* Empty State */}
+                        {!loadingCampfires && userCampfires.length === 0 && (
+                            <motion.div 
+                                className="p-6 text-center"
+                                initial={{ opacity: 0, y: 10 }}
+                                animate={{ opacity: 1, y: 0 }}
+                                transition={{ delay: 0.1 }}
+                            >
+                                <Users className="h-8 w-8 text-muted-foreground mx-auto mb-2" />
+                                <div className="text-sm font-medium text-muted-foreground">No campfires joined</div>
+                                <div className="text-xs text-muted-foreground">Join some campfires to post in them</div>
+                            </motion.div>
+                        )}
+                    </motion.div>
+                )}
+            </AnimatePresence>
         </div>
     );
 };
