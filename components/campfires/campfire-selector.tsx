@@ -12,7 +12,7 @@ export interface UserCampfire {
     description: string;
     iconURL?: string;
     purpose: CampfirePurpose;
-    role: 'admin' | 'moderator' | 'camper';
+    role: 'firekeeper' | 'firestarter' | 'camper';
     memberCount: number;
   }
 
