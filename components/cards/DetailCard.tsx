@@ -110,8 +110,13 @@ export function DetailCard({
   const isMentor = author_roles.includes('mentor');
   const isVerified = author_roles.includes('verified');
 
-  const displayName = campfires.name || post.author_name;
-  const displayAvatarUrl = campfires.icon_url || post.author_avatar_url;
+  let displayName = author_name;
+  let displayAvatarUrl = author_avatar_url;
+
+  if(campfires){
+    displayName = campfires.name || post.author_name;
+    displayAvatarUrl = campfires.icon_url || post.author_avatar_url;
+  }
   return (
     <>
       <Card className="mt-5 w-full rounded-none border-0 border-x-0 max-sm:mb-5 md:w-[calc(100vw-var(--sidebar-width))] md:px-8">
