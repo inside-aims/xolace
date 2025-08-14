@@ -498,7 +498,7 @@ export function PostForm() {
             tag_names: tags,
             type,
             slide_contents: slidesWithoutTags,
-            campfire_id: selectedCampfire?.campfireId || null,
+            campfire_id: selectedCampfire ? selectedCampfire.campfireId : undefined,
           },
         );
 
