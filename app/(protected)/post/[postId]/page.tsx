@@ -62,6 +62,11 @@ const PostDetailPage = async (props: {
           post_slides (
             slide_index,
             content
+          ),
+          campfires!posts_campfire_id_fkey (
+            name,
+            icon_url,
+            slug
           )  
    `,
     )
@@ -75,8 +80,11 @@ const PostDetailPage = async (props: {
 
   //  check for error
   if (error) {
+    console.log(error)
     return notFound();
   }
+
+  console.log(post)
 
   return (
     <Comment postId={postId} post={post} type={type} />

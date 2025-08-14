@@ -53,6 +53,11 @@ type DetailPost = Database['public']['Tables']['posts']['Row'] & {
     content: string;
     slide_index: number;
   }[];
+  campfires: {
+    name: string;
+    icon_url?: string;
+    slug: string;
+  };
 };
 
 // types/campfire.ts - New types for campfire functionality
@@ -93,3 +98,43 @@ type SupaVideoDetails = Database['public']['Tables']['videos']['Row'] & {
 }
 
 type Notification = Database['public']['Tables']['notifications']['Row']
+
+
+export interface EnhancedPost {
+  id: string;
+  created_at: string;
+  created_by: string | null;
+  author_name: string;
+  content: string;
+  mood: string;
+  author_avatar_url: string | null;
+  expires_in_24hr: boolean;
+  duration: string | null;
+  expires_at: string | null;
+  downvotes: number;
+  upvotes: number;
+  is_sensitive: boolean;
+  is_prompt_response: boolean;
+  type: string;
+  author_roles: ("normal_user" | "verified" | "blue_team" | "help_professional" | "mentor")[];
+  campfire_id: string | null;
+  campfire_name: string | null;
+  campfire_slug: string | null;
+  campfire_icon_url: string | null;
+  priority_score: number;
+  is_new_post: boolean;
+  is_campfire_post: boolean;
+  posttags: Array<{ name: string }>;
+  comments_count: number;
+  views_count: number;
+  collections: Array<{ user_id: string }>;
+  post_slides: Array<{ slide_index: number; content: string }>;
+}
+
+export interface PostMetricData {
+  id: string;
+  comments: Array<{ count: number }>;
+  created_by: string | null;
+  upvotes: number;
+  downvotes: number;
+}

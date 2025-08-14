@@ -89,6 +89,7 @@
     "react-dom": "19.1.0",
     "react-easy-crop": "^5.5.0",
     "react-hook-form": "^7.60.0",
+    "react-intersection-observer": "^9.16.0",
     "react-markdown": "^10.1.0",
     "react-phone-number-input": "^3.4.12",
     "reading-time-estimator": "^1.14.0",

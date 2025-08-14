@@ -9,7 +9,7 @@ export interface UserCampfire {
   description: string;
   iconURL?: string;
   purpose: CampfirePurpose;
-  role: 'admin' | 'moderator' | 'camper';
+  role: 'firestarter' | 'firekeeper' | 'camper';
   memberCount: number;
 }
 
@@ -51,7 +51,7 @@ export function getUserCampfires(userId?: string) {
 
       // Type assertion for the joined data structure
       const typedData = data as unknown as Array<{
-        role: 'admin' | 'moderator' | 'camper';
+        role: 'firestarter' | 'firekeeper' | 'camper';
         campfire_id: string;
         campfires: {
           id: string;
