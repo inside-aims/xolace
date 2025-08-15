@@ -76,7 +76,7 @@ const ManageCampfireCard = ({
         <div className="flex min-w-0 flex-col">
           <Link
             href={`/x/${slug}`}
-            className="truncate font-semibold hover:underline"
+            className="active:text-lavender-400 truncate font-semibold hover:underline active:underline"
           >
             {name}
           </Link>
@@ -107,25 +107,25 @@ const ManageCampfireCard = ({
           />
         </button>
 
-                {isJoined ? (
-                  <Button 
-                    size="sm" 
-                    variant="outline" 
-                    className="rounded-full px-3 h-8 text-xs border dark:border-neutral-300"
-                    disabled
-                  >
-                    Joined
-                  </Button>
-                ) : (
-                  <Button 
-                    size="sm" 
-                    onClick={handleJoinClick}
-                    disabled={isJoining}
-                    className="rounded-full px-3 h-8 text-xs"
-                  >
-                    {isJoining ? 'Joining...' : 'Join'}
-                  </Button>
-                )}
+        {isJoined ? (
+          <Button
+            size="sm"
+            variant="outline"
+            className="h-8 rounded-full border px-3 text-xs dark:border-neutral-300"
+            disabled
+          >
+            Joined
+          </Button>
+        ) : (
+          <Button
+            size="sm"
+            onClick={handleJoinClick}
+            disabled={isJoining}
+            className="h-8 rounded-full px-3 text-xs"
+          >
+            {isJoining ? 'Joining...' : 'Join'}
+          </Button>
+        )}
       </div>
     </div>
   );

@@ -17,6 +17,7 @@ export interface CampfireDetails {
   createdBy: string;
   visibility: 'public' | 'private' | 'restricted' | 'secret';
   memberRole: 'camper' | 'firestarter' | 'firekeeper' ;
+  isFavorite: boolean;
 }
 
 const QUERY_STALE_TIME = 5 * 60 * 1000; // 5 minutes
@@ -63,11 +64,12 @@ export function getCampfireWithSlug(slug: string, userId?: string) {
 
       // Check membership separately if user is provided
       let isMember = false;
+      let isFavorite = false;
       let memberRole: 'camper' | 'firestarter' | 'firekeeper' = 'camper';
       if (userId) {
         const { data: membershipData, error: membershipError } = await supabase
           .from('campfire_members')
-          .select('id, role')
+          .select('id, role, is_favorite')
           .eq('campfire_id', campfireData.id)
           .eq('user_id', userId)
           .single();
@@ -78,6 +80,7 @@ export function getCampfireWithSlug(slug: string, userId?: string) {
 
         isMember = !!membershipData;
         memberRole = membershipData?.role || 'camper';
+        isFavorite = membershipData?.is_favorite || false;
       }
 
       console.log('Campfire data:', campfireData);
@@ -96,6 +99,7 @@ export function getCampfireWithSlug(slug: string, userId?: string) {
         visibility: campfireData.visibility,
         isMember,
         memberRole,
+        isFavorite,
       } as CampfireDetails;
     },
     staleTime: QUERY_STALE_TIME,

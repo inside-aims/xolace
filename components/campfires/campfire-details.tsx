@@ -16,6 +16,10 @@ import { useLeaveCampfireMutation } from "@/hooks/campfires/useLeaveCampfireMuta
 import { formatMembers, getBgSeverity } from "./campfires.types";
 import { Avatar, AvatarFallback, AvatarImage } from "../ui/avatar";
 import CampfireActionsPopover from "./campfire-actions-popover";
+import {
+  useAddFavoriteCampfireMutation,
+  useRemoveFavoriteCampfireMutation,
+} from '@/hooks/campfires/useFavoriteCampfireMutation';
 
 const CampfireDetails = ({slug}: {slug : string}) => {
   const user = useUserState(state => state.user);
@@ -33,6 +37,10 @@ const CampfireDetails = ({slug}: {slug : string}) => {
   // Mutations for joining/leaving campfire
   const joinMutation = useJoinCampfireMutation();
   const leaveMutation = useLeaveCampfireMutation();
+
+  // Mutations for favorite campfire
+    const addFavoriteMutation = useAddFavoriteCampfireMutation();
+    const removeFavoriteMutation = useRemoveFavoriteCampfireMutation();
 
   const handleCreatePost = () => {
     if (!user) {
@@ -63,6 +71,29 @@ const CampfireDetails = ({slug}: {slug : string}) => {
       refetch();
     } catch (error) {
       console.error("Error toggling membership:", error);
+    }
+  };
+
+  //Helper for favorite action
+  const handleFavoriteToggle = async () => {
+    if (!user) {
+      toast.error("Please sign in to favorite this campfire");
+      router.push("/sign-in");
+      return;
+    }
+
+    if (!campfire) return;
+
+    try {
+      if (campfire.isFavorite) {
+        await removeFavoriteMutation.mutateAsync(campfire.campfireId);
+      } else {
+        await addFavoriteMutation.mutateAsync(campfire.campfireId);
+      }
+      // Refetch to get updated data
+      refetch();
+    } catch (error) {
+      console.error("Error toggling favorite:", error);
     }
   };
 
@@ -226,7 +257,10 @@ const CampfireDetails = ({slug}: {slug : string}) => {
               description: campfire.description,
               slug: campfire.slug,
               isMember: campfire.isMember,
+              isFavorite: campfire.isFavorite,
             }}
+            onAddToFavorites={handleFavoriteToggle}
+            isProcessingFavorite={addFavoriteMutation.isPending || removeFavoriteMutation.isPending}
           />
         </div>
       </div>
