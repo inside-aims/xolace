@@ -13,7 +13,6 @@ import {
   Share2,
   Copy,
   Heart,
-  Plus,
   Volume2,
   VolumeX,
   Flag,
@@ -76,7 +75,7 @@ const CampfireActionsPopover: React.FC<CampfireActionsPopoverProps> = ({
     try {
       await navigator.clipboard.writeText(window.location.href);
       toast.success('Campfire link copied to clipboard!');
-    } catch (error) {
+    } catch (_) {
       // Final fallback for older browsers
       const textArea = document.createElement('textarea');
       textArea.value = window.location.href;
@@ -86,7 +85,7 @@ const CampfireActionsPopover: React.FC<CampfireActionsPopoverProps> = ({
       try {
         document.execCommand('copy');
         toast.success('Campfire link copied to clipboard!');
-      } catch (fallbackError) {
+      } catch (_) {
         toast.error('Unable to copy link');
       }
       document.body.removeChild(textArea);
@@ -102,14 +101,14 @@ const CampfireActionsPopover: React.FC<CampfireActionsPopoverProps> = ({
     }
   };
 
-  const handleAddToCustomFeed = () => {
-    setIsOpen(false);
-    if (onAddToCustomFeed) {
-      onAddToCustomFeed();
-    } else {
-      toast.info('Custom feed feature coming soon!');
-    }
-  };
+  // const handleAddToCustomFeed = () => {
+  //   setIsOpen(false);
+  //   if (onAddToCustomFeed) {
+  //     onAddToCustomFeed();
+  //   } else {
+  //     toast.info('Custom feed feature coming soon!');
+  //   }
+  // };
 
   const handleMuteToggle = () => {
     setIsOpen(false);

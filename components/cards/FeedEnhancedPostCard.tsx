@@ -22,7 +22,6 @@ import ReportForm from '../forms/ReportForm';
 import KvngDialogDrawer from '../shared/KvngDialogDrawer';
 import { truncateText } from '@/lib/utils';
 import TagCard from './TagCard';
-import { Post } from '@/types/global';
 import { usePreferencesStore } from '@/lib/store/preferences-store';
 import PostCardMask from '../shared/masks/PostCardMask';
 import {
@@ -48,6 +47,7 @@ import { Badge } from '../ui/badge';
 import { SinglePost } from '../shared/SinglePost';
 import SimpleCarouselPost from '../shared/Tour/SimpleCorouselPost';
 import profBadge from "../../public/assets/images/user-role-badges/consellors-badge.webp"
+import { EnhancedPost } from '@/queries/posts/getEnhancedFeed';
 
 const moodIcons: Record<string, React.JSX.Element> = {
   happy: <Smile className="h-4 w-4" />,
@@ -118,7 +118,7 @@ interface CampfireOverride {
 
 type PostCardType = {
   className?: string;
-  post: Post;
+  post: EnhancedPost;
   section?: 'profile';
   onClick?: () => void;
   signedUrls?: Record<string, string>;
@@ -131,7 +131,7 @@ export interface TagProps {
   };
 }
 
-export function EnhancedPostCard({ 
+export function FeedEnhancedPostCard({ 
   className, 
   post, 
   onClick, 
@@ -166,11 +166,11 @@ export function EnhancedPostCard({
   const isVerified = post.author_roles.includes('verified');
 
   // Determine display values (campfire override or original author)
-  const displayName = campfireOverride?.name || post.author_name;
+  const displayName = post.campfire_name || post.author_name;
   // const displayAvatarUrl = campfireOverride?.iconUrl || post.author_avatar_url;
   
   // Avatar source logic with campfire support
-  const avatarSrc = campfireOverride?.iconUrl || 
+  const avatarSrc = post.campfire_icon_url || 
     (post.author_avatar_url && signedUrls?.[post.author_avatar_url]) || 
     post.author_avatar_url || 
     undefined;
@@ -182,6 +182,19 @@ export function EnhancedPostCard({
 
   // Show original author info when in campfire context
   const showOriginalAuthor = !!campfireOverride;
+
+  //post metric data
+  const postMetricData = {
+    id: post.id,
+    comments: [
+        {
+            count: post.comments_count
+        }
+    ],
+    created_by: post.created_by,
+    upvotes: post.upvotes,
+    downvotes: post.downvotes,
+  }
 
   return (
     <>
@@ -247,7 +260,7 @@ export function EnhancedPostCard({
                     VERIFIED
                   </Badge>
                 )}
-                {campfireOverride && (
+                {post.is_campfire_post && (
                   <Badge variant="minimal" className="text-[8px] py-[1px] text-purple-400 bg-purple-900/90 dark:bg-purple-900/20 border-purple-800/50">
                     CAMPFIRE
                   </Badge>
@@ -277,21 +290,21 @@ export function EnhancedPostCard({
           )}
           <div className="mt-2 flex flex-wrap gap-2">
             {post.posttags &&
-              post.posttags.map((tag: TagProps, index: number) => (
+              post.posttags.map((tag, index: number) => (
                 <TagCard
-                  key={`${tag.tags.name}_${index}`}
-                  name={tag.tags.name}
-                  _id={`${tag.tags.name}_${index}`}
+                  key={`${tag.name}_${index}`}
+                  name={tag.name}
+                  _id={`${tag.name}_${index}`}
                 />
               ))}
           </div>
         </CardContent>
 
         <CardFooter className="flex w-full items-center justify-between">
-          <PostMetrics post={post} userId={user?.id || ''} />
+          <PostMetrics post={postMetricData} userId={user?.id || ''} />
           <div className="flex items-center gap-2" id="view-btn">
             <ScanEye className="size-4 text-red-200 sm:size-4" />
-            <span className="font-button-small">{post.views[0].count}</span>
+            <span className="font-button-small">{post.views_count}</span>
           </div>
 
           <div className="flex items-center justify-center gap-2">

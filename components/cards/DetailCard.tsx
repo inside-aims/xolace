@@ -103,11 +103,20 @@ export function DetailCard({
     type,
     post_slides,
     author_roles,
+    campfires,
   } = post;
 
   const isProfessional = author_roles.includes('help_professional');
   const isMentor = author_roles.includes('mentor');
   const isVerified = author_roles.includes('verified');
+
+  let displayName = author_name;
+  let displayAvatarUrl = author_avatar_url;
+
+  if(campfires){
+    displayName = campfires.name || post.author_name;
+    displayAvatarUrl = campfires.icon_url || post.author_avatar_url;
+  }
   return (
     <>
       <Card className="mt-5 w-full rounded-none border-0 border-x-0 max-sm:mb-5 md:w-[calc(100vw-var(--sidebar-width))] md:px-8">
@@ -119,18 +128,19 @@ export function DetailCard({
             >
               <ArrowLeft size={22} className="text-white" />
             </button>
-            <Avatar>
+            <Avatar className='max-sm:h-9 max-sm:w-9'>
               <AvatarImage
-                src={author_avatar_url || undefined}
-                alt={author_name}
-                className="max-sm:h-9 max-sm:w-9"
+                src={displayAvatarUrl || undefined}
+                alt={displayName}
               />
-              <AvatarFallback className='bg-gradient-to-br from-[#0536ff] to-[#6a71ea] text-white'>{author_name.slice(0, 2).toUpperCase()}</AvatarFallback>
+              <AvatarFallback className="bg-gradient-to-br from-[#0536ff] to-[#6a71ea] text-white">
+                {displayName.slice(0, 2).toUpperCase()}
+              </AvatarFallback>
             </Avatar>
             <div className="flex flex-col items-start justify-center">
               <div className="flex items-center gap-1">
                 <h5 className="text-small text-default-400 tracking-tight">
-                  {author_name}
+                  {displayName}
                 </h5>
                 <div
                   className={`h-5 w-5 ${moodColors[mood]} flex items-center justify-center rounded-full text-white`}
@@ -139,12 +149,41 @@ export function DetailCard({
                 </div>
               </div>
               <div className="flex items-center gap-2">
-              <small className="text-sm text-zinc-500 dark:text-gray-400">
-                {format(created_at, 'short-en')}
-              </small>
-              {isProfessional && <Badge variant="minimal" className="text-[8px] py-[1px] text-green-400 bg-green-900/90 dark:bg-green-900/20 border-green-800/50">PROFESSIONAL</Badge>}
-              {isMentor && <Badge variant="minimal" className="text-[8px] py-[1px] text-orange-400 bg-orange-900/90 dark:bg-orange-900/20 border-orange-800/50">MENTOR</Badge>}
-              {isVerified && <Badge variant="minimal" className="text-[8px] py-[1px] text-blue-400 bg-blue-900/90 dark:bg-blue-900/20 border-blue-800/50">VERIFIED</Badge>}
+                <small className="text-sm text-zinc-500 dark:text-gray-400">
+                  {format(created_at, 'short-en')}
+                </small>
+                {isProfessional && (
+                  <Badge
+                    variant="minimal"
+                    className="border-green-800/50 bg-green-900/90 py-[1px] text-[8px] text-green-400 dark:bg-green-900/20"
+                  >
+                    PROFESSIONAL
+                  </Badge>
+                )}
+                {isMentor && (
+                  <Badge
+                    variant="minimal"
+                    className="border-orange-800/50 bg-orange-900/90 py-[1px] text-[8px] text-orange-400 dark:bg-orange-900/20"
+                  >
+                    MENTOR
+                  </Badge>
+                )}
+                {isVerified && (
+                  <Badge
+                    variant="minimal"
+                    className="border-blue-800/50 bg-blue-900/90 py-[1px] text-[8px] text-blue-400 dark:bg-blue-900/20"
+                  >
+                    VERIFIED
+                  </Badge>
+                )}
+                {campfires && (
+                  <Badge
+                    variant="minimal"
+                    className="border-purple-800/50 bg-purple-900/90 py-[1px] text-[8px] text-purple-400 dark:bg-purple-900/20"
+                  >
+                    CAMPFIRE
+                  </Badge>
+                )}
               </div>
             </div>
           </div>

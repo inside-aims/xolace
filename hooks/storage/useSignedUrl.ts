@@ -4,13 +4,14 @@ import {useMemo} from 'react';
 import { useQuery } from '@tanstack/react-query';
 import { getBatchSignedUrls } from '@/lib/actions/storage.actions';
 import { Post } from '@/types/global';
+import { EnhancedPost } from '@/queries/posts/getEnhancedFeed';
 
 /**
  * A React Query hook to efficiently fetch a batch of signed URLs for post avatars.
  * @param posts - The array of posts from the initial feed query.
  * @returns The result of the React Query operation, containing a map of avatar paths to signed URLs.
  */
-export const useSignedAvatarUrls = (posts: Post[] | undefined) => {
+export const useSignedAvatarUrls = (posts: Post[] | EnhancedPost[] | undefined) => {
   // 1. Extract only the avatar paths that need a signed URL
   const avatarPaths = useMemo(() => {
     if (!posts) return [];

@@ -1600,6 +1600,7 @@ export type Database = {
           type?: Database["public"]["Enums"]["post_type"]
           tag_names?: string[]
           slide_contents?: string[]
+          campfire_id?: string
         }
         Returns: string
       }
@@ -1653,6 +1654,21 @@ export type Database = {
         }
         Returns: string
       }
+      create_post_with_tags_v5: {
+        Args: {
+          content: string
+          mood: Database["public"]["Enums"]["post_mood"]
+          expires_in_24hr: boolean
+          duration?: Database["public"]["Enums"]["post_duration"]
+          expires_at?: string
+          is_sensitive?: boolean
+          is_prompt_response?: boolean
+          type?: Database["public"]["Enums"]["post_type"]
+          tag_names?: string[]
+          slide_contents?: string[]
+        }
+        Returns: string
+      }
       get_campfire_members_by_roles: {
         Args: {
           p_campfire_id: string
@@ -1698,6 +1714,43 @@ export type Database = {
           user_id: string
           username: string
           welcome_message: string | null
+        }[]
+      }
+      get_personalized_feed: {
+        Args: {
+          user_id_param: string
+          page_size?: number
+          offset_param?: number
+        }
+        Returns: {
+          id: string
+          created_at: string
+          created_by: string
+          author_name: string
+          content: string
+          mood: Database["public"]["Enums"]["post_mood"]
+          author_avatar_url: string
+          expires_in_24hr: boolean
+          duration: Database["public"]["Enums"]["post_duration"]
+          expires_at: string
+          downvotes: number
+          upvotes: number
+          is_sensitive: boolean
+          is_prompt_response: boolean
+          type: Database["public"]["Enums"]["post_type"]
+          author_roles: Database["public"]["Enums"]["user_role"][]
+          campfire_id: string
+          campfire_name: string
+          campfire_slug: string
+          campfire_icon_url: string
+          priority_score: number
+          is_new_post: boolean
+          is_campfire_post: boolean
+          posttags: Json
+          comments_count: number
+          views_count: number
+          collections: Json
+          post_slides: Json
         }[]
       }
       get_user_stats: {

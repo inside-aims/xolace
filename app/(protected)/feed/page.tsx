@@ -1,6 +1,6 @@
 import type { Metadata } from 'next';
 
-import FeedList from '@/components/shared/FeedList';
+import EnhancedFeedList from '@/components/shared/EnhancedFeedList';
 import TourProvider from '@/components/shared/Tour/TourProvider';
 import { FeedSteps } from '@/constants/tourSteps';
 import TourButton from '@/components/shared/Tour/TourButton';
@@ -12,57 +12,49 @@ import {
   HydrationBoundary,
   QueryClient,
 } from '@tanstack/react-query';
-import { getAllPosts } from '@/queries/posts/getAllPosts.action';
+import { getEnhancedFeedForCurrentUser } from '@/queries/posts/getEnhancedFeedForCurrentUser.action';
 
 export const metadata: Metadata = {
   title: 'Feed',
-  description: "Discover different stories , experiences from real and unique individuals as well as the community"
+  description: "Discover different stories, experiences from real and unique individuals as well as the community"
 };
 
-export default async function FeedPage() {
+export default async function EnhancedFeedPage() {
   const queryClient = new QueryClient();
 
-  // Note we are now using fetchQuery()
- await queryClient.prefetchQuery({
-    queryKey: ['posts'],
-    queryFn: getAllPosts,
-  });
+  // Prefetch the first page of enhanced feed
+  try {
+    const initialFeedData = await getEnhancedFeedForCurrentUser(50, 0);
+    console.log("Initial feed ", initialFeedData)
+    
+    // Set the initial data for the infinite query
+    queryClient.setQueryData(['enhanced-feed'], {
+      pages: [
+        {
+          posts: initialFeedData,
+          nextOffset: initialFeedData.length === 50 ? 50 : null,
+          hasMore: initialFeedData.length === 50
+        }
+      ],
+      pageParams: [0]
+    });
+  } catch (error) {
+    console.error('Failed to prefetch enhanced feed:', error);
+    // Continue without prefetched data - the client will handle loading
+  }
 
   return (
     <TourProvider steps={FeedSteps}>
       <HydrationBoundary state={dehydrate(queryClient)}>
         <HealthTipsWrapper>
           <DailyPrompt />
-
-          <FeedList />
+          <EnhancedFeedList />
         </HealthTipsWrapper>
       </HydrationBoundary>
       <div className="fixed right-6 bottom-10 z-50 block rounded-full md:right-20 md:bottom-10 bg-green-500">
         <TourButton />
       </div>
-
-      {/* Enhanced Chat Interface */}
-      {/* <EnhancedAIChatInterface /> */}
       <WelcomeModalCard />
     </TourProvider>
   );
-}
-
-{
-  /* <RadioGroup defaultValue="comfortable" className=' flex' >
-      <div className="flex items-center space-x-2">
-        <RadioGroupItem value="default" id="r1" className=' w-20 h-20 bg-white'  >
-          <RocketIcon className="mr-2 h-10 w-10 text-red-400" />
-        </RadioGroupItem>
-        <Label htmlFor="r1">Default</Label>
-      </div>
-      <div className="flex items-center space-x-2">
-        <RadioGroupItem value="comfortable" id="r2" />
-        <Label htmlFor="r2">Comfortable</Label>
-      </div>
-      <div className="flex items-center space-x-2">
-        <RadioGroupItem value="compact" id="r3" />
-        <Label htmlFor="r3">Compact</Label>
-      </div>
-    </RadioGroup> */
 }

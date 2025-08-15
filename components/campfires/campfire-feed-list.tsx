@@ -75,7 +75,7 @@ const CampfireFeedList = ({
 
             sessionStorage.removeItem(`campfireFeedViewContext-${campfireId}`);
           }, 600);
-        } catch (error) {
+        } catch (_) {
           sessionStorage.removeItem(`campfireFeedViewContext-${campfireId}`);
         }
       }

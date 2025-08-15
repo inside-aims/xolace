@@ -5,7 +5,7 @@ import {Button} from "@/components/ui/button";
 import {Separator} from "@/components/ui/separator";
 import {Accordion, AccordionContent, AccordionItem, AccordionTrigger} from "@/components/ui/accordion";
 import React from "react";
-import {CampfireAvatarInterface, formatMembers} from "@/components/campfires/campfires.types";
+import { formatMembers} from "@/components/campfires/campfires.types";
 import CampfireAvatar from "@/components/campfires/campfire-avatar";
 import Link from 'next/link';
 import {CampfireDetails} from "@/queries/campfires/getCampfireWithSlug";
