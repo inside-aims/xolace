@@ -25,6 +25,11 @@ export function usePosts() {
           post_slides (
             slide_index,
             content
+          ),
+          campfires (
+            name,
+            icon_url,
+            slug
           )  
       `,
         )

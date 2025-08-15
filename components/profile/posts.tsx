@@ -65,6 +65,11 @@ const Posts = () => {
           post_slides (
             slide_index,
             content
+          ),
+          campfires (
+            name,
+            slug,
+            icon_url
           )  
     `,
         )

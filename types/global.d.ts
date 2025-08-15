@@ -35,6 +35,11 @@ type Post = Database['public']['Tables']['posts']['Row'] & {
     content: string;
     slide_index: number;
   }[];
+  campfires: {
+    name: string;
+    icon_url: string | null;
+    slug: string;
+  } | null;
 };
 
 type DetailPost = Database['public']['Tables']['posts']['Row'] & {

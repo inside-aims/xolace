@@ -8,7 +8,7 @@ import { cn } from '@/lib/utils';
 import { Post } from '@/types/global';
 import { usePathname, useRouter } from 'next/navigation';
 import { FeedSkeletonCard } from '@/components/shared/loaders/FeedSkeletonLoader';
-
+import { useSignedAvatarUrls } from '@/hooks/storage/useSignedUrl';
 
 const PostCard = dynamic(
   () => import('@/components/cards/PostCard').then(mod => mod.PostCard),
@@ -32,6 +32,8 @@ interface Props {
 const ExploreFeedList = ({ filteredPosts }: Props) => {
   const router = useRouter();
   const pathname = usePathname();
+
+    const { data: signedUrls } = useSignedAvatarUrls(filteredPosts);
 
   // Store post order in session storage when component mounts or posts change
   useEffect(() => {
@@ -95,6 +97,8 @@ const ExploreFeedList = ({ filteredPosts }: Props) => {
                 'mb-3 w-full overflow-hidden transition-colors duration-300',
               )}
               onClick={() => handlePostClick(post.id)}
+              signedUrls={signedUrls}
+              campfireOverride={post.campfires ?{name: post.campfires.name, iconUrl: post.campfires.icon_url, slug: post.campfires.slug} : undefined}
             />
           </motion.div>
         ))
@@ -108,7 +112,7 @@ const ExploreFeedList = ({ filteredPosts }: Props) => {
     <>
       <motion.div
         layout
-        className="mt-10 mb-10 grid w-full grid-cols-1 gap-6 md:px-8"
+        className="mt-10 mb-10 grid w-full grid-cols-1 gap-3 md:px-8"
       >
         <AnimatePresence>
           {renderedPosts}

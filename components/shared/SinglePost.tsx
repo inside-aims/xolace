@@ -7,7 +7,7 @@ interface SinglePostProps {
     return (
       <div className="relative" onClick={onClick}>
         <div className="bg-transparent  rounded-2xl py-2 ">
-          <p className="dark:text-white leading-relaxed text-content-label whitespace-pre-wrap">{content}</p>
+          <p className="dark:text-white leading-relaxed text-content-label whitespace-pre-wrap active:text-lavender-400">{content}</p>
         </div>
   
         {/* Decorative elements */}

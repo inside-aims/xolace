@@ -48,6 +48,7 @@ import { Badge } from '../ui/badge';
 import { SinglePost } from '../shared/SinglePost';
 import SimpleCarouselPost from '../shared/Tour/SimpleCorouselPost';
 import profBadge from "../../public/assets/images/user-role-badges/consellors-badge.webp"
+import Link from 'next/link';
 
 const moodIcons: Record<string, React.JSX.Element> = {
   happy: <Smile className="h-4 w-4" />,
@@ -119,7 +120,7 @@ interface CampfireOverride {
 type PostCardType = {
   className?: string;
   post: Post;
-  section?: 'profile';
+  section?: 'profile' | 'collections';
   onClick?: () => void;
   signedUrls?: Record<string, string>;
   campfireOverride?: CampfireOverride; // New prop for campfire context
@@ -136,7 +137,8 @@ export function EnhancedPostCard({
   post, 
   onClick, 
   signedUrls, 
-  campfireOverride 
+  campfireOverride,
+  section 
 }: PostCardType) {
   // Get user data
   const user = useUserState(state => state.user);
@@ -208,9 +210,18 @@ export function EnhancedPostCard({
             </Avatar>
             <div className="flex flex-col items-start justify-center">
               <div className="flex items-center gap-2">
-                <h4 className="text-foreground font-semibold">
-                  {displayName}
-                </h4>
+              {campfireOverride ? (
+                  <Link className='active:underline active:text-lavender-400' href={`/x/${campfireOverride.slug}`}>
+                    {' '}
+                    <h4 className="text-foreground font-semibold">
+                      {displayName}
+                    </h4>
+                  </Link>
+                ) : (
+                  <h4 className="text-foreground font-semibold">
+                    {displayName}
+                  </h4>
+                )}
                 <div
                   className={`h-5 w-5 ${moodColors[post.mood]} flex items-center justify-center rounded-full text-white`}
                 >
@@ -224,7 +235,7 @@ export function EnhancedPostCard({
               </div>
 
               <div className="text-muted-foreground flex items-center gap-2 text-sm">
-                {showOriginalAuthor && (
+                {showOriginalAuthor && section != 'collections' && (
                   <small className="text-[11px] text-zinc-400 dark:text-gray-500">
                     by {post.author_name} • 
                   </small>
