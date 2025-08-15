@@ -22,8 +22,6 @@ import { useJoinCampfireMutation } from '@/hooks/campfires/useJoinCampfireMutati
 import { useInView } from 'react-intersection-observer';
 import { getUserJoinedCampfires } from '@/queries/campfires/getUserJoinedCampfires';
 import { getUserFavoriteCampfires } from '@/queries/campfires/getUserFavouriteCampfires';
-import { OnboardingTooltip } from '../shared/onboarding-tooltip';
-import { UserCampfireFavoriteJoin } from '@/components/campfires/campfires.types';
 
 const tabOptions: { key: string; label: string }[] = [
   { key: 'allCampfires', label: 'All Campfires' },
