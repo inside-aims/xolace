@@ -144,7 +144,6 @@ const DiscoverCampfireList = () => {
                      onJoin={() => handleJoinClick(campfire.campfireId)}
                      isMember={campfire.isMember}
                    />
-                   <Separator />
                  </div>
                 ))}
               </div>
