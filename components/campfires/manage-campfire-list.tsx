@@ -147,35 +147,16 @@ const ManageCampfireList = () => {
       <div className="flex w-full max-w-6xl flex-col items-start justify-start gap-4 px-4 pt-4 md:pt-8">
         <div className="flex w-full items-center justify-between">
           <h1 className="text-2xl font-bold">Manage Campfires</h1>
-
-          <OnboardingTooltip
-            id="manage-campfires-intro"
-            content={{
-              title: 'Welcome to Your Campfires!',
-              description:
-                "Here you can view all campfires you've joined and mark your favorites for quick access.",
-            }}
-            position="bottom"
-          >
             <div className="text-muted-foreground text-sm">
               {selectedTab === 'favorites'
                 ? `${allFavoriteCampfires.length} favorite${allFavoriteCampfires.length !== 1 ? 's' : ''}`
                 : `${allJoinedCampfires.length} joined`}
             </div>
-          </OnboardingTooltip>
         </div>
 
         <div className="grid w-full grid-cols-12 gap-4 md:gap-8">
           <div className="col-span-12 flex w-full flex-col gap-4 md:col-span-8">
             <div className="flex w-full items-center justify-between gap-4">
-              <OnboardingTooltip
-                id="search-campfires"
-                content={{
-                  title: 'Search Your Campfires',
-                  description: `Type to search by campfire name or description in your ${selectedTab === 'favorites' ? 'favorites' : 'joined campfires'}!`,
-                }}
-                position="bottom"
-              >
                 <div className="flex h-10 w-full items-center rounded-lg border px-2 dark:border-neutral-200">
                   <Folders className="text-muted-foreground h-5 w-5" />
                   <Input
@@ -186,7 +167,6 @@ const ManageCampfireList = () => {
                     onChange={e => setSearchTerm(e.target.value)}
                   />
                 </div>
-              </OnboardingTooltip>
 
               <Drawer open={drawerOpen} onOpenChange={setDrawerOpen}>
                 <DrawerTrigger asChild>
