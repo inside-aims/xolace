@@ -91,6 +91,9 @@ export function useLeaveCampfireMutation() {
       queryClient.invalidateQueries({ 
         queryKey: ['campfire', 'members', campfireId] 
       });
+
+      queryClient.invalidateQueries({ queryKey: ['campfires', 'user', 'joined', user?.id] });
+      queryClient.invalidateQueries({ queryKey: ['campfires', 'user', 'favorites', user?.id] });
     },
     onSettled: () => {
       // Always refetch the campfires list
