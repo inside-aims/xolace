@@ -51,10 +51,12 @@ export function getUserFavoriteCampfires(userId?: string, searchTerm: string = '
           .order('joined_at', { ascending: false }) // Order by when they joined (favorited)
           .range(offset, offset + PAGE_SIZE - 1);
   
+          console.log("searchTerm ", searchTerm)
         // Apply search filter if provided
         if (searchTerm.trim()) {
           query = query.or(
-            `campfires.name.ilike.%${searchTerm}%,campfires.description.ilike.%${searchTerm}%`
+            `name.ilike.%${searchTerm}%,description.ilike.%${searchTerm}%`,
+            { foreignTable: 'campfires' }
           );
         }
   
