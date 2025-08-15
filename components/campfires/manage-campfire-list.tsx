@@ -130,7 +130,7 @@ const ManageCampfireList = () => {
           <div className="mb-4 text-6xl">😕</div>
           <h3 className="mb-2 text-lg font-medium">Something went wrong</h3>
           <p className="text-muted-foreground mb-4">
-            We couldn't load your campfires. Please try again.
+            We couldn&apos;t load your campfires. Please try again.
           </p>
           <Button onClick={() => activeQuery.refetch()} variant="outline">
             Try Again

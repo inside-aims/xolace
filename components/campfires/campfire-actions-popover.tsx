@@ -40,7 +40,6 @@ interface CampfireActionsPopoverProps {
 const CampfireActionsPopover: React.FC<CampfireActionsPopoverProps> = ({
   campfire,
   onAddToFavorites,
-  onAddToCustomFeed,
   onMuteToggle,
   onReport,
   className = "",
