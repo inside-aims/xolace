@@ -92,7 +92,7 @@ export function SidebarLeft({
           {
             key: "manageCampfire",
             title: "Manage Campfires",
-            url: `/user/${user?.username.toLowerCase()}/campfires`,
+            url: `/user/x/campfires`,
             icon: Cog
           },
           {
