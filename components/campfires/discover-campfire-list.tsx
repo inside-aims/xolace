@@ -72,7 +72,7 @@ const DiscoverCampfireList = () => {
 
         {/* Search & Filter */}
         <div
-          className="sticky -top-8 z-50 flex w-full max-w-xl items-center justify-between gap-4 py-2 md:justify-center">
+          className="sticky -top-8 z-20 flex w-full max-w-xl items-center justify-between gap-4 py-2 md:justify-center">
           <div className="flex w-full items-center rounded-s-2xl border px-2 sm:w-2/3">
             <Search className="text-muted-foreground mr-2 h-5 w-5" />
             <Input
@@ -130,11 +130,10 @@ const DiscoverCampfireList = () => {
               <div
                 className="grid md:hidden w-full grid-cols-1 items-stretch gap-1 pt-2 pb-5">
                 {filteredCampfires?.map(campfire => (
-                 <>
+                 <div key={campfire.campfireId}>
                  {/* only show seperator above for the first in the list, use css */}
                  <Separator className=' first:block hidden' />
                    <DiscoverMobileCard
-                     key={campfire.campfireId}
                      campfireId={campfire.campfireId}
                      name={campfire.name}
                      description={campfire.description}
@@ -146,7 +145,7 @@ const DiscoverCampfireList = () => {
                      isMember={campfire.isMember}
                    />
                    <Separator />
-                 </>
+                 </div>
                 ))}
               </div>
               <div

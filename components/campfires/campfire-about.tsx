@@ -78,7 +78,7 @@ const CampfireAbout = ({campfire}: CampfireAboutProps) => {
     <div
       className="flex items-start flex-col pt-4 pb-16 md:py-4 gap-4 bg-neutral-100 dark:bg-neutral-800 rounded-lg text-sm text-neutral-500 dark:text-neutral-300">
       {/*about the campfire section*/}
-      <div className="flex items-start flex-col gap-4 px-2 py-2 w-full">
+      <div className="flex items-start flex-col gap-4 px-4 py-2 w-full">
         <h2 className={" font-semibold"}><span className="uppercase">About</span> {campfire.name}</h2>
         <div className="flex flex-col gap-2">
           <p className="text-neutral-700 dark:text-neutral-200 font-medium">

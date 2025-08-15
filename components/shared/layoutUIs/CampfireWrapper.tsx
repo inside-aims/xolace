@@ -1,4 +1,5 @@
 import { ReactNode } from 'react';
+import CampfirePurposes from "@/components/campfires/campfire-purposes";
 
 /*
 Wrapper class to display campfire only on
@@ -22,10 +23,10 @@ export default function CampfireWrapper({children}: {
       </div>
       <div
         className={
-          'col-span-12 hidden h-full overflow-auto pt-1 md:col-span-3 md:flex'
+          'col-span-12 hidden h-full overflow-auto pt-1 md:col-span-3 md:flex border'
         }
       >
-        The Falcon!!!
+        <CampfirePurposes/>
       </div>
     </div>
   );
