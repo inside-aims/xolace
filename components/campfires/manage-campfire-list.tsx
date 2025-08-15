@@ -172,7 +172,7 @@ const ManageCampfireList = () => {
                     <SquareDashedMousePointer />
                   </button>
                 </DrawerTrigger>
-                <DrawerContent>
+                <DrawerContent className='dark:bg-bg-dark' aria-describedby={undefined}>
                   <DrawerHeader>
                     <DrawerTitle>Select Filter</DrawerTitle>
                   </DrawerHeader>
