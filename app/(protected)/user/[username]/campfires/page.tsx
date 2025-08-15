@@ -1,5 +1,5 @@
 import {Metadata} from "next";
-import CampfiresList from "@/components/campfires/campfires-list";
+import ManageCampfireList from "@/components/campfires/manage-campfire-list";
 
 export const metadata: Metadata = {
   title: 'Manage Campfires',
@@ -8,9 +8,9 @@ export const metadata: Metadata = {
 
 const ManageCampfiresPage = () => {
   return(
-    <main>
+    <main className={"w-full"}>
       {/*for demonstration purpose*/}
-      <CampfiresList isDiscover={false}/>
+      <ManageCampfireList/>
       {/*<CampfiresListSkeleton/>*/}
     </main>
   )

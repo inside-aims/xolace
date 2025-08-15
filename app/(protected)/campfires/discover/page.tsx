@@ -1,5 +1,5 @@
 import {Metadata} from "next";
-import CampfiresList from "@/components/campfires/campfires-list";
+import DiscoverCampfireList from "@/components/campfires/discover-campfire-list";
 
 
 export const metadata: Metadata = {
@@ -10,7 +10,7 @@ export const metadata: Metadata = {
 const CampfiresPage = () => {
   return(
     <main className="w-full">
-      <CampfiresList/>
+      <DiscoverCampfireList/>
     </main>
   )
 }

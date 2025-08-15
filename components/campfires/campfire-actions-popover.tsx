@@ -27,21 +27,23 @@ interface CampfireActionsPopoverProps {
     description?: string;
     slug: string;
     isMember?: boolean;
+    isFavorite?: boolean;
   };
   onAddToFavorites?: () => void;
   onAddToCustomFeed?: () => void;
   onMuteToggle?: () => void;
   onReport?: () => void;
   className?: string;
+  isProcessingFavorite?: boolean;
 }
 
 const CampfireActionsPopover: React.FC<CampfireActionsPopoverProps> = ({
   campfire,
   onAddToFavorites,
-  onAddToCustomFeed,
   onMuteToggle,
   onReport,
   className = "",
+  isProcessingFavorite = false,
 }) => {
   const [isOpen, setIsOpen] = useState(false);
   const [isMuted, setIsMuted] = useState(false); // This should come from user preferences in real implementation
@@ -145,7 +147,11 @@ const CampfireActionsPopover: React.FC<CampfireActionsPopoverProps> = ({
           className={`rounded-full border border-neutral-400 hover:bg-neutral-50 dark:hover:bg-neutral-800 transition-colors ${className}`}
           aria-label="More options"
         >
-          <Ellipsis size={14} />
+          {isProcessingFavorite ? (
+            <div className="w-4 h-4 border-2 border-gray-300 border-t-transparent rounded-full animate-spin" />
+          ) : (
+            <Ellipsis size={14} />
+          )}
         </Button>
       </PopoverTrigger>
       
@@ -203,8 +209,10 @@ const CampfireActionsPopover: React.FC<CampfireActionsPopoverProps> = ({
               className="w-full justify-start h-8 px-2"
               onClick={handleAddToFavorites}
             >
-              <Heart className="mr-2 h-4 w-4" />
-              Add to favorites
+              {/* fill heart if favorite */}
+              <Heart className={`mr-2 h-4 w-4 transition-all duration-200 ${campfire.isFavorite ? 'fill-yellow-400 text-yellow-400 drop-shadow-sm'
+                : 'text-gray-400 hover:text-yellow-400'}`} />
+              {campfire.isFavorite ? 'Remove from favorites' : 'Add to favorites'}
             </Button>
             {/* <Button
               variant="ghost"

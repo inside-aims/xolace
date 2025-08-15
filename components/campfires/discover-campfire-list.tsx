@@ -4,7 +4,10 @@ import { AlertCircle, RefreshCw, Search } from 'lucide-react';
 import { Input } from '@/components/ui/input';
 import React, { useCallback, useState } from 'react';
 import { CampfirePurpose } from '@/components/campfires/campfires.types';
-import {CampfireDesktopCard, CampfireMobileCard} from '@/components/campfires/campfire-cards';
+import {
+  DiscoverMobileCard,
+  DiscoverDesktopCard
+} from '@/components/campfires/discover-cards';
 import { FilterByPurpose } from '@/components/campfires/filtered-purpose';
 import CampfireWrapper from '@/components/shared/layoutUIs/CampfireWrapper';
 import { useAllPublicCampfires } from '@/queries/campfires/getAllPublicCampfires';
@@ -15,10 +18,7 @@ import { Alert, AlertDescription } from '@/components/ui/alert';
 import { Button } from '@/components/ui/button';
 import {Separator} from "@/components/ui/separator";
 
-interface CampfireListProps {
-  isDiscover?: boolean;
-}
-const CampfiresList = ({isDiscover = true}: CampfireListProps) => {
+const DiscoverCampfireList = () => {
   const user = useUserState(state => state.user);
   const [searchTerm, setSearchTerm] = useState<string>('');
   const [selectedPurposes, setSelectedPurposes] = useState<CampfirePurpose[]>(
@@ -63,12 +63,10 @@ const CampfiresList = ({isDiscover = true}: CampfireListProps) => {
         {/* Page Heading */}
         <div className="space-y-2 text-center">
           <h1 className="text-2xl font-bold">
-            {`${isDiscover ? "Discover" : "Manage"} Campfires`}
+            Discover Campfire
           </h1>
           <p className="text-muted-foreground">
-            {isDiscover
-              ? "Find your circle. Join discussions that matter to you."
-              : "View and organize the campfires you're already part of."}
+            Find your circle. Join discussions that matter to you.
           </p>
         </div>
 
@@ -135,7 +133,7 @@ const CampfiresList = ({isDiscover = true}: CampfireListProps) => {
                  <>
                  {/* only show seperator above for the first in the list, use css */}
                  <Separator className=' first:block hidden' />
-                   <CampfireMobileCard
+                   <DiscoverMobileCard
                      key={campfire.campfireId}
                      campfireId={campfire.campfireId}
                      name={campfire.name}
@@ -154,7 +152,7 @@ const CampfiresList = ({isDiscover = true}: CampfireListProps) => {
               <div
                 className="hidden md:grid w-full grid-cols-1 items-stretch gap-6 pt-4 pb-5 md:grid-cols-2 lg:grid-cols-2 xl:grid-cols-3">
                 {filteredCampfires?.map(campfire => (
-                  <CampfireDesktopCard
+                  <DiscoverDesktopCard
                     key={campfire.campfireId}
                     campfireId={campfire.campfireId}
                     name={campfire.name}
@@ -175,4 +173,4 @@ const CampfiresList = ({isDiscover = true}: CampfireListProps) => {
     </CampfireWrapper>
   );
 };
-export default CampfiresList;
+export default DiscoverCampfireList;

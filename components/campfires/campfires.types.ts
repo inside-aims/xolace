@@ -88,3 +88,19 @@ export const getBgSeverity = (purpose: string) => {
       return 'bg-neutral-200 text-neutral-800';
   }
 };
+
+
+export interface UserCampfireFavoriteJoin {
+  campfireId: string;
+  name: string;
+  slug: string;
+  description: string;
+  members: number;
+  purpose: CampfirePurpose;
+  iconURL?: string;
+  isFavorite: boolean;
+  isJoined: boolean;
+  joinedAt?: string;
+  role?: 'firestarter' | 'firekeeper' | 'camper';
+  favoritedAt?: string;
+}

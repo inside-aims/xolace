@@ -147,3 +147,77 @@ export async function leaveCampfire(
     throw error;
   }
 }
+
+// Add campfire to favorites (auto-join if not already a member)
+export async function addCampfireToFavorites(
+  campfireId: string,
+  userId: string,
+): Promise<void> {
+  const supabase = await createClient();
+  
+  try {
+    // Check if user is already a member
+    const { data: existingMember, error: checkError } = await supabase
+      .from('campfire_members')
+      .select('id, is_favorite')
+      .eq('campfire_id', campfireId)
+      .eq('user_id', userId)
+      .single();
+
+    if (checkError && checkError.code !== 'PGRST116') {
+      // PGRST116 is "not found" error, which is expected if not a member
+      throw new Error(`Failed to check membership: ${checkError.message}`);
+    }
+
+    if (existingMember) {
+      // User is already a member, just update is_favorite to true
+      const { error: updateError } = await supabase
+        .from('campfire_members')
+        .update({ is_favorite: true })
+        .eq('id', existingMember.id);
+
+      if (updateError) {
+        throw new Error(`Failed to favorite campfire: ${updateError.message}`);
+      }
+    } else {
+      // User is not a member, join them with is_favorite = true
+      const { error: insertError } = await supabase
+        .from('campfire_members')
+        .insert({
+          campfire_id: campfireId,
+          user_id: userId,
+          is_favorite: true,
+        });
+
+      if (insertError) {
+        throw new Error(`Failed to join and favorite campfire: ${insertError.message}`);
+      }
+    }
+  } catch (error) {
+    console.error('Error adding campfire to favorites:', error);
+    throw error;
+  }
+}
+
+// Remove campfire from favorites (keep membership)
+export async function removeCampfireFromFavorites(
+  campfireId: string,
+  userId: string,
+): Promise<void> {
+  const supabase = await createClient();
+  
+  try {
+    const { error } = await supabase
+      .from('campfire_members')
+      .update({ is_favorite: false })
+      .eq('campfire_id', campfireId)
+      .eq('user_id', userId);
+
+    if (error) {
+      throw new Error(`Failed to unfavorite campfire: ${error.message}`);
+    }
+  } catch (error) {
+    console.error('Error removing campfire from favorites:', error);
+    throw error;
+  }
+}

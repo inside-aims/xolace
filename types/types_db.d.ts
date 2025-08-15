@@ -257,6 +257,7 @@ export type Database = {
         Row: {
           campfire_id: string
           id: string
+          is_favorite: boolean
           joined_at: string
           role: Database["public"]["Enums"]["campfire_role"]
           user_id: string
@@ -264,6 +265,7 @@ export type Database = {
         Insert: {
           campfire_id: string
           id?: string
+          is_favorite?: boolean
           joined_at?: string
           role?: Database["public"]["Enums"]["campfire_role"]
           user_id: string
@@ -271,6 +273,7 @@ export type Database = {
         Update: {
           campfire_id?: string
           id?: string
+          is_favorite?: boolean
           joined_at?: string
           role?: Database["public"]["Enums"]["campfire_role"]
           user_id?: string

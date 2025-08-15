@@ -39,7 +39,7 @@ const getBgSeverity = (purpose: string) => {
   }
 };
 
-export const CampfireDesktopCard = (campfire: CampfireCardProps) => {
+export const DiscoverDesktopCard = (campfire: CampfireCardProps) => {
 
   return (
     <Card
@@ -100,7 +100,7 @@ export const CampfireDesktopCard = (campfire: CampfireCardProps) => {
 };
 
 
-export const CampfireMobileCard = (campfire: CampfireCardProps) => {
+export const DiscoverMobileCard = (campfire: CampfireCardProps) => {
   return (
     <Card
       key={campfire.campfireId}
