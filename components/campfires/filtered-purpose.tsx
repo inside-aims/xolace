@@ -32,10 +32,10 @@ export function FilterByPurpose({ selected, onChange }: FilterByPurposeProps) {
           <span className="hidden md:flex">Filter by purpose</span>
         </Button>
       </PopoverTrigger>
-      <PopoverContent className="w-52 md:w-[230px]  mx-1 md:mx-0 bg-bg-dark">
+      <PopoverContent className="w-52 md:w-[230px]  mx-1 md:mx-0 bg-bg dark:bg-bg-dark">
         <Command>
           <CommandEmpty>No purposes found.</CommandEmpty>
-          <CommandGroup heading="Select Purposes" className="bg-bg-dark">
+          <CommandGroup heading="Select Purposes" className="bg-bg dark:bg-bg-dark">
             {purposes.map((purpose) => (
               <CommandItem
                 key={purpose}
