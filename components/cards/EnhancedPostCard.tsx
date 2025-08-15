@@ -119,7 +119,7 @@ interface CampfireOverride {
 type PostCardType = {
   className?: string;
   post: Post;
-  section?: 'profile';
+  section?: 'profile' | 'collections';
   onClick?: () => void;
   signedUrls?: Record<string, string>;
   campfireOverride?: CampfireOverride; // New prop for campfire context
@@ -136,7 +136,8 @@ export function EnhancedPostCard({
   post, 
   onClick, 
   signedUrls, 
-  campfireOverride 
+  campfireOverride,
+  section 
 }: PostCardType) {
   // Get user data
   const user = useUserState(state => state.user);
@@ -224,7 +225,7 @@ export function EnhancedPostCard({
               </div>
 
               <div className="text-muted-foreground flex items-center gap-2 text-sm">
-                {showOriginalAuthor && (
+                {showOriginalAuthor && section != 'collections' && (
                   <small className="text-[11px] text-zinc-400 dark:text-gray-500">
                     by {post.author_name} • 
                   </small>

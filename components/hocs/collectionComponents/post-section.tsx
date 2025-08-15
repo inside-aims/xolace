@@ -47,7 +47,12 @@ export function PostsSection({ collectionFilter, userId }: PostsSectionProps) {
         post_slides (
             slide_index,
             content
-        )
+        ),
+        campfires!posts_campfire_id_fkey (
+            name,
+            icon_url,
+            slug
+          )
       )
     `;
 
@@ -116,6 +121,7 @@ const {
 
   const filteredAndSortedPosts = useMemo(() => {
     const filtered = collectionsData.map((item) => item.posts)
+    console.log(filtered)
 
     return filtered.sort((a, b) => {
       switch (sortFilter) {
@@ -146,6 +152,12 @@ const {
            post={post}
            onClick={() => handlePostClick(post.id)}
            className="bg-bg dark:bg-bg-dark mb-5 w-full rounded-none border-x-0 md:w-full dark:ring-zinc-800 dark:hover:ring-zinc-700 dark:focus-visible:ring-[#193a47]"
+           campfireOverride={{
+            name: post.campfires.name,
+            iconUrl: post.campfires.icon_url,
+            slug: post.campfires.slug
+           }}
+           section="collections"
          />
         ))}
 
