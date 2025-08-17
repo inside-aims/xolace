@@ -1,7 +1,7 @@
 // /hooks/useNotificationCardLogic.ts
 
 import { useMemo } from 'react';
-import { ThumbsUp, ThumbsDown, MessageSquare, Bookmark, Eye, Bell, Heart } from 'lucide-react';
+import { ThumbsUp, ThumbsDown, MessageSquare, Bookmark, Eye, Bell, Heart, Users } from 'lucide-react';
 import type { Notification } from '@/types/global'; // Make sure this path is correct
 import { truncateText } from '@/lib/utils';
 
@@ -93,6 +93,12 @@ export function useNotificationCardLogic(notification: Notification) {
               message: <>{actorName} viewed your post.</>,
               link,
           };
+      case 'joined_campfire':
+        return {
+          icon: <Users className="h-5 w-5 text-blue-500" />,
+          message: <>{actorName} joined your campfire.</>,
+          link,
+        };
       case 'system_announcement': // for system notification add description
         return {
           icon: <Bell className="h-5 w-5 text-yellow-500" />,

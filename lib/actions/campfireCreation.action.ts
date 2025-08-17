@@ -3,6 +3,7 @@
 import { createClient } from '@/utils/supabase/server';
 import { uploadImageToBucket } from '@/utils/helpers/uploadImageToBucket';
 import { CampfireRule } from '@/components/campfires/campfires.types';
+import { createNotification } from './notifications.action';
 
 export const createCampfire = async (formData: FormData) => {
   const supabase = await createClient();
@@ -119,6 +120,27 @@ export async function joinCampfire(
     if (error) {
       throw new Error(`Failed to join campfire: ${error.message}`);
     }
+
+    const { data, error: campfireError } = await supabase
+      .from('campfires')
+      .select('created_by, slug')
+      .eq('id', campfireId)
+      .single();
+
+    if (campfireError || !data) {
+      throw new Error(`Failed to get campfire: ${campfireError?.message}`);
+    }
+
+    await createNotification({
+      recipient_user_id: data.created_by, // The campfire's author gets the notification
+      actor_id: userId, // The user who joined the campfire
+      type: 'joined_campfire',
+      entity_id: campfireId, // A link to the content
+      metadata: {
+        content_type: 'campfire',
+        link: `/x/${data.slug}`,
+      },
+    });
   } catch (error) {
     console.error('Error joining campfire:', error);
     throw error;
@@ -132,7 +154,6 @@ export async function leaveCampfire(
 ): Promise<void> {
   const supabase = await createClient();
   try {
-
     // Check if member exists and get role
     const { data: member, error: memberError } = await supabase
       .from('campfire_members')
@@ -147,14 +168,16 @@ export async function leaveCampfire(
 
     // Prevent creator from leaving (they should transfer ownership first)
     if (member.role === 'firestarter') {
-      throw new Error('Firestarters cannot leave their campfire. Transfer ownership first.');
-      };
+      throw new Error(
+        'Firestarters cannot leave their campfire. Transfer ownership first.',
+      );
+    }
 
     const { error } = await supabase
-        .from('campfire_members')
-        .delete()
-        .eq('campfire_id', campfireId)
-        .eq('user_id', userId);
+      .from('campfire_members')
+      .delete()
+      .eq('campfire_id', campfireId)
+      .eq('user_id', userId);
 
     if (error) {
       throw new Error(`Failed to leave campfire: ${error.message}`);
@@ -171,7 +194,7 @@ export async function addCampfireToFavorites(
   userId: string,
 ): Promise<void> {
   const supabase = await createClient();
-  
+
   try {
     // Check if user is already a member
     const { data: existingMember, error: checkError } = await supabase
@@ -207,7 +230,9 @@ export async function addCampfireToFavorites(
         });
 
       if (insertError) {
-        throw new Error(`Failed to join and favorite campfire: ${insertError.message}`);
+        throw new Error(
+          `Failed to join and favorite campfire: ${insertError.message}`,
+        );
       }
     }
   } catch (error) {
@@ -222,7 +247,7 @@ export async function removeCampfireFromFavorites(
   userId: string,
 ): Promise<void> {
   const supabase = await createClient();
-  
+
   try {
     const { error } = await supabase
       .from('campfire_members')
