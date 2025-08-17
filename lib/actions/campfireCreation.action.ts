@@ -3,7 +3,6 @@
 import { createClient } from '@/utils/supabase/server';
 import { uploadImageToBucket } from '@/utils/helpers/uploadImageToBucket';
 import { CampfireRule } from '@/components/campfires/campfires.types';
-import { generateCampfireSlug } from '../utils';
 
 export const createCampfire = async (formData: FormData) => {
   const supabase = await createClient();
