@@ -133,6 +133,24 @@ export async function leaveCampfire(
 ): Promise<void> {
   const supabase = await createClient();
   try {
+
+    // Check if member exists and get role
+    const { data: member, error: memberError } = await supabase
+      .from('campfire_members')
+      .select('role')
+      .eq('campfire_id', campfireId)
+      .eq('user_id', userId)
+      .single();
+
+    if (memberError || !member) {
+      throw new Error('You are not a member of this campfire');
+    }
+
+    // Prevent creator from leaving (they should transfer ownership first)
+    if (member.role === 'firestarter') {
+      throw new Error('Firestarters cannot leave their campfire. Transfer ownership first.');
+      };
+
     const { error } = await supabase
         .from('campfire_members')
         .delete()

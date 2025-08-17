@@ -32,18 +32,20 @@ export function useLeaveCampfireMutation() {
         'public',
       ]);
 
-      const previousCampfireDetails = queryClient.getQueryData<CampfireDetails>([
-        'campfires',
-        'public',
-        campfireId,
-      ]);
+      const previousCampfireDetails = queryClient.getQueryData<CampfireDetails>(
+        ['campfires', 'public', campfireId],
+      );
 
       // Optimistically update public campfires list
       queryClient.setQueryData<Campfire[]>(['campfires', 'public'], old => {
         if (!old) return [];
         return old.map(campfire =>
           campfire.campfireId === campfireId
-            ? { ...campfire, isMember: false, members: Math.max(0, campfire.members - 1) }
+            ? {
+                ...campfire,
+                isMember: false,
+                members: Math.max(0, campfire.members - 1),
+              }
             : campfire,
         );
       });
@@ -56,7 +58,7 @@ export function useLeaveCampfireMutation() {
             ...previousCampfireDetails,
             isMember: false,
             members: Math.max(0, previousCampfireDetails.members - 1),
-          }
+          },
         );
       }
 
@@ -70,7 +72,7 @@ export function useLeaveCampfireMutation() {
           context.previousCampfires,
         );
       }
-      
+
       if (context?.previousCampfireDetails) {
         queryClient.setQueryData(
           ['campfires', 'public', campfireId],
@@ -78,22 +80,32 @@ export function useLeaveCampfireMutation() {
         );
       }
 
-      toast.error('Failed to leave campfire. Please try again.');
-      console.error('Failed to leave campfire:', err);
+      // Show err.message when it is Firestarters cannot leave their campfire. Transfer ownership first. or general message
+      if (err.message === 'Firestarters cannot leave their campfire. Transfer ownership first.') {
+        toast.error(err.message);
+        return;
+      }
+      toast.error("Failed to leave campfire. Please try again.");
     },
     onSuccess: (_, campfireId) => {
-      toast.success('Successfully left campfire! We hope to see you again soon.');
-      
+      toast.success(
+        'Successfully left campfire! We hope to see you again soon.',
+      );
+
       // Invalidate related queries to ensure fresh data
-      queryClient.invalidateQueries({ 
-        queryKey: ['campfires', 'public', campfireId] 
+      queryClient.invalidateQueries({
+        queryKey: ['campfires', 'public', campfireId],
       });
-      queryClient.invalidateQueries({ 
-        queryKey: ['campfire', 'members', campfireId] 
+      queryClient.invalidateQueries({
+        queryKey: ['campfire', 'members', campfireId],
       });
 
-      queryClient.invalidateQueries({ queryKey: ['campfires', 'user', 'joined', user?.id] });
-      queryClient.invalidateQueries({ queryKey: ['campfires', 'user', 'favorites', user?.id] });
+      queryClient.invalidateQueries({
+        queryKey: ['campfires', 'user', 'joined', user?.id],
+      });
+      queryClient.invalidateQueries({
+        queryKey: ['campfires', 'user', 'favorites', user?.id],
+      });
     },
     onSettled: () => {
       // Always refetch the campfires list
