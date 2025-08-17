@@ -96,6 +96,13 @@ const CampfireDetails = ({slug}: {slug : string}) => {
       return;
     }
 
+    if(user.is_anonymous){
+      toast.error("Anonymous users cannot add campfires to favorites. Please use a real account.", {
+        duration: 3000,
+      });
+      return;
+    }
+
     if (!campfire) return;
 
     try {
