@@ -44,6 +44,7 @@ import { NavMiddle } from "./nav-middle"
 import { Separator } from "./ui/separator"
 import CreateCampfireModal from "@/components/campfires/campfire-creation-modal";
 import { Tooltip, TooltipContent,TooltipTrigger } from "@/components/ui/tooltip";
+import { toast } from 'sonner';
 
 export function SidebarLeft({
   ...props
@@ -55,6 +56,20 @@ export function SidebarLeft({
    // get user profile data
    const user = useUserState(state => state.user);
    const { roles } = useUserState()
+
+   const handleOpenCreateCampfireModal = () => {
+    if (!user) {
+      toast.error("Please sign in to create a campfire, or reload the page.");
+      return;
+    }
+    if(user.is_anonymous){
+      toast.error("Anonymous users cannot create campfires. Please use a real account.", {
+        duration: 3000,
+      });
+      return;
+    }
+    setIsModalOpen(true);
+   }
 
   const data = {
     navSecondary: [
@@ -86,7 +101,7 @@ export function SidebarLeft({
           {
             key: "createCampfire",
             title: "Create Campfire",
-            onClick: () => setIsModalOpen(true),
+            onClick: handleOpenCreateCampfireModal,
             icon: Plus
           },
           {
