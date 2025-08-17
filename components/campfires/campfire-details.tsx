@@ -48,6 +48,13 @@ const CampfireDetails = ({slug}: {slug : string}) => {
       router.push("/sign-in");
       return;
     }
+
+    if(user.is_anonymous){
+      toast.error("Anonymous users cannot create posts for this campfire. Please use a real account.", {
+        duration: 3000,
+      });
+      return;
+    }
     router.push(`/create-post?submit=${slug}`);
   };
 
