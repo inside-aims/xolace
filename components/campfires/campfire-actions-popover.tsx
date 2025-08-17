@@ -120,7 +120,7 @@ const CampfireActionsPopover: React.FC<CampfireActionsPopoverProps> = ({
     if (onMuteToggle) {
       onMuteToggle();
     } else {
-      toast.info(newMutedState ? 'Campfire muted' : 'Campfire unmuted');
+      toast.info("Mute feature coming soon");
     }
   };
 

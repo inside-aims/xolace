@@ -22,6 +22,7 @@ import { useJoinCampfireMutation } from '@/hooks/campfires/useJoinCampfireMutati
 import { useInView } from 'react-intersection-observer';
 import { getUserJoinedCampfires } from '@/queries/campfires/getUserJoinedCampfires';
 import { getUserFavoriteCampfires } from '@/queries/campfires/getUserFavouriteCampfires';
+import { DotLottieReact } from '@lottiefiles/dotlottie-react';
 
 const tabOptions: { key: string; label: string }[] = [
   { key: 'allCampfires', label: 'All Campfires' },
@@ -145,26 +146,26 @@ const ManageCampfireList = () => {
       <div className="flex w-full max-w-6xl flex-col items-start justify-start gap-4 px-4 pt-4 md:pt-8">
         <div className="flex w-full items-center justify-between">
           <h1 className="text-2xl font-bold">Manage Campfires</h1>
-            <div className="text-muted-foreground text-sm">
-              {selectedTab === 'favorites'
-                ? `${allFavoriteCampfires.length} favorite${allFavoriteCampfires.length !== 1 ? 's' : ''}`
-                : `${allJoinedCampfires.length} joined`}
-            </div>
+          <div className="text-muted-foreground text-sm">
+            {selectedTab === 'favorites'
+              ? `${allFavoriteCampfires.length} favorite${allFavoriteCampfires.length !== 1 ? 's' : ''}`
+              : `${allJoinedCampfires.length} joined`}
+          </div>
         </div>
 
         <div className="grid w-full grid-cols-12 gap-4 md:gap-8">
           <div className="col-span-12 flex w-full flex-col gap-4 md:col-span-8">
             <div className="flex w-full items-center justify-between gap-4">
-                <div className="flex h-10 w-full items-center rounded-lg border px-2 dark:border-neutral-200">
-                  <Folders className="text-muted-foreground h-5 w-5" />
-                  <Input
-                    type="text"
-                    placeholder={`Search ${selectedTab === 'favorites' ? 'favorites' : 'joined campfires'}...`}
-                    className="w-full border border-x-0 dark:border-neutral-200"
-                    value={searchTerm}
-                    onChange={e => setSearchTerm(e.target.value)}
-                  />
-                </div>
+              <div className="flex h-10 w-full items-center rounded-lg border px-2 dark:border-neutral-200">
+                <Folders className="text-muted-foreground h-5 w-5" />
+                <Input
+                  type="text"
+                  placeholder={`Search ${selectedTab === 'favorites' ? 'favorites' : 'joined campfires'}...`}
+                  className="w-full border border-x-0 dark:border-neutral-200"
+                  value={searchTerm}
+                  onChange={e => setSearchTerm(e.target.value)}
+                />
+              </div>
 
               <Drawer open={drawerOpen} onOpenChange={setDrawerOpen}>
                 <DrawerTrigger asChild>
@@ -172,7 +173,10 @@ const ManageCampfireList = () => {
                     <SquareDashedMousePointer />
                   </button>
                 </DrawerTrigger>
-                <DrawerContent className='dark:bg-bg-dark' aria-describedby={undefined}>
+                <DrawerContent
+                  className="dark:bg-bg-dark"
+                  aria-describedby={undefined}
+                >
                   <DrawerHeader>
                     <DrawerTitle>Select Filter</DrawerTitle>
                   </DrawerHeader>
@@ -230,7 +234,14 @@ const ManageCampfireList = () => {
                 </div>
               ) : isEmpty ? (
                 <div className="flex w-full flex-col items-center justify-center py-16 text-center">
-                  <div className="mb-4 text-6xl">🔥</div>
+                  <div className="mb-4 text-6xl">
+                    <DotLottieReact
+                      src="https://lottie.host/8586490e-8c75-47c6-afc2-c8f2a6f10682/hYjxZaYm6a.lottie"
+                      loop
+                      autoplay
+                      style={{ width: '160px', height: '160px' }}
+                    />
+                  </div>
                   <h3 className="mb-2 text-lg font-medium">
                     {selectedTab === 'favorites'
                       ? 'No favorite campfires yet'
@@ -345,7 +356,9 @@ const ManageCampfireList = () => {
                     </span>
                   </div>
                   <div className="flex justify-between">
-                    <span className="text-muted-foreground">Firestarter Role:</span>
+                    <span className="text-muted-foreground">
+                      Firestarter Role:
+                    </span>
                     <span className="font-medium">
                       {
                         allJoinedCampfires.filter(c => c.role === 'firestarter')

@@ -48,6 +48,13 @@ const CampfireDetails = ({slug}: {slug : string}) => {
       router.push("/sign-in");
       return;
     }
+
+    if(user.is_anonymous){
+      toast.error("Anonymous users cannot create posts for this campfire. Please use a real account.", {
+        duration: 3000,
+      });
+      return;
+    }
     router.push(`/create-post?submit=${slug}`);
   };
 
@@ -56,6 +63,13 @@ const CampfireDetails = ({slug}: {slug : string}) => {
     if (!user) {
       toast.error("Please sign in to join this campfire");
       router.push("/sign-in");
+      return;
+    }
+
+    if(user.is_anonymous){
+      toast.error("Anonymous users cannot join campfires. Please use a real account.", {
+        duration: 3000,
+      });
       return;
     }
 
@@ -79,6 +93,13 @@ const CampfireDetails = ({slug}: {slug : string}) => {
     if (!user) {
       toast.error("Please sign in to favorite this campfire");
       router.push("/sign-in");
+      return;
+    }
+
+    if(user.is_anonymous){
+      toast.error("Anonymous users cannot add campfires to favorites. Please use a real account.", {
+        duration: 3000,
+      });
       return;
     }
 

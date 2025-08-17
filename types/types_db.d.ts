@@ -1846,6 +1846,7 @@ export type Database = {
         | "system"
         | "view"
         | "video"
+        | "campfire"
       feedback_status: "open" | "closed"
       notification_target_type:
         | "single_user"
@@ -1862,6 +1863,8 @@ export type Database = {
         | "system_announcement"
         | "post_viewed"
         | "comment_reply"
+        | "joined_campfire"
+        | "leave_campfire"
       post_duration: "6" | "12" | "24"
       post_mood:
         | "neutral"
@@ -2051,6 +2054,7 @@ export const Constants = {
         "system",
         "view",
         "video",
+        "campfire",
       ],
       feedback_status: ["open", "closed"],
       notification_target_type: [
@@ -2069,6 +2073,8 @@ export const Constants = {
         "system_announcement",
         "post_viewed",
         "comment_reply",
+        "joined_campfire",
+        "leave_campfire",
       ],
       post_duration: ["6", "12", "24"],
       post_mood: [

@@ -17,6 +17,8 @@ import CampfiresListSkeleton from '@/components/campfires/campfires-list-skeleto
 import { Alert, AlertDescription } from '@/components/ui/alert';
 import { Button } from '@/components/ui/button';
 import {Separator} from "@/components/ui/separator";
+import { toast } from 'sonner';
+
 
 const DiscoverCampfireList = () => {
   const user = useUserState(state => state.user);
@@ -35,6 +37,17 @@ const DiscoverCampfireList = () => {
 
   // Helper function for join campfire
   const handleJoinClick = (campfireId: string) => {
+    if (!user) {
+      toast.error("Please sign in to join this campfire, or reload the page.");
+      return;
+    }
+
+    if(user.is_anonymous){
+      toast.error("Anonymous users cannot join campfires. Please use a real account.", {
+        duration: 3000,
+      });
+      return;
+    }
     joinCampfireMutation.mutate(campfireId);
   };
 

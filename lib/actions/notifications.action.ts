@@ -6,7 +6,7 @@ import { createClient } from "@/utils/supabase/server";
 export async function createNotification(payload: {
     recipient_user_id: string;
     actor_id: string | null;
-    type: 'new_upvote' | 'video_saved' | 'new_comment' | 'post_viewed' | 'post_saved' | 'video_liked' | 'system_announcement' | 'new_downvote' | 'comment_reply' // etc.
+    type: 'new_upvote' | 'video_saved' | 'new_comment' | 'post_viewed' | 'post_saved' | 'video_liked' | 'system_announcement' | 'new_downvote' | 'comment_reply' | 'joined_campfire' | 'leave_campfire'// etc.
     entity_id: string;
     metadata?: object;
 }) {
