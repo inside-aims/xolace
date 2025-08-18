@@ -121,7 +121,6 @@ const {
 
   const filteredAndSortedPosts = useMemo(() => {
     const filtered = collectionsData.map((item) => item.posts)
-    console.log(filtered)
 
     return filtered.sort((a, b) => {
       switch (sortFilter) {

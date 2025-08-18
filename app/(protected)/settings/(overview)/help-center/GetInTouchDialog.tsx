@@ -71,8 +71,7 @@ export default function GetInTouchDialog() {
           "We've received your question and will be in touch shortly.",
       });
       form.reset();
-    } catch (error) {
-      console.error(error);
+    } catch (_) {
       toast.error(`😿 Something went wrong while reaching out! Try again.`);
     } finally {
       setIsLoading(false);

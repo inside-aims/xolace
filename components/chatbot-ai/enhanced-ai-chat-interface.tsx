@@ -155,7 +155,6 @@ const parsedErrorMessage = (() => {
     const parsed = JSON.parse(error.message);
     return parsed.error || "An unexpected error occurred.";
   } catch {
-    console.log("error ", error)
     // Fallback to the raw error message
     return error.message || "An unexpected error occurred.";
   }

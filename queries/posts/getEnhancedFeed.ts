@@ -65,7 +65,6 @@ export function getEnhancedFeed(userId: string | undefined) {
         throw new Error(error.message);
       }
 
-      console.log("enhanced post data ",data)
       const posts = data || [];
       const hasMore = posts.length === POSTS_PER_PAGE;
       const nextOffset = hasMore ? offset + POSTS_PER_PAGE : null;

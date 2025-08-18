@@ -142,8 +142,7 @@ const VideoUploadForms = ({open, setOpen }: {open: boolean, setOpen: (open: bool
       video.resetFile();
       thumbnail.resetFile();
       setOpen(false);
-    } catch (error) {
-      console.error(error);
+    } catch (_) {
       toast.error("Failed to upload video", {id: toastId});
     } finally {
       setIsSubmitting(false);

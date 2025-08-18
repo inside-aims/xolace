@@ -54,7 +54,6 @@ export const uploadImageToBucket = async ({
       });
 
     if (uploadError) {
-      console.error('Error uploading image:', uploadError);
       return {
         success: false,
         path: null,

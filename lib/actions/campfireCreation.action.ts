@@ -91,7 +91,6 @@ export const createCampfire = async (formData: FormData) => {
       .insert(rulesToInsert);
 
     if (rulesError) {
-      console.log(rulesError);
       // Optionally, you might want to delete the created campfire if rules insertion fails
       // await supabase.from('campfires').delete().match({ id: campfire.id });
       return {
@@ -142,7 +141,6 @@ export async function joinCampfire(
       },
     });
   } catch (error) {
-    console.error('Error joining campfire:', error);
     throw error;
   }
 }

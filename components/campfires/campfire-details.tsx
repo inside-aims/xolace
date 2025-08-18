@@ -2,7 +2,7 @@
 
 import React, { useState } from "react";
 import {Button} from "@/components/ui/button";
-import {Plus, Bell, Globe, Users, Info} from "lucide-react";
+import {Plus, Globe, Users, Info} from "lucide-react";
 import CampfireAbout from "@/components/campfires/campfire-about";
 import CampfireHighlight from "@/components/campfires/campfire-highlight";
 import { useRouter } from "next/navigation";
@@ -84,7 +84,7 @@ const CampfireDetails = ({slug}: {slug : string}) => {
       // Refetch to get updated data
       refetch();
     } catch (error) {
-      console.error("Error toggling membership:", error);
+      throw error;
     }
   };
 
@@ -118,13 +118,13 @@ const CampfireDetails = ({slug}: {slug : string}) => {
     }
   };
 
-  const handleNotificationToggle = () => {
-    if (!campfire?.isMember) {
-      toast.info("Join this campfire to receive notifications");
-      return;
-    }
-    toast.info("Notification preferences updated");
-  };
+  // const handleNotificationToggle = () => {
+  //   if (!campfire?.isMember) {
+  //     toast.info("Join this campfire to receive notifications");
+  //     return;
+  //   }
+  //   toast.info("Notification preferences updated");
+  // };
 
   const tabOptions: {key: string, label: string, children: React.ReactNode}[] = [
     {
@@ -246,7 +246,7 @@ const CampfireDetails = ({slug}: {slug : string}) => {
           >
             <Plus size={16}/> <span> Create Post</span>
           </Button>
-          <Button
+          {/* <Button
             size="sm"
             variant="outline"
             className="items-center rounded-full border border-neutral-400"
@@ -254,7 +254,7 @@ const CampfireDetails = ({slug}: {slug : string}) => {
             disabled={!campfire.isMember}
           >
             <Bell size={14} />
-          </Button>
+          </Button> */}
 
           <Button
             size="sm"

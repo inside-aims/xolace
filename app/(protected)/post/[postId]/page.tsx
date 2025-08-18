@@ -80,11 +80,9 @@ const PostDetailPage = async (props: {
 
   //  check for error
   if (error) {
-    console.log(error)
     return notFound();
   }
 
-  console.log(post)
 
   return (
     <Comment postId={postId} post={post} type={type} />

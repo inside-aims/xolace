@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { fetchTags } from "@/app/actions";
 import { Tag } from "@/types/global";
+import { toast } from "sonner";
 
 export function TopTags() {
 
@@ -16,7 +17,7 @@ const loadTags = async () =>{
     setPostTags(data)
   }
   } catch (error) {
-    console.log(error)
+    toast.error("Failed to fetch tags. Please refresh the page.");
   } finally {
     setIsLoading(false)}
 }

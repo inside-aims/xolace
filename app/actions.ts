@@ -250,7 +250,6 @@ export async function sendSupabaseOTP(email: string) {
   });
 
   if (error) {
-    console.error('Supabase OTP Error:', error);
     return { success: false, message: error.message };
   }
 
@@ -687,7 +686,6 @@ export async function removeVideoFromCollectionAction({
       .eq('collection_name', collectionName);
 
     if (error) {
-      console.error('Supabase error removing video from collection:', error);
       throw new Error(error.message);
     }
 

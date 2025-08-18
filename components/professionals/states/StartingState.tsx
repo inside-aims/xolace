@@ -140,7 +140,6 @@ export default function StartingState({inviteCode}: {inviteCode: string}) {
 
   const handleFinalSubmit: SubmitHandler<FullFormType> = async (data) => {
     const updatedData = { ...data };
-    console.log("Final data submitted:", updatedData);
     
     setIsSubmitting(true);
     const toastId = toast.loading('Submitting your information...');
@@ -249,7 +248,6 @@ export default function StartingState({inviteCode}: {inviteCode: string}) {
                                   if (file) {
                                     setSelectedFile(file);
                                     const fileName = `${Date.now()}_${file.name}`;
-                                    console.log("file name ", fileName)
                                     field.onChange(fileName);
                                   }
                                 }}

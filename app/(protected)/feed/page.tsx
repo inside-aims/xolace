@@ -25,7 +25,6 @@ export default async function EnhancedFeedPage() {
   // Prefetch the first page of enhanced feed
   try {
     const initialFeedData = await getEnhancedFeedForCurrentUser(50, 0);
-    console.log("Initial feed ", initialFeedData)
     
     // Set the initial data for the infinite query
     queryClient.setQueryData(['enhanced-feed'], {
@@ -38,8 +37,7 @@ export default async function EnhancedFeedPage() {
       ],
       pageParams: [0]
     });
-  } catch (error) {
-    console.error('Failed to prefetch enhanced feed:', error);
+  } catch (_) {
     // Continue without prefetched data - the client will handle loading
   }
 
