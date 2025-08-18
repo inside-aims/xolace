@@ -38,7 +38,6 @@ const Profile = () => {
     {key: 'posts', name: 'Your Posts', children: <Posts/> },
   ]
 
-  console.log(roles)
     // Determine badge eligibility
     const isProfessional = roles.includes('help_professional');
     const isMentor = roles.includes('mentor');

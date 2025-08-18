@@ -48,7 +48,6 @@ export function useCommentMutation(post: DetailPost) {
         .single();
 
       if (error) {
-        console.error('Supabase insert error:', error);
         throw new Error(error.message);
       }
 

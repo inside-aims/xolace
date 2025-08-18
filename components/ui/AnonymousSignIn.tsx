@@ -34,13 +34,11 @@ const AnonymousSignIn = () => {
     const { data, error } = await supabase.auth.signInAnonymously();
     if (error) {
       toast.error("Oops, looks like you couldn't get in right now, please try again 🤔");
-      console.error('Error signing in anonymously:', error);
       return;
     }
 
     if (!data.user) {
       toast.error('There is no user data');
-      console.error('Error signing in anonymously:', error);
       return;
     }
 
@@ -61,7 +59,6 @@ const AnonymousSignIn = () => {
 
     if(profileError){
       toast.error('Masking you failed, why is that ? 🤔. Just try again I guess');
-      console.error('Error signing in anonymously:', profileError);
       return;
     }
 
@@ -70,9 +67,8 @@ const AnonymousSignIn = () => {
       // Redirect to the feed page or your desired page after successful sign-in
       router.push('/feed');
     }
-   } catch (error) {
+   } catch (_) {
     toast.error("Masking you failed, why is that ? 🤔");
-    console.error('Error signing in anonymously:', error);
    }
    finally {
     setIsLoading(false);

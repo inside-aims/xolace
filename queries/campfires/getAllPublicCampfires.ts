@@ -49,7 +49,6 @@ export function useAllPublicCampfires(userId?: string) {
         return [];
       }
 
-      console.log(data);
 
       // The type assertion is needed here because the dynamic select with join
       // isn't fully typed by Supabase's generator. We are confident in the shape

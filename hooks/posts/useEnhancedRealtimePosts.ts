@@ -23,7 +23,6 @@ export function useEnhancedRealtimePosts() {
           table: 'posts'
         },
         async (payload) => {
-          console.log('Real-time post change:', payload);
           
           // For new posts, we need to check if they should appear in user's feed
           if (payload.eventType === 'INSERT') {

@@ -20,7 +20,6 @@ export function useRealTimeCampfirePosts(campfireId: string) {
           filter: `campfire_id=eq.${campfireId}`,
         },
         (payload) => {
-          console.log('Campfire post change received!', payload);
           // Invalidate and refetch the campfire posts query
           queryClient.invalidateQueries({
             queryKey: ['campfire-posts', campfireId],

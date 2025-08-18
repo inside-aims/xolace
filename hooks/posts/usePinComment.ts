@@ -21,7 +21,6 @@ export function usePinComment(postId?: string) {
             toast.success("Comment pin status updated!");
         },
         onError: (error) => {
-            console.log(error)
             toast.error("Failed to update pin", { description: error.message });
         }
     });

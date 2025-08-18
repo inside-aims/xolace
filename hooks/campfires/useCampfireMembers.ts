@@ -40,7 +40,6 @@ export function useCampfireMembers(
       });
 
       if (error) {
-        console.error('Error fetching campfire members:', error);
         throw new Error(error.message);
       }
 

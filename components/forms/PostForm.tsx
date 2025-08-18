@@ -503,7 +503,6 @@ export function PostForm() {
         );
 
         if (postError) {
-          console.error('Error creating post:', postError);
           toast.error('Oops, something must have gone wrong 😵‍💫! try again', {
             position: 'bottom-center',
           });
@@ -574,8 +573,7 @@ export function PostForm() {
           router.replace(pathname);
         }
         // eslint-disable-next-line @typescript-eslint/no-unused-vars
-      } catch (error) {
-        console.error('Error creating post:', error);
+      } catch (_) {
         toast('Error!', {
           description: 'Ooops🫢 !! Could not create post, Please try again',
           position: 'bottom-center',

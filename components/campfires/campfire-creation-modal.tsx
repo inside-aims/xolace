@@ -53,6 +53,7 @@ import Link from 'next/link';
 import { toFile } from '@/utils/helpers/uploadImageToBucket';
 import { generateCampfireSlug } from '@/lib/utils';
 import { useCreateCampfireMutation } from '@/hooks/campfires/useCreateCampfireMutation'; // Import the new hook
+import { toast } from 'sonner';
 
 const MAX_WORDS = 20;
 const MAX_RULES = 4;
@@ -210,7 +211,7 @@ const CreateCampfireModal = ({
         setStep(prev => prev + 1);
       }
     } else {
-      console.log('Validation failed for step', step);
+      toast.error(`Validation failed for step ${step}`);
     }
   };
 

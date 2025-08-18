@@ -122,14 +122,10 @@ export const usePreferencesStore = create<PreferencesState>((set, get) => ({
     const currentPreferences = get().preferences;
 
     if (!user) {
-      console.error(
-        'PreferencesStore: User not available for updating preference.',
-      );
       set({ error: 'User not authenticated' });
       return;
     }
     if (!currentPreferences) {
-      console.error('PreferencesStore: Preferences not loaded yet.');
       set({ error: 'Preferences not loaded' });
       return;
     }

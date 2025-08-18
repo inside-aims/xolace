@@ -83,8 +83,6 @@ export function getCampfireWithSlug(slug: string, userId?: string) {
         isFavorite = membershipData?.is_favorite || false;
       }
 
-      console.log('Campfire data:', campfireData);
-
       return {
         campfireId: campfireData.id,
         name: campfireData.name,

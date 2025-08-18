@@ -84,7 +84,7 @@ const CampfireDetails = ({slug}: {slug : string}) => {
       // Refetch to get updated data
       refetch();
     } catch (error) {
-      console.error("Error toggling membership:", error);
+      throw error;
     }
   };
 

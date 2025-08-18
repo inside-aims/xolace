@@ -113,7 +113,6 @@ function createStore<TData extends SupabaseTableData<T>, T extends SupabaseTable
     const { data: newData, count, error } = await query.range(skip, skip + pageSize - 1)
 
     if (error) {
-      console.error('An unexpected error occurred:', error)
       setState({ error })
     } else {
       const deduplicatedData = ((newData || []) as TData[]).filter(
