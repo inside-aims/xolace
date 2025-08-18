@@ -4,6 +4,7 @@ import { ChevronRight, type LucideIcon } from 'lucide-react';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { useSidebar } from '@/components/ui/sidebar';
+import BetaBadge from './extras/beta-badge';
 
 import {
   Collapsible,
@@ -30,12 +31,15 @@ export function NavMiddle({
     url: string;
     icon?: LucideIcon;
     isActive?: boolean;
+    isBeta?: boolean;
     items?: {
       key: string;
       title: string | React.ReactNode;
       url?: string;
       icon?: LucideIcon;
       onClick?: () => void;
+      isNew?: boolean;
+      isBeta?: boolean;
     }[];
   }[];
 }) {
@@ -55,11 +59,14 @@ export function NavMiddle({
               <CollapsibleTrigger asChild>
                 <SidebarMenuButton
                   tooltip={item.title}
-                  className="py-5 tracking-widest uppercase focus:outline-none focus-visible:outline-none focus:ring-0 focus-visible:ring-0"
+                  className="py-5 tracking-widest uppercase focus:ring-0 focus:outline-none focus-visible:ring-0 focus-visible:outline-none"
                 >
                   {item.icon && <item.icon />}
                   <span className="text-muted-foreground text-xs leading-4">
                     {item.title}
+                    {item.isBeta && (
+                      <BetaBadge className='ml-2 py-0' size="sm" variant="neural" />
+                    )}
                   </span>
                   <ChevronRight className="ml-auto transition-transform duration-200 group-data-[state=open]/collapsible:rotate-90" />
                 </SidebarMenuButton>
@@ -67,9 +74,8 @@ export function NavMiddle({
               <CollapsibleContent>
                 <SidebarMenuSub>
                   {item.items?.map(subItem => {
-
                     let isActive = false;
-                    if(subItem.url){
+                    if (subItem.url) {
                       isActive =
                         (pathName.includes(subItem.url) &&
                           subItem.url.length > 1) ||
@@ -80,24 +86,36 @@ export function NavMiddle({
                       <SidebarMenuSubItem key={subItem.key}>
                         <SidebarMenuSubButton
                           asChild
-                          className="py-5 relative"
+                          className="relative py-5"
                           isActive={isActive}
-                          onClick={subItem.onClick ? subItem.onClick : () => setOpenMobile(false)}
+                          onClick={
+                            subItem.onClick
+                              ? subItem.onClick
+                              : () => setOpenMobile(false)
+                          }
                         >
-                          {subItem.url ?
-                          <Link href={subItem.url} className='flex justify-start items-center'>
-                            <span className="text-sidebar-label flex items-center gap-2">
+                          {subItem.url ? (
+                            <Link
+                              href={subItem.url}
+                              className="flex items-center justify-start"
+                            >
+                              <span className="text-sidebar-label flex items-center gap-2">
+                                {subItem.icon && <subItem.icon size={16} />}
+                                {subItem.title}
+                              </span>
+                              {subItem.isNew && <NewBadge size="sm" />}
+                              {subItem.isBeta && <NewBadge size="sm" />}
+                            </Link>
+                          ) : (
+                            <span className="text-sidebar-label flex cursor-pointer items-center relative">
                               {subItem.icon && <subItem.icon size={16} />}
                               {subItem.title}
+                              
+                              {subItem.isBeta && (
+                                <BetaBadge className='absolute right-0 top-1 py-0 px-1' size="sm" />
+                              )}
                             </span>
-                            {/*<NewBadge size="sm" />*/}
-                          </Link>
-                        : 
-                        <span className="text-sidebar-label cursor-pointer flex items-center">
-                          {subItem.icon && <subItem.icon size={16} />}
-                          {subItem.title}
-                        </span>
-                        }
+                          )}
                         </SidebarMenuSubButton>
                       </SidebarMenuSubItem>
                     );

@@ -97,24 +97,31 @@ export function SidebarLeft({
         url: "#",
         icon: Flame,
         isActive: true,
+        isBeta: true,
         items: [
           {
             key: "createCampfire",
             title: "Create Campfire",
             onClick: handleOpenCreateCampfireModal,
-            icon: Plus
+            icon: Plus,
+            isNew: false,
+            isBeta: false,
           },
           {
             key: "manageCampfire",
             title: "Manage Campfires",
             url: `/user/x/campfires`,
-            icon: Cog
+            icon: Cog,
+            isNew: false,
+            isBeta: false,
           },
           {
             key: "discoverCampfires",
             title: "Discover Campfires",
             url: "/campfires/discover",
-            icon: Search
+            icon: Search,
+            isNew: false,
+            isBeta: false,
           }
         ],
       },],
@@ -130,13 +137,17 @@ export function SidebarLeft({
             key: "healthTips",
             title: "Health Tips",
             url: "/health-tips",
-            icon: HeartPulse
+            icon: HeartPulse,
+            isNew: true,
+            isBeta: false,
           },
           {
             key: "glimpse",
             title: "Glimpse",
             url: "/glimpse",
-            icon: TvMinimalPlay
+            icon: TvMinimalPlay,
+            isNew: true,
+            isBeta: false,
           },
         ],
       },]

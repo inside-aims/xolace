@@ -5,13 +5,15 @@ interface NewBadgeProps {
   variant?: 'gradient' | 'glow' | 'minimal';
   className?: string;
   containerClass?: string;
+  text?: string;
 }
 
 export const NewBadge: React.FC<NewBadgeProps> = ({ 
   size = 'md', 
   variant = 'gradient',
   className = '' ,
-  containerClass = ''
+  containerClass = '',
+  text = 'New'
 }) => {
   const sizeClasses = {
     sm: 'px-2 py-1 text-[10px]',
@@ -38,7 +40,7 @@ export const NewBadge: React.FC<NewBadgeProps> = ({
         
         {/* Main badge */}
         <div className="relative z-10 bg-gradient-to-r from-[#0536FF] to-[#524EDD] text-white rounded-full px-full py-full w-full h-full flex items-center justify-center">
-          <span className="drop-shadow-sm">New</span>
+          <span className="drop-shadow-sm">{text}</span>
         </div>
         
         {/* Subtle inner glow */}
@@ -57,7 +59,7 @@ export const NewBadge: React.FC<NewBadgeProps> = ({
         hover:border-[#0536FF]/40
         backdrop-blur-sm
       `}>
-        <span>New</span>
+        <span>{text}</span>
       </div>
     );
   }
@@ -76,7 +78,7 @@ export const NewBadge: React.FC<NewBadgeProps> = ({
       <div className="absolute inset-0 bg-gradient-to-br from-transparent via-transparent to-[#14B8A6]/20 rounded-full"></div>
       
       {/* Content */}
-      <span className="relative z-10 text-white drop-shadow-sm">New</span>
+      <span className="relative z-10 text-white drop-shadow-sm">{text}</span>
       
       {/* Inner highlight */}
       <div className="absolute top-0 left-0 right-0 h-1/2 bg-gradient-to-b from-white/20 to-transparent rounded-full pointer-events-none"></div>
