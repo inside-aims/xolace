@@ -112,7 +112,7 @@ export function NavMiddle({
                               {subItem.title}
                               
                               {subItem.isBeta && (
-                                <KvngBadge className='absolute right-0 top-1 py-0 px-1' size="xs" children="BETA" />
+                                <KvngBadge className='absolute right-0 top-1 py-0 px-1' size="xs" >BETA</KvngBadge>
                               )}
                             </span>
                           )}

@@ -105,7 +105,7 @@ const ExploreFeedList = ({ filteredPosts }: Props) => {
       ) : (
         <SearchLoader title='No posts found' description='Try adjusting your search or filters'/>
       ),
-    [filteredPosts, handlePostClick],
+    [filteredPosts, handlePostClick, signedUrls],
   );
 
   return (
