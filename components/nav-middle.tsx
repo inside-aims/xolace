@@ -4,7 +4,7 @@ import { ChevronRight, type LucideIcon } from 'lucide-react';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { useSidebar } from '@/components/ui/sidebar';
-import BetaBadge from './extras/beta-badge';
+import {KvngBadge} from './extras/new-beta-badge';
 
 import {
   Collapsible,
@@ -65,7 +65,7 @@ export function NavMiddle({
                   <span className="text-muted-foreground text-xs leading-4">
                     {item.title}
                     {item.isBeta && (
-                      <BetaBadge className='ml-2 py-0' size="sm" variant="neural" />
+                      <KvngBadge variant='gradient' className='ml-2 py-0' size="xs" color="purple"  >BETA</KvngBadge> 
                     )}
                   </span>
                   <ChevronRight className="ml-auto transition-transform duration-200 group-data-[state=open]/collapsible:rotate-90" />
@@ -112,7 +112,7 @@ export function NavMiddle({
                               {subItem.title}
                               
                               {subItem.isBeta && (
-                                <BetaBadge className='absolute right-0 top-1 py-0 px-1' size="sm" />
+                                <KvngBadge className='absolute right-0 top-1 py-0 px-1' size="xs" >BETA</KvngBadge>
                               )}
                             </span>
                           )}
