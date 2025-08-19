@@ -74,6 +74,9 @@ export const updateSession = async (request: NextRequest) => {
       '/create-health-tips',
       '/glimpse',
       '/notifications',
+      '/campfires',
+      '/user',
+      '/x'
     ];
 
     // List of public routes

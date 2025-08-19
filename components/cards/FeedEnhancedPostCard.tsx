@@ -48,6 +48,7 @@ import { SinglePost } from '../shared/SinglePost';
 import SimpleCarouselPost from '../shared/Tour/SimpleCorouselPost';
 import profBadge from "../../public/assets/images/user-role-badges/consellors-badge.webp"
 import { EnhancedPost } from '@/queries/posts/getEnhancedFeed';
+import Link from 'next/link';
 
 const moodIcons: Record<string, React.JSX.Element> = {
   happy: <Smile className="h-4 w-4" />,
@@ -221,9 +222,18 @@ export function FeedEnhancedPostCard({
             </Avatar>
             <div className="flex flex-col items-start justify-center">
               <div className="flex items-center gap-2">
-                <h4 className="text-foreground font-semibold">
-                  {displayName}
-                </h4>
+              {post.campfire_slug ? (
+                  <Link className='active:underline active:text-lavender-400 ' href={`/x/${post.campfire_slug}`}>
+                    {' '}
+                    <h4 className="text-foreground font-semibold active:text-lavender-400 hover:text-lavender-400">
+                      {displayName}
+                    </h4>
+                  </Link>
+                ) : (
+                  <h4 className="text-foreground font-semibold">
+                    {displayName}
+                  </h4>
+                )}
                 <div
                   className={`h-5 w-5 ${moodColors[post.mood]} flex items-center justify-center rounded-full text-white`}
                 >
