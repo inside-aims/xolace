@@ -6,7 +6,7 @@ import React, { useCallback, useState } from 'react';
 import { CampfirePurpose } from '@/components/campfires/campfires.types';
 import {
   DiscoverMobileCard,
-  DiscoverDesktopCard
+  DiscoverDesktopCard,
 } from '@/components/campfires/discover-cards';
 import { FilterByPurpose } from '@/components/campfires/filtered-purpose';
 import CampfireWrapper from '@/components/shared/layoutUIs/CampfireWrapper';
@@ -16,9 +16,9 @@ import { useUserState } from '@/lib/store/user';
 import CampfiresListSkeleton from '@/components/campfires/campfires-list-skeleton';
 import { Alert, AlertDescription } from '@/components/ui/alert';
 import { Button } from '@/components/ui/button';
-import {Separator} from "@/components/ui/separator";
+import { Separator } from '@/components/ui/separator';
 import { toast } from 'sonner';
-
+import { DotLottieReact } from '@lottiefiles/dotlottie-react';
 
 const DiscoverCampfireList = () => {
   const user = useUserState(state => state.user);
@@ -38,14 +38,17 @@ const DiscoverCampfireList = () => {
   // Helper function for join campfire
   const handleJoinClick = (campfireId: string) => {
     if (!user) {
-      toast.error("Please sign in to join this campfire, or reload the page.");
+      toast.error('Please sign in to join this campfire, or reload the page.');
       return;
     }
 
-    if(user.is_anonymous){
-      toast.error("Anonymous users cannot join campfires. Please use a real account.", {
-        duration: 3000,
-      });
+    if (user.is_anonymous) {
+      toast.error(
+        'Anonymous users cannot join campfires. Please use a real account.',
+        {
+          duration: 3000,
+        },
+      );
       return;
     }
     joinCampfireMutation.mutate(campfireId);
@@ -75,17 +78,14 @@ const DiscoverCampfireList = () => {
       <div className="flex w-full flex-col items-center gap-4 px-4">
         {/* Page Heading */}
         <div className="space-y-2 text-center">
-          <h1 className="text-2xl font-bold">
-            Discover Campfire
-          </h1>
+          <h1 className="text-2xl font-bold">Discover Campfire</h1>
           <p className="text-muted-foreground">
             Find your circle. Join discussions that matter to you.
           </p>
         </div>
 
         {/* Search & Filter */}
-        <div
-          className="sticky -top-8 z-20 flex w-full max-w-xl items-center justify-between gap-4 py-2 md:justify-center">
+        <div className="sticky -top-8 z-20 flex w-full max-w-xl items-center justify-between gap-4 py-2 md:justify-center">
           <div className="flex w-full items-center rounded-s-2xl border px-2 sm:w-2/3">
             <Search className="text-muted-foreground mr-2 h-5 w-5" />
             <Input
@@ -109,7 +109,10 @@ const DiscoverCampfireList = () => {
               <CampfiresListSkeleton />
             </div>
           ) : isError ? (
-            <div className="flex w-full flex-col items-center gap-4 px-4" key="error">
+            <div
+              className="flex w-full flex-col items-center gap-4 px-4"
+              key="error"
+            >
               <Alert variant="destructive" className="max-w-md">
                 <AlertCircle className="h-4 w-4" />
                 <AlertDescription>
@@ -123,45 +126,49 @@ const DiscoverCampfireList = () => {
               </Button>
             </div>
           ) : filteredCampfires && filteredCampfires.length === 0 ? (
-            <div className="flex flex-col items-center justify-center py-12 text-center w-full">
-                <div className="text-6xl mb-4">🔥</div>
-                <h3 className="text-lg font-medium mb-2">No campfires found</h3>
-                <p className="text-muted-foreground mb-4">
-                  {searchTerm || selectedPurposes.length > 0
-                    ? "Try adjusting your search or filters"
-                    : "Be the first to create a campfire!"
-                  }
-                </p>
-                {(searchTerm || selectedPurposes.length > 0) && (
-                  <Button onClick={handleClearFilters} variant="outline">
-                    Clear Filters
-                  </Button>
-                )}
+            <div className="flex w-full flex-col items-center justify-center py-12 text-center">
+              <div className="mb-4 text-6xl">
+                <DotLottieReact
+                  src="https://lottie.host/8586490e-8c75-47c6-afc2-c8f2a6f10682/hYjxZaYm6a.lottie"
+                  loop
+                  autoplay
+                  style={{ width: '160px', height: '160px' }}
+                />
               </div>
+              <h3 className="mb-2 text-lg font-medium">No campfires found</h3>
+              <p className="text-muted-foreground mb-4">
+                {searchTerm || selectedPurposes.length > 0
+                  ? 'Try adjusting your search or filters'
+                  : 'Be the first to create a campfire!'}
+              </p>
+              {(searchTerm || selectedPurposes.length > 0) && (
+                <Button onClick={handleClearFilters} variant="outline">
+                  Clear Filters
+                </Button>
+              )}
+            </div>
           ) : (
             <>
-              <div
-                className="grid md:hidden w-full grid-cols-1 items-stretch gap-1 pt-2 pb-5">
+              <div className="grid w-full grid-cols-1 items-stretch gap-1 pt-2 pb-5 md:hidden">
                 {filteredCampfires?.map(campfire => (
-                 <div key={campfire.campfireId}>
-                 {/* only show seperator above for the first in the list, use css */}
-                 <Separator className=' first:block hidden' />
-                   <DiscoverMobileCard
-                     campfireId={campfire.campfireId}
-                     name={campfire.name}
-                     description={campfire.description}
-                     members={campfire.members}
-                     purpose={campfire.purpose}
-                     iconURL={campfire.iconURL}
-                     slug={campfire.slug}
-                     onJoin={() => handleJoinClick(campfire.campfireId)}
-                     isMember={campfire.isMember}
-                   />
-                 </div>
+                  <div key={campfire.campfireId}>
+                    {/* only show seperator above for the first in the list, use css */}
+                    <Separator className="hidden first:block" />
+                    <DiscoverMobileCard
+                      campfireId={campfire.campfireId}
+                      name={campfire.name}
+                      description={campfire.description}
+                      members={campfire.members}
+                      purpose={campfire.purpose}
+                      iconURL={campfire.iconURL}
+                      slug={campfire.slug}
+                      onJoin={() => handleJoinClick(campfire.campfireId)}
+                      isMember={campfire.isMember}
+                    />
+                  </div>
                 ))}
               </div>
-              <div
-                className="hidden md:grid w-full grid-cols-1 items-stretch gap-6 pt-4 pb-5 md:grid-cols-2 lg:grid-cols-2 xl:grid-cols-3">
+              <div className="hidden w-full grid-cols-1 items-stretch gap-6 pt-4 pb-5 md:grid md:grid-cols-2 lg:grid-cols-2 xl:grid-cols-3">
                 {filteredCampfires?.map(campfire => (
                   <DiscoverDesktopCard
                     key={campfire.campfireId}

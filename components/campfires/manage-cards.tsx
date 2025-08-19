@@ -80,7 +80,7 @@ const ManageCampfireCard = ({
           >
             {name}
           </Link>
-          <p className="text-sm break-words text-gray-500 dark:text-neutral-300">
+          <p className="text-sm break-words text-gray-500 dark:text-neutral-300 truncate">
             {description}
           </p>
         </div>
