@@ -1,20 +1,28 @@
 export const policiesData = [
-    {
-      id: "community-guidelines",
-      title: "Campfire Code",
-      description: "How we keep Xolace warm, safe, and supportive for all",
-      category: "Community",
-      version: "1.1",
-      lastUpdated: "June 19, 2025",
-      sections: [
-        { id: "campfire-culture", title: "Campfire Culture", level: 2 },
-        { id: "the-sharing-circle", title: "The Sharing Circle", level: 2 },
-        { id: "guardians-professionals", title: "Guardians & Professionals", level: 2 },
-        { id: "harassment-policy", title: "Harassment Policy", level: 2 },
-        { id: "fire-safety-protections", title: "Fire Safety Protections", level: 2 },
-        { id: "reporting-violations", title: "Reporting Violations", level: 2 },
-      ],
-      content: `## Campfire Culture
+  {
+    id: 'community-guidelines',
+    title: 'Campfire Code',
+    description: 'How we keep Xolace warm, safe, and supportive for all',
+    category: 'Community',
+    version: '1.1',
+    lastUpdated: 'June 19, 2025',
+    sections: [
+      { id: 'campfire-culture', title: 'Campfire Culture', level: 2 },
+      { id: 'the-sharing-circle', title: 'The Sharing Circle', level: 2 },
+      {
+        id: 'guardians-professionals',
+        title: 'Guardians & Professionals',
+        level: 2,
+      },
+      { id: 'harassment-policy', title: 'Harassment Policy', level: 2 },
+      {
+        id: 'fire-safety-protections',
+        title: 'Fire Safety Protections',
+        level: 2,
+      },
+      { id: 'reporting-violations', title: 'Reporting Violations', level: 2 },
+    ],
+    content: `## Campfire Culture
   
   At Xolace, we're building a digital campfire where people gather to share experiences, moments , find warmth, and support each other through life's journeys. 
   These principles keep our fire burning bright: We believe healing begins with empathy, and that means treating one another with respect always. 
@@ -136,25 +144,31 @@ export const policiesData = [
 > - Xolace Founding Principle
   
   `,
-
-  
-    },
-    {
-      id: "privacy-policy",
-      title: "Privacy Sanctuary",
-      description: "How we honor and protect your digital vulnerability",
-      category: "Trust & Safety",
-      version: "1.1",
-      lastUpdated: "June 19, 2025",
-      sections: [
-        { id: "our-privacy-principles", title: "Our Privacy Principles", level: 2 },
-        {id: "information-we-collect", title: "Information We Collect", level: 2},
-        { id: "how-we-use-your-data", title: "How We Use Your Data", level: 2 },
-        { id: "data-sharing", title: "Data Sharing and Disclosure", level: 2 },
-        { id: "user-rights", title: "Your Rights and Choices", level: 2 },
-        { id: "data-security", title: "Data Security", level: 2 },
-      ],
-      content: `## Our Privacy Principles
+  },
+  {
+    id: 'privacy-policy',
+    title: 'Privacy Sanctuary',
+    description: 'How we honor and protect your digital vulnerability',
+    category: 'Trust & Safety',
+    version: '1.1',
+    lastUpdated: 'June 19, 2025',
+    sections: [
+      {
+        id: 'our-privacy-principles',
+        title: 'Our Privacy Principles',
+        level: 2,
+      },
+      {
+        id: 'information-we-collect',
+        title: 'Information We Collect',
+        level: 2,
+      },
+      { id: 'how-we-use-your-data', title: 'How We Use Your Data', level: 2 },
+      { id: 'data-sharing', title: 'Data Sharing and Disclosure', level: 2 },
+      { id: 'user-rights', title: 'Your Rights and Choices', level: 2 },
+      { id: 'data-security', title: 'Data Security', level: 2 },
+    ],
+    content: `## Our Privacy Principles
 
 At Xolace, privacy isn't a feature - it's the foundation of our campfire. We operate by these core beliefs:
 
@@ -276,24 +290,24 @@ We implement robust security measures to protect your information from unauthori
   
   **Incident Response:**
   In the unlikely event of a data breach, we will notify affected users within 72 hours and provide clear information about what happened and what steps we're taking.`,
-    },
-    {
-      id: "terms-of-service",
-      title: "Terms of Service",
-      description: "The legal agreement governing your use of Xolace",
-      category: "Legal",
-      version: "1.1",
-      lastUpdated: "June 19, 2025",
-      sections: [
-        { id: "welcome", title: "Welcome to the Campfire", level: 2 },
-        { id: "acceptance-of-terms", title: "Acceptance of Terms", level: 2 },
-        { id: "sanctuary-rules", title: "Sanctuary Rules", level: 2 },
-        { id: "user-responsibilities", title: "User Responsibilities", level: 2 },
-        { id: "service-availability", title: "Service Availability", level: 2 },
-        { id: "intellectual-property", title: "Intellectual Property", level: 2 },
-        { id: "termination", title: "Account Termination", level: 2 },
-      ],
-      content: `## Welcome to the Campfire
+  },
+  {
+    id: 'terms-of-service',
+    title: 'Terms of Service',
+    description: 'The legal agreement governing your use of Xolace',
+    category: 'Legal',
+    version: '1.1',
+    lastUpdated: 'June 19, 2025',
+    sections: [
+      { id: 'welcome', title: 'Welcome to the Campfire', level: 2 },
+      { id: 'acceptance-of-terms', title: 'Acceptance of Terms', level: 2 },
+      { id: 'sanctuary-rules', title: 'Sanctuary Rules', level: 2 },
+      { id: 'user-responsibilities', title: 'User Responsibilities', level: 2 },
+      { id: 'service-availability', title: 'Service Availability', level: 2 },
+      { id: 'intellectual-property', title: 'Intellectual Property', level: 2 },
+      { id: 'termination', title: 'Account Termination', level: 2 },
+    ],
+    content: `## Welcome to the Campfire
 
 By joining Xolace, you're entering a digital sanctuary designed for authentic connection and emotional support. These terms create our shared agreement for keeping this space safe and sacred.
 
@@ -413,22 +427,23 @@ Either you or Xolace may terminate your account under certain circumstances.
   
 **Post‑Termination:**  
 - Your right to access the Platform ends immediately.  
-- We may retain certain data to comply with legal obligations and protect community safety. `
-    },
-    {
-      id: "ai-usage",
-      title: "Our AI Principles",
-      description: "How we ethically integrate artificial intelligence at your digital campfire",
-      category: "Technology",
-      version: "1.1",
-      lastUpdated: "June 19, 2025",
-      sections: [
-        { id: "ai-features", title: "AI Around the Campfire", level: 2 },
-        { id: "ai-limitations", title: "Understanding AI Limitations", level: 2 },
-        { id: "user-control", title: "User Control and Consent", level: 2 },
-        { id: "ai-safety", title: "AI Safety Measures", level: 2 },
-      ],
-      content: `## AI Around the Campfire
+- We may retain certain data to comply with legal obligations and protect community safety. `,
+  },
+  {
+    id: 'ai-usage',
+    title: 'Our AI Principles',
+    description:
+      'How we ethically integrate artificial intelligence at your digital campfire',
+    category: 'Technology',
+    version: '1.1',
+    lastUpdated: 'June 19, 2025',
+    sections: [
+      { id: 'ai-features', title: 'AI Around the Campfire', level: 2 },
+      { id: 'ai-limitations', title: 'Understanding AI Limitations', level: 2 },
+      { id: 'user-control', title: 'User Control and Consent', level: 2 },
+      { id: 'ai-safety', title: 'AI Safety Measures', level: 2 },
+    ],
+    content: `## AI Around the Campfire
 
 At Xolace, artificial intelligence serves as a gentle guide—never the firekeeper. We use AI mindfully to enhance human connection, not replace it.
   
@@ -502,21 +517,21 @@ We uphold rigorous standards to keep AI trustworthy, fair, and secure.
 
 > That explains the chat disappearing on reload of the page.
 `,
-    },
-    {
-      id: "reporting-safety",
-      title: "Reporting & Safety Tools",
-      description: "How to report concerns and stay safe on our platform",
-      category: "Safety",
-      version: "1.1",
-      lastUpdated: "June 19, 2025",
-      sections: [
-        { id: "reporting-process", title: "How to Report", level: 2 },
-        { id: "safety-tools", title: "Available Safety Tools", level: 2 },
-        { id: "crisis-resources", title: "Crisis Resources", level: 2 },
-        { id: "response-timeline", title: "Our Response Process", level: 2 },
-      ],
-      content: `## How to Report
+  },
+  {
+    id: 'reporting-safety',
+    title: 'Reporting & Safety Tools',
+    description: 'How to report concerns and stay safe on our platform',
+    category: 'Safety',
+    version: '1.1',
+    lastUpdated: 'June 19, 2025',
+    sections: [
+      { id: 'reporting-process', title: 'How to Report', level: 2 },
+      { id: 'safety-tools', title: 'Available Safety Tools', level: 2 },
+      { id: 'crisis-resources', title: 'Crisis Resources', level: 2 },
+      { id: 'response-timeline', title: 'Our Response Process', level: 2 },
+    ],
+    content: `## How to Report
   
   Your wellbeing—and the wellbeing of everyone at our digital campfire is our priority. If something feels wrong or unsafe, please let us know immediately.
   
@@ -601,21 +616,25 @@ We treat every report as a call to action swiftly and thoughtfully.
 
 **Transparency & Trust:**  
 We publish quarterly reports on report volumes and outcomes always anonymized to protect privacy.`,
-    },
-    {
-      id: "user-roles",
-      title: "User Roles & Responsibilities",
-      description: "Different types of users and their specific responsibilities",
-      category: "Community",
-      version: "1.1",
-      lastUpdated: "June 19, 2025",
-      sections: [
-        { id: "standard-users", title: "Standard Users", level: 2 },
-        { id: "verified-professionals", title: "Verified Mental Health Professionals", level: 2 },
-        { id: "community-moderators", title: "Community Moderators", level: 2 },
-        { id: "support-advocates", title: "Support Advocates", level: 2 },
-      ],
-      content: `## Standard Users
+  },
+  {
+    id: 'user-roles',
+    title: 'User Roles & Responsibilities',
+    description: 'Different types of users and their specific responsibilities',
+    category: 'Community',
+    version: '1.1',
+    lastUpdated: 'June 19, 2025',
+    sections: [
+      { id: 'standard-users', title: 'Standard Users', level: 2 },
+      {
+        id: 'verified-professionals',
+        title: 'Verified Mental Health Professionals',
+        level: 2,
+      },
+      { id: 'community-moderators', title: 'Community Moderators', level: 2 },
+      { id: 'support-advocates', title: 'Support Advocates', level: 2 },
+    ],
+    content: `## Standard Users
   
   Standard Users are the heart of our digital campfire your voices, stories, and support keep this community thriving.
   
@@ -711,6 +730,47 @@ Empathetic volunteers trained to offer immediate, non‑clinical support and res
   
 **Recognition:**  
 Support Advocates receive ongoing supervision, continuing education, and community recognition for their vital role.`,
-    }
-  ]
-  
+  },
+  {
+    id: 'campfire-rules',
+    title: 'Xolace Campfire Rules',
+    description:
+      'Platform-wide rules that apply across all Campfires on Xolace.',
+    category: 'Community',
+    version: '1.0',
+    lastUpdated: 'August 19, 2025',
+    sections: [
+      { id: 'protect-the-flame', title: 'Protect the Flame', level: 2 },
+      {
+        id: 'honor-the-campfire-circle',
+        title: 'Honor the Campfire Circle',
+        level: 2,
+      },
+      { id: 'respect-privacy', title: 'Respect Privacy & Trust', level: 2 },
+      { id: 'protect-minors', title: 'Protect Minors', level: 2 },
+      {
+        id: 'authentic-identity',
+        title: 'Be Authentic, Don’t Pretend',
+        level: 2,
+      },
+      { id: 'label-your-sparks', title: 'Label Your Sparks', level: 2 },
+      { id: 'keep-it-legal', title: 'Keep It Legal', level: 2 },
+      { id: 'dont-break-firepit', title: 'Don’t Break the Firepit', level: 2 },
+      { id: 'enforcement', title: 'Enforcement', level: 2 },
+    ],
+    content:
+      `## Protect the Flame
+      
+      \n\nEvery Campfire should be a safe space. Harassment, bullying, hate speech, threats, or attacks on vulnerable groups are not tolerated. Our flames should warm, not burn.\n\n---\n\n## Honor the Campfire Circle\n\nEach Campfire has its own culture. Follow the rules of the Campfires you join. Share authentically, participate with good intent, 
+      and avoid manipulation (spam, fake accounts, vote cheating, or disruption).\n\n---\n\n## Respect Privacy & Trust\n\nConfidentiality is sacred here. Do not expose or threaten to expose 
+      someone’s personal information. Sharing private or intimate content without consent is forbidden. Trust keeps our fire alive.\n\n---\n\n## Protect Minors\n\nAbsolutely no sexual, abusive, or 
+      exploitative content involving minors. Predatory behavior will result in immediate removal and reporting.\n\n---\n\n## Be Authentic, Don’t Pretend\n\nYou don’t need to use your real name, 
+      but you cannot impersonate others in a deceptive or harmful way. Your voice matters most when it’s your own.\n\n---\n\n## Label Your Sparks\n\nHelp others have predictable, safe experiences. 
+      If you’re posting sensitive, graphic, or triggering content, label it clearly. Give people the choice to step closer to your spark or not.\n\n---\n\n## Keep It Legal\n\nNo illegal activity, no 
+      prohibited transactions, and no using Xolace as a platform for crime. This includes drug sales, fraud, or anything that could harm others or break the law.\n\n---
+      \n\n## Don’t Break the Firepit\n\nDo not exploit, hack, or abuse the platform in ways that interfere with others’ use of Xolace. Keep the fire burning for all.\n\n---
+      \n\n## Enforcement\n\nWe keep Xolace safe through community trust and platform action. Enforcement may include:\n\n- A gentle reminder to check your behavior
+      \n- Formal warnings\n- Temporary or permanent suspension of accounts\n- Content removal\n- Restricting or quarantining Campfires\n- Permanent bans on harmful Campfires or accounts\n\n---
+      \n\n✨ Remember: Xolace is not just a platform, it’s a circle around the fire. Protect the warmth, respect each voice, and keep the flame alive.`,
+  },
+];
