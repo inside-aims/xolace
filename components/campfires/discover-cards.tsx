@@ -13,6 +13,7 @@ import {CampfirePurpose, formatMembers} from '@/components/campfires/campfires.t
 import Link from 'next/link';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { Info } from 'lucide-react';
+import { truncateText } from '@/lib/utils';
 
 interface CampfireCardProps {
   campfireId: string;
@@ -71,7 +72,7 @@ export const DiscoverDesktopCard = (campfire: CampfireCardProps) => {
               </p>
             )}
           </div>
-          <CardDescription>{campfire.description}</CardDescription>
+          <CardDescription>{truncateText(campfire.description, 60)}</CardDescription>
         </CardHeader>
         <CardContent className="pb-2">
           <Badge className={`${getBgSeverity(campfire.purpose)} font-normal`}>

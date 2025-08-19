@@ -192,32 +192,32 @@ export function SiteHeader() {
               <RealtimeAvatarStack roomName="break_room" />
             </div> */}
           </div>
+          <AnimatePresence>
           {isOpen && (
-            <AnimatePresence>
               <motion.div
-                className={
-                  'bg-bg fixed top-[var(--header-height)] right-0 z-[9999] flex h-auto max-h-[calc(90vh-var(--header-height)-70px)] w-[calc(100%-1rem)] max-w-[80%] flex-col rounded-lg border shadow-lg md:max-h-[calc(90vh-40px)] md:w-[400px] dark:bg-[#1b1a1a]'
-                }
+                className="bg-bg fixed top-[var(--header-height)] right-0 z-[9999] flex h-auto max-h-[calc(90vh-var(--header-height)-70px)] w-[calc(100%-1rem)] max-w-[80%] flex-col rounded-lg border shadow-lg md:max-h-[calc(90vh-40px)] md:w-[400px] dark:bg-[#1b1a1a]"
                 initial={{ x: 300, opacity: 0, scale: 0.98 }}
                 animate={{ x: 0, opacity: 1, scale: 1 }}
-                exit={{ x: 300, opacity: 0, scale: 0.98 }}
-                transition={{
-                  x: isOpen
-                    ? { duration: 0.5, ease: [0.25, 0.8, 0.25, 1] }
-                    : { duration: 0.9, ease: [0.25, 0.8, 0.25, 1] },
-                  opacity: isOpen
-                    ? { duration: 0.2, ease: 'easeOut' }
-                    : { duration: 0.5, ease: 'easeIn' },
-                  scale: isOpen
-                    ? { duration: 0.2, ease: 'easeOut' }
-                    : { duration: 0.5, ease: 'easeIn' },
+                exit={{
+                  x: 300,
+                  opacity: 0,
+                  scale: 0.95,
+                  transition: {
+                    x: { duration: 0.15, ease: "easeIn" },
+                    opacity: { duration: 0.25, ease: "easeIn" },
+                    scale: { duration: 0.25, ease: "easeIn" },
+                  },
                 }}
-                ref={notificationRef}
+                transition={{
+                  x: { duration: 0.55, ease: [0.25, 0.8, 0.25, 1] },
+                  opacity: { duration: 0.25, ease: "easeOut" },
+                  scale: { duration: 0.25, ease: "easeOut" },
+                }}
               >
-                <NotificationPanel />
+                <NotificationPanel/>
               </motion.div>
-            </AnimatePresence>
           )}
+          </AnimatePresence>
         </div>
       </header>
 
