@@ -769,7 +769,7 @@ const CreateCampfireModal = ({
                 By continuing, you agree to our{' '}
                 <span className="font-semibold">Mod Code of Conduct</span> and
                 acknowledge that you understand the{' '}
-                <Link href="/" className="text-lavender-300 font-semibold">
+                <Link href="/policies" target='_blank' className="text-lavender-300 font-semibold">
                   Xolace Rules
                 </Link>
                 .
