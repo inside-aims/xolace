@@ -27,7 +27,7 @@ type DropdownMenuProp = {
   commentCreatedBy?: string | number;
   commentPinnedStatus?: string;
   onOpenChange: React.Dispatch<React.SetStateAction<boolean>>;
-  dailyPrompt?: string;
+  dailyPrompt?: string | null;
   setDailyPrompt?: React.Dispatch<React.SetStateAction<boolean>>;
   showDailyPrompt?: boolean;
 };

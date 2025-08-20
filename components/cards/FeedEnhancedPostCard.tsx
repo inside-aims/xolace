@@ -291,7 +291,7 @@ export function FeedEnhancedPostCard({
             postId={post.id}
             postCreatedBy={post.created_by ?? ""}
             onOpenChange={setIsOpen}
-            dailyPrompt={"Share the pettiest thing you’ve done out of spite."} //Replace with post.dailyPrompt
+            dailyPrompt={post.prompt_text} 
             showDailyPrompt={showDailyPrompt}
             setDailyPrompt={setShowDailyPrompt}
           />
@@ -302,14 +302,14 @@ export function FeedEnhancedPostCard({
             <SinglePost
               content={truncateText(post.content, 200)}
               onClick={onClick}
-              dailyPrompt={"Share the pettiest thing you’ve done out of spite."} //Replace with post.dailyPrompt
+              dailyPrompt={post.prompt_text}
               showDailyPrompt={showDailyPrompt}
             />
           ) : (
             <SimpleCarouselPost
               slides={post.post_slides || []}
               onClick={onClick}
-              dailyPrompt={"Share the pettiest thing you’ve done out of spite."} //Replace with post.dailyPrompt
+              dailyPrompt={post.prompt_text} //Replace with post.dailyPrompt
               showDailyPrompt={showDailyPrompt}
             />
           )}
