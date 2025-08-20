@@ -24,6 +24,12 @@ interface CommentCardProps {
   className?: string;
   expandedComments?: Set<number>;
   postCreatedBy: string | null;
+  campfires?: {
+    name: string;
+    slug: string;
+    iconUrl?: string;
+  } | null
+  commentSignedUrls?: Record<string, string>;
 }
 
 const CommentCard = ({
@@ -38,6 +44,8 @@ const CommentCard = ({
   replyingTo,
   expandedComments,
   postCreatedBy,
+  campfires,
+  commentSignedUrls,
 }: CommentCardProps) => {
   // states
   const [isOpen, setIsOpen] = useState<boolean>(false);
@@ -50,6 +58,14 @@ const CommentCard = ({
   useEffect(() => {
     setTimestamp(format(comment.created_at));
   }, [comment]);
+
+  const displayName = campfires?.name || comment.author_name;
+
+  // Avatar source logic with campfire support
+  const avatarSrc = campfires?.iconUrl || 
+    (comment.author_avatar_url && commentSignedUrls?.[comment.author_avatar_url]) || 
+    comment.author_avatar_url || 
+    undefined;
 
   return (
     <>
@@ -103,14 +119,14 @@ const CommentCard = ({
           >
             <div className="flex items-center justify-center gap-1">
               <Avatar className="h-8 w-8">
-                <AvatarImage src={comment.author_avatar_url || undefined} />
+                <AvatarImage src={avatarSrc || undefined} />
                 <AvatarFallback className="bg-gradient-to-br from-[#0536ff] to-[#6a71ea] text-white">
-                  {comment.author_name?.slice(0, 2).toUpperCase()}
+                  {displayName?.slice(0, 2).toUpperCase()}
                 </AvatarFallback>
               </Avatar>
               <div className="flex flex-col items-start justify-center gap-1">
                 <h5 className="text-sm font-semibold tracking-tight text-gray-900 dark:text-white">
-                  {comment.author_name}
+                  {displayName}
                 </h5>
               </div>
               <small className="ml-2 text-xs text-zinc-500 dark:text-gray-400">

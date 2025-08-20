@@ -2,7 +2,15 @@
 import React from 'react';
 import { NestedComment } from '@/types/global';
 import CommentCard from "@/components/cards/CommentCard";
+import { useCommentSignedUrls } from '@/hooks/storage/useCommentSignedUrl';
 
+/*
+{
+    "name": "x/Best Of Anime",
+    "slug": "best-of-anime",
+    "icon_url": "http://127.0.0.1:54321/storage/v1/object/public/campfires.bucket/icons/4a39dece-d3f4-47f7-8bd5-e667e9c8c5d6_icon_1754846924934"
+}
+*/
 interface CommentChartProps {
   comments: NestedComment[];
   onReply: (authorName: string, commentId: number) => void;
@@ -10,9 +18,14 @@ interface CommentChartProps {
   expandedComments: Set<number>;
   onToggleExpanded: (commentId: number) => void;
   postCreatedBy: string | null;
+  campfires?: {
+    name: string;
+    slug: string;
+    iconUrl?: string;
+  } | null
 }
 
-const CommentChart: React.FC<CommentChartProps> = ({ comments, onReply, replyingTo, expandedComments, onToggleExpanded, postCreatedBy }) => {
+const CommentChart: React.FC<CommentChartProps> = ({ comments, onReply, replyingTo, expandedComments, onToggleExpanded, postCreatedBy, campfires }) => {
   // const [expandedComments, setExpandedComments] = useState<Set<string>>(new Set());
 
   // const toggleExpanded = (commentId: number) => {
@@ -66,6 +79,7 @@ const CommentChart: React.FC<CommentChartProps> = ({ comments, onReply, replying
   //   );
   // };
 
+  const { data: commentSignedUrls } = useCommentSignedUrls(comments);
   return (
     <div className="space-y-2 ">
       {/* {rootComments.map((comment) => renderComment(comment, 0))} */}
@@ -80,6 +94,8 @@ const CommentChart: React.FC<CommentChartProps> = ({ comments, onReply, replying
                     onToggleExpanded={onToggleExpanded}
                     expandedComments={expandedComments}
                     postCreatedBy={postCreatedBy}
+                    campfires={campfires}
+                    commentSignedUrls={commentSignedUrls}
                 />
             ))}
     </div>

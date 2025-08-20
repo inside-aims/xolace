@@ -134,6 +134,7 @@ const PostDetailDrawer = ({ post, type }: { post: DetailPost; type: Type }) => {
         parentId,
         depth,
         parentAuthorId,
+        campfireId: post.campfire_id,
       },
       {
         onSuccess: () => {
