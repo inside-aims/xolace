@@ -184,8 +184,8 @@ const CampfireDetails = ({slug}: {slug : string}) => {
           <div className="relative w-full h-full">
           <Avatar className="hidden lg:flex rounded-full border-3 border-white dark:border-black/80 h-20 w-20">
               <AvatarImage className="rounded-full object-contain" src={campfire.iconURL || undefined} alt={campfire.name} />
-              <AvatarFallback className="border-lavender-500 flex h-8 w-8 items-center justify-center rounded-full border font-semibold text-white"><span
-                  className={`bg-lavender-500 flex h-7 w-7 items-center justify-center rounded-full font-semibold text-white`}
+              <AvatarFallback className="border-lavender-500 flex items-center justify-center rounded-full border font-semibold text-white"><span
+                  className={`bg-lavender-500 flex h-20 w-20 items-center justify-center rounded-full font-semibold text-white text-3xl`}
                 >
                   x/
                 </span></AvatarFallback>
