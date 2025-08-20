@@ -7,7 +7,7 @@ import dynamic from 'next/dynamic';
 import { useRouter } from 'next/navigation';
 import { Button } from '@/components/ui/button';
 import { Card } from '@/components/ui/card';
-import { ArrowRight, Sparkles, CalendarDays } from 'lucide-react';
+import {ArrowRight, Sparkles, CalendarDays, HelpCircle} from 'lucide-react';
 import { usePreferencesStore } from '@/lib/store/preferences-store';
 import { motion } from 'motion/react';
 import qs from 'query-string';
@@ -262,3 +262,13 @@ const DailyPrompt = () => {
 };
 
 export default DailyPrompt;
+
+// Component to display the daily prompt question on a feed card
+export const DailyPromptQuestion = ( {dailyPrompt}:{dailyPrompt: string}) => {
+  return (
+    <div className="mb-1 flex items-start gap-1 text-sm text-gray-500 dark:text-gray-400 italic select-none">
+      <HelpCircle size={16}/>
+      <p>{dailyPrompt}</p>
+    </div>
+  )
+}
