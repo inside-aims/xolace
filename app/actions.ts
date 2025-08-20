@@ -787,7 +787,8 @@ export async function fetchDailyPromptAction() {
         id,
         prompt_text,
         created_at,
-        active_on
+        active_on,
+        category
       `,
       )
       .eq('active_on', today)
