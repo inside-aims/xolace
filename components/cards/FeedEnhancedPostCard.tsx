@@ -146,6 +146,8 @@ export function FeedEnhancedPostCard({
   // States
   const [timestamp, setTimestamp] = useState('');
   const [isOpen, setIsOpen] = useState<boolean>(false);
+  const [showDailyPrompt, setShowDailyPrompt] = useState(false);
+
 
   // Register the custom locale
   register('short-en', customLocale);
@@ -289,14 +291,27 @@ export function FeedEnhancedPostCard({
             postId={post.id}
             postCreatedBy={post.created_by ?? ""}
             onOpenChange={setIsOpen}
+            dailyPrompt={"Share the pettiest thing you’ve done out of spite."} //Replace with post.dailyPrompt
+            showDailyPrompt={showDailyPrompt}
+            setDailyPrompt={setShowDailyPrompt}
           />
         </CardHeader>
 
         <CardContent className="cursor-pointer">
           {post.type === "single" ? (
-            <SinglePost content={truncateText(post.content, 200)} onClick={onClick} />
+            <SinglePost
+              content={truncateText(post.content, 200)}
+              onClick={onClick}
+              dailyPrompt={"Share the pettiest thing you’ve done out of spite."} //Replace with post.dailyPrompt
+              showDailyPrompt={showDailyPrompt}
+            />
           ) : (
-            <SimpleCarouselPost slides={post.post_slides || []} onClick={onClick} />
+            <SimpleCarouselPost
+              slides={post.post_slides || []}
+              onClick={onClick}
+              dailyPrompt={"Share the pettiest thing you’ve done out of spite."} //Replace with post.dailyPrompt
+              showDailyPrompt={showDailyPrompt}
+            />
           )}
           <div className="mt-2 flex flex-wrap gap-2">
             {post.posttags &&
