@@ -7,7 +7,7 @@ import dynamic from 'next/dynamic';
 import { useRouter } from 'next/navigation';
 import { Button } from '@/components/ui/button';
 import { Card } from '@/components/ui/card';
-import { ArrowRight, Sparkles, CalendarDays } from 'lucide-react';
+import { ArrowRight, Sparkles, CalendarDays, Tag } from 'lucide-react';
 import { usePreferencesStore } from '@/lib/store/preferences-store';
 import { motion } from 'motion/react';
 import qs from 'query-string';
@@ -18,6 +18,7 @@ import { TipsBanner } from './TipsBanner';
 import { WordRotate } from '../magicui/word-rotate';
 import { usePrompt } from '@/hooks/prompts/usePromptData';
 import { tips } from '@/constants';
+import { getCategoryIcon, getThemeColors } from '@/utils/helpers/dailyPromptUtilities';
 // import { DotLottieReact } from '@lottiefiles/dotlottie-react';
 
 // interface DailyPromptData {
@@ -170,6 +171,9 @@ const DailyPrompt = () => {
     );
   }
 
+  const { gradient, accent, button, glow } = getThemeColors(promptData?.data?.category);
+  const categoryIcon = getCategoryIcon(promptData?.data?.category);
+
   return (
     <div
       className="mb-3 w-full sm:mb-4 md:px-8"
@@ -181,9 +185,9 @@ const DailyPrompt = () => {
         transition={{ duration: 0.6, ease: 'anticipate' }}
         className=""
       >
-        <Card className="to-lavender-700 dark:from-ocean-700/80 dark:to-lavender-800/80 relative overflow-hidden border-none bg-gradient-to-br from-purple-600 text-white shadow-xl">
+        <Card className={`to-lavender-700 dark:from-ocean-700/80 dark:to-lavender-800/80 relative overflow-hidden border-none bg-gradient-to-br from-purple-600 text-white shadow-xl ${gradient}`}>
           {/* Decorative Glows */}
-          <div className="absolute top-0 right-0 -mt-20 -mr-20 h-40 w-40 animate-pulse rounded-full bg-indigo-400/30 blur-3xl"></div>
+          <div className={`absolute top-0 right-0 -mt-20 -mr-20 h-40 w-40 animate-pulse rounded-full bg-indigo-400/30 blur-3xl ${glow}`}></div>
           <div className="absolute bottom-0 left-0 -mb-16 -ml-16 h-32 w-32 animate-pulse rounded-full bg-purple-400/30 blur-3xl delay-1000"></div>
 
           <div className="relative z-10 px-4 py-3">
@@ -228,6 +232,19 @@ const DailyPrompt = () => {
               </div>
               </div>
             </div>
+
+            {/* Category Badge */}
+            {promptData?.data?.category && (
+              <div className="mb-2 flex items-center gap-2">
+                <div className="flex items-center gap-1.5 rounded-full bg-white/10 px-3 py-1 text-xs font-medium backdrop-blur-sm">
+                  <span className="text-sm">{categoryIcon}</span>
+                  <Tag className="h-3 w-3" />
+                  <span className="capitalize">
+                    {promptData?.data?.category.replace('_', ' ')}
+                  </span>
+                </div>
+              </div>
+            )}
             <p className="mb-3 flex items-center text-xs text-purple-200 dark:text-purple-300">
               <CalendarDays className="mr-1.5 h-4 w-4 text-purple-300" />
               {format(
@@ -237,20 +254,20 @@ const DailyPrompt = () => {
             </p>
 
             <div className="relative my-3 flex min-h-[50px] items-center justify-center rounded-xl bg-white/5 p-3 backdrop-blur-sm dark:bg-black/10">
-              <span className="absolute top-1 -left-2 font-serif text-6xl text-purple-400/50 select-none dark:text-purple-500/50">
+              <span className={`absolute top-1 -left-2 font-serif text-6xl  select-none ${accent}`}>
                 “
               </span>
               <p className="text-md px-4 text-center leading-snug font-medium sm:text-xl">
                 {promptData?.data?.prompt_text}
               </p>
-              <span className="absolute -right-2 bottom-0 font-serif text-6xl text-purple-400/50 select-none dark:text-purple-500/50">
+              <span className={`absolute -right-2 bottom-0 font-serif text-6xl select-none  ${accent}`}>
                 ”
               </span>
             </div>
 
             <Button
               onClick={handleRespond}
-              className="mt-2 w-full rounded-lg bg-white py-3.5 text-base font-bold text-purple-700 shadow-md transition-all hover:-translate-y-0.5 hover:bg-gray-100 hover:shadow-lg"
+              className={`mt-2 w-full rounded-lg bg-white py-3.5 text-base font-bold shadow-md transition-all hover:-translate-y-0.5 hover:bg-gray-100 hover:shadow-lg ${button}`}
             >
               Share Your Thoughts <ArrowRight className="ml-2.5 h-5 w-5" />
             </Button>
