@@ -84,8 +84,7 @@ const CampfireFeedList = ({
 
   const handlePostClick = (postId: string) => {
     let viewContext = {};
-    if (isDesktop) {
-      if (!scrollableContainer) return;
+    if (isDesktop && scrollableContainer ) {
       viewContext = {
         scrollY: scrollableContainer.scrollTop,
         timestamp: Date.now(),
@@ -109,7 +108,7 @@ const CampfireFeedList = ({
         campfireId,
       };
     }
-
+    console.log("clicking")
     sessionStorage.setItem(`campfireFeedViewContext-${campfireId}`, JSON.stringify(viewContext));
     router.push(`/post/${postId}`);
   };
