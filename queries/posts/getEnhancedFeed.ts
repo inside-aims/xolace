@@ -30,6 +30,8 @@ export interface EnhancedPost {
   views_count: number;
   collections: Array<{ user_id: string }>;
   post_slides: Array<{ slide_index: number; content: string }>;
+  prompt_text: string | null;
+  prompt_category: string | null;
 }
 
 interface FeedPage {

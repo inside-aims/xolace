@@ -13,7 +13,7 @@ interface SimpleCarouselPostProps {
   slides: Slide[];
   onClick?: () => void;
   showDailyPrompt?: boolean,
-  dailyPrompt?: string
+  dailyPrompt?: string | null
 }
 
 const SimpleCarouselPost = ({ slides, onClick, showDailyPrompt, dailyPrompt }: SimpleCarouselPostProps) => {

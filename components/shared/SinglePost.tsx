@@ -5,7 +5,7 @@ interface SinglePostProps {
     content: string
     onClick?: () => void,
     showDailyPrompt?: boolean,
-    dailyPrompt?: string
+    dailyPrompt?: string | null
   }
   
   export function SinglePost({ content, onClick,showDailyPrompt, dailyPrompt }: SinglePostProps) {
