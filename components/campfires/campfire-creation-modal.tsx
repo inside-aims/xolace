@@ -1,6 +1,7 @@
 'use client';
 
 import React, { useState } from 'react';
+import { useRouter } from 'next/navigation';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import * as z from 'zod';
@@ -127,6 +128,7 @@ const CreateCampfireModal = ({
   open,
   onOpenChange,
 }: CreateCampfireModalProps) => {
+  const router = useRouter();
   const [step, setStep] = useState(1);
   const [wordCount, setWordCount] = useState<number>(0);
 
@@ -161,12 +163,13 @@ const CreateCampfireModal = ({
 
   const handleFinalSubmit = async (data: FullFormType) => {
     const formData = new FormData();
+    const generatedSlug = generateCampfireSlug(data.name)
     formData.append('name', `x/${data.name}`);
     formData.append('description', data.description);
     formData.append('purpose', data.purpose);
     formData.append('visibility', data.visibility);
     formData.append('rules', JSON.stringify(rules));
-    formData.append('slug', generateCampfireSlug(data.name));
+    formData.append('slug', generatedSlug);
     
     if (iconBlob) {
       formData.append(
@@ -189,6 +192,7 @@ const CreateCampfireModal = ({
           form.reset();
           setStep(1);
           onOpenChange(false);
+          router.push(`/x/${generatedSlug}`);
         }
       },
     });
