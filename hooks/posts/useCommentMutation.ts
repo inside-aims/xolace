@@ -109,6 +109,7 @@ export function useCommentMutation(post: DetailPost) {
         depth: depth ? depth : 0,
         parent_id: parentId ? Number(parentId) : null,
         pinned_status: 'none',
+        campfire_id: post.campfire_id,
       };
 
       // Optimistically update the comments list

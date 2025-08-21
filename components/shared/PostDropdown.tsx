@@ -12,7 +12,7 @@ import {
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu';
 import { useUserState } from '@/lib/store/user';
-import { Trash2, Telescope, Flag, Pin } from 'lucide-react';
+import {Trash2, Telescope, Flag, Pin, Eye, EyeOff} from 'lucide-react';
 import { usePostMutations } from '@/hooks/posts/usePostMutation';
 import { usePinComment } from '@/hooks/posts/usePinComment';
 
@@ -27,6 +27,9 @@ type DropdownMenuProp = {
   commentCreatedBy?: string | number;
   commentPinnedStatus?: string;
   onOpenChange: React.Dispatch<React.SetStateAction<boolean>>;
+  dailyPrompt?: string | null;
+  setDailyPrompt?: React.Dispatch<React.SetStateAction<boolean>>;
+  showDailyPrompt?: boolean;
 };
 
 const PostDropdown: React.FC<DropdownMenuProp> = ({
@@ -40,6 +43,9 @@ const PostDropdown: React.FC<DropdownMenuProp> = ({
   onOpenChange,
   content,
   commentPinnedStatus,
+  dailyPrompt,
+  setDailyPrompt,
+  showDailyPrompt
 }) => {
   const router = useRouter();
   const user = useUserState(state => state.user);
@@ -59,6 +65,15 @@ const PostDropdown: React.FC<DropdownMenuProp> = ({
   const handleReportClick = () => {
     onOpenChange(true);
   };
+
+  // Handle view daily prompt
+  // inside PostDropdown
+  const handleShowPrompt = () => {
+    if (setDailyPrompt) {
+      setDailyPrompt(prev => !prev)
+    }
+  }
+
 
   // check if user is author of the comment
   const isCommentAuthor = commentCreatedBy === user?.id;
@@ -166,6 +181,26 @@ const PostDropdown: React.FC<DropdownMenuProp> = ({
               <Link href={`post/${postId}`}>View</Link>
             </DropdownMenuItem>
           )}
+
+          {dailyPrompt && (
+            <DropdownMenuItem
+              className="hover:cursor-pointer"
+              onSelect={handleShowPrompt}
+            >
+              {showDailyPrompt ? (
+                <>
+                  <EyeOff size={16} strokeWidth={1.5} />
+                  <p>Hide prompt</p>
+                </>
+              ) : (
+                <>
+                  <Eye size={16} strokeWidth={1.5} />
+                  <p>Related Prompt</p>
+                </>
+              )}
+            </DropdownMenuItem>
+          )}
+
 
           <DropdownMenuItem
             className="hover:cursor-pointer"

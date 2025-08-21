@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { Button } from '@/components/ui/button';
 import { ArrowLeft, ArrowRight } from 'lucide-react';
 import { truncateText } from '@/lib/utils';
+import {DailyPromptQuestion} from "@/components/shared/DailyPrompt";
 
 interface Slide {
   content: string;
@@ -11,9 +12,11 @@ interface Slide {
 interface SimpleCarouselPostProps {
   slides: Slide[];
   onClick?: () => void;
+  showDailyPrompt?: boolean,
+  dailyPrompt?: string | null
 }
 
-const SimpleCarouselPost = ({ slides, onClick }: SimpleCarouselPostProps) => {
+const SimpleCarouselPost = ({ slides, onClick, showDailyPrompt, dailyPrompt }: SimpleCarouselPostProps) => {
   const [currentSlide, setCurrentSlide] = useState(0);
 
   const navigateSlide = (direction: 'prev' | 'next') => {
@@ -64,6 +67,9 @@ const SimpleCarouselPost = ({ slides, onClick }: SimpleCarouselPostProps) => {
 
       {/* Carousel Content */}
       <div className="mb-3 cursor-pointer" onClick={onClick}>
+        {showDailyPrompt && dailyPrompt && (
+          <DailyPromptQuestion dailyPrompt={dailyPrompt}/>
+        )}
         <p className="text-foreground leading-relaxed whitespace-pre-wrap text-content-label">
           {truncateText(slides[currentSlide]?.content || '', 200)}
         </p>

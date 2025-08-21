@@ -427,6 +427,7 @@ export type Database = {
         Row: {
           author_avatar_url: string | null
           author_name: string | null
+          campfire_id: string | null
           comment_text: string
           created_at: string
           created_by: string | null
@@ -439,6 +440,7 @@ export type Database = {
         Insert: {
           author_avatar_url?: string | null
           author_name?: string | null
+          campfire_id?: string | null
           comment_text: string
           created_at?: string
           created_by?: string | null
@@ -451,6 +453,7 @@ export type Database = {
         Update: {
           author_avatar_url?: string | null
           author_name?: string | null
+          campfire_id?: string | null
           comment_text?: string
           created_at?: string
           created_by?: string | null
@@ -461,6 +464,13 @@ export type Database = {
           post?: string
         }
         Relationships: [
+          {
+            foreignKeyName: "comments_campfire_id_fkey"
+            columns: ["campfire_id"]
+            isOneToOne: false
+            referencedRelation: "campfires"
+            referencedColumns: ["id"]
+          },
           {
             foreignKeyName: "comments_created_by_fkey"
             columns: ["created_by"]
@@ -487,6 +497,7 @@ export type Database = {
       daily_prompts: {
         Row: {
           active_on: string
+          category: string
           created_at: string
           created_by: string
           id: string
@@ -495,6 +506,7 @@ export type Database = {
         }
         Insert: {
           active_on: string
+          category?: string
           created_at?: string
           created_by: string
           id?: string
@@ -503,6 +515,7 @@ export type Database = {
         }
         Update: {
           active_on?: string
+          category?: string
           created_at?: string
           created_by?: string
           id?: string
@@ -877,6 +890,7 @@ export type Database = {
           content: string
           created_at: string
           created_by: string | null
+          daily_prompt_id: string | null
           downvotes: number
           duration: Database["public"]["Enums"]["post_duration"] | null
           expires_at: string | null
@@ -896,6 +910,7 @@ export type Database = {
           content: string
           created_at?: string
           created_by?: string | null
+          daily_prompt_id?: string | null
           downvotes?: number
           duration?: Database["public"]["Enums"]["post_duration"] | null
           expires_at?: string | null
@@ -915,6 +930,7 @@ export type Database = {
           content?: string
           created_at?: string
           created_by?: string | null
+          daily_prompt_id?: string | null
           downvotes?: number
           duration?: Database["public"]["Enums"]["post_duration"] | null
           expires_at?: string | null
@@ -939,6 +955,13 @@ export type Database = {
             columns: ["created_by"]
             isOneToOne: false
             referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "posts_daily_prompt_id_fkey"
+            columns: ["daily_prompt_id"]
+            isOneToOne: false
+            referencedRelation: "daily_prompts"
             referencedColumns: ["id"]
           },
         ]
@@ -1604,6 +1627,7 @@ export type Database = {
           tag_names?: string[]
           slide_contents?: string[]
           campfire_id?: string
+          daily_prompt_id?: string
         }
         Returns: string
       }
@@ -1672,6 +1696,22 @@ export type Database = {
         }
         Returns: string
       }
+      create_post_with_tags_v6: {
+        Args: {
+          content: string
+          mood: Database["public"]["Enums"]["post_mood"]
+          expires_in_24hr: boolean
+          duration?: Database["public"]["Enums"]["post_duration"]
+          expires_at?: string
+          is_sensitive?: boolean
+          is_prompt_response?: boolean
+          type?: Database["public"]["Enums"]["post_type"]
+          tag_names?: string[]
+          slide_contents?: string[]
+          campfire_id?: string
+        }
+        Returns: string
+      }
       get_campfire_members_by_roles: {
         Args: {
           p_campfire_id: string
@@ -1690,6 +1730,7 @@ export type Database = {
         Returns: {
           author_avatar_url: string | null
           author_name: string | null
+          campfire_id: string | null
           comment_text: string
           created_at: string
           created_by: string | null
@@ -1720,6 +1761,46 @@ export type Database = {
         }[]
       }
       get_personalized_feed: {
+        Args: {
+          user_id_param: string
+          page_size?: number
+          offset_param?: number
+        }
+        Returns: {
+          id: string
+          created_at: string
+          created_by: string
+          author_name: string
+          content: string
+          mood: Database["public"]["Enums"]["post_mood"]
+          author_avatar_url: string
+          expires_in_24hr: boolean
+          duration: Database["public"]["Enums"]["post_duration"]
+          expires_at: string
+          downvotes: number
+          upvotes: number
+          is_sensitive: boolean
+          is_prompt_response: boolean
+          type: Database["public"]["Enums"]["post_type"]
+          author_roles: Database["public"]["Enums"]["user_role"][]
+          campfire_id: string
+          campfire_name: string
+          campfire_slug: string
+          campfire_icon_url: string
+          daily_prompt_id: string
+          prompt_text: string
+          prompt_category: string
+          priority_score: number
+          is_new_post: boolean
+          is_campfire_post: boolean
+          posttags: Json
+          comments_count: number
+          views_count: number
+          collections: Json
+          post_slides: Json
+        }[]
+      }
+      get_personalized_feed_v1: {
         Args: {
           user_id_param: string
           page_size?: number
