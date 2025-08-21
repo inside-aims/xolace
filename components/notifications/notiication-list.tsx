@@ -43,6 +43,11 @@ const NotificationList = () => {
     timeFilter: selectedTimeRange,
   });
 
+  // Handle deleting all notifications
+  const handleDeleteAllNotifications = () => {
+    return ''
+  }
+
   return (
     <div className="min-h-[calc(100vh-var(--header-height))]">
       <section className="sticky top-0 z-20 bg-white dark:bg-[#121212]">
@@ -50,6 +55,7 @@ const NotificationList = () => {
           onFilterChange={(filter) => setSelectedFilter(filter as StatusFilter)}
           filterOptions={filterOptions}
           selectedFilter={selectedFilter}
+          onDeleteAll={handleDeleteAllNotifications}
         />
       </section>
 
