@@ -57,7 +57,7 @@ import { useUserState } from '@/lib/store/user';
 import { logActivity } from '@/lib/activity-logger';
 import { ActivityType } from '@/types/activity';
 import { usePreferencesStore } from '@/lib/store/preferences-store';
-import { useSearchParams, useRouter, usePathname } from 'next/navigation';
+import { useRouter, usePathname } from 'next/navigation';
 //import mascot from '../../public/assets/images/mas.webp';
 import { CURRENT_CONSENT_VERSION } from '@/constants/terms';
 import { Card, CardContent } from '@/components/ui/card';
@@ -87,13 +87,18 @@ const ConsentModal = dynamic(() => import('../modals/ConsentModal'), {
 // Define a key for local storage
 const POST_DRAFT_KEY = 'postFormDraft';
 
+interface PostFormProps {
+  submitToSlug?: string;
+  promptTextQuery?: string;
+  promptIdQuery?: string;
+}
+
 const placeholders = [
   "What's on your mind ?",
   'Use # for tags! At most 3',
   'Share your experiences',
 ];
-export function PostForm() {
-  const searchParams = useSearchParams();
+export function PostForm({ submitToSlug, promptTextQuery, promptIdQuery }: PostFormProps) {
   const router = useRouter();
   const pathname = usePathname();
   const { preferences } = usePreferencesStore();
@@ -129,31 +134,60 @@ export function PostForm() {
     getUserCampfires(user?.id);
 
   const intervalRef = useRef<NodeJS.Timeout | null>(null);
-  const startAnimation = () => {
+  // const startAnimation = () => {
+  //   intervalRef.current = setInterval(() => {
+  //     setCurrentPlaceholder(prev => (prev + 1) % placeholders.length);
+  //   }, 3000);
+  // };
+
+  // const handleVisibilityChange = () => {
+  //   if (document.visibilityState !== 'visible' && intervalRef.current) {
+  //     clearInterval(intervalRef.current); // Clear the interval when the tab is not visible
+  //     intervalRef.current = null;
+  //   } else if (document.visibilityState === 'visible') {
+  //     startAnimation(); // Restart the interval when the tab becomes visible
+  //   }
+  // };
+
+  // useEffect(() => {
+  //   startAnimation();
+  //   document.addEventListener('visibilitychange', handleVisibilityChange);
+
+  //   return () => {
+  //     if (intervalRef.current) {
+  //       clearInterval(intervalRef.current);
+  //     }
+  //     document.removeEventListener('visibilitychange', handleVisibilityChange);
+  //   };
+  // }, [handleVisibilityChange]);
+
+  useEffect(() => {
+    const handleVisibilityChange = () => {
+      if (document.visibilityState !== 'visible' && intervalRef.current) {
+        clearInterval(intervalRef.current);
+        intervalRef.current = null;
+      } else if (document.visibilityState === 'visible' && !intervalRef.current) {
+        intervalRef.current = setInterval(() => {
+          setCurrentPlaceholder(prev => (prev + 1) % placeholders.length);
+        }, 3000);
+      }
+    };
+  
+    // Start initial animation
     intervalRef.current = setInterval(() => {
       setCurrentPlaceholder(prev => (prev + 1) % placeholders.length);
     }, 3000);
-  };
-  const handleVisibilityChange = () => {
-    if (document.visibilityState !== 'visible' && intervalRef.current) {
-      clearInterval(intervalRef.current); // Clear the interval when the tab is not visible
-      intervalRef.current = null;
-    } else if (document.visibilityState === 'visible') {
-      startAnimation(); // Restart the interval when the tab becomes visible
-    }
-  };
-
-  useEffect(() => {
-    startAnimation();
+  
     document.addEventListener('visibilitychange', handleVisibilityChange);
-
+  
     return () => {
       if (intervalRef.current) {
         clearInterval(intervalRef.current);
+        intervalRef.current = null;
       }
       document.removeEventListener('visibilitychange', handleVisibilityChange);
     };
-  }, [handleVisibilityChange]);
+  }, []);
 
   //  form
   const form = useForm<z.infer<typeof PostSchema>>({
@@ -225,13 +259,11 @@ export function PostForm() {
         );
       setTags([...new Set(cleanTags)]);
     },
-    [setTags],
+    [],
   ); // setTags is stable from useState
 
   // Effect to load draft or prefill from prompt on component mount
   useEffect(() => {
-    const promptTextQuery = searchParams.get('prompt');
-    const submitToSlug = searchParams.get('submit');
 
     // Handle submit parameter - pre-select campfire
     if (submitToSlug && userCampfires.length > 0) {
@@ -245,8 +277,10 @@ export function PostForm() {
       //const decodedPromptText = decodeURIComponent(promptTextQuery);
       const initialContent = `\n\n#DailyPrompt `;
 
-      setValue('content', initialContent, { shouldValidate: true });
-      handleInput(initialContent);
+      if (form.getValues('content') !== initialContent) {
+        setValue('content', initialContent, { shouldValidate: true });
+        handleInput(initialContent);
+      }
 
       // Clear any saved draft if we are prefilling from a prompt
       if (typeof window !== 'undefined' && preferences?.auto_save_drafts) {
@@ -259,27 +293,24 @@ export function PostForm() {
         handleInput(savedDraft);
       }
     }
-  }, [searchParams, setValue, preferences?.auto_save_drafts, handleInput, userCampfires]);
+  }, [submitToSlug, promptTextQuery, setValue, preferences?.auto_save_drafts, handleInput, userCampfires]);
 
   useEffect(() => {
-    if (preferences?.auto_save_drafts) {
-      // Do not save draft if the content is the initial prompt prefill unless modified
-      const currentContent = form.getValues('content');
-      const promptTextQuery = searchParams.get('prompt');
-      let isInitialPromptFill = false;
-      if (promptTextQuery) {
-        //const decodedPromptText = decodeURIComponent(promptTextQuery);
-        const initialContentPattern = `\n\n#DailyPrompt `;
-        if (currentContent.trim() === initialContentPattern.trim()) {
-          // check both with and without #DailyPrompt initially
-          isInitialPromptFill = true;
-        }
-      }
+    if (!preferences?.auto_save_drafts) return;
 
-      if (!isInitialPromptFill) {
-        debouncedSaveDraft(content);
-      }
+    const currentContent = content; // Use the watched content directly
+    
+    let isInitialPromptFill = false;
+    if (promptTextQuery) {
+      const initialContentPattern = `\n\n#DailyPrompt `;
+      if (currentContent.trim() === initialContentPattern.trim()) {
+      isInitialPromptFill = true;
     }
+  }
+
+  if (!isInitialPromptFill && currentContent) {
+    debouncedSaveDraft(currentContent);
+  }
     return () => {
       debouncedSaveDraft.cancel();
     };
@@ -287,9 +318,7 @@ export function PostForm() {
     content,
     preferences?.auto_save_drafts,
     debouncedSaveDraft,
-    searchParams,
-    form.getValues,
-    form,
+    promptTextQuery,
   ]);
 
   const addSlide = () => {
@@ -481,8 +510,8 @@ export function PostForm() {
 
       try {
         // Get prompt_id from searchParams if it exists
-        const promptId = searchParams.get('prompt_id');
-        const promptText = searchParams.get('prompt');
+        const promptId = promptIdQuery;
+        const promptText = promptTextQuery;
         const is_prompt_response = promptId ? true : false;
 
         const { data: post_id, error: postError } = await supabase.rpc(
@@ -499,6 +528,7 @@ export function PostForm() {
             type,
             slide_contents: slidesWithoutTags,
             campfire_id: selectedCampfire ? selectedCampfire.campfireId : undefined,
+            daily_prompt_id: is_prompt_response ? promptId : undefined,
           },
         );
 

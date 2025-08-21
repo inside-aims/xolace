@@ -1627,6 +1627,7 @@ export type Database = {
           tag_names?: string[]
           slide_contents?: string[]
           campfire_id?: string
+          daily_prompt_id?: string
         }
         Returns: string
       }
@@ -1692,6 +1693,22 @@ export type Database = {
           type?: Database["public"]["Enums"]["post_type"]
           tag_names?: string[]
           slide_contents?: string[]
+        }
+        Returns: string
+      }
+      create_post_with_tags_v6: {
+        Args: {
+          content: string
+          mood: Database["public"]["Enums"]["post_mood"]
+          expires_in_24hr: boolean
+          duration?: Database["public"]["Enums"]["post_duration"]
+          expires_at?: string
+          is_sensitive?: boolean
+          is_prompt_response?: boolean
+          type?: Database["public"]["Enums"]["post_type"]
+          tag_names?: string[]
+          slide_contents?: string[]
+          campfire_id?: string
         }
         Returns: string
       }
