@@ -44,7 +44,7 @@ const NotificationList = () => {
   const deleteAllNotifications = useDeleteAllNotifications();
 
   // The component just calls the hook with the current filter states.
-  let {
+  const {
     data: notifications,
     fetchNextPage,
     hasMore,
