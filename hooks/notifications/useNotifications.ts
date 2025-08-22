@@ -10,6 +10,7 @@ import {
   startOfToday, endOfToday, startOfYesterday, endOfYesterday,
   startOfWeek, endOfWeek, subWeeks, startOfMonth, endOfMonth, subMonths
 } from 'date-fns';
+import { useUserState } from '@/lib/store/user';
 
 
 // Define the types for our filters
@@ -194,4 +195,26 @@ export function useInfiniteNotifications({
     pageSize: pageSize,
     idColumn: 'id',
   });
+}
+
+// delete all notifications , remove rpc and use supabase client
+export function useDeleteAllNotifications() {
+    const queryClient = useQueryClient();
+    const supabase = getSupabaseBrowserClient();
+    const user = useUserState(state => state.user);
+
+    return useMutation({
+        mutationFn: async () => {
+            const { error } = await supabase.from('notifications').delete().eq('recipient_user_id', user?.id || '');
+            if (error) throw new Error(error.message);
+        },
+        onSuccess: () => {
+            // When successful, invalidate all related queries to update the UI
+            queryClient.invalidateQueries({ queryKey: ['notifications'] });
+            toast.success("All notifications deleted.");
+        },
+        onError: (error) => {
+            toast.error(error.message || "Failed to delete notifications.");
+        }
+    });
 }

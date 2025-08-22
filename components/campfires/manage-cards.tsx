@@ -52,26 +52,18 @@ const ManageCampfireCard = ({
       key={campfireId}
     >
       <div className="flex min-w-0 flex-1 gap-2">
-        {iconURL ? (
-          <Avatar>
+        <Avatar className="h-10 w-10">
             <AvatarImage
-              className="h-8 w-8 rounded-full"
+              className="h-10 w-10 rounded-full"
               src={iconURL || undefined}
               alt={name}
             />
-            <AvatarFallback className="border-lavender-500 flex h-8 w-8 items-center justify-center rounded-full border font-semibold text-white">
-              <span className="bg-lavender-500 flex h-7 w-7 items-center justify-center rounded-full font-semibold text-white">
+            <AvatarFallback className="border-lavender-500 flex h-10 w-10 items-center justify-center rounded-full border font-semibold text-white">
+              <span className="bg-lavender-500 flex h-9 w-9 items-center justify-center rounded-full font-semibold text-white">
                 x/
               </span>
             </AvatarFallback>
           </Avatar>
-        ) : (
-          <p className="border-lavender-500 flex h-8 w-8 items-center justify-center rounded-full border font-semibold text-white">
-            <span className="bg-lavender-500 flex h-7 w-7 items-center justify-center rounded-full font-semibold text-white">
-              x/
-            </span>
-          </p>
-        )}
 
         <div className="flex min-w-0 flex-col">
           <Link
