@@ -55,6 +55,13 @@ const CampfireDetails = ({slug}: {slug : string}) => {
       });
       return;
     }
+
+    if(!campfire?.isMember){
+      toast.error("Sorry non-members cannot post here. Please join campfire to be able to share✨", {
+        duration: 4000,
+      });
+      return;
+    }
     router.push(`/create-post?submit=${slug}`);
   };
 

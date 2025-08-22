@@ -210,7 +210,7 @@ export function FeedEnhancedPostCard({
         <ReportForm postId={post.id} />
       </KvngDialogDrawer>
 
-      <Card className={`${className} relative hover:shadow-2xl transition-all duration-500 hover:scale-[1.02]`} id={post.id}>
+      <Card className={`${className} relative lg:hover:shadow-2xl transition-all duration-500 lg:hover:scale-[1.02]`} id={post.id}>
         <CardHeader className="flex-row items-start justify-between px-4 py-2">
           <div className="flex items-center gap-3 md:gap-7">
             <Avatar>
