@@ -1,15 +1,18 @@
 import {DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger} from "@/components/ui/dropdown-menu";
 import {ChevronDown, Trash} from "lucide-react";
 import React from "react";
+import { DefaultLoader } from "../shared/loaders/DefaultLoader";
 
 interface ListHeaderProps {
   filterOptions: {key: string; label: string}[];
   selectedFilter: string;
   onFilterChange: (filter: string) => void;
   onDeleteAll: () => void;
+  isDeleteAllPending: boolean;
+  notificationsCount: number;
 }
 
-const ListHeader: React.FC<ListHeaderProps> = ({filterOptions, selectedFilter, onFilterChange, onDeleteAll}) => {
+const ListHeader: React.FC<ListHeaderProps> = ({filterOptions, selectedFilter, onFilterChange, onDeleteAll, isDeleteAllPending, notificationsCount}) => {
 
   return(
     <header className="w-full rounded-lg items-start flex flex-col gap-2 md:gap-4 shadow-lg p-4 border ">
@@ -34,10 +37,12 @@ const ListHeader: React.FC<ListHeaderProps> = ({filterOptions, selectedFilter, o
         </div>
 
         <button
-          className={`py-0.5 px-2 flex flex-row items-center justify-center gap-1 rounded-md hover:animate-pulse text-sm capitalize text-white bg-red-500`}
+          className={`py-0.5 px-2 flex items-center justify-center  rounded-md hover:animate-pulse text-sm capitalize text-white bg-red-500 ${isDeleteAllPending || notificationsCount === 0 ? "cursor-not-allowed opacity-50" : ""}`}
           onClick={onDeleteAll}
+          type="button"
+          disabled={isDeleteAllPending || notificationsCount === 0}
         >
-         <Trash size={14}/> Delete All
+         {isDeleteAllPending ? <DefaultLoader size={16} /> : ( <span className="flex flex-row items-center justify-center gap-1"><Trash size={14}/> Delete All</span>)}
         </button>
       </section>
 
@@ -62,10 +67,12 @@ const ListHeader: React.FC<ListHeaderProps> = ({filterOptions, selectedFilter, o
           </DropdownMenuContent>
         </DropdownMenu>
         <button
-          className={`py-0.5 px-2 flex flex-row items-center justify-center gap-1 rounded-md hover:animate-pulse text-sm capitalize text-white bg-red-500`}
+          className={`py-0.5 px-2 flex flex-row items-center justify-center gap-1 rounded-md hover:animate-pulse text-sm capitalize text-white bg-red-500 ${isDeleteAllPending || notificationsCount === 0 ? "cursor-not-allowed opacity-50" : ""}`}
           onClick={onDeleteAll}
+          type="button"
+          disabled={isDeleteAllPending || notificationsCount === 0}
         >
-          <Trash size={14}/> Delete All
+          {isDeleteAllPending ? <DefaultLoader size={16} /> : ( <span className="flex flex-row items-center justify-center gap-1"><Trash size={14}/> Delete All</span>)}
         </button>
       </section>
     </header>
