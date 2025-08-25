@@ -173,6 +173,7 @@ export function SiteHeader() {
                 className={'flex cursor-pointer items-center'}
                 onClick={() => setIsOpen(!isOpen)}
                 ref={bellButtonRef}
+                id="notification-btn"
               >
                 <Bell size={22} />
               </button>

@@ -168,12 +168,12 @@ export const FeedSteps: Step[] = [
     ),
   },
   {
-    selector: '#online-users',
+    selector: '#notification-btn',
     content: () => (
       <TourWrapper>
-        <TourTitle>Online Users</TourTitle>
+        <TourTitle>Notification Button</TourTitle>
         <TourContent>
-          This shows the number of users currently online in the break room.
+          This button opens the notification panel.
         </TourContent>
       </TourWrapper>
     ),
