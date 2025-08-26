@@ -63,6 +63,7 @@ export const CampfireSelector = ({
                         ? 'border-purple-200 bg-purple-50 dark:border-purple-800 dark:bg-purple-950' 
                         : 'border-border'
                 }`}
+                id="post-to"
             >
                 <div className="flex items-center gap-3 w-full">
                     {selectedCampfire ? (

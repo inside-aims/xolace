@@ -127,7 +127,7 @@ export function SiteHeader() {
 
             {/* Logo */}
             <div>
-              <Link href="/feed" className="flex items-center">
+              <Link href="/feed" className="flex items-center" id="mascot">
                 <Image
                   src={mascot}
                   alt="logo"
@@ -173,6 +173,7 @@ export function SiteHeader() {
                 className={'flex cursor-pointer items-center'}
                 onClick={() => setIsOpen(!isOpen)}
                 ref={bellButtonRef}
+                id="notification-btn"
               >
                 <Bell size={22} />
               </button>

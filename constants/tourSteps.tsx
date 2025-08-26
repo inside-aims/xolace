@@ -154,7 +154,7 @@ export const FeedSteps: Step[] = [
     ),
   },
   {
-    selector: '#theme-btn',
+    selector: '.theme-btn',
     content: () => (
       <TourWrapper>
         {' '}
@@ -168,12 +168,23 @@ export const FeedSteps: Step[] = [
     ),
   },
   {
-    selector: '#online-users',
+    selector: '#notification-btn',
     content: () => (
       <TourWrapper>
-        <TourTitle>Online Users</TourTitle>
+        <TourTitle>Notification Button</TourTitle>
         <TourContent>
-          This shows the number of users currently online in the break room.
+          This button opens the notification panel.
+        </TourContent>
+      </TourWrapper>
+    ),
+  },
+  {
+    selector: '#mascot',
+    content: () => (
+      <TourWrapper>
+        <TourTitle>Finished</TourTitle>
+        <TourContent>
+          You&apos;ve completed the tour! Tour guide will be disabled now 😉. If you haven&apos;t taken the tour on the post creation page yet, you can always turn it back on in the settings page.
         </TourContent>
       </TourWrapper>
     ),
@@ -182,7 +193,7 @@ export const FeedSteps: Step[] = [
 
 export const createPostSteps: Step[] = [
   {
-    selector: '#postTextArea',
+    selector: '.postTextArea',
     content: () => (
       <TourWrapper>
         <TourTitle>Share Your Story</TourTitle>
@@ -194,61 +205,81 @@ export const createPostSteps: Step[] = [
     ),
   },
   {
-    selector: '#postTextArea #tags-guide',
+    selector: '.postTextArea',
     content: () => (
       <TourWrapper>
         <TourTitle>Tag Your Post</TourTitle>
         <TourContent>
-          Keep it relevant! Add up to three tags (max) to your post. Once
+          Keep it relevant! Add up to three tags (max) to your post. Start with #. Once
           posted, each tag gets its own shiny little card!
         </TourContent>
       </TourWrapper>
     ),
   },
   {
-    selector: '#postTextArea #mood-display',
+    selector: '.mood-display',
     content: () => (
       <TourWrapper>
         <TourTitle>Post Mood</TourTitle>
         <TourContent>
-          This reveals the mood chosen for the post—because every post has a
-          vibe!
+          This reveals the various moods available for the post. Set the tone! Pick a mood, happy, sad, angry, or anything in between; to
+          match your post&apos;s vibe.
         </TourContent>
       </TourWrapper>
     ),
   },
   {
-    selector: '#toggle24hr',
+    selector: '.selected-mood',
     content: () => (
       <TourWrapper>
-        <TourTitle>Post Duration</TourTitle>
+        <TourTitle>Selected Mood</TourTitle>
         <TourContent>
-          Set the clock! Choose whether your post vanishes in 24 hours or stays
-          up for the long haul.
+          This displays the mood selected for the post.
         </TourContent>
       </TourWrapper>
     ),
   },
   {
-    selector: '#postTextArea #emoji-btn',
+    selector: '#post-to',
+    content: () => (
+      <TourWrapper>
+        <TourTitle>Post To</TourTitle>
+        <TourContent>
+          This reveals the various campfires available for the post. Select the campfire you want to post to or post to the general feed.
+        </TourContent>
+      </TourWrapper>
+    ),
+  },
+  {
+    selector: '#post-type',
+    content: () => (
+      <TourWrapper>
+        <TourTitle>Post Type</TourTitle>
+        <TourContent>
+          This reveals the various post types available for the post. Select the post type you want to post as, whether single or carousel if you have a lot to share.
+        </TourContent>
+      </TourWrapper>
+    ),
+  },
+  {
+    selector: '#tools-btn',
+    content: () => (
+      <TourWrapper>
+        <TourTitle>Post tools</TourTitle>
+        <TourContent>
+          Access the various tools available for the post, such as post duration, visibility, and more.
+        </TourContent>
+      </TourWrapper>
+    ),
+  },
+  {
+    selector: '#emoji-btn',
     content: () => (
       <TourWrapper>
         <TourTitle>Add Emojis</TourTitle>
         <TourContent>
           A picture&apos;s worth a thousand words—so why not add some emojis?
           Click to sprinkle some extra flair! 😉
-        </TourContent>
-      </TourWrapper>
-    ),
-  },
-  {
-    selector: '#mood-carousel',
-    content: () => (
-      <TourWrapper>
-        <TourTitle>Choose a Mood</TourTitle>
-        <TourContent>
-          Set the tone! Pick a mood—happy, sad, angry, or anything in between—to
-          match your post&apos;s vibe.
         </TourContent>
       </TourWrapper>
     ),
@@ -265,13 +296,13 @@ export const createPostSteps: Step[] = [
     ),
   },
   {
-    selector: '#counter',
+    selector: '.counter',
     content: () => (
       <TourWrapper>
         <TourTitle>Character Count</TourTitle>
         <TourContent>
           Keep an eye on your words! This shows how many characters you&apos;ve
-          typed—if it turns red, you&apos;ve gone over the limit!
+          typed with the limit of 500 characters!
         </TourContent>
       </TourWrapper>
     ),

@@ -238,6 +238,7 @@ export function FeedEnhancedPostCard({
                 )}
                 <div
                   className={`h-5 w-5 ${moodColors[post.mood]} flex items-center justify-center rounded-full text-white`}
+                  id="mood-btn"
                 >
                   {moodIcons[post.mood]}
                 </div>
