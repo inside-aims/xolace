@@ -651,7 +651,7 @@ export function PostForm({ submitToSlug, promptTextQuery, promptIdQuery }: PostF
                     control={form.control}
                     name="type"
                     render={({ field }) => (
-                      <FormItem className="relative flex-1">
+                      <FormItem className="relative flex-1" id="post-type">
                         <FormLabel className="text-foreground text-sm font-medium">
                           Post Type
                         </FormLabel>
@@ -717,6 +717,7 @@ export function PostForm({ submitToSlug, promptTextQuery, promptIdQuery }: PostF
                             ? 'border-purple-200 bg-purple-50 text-purple-700 dark:border-purple-800 dark:bg-purple-950 dark:text-purple-300'
                             : 'hover:bg-muted'
                         }`}
+                        id="tools-btn"
                       >
                         <PaintRoller className="mr-2 h-4 w-4" />
                         Tools
@@ -846,7 +847,7 @@ export function PostForm({ submitToSlug, promptTextQuery, promptIdQuery }: PostF
                   name="content"
                   render={({ field }) => (
                     <FormItem>
-                      <div className="relative">
+                      <div className="relative postTextArea">
                         <FormControl>
                           <Textarea
                             {...field}
@@ -871,7 +872,7 @@ export function PostForm({ submitToSlug, promptTextQuery, promptIdQuery }: PostF
                             disabled={animating}
                           />
                         </FormControl>
-                        <div className="text-muted-foreground absolute right-3 bottom-3 text-xs">
+                        <div className="text-muted-foreground absolute right-3 bottom-3 text-xs counter">
                           {charCount}/{maxChars}
                         </div>
 
@@ -986,12 +987,12 @@ export function PostForm({ submitToSlug, promptTextQuery, promptIdQuery }: PostF
                       onFocus={() => setIsTextareaFocused(true)}
                       onBlur={() => setIsTextareaFocused(false)}
                       placeholder={`Slide ${currentSlide + 1} content... Tell part of your story here`}
-                      className="border-border min-h-[140px] resize-none rounded-xl border-2 border-dashed bg-transparent text-base leading-relaxed transition-all duration-200 focus:ring-0 focus-visible:ring-0"
+                      className="border-border min-h-[140px] resize-none rounded-xl border-2 border-dashed bg-transparent text-base leading-relaxed transition-all duration-200 focus:ring-0 focus-visible:ring-0 postTextArea"
                       maxLength={maxChars}
                       id="tags-guide"
                       disabled={animating}
                     />
-                    <div className="text-muted-foreground absolute right-3 bottom-3 text-xs">
+                    <div className="text-muted-foreground absolute right-3 bottom-3 text-xs counter">
                       {charCount}/{maxChars}
                     </div>
 
@@ -1074,7 +1075,7 @@ export function PostForm({ submitToSlug, promptTextQuery, promptIdQuery }: PostF
                   </Popover>
 
                   {/* Mood Button with Slow Pulse Animation */}
-                  <div className="relative">
+                  <div className="relative mood-display">
                     <Button
                       type="button"
                       variant="ghost"
@@ -1095,7 +1096,7 @@ export function PostForm({ submitToSlug, promptTextQuery, promptIdQuery }: PostF
                         <h4 className="text-foreground mb-4 text-center font-semibold">
                           How are you feeling?
                         </h4>
-                        <div className="grid max-h-64 grid-cols-4 gap-2 overflow-y-auto">
+                        <div className="grid max-h-54 lg:max-h-64 grid-cols-4 gap-2 overflow-y-auto">
                           {moods.map(mood => (
                             <button
                               key={mood.id}
@@ -1125,7 +1126,7 @@ export function PostForm({ submitToSlug, promptTextQuery, promptIdQuery }: PostF
 
                   {/* Current Mood Display */}
                   {selectedMood && (
-                    <div className="bg-muted flex items-center gap-2 rounded-lg px-3 py-2">
+                    <div className="bg-muted flex items-center gap-2 rounded-lg px-3 py-2 selected-mood">
                       <div
                         className={`h-2 w-2 rounded-full ${selectedMood.color}`}
                       ></div>
