@@ -1,19 +1,16 @@
-'use client';
+import ModsAndMembersTab from "@/components/mods/features/moderators/mods-and-members-tab";
+import type {Metadata} from "next";
 
-import React from 'react';
-import { useUserState } from '@/lib/store/user';
-
-/*
-You can remove the useUserState hook and use client directive if you don't need it.
-*/
+export const metadata: Metadata = {
+  title: 'Moderator',
+  description: "Discover different stories, experiences from real and unique individuals as well as the community"
+};
 
 const ModsPage = () => {
-  const user = useUserState();
-  console.log(user);
   return (
-    <div>
-      ModPage {user?.user?.username}
-    </div>
+    <main>
+      <ModsAndMembersTab/>
+    </main>
   );
 };
 
