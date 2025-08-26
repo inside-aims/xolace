@@ -158,6 +158,7 @@ export type Database = {
       anonymous_messages: {
         Row: {
           posts: any
+          can_reshare: boolean
           content: string
           created_at: string
           id: string
@@ -167,6 +168,7 @@ export type Database = {
           shared_at: string | null
         }
         Insert: {
+          can_reshare?: boolean
           content: string
           created_at?: string
           id?: string
@@ -176,6 +178,7 @@ export type Database = {
           shared_at?: string | null
         }
         Update: {
+          can_reshare?: boolean
           content?: string
           created_at?: string
           id?: string
@@ -897,6 +900,7 @@ export type Database = {
           expires_in_24hr: boolean
           id: string
           is_prompt_response: boolean
+          is_reshared_anon_meg: boolean
           is_sensitive: boolean
           mood: Database["public"]["Enums"]["post_mood"]
           type: Database["public"]["Enums"]["post_type"]
@@ -917,6 +921,7 @@ export type Database = {
           expires_in_24hr?: boolean
           id?: string
           is_prompt_response?: boolean
+          is_reshared_anon_meg?: boolean
           is_sensitive?: boolean
           mood?: Database["public"]["Enums"]["post_mood"]
           type?: Database["public"]["Enums"]["post_type"]
@@ -937,6 +942,7 @@ export type Database = {
           expires_in_24hr?: boolean
           id?: string
           is_prompt_response?: boolean
+          is_reshared_anon_meg?: boolean
           is_sensitive?: boolean
           mood?: Database["public"]["Enums"]["post_mood"]
           type?: Database["public"]["Enums"]["post_type"]
@@ -1628,6 +1634,7 @@ export type Database = {
           slide_contents?: string[]
           campfire_id?: string
           daily_prompt_id?: string
+          is_reshared_anon_meg?: boolean
         }
         Returns: string
       }
@@ -1709,6 +1716,23 @@ export type Database = {
           tag_names?: string[]
           slide_contents?: string[]
           campfire_id?: string
+        }
+        Returns: string
+      }
+      create_post_with_tags_v7: {
+        Args: {
+          content: string
+          mood: Database["public"]["Enums"]["post_mood"]
+          expires_in_24hr: boolean
+          duration?: Database["public"]["Enums"]["post_duration"]
+          expires_at?: string
+          is_sensitive?: boolean
+          is_prompt_response?: boolean
+          type?: Database["public"]["Enums"]["post_type"]
+          tag_names?: string[]
+          slide_contents?: string[]
+          campfire_id?: string
+          daily_prompt_id?: string
         }
         Returns: string
       }
