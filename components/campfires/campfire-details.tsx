@@ -253,15 +253,6 @@ const CampfireDetails = ({slug}: {slug : string}) => {
           >
             <Plus size={16}/> <span> Create Post</span>
           </Button>
-          {/* <Button
-            size="sm"
-            variant="outline"
-            className="items-center rounded-full border border-neutral-400"
-            onClick={handleNotificationToggle}
-            disabled={!campfire.isMember}
-          >
-            <Bell size={14} />
-          </Button> */}
 
           <Button
             size="sm"
@@ -277,6 +268,15 @@ const CampfireDetails = ({slug}: {slug : string}) => {
             ) : (
               "Join"
             )}
+          </Button>
+
+          <Button
+            className={"flex gap-1 items-center rounded-full bg-lavender-500 dark:bg-lavender-500 hover:bg-lavender-600 text-white hover:text-white"}
+            size="sm"
+            variant="outline"
+            onClick={() => router.push(`/mod/${user?.username}/moderators`)}
+          >
+            Mod Tools
           </Button>
 
           <CampfireActionsPopover
