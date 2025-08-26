@@ -154,7 +154,7 @@ export const FeedSteps: Step[] = [
     ),
   },
   {
-    selector: '#theme-btn',
+    selector: '.theme-btn',
     content: () => (
       <TourWrapper>
         {' '}
@@ -174,6 +174,17 @@ export const FeedSteps: Step[] = [
         <TourTitle>Notification Button</TourTitle>
         <TourContent>
           This button opens the notification panel.
+        </TourContent>
+      </TourWrapper>
+    ),
+  },
+  {
+    selector: '#mascot',
+    content: () => (
+      <TourWrapper>
+        <TourTitle>Finished</TourTitle>
+        <TourContent>
+          You&apos;ve completed the tour! Tour guide will be disabled now 😉. If you haven&apos;t taken the tour on the post creation page yet, you can always turn it back on in the settings page.
         </TourContent>
       </TourWrapper>
     ),

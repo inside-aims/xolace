@@ -127,7 +127,7 @@ export function SiteHeader() {
 
             {/* Logo */}
             <div>
-              <Link href="/feed" className="flex items-center">
+              <Link href="/feed" className="flex items-center" id="mascot">
                 <Image
                   src={mascot}
                   alt="logo"
