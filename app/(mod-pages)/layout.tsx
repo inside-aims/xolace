@@ -1,14 +1,23 @@
 import React from 'react';
 
-// import ConditionalLeftSidebar from '@/components/shared/layoutUIs/ConditionalLeftSidebar';
 import Bottombar from '@/components/shared/layoutUIs/Bottombar';
-// import Topbar from '@/components/shared/layoutUIs/Topbar';
 import { createClient } from '@/utils/supabase/server';
 import InitUser from '@/lib/store/initUser';
 
-import { SidebarLeft } from '@/components/sidebar-left';
-import { SidebarInset, SidebarProvider } from '@/components/ui/sidebar';
+import {SidebarInset, SidebarProvider} from '@/components/ui/sidebar';
 import { SiteHeader } from '@/components/site-header';
+import {ModsSidebarLeft} from "@/components/mods/layout/mod-siderbar-left";
+import type {Metadata} from "next";
+
+
+export const metadata: Metadata = {
+  title: {
+    template: '%s • Mod Tools | Xolace',
+    default: 'Mod Tools | Xolace',
+  },
+  description: "Discover different stories, experiences from real and unique individuals as well as the community"
+};
+
 
 export default async function ProtectedLayout({
   children,
@@ -40,15 +49,25 @@ export default async function ProtectedLayout({
 
   return (
     <div className="[--header-height:calc(--spacing(14))]">
-      <SidebarProvider
-        className="flex flex-col"
-        style={{ '--header-height': '60px' } as React.CSSProperties}
-      >
-        <SiteHeader />
-        {children}
-        <Bottombar />
-        <InitUser user={profileUser} />
-      </SidebarProvider>
+      <div className="[--header-height:calc(--spacing(14))]">
+        <SidebarProvider
+          className="flex flex-col"
+          style={{'--header-height': '60px'} as React.CSSProperties}
+        >
+          <SiteHeader/>
+          <div className="flex flex-1">
+            <ModsSidebarLeft collapsible='icon'/>
+            <SidebarInset>
+              <section className="p-4 md:p-8">
+                {children}
+              </section>
+              <Bottombar/>
+            </SidebarInset>
+            {/* <SidebarRight /> */}
+          </div>
+          <InitUser user={profileUser}/>
+        </SidebarProvider>
+      </div>
     </div>
   );
 }
