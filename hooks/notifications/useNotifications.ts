@@ -218,3 +218,23 @@ export function useDeleteAllNotifications() {
         }
     });
 }
+
+export function useDeleteNotification({notificationId}: {notificationId: string}) {
+  const queryClient = useQueryClient();
+  const supabase = getSupabaseBrowserClient();
+
+  return useMutation({
+      mutationFn: async () => {
+          const { error } = await supabase.from('notifications').delete().eq('id', notificationId);
+          if (error) throw new Error(error.message);
+      },
+      onSuccess: () => {
+          // When successful, invalidate all related queries to update the UI
+          queryClient.invalidateQueries({ queryKey: ['notifications'] });
+          toast.success("Notification deleted.");
+      },
+      onError: (error) => {
+          toast.error(error.message || "Failed to delete notification.");
+      }
+  });
+}
