@@ -86,7 +86,7 @@ export function ModsSidebarLeft({...props}: React.ComponentProps<typeof Sidebar>
             </TooltipContent>
           </Tooltip>
         </SidebarHeader>
-        <SidebarContent className={"px-2"}>
+        <SidebarContent className={""}>
           <ModsNavMain/>
         </SidebarContent>
       </Sidebar>
