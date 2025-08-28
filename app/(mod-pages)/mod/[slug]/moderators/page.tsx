@@ -3,7 +3,7 @@ import type {Metadata} from "next";
 
 export const metadata: Metadata = {
   title: 'Moderator',
-  description: "Discover different stories, experiences from real and unique individuals as well as the community"
+  description: "Discover moderator tool for managing their campfire"
 };
 
 const ModsPage = () => {
