@@ -78,7 +78,7 @@ export function ModsNavMain() {
         <ArrowLeft size={16}/> <span>Exit mod tools</span>
       </Button>
 
-      <div className={"flex flex-col gap-2 w-full items-center justify-start"}>
+      <div className={"flex flex-col gap-2 w-full items-center justify-start px-2"}>
         <div className={"flex items-center justify-start w-full"}>
           <Select value={campfire} onValueChange={setCampfire}>
             <SelectTrigger
@@ -130,8 +130,7 @@ export function ModsNavMain() {
                 <SidebarMenuItem key={item.label} className="w-full flex">
                   <SidebarMenuButton
                     asChild
-                    isActive={isActive}
-                    className={`${isActive && 'bg-neutral-200 dark:bg-neutral-600!'} hover:bg-neutral-100 dark:hover:bg-neutral-800 py-4`}
+                    className={`${isActive && 'border-s-4 border-lavender-600 rounded-none'} hover:bg-neutral-100 dark:hover:bg-neutral-800 py-4`}
                     onClick={() => setOpenMobile(false)}
                     tooltip={item.label}
                   >
