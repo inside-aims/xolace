@@ -4,7 +4,7 @@ import {
   Users,
   BarChart3,
   BookOpen,
-  MessageSquare,
+  MessageSquare, Settings, Book, Bell, File
 } from "lucide-react";
 import { ComponentType } from "react";
 
@@ -42,5 +42,14 @@ export const getModsSidebarSections = (username?: string): ModsSidebarSection[] 
         { icon: MessageSquare, route: `${parentRoute}/saved`, label: "Saved Responses" },
       ],
     },
+    {
+      title:  "SETTINGS",
+      items: [
+        {icon: Settings, route: `${parentRoute}/settings`, label: "General Settings" },
+        {icon: File, route: `${parentRoute}/posts-comments`, label: "Posts & Comments" },
+        {icon: Book, route: `${parentRoute}/campfire-guide`, label: "Campfire Guide" },
+        {icon: Bell, route: `${parentRoute}/campfire-guide`, label: "Notification" },
+      ]
+    }
   ];
 };
