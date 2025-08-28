@@ -1,9 +1,17 @@
-import React from 'react'
+import ModsAndMembersTab from "@/components/mods/features/moderators/mods-and-members-tab";
+import type {Metadata} from "next";
 
-const SettingsPage = () => {
+export const metadata: Metadata = {
+  title: 'General Settings',
+  description: "Manage campfire general settings"
+};
+
+const GeneralSettingsPage = () => {
   return (
-    <div>SettingsPage</div>
-  )
-}
+    <main>
 
-export default SettingsPage
+    </main>
+  );
+};
+
+export default GeneralSettingsPage;
