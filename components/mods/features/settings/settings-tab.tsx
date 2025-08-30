@@ -30,7 +30,7 @@ const SettingsTab = ({slug}: {slug: string}) => {
     {
       key: "privacyAndDiscovery",
       label: "Privacy & Discovery",
-      children: <PrivacyAndDiscovery/>,
+      children: <PrivacyAndDiscovery campfire={campfire} />,
     },
     {
       key: "notifications",

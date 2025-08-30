@@ -28,11 +28,12 @@ export interface SettingsItemProps {
   onClose?: () => void;
   onSave?: (label: string, value: string) => void;
   isSaving?: boolean;
+  disabled?: boolean;
 }
 
 const SettingsItem = (
   {label, value, description, toggle, toggleValue, type,
-    options, isOpen, onClose, onSave, onClick, isSaving,}: SettingsItemProps) => {
+    options, isOpen, onClose, onSave, onClick, isSaving, disabled,}: SettingsItemProps) => {
 
   const { register, handleSubmit, setValue, formState: { isDirty }, } = useForm({
     defaultValues: {
@@ -49,8 +50,11 @@ const SettingsItem = (
   return (
     <div className="w-full flex flex-col">
       <div
-        className="w-full flex items-center justify-between cursor-pointer group"
-        onClick={() => !toggle && onClick?.()}
+        className={`${disabled ? 'cursor-not-allowed opacity-50' : 'cursor-pointer'} w-full flex items-center justify-between group`}
+        onClick={() => {
+          if (disabled) return;
+          !toggle && onClick?.();
+        }}
       >
         <div>
           <p className="font-medium">{label}</p>
