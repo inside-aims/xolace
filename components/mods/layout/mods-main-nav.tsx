@@ -26,7 +26,7 @@ import {getModsSidebarSections} from "@/components/mods/layout/constants";
 import {ArrowLeft, Search} from "lucide-react";
 import {Input} from "@/components/ui/input";
 import React, {useState} from "react";
-import {useUserState} from "@/lib/store/user";
+
 
 
 type Campfire = {
@@ -76,7 +76,7 @@ export function ModsNavMain() {
         variant={"ghost"}
         size={"sm"}
         className={"flex gap-1 items-center justify-start w-full text-neutral-500"}
-        onClick={() => router.back()}
+        onClick={() => router.push(`/x/${params.slug}`)}
       >
         <ArrowLeft size={16}/> <span>Exit mod tools</span>
       </Button>

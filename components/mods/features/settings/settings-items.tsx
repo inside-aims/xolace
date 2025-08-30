@@ -27,11 +27,12 @@ export interface SettingsItemProps {
   isOpen?: boolean;
   onClose?: () => void;
   onSave?: (label: string, value: string) => void;
+  isSaving?: boolean;
 }
 
 const SettingsItem = (
   {label, value, description, toggle, toggleValue, type,
-    options, isOpen, onClose, onSave, onClick,}: SettingsItemProps) => {
+    options, isOpen, onClose, onSave, onClick, isSaving,}: SettingsItemProps) => {
 
   const { register, handleSubmit, setValue, formState: { isDirty }, } = useForm({
     defaultValues: {
@@ -62,7 +63,7 @@ const SettingsItem = (
           <Switch checked={toggleValue} />
         ) : (
           <div className="flex items-center gap-1 text-sm text-muted-foreground">
-            {value && value}
+            {value && label === 'Display name' ? `x/${value}` : value}
             <span className="p-2 rounded-full transition-colors duration-200 group-hover:bg-neutral-200 dark:group-hover:bg-neutral-800">
               <ChevronRight />
             </span>
@@ -119,11 +120,11 @@ const SettingsItem = (
             </Button>
             <Button
               type="submit"
-              disabled={!isDirty}
+              disabled={!isDirty || isSaving}
               size="sm"
               className={"bg-lavender-500 hover:bg-lavender-600 rounded-full dark:bg-lavender-500 dark:hover:bg-lavender-600 text-white px-4"}
             >
-              Save
+              {isSaving ? "Saving..." : "Save"}
             </Button>
           </div>
         </form>
