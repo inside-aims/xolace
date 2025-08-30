@@ -1,6 +1,6 @@
 'use client';
 
-import {usePathname, useRouter} from 'next/navigation';
+import {usePathname, useRouter, useParams} from 'next/navigation';
 import Link from 'next/link';
 import { Button } from "@/components/ui/button"
 
@@ -56,8 +56,11 @@ const campfires: Campfire[] = [
 
 
 export function ModsNavMain() {
-  const { user } = useUserState();
-  const sidebarSections = getModsSidebarSections(user?.username);
+  // const { user } = useUserState();
+
+  // get the slug params 
+  const params = useParams<{ slug: string }>()
+  const sidebarSections = getModsSidebarSections(params.slug);
 
   const [searchTerm, setSearchTerm] = React.useState('');
   const [campfire, setCampfire] = useState("xolace")

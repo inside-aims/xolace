@@ -2,8 +2,13 @@
 
 import React, { useState } from "react";
 import SettingsItem, { SettingsItemProps } from "./settings-items";
+import { CampfireDetails } from "@/queries/campfires/getCampfireWithSlug";
 
-const GeneralSettings = () => {
+interface GeneralSettingsProps {
+  campfire: CampfireDetails | undefined;
+}
+
+const GeneralSettings = ({campfire}: GeneralSettingsProps) => {
   const [openIndex, setOpenIndex] = useState<number | null>(null);
 
   const generalSettingsOptions: SettingsItemProps[] = [
@@ -11,12 +16,13 @@ const GeneralSettings = () => {
       label: "Display name",
       description: "Campfire display name",
       type: "input",
-      value: "x/Xolace",
+      value: campfire?.name,
     },
     {
       label: "Description",
       description: "Campfire description content goes here",
       type: "textarea",
+      value: campfire?.description,
     },
     {
       label: "Welcome message",

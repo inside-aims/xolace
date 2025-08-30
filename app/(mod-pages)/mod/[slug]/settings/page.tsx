@@ -7,10 +7,17 @@ export const metadata: Metadata = {
   description: "Manage campfire general settings"
 };
 
-const GeneralSettingsPage = () => {
+// get slug params
+interface Props {
+  params: Promise<{ slug: string }>;
+}
+
+const GeneralSettingsPage = async ({ params }: Props) => {
+  const { slug } = await params;
+
   return (
     <main>
-      <SettingsTab/>
+      <SettingsTab slug={slug}/>
     </main>
   );
 };

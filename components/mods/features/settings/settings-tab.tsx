@@ -4,13 +4,28 @@ import React, { useState } from "react";
 import GeneralSettings from "@/components/mods/features/settings/general";
 import PrivacyAndDiscovery from "@/components/mods/features/settings/privacy-and-discovery";
 import SettingsNotification from "@/components/mods/features/settings/notifications";
+import { getCampfireWithSlug } from "@/queries/campfires/getCampfireWithSlug";
+import { useUserState } from "@/lib/store/user";
 
-const SettingsTab = () => {
+const SettingsTab = ({slug}: {slug: string}) => {
+  const user = useUserState(state => state.user);
+
+  const [activeTab, setActiveTab] = useState("general");
+
+   // fetch campfire details
+    const {
+      data: campfire,
+      isPending,
+      isError,
+      refetch,
+    } = getCampfireWithSlug(slug,user?.id);
+
+      
   const tabOptions: { key: string; label: string; children: React.ReactNode }[] = [
     {
       key: "general",
       label: "General",
-      children: <GeneralSettings/>,
+      children: <GeneralSettings campfire={campfire} />,
     },
     {
       key: "privacyAndDiscovery",
@@ -24,7 +39,14 @@ const SettingsTab = () => {
     }
   ];
 
-  const [activeTab, setActiveTab] = useState(tabOptions[0].key);
+
+  if (isPending) {
+    return <div>Loading...</div>
+  }
+
+  if (isError) {
+    return <div>Error loading campfire</div>
+  }
 
   return (
     <div className="flex flex-col items-start w-full justify-start gap-4 max-w-3xl">
