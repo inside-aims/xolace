@@ -9,74 +9,95 @@ import {
   TableRow,
 } from "@/components/ui/table";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-import {Button} from "@/components/ui/button";
-import {Plus, Search} from "lucide-react";
-import {Input} from "@/components/ui/input";
-import React, {useState} from "react";
+import { Button } from "@/components/ui/button";
+import { Plus, Search, Loader2 } from "lucide-react";
+import { Input } from "@/components/ui/input";
+import React, { useState } from "react";
 import ModeratorActionsPopover from "@/components/mods/features/moderators/action-popover";
-import InviteModModal, {
-  ModInviteProps
-} from "@/components/mods/features/moderators/invites-mod-modal";
+import InviteModModal from "@/components/mods/features/moderators/invites-mod-modal";
+import { getCampfireModerators } from "@/queries/campfires/moderations/getCampfireModerators";
+import { formatDistanceToNow } from "date-fns";
 
-const mockModerators = [
-  {
-    id: 1,
-    username: "u/NoFlow9266",
-    avatar: "/avatars/avatar1.png",
-    permissions: "Everything",
-    canEdit: "No",
-    joined: "11:04 AM • Aug 19, 2025",
-  },
-  {
-    id: 2,
-    username: "u/Usual_Field_7545",
-    avatar: "https://cdn-icons-png.flaticon.com/512/3135/3135715.png",
-    permissions: "Everything",
-    canEdit: "No",
-    joined: "7:37 PM • Aug 25, 2025",
-  },
-];
+interface ModeratorsProps {
+  campfireId: string;
+}
 
-const Moderators = ({campfireId}: {campfireId: string}) => {
-  const [searchTerm, setSearchTerm] = React.useState('');
+const Moderators: React.FC<ModeratorsProps> = ({ campfireId }) => {
+  const [searchTerm, setSearchTerm] = useState('');
   const [showInviteModal, setShowInviteModal] = useState<boolean>(false);
 
-  const filteredModerators = searchTerm.trim() === ""
-    ? mockModerators
-    : mockModerators.filter((moderator) => {
-      const term = searchTerm.toLowerCase()
-      return (
-        moderator.username.toLowerCase().includes(term) ||
-        moderator.id.toString().includes(term)
-      )
-    })
+  // Fetch moderators data
+  const { 
+    data: moderators, 
+    isLoading, 
+    isError,
+    error 
+  } = getCampfireModerators(campfireId);
 
-  //Helper for inviting mods
-  // const handleInviteMod = (mod: ModInviteProps, permissions: ModPermissions) => {
-  //   console.log('Inviting mod:', mod);
-  //   console.log('With permissions:', permissions);
-  //   // Handle the invitation logic here
-  // };
+  // Filter moderators based on search term
+  const filteredModerators = React.useMemo(() => {
+    if (!moderators) return [];
+    
+    if (searchTerm.trim() === "") {
+      return moderators;
+    }
 
-  //Helper for mod team order
+    const term = searchTerm.toLowerCase();
+    return moderators.filter((moderator) => 
+      moderator.username.toLowerCase().includes(term) ||
+      moderator.id.toString().includes(term)
+    );
+  }, [moderators, searchTerm]);
+
   const handleTeamOrder = () => {
-    return ''
+    // TODO: Implement team order functionality
+    console.log('Team order functionality');
+  };
+
+  const handleLeaveModTeam = () => {
+    // TODO: Implement leave mod team functionality  
+    console.log('Leave mod team functionality');
+  };
+
+  if (isLoading) {
+    return (
+      <div className="w-full flex flex-col items-center justify-center py-8">
+        <Loader2 className="h-8 w-8 animate-spin text-ocean-500" />
+        <p className="text-sm text-neutral-600 dark:text-neutral-400 mt-2">
+          Loading moderators...
+        </p>
+      </div>
+    );
   }
 
-  //Helper to exit as mod
-  const handleLeaveModTeam = () => {
-    return ''
+  if (isError) {
+    return (
+      <div className="w-full flex flex-col items-center justify-center py-8">
+        <p className="text-sm text-red-500 mb-4">
+          Failed to load moderators: {error?.message || 'Unknown error'}
+        </p>
+        <Button 
+          variant="outline" 
+          onClick={() => window.location.reload()}
+          className="rounded-lg"
+        >
+          Try Again
+        </Button>
+      </div>
+    );
   }
 
   return (
     <>
-      <div className="w-full flex flex-col">
+      <div className="w-full flex flex-col space-y-4">
+        {/* Header Actions */}
         <div className="flex gap-2 justify-end">
           <Button
-            className="flex items-center gap-1 rounded-full bg-lavender-500 py-2 text-white text-sm hover:bg-lavender-600 transition"
+            className="flex items-center gap-1 rounded-full bg-lavender-500 py-2 text-white text-sm hover:bg-lavender-600 transition-colors"
             onClick={() => setShowInviteModal(true)}
           >
-            <Plus/> Invite Mod
+            <Plus className="h-4 w-4" /> 
+            Invite Firekeeper
           </Button>
           <ModeratorActionsPopover
             onLeaveModTeam={handleLeaveModTeam}
@@ -85,52 +106,127 @@ const Moderators = ({campfireId}: {campfireId: string}) => {
         </div>
 
         {/* Search */}
-        <div className="relative w-full rounded-full my-4">
-          <span className="absolute inset-y-0 start-0 flex items-center ps-2">
-            <Search className="w-4 h-4 text-muted-foreground"/>
+        <div className="relative w-full rounded-full">
+          <span className="absolute inset-y-0 start-0 flex items-center ps-3">
+            <Search className="w-4 h-4 text-muted-foreground" />
           </span>
           <Input
             type="text"
             name="searchInput"
-            placeholder="Search mod"
-            className="ps-8 w-full md:w-64 lg:w-81 rounded-full border border-gray-300 dark:border-gray-700 px-4 py-2 text-sm"
+            placeholder="Search firekeepers..."
+            className="ps-10 w-full md:w-64 lg:w-80 rounded-full border border-gray-300 dark:border-gray-700 px-4 py-2 text-sm"
             value={searchTerm}
             onChange={(e) => setSearchTerm(e.target.value)}
           />
         </div>
 
-        {/* Table */}
-        <div className="overflow-x-auto rounded-md border">
+        {/* Moderators Table */}
+        <div className="overflow-x-auto rounded-lg border border-neutral-200 dark:border-neutral-800">
           <Table>
             <TableHeader>
-              <TableRow>
-                <TableHead>USERNAME</TableHead>
-                <TableHead>PERMISSIONS</TableHead>
-                <TableHead>You can edit</TableHead>
-                <TableHead>JOINED</TableHead>
+              <TableRow className="bg-neutral-50 dark:bg-neutral-900">
+                <TableHead className="font-semibold">USERNAME</TableHead>
+                <TableHead className="font-semibold">PERMISSIONS</TableHead>
+                <TableHead className="font-semibold">YOU CAN EDIT</TableHead>
+                <TableHead className="font-semibold">JOINED</TableHead>
               </TableRow>
             </TableHeader>
             <TableBody>
-              {filteredModerators.map((mod) => (
-                <TableRow key={mod.id}>
-                  <TableCell className="flex items-center gap-2">
-                    <Avatar className="h-8 w-8">
-                      <AvatarImage src={mod.avatar} alt={mod.username}/>
-                      <AvatarFallback>
-                        {mod.username.charAt(2).toUpperCase()}
-                      </AvatarFallback>
-                    </Avatar>
-                    <span>{mod.username}</span>
+              {filteredModerators.length === 0 ? (
+                <TableRow>
+                  <TableCell colSpan={4} className="text-center py-8">
+                    <div className="flex flex-col items-center space-y-2">
+                      <p className="text-neutral-500 dark:text-neutral-400">
+                        {searchTerm.trim() ? 'No moderators found matching your search.' : 'No moderators found.'}
+                      </p>
+                      {searchTerm.trim() && (
+                        <Button 
+                          variant="ghost" 
+                          onClick={() => setSearchTerm('')}
+                          className="text-sm"
+                        >
+                          Clear search
+                        </Button>
+                      )}
+                    </div>
                   </TableCell>
-                  <TableCell>{mod.permissions}</TableCell>
-                  <TableCell>{mod.canEdit}</TableCell>
-                  <TableCell>{mod.joined}</TableCell>
                 </TableRow>
-              ))}
+              ) : (
+                filteredModerators.map((mod) => (
+                  <TableRow 
+                    key={mod.id} 
+                    className="hover:bg-neutral-50 dark:hover:bg-neutral-800/50 transition-colors"
+                  >
+                    <TableCell>
+                      <div className="flex items-center gap-3">
+                        <Avatar className="h-10 w-10 border border-neutral-200 dark:border-neutral-700">
+                          <AvatarImage src={mod.avatar_url} alt={mod.username} />
+                          <AvatarFallback className="text-sm font-medium">
+                            {mod.username.substring(0, 2).toUpperCase()}
+                          </AvatarFallback>
+                        </Avatar>
+                        <div className="flex flex-col">
+                          <span className="font-medium text-neutral-900 dark:text-neutral-100">
+                            {mod.username}
+                          </span>
+                          {mod.role === 'creator' && (
+                            <span className="text-xs text-ocean-600 dark:text-ocean-400 font-medium">
+                              Founder
+                            </span>
+                          )}
+                        </div>
+                      </div>
+                    </TableCell>
+                    <TableCell>
+                      <div className="flex flex-col space-y-1">
+                        <span className="text-sm font-medium text-neutral-900 dark:text-neutral-100">
+                          {mod.permission_summary || 'Everything'}
+                        </span>
+                        {mod.permission_count && (
+                          <span className="text-xs text-neutral-500 dark:text-neutral-400">
+                            {mod.permission_count} permission{mod.permission_count !== 1 ? 's' : ''}
+                          </span>
+                        )}
+                      </div>
+                    </TableCell>
+                    <TableCell>
+                      <span className={`text-sm font-medium ${
+                        mod.can_edit 
+                          ? 'text-green-600 dark:text-green-400' 
+                          : 'text-neutral-500 dark:text-neutral-400'
+                      }`}>
+                        {mod.can_edit ? 'Yes' : 'No'}
+                      </span>
+                    </TableCell>
+                    <TableCell>
+                      <div className="flex flex-col">
+                        <span className="text-sm text-neutral-900 dark:text-neutral-100">
+                          {formatDistanceToNow(new Date(mod.joined_at))} ago
+                        </span>
+                        <span className="text-xs text-neutral-500 dark:text-neutral-400">
+                          {new Date(mod.joined_at).toLocaleDateString('en-US', {
+                            month: 'short',
+                            day: 'numeric',
+                            year: 'numeric'
+                          })}
+                        </span>
+                      </div>
+                    </TableCell>
+                  </TableRow>
+                ))
+              )}
             </TableBody>
           </Table>
         </div>
+
+        {/* Stats Footer */}
+        {moderators && moderators.length > 0 && (
+          <div className="text-xs text-neutral-500 dark:text-neutral-400 text-center">
+            Showing {filteredModerators.length} of {moderators.length} firekeeper{moderators.length !== 1 ? 's' : ''}
+          </div>
+        )}
       </div>
+
       <InviteModModal
         isOpen={showInviteModal}
         onClose={() => setShowInviteModal(false)}
