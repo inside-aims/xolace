@@ -6,10 +6,16 @@ export const metadata: Metadata = {
   description: "Discover moderator tool for managing their campfire"
 };
 
-const ModsPage = () => {
+interface Props {
+  params: Promise<{ slug: string }>;
+}
+
+const ModsPage = async ({params}: Props) => {
+  const { slug } = await params;
+
   return (
     <main>
-      <ModsAndMembersTab/>
+      <ModsAndMembersTab slug={slug}/>
     </main>
   );
 };

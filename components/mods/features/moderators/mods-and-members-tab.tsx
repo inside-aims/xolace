@@ -6,13 +6,25 @@ import Moderators from "@/components/mods/features/moderators/moderators";
 import ApprovedCampers from "@/components/mods/features/moderators/approved-campers";
 import InvitesMod from "@/components/mods/features/moderators/invites-mod";
 import ModeratorRecruiting from "@/components/mods/features/moderators/recruiting";
+import { getCampfireIdWithSlug } from "@/queries/campfires/getCampfireIdWithSlug";
 
-const ModsAndMemberTab = () => {
+const ModsAndMemberTab = ({slug}: {slug: string}) => {
+  const [activeTab, setActiveTab] = useState("moderators");
+  const { data: campfireData, isPending, isError } = getCampfireIdWithSlug(slug);
+
+  if (isPending) {
+    return <div>Loading...</div>
+  }
+
+  if (isError) {
+    return <div>Error loading campfire</div>
+  }
+
   const tabOptions: { key: string; label: string; children: React.ReactNode }[] = [
     {
       key: "moderators",
       label: "Moderators",
-      children: <Moderators />,
+      children: <Moderators campfireId={campfireData.campfireId}/>,
     },
     {
       key: "approvedCampers",
@@ -31,7 +43,7 @@ const ModsAndMemberTab = () => {
     },
   ];
 
-  const [activeTab, setActiveTab] = useState(tabOptions[0].key);
+
 
   return (
     <div className="flex flex-col items-start w-full justify-start gap-4">

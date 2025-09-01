@@ -38,7 +38,7 @@ const mockModerators = [
   },
 ];
 
-const Moderators = () => {
+const Moderators = ({campfireId}: {campfireId: string}) => {
   const [searchTerm, setSearchTerm] = React.useState('');
   const [showInviteModal, setShowInviteModal] = useState<boolean>(false);
 
