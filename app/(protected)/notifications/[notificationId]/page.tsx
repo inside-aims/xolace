@@ -2,6 +2,7 @@ import NotificationDetails from "@/components/notifications/notification-details
 import HealthTipsWrapper from "@/components/shared/layoutUIs/HealthTipsWrapper";
 import { notFound } from "next/navigation";
 import { createClient } from "@/utils/supabase/server";
+import ModeratorInvitationDetails from "@/components/notifications/FirekeeperInvitationDetails";
 
 interface Props {
   params: Promise<{ notificationId: string }>;
@@ -21,9 +22,18 @@ export default async function NotificationDetailsPage({ params }: Props) {
     return notFound();
   }
 
+  const renderNotificationContent = () => {
+    switch (notification.type) {
+      case 'firekeeper_invitation':
+        return <ModeratorInvitationDetails notification={notification} />;
+      default:
+        return <NotificationDetails notification={notification} />;
+    }
+  };
+
   return (
     <HealthTipsWrapper>
-      <NotificationDetails notification={notification} />
+      {renderNotificationContent()}
     </HealthTipsWrapper>
   );
 }
