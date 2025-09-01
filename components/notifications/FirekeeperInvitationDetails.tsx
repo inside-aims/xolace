@@ -81,7 +81,7 @@ export default function ModeratorInvitationDetails({ notification }: ModeratorIn
 
         <div className="bg-yellow-900/20 border border-yellow-700/50 text-yellow-300 text-sm p-3 rounded-lg flex items-center gap-3">
           <Info size={20} />
-          <span>Becoming a Firekeeper gives you moderation tools and responsibilities within the Campfire.</span>
+          <span>Becoming a Firekeeper gives you moderation tools and responsibilities within the Campfire. You can safely ignore this invitation if you do not wish to accept it.</span>
         </div>
 
         <footer className="flex flex-col sm:flex-row items-center justify-center gap-4 pt-4">
