@@ -68,7 +68,7 @@ export function getPermissionGroups() {
         permissions
       }));
     },
-    staleTime: 5 * 60 * 1000, // 5 minutes - permissions don't change frequently
-    gcTime: 10 * 60 * 1000, // 10 minutes
+    staleTime: 30 * 60 * 1000, // 30 minutes - permissions don't change frequently
+    gcTime: 60 * 60 * 1000, // 1 hour
   });
 }

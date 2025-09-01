@@ -3,6 +3,7 @@
 import { useRouter } from 'next/navigation';
 import { ShieldCheck, ShieldX, Clock, MessageSquare, Info } from 'lucide-react';
 // import { useAcceptModeratorInvitation, useDeclineModeratorInvitation } from '@/hooks/campfires/useModeratorInvites';
+import { useAcceptModeratorInvite, useDeclineModeratorInvite } from '@/hooks/campfires/moderations/useCampfireModerationHooks';
 import { Button } from '@/components/ui/button';
 import { DefaultLoader } from '../shared/loaders/DefaultLoader';
 
@@ -12,6 +13,7 @@ interface ModeratorInviteMetadata {
   campfire_name: string;
   campfire_icon_url?: string;
   invitation_message?: string;
+  campfire_slug: string;
 }
 
 // The main prop for our component
@@ -28,29 +30,26 @@ export default function ModeratorInvitationDetails({ notification }: ModeratorIn
   const router = useRouter();
   const invitationId = notification.entity_id;
 
-//   const { mutate: acceptInvite, isPending: isAccepting } = useAcceptModeratorInvitation();
-//   const { mutate: declineInvite, isPending: isDeclining } = useDeclineModeratorInvitation();
-
-const isAccepting = false;
-const isDeclining = false;
+  const { mutate: acceptInvite, isPending: isAccepting } = useAcceptModeratorInvite();
+  const { mutate: declineInvite, isPending: isDeclining } = useDeclineModeratorInvite();
 
   const handleAccept = () => {
-    // acceptInvite(invitationId, {
-    //   onSuccess: () => {
-    //     // Redirect to the campfire's page on success
-    //     router.push(`/c/${notification.metadata.campfire_id}`);
-    //   },
-    //   // You can add onError handling here with a toast notification
-    // });
+    acceptInvite(invitationId, {
+      onSuccess: () => {
+        // Redirect to the campfire's page on success
+        router.push(`/x/${notification.metadata.campfire_slug}`);
+      },
+      // You can add onError handling here with a toast notification
+    });
   };
 
   const handleDecline = () => {
-    // declineInvite(invitationId, {
-    //   onSuccess: () => {
-    //     // Go back to the notifications list
-    //     router.push('/notifications');
-    //   },
-    // });
+    declineInvite(invitationId, {
+      onSuccess: () => {
+        // Go back to the notifications list
+        router.push('/notifications');
+      },
+    });
   };
 
   const isProcessing = isAccepting || isDeclining;
@@ -91,14 +90,14 @@ const isDeclining = false;
             onClick={handleDecline}
             disabled={isProcessing}
           >
-            {isDeclining ? <DefaultLoader /> : <><ShieldX className="mr-2 h-4 w-4" /> Decline</>}
+            {isDeclining ? <DefaultLoader size={20} /> : <><ShieldX className="mr-2 h-4 w-4" /> Decline</>}
           </Button>
           <Button
             className="w-full sm:w-auto bg-green-600 hover:bg-green-700 text-white rounded-full px-8"
             onClick={handleAccept}
             disabled={isProcessing}
           >
-            {isAccepting ? <DefaultLoader /> : <><ShieldCheck className="mr-2 h-4 w-4" /> Accept</>}
+            {isAccepting ? <DefaultLoader size={20} /> : <><ShieldCheck className="mr-2 h-4 w-4" /> Accept</>}
           </Button>
         </footer>
       </div>

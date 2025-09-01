@@ -112,3 +112,92 @@ export const useCreateFirekeeperInviteV2 = (campfireId: string) => {
     retryDelay: (attemptIndex) => Math.min(1000 * 2 ** attemptIndex, 30000), // Exponential backoff
   });
 };
+
+
+export const useAcceptModeratorInvite = () => {
+  const queryClient = useQueryClient()
+
+  return useMutation({
+    mutationFn: async (invitationId: string) => {
+      const response = await fetch(`/api/v1/firekeeper-invites/${invitationId}/accept`, {
+        method: 'POST'
+      })
+
+      if (!response.ok) {
+        const error = await response.json()
+        throw new Error(error.error || 'Failed to accept invitation')
+      }
+
+      return response.json()
+    },
+    onMutate: async (variables) => {
+      toast.loading('Accepting invitation...', { id: 'accept-loading' });
+    },
+    onSuccess: () => {
+      // Dismiss loading toast
+      toast.dismiss('accept-loading');
+      
+      // Show success message
+      toast.success('You are now a firekeeper🔥!')
+      queryClient.invalidateQueries({ queryKey: ['campfires'] })
+    },
+    onError: (error: Error, variables) => {
+      // Dismiss loading toast
+      toast.dismiss('accept-loading');
+      
+      // Show error message
+      toast.error('Failed to accept invitation', {
+        description: error.message || 'Please try again later.',
+        duration: 5000,
+      });
+      
+      console.error('Accept moderator invite error:', {
+        error: error.message,
+        variables,
+      });
+      toast.error(error.message)
+    }
+  })
+}
+
+export const useDeclineModeratorInvite = () => {
+  const queryClient = useQueryClient()
+  const supabase = getSupabaseBrowserClient()
+
+  return useMutation({
+    mutationFn: async (invitationId: string) => {
+
+      // first check if the invitation has not expired or been accepted
+      const { data: invite, error: inviteError } = await supabase
+        .from('campfire_moderator_invites')
+        .select('accepted_at, declined_at, expires_at')
+        .eq('id', invitationId)
+        .single()
+
+      if (inviteError || !invite) {
+        throw new Error('Invitation not found')
+      }
+
+      if( invite.expires_at < new Date().toISOString() ) {
+        throw new Error('Invitation has expired')
+      }
+
+      if (invite.accepted_at || invite.declined_at) {
+        throw new Error('Invitation has already been accepted or declined')
+      }
+
+      const { error } = await supabase
+        .from('campfire_moderator_invites')
+        .update({ declined_at: new Date().toISOString() })
+        .eq('id', invitationId)
+
+      if (error) throw error
+    },
+    onSuccess: () => {
+      toast.success('Invitation declined')
+    },
+    onError: (error: Error) => {
+      toast.error(error.message)
+    }
+  })
+}
