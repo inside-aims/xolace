@@ -47,7 +47,7 @@ export const getModsSidebarSections = (username?: string): ModsSidebarSection[] 
       items: [
         {icon: Settings, route: `${parentRoute}/settings`, label: "General Settings" },
         {icon: File, route: `${parentRoute}/posts-comments`, label: "Posts & Comments" },
-        {icon: Book, route: `${parentRoute}/campfire-guide`, label: "Campfire Guide" },
+        {icon: Book, route: `${parentRoute}/guide`, label: "Campfire Guide" },
         {icon: Bell, route: `${parentRoute}/campfire-guide`, label: "Notification" },
       ]
     }
