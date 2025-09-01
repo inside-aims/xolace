@@ -5,8 +5,11 @@ import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/components/u
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Checkbox } from '@/components/ui/checkbox';
-import {Search, UserRoundPlusIcon, X} from 'lucide-react';
+import {Loader2, Search, UserRoundPlusIcon, X} from 'lucide-react';
 import {Avatar, AvatarFallback, AvatarImage} from "@/components/ui/avatar";
+import { useDebounce } from '@/utils/helpers/useDebounce';
+import { useSearchUsers } from '@/hooks/campfires/moderations/useSearchUsers';
+import { formatDistanceToNow } from 'date-fns';
 
 // Mock mod data
 const mockUsers = [
@@ -47,11 +50,11 @@ const mockUsers = [
 export interface ModInviteProps {
   id: string;
   username: string;
-  avatar: string;
-  postKarma: number;
-  commentKarma: number;
-  accountAge: string;
+  avatar_url: string;
+  created_at: string;
+  reputation: number;
 }
+
 
 export interface InviteModModalProps {
   isOpen: boolean;
@@ -106,14 +109,15 @@ const InviteModModal: React.FC<InviteModModalProps> = ({isOpen, onClose, onInvit
     channels: true,
     chatConfig: true
   });
+// 1. Use the debouncer on the search term
+const debouncedSearchTerm = useDebounce(searchTerm, 500); // 500ms delay
 
-  // Filter users based on search term
-  const filteredUsers = useMemo(() => {
-    if (!searchTerm) return [];
-    return mockUsers.filter(user =>
-      user.username.toLowerCase().includes(searchTerm.toLowerCase())
-    );
-  }, [searchTerm]);
+// 2. Use the data-fetching hook with the debounced term
+const {
+  data: foundUsers,
+  isLoading: isSearching,
+  isError,
+} = useSearchUsers(debouncedSearchTerm);
 
   const handleUserSelect = (mod: ModInviteProps) => {
     setSelectedMod(mod);
@@ -186,16 +190,27 @@ const InviteModModal: React.FC<InviteModModalProps> = ({isOpen, onClose, onInvit
                 </div>
 
                 {/* Search Results */}
-                {searchTerm && filteredUsers.length > 0 && (
+                {debouncedSearchTerm.length >= 3 && (
                   <div className="absolute z-10 w-full mt-1 bg-white dark:bg-neutral-900 border border-neutral-200 dark:border-neutral-800 rounded-md shadow-lg max-h-40 overflow-y-auto">
-                    {filteredUsers.map((mod) => (
+                     {isSearching && (
+                       <div className="flex items-center justify-center p-4 text-sm text-gray-500">
+                         <Loader2 className="mr-2 h-4 w-4 animate-spin" /> Searching...
+                       </div>
+                    )}
+                    {isError && (
+                      <div className="p-4 text-sm text-red-500">Could not fetch users.</div>
+                    )}
+                    {!isSearching && foundUsers && foundUsers.length === 0 && (
+                      <div className="p-4 text-sm text-gray-500">No users found.</div>
+                    )}
+                    {foundUsers?.map((mod) => (
                       <div
                         key={mod.id}
                         className="flex items-center p-3 hover:bg-neutral-200 dark:hover:bg-neutral-700 cursor-pointer"
                         onClick={() => handleUserSelect(mod)}
                       >
                         <Avatar className="w-8 h-8 rounded-full border border-neutral-400 dark:border-neutral-100">
-                          <AvatarImage src={mod.avatar} alt={mod.username}/>
+                          <AvatarImage src={mod.avatar_url} alt={mod.username}/>
                           <AvatarFallback>{mod.username.charAt(2)}</AvatarFallback>
                         </Avatar>
                         <div className="ml-3">
@@ -203,7 +218,7 @@ const InviteModModal: React.FC<InviteModModalProps> = ({isOpen, onClose, onInvit
                             {mod.username}
                           </div>
                           <div className="text-xs text-neutral-500 dark:text-neutral-400">
-                            {mod.accountAge} • {mod.postKarma} post karma • {mod.commentKarma} comment karma
+                            {formatDistanceToNow(new Date(mod.created_at))} ago • {mod.reputation} reputation
                           </div>
                         </div>
                       </div>
@@ -215,7 +230,7 @@ const InviteModModal: React.FC<InviteModModalProps> = ({isOpen, onClose, onInvit
               /* Selected User Display */
               <div className="flex items-center p-3 bg-neutral-200 dark:bg-neutral-800 rounded-md">
                 <Avatar className="w-8 h-8 rounded-full border border-neutral-400 dark:border-neutral-100">
-                  <AvatarImage src={selectedMod.avatar} alt={selectedMod.username}/>
+                  <AvatarImage src={selectedMod.avatar_url} alt={selectedMod.username}/>
                   <AvatarFallback>{selectedMod.username.charAt(2)}</AvatarFallback>
                 </Avatar>
                 <div className="ml-3 flex-1">
@@ -223,7 +238,7 @@ const InviteModModal: React.FC<InviteModModalProps> = ({isOpen, onClose, onInvit
                     {selectedMod.username}
                   </div>
                   <div className="text-xs text-neutral-500 dark:text-neutral-400">
-                    {selectedMod.accountAge} • {selectedMod.postKarma} post karma • {selectedMod.commentKarma} comment karma
+                    {formatDistanceToNow(new Date(selectedMod.created_at))} ago • {selectedMod.reputation} reputation
                   </div>
                 </div>
                 <Button
