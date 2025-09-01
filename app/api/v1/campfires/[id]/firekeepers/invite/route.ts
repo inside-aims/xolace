@@ -36,9 +36,37 @@ export async function POST(
       return NextResponse.json({ error: 'Profile not found' }, { status: 404 })
     }
 
+    const campfireId = params.id;
+
+    // Check for pending invitations
+    const { data: pendingInvite, error: pendingError } = await supabase
+      .from('campfire_moderator_invites')
+      .select('id')
+      .eq('campfire_id', campfireId)
+      .eq('invitee_id', inviteeId)
+      .is('accepted_at', null)
+      .is('declined_at', null)
+      .gt('expires_at', new Date().toISOString())
+      .maybeSingle();
+
+    if (pendingError) {
+      console.error('Pending invite check error:', pendingError);
+      return NextResponse.json(
+        { error: 'Failed to check pending invitations' },
+        { status: 500 }
+      );
+    }
+
+    if (pendingInvite) {
+      return NextResponse.json(
+        { error: `This Camper already has a pending invitation` },
+        { status: 400 }
+      );
+    }
+
     // Call the database function
     const { data, error } = await supabase.rpc('create_firekeeper_invitation', {
-      p_campfire_id: params.id,
+      p_campfire_id: campfireId,
       p_inviter_id: profile.id,
       p_invitee_id: inviteeId,
       p_permission_ids: permissionIds,

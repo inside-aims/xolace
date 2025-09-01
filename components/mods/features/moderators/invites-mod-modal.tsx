@@ -12,7 +12,7 @@ import { Alert, AlertDescription } from '@/components/ui/alert';
 import { useDebounce } from '@/utils/helpers/useDebounce';
 import { useSearchUsers } from '@/hooks/campfires/moderations/useSearchUsers';
 import { getPermissionGroups } from '@/queries/campfires/permissions/getPermissionGroup';
-import { useCreateFirekeeperInvite } from '@/hooks/campfires/moderations/useCampfireModerationHooks';
+import { useCreateFirekeeperInviteV2 } from '@/hooks/campfires/moderations/useCampfireModerationHooks';
 import { formatDistanceToNow } from 'date-fns';
 import { toast } from 'sonner';
 
@@ -52,7 +52,7 @@ const InviteModModal: React.FC<InviteModModalProps> = ({
   const debouncedSearchTerm = useDebounce(searchTerm, 500);
   const { data: foundUsers, isLoading: isSearching, isError } = useSearchUsers(debouncedSearchTerm);
   const { data: permissionGroups, isLoading: isLoadingPermissions } = getPermissionGroups();
-  const createInviteMutation = useCreateFirekeeperInvite(campfireId);
+  const createInviteMutation = useCreateFirekeeperInviteV2(campfireId);
 
   // Initialize permissions when groups are loaded
   React.useEffect(() => {
