@@ -15,8 +15,7 @@ import {Input} from "@/components/ui/input";
 import React, {useState} from "react";
 import ModeratorActionsPopover from "@/components/mods/features/moderators/action-popover";
 import InviteModModal, {
-  ModInviteProps,
-  ModPermissions
+  ModInviteProps
 } from "@/components/mods/features/moderators/invites-mod-modal";
 
 const mockModerators = [
@@ -53,11 +52,11 @@ const Moderators = ({campfireId}: {campfireId: string}) => {
     })
 
   //Helper for inviting mods
-  const handleInviteMod = (mod: ModInviteProps, permissions: ModPermissions) => {
-    console.log('Inviting mod:', mod);
-    console.log('With permissions:', permissions);
-    // Handle the invitation logic here
-  };
+  // const handleInviteMod = (mod: ModInviteProps, permissions: ModPermissions) => {
+  //   console.log('Inviting mod:', mod);
+  //   console.log('With permissions:', permissions);
+  //   // Handle the invitation logic here
+  // };
 
   //Helper for mod team order
   const handleTeamOrder = () => {
@@ -135,7 +134,7 @@ const Moderators = ({campfireId}: {campfireId: string}) => {
       <InviteModModal
         isOpen={showInviteModal}
         onClose={() => setShowInviteModal(false)}
-        onInvite={handleInviteMod}
+        campfireId={campfireId}
       />
     </>
   );
