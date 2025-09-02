@@ -5,7 +5,6 @@ import { Alert, AlertDescription } from "@/components/ui/alert";
 import SettingsItem, { SettingsItemProps } from "@/components/mods/features/settings/settings-items";
 import { Info } from "lucide-react";
 import { CampfireDetails } from "@/queries/campfires/getCampfireWithSlug";
-import { toTitleCase } from "@/utils";
 
 interface PrivacyAndDiscoveryProps {
   campfire: CampfireDetails | undefined;
@@ -47,13 +46,23 @@ const PrivacyAndDiscovery = ({campfire}: PrivacyAndDiscoveryProps) => {
     // },
   ];
 
-  const handleSave = (label: string, val: string) => {
+  const handleSave = (label: string, val: string | { label: string; value: string }[]) => {
     console.log(`Saving ${label}:`, val);
 
-    if (label === "Campfire Type") {
-      // update campfire type
-    } else if (label === "Anonymous users") {
-      // update ano users
+    switch (label) {
+      case "Campfire Type":
+        if (typeof val === "string") {
+          // update campfire type
+        }
+        break;
+      case "Anonymous users":
+        if (typeof val === "string") {
+          // update ano users
+        }
+        break;
+      default:
+        console.warn(`No update handler for setting: ${label}`);
+        break;
     }
   };
 

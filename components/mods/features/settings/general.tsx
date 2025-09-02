@@ -1,7 +1,6 @@
 "use client";
 
 import React, { useState } from "react";
-import { useRouter } from "next/navigation";
 import SettingsItem, { SettingsItemProps } from "./settings-items";
 import { CampfireDetails } from "@/queries/campfires/getCampfireWithSlug";
 import { useUpdateCampfireMutation } from "@/hooks/campfires/useUpdateCampfireMutation";
@@ -14,7 +13,6 @@ interface GeneralSettingsProps {
 
 const GeneralSettings = ({campfire}: GeneralSettingsProps) => {
   const [openIndex, setOpenIndex] = useState<number | null>(null);
-  const router = useRouter();
 
   // 1. Call the mutation hook
   const { mutate: updateCampfire, isPending } = useUpdateCampfireMutation();
@@ -38,27 +36,42 @@ const GeneralSettings = ({campfire}: GeneralSettingsProps) => {
     },
   ];
 
-  const handleSave = (label: string, value: string) => {
+  const handleSave = (label: string, value: string | { label: string; value: string }[]) => {
     if (!campfire) return;
 
     let updates = {};
-    let newSlug = generateCampfireSlug(value);
 
-    // 2. Determine which field to update based on the label
     switch (label) {
       case "Display name":
-        updates = { name: value,  slug: newSlug };
+        if (typeof value === "string") {
+          const newSlug = generateCampfireSlug(value);
+          updates = { name: value, slug: newSlug };
+        } else {
+          console.warn("Display name value should be a string");
+          return;
+        }
         break;
       case "Description":
-        updates = { description: value };
+        if (typeof value === "string") {
+          updates = { description: value };
+        } else {
+          console.warn("Description value should be a string");
+          return;
+        }
         break;
-      // Add other cases here for future settings
+      case "Welcome message":
+        if (typeof value === "string") {
+          updates = { welcomeMessage: value };
+        } else {
+          console.warn("Welcome message value should be a string");
+          return;
+        }
+        break;
       default:
         console.warn(`No update handler for setting: ${label}`);
         return;
     }
 
-    // 3. Call the mutate function with the required variables
     updateCampfire({
       campfireId: campfire.campfireId,
       slug: campfire.slug,
@@ -66,13 +79,14 @@ const GeneralSettings = ({campfire}: GeneralSettingsProps) => {
     }, {
       onSuccess: () => {
         toast.success(`${label} updated successfully!`);
-        setOpenIndex(null); // Close the form on success
+        setOpenIndex(null);
       },
       onError: (error) => {
         toast.error(`Failed to update ${label}: ${error.message}`);
       }
     });
   };
+
 
 
   return (
