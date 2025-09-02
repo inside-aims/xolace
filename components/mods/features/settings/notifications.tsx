@@ -48,15 +48,31 @@ const SettingsNotification = () => {
     },
   ];
 
-  const handleSave = (label: string, val: string) => {
+
+  const handleSave = (label: string, val: string | { label: string; value: string }[]) => {
     console.log(`Saving ${label}:`, val);
 
-    if (label === "Activity") {
-      // update activity
-    } else if (label === "Mod Mail") {
-      // update mod mail
-    } else if (label === "Reports") {
-      // update reports
+    switch (label) {
+      case "Activity":
+        if (typeof val === "string") {
+          // update activity
+        }
+        break;
+
+      case "Mod Mail":
+        if (typeof val === "string") {
+          // update mod mail
+        }
+        break;
+
+      case "Reports":
+        if (typeof val === "string") {
+          // update reports
+        }
+        break;
+      default:
+        console.warn(`No update handler for setting: ${label}`);
+        break;
     }
   };
 

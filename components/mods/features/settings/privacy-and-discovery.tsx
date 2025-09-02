@@ -46,13 +46,23 @@ const PrivacyAndDiscovery = ({campfire}: PrivacyAndDiscoveryProps) => {
     // },
   ];
 
-  const handleSave = (label: string, val: string) => {
+  const handleSave = (label: string, val: string | { label: string; value: string }[]) => {
     console.log(`Saving ${label}:`, val);
 
-    if (label === "Campfire Type") {
-      // update campfire type
-    } else if (label === "Anonymous users") {
-      // update ano users
+    switch (label) {
+      case "Campfire Type":
+        if (typeof val === "string") {
+          // update campfire type
+        }
+        break;
+      case "Anonymous users":
+        if (typeof val === "string") {
+          // update ano users
+        }
+        break;
+      default:
+        console.warn(`No update handler for setting: ${label}`);
+        break;
     }
   };
 
