@@ -1,7 +1,7 @@
 "use client";
 
-import { ChevronRight } from "lucide-react";
-import React from "react";
+import {ChevronRight, Minus, Pencil, Save} from "lucide-react";
+import React, {useState} from "react";
 import { Switch } from "@/components/ui/switch";
 import { useForm } from "react-hook-form";
 import { Input } from "@/components/ui/input";
@@ -22,18 +22,29 @@ export interface SettingsItemProps {
   onClick?: () => void;
   toggle?: boolean;
   toggleValue?: boolean;
-  type?: "input" | "textarea" | "select";
+  type?: "input" | "textarea" | "select" | "resources";
   options?: string[];
   isOpen?: boolean;
   onClose?: () => void;
-  onSave?: (label: string, value: string) => void;
+  onSave?: (label: string, value: string | { label: string; value: string }[]) => void;
   isSaving?: boolean;
   disabled?: boolean;
+  resourcesList?: { label: string; value: string }[];
+  onResourcesChange?: (resources: { label: string; value: string }[]) => void;
 }
 
 const SettingsItem = (
-  {label, value, description, toggle, toggleValue, type,
-    options, isOpen, onClose, onSave, onClick, isSaving, disabled,}: SettingsItemProps) => {
+  {label, value, description, toggle, toggleValue, type, options, isOpen, onClose, onSave, onClick, isSaving, disabled, resourcesList, onResourcesChange}: SettingsItemProps) => {
+
+  const [editingIndex, setEditingIndex] = useState<number | null>(null);
+  const [editLabel, setEditLabel] = useState("");
+  const [editValue, setEditValue] = useState("");
+
+  const handleEdit = (idx: number, res: { label: string; value: string }) => {
+    setEditingIndex(idx);
+    setEditLabel(res.label);
+    setEditValue(res.value);
+  };
 
   const { register, handleSubmit, setValue, formState: { isDirty }, } = useForm({
     defaultValues: {
@@ -43,7 +54,11 @@ const SettingsItem = (
 
   //eslint-disable-next-line
   const handleSave = (data: any) => {
-    onSave?.(label,data.field);
+    if (type === "resources" && resourcesList) {
+      onSave?.(label, resourcesList);
+    } else {
+      onSave?.(label, data.field);
+    }
     onClose?.();
   };
 
@@ -111,6 +126,96 @@ const SettingsItem = (
                 ))}
               </SelectContent>
             </Select>
+          )}
+
+          {type === "resources" && resourcesList && (
+            <div className="space-y-3">
+              {resourcesList.map((res, idx) => (
+                <div
+                  key={idx}
+                  className="flex items-center justify-between gap-2 p-2 rounded-lg border"
+                >
+                  {editingIndex === idx ? (
+                    <div className="flex flex-1 flex-col gap-2">
+                      <Input
+                        value={editLabel}
+                        onChange={(e) => setEditLabel(e.target.value)}
+                        placeholder="Resource name"
+                      />
+                      <Input
+                        value={editValue}
+                        onChange={(e) => setEditValue(e.target.value)}
+                        placeholder="Resource link"
+                      />
+                    </div>
+                  ) : (
+                    <div className="flex flex-col flex-1">
+                      <span className="font-medium">{res.label}</span>
+                      <span className="text-xs text-muted-foreground">{res.value}</span>
+                    </div>
+                  )}
+
+                  <div className="flex items-center gap-2">
+                    {editingIndex === idx ? (
+                      <Button
+                        type="button"
+                        size="sm"
+                        className="px-3 rounded-full bg-lavender-500 hover:bg-lavender-600 text-white"
+                        onClick={() => {
+                          const updated = [...resourcesList];
+                          updated[idx] = { label: editLabel, value: editValue };
+                          onResourcesChange?.(updated);
+                          setEditingIndex(null);
+                          setValue("field", "dirty", { shouldDirty: true });
+                        }}
+                      >
+                        <Save className="h-4 w-4" />
+                      </Button>
+                    ) : (
+                      <>
+                        <button
+                          type="button"
+                          onClick={() => handleEdit(idx, res)}
+                          className="p-1 rounded-full hover:bg-muted"
+                          title="Edit"
+                        >
+                          <Pencil className="h-4 w-4" />
+                        </button>
+                        <button
+                          type="button"
+                          onClick={() => {
+                            const updated = resourcesList.filter((_, i) => i !== idx);
+                            onResourcesChange?.(updated);
+                          }}
+                          className="p-1 rounded-full hover:bg-muted text-red-500"
+                          title="Remove"
+                        >
+                          <Minus className="h-4 w-4" />
+                        </button>
+                      </>
+                    )}
+                  </div>
+                </div>
+              ))}
+
+              {resourcesList.length < 3 && (
+                <Button
+                  type="button"
+                  onClick={() => {
+                    const updated = [
+                      ...resourcesList,
+                      { label: "New Resource", value: "" },
+                    ];
+                    onResourcesChange?.(updated);
+                    handleEdit(updated.length - 1, updated[updated.length - 1]);
+                  }}
+                  className="w-full rounded-full"
+                  variant="outline"
+                >
+                  + Add Resource
+                </Button>
+              )}
+            </div>
           )}
 
           <div className="flex justify-end gap-2">
