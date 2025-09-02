@@ -2,6 +2,7 @@
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { getSupabaseBrowserClient } from '@/utils/supabase/client';
 import { useRouter } from 'next/navigation';
+import { useUserState } from '@/lib/store/user';
 
 // Define the shape of the variables the mutation will accept
 export interface UpdateCampfireVariables {
@@ -19,10 +20,34 @@ export const useUpdateCampfireMutation = () => {
   const router = useRouter();
   const queryClient = useQueryClient();
   const supabase = getSupabaseBrowserClient();
+  const user = useUserState(state => state.user)
 
   return useMutation<void, Error, UpdateCampfireVariables>({
     // The mutation function itself: performs the async update
     mutationFn: async ({ campfireId, updates }) => {
+
+      if (!user?.id) {
+        throw new Error('User not authenticated');
+      }
+
+      // First check if the current user has permission
+      const { data: hasPermission, error: permissionError } = await supabase.rpc(
+        'has_campfire_permission',
+        {
+          p_campfire_id: campfireId,
+          p_user_id: user.id,
+          p_permission_key: 'can_edit_settings'
+        }
+      );
+
+      if (permissionError) {
+        throw new Error(`Permission check failed: ${permissionError.message}`);
+      }
+
+      if (!hasPermission) {
+        throw new Error('You do not have permission to edit campfire settings');
+      }
+
       const { error } = await supabase
         .from('campfires')
         .update(updates)

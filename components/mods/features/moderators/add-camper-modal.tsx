@@ -83,7 +83,7 @@ const AddApprovedCamperModal: React.FC<AddApprovedCamperModalProps> = ({
 
   return (
     <Dialog open={isOpen} onOpenChange={onClose}>
-      <DialogContent className="w-full max-w-[98vw] sm:max-w-[500px]">
+      <DialogContent className="w-full max-w-[98vw] sm:max-w-[500px] border-0 rounded-2xl!">
         <DialogHeader>
           <DialogTitle className="flex items-center gap-1">
             <Plus className="h-5 w-5" /> 

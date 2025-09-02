@@ -148,7 +148,7 @@ const InviteModModal: React.FC<InviteModModalProps> = ({
   if (isLoadingPermissions) {
     return (
       <Dialog open={isOpen} onOpenChange={onClose}>
-        <DialogContent className="w-full max-w-[98vw] sm:max-w-[500px]">
+        <DialogContent className="w-full max-w-[98vw] sm:max-w-[500px] border-0 rounded-2xl!">
           <div className="flex items-center justify-center py-8">
             <Loader2 className="h-6 w-6 animate-spin mr-2" />
             Loading permissions...
@@ -160,7 +160,7 @@ const InviteModModal: React.FC<InviteModModalProps> = ({
 
   return (
     <Dialog open={isOpen} onOpenChange={onClose}>
-      <DialogContent className="w-full max-w-[98vw] sm:max-w-[600px] max-h-[90vh] overflow-y-auto">
+      <DialogContent className="w-full max-w-[98vw] sm:max-w-[600px] max-h-[90vh] overflow-y-auto border-0 rounded-2xl!">
         <DialogHeader>
           <DialogTitle className="flex items-center gap-1">
             <UserRoundPlusIcon className="h-5 w-5" /> 
@@ -272,7 +272,7 @@ const InviteModModal: React.FC<InviteModModalProps> = ({
 
             {permissionGroups?.map((group) => (
               <div key={group.group} className="space-y-2">
-                <div className="flex items-start space-x-3 p-3 rounded-lg border border-neutral-200 dark:border-neutral-700 hover:bg-neutral-50 dark:hover:bg-neutral-800/50">
+                <div className="flex items-start space-x-3 p-3 py-1 rounded-lg border-0 border-neutral-200 dark:border-neutral-700 hover:bg-neutral-50 dark:hover:bg-neutral-800/50">
                   <Checkbox
                     id={group.group}
                     checked={selectedPermissions[group.group]?.selected || false}
