@@ -29,7 +29,7 @@ const ModsAndMemberTab = ({slug}: {slug: string}) => {
     {
       key: "approvedCampers",
       label: "Approved Campers",
-      children: <ApprovedCampers />,
+      children: <ApprovedCampers campfireId={campfireData.campfireId} />,
     },
     {
       key: "invites",
