@@ -1,4 +1,4 @@
-import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
+import { useMutation, useQueryClient } from '@tanstack/react-query'
 import { getSupabaseBrowserClient } from '@/utils/supabase/client'
 import { toast } from 'sonner'
 

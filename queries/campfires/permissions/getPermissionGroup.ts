@@ -6,7 +6,7 @@ export interface CampfirePermission {
   id: number;
   key: string;
   display_name: string;
-  description: string;
+  description: string | null;
   permission_group: 'manage_users' | 'manage_config' | 'manage_content';
   is_active: boolean;
   sort_order: number;
@@ -69,6 +69,6 @@ export function getPermissionGroups() {
       }));
     },
     staleTime: 30 * 60 * 1000, // 30 minutes - permissions don't change frequently
-    gcTime: 60 * 60 * 1000, // 1 hour
+    gcTime: 30 * 60 * 1000, // 30 minutes
   });
 }

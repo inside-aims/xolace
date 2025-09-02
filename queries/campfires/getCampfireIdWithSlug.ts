@@ -1,7 +1,6 @@
 // queries/campfires/getCampfireWithSlug.ts
 import { useQuery } from '@tanstack/react-query';
 import { getSupabaseBrowserClient } from '@/utils/supabase/client';
-import { CampfirePurpose } from '@/components/campfires/campfires.types';
 
 export interface CampfireId {
   campfireId: string;

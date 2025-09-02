@@ -5,7 +5,6 @@ import { Alert, AlertDescription } from "@/components/ui/alert";
 import SettingsItem, { SettingsItemProps } from "@/components/mods/features/settings/settings-items";
 import { Info } from "lucide-react";
 import { CampfireDetails } from "@/queries/campfires/getCampfireWithSlug";
-import { toTitleCase } from "@/utils";
 
 interface PrivacyAndDiscoveryProps {
   campfire: CampfireDetails | undefined;

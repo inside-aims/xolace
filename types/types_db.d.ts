@@ -256,10 +256,147 @@ export type Database = {
           },
         ]
       }
+      campfire_member_permissions: {
+        Row: {
+          allowed: boolean
+          campfire_id: string
+          expires_at: string | null
+          granted_at: string
+          granted_by: string
+          notes: string | null
+          permission_id: number
+          user_id: string
+        }
+        Insert: {
+          allowed?: boolean
+          campfire_id: string
+          expires_at?: string | null
+          granted_at?: string
+          granted_by: string
+          notes?: string | null
+          permission_id: number
+          user_id: string
+        }
+        Update: {
+          allowed?: boolean
+          campfire_id?: string
+          expires_at?: string | null
+          granted_at?: string
+          granted_by?: string
+          notes?: string | null
+          permission_id?: number
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "cmp_campfire_fkey"
+            columns: ["campfire_id"]
+            isOneToOne: false
+            referencedRelation: "campfires"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "cmp_granted_by_fkey"
+            columns: ["granted_by"]
+            isOneToOne: false
+            referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "cmp_permission_fkey"
+            columns: ["permission_id"]
+            isOneToOne: false
+            referencedRelation: "campfire_permissions"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "cmp_user_fkey"
+            columns: ["user_id"]
+            isOneToOne: false
+            referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      campfire_member_restrictions: {
+        Row: {
+          campfire_id: string
+          created_at: string
+          duration_type: Database["public"]["Enums"]["moderation_duration_type"]
+          expires_at: string | null
+          id: string
+          lift_reason: string | null
+          lifted_at: string | null
+          lifted_by: string | null
+          reason: string
+          restricted_by: string
+          restriction_type: string
+          user_id: string
+        }
+        Insert: {
+          campfire_id: string
+          created_at?: string
+          duration_type: Database["public"]["Enums"]["moderation_duration_type"]
+          expires_at?: string | null
+          id?: string
+          lift_reason?: string | null
+          lifted_at?: string | null
+          lifted_by?: string | null
+          reason: string
+          restricted_by: string
+          restriction_type: string
+          user_id: string
+        }
+        Update: {
+          campfire_id?: string
+          created_at?: string
+          duration_type?: Database["public"]["Enums"]["moderation_duration_type"]
+          expires_at?: string | null
+          id?: string
+          lift_reason?: string | null
+          lifted_at?: string | null
+          lifted_by?: string | null
+          reason?: string
+          restricted_by?: string
+          restriction_type?: string
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "cmr_campfire_fkey"
+            columns: ["campfire_id"]
+            isOneToOne: false
+            referencedRelation: "campfires"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "cmr_lifted_by_fkey"
+            columns: ["lifted_by"]
+            isOneToOne: false
+            referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "cmr_restricted_by_fkey"
+            columns: ["restricted_by"]
+            isOneToOne: false
+            referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "cmr_user_fkey"
+            columns: ["user_id"]
+            isOneToOne: false
+            referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       campfire_members: {
         Row: {
           campfire_id: string
           id: string
+          is_approved: boolean
           is_favorite: boolean
           joined_at: string
           role: Database["public"]["Enums"]["campfire_role"]
@@ -268,6 +405,7 @@ export type Database = {
         Insert: {
           campfire_id: string
           id?: string
+          is_approved?: boolean
           is_favorite?: boolean
           joined_at?: string
           role?: Database["public"]["Enums"]["campfire_role"]
@@ -276,6 +414,7 @@ export type Database = {
         Update: {
           campfire_id?: string
           id?: string
+          is_approved?: boolean
           is_favorite?: boolean
           joined_at?: string
           role?: Database["public"]["Enums"]["campfire_role"]
@@ -297,6 +436,191 @@ export type Database = {
             referencedColumns: ["id"]
           },
         ]
+      }
+      campfire_moderation_logs: {
+        Row: {
+          action_type: Database["public"]["Enums"]["moderation_action_type"]
+          additional_notes: string | null
+          campfire_id: string
+          created_at: string
+          id: string
+          metadata: Json | null
+          moderator_id: string
+          permission_id: number | null
+          reason: string
+          target_comment_id: number | null
+          target_post_id: string | null
+          target_user_id: string | null
+        }
+        Insert: {
+          action_type: Database["public"]["Enums"]["moderation_action_type"]
+          additional_notes?: string | null
+          campfire_id: string
+          created_at?: string
+          id?: string
+          metadata?: Json | null
+          moderator_id: string
+          permission_id?: number | null
+          reason: string
+          target_comment_id?: number | null
+          target_post_id?: string | null
+          target_user_id?: string | null
+        }
+        Update: {
+          action_type?: Database["public"]["Enums"]["moderation_action_type"]
+          additional_notes?: string | null
+          campfire_id?: string
+          created_at?: string
+          id?: string
+          metadata?: Json | null
+          moderator_id?: string
+          permission_id?: number | null
+          reason?: string
+          target_comment_id?: number | null
+          target_post_id?: string | null
+          target_user_id?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "cml_campfire_fkey"
+            columns: ["campfire_id"]
+            isOneToOne: false
+            referencedRelation: "campfires"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "cml_moderator_fkey"
+            columns: ["moderator_id"]
+            isOneToOne: false
+            referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "cml_permission_fkey"
+            columns: ["permission_id"]
+            isOneToOne: false
+            referencedRelation: "campfire_permissions"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "cml_target_comment_fkey"
+            columns: ["target_comment_id"]
+            isOneToOne: false
+            referencedRelation: "comments"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "cml_target_post_fkey"
+            columns: ["target_post_id"]
+            isOneToOne: false
+            referencedRelation: "posts"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "cml_target_user_fkey"
+            columns: ["target_user_id"]
+            isOneToOne: false
+            referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      campfire_moderator_invites: {
+        Row: {
+          accepted_at: string | null
+          campfire_id: string
+          created_at: string
+          declined_at: string | null
+          expires_at: string
+          id: string
+          invitation_message: string | null
+          invitee_id: string
+          inviter_id: string
+          permission_ids: number[]
+        }
+        Insert: {
+          accepted_at?: string | null
+          campfire_id: string
+          created_at?: string
+          declined_at?: string | null
+          expires_at: string
+          id?: string
+          invitation_message?: string | null
+          invitee_id: string
+          inviter_id: string
+          permission_ids: number[]
+        }
+        Update: {
+          accepted_at?: string | null
+          campfire_id?: string
+          created_at?: string
+          declined_at?: string | null
+          expires_at?: string
+          id?: string
+          invitation_message?: string | null
+          invitee_id?: string
+          inviter_id?: string
+          permission_ids?: number[]
+        }
+        Relationships: [
+          {
+            foreignKeyName: "cmi_campfire_fkey"
+            columns: ["campfire_id"]
+            isOneToOne: false
+            referencedRelation: "campfires"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "cmi_invitee_fkey"
+            columns: ["invitee_id"]
+            isOneToOne: false
+            referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "cmi_inviter_fkey"
+            columns: ["inviter_id"]
+            isOneToOne: false
+            referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      campfire_permissions: {
+        Row: {
+          created_at: string
+          description: string | null
+          display_name: string
+          id: number
+          is_active: boolean
+          key: string
+          permission_group: Database["public"]["Enums"]["campfire_permission"]
+          sort_order: number
+          updated_at: string
+        }
+        Insert: {
+          created_at?: string
+          description?: string | null
+          display_name: string
+          id?: number
+          is_active?: boolean
+          key: string
+          permission_group: Database["public"]["Enums"]["campfire_permission"]
+          sort_order?: number
+          updated_at?: string
+        }
+        Update: {
+          created_at?: string
+          description?: string | null
+          display_name?: string
+          id?: number
+          is_active?: boolean
+          key?: string
+          permission_group?: Database["public"]["Enums"]["campfire_permission"]
+          sort_order?: number
+          updated_at?: string
+        }
+        Relationships: []
       }
       campfire_rules: {
         Row: {
@@ -328,6 +652,41 @@ export type Database = {
             foreignKeyName: "campfire_rules_campfire_id_fkey"
             columns: ["campfire_id"]
             isOneToOne: false
+            referencedRelation: "campfires"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      campfire_settings: {
+        Row: {
+          auto_remove_expired_restrictions: boolean
+          campfire_id: string
+          created_at: string
+          firekeeper_invite_expiry_days: number
+          max_firekeepers: number
+          updated_at: string
+        }
+        Insert: {
+          auto_remove_expired_restrictions?: boolean
+          campfire_id: string
+          created_at?: string
+          firekeeper_invite_expiry_days?: number
+          max_firekeepers?: number
+          updated_at?: string
+        }
+        Update: {
+          auto_remove_expired_restrictions?: boolean
+          campfire_id?: string
+          created_at?: string
+          firekeeper_invite_expiry_days?: number
+          max_firekeepers?: number
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "campfire_settings_campfire_id_fkey"
+            columns: ["campfire_id"]
+            isOneToOne: true
             referencedRelation: "campfires"
             referencedColumns: ["id"]
           },
@@ -1620,6 +1979,20 @@ export type Database = {
       }
     }
     Functions: {
+      accept_firekeeper_invitation: {
+        Args: { p_invitation_id: string; p_user_id: string }
+        Returns: boolean
+      }
+      create_firekeeper_invitation: {
+        Args: {
+          p_campfire_id: string
+          p_inviter_id: string
+          p_invitee_id: string
+          p_permission_ids: number[]
+          p_invitation_message?: string
+        }
+        Returns: string
+      }
       create_post_with_tags: {
         Args: {
           content: string
@@ -1736,6 +2109,16 @@ export type Database = {
         }
         Returns: string
       }
+      get_campfire_approved_users: {
+        Args: { p_campfire_id: string }
+        Returns: {
+          id: string
+          username: string
+          avatar_url: string
+          joined_at: string
+          reputation: number
+        }[]
+      }
       get_campfire_members_by_roles: {
         Args: {
           p_campfire_id: string
@@ -1747,6 +2130,48 @@ export type Database = {
           username: string
           avatar_url: string
           role: Database["public"]["Enums"]["campfire_role"]
+        }[]
+      }
+      get_campfire_moderators: {
+        Args: { p_campfire_id: string }
+        Returns: {
+          id: string
+          username: string
+          avatar_url: string
+          role: Database["public"]["Enums"]["campfire_role"]
+          joined_at: string
+          permission_summary: string
+          permission_count: number
+          can_edit: boolean
+          permissions: Json
+        }[]
+      }
+      get_campfire_moderators_v2: {
+        Args: { p_campfire_id: string }
+        Returns: {
+          id: string
+          username: string
+          avatar_url: string
+          role: Database["public"]["Enums"]["campfire_role"]
+          joined_at: string
+          permission_summary: string
+          permission_count: number
+          can_edit: boolean
+          permissions: Json
+        }[]
+      }
+      get_campfire_moderators_v3: {
+        Args: { p_campfire_id: string }
+        Returns: {
+          id: string
+          username: string
+          avatar_url: string
+          role: Database["public"]["Enums"]["campfire_role"]
+          joined_at: string
+          permission_summary: string
+          permission_count: number
+          can_edit: boolean
+          permissions: Json
         }[]
       }
       get_comments_with_replies: {
@@ -1861,6 +2286,14 @@ export type Database = {
           post_slides: Json
         }[]
       }
+      get_user_campfire_permissions: {
+        Args: { p_campfire_id: string }
+        Returns: {
+          permission_key: string
+          display_name: string
+          permission_group: string
+        }[]
+      }
       get_user_stats: {
         Args: { profile_id: string }
         Returns: {
@@ -1880,6 +2313,14 @@ export type Database = {
         }
         Returns: Json
       }
+      has_campfire_permission: {
+        Args: {
+          p_campfire_id: string
+          p_user_id: string
+          p_permission_key: string
+        }
+        Returns: boolean
+      }
       increment_reputation: {
         Args: { user_id_in: string; points_in: number }
         Returns: undefined
@@ -1897,6 +2338,10 @@ export type Database = {
         Returns: {
           id: number
         }[]
+      }
+      is_active_campfire_member: {
+        Args: { p_campfire_id: string; p_user_id: string }
+        Returns: boolean
       }
       mark_all_notifications_as_read: {
         Args: Record<PropertyKey, never>
@@ -1917,6 +2362,16 @@ export type Database = {
         Args: Record<PropertyKey, never>
         Returns: undefined
       }
+      search_profiles_for_invite: {
+        Args: { p_search_term: string }
+        Returns: {
+          id: string
+          username: string
+          avatar_url: string
+          created_at: string
+          reputation: number
+        }[]
+      }
       upsert_tags_and_tips_relationship: {
         Args: { tag_names: string[]; tips_id: number }
         Returns: undefined
@@ -1934,6 +2389,7 @@ export type Database = {
         | "viewed"
         | "added"
         | "liked"
+      campfire_permission: "manage_config" | "manage_content" | "manage_users"
       campfire_purpose:
         | "support_circle"
         | "growth_group"
@@ -1953,6 +2409,25 @@ export type Database = {
         | "video"
         | "campfire"
       feedback_status: "open" | "closed"
+      moderation_action_type:
+        | "ban_user_temporary"
+        | "ban_user_permanent"
+        | "unban_user"
+        | "mute_user_temporary"
+        | "mute_user_permanent"
+        | "unmute_user"
+        | "remove_member"
+        | "delete_post"
+        | "remove_post"
+        | "restore_post"
+        | "delete_comment"
+        | "remove_comment"
+        | "restore_comment"
+        | "pin_comment"
+        | "unpin_comment"
+        | "grant_permission"
+        | "revoke_permission"
+      moderation_duration_type: "temporary" | "permanent"
       notification_target_type:
         | "single_user"
         | "role_based"
@@ -1970,6 +2445,7 @@ export type Database = {
         | "comment_reply"
         | "joined_campfire"
         | "leave_campfire"
+        | "firekeeper_invitation"
       post_duration: "6" | "12" | "24"
       post_mood:
         | "neutral"
@@ -2141,6 +2617,7 @@ export const Constants = {
         "added",
         "liked",
       ],
+      campfire_permission: ["manage_config", "manage_content", "manage_users"],
       campfire_purpose: [
         "support_circle",
         "growth_group",
@@ -2162,6 +2639,26 @@ export const Constants = {
         "campfire",
       ],
       feedback_status: ["open", "closed"],
+      moderation_action_type: [
+        "ban_user_temporary",
+        "ban_user_permanent",
+        "unban_user",
+        "mute_user_temporary",
+        "mute_user_permanent",
+        "unmute_user",
+        "remove_member",
+        "delete_post",
+        "remove_post",
+        "restore_post",
+        "delete_comment",
+        "remove_comment",
+        "restore_comment",
+        "pin_comment",
+        "unpin_comment",
+        "grant_permission",
+        "revoke_permission",
+      ],
+      moderation_duration_type: ["temporary", "permanent"],
       notification_target_type: [
         "single_user",
         "role_based",
@@ -2180,6 +2677,7 @@ export const Constants = {
         "comment_reply",
         "joined_campfire",
         "leave_campfire",
+        "firekeeper_invitation",
       ],
       post_duration: ["6", "12", "24"],
       post_mood: [
