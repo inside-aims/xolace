@@ -7,11 +7,17 @@ export const metadata: Metadata = {
   description: "Manage your campfire guide"
 };
 
+interface Props {
+  params: Promise<{ slug: string }>;
+}
 
-const GuidePage = () => {
+
+const GuidePage = async ({params}: Props) => {
+  const { slug } = await params;
+
   return (
    <main>
-     <CampfireGuide/>
+     <CampfireGuide slug={slug}/>
    </main>
   )
 }

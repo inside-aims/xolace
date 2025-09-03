@@ -1,7 +1,7 @@
 "use client";
 
 import {ChevronRight, Minus, Pencil, Save} from "lucide-react";
-import React, {useState} from "react";
+import React, {useState, useEffect} from "react";
 import { Switch } from "@/components/ui/switch";
 import { useForm } from "react-hook-form";
 import { Input } from "@/components/ui/input";
@@ -39,6 +39,11 @@ const SettingsItem = (
   const [editingIndex, setEditingIndex] = useState<number | null>(null);
   const [editLabel, setEditLabel] = useState("");
   const [editValue, setEditValue] = useState("");
+  const [resources, setResources] = useState(resourcesList);
+
+  useEffect(() => {
+    setResources(resourcesList);
+  }, [resourcesList]);
 
   const handleEdit = (idx: number, res: { label: string; value: string }) => {
     setEditingIndex(idx);
@@ -61,6 +66,7 @@ const SettingsItem = (
     }
     onClose?.();
   };
+  
 
   return (
     <div className="w-full flex flex-col">
