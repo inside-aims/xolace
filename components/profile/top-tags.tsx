@@ -16,7 +16,7 @@ const loadTags = async () =>{
   if(data){
     setPostTags(data)
   }
-  } catch (error) {
+  } catch (_) {
     toast.error("Failed to fetch tags. Please refresh the page.");
   } finally {
     setIsLoading(false)}

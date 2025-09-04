@@ -1,0 +1,19 @@
+INSERT INTO public.campfire_permissions (key, display_name, description, permission_group, sort_order) VALUES
+-- User management permissions
+('can_ban_users', 'Ban Users', 'Temporarily or permanently ban members from the campfire', 'manage_users', 10),
+('can_mute_users', 'Mute Users', 'Prevent users from posting or commenting', 'manage_users', 20),
+('can_remove_members', 'Remove Members', 'Remove users from the campfire without banning', 'manage_users', 30),
+('can_view_member_info', 'View Member Details', 'Access detailed member information and history', 'manage_users', 40),
+
+-- Configuration permissions  
+('can_edit_settings', 'Edit Settings', 'Modify campfire settings, name, description, and appearance', 'manage_config', 100),
+('can_manage_rules', 'Manage Rules', 'Create, edit, and delete campfire rules', 'manage_config', 110),
+('can_manage_roles', 'Manage Roles', 'Grant and revoke moderator permissions', 'manage_config', 120),
+
+-- Content moderation permissions
+('can_delete_posts', 'Delete Posts', 'Permanently remove posts and their comments', 'manage_content', 200),
+('can_remove_posts', 'Remove Posts', 'Hide posts from public view (reversible)', 'manage_content', 210),
+('can_pin_posts', 'Pin Posts', 'Pin and unpin posts in the campfire', 'manage_content', 220),
+('can_delete_comments', 'Delete Comments', 'Permanently remove comments', 'manage_content', 230),
+('can_remove_comments', 'Remove Comments', 'Hide comments from public view (reversible)', 'manage_content', 240),
+('can_pin_comments', 'Pin Comments', 'Pin and unpin comments on posts', 'manage_content', 250);

@@ -99,6 +99,12 @@ export function useNotificationCardLogic(notification: Notification) {
           message: <>{actorName} joined your campfire.</>,
           link,
         };
+      case 'firekeeper_invitation':
+        return {
+          icon: <Users className="h-5 w-5 text-blue-500" />,
+          message: <>{actorName} invited you to become a firekeeper.</>,
+          link,
+        };
       case 'system_announcement': // for system notification add description
         return {
           icon: <Bell className="h-5 w-5 text-yellow-500" />,

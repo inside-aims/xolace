@@ -1,4 +1,3 @@
-import {HelpCircle} from "lucide-react";
 import {DailyPromptQuestion} from "@/components/shared/DailyPrompt";
 
 interface SinglePostProps {

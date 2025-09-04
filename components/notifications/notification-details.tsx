@@ -5,13 +5,10 @@ import { Clock, Tag, User, ExternalLink, MoveLeft, Trash } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { useRouter } from 'next/navigation';
 import { formatDistanceToNow } from 'date-fns';
-import {
-  useNotificationDetails,
-  useDeleteNotification,
-} from '@/hooks/notifications/useNotifications';
+import { useDeleteNotification } from '@/hooks/notifications/useNotifications';
 import { NotificationMetadataWithLink } from '@/hooks/notifications/useNotificationCardLogic';
-import SearchLoader from '../shared/loaders/SearchLoader';
 import { DefaultLoader } from '../shared/loaders/DefaultLoader';
+import { Notification } from '@/types/global';
 
 const getPriorityColor = (priority: string) => {
   switch (priority) {
@@ -40,16 +37,17 @@ const getCategoryColor = (category: string) => {
 };
 
 export default function NotificationDetails({
-  notificationId,
+  notification,
 }: {
-  notificationId: string;
+  notification: Notification;
 }) {
   const router = useRouter();
-  const {
-    data: notification,
-    isPending,
-    error,
-  } = useNotificationDetails({ notificationId });
+  const notificationId = notification.id;
+  // const {
+  //   data: notification,
+  //   isPending,
+  //   error,
+  // } = useNotificationDetails({ notificationId });
   const { mutate: deleteNotification, isPending: isDeletingNotification } =
     useDeleteNotification({ notificationId });
 
@@ -67,9 +65,9 @@ export default function NotificationDetails({
     }
   };
 
-  if (isPending) return <SearchLoader />;
+  // if (isPending) return <SearchLoader />;
 
-  if (error) return <div>Error: {error.message}</div>;
+  // if (error) return <div>Error: {error.message}</div>;
 
   const metadata = notification.metadata as NotificationMetadataWithLink | null;
 

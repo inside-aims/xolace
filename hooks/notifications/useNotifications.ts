@@ -84,9 +84,9 @@ export function usePanelNotifications({ userId, filter }: UsePanelNotificationsP
         .order('created_at', { ascending: false })
         .limit(20);
 
-      // Filter for important notifications (system announcements) at the database level
+      // Filter for important notifications (system announcements or firekeeper invitation) at the database level
       if (filter === 'important') {
-        query = query.eq('type', 'system_announcement');
+        query = query.in('type', ['system_announcement', 'firekeeper_invitation']);
       }
 
       const { data, error } = await query;
@@ -171,7 +171,7 @@ export function useInfiniteNotifications({
       // 1. Add status filters
       if (statusFilter === 'read') query = query.eq('is_read', true);
       if (statusFilter === 'unread') query = query.eq('is_read', false);
-      if (statusFilter === 'important') query = query.eq('type', 'system_announcement');
+      if (statusFilter === 'important') query = query.in('type', ['system_announcement', 'firekeeper_invitation']);
 
       // 2. Add time filters
       const dateRange = getDateRange(timeFilter);

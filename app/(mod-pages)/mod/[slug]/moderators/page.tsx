@@ -1,19 +1,22 @@
-'use client';
+import ModsAndMembersTab from "@/components/mods/features/moderators/mods-and-members-tab";
+import type {Metadata} from "next";
 
-import React from 'react';
-import { useUserState } from '@/lib/store/user';
+export const metadata: Metadata = {
+  title: 'Moderator',
+  description: "Discover moderator tool for managing their campfire"
+};
 
-/*
-You can remove the useUserState hook and use client directive if you don't need it.
-*/
+interface Props {
+  params: Promise<{ slug: string }>;
+}
 
-const ModsPage = () => {
-  const user = useUserState();
-  console.log(user);
+const ModsPage = async ({params}: Props) => {
+  const { slug } = await params;
+
   return (
-    <div>
-      ModPage {user?.user?.username}
-    </div>
+    <main>
+      <ModsAndMembersTab slug={slug}/>
+    </main>
   );
 };
 

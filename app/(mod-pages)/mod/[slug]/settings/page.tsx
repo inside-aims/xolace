@@ -1,9 +1,25 @@
-import React from 'react'
+import ModsAndMembersTab from "@/components/mods/features/moderators/mods-and-members-tab";
+import type {Metadata} from "next";
+import SettingsTab from "@/components/mods/features/settings/settings-tab";
 
-const SettingsPage = () => {
-  return (
-    <div>SettingsPage</div>
-  )
+export const metadata: Metadata = {
+  title: 'General Settings',
+  description: "Manage campfire general settings"
+};
+
+// get slug params
+interface Props {
+  params: Promise<{ slug: string }>;
 }
 
-export default SettingsPage
+const GeneralSettingsPage = async ({ params }: Props) => {
+  const { slug } = await params;
+
+  return (
+    <main>
+      <SettingsTab slug={slug}/>
+    </main>
+  );
+};
+
+export default GeneralSettingsPage;
