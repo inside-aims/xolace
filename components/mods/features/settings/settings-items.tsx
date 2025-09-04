@@ -1,49 +1,71 @@
-"use client";
+'use client';
 
-import {ChevronRight, Minus, Pencil, Save} from "lucide-react";
-import React, {useState, useEffect} from "react";
-import { Switch } from "@/components/ui/switch";
-import { useForm } from "react-hook-form";
-import { Input } from "@/components/ui/input";
-import { Textarea } from "@/components/ui/textarea";
+import { ChevronRight, Minus, Pencil, Save } from 'lucide-react';
+import React, { useState, useEffect } from 'react';
+import { Switch } from '@/components/ui/switch';
+import { useForm } from 'react-hook-form';
+import { Input } from '@/components/ui/input';
+import { Textarea } from '@/components/ui/textarea';
 import {
   Select,
   SelectContent,
   SelectItem,
   SelectTrigger,
   SelectValue,
-} from "@/components/ui/select";
-import { Button } from "@/components/ui/button";
+} from '@/components/ui/select';
+import { Button } from '@/components/ui/button';
+import { toast } from 'sonner';
 
 export interface SettingsItemProps {
   label: string;
   value?: string;
   description?: string;
   onClick?: () => void;
+  onToggle?: (val: boolean) => void;
   toggle?: boolean;
   toggleValue?: boolean;
-  type?: "input" | "textarea" | "select" | "resources";
+  type?: 'input' | 'textarea' | 'select' | 'resources';
   options?: string[];
   isOpen?: boolean;
   onClose?: () => void;
-  onSave?: (label: string, value: string | { label: string; value: string }[]) => void;
+  onSave?: (
+    label: string,
+    value: string | { label: string; value: string }[],
+  ) => void;
   isSaving?: boolean;
   disabled?: boolean;
   resourcesList?: { label: string; value: string }[];
   onResourcesChange?: (resources: { label: string; value: string }[]) => void;
+  isLoading?: boolean;
 }
 
-const SettingsItem = (
-  {label, value, description, toggle, toggleValue, type, options, isOpen, onClose, onSave, onClick, isSaving, disabled, resourcesList, onResourcesChange}: SettingsItemProps) => {
-
+const SettingsItem = ({
+  label,
+  value,
+  description,
+  toggle,
+  toggleValue,
+  type,
+  options,
+  isOpen,
+  onClose,
+  onSave,
+  onClick,
+  isSaving,
+  disabled,
+  resourcesList = [],
+  onResourcesChange,
+  onToggle,
+  isLoading,
+}: SettingsItemProps) => {
   const [editingIndex, setEditingIndex] = useState<number | null>(null);
-  const [editLabel, setEditLabel] = useState("");
-  const [editValue, setEditValue] = useState("");
+  const [editLabel, setEditLabel] = useState('');
+  const [editValue, setEditValue] = useState('');
   const [resources, setResources] = useState(resourcesList);
 
   useEffect(() => {
     setResources(resourcesList);
-  }, [resourcesList]);
+  }, []);
 
   const handleEdit = (idx: number, res: { label: string; value: string }) => {
     setEditingIndex(idx);
@@ -51,45 +73,90 @@ const SettingsItem = (
     setEditValue(res.value);
   };
 
-  const { register, handleSubmit, setValue, formState: { isDirty }, } = useForm({
+  const {
+    register,
+    handleSubmit,
+    setValue,
+    formState: { isDirty },
+  } = useForm({
     defaultValues: {
-      field: value || "",
+      field: value || '',
     },
   });
 
   //eslint-disable-next-line
   const handleSave = (data: any) => {
-    if (type === "resources" && resourcesList) {
-      onSave?.(label, resourcesList);
+    if (type === 'resources' && resources) {
+      onSave?.(label, resources);
     } else {
       onSave?.(label, data.field);
     }
+    setValue('field', 'dirty', { shouldDirty: false });
     onClose?.();
   };
-  
+
+  const addResource = () => {
+    if (resources.length < 3) {
+      const idx = resources.length;
+      setResources([...resources, { label: 'Resource Name', value: '' }]);
+      handleEdit(idx, { label: 'Resource Name', value: '' });
+    }
+  };
+
+  const updateResource = (index: number) => {
+    if (!editLabel || !editValue) {
+      toast.error('Please fill in both fields');
+      return;
+    }
+
+    // check if editValue is link format
+    if (editValue && !editValue.startsWith('https')) {
+      toast.error('Invalid link format. Please include https://');
+      return;
+    }
+
+    setValue('field', 'dirty', { shouldDirty: true });
+    const updated = [...resources];
+    updated[index] = { label: editLabel, value: editValue };
+    setEditingIndex(null);
+    setResources(updated);
+  };
+
+  const removeResource = (index: number) => {
+    setValue('field', 'dirty', { shouldDirty: true });
+    setResources(resources.filter((_, i) => i !== index));
+  };
 
   return (
-    <div className="w-full flex flex-col">
+    <div className="flex w-full flex-col">
       <div
-        className={`${disabled ? 'cursor-not-allowed opacity-50' : 'cursor-pointer'} w-full flex items-center justify-between group`}
+        className={`${disabled ? 'cursor-not-allowed opacity-50' : 'cursor-pointer'} group flex w-full items-center justify-between`}
         onClick={() => {
-          if (disabled) return;
+          if (disabled || isLoading) return;
           !toggle && onClick?.();
         }}
       >
         <div>
           <p className="font-medium">{label}</p>
           {description && (
-            <p className="text-sm text-muted-foreground">{description}</p>
+            <p className="text-muted-foreground text-sm">{description}</p>
           )}
         </div>
 
         {toggle ? (
-          <Switch checked={toggleValue} />
+          <Switch
+            checked={toggleValue}
+            onCheckedChange={val => onToggle?.(val)}
+            disabled={disabled || isLoading}
+          />
         ) : (
-          <div className="flex items-center gap-1 text-sm text-muted-foreground">
-            {value && label === 'Display name' ? `x/${value}` : value}
-            <span className="p-2 rounded-full transition-colors duration-200 group-hover:bg-neutral-200 dark:group-hover:bg-neutral-800">
+          <div className="text-muted-foreground flex items-center gap-1 text-sm">
+            {value && label === 'Display name'
+              ? `x/${value}`
+              : label === 'Resources'
+                ? `${resources.length}/3`
+                : value}
+            <span className="rounded-full p-2 transition-colors duration-200 group-hover:bg-neutral-200 dark:group-hover:bg-neutral-800">
               <ChevronRight />
             </span>
           </div>
@@ -99,26 +166,25 @@ const SettingsItem = (
       {isOpen && !toggle && (
         <form
           onSubmit={handleSubmit(handleSave)}
-          className="mt-3 p-3 rounded-xl border bg-muted/30 space-y-3"
+          className="bg-muted/30 mt-3 space-y-3 rounded-xl border p-3"
         >
-          {type === "input" && (
-            <Input
-              {...register("field")}
-              placeholder={`Enter ${label}`}
-            />
+          {type === 'input' && (
+            <Input {...register('field')} placeholder={`Enter ${label}`} />
           )}
 
-          {type === "textarea" && (
+          {type === 'textarea' && (
             <Textarea
-              {...register("field")}
+              {...register('field')}
               placeholder={`Enter ${label}`}
               rows={4}
             />
           )}
 
-          {type === "select" && options && (
+          {type === 'select' && options && (
             <Select
-              onValueChange={(val) => setValue("field", val, { shouldDirty: true })}
+              onValueChange={val =>
+                setValue('field', val, { shouldDirty: true })
+              }
               defaultValue={value || options?.[0]}
             >
               <SelectTrigger>
@@ -134,30 +200,32 @@ const SettingsItem = (
             </Select>
           )}
 
-          {type === "resources" && resourcesList && (
+          {type === 'resources' && resources && (
             <div className="space-y-3">
-              {resourcesList.map((res, idx) => (
+              {resources.map((res, idx) => (
                 <div
                   key={idx}
-                  className="flex items-center justify-between gap-2 p-2 rounded-lg border"
+                  className="flex items-center justify-between gap-2 rounded-lg border p-2"
                 >
                   {editingIndex === idx ? (
                     <div className="flex flex-1 flex-col gap-2">
                       <Input
                         value={editLabel}
-                        onChange={(e) => setEditLabel(e.target.value)}
+                        onChange={e => setEditLabel(e.target.value)}
                         placeholder="Resource name"
                       />
                       <Input
                         value={editValue}
-                        onChange={(e) => setEditValue(e.target.value)}
+                        onChange={e => setEditValue(e.target.value)}
                         placeholder="Resource link"
                       />
                     </div>
                   ) : (
-                    <div className="flex flex-col flex-1">
+                    <div className="flex flex-1 flex-col">
                       <span className="font-medium">{res.label}</span>
-                      <span className="text-xs text-muted-foreground">{res.value}</span>
+                      <span className="text-muted-foreground text-xs">
+                        {res.value}
+                      </span>
                     </div>
                   )}
 
@@ -166,13 +234,9 @@ const SettingsItem = (
                       <Button
                         type="button"
                         size="sm"
-                        className="px-3 rounded-full bg-lavender-500 hover:bg-lavender-600 text-white"
+                        className="bg-lavender-500 hover:bg-lavender-600 rounded-full px-3 text-white"
                         onClick={() => {
-                          const updated = [...resourcesList];
-                          updated[idx] = { label: editLabel, value: editValue };
-                          onResourcesChange?.(updated);
-                          setEditingIndex(null);
-                          setValue("field", "dirty", { shouldDirty: true });
+                          updateResource(idx);
                         }}
                       >
                         <Save className="h-4 w-4" />
@@ -182,18 +246,15 @@ const SettingsItem = (
                         <button
                           type="button"
                           onClick={() => handleEdit(idx, res)}
-                          className="p-1 rounded-full hover:bg-muted"
+                          className="hover:bg-muted rounded-full p-1"
                           title="Edit"
                         >
                           <Pencil className="h-4 w-4" />
                         </button>
                         <button
                           type="button"
-                          onClick={() => {
-                            const updated = resourcesList.filter((_, i) => i !== idx);
-                            onResourcesChange?.(updated);
-                          }}
-                          className="p-1 rounded-full hover:bg-muted text-red-500"
+                          onClick={() => removeResource(idx)}
+                          className="hover:bg-muted rounded-full p-1 text-red-500"
                           title="Remove"
                         >
                           <Minus className="h-4 w-4" />
@@ -204,17 +265,10 @@ const SettingsItem = (
                 </div>
               ))}
 
-              {resourcesList.length < 3 && (
+              {resources.length < 3 && (
                 <Button
                   type="button"
-                  onClick={() => {
-                    const updated = [
-                      ...resourcesList,
-                      { label: "New Resource", value: "" },
-                    ];
-                    onResourcesChange?.(updated);
-                    handleEdit(updated.length - 1, updated[updated.length - 1]);
-                  }}
+                  onClick={addResource}
                   className="w-full rounded-full"
                   variant="outline"
                 >
@@ -228,8 +282,11 @@ const SettingsItem = (
             <Button
               type="button"
               variant="outline"
-              onClick={onClose}
-              className={"rounded-full border px-4"}
+              onClick={() => {
+                setEditingIndex(null);
+                onClose?.();
+              }}
+              className={'rounded-full border px-4'}
             >
               Cancel
             </Button>
@@ -237,9 +294,11 @@ const SettingsItem = (
               type="submit"
               disabled={!isDirty || isSaving}
               size="sm"
-              className={"bg-lavender-500 hover:bg-lavender-600 rounded-full dark:bg-lavender-500 dark:hover:bg-lavender-600 text-white px-4"}
+              className={
+                'bg-lavender-500 hover:bg-lavender-600 dark:bg-lavender-500 dark:hover:bg-lavender-600 rounded-full px-4 text-white'
+              }
             >
-              {isSaving ? "Saving..." : "Save"}
+              {isSaving ? 'Saving...' : 'Save'}
             </Button>
           </div>
         </form>
