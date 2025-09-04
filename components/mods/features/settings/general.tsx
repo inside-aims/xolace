@@ -26,7 +26,7 @@ const GeneralSettings = ({campfire}: GeneralSettingsProps) => {
     },
     {
       label: "Description",
-      description: "Campfire description content goes here",
+      description: "Campfire description",
       type: "textarea",
       value: campfire?.description,
     },

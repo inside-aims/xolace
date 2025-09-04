@@ -15,6 +15,7 @@ import {
 } from '@/components/ui/select';
 import { Button } from '@/components/ui/button';
 import { toast } from 'sonner';
+import { truncateText } from '@/lib/utils';
 
 export interface SettingsItemProps {
   label: string;
@@ -138,7 +139,7 @@ const SettingsItem = ({
         <div>
           <p className="font-medium">{label}</p>
           {description && (
-            <p className="text-muted-foreground text-sm">{description}</p>
+            <p className="text-muted-foreground text-sm truncate">{description}</p>
           )}
         </div>
 
@@ -154,7 +155,7 @@ const SettingsItem = ({
               ? `x/${value}`
               : label === 'Resources'
                 ? `${resources.length}/3`
-                : value}
+                : truncateText(value || '', 20)}
             <span className="rounded-full p-2 transition-colors duration-200 group-hover:bg-neutral-200 dark:group-hover:bg-neutral-800">
               <ChevronRight />
             </span>
@@ -169,6 +170,9 @@ const SettingsItem = ({
         >
           {type === 'input' && (
             <Input {...register('field')} placeholder={`Enter ${label}`} />
+          )}
+          {label === 'Welcome message' && (
+            <p className="text-xs text-muted-foreground">{`Tip: Add {username} to personalize the message`}</p>
           )}
 
           {type === 'textarea' && (
