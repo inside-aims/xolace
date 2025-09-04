@@ -29,26 +29,26 @@ export const getModsSidebarSections = (username?: string): ModsSidebarSection[] 
     {
       title: "OVERVIEW",
       items: [
-        { icon: ClipboardList, route: `${parentRoute}/queues`, label: "Queues" },
-        { icon: Mail, route: `${parentRoute}/mod-mail`, label: "Mod Mail" },
+        // { icon: ClipboardList, route: `${parentRoute}/queues`, label: "Queues" },
+        // { icon: Mail, route: `${parentRoute}/mod-mail`, label: "Mod Mail" },
         { icon: Users, route: `${parentRoute}/moderators`, label: "Mods & Members", new: true },
-        { icon: BarChart3, route:`${parentRoute}/insights`, label: "Insights" },
+        // { icon: BarChart3, route:`${parentRoute}/insights`, label: "Insights" },
       ],
     },
-    {
-      title: "MODERATION",
-      items: [
-        { icon: BookOpen, route: `${parentRoute}/rules`, label: "Rules" },
-        { icon: MessageSquare, route: `${parentRoute}/saved`, label: "Saved Responses" },
-      ],
-    },
+    // {
+    //   title: "MODERATION",
+    //   items: [
+    //     { icon: BookOpen, route: `${parentRoute}/rules`, label: "Rules" },
+    //     { icon: MessageSquare, route: `${parentRoute}/saved`, label: "Saved Responses" },
+    //   ],
+    // },
     {
       title:  "SETTINGS",
       items: [
-        {icon: Settings, route: `${parentRoute}/settings`, label: "General Settings" },
-        {icon: File, route: `${parentRoute}/posts-comments`, label: "Posts & Comments" },
-        {icon: Book, route: `${parentRoute}/guide`, label: "Campfire Guide" },
-        {icon: Bell, route: `${parentRoute}/campfire-guide`, label: "Notification" },
+        {icon: Settings, route: `${parentRoute}/settings`, label: "General Settings" , new: true},
+        // {icon: File, route: `${parentRoute}/posts-comments`, label: "Posts & Comments" },
+        {icon: Book, route: `${parentRoute}/guide`, label: "Campfire Guide", new: true },
+        // {icon: Bell, route: `${parentRoute}/campfire-guide`, label: "Notification" },
       ]
     }
   ];

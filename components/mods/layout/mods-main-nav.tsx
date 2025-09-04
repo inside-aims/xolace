@@ -23,52 +23,31 @@ import {
   AvatarImage,
 } from "@/components/ui/avatar";
 import {getModsSidebarSections} from "@/components/mods/layout/constants";
-import {ArrowLeft, Search} from "lucide-react";
+import {ArrowLeft, Loader2, Search} from "lucide-react";
 import {Input} from "@/components/ui/input";
-import React, {useState} from "react";
-
-
-
-type Campfire = {
-  id: string
-  name: string
-  icon: string
-}
-
-// Dummy listed campfire - will be replace later
-const campfires: Campfire[] = [
-  {
-    id: "xolace",
-    name: "r/Xolace",
-    icon: "https://styles.redditmedia.com/t5_2qh1i/styles/communityIcon_a8j2k.png",
-  },
-  {
-    id: "limitlessyou",
-    name: "r/LimitlessYou",
-    icon: "https://cdn-icons-png.flaticon.com/512/2907/2907253.png",
-  },
-  {
-    id: "mindset",
-    name: "r/Mindset",
-    icon: "https://cdn-icons-png.flaticon.com/512/3135/3135715.png",
-  },
-]
-
+import React from "react";
+import { getModeratedCampfires } from "@/queries/campfires/moderations/getModeratedCampfires";
 
 export function ModsNavMain() {
-  // const { user } = useUserState();
-
   // get the slug params 
   const params = useParams<{ slug: string }>()
   const sidebarSections = getModsSidebarSections(params.slug);
 
   const [searchTerm, setSearchTerm] = React.useState('');
-  const [campfire, setCampfire] = useState("xolace")
 
   const router = useRouter();
-
   const pathName = usePathname();
   const { setOpenMobile } = useSidebar();
+
+  const { data: moderatedCampfires , isPending: moderatedCampfiresPending , isError } = getModeratedCampfires();
+
+  // Handle campfire selection change
+  const handleCampfireChange = (selectedSlug: string) => {
+    if (!pathName || !params.slug) return;
+    
+    const newPath = pathName.replace(params.slug, selectedSlug);
+    router.push(newPath);
+  };
 
   return (
     <SidebarMenu className="gap-6 pt-0 ">
@@ -81,25 +60,51 @@ export function ModsNavMain() {
         <ArrowLeft size={16}/> <span>Exit mod tools</span>
       </Button>
 
-      <div className={"flex flex-col gap-2 w-full items-center justify-start px-2"}>
+              <div className={"flex flex-col gap-2 w-full items-center justify-start px-2"}>
         <div className={"flex items-center justify-start w-full"}>
-          <Select value={campfire} onValueChange={setCampfire}>
+          <Select value={params.slug} onValueChange={handleCampfireChange} disabled={moderatedCampfiresPending || isError}>
             <SelectTrigger
               className="w-[160px] rounded-full h-8 border-none hover:bg-neutral-100 dark:hover:bg-neutral-800 text-sm flex items-center">
-              <SelectValue placeholder="Select campfire"/>
+              <SelectValue placeholder={
+                moderatedCampfiresPending 
+                  ? (<div className="flex items-center gap-2">
+                  <Loader2 className="h-4 w-4 animate-spin" />
+                  <span>Loading...</span>
+                </div> )
+                  : isError 
+                  ? "Error loading"
+                  : "Select campfire"
+              }/>
             </SelectTrigger>
             <SelectContent>
-              {campfires.map((c) => (
-                <SelectItem key={c.id} value={c.id}>
+              {moderatedCampfiresPending ? (
+                <SelectItem value="loading" disabled>
                   <div className="flex items-center gap-2">
-                    <Avatar className="h-6 w-6 rounded-full">
-                      <AvatarImage src={c.icon} alt={c.name}/>
-                      <AvatarFallback>{c.name.charAt(2)}</AvatarFallback>
-                    </Avatar>
-                    <span>{c.name}</span>
+                    <Loader2 className="h-4 w-4 animate-spin" />
+                    <span>Loading...</span>
                   </div>
                 </SelectItem>
-              ))}
+              ) : isError ? (
+                <SelectItem value="error" disabled>
+                  <span className="text-red-500">Failed to load campfires</span>
+                </SelectItem>
+              ) : moderatedCampfires?.length === 0 ? (
+                <SelectItem value="empty" disabled>
+                  <span className="text-muted-foreground">No campfires found</span>
+                </SelectItem>
+              ) : moderatedCampfires && (
+                moderatedCampfires.map((c) => (
+                  <SelectItem key={c.id} value={c.slug}>
+                    <div className="flex items-center gap-2">
+                      <Avatar className="h-6 w-6 rounded-full">
+                        <AvatarImage src={c.icon_url || ''} alt={c.name}/>
+                        <AvatarFallback>{c.name.charAt(0)}</AvatarFallback>
+                      </Avatar>
+                      <span className=' truncate'>{c.name}</span>
+                    </div>
+                  </SelectItem>
+                ))
+              )}
             </SelectContent>
           </Select>
         </div>
