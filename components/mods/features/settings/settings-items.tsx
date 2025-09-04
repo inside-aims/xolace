@@ -23,7 +23,7 @@ export interface SettingsItemProps {
   onClick?: () => void;
   onToggle?: (val: boolean) => void;
   toggle?: boolean;
-  toggleValue?: boolean;
+  toggleValue?: boolean | null;
   type?: 'input' | 'textarea' | 'select' | 'resources';
   options?: string[];
   isOpen?: boolean;
@@ -144,7 +144,7 @@ const SettingsItem = ({
 
         {toggle ? (
           <Switch
-            checked={toggleValue}
+            checked={toggleValue ?? false}
             onCheckedChange={val => onToggle?.(val)}
             disabled={disabled || isLoading}
           />

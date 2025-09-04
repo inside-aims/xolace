@@ -40,7 +40,7 @@ const GuidePreviewDrawer: React.FC<GuidePreviewDrawerProps> = ({
           Preview Guide
         </Button>
       </DrawerTrigger>
-      <DrawerContent className="max-h-[85vh]">
+      <DrawerContent className="max-h-[85vh] bg-bg dark:bg-bg-dark">
         <DrawerHeader className="pb-4">
           <DrawerTitle className="text-center">Guide Preview</DrawerTitle>
           <DrawerDescription className="text-center text-sm text-neutral-600 dark:text-neutral-400">
