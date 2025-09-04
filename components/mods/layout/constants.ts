@@ -1,10 +1,6 @@
 import {
-  ClipboardList,
-  Mail,
   Users,
-  BarChart3,
-  BookOpen,
-  MessageSquare, Settings, Book, Bell, File
+  Settings, Book
 } from "lucide-react";
 import { ComponentType } from "react";
 

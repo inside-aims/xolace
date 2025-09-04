@@ -26,37 +26,6 @@ import {ModsNavMain} from "@/components/mods/layout/mods-main-nav";
 export function ModsSidebarLeft({...props}: React.ComponentProps<typeof Sidebar>) {
   const { toggleSidebar, open } = useSidebar();
 
-
-  const data = {
-    modsNav: [
-      {
-        key: 'campfire',
-        title: 'Campfire',
-        url: '#',
-        icon: Flame,
-        isActive: true,
-        items: [
-          {
-            key: 'manageCampfire',
-            title: 'Manage Campfires',
-            url: `/user/x/campfires`,
-            icon: Cog,
-            isNew: false,
-            isBeta: false,
-          },
-          {
-            key: 'discoverCampfires',
-            title: 'Discover Campfires',
-            url: '/campfires/discover',
-            icon: Search,
-            isNew: false,
-            isBeta: false,
-          },
-        ],
-      },
-    ],
-  };
-
   return (
     <>
       <Sidebar

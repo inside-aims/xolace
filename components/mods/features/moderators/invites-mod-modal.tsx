@@ -201,7 +201,7 @@ const InviteModModal: React.FC<InviteModModalProps> = ({
                     )}
                     {!isSearching && foundUsers && foundUsers.length === 0 && (
                       <div className="p-4 text-sm text-gray-500 text-center">
-                        No users found matching "{debouncedSearchTerm}"
+                        No users found matching &quot;{debouncedSearchTerm}&quot;
                       </div>
                     )}
                     {foundUsers?.map((mod) => (

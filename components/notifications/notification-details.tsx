@@ -5,12 +5,8 @@ import { Clock, Tag, User, ExternalLink, MoveLeft, Trash } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { useRouter } from 'next/navigation';
 import { formatDistanceToNow } from 'date-fns';
-import {
-  useNotificationDetails,
-  useDeleteNotification,
-} from '@/hooks/notifications/useNotifications';
+import { useDeleteNotification } from '@/hooks/notifications/useNotifications';
 import { NotificationMetadataWithLink } from '@/hooks/notifications/useNotificationCardLogic';
-import SearchLoader from '../shared/loaders/SearchLoader';
 import { DefaultLoader } from '../shared/loaders/DefaultLoader';
 import { Notification } from '@/types/global';
 

@@ -1,11 +1,12 @@
 'use client';
 
 import { useRouter } from 'next/navigation';
-import { ShieldCheck, ShieldX, Clock, MessageSquare, Info } from 'lucide-react';
+import { ShieldCheck, ShieldX, MessageSquare, Info } from 'lucide-react';
 // import { useAcceptModeratorInvitation, useDeclineModeratorInvitation } from '@/hooks/campfires/useModeratorInvites';
 import { useAcceptModeratorInvite, useDeclineModeratorInvite } from '@/hooks/campfires/moderations/useCampfireModerationHooks';
 import { Button } from '@/components/ui/button';
 import { DefaultLoader } from '../shared/loaders/DefaultLoader';
+import Image from 'next/image';
 
 // Define the shape of the metadata for this specific notification type
 interface ModeratorInviteMetadata {
@@ -58,9 +59,11 @@ export default function ModeratorInvitationDetails({ notification }: ModeratorIn
     <div className="main-container max-w-2xl mx-auto p-4 sm:p-6">
       <div className="rounded-2xl border border-gray-700 bg-gray-900/50 p-6 sm:p-8 text-center space-y-6">
         <header className="space-y-3">
-          <img
+          <Image
             src={notification.metadata.campfire_icon_url || '/default-icon.png'}
             alt={`${notification.metadata.campfire_name} icon`}
+            width={80}
+            height={80}
             className="w-20 h-20 rounded-full mx-auto border-2 border-gray-600"
           />
           <h1 className="text-2xl font-bold">Firekeeper Invitation</h1>

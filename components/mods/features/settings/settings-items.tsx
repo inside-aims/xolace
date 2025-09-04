@@ -54,7 +54,6 @@ const SettingsItem = ({
   isSaving,
   disabled,
   resourcesList = [],
-  onResourcesChange,
   onToggle,
   isLoading,
 }: SettingsItemProps) => {
