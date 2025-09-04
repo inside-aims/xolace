@@ -27,18 +27,6 @@ const CampfireGuide = ({slug}: {slug: string}) => {
     error: guideError 
   } = getCampfireGuide(campfireData?.campfireId || '');
 
-  // Fake preview state
-  // const [guideEnabled, setGuideEnabled] = useState(true);
-  // const [showOnJoin, setShowOnJoin] = useState(false);
-  // const [headerLayout, setHeaderLayout] = useState("Avatar and name");
-  // const [headerImage, setHeaderImage] = useState("Banner");
-  // const [welcomeMsg, setWelcomeMsg] = useState(`Welcome to our campfire, {username}!`);
-  // const [campfireName] = useState("x/moonWriters");
-  // const [resources, setResources] = useState([
-  //   { label: "MoonWrite", value: "moonWrite" },
-  //   { label: "Campfire Guide", value: "campfireGuide" }
-  // ]);
-
     // Mutations
     const updateSettingsMutation = useUpdateGuideSettings(campfireData?.campfireId || '');
     const updateResourcesMutation = useUpdateGuideResources(campfireData?.campfireId || '');
