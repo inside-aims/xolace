@@ -3,7 +3,7 @@
 import React, { useState } from "react";
 import GeneralSettings from "@/components/mods/features/settings/general";
 import PrivacyAndDiscovery from "@/components/mods/features/settings/privacy-and-discovery";
-import SettingsNotification from "@/components/mods/features/settings/notifications";
+// import SettingsNotification from "@/components/mods/features/settings/notifications";
 import { getCampfireWithSlug } from "@/queries/campfires/getCampfireWithSlug";
 import { useUserState } from "@/lib/store/user";
 
@@ -17,7 +17,6 @@ const SettingsTab = ({slug}: {slug: string}) => {
       data: campfire,
       isPending,
       isError,
-      refetch,
     } = getCampfireWithSlug(slug,user?.id);
 
       
@@ -32,11 +31,11 @@ const SettingsTab = ({slug}: {slug: string}) => {
       label: "Privacy & Discovery",
       children: <PrivacyAndDiscovery campfire={campfire} />,
     },
-    {
-      key: "notifications",
-      label: "Notifications",
-      children: <SettingsNotification/>
-    }
+    // {
+    //   key: "notifications",
+    //   label: "Notifications",
+    //   children: <SettingsNotification/>
+    // }
   ];
 
 

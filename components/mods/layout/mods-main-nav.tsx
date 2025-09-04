@@ -23,8 +23,7 @@ import {
   AvatarImage,
 } from "@/components/ui/avatar";
 import {getModsSidebarSections} from "@/components/mods/layout/constants";
-import {ArrowLeft, Loader2, Search} from "lucide-react";
-import {Input} from "@/components/ui/input";
+import {ArrowLeft, Loader2} from "lucide-react";
 import React from "react";
 import { getModeratedCampfires } from "@/queries/campfires/moderations/getModeratedCampfires";
 
@@ -33,7 +32,7 @@ export function ModsNavMain() {
   const params = useParams<{ slug: string }>()
   const sidebarSections = getModsSidebarSections(params.slug);
 
-  const [searchTerm, setSearchTerm] = React.useState('');
+  // const [searchTerm, setSearchTerm] = React.useState('');
 
   const router = useRouter();
   const pathName = usePathname();
@@ -108,7 +107,7 @@ export function ModsNavMain() {
             </SelectContent>
           </Select>
         </div>
-        <div className="relative w-full rounded-full">
+        {/* <div className="relative w-full rounded-full">
           <span className="absolute inset-y-0 start-0 flex items-center ps-2">
             <Search className="w-4 h-4 text-muted-foreground"/>
           </span>
@@ -120,7 +119,7 @@ export function ModsNavMain() {
             value={searchTerm}
             onChange={(e) => setSearchTerm(e.target.value)}
           />
-        </div>
+        </div> */}
       </div>
 
       <div className="w-full flex flex-col gap-6">

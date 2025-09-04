@@ -30,10 +30,10 @@ const GeneralSettings = ({campfire}: GeneralSettingsProps) => {
       type: "textarea",
       value: campfire?.description,
     },
-    {
-      label: "Welcome message",
-      type: "input",
-    },
+    // {
+    //   label: "Welcome message",
+    //   type: "input",
+    // },
   ];
 
   const handleSave = (label: string, value: string | { label: string; value: string }[]) => {

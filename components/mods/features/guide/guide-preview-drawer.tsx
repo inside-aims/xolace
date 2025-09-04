@@ -20,12 +20,14 @@ interface GuidePreviewDrawerProps {
   welcomeMsg: string;
   campfireName: string;
   resources: { label: string; value: string }[];
+  icon?: string;
 }
 
 const GuidePreviewDrawer: React.FC<GuidePreviewDrawerProps> = ({
   welcomeMsg,
   campfireName,
-  resources
+  resources,
+  icon
 }) => {
   return (
     <Drawer>
@@ -52,6 +54,7 @@ const GuidePreviewDrawer: React.FC<GuidePreviewDrawerProps> = ({
               welcomeMsg={welcomeMsg}
               campfireName={campfireName}
               resource={resources}
+              icon={icon}
             />
           </div>
         </div>

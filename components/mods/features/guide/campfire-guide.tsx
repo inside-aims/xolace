@@ -199,6 +199,7 @@ const CampfireGuide = ({slug}: {slug: string}) => {
             welcomeMsg={guideData.guide_welcome_message}
             campfireName={guideData.name}
             resources={uiResources}
+            icon={guideData.icon_url}
           />
         </div>
 
