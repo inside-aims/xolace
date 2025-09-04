@@ -153,10 +153,7 @@ const CampfireGuide = ({slug}: {slug: string}) => {
   if (isLoading) {
     return (
       <div className="flex flex-col items-center justify-center py-12">
-        <Loader2Component/>
-        <p className="text-sm text-neutral-600 dark:text-neutral-400 mt-2">
-          Loading campfire guide...
-        </p>
+        <Loader2Component message="Loading campfire guide..."/>
       </div>
     );
   }
