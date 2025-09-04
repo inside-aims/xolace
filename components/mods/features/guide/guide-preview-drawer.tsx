@@ -20,7 +20,7 @@ interface GuidePreviewDrawerProps {
   welcomeMsg: string;
   campfireName: string;
   resources: { label: string; value: string }[];
-  icon?: string;
+  icon: string | null;
 }
 
 const GuidePreviewDrawer: React.FC<GuidePreviewDrawerProps> = ({

@@ -10,7 +10,7 @@ interface GuidePreview {
   campfireName: string;
   welcomeMsg: string;
   resource?: { label: string; value: string }[];
-  icon?: string;
+  icon: string | null;
 }
 const GuidePreview = ({
   campfireName,

@@ -196,7 +196,7 @@ const CampfireGuide = ({slug}: {slug: string}) => {
         {/* Mobile Preview Button */}
         <div className="block lg:hidden">
           <GuidePreviewDrawer
-            welcomeMsg={guideData.guide_welcome_message}
+            welcomeMsg={guideData.guide_welcome_message || 'You are welcome !'}
             campfireName={guideData.name}
             resources={uiResources}
             icon={guideData.icon_url}
@@ -221,7 +221,7 @@ const CampfireGuide = ({slug}: {slug: string}) => {
       {/* Desktop Preview Card */}
       <Card className="hidden lg:block w-full lg:w-2/5 items-start rounded-2xl shadow-md p-8 lg:sticky lg:top-6">
         <GuidePreview
-          welcomeMsg={guideData.guide_welcome_message}
+          welcomeMsg={guideData.guide_welcome_message || 'You are welcome !'}
           campfireName={guideData.name}
           resource={uiResources}
           icon={guideData.icon_url}
