@@ -10,14 +10,15 @@ interface GuidePreview{
   campfireName: string;
   welcomeMsg: string;
   resource?: {label: string, value: string}[];
+  icon?: string;
 }
-const GuidePreview = ({campfireName, welcomeMsg, resource}: GuidePreview) => {
+const GuidePreview = ({campfireName, welcomeMsg, resource, icon}: GuidePreview) => {
   return(
     <div className="w-full flex flex-col gap-4">
       <div className="flex flex-col items-center text-center gap-2">
         <Avatar className="w-16 h-16 rounded-full ">
           <AvatarImage
-            src={""}
+            src={icon || ""}
             className="w-full h-full object-cover object-center rounded-full border"
           />
           <AvatarFallback className="bg-gradient-to-tr from-orange-400 to-pink-400 flex items-center justify-center text-white font-bold text-xl">

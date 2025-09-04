@@ -11,6 +11,7 @@ import { useUpdateGuideResources } from "@/hooks/campfires/moderations/useUpdate
 import Loader2Component from "@/components/shared/loaders/Loader2";
 import { Button } from "@/components/ui/button";
 import GuidePreviewDrawer from "@/components/mods/features/guide/guide-preview-drawer";
+import { toast } from "sonner";
 
 const CampfireGuide = ({slug}: {slug: string}) => {
   const [openIndex, setOpenIndex] = useState<number | null>(null);
@@ -57,29 +58,31 @@ const CampfireGuide = ({slug}: {slug: string}) => {
       description: "Appears in the sidebar and About section",
       toggle: true,
       toggleValue: guideData.guide_enabled,
-      onClick: () => updateSettingsMutation.mutate({ 
-        guide_enabled: !guideData.guide_enabled 
+      onToggle: (val) => updateSettingsMutation.mutate({ 
+        guide_enabled: val 
       }),
     },
     {
       label: "Show when someone joins this campfire",
       toggle: true,
       toggleValue: guideData.guide_show_on_join,
-      onClick: () => updateSettingsMutation.mutate({ 
-        guide_show_on_join: !guideData.guide_show_on_join 
+      onToggle: (val) => updateSettingsMutation.mutate({ 
+        guide_show_on_join: val 
       }),
     },
     {
       label: "Header layout",
       value: guideData.guide_header_layout,
       type: "select",
-      options: ["Name and Banner", "Avatar and Banner", "Avatar and Name"]
+      options: ["Name and Banner", "Avatar and Banner", "Avatar and Name"],
+      disabled: true
     },
     {
       label: "Header image",
       value: guideData.guide_header_image,
       type: "select",
-      options: ["Campfire banner", "Campfire icon"]
+      options: ["Campfire banner", "Campfire icon"],
+      disabled: true
     },
     {
       label: "Welcome message",
@@ -88,17 +91,9 @@ const CampfireGuide = ({slug}: {slug: string}) => {
     },
     {
       label: "Resources",
-      value: `${uiResources.length}/3`,
+      value: `3`,
       type: "resources",
       resourcesList: uiResources,
-      onResourcesChange: (resources) => {
-        // Transform back to API format
-        const apiResources = resources.map(r => ({
-          label: r.label,
-          url: r.value !== r.label ? r.value : undefined
-        }));
-        updateResourcesMutation.mutate(apiResources);
-      },
     },
   ] : [];
 
@@ -124,12 +119,29 @@ const CampfireGuide = ({slug}: {slug: string}) => {
         break;
       case "Resources":
         if (Array.isArray(value)) {
+          // First, perform validation
+          const hasInvalidLink = value.some(r => r.value && !r.value.startsWith('https'));
+          const hasEmptyField = value.some(r => !r.value);
+        
+          if (hasInvalidLink) {
+            toast.error("Invalid link format. Please include https://");
+            return;
+          }
+        
+          if (hasEmptyField) {
+            toast.error("Please fill in both fields in");
+            return;
+          }
+        
+          // If validation passes, map the data
           const apiResources = value.map(r => ({
             label: r.label,
             url: r.value !== r.label ? r.value : undefined
           }));
+        
           updateResourcesMutation.mutate(apiResources);
         }
+        
         break;
       default:
         break;
@@ -199,7 +211,7 @@ const CampfireGuide = ({slug}: {slug: string}) => {
               onClick={() => setOpenIndex(openIndex === index ? null : index)}
               onClose={() => setOpenIndex(null)}
               onSave={handleSave}
-              disabled={updateSettingsMutation.isPending || updateResourcesMutation.isPending}
+              isLoading={updateSettingsMutation.isPending || updateResourcesMutation.isPending}
             />
           ))}
         </div>
@@ -211,6 +223,7 @@ const CampfireGuide = ({slug}: {slug: string}) => {
           welcomeMsg={guideData.guide_welcome_message}
           campfireName={guideData.name}
           resource={uiResources}
+          icon={guideData.icon_url}
         />
       </Card>
     </div>
