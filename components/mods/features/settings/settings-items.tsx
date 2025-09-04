@@ -18,7 +18,7 @@ import { toast } from 'sonner';
 
 export interface SettingsItemProps {
   label: string;
-  value?: string;
+  value?: string | null;
   description?: string;
   onClick?: () => void;
   onToggle?: (val: boolean) => void;
