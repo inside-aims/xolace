@@ -310,21 +310,19 @@ const CampfireDetails = ({ slug }: { slug: string }) => {
             )}
           </Button>
 
-          {campfire.memberRole === 'firekeeper' ||
-            (campfire.memberRole === 'firestarter' && (
-              <Button
-                className={
-                  'bg-lavender-500 dark:bg-lavender-500 hover:bg-lavender-600 flex items-center gap-1 rounded-full text-white hover:text-white'
-                }
-                size="sm"
-                variant="outline"
-                onClick={() =>
-                  router.replace(`/mod/${campfire.slug}/moderators`)
-                }
-              >
-                Mod Tools
-              </Button>
-            ))}
+          {(campfire.memberRole === 'firekeeper' ||
+            campfire.memberRole === 'firestarter') && (
+            <Button
+              className={
+                'bg-lavender-500 dark:bg-lavender-500 hover:bg-lavender-600 flex items-center gap-1 rounded-full text-white hover:text-white'
+              }
+              size="sm"
+              variant="outline"
+              onClick={() => router.replace(`/mod/${campfire.slug}/moderators`)}
+            >
+              Mod Tools
+            </Button>
+          )}
 
           <CampfireActionsPopover
             campfire={{
