@@ -256,6 +256,41 @@ export type Database = {
           },
         ]
       }
+      campfire_guide_resources: {
+        Row: {
+          campfire_id: string
+          created_at: string | null
+          id: number
+          label: string
+          sort_order: number | null
+          url: string | null
+        }
+        Insert: {
+          campfire_id: string
+          created_at?: string | null
+          id?: number
+          label: string
+          sort_order?: number | null
+          url?: string | null
+        }
+        Update: {
+          campfire_id?: string
+          created_at?: string | null
+          id?: number
+          label?: string
+          sort_order?: number | null
+          url?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "campfire_guide_resources_campfire_id_fkey"
+            columns: ["campfire_id"]
+            isOneToOne: false
+            referencedRelation: "campfires"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       campfire_member_permissions: {
         Row: {
           allowed: boolean
@@ -698,6 +733,11 @@ export type Database = {
           created_at: string
           created_by: string
           description: string | null
+          guide_enabled: boolean | null
+          guide_header_image: string | null
+          guide_header_layout: string | null
+          guide_show_on_join: boolean | null
+          guide_welcome_message: string | null
           icon_url: string | null
           id: string
           member_count: number
@@ -712,6 +752,11 @@ export type Database = {
           created_at?: string
           created_by: string
           description?: string | null
+          guide_enabled?: boolean | null
+          guide_header_image?: string | null
+          guide_header_layout?: string | null
+          guide_show_on_join?: boolean | null
+          guide_welcome_message?: string | null
           icon_url?: string | null
           id?: string
           member_count?: number
@@ -726,6 +771,11 @@ export type Database = {
           created_at?: string
           created_by?: string
           description?: string | null
+          guide_enabled?: boolean | null
+          guide_header_image?: string | null
+          guide_header_layout?: string | null
+          guide_show_on_join?: boolean | null
+          guide_welcome_message?: string | null
           icon_url?: string | null
           id?: string
           member_count?: number
