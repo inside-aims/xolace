@@ -1,8 +1,8 @@
 export interface CampfireGuideResource {
     id: number;
     label: string;
-    url?: string;
-    sort_order: number;
+    url: string | null;
+    sort_order: number | null;
   }
   
   export interface CampfireGuideData {
@@ -18,13 +18,13 @@ export interface CampfireGuideResource {
     id: string;
     name: string;
     slug: string;
-    description?: string;
-    icon_url?: string;
-    banner_url?: string;
-    guide_enabled: boolean;
-    guide_show_on_join: boolean;
-    guide_header_layout: string;
-    guide_header_image: string;
-    guide_welcome_message: string;
+    description: string | null;
+    icon_url: string | null;
+    banner_url: string | null;
+    guide_enabled: boolean | null;
+    guide_show_on_join: boolean | null;
+    guide_header_layout: string | null;
+    guide_header_image: string | null;
+    guide_welcome_message: string | null;
     resources: CampfireGuideResource[];
   }

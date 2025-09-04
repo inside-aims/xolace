@@ -1,6 +1,5 @@
 import { useQuery } from '@tanstack/react-query';
 import { getSupabaseBrowserClient } from '@/utils/supabase/client';
-import { toast } from 'sonner';
 import { CampfireWithGuide } from '@/types/campfire';
 
 // Fetch campfire guide data
