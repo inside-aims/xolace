@@ -66,6 +66,7 @@ const SettingsItem = ({
 
   useEffect(() => {
     setResources(resourcesList);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const handleEdit = (idx: number, res: { label: string; value: string }) => {
@@ -153,7 +154,9 @@ const SettingsItem = ({
         className={`${disabled ? 'cursor-not-allowed opacity-50' : 'cursor-pointer'} group flex w-full items-center justify-between`}
         onClick={() => {
           if (disabled || isLoading) return;
-          !toggle && onClick?.();
+          if (!toggle) {
+            onClick?.();
+          }
         }}
       >
         <div>

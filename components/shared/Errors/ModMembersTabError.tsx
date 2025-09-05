@@ -76,7 +76,7 @@ const ModMembersTabError = ({error, slug, refetch}: {error: Error, slug: string,
               Need Help?
             </h4>
             <p className="text-xs text-neutral-600 dark:text-neutral-400 leading-relaxed">
-              If you're the campfire owner and this keeps happening, try checking your campfire settings or visit channel to contact support for assistance.
+              If you&apos;re the campfire owner and this keeps happening, try checking your campfire settings or visit channel to contact support for assistance.
             </p>
             <Link className="text-xs text-lavender-600 dark:text-lavender-400 leading-relaxed hover:underline" href="/channel">Visit Channel</Link>
           </div>
