@@ -44,7 +44,7 @@ const SettingsTab = ({slug}: {slug: string}) => {
   }
 
   if (isError) {
-    return <div>Error loading campfire</div>
+    return <div>Error loading campfire settings</div>
   }
 
   return (

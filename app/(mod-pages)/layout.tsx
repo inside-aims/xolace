@@ -15,7 +15,7 @@ export const metadata: Metadata = {
     template: '%s • Mod Tools | Xolace',
     default: 'Mod Tools | Xolace',
   },
-  description: "Discover different stories, experiences from real and unique individuals as well as the community"
+  description: "Mod tools for your campfire"
 };
 
 

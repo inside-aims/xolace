@@ -76,7 +76,8 @@ export const updateSession = async (request: NextRequest) => {
       '/notifications',
       '/campfires',
       '/user',
-      '/x'
+      '/x',
+      '/mod',
     ];
 
     // List of public routes
