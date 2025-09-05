@@ -6,6 +6,8 @@ import PrivacyAndDiscovery from "@/components/mods/features/settings/privacy-and
 // import SettingsNotification from "@/components/mods/features/settings/notifications";
 import { getCampfireWithSlug } from "@/queries/campfires/getCampfireWithSlug";
 import { useUserState } from "@/lib/store/user";
+import SettingsTabSkeleton from "@/components/shared/loaders/SettingsTabSkeleton";
+import ModSettingsTabError from "@/components/shared/Errors/ModSettingsTabError";
 
 const SettingsTab = ({slug}: {slug: string}) => {
   const user = useUserState(state => state.user);
@@ -17,6 +19,8 @@ const SettingsTab = ({slug}: {slug: string}) => {
       data: campfire,
       isPending,
       isError,
+      error,
+      refetch,
     } = getCampfireWithSlug(slug,user?.id);
 
       
@@ -40,11 +44,11 @@ const SettingsTab = ({slug}: {slug: string}) => {
 
 
   if (isPending) {
-    return <div>Loading...</div>
+    return <SettingsTabSkeleton/>
   }
 
   if (isError) {
-    return <div>Error loading campfire settings</div>
+    return <ModSettingsTabError error={error} slug={slug} refetch={refetch}/>
   }
 
   return (
