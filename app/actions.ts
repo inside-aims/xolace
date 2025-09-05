@@ -73,13 +73,23 @@ export const signUpAction = validatedAction(signUpSchema, async data => {
     .single();
 
   if (puError) {
+    const usernameExists = puError.message.includes('profiles_username_key');
     await supabaseAdmin.auth.admin.deleteUser(userData.user.id);
-    return {
-      success: false,
-      message: 'Failed to create profile. Please try again.',
-      email,
-      password,
-    };
+    if (usernameExists) {
+      return {
+        success: false,
+        message: 'Failed to create profile, Username already exists!',
+        email,
+        password,
+      };
+    }else{
+      return {
+        success: false,
+        message: 'Failed to create profile. Please try again.',
+        email,
+        password,
+      };
+    }
   }
 
   const res = await sendOTPCode(email, 'signup');
