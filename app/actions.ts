@@ -147,7 +147,7 @@ export const onBoardingFlowAction = async (data: FullFormType, selectedFile: Fil
   const userId = userData.user.id;
 
   // 2. Upload avatar
-  const {success: avatarSuccess, path: avatarPath, message: avatarMessage} = await uploadImageToBucket({file: avatar, bucketName: 'professionals.bucket', supabase: supabaseAdmin, selectedFile, folder: 'avatars', owner: userId, bucketType: 'private'});
+  const {success: avatarSuccess, path: avatarPath} = await uploadImageToBucket({file: avatar, bucketName: 'professionals.bucket', supabase: supabaseAdmin, selectedFile, folder: 'avatars', owner: userId, bucketType: 'private'});
 
   let avatarUrl;
   if (avatarSuccess) {

@@ -1,4 +1,3 @@
-import ModsAndMembersTab from "@/components/mods/features/moderators/mods-and-members-tab";
 import type {Metadata} from "next";
 import SettingsTab from "@/components/mods/features/settings/settings-tab";
 
