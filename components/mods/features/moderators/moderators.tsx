@@ -17,6 +17,7 @@ import ModeratorActionsPopover from "@/components/mods/features/moderators/actio
 import InviteModModal from "@/components/mods/features/moderators/invites-mod-modal";
 import { getCampfireModerators } from "@/queries/campfires/moderations/getCampfireModerators";
 import { formatDistanceToNow } from "date-fns";
+import { toast } from "sonner";
 
 interface ModeratorsProps {
   campfireId: string;
@@ -51,12 +52,12 @@ const Moderators: React.FC<ModeratorsProps> = ({ campfireId }) => {
 
   const handleTeamOrder = () => {
     // TODO: Implement team order functionality
-    console.log('Team order functionality');
+    toast("Cannot order team at this time")
   };
 
   const handleLeaveModTeam = () => {
     // TODO: Implement leave mod team functionality  
-    console.log('Leave mod team functionality');
+    toast("Cannot leave mod team at this time")
   };
 
   if (isLoading) {
