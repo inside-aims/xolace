@@ -71,12 +71,12 @@ const PrivacyAndDiscovery = ({campfire}: PrivacyAndDiscoveryProps) => {
       <Alert className="rounded-xl bg-neutral-50 dark:bg-neutral-900">
         <Info className="h-4 w-4" />
         <AlertDescription className="flex flex-wrap items-center gap-1 text-sm">
-          Making a temporary change because of increased activity?{" "}
+          All privacy settings are currently disabled.
           <a
-            href="#"
+            href="/policies"
             className="underline underline-offset-2 font-medium hover:text-primary"
           >
-            Set up a temporary event!
+            Learn more
           </a>
         </AlertDescription>
       </Alert>

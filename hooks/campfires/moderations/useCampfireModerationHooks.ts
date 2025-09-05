@@ -140,6 +140,7 @@ export const useAcceptModeratorInvite = () => {
       // Show success message
       toast.success('You are now a firekeeper🔥!')
       queryClient.invalidateQueries({ queryKey: ['campfires'] })
+      queryClient.invalidateQueries({ queryKey: ['campfires', 'public'] })
       queryClient.invalidateQueries({queryKey: ['campfire-moderators']})
     },
     onError: (error: Error, variables) => {

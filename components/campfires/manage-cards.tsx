@@ -20,8 +20,6 @@ const ManageCampfireCard = ({
   slug,
   description,
   iconURL,
-  members,
-  role,
   isFavorite = false,
   isJoined = false,
   onToggleFavorite,

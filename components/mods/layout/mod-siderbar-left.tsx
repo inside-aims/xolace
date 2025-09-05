@@ -2,11 +2,8 @@
 
 import * as React from 'react';
 import {
-  Flame,
   ChevronLeft,
   ChevronRight,
-  Cog,
-  Search,
 } from 'lucide-react';
 
 import {

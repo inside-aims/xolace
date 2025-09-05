@@ -4,16 +4,14 @@
 import React from 'react';
 import {
   Drawer,
-  DrawerClose,
   DrawerContent,
   DrawerDescription,
-  DrawerFooter,
   DrawerHeader,
   DrawerTitle,
   DrawerTrigger,
 } from '@/components/ui/drawer';
 import { Button } from '@/components/ui/button';
-import { Eye, X } from 'lucide-react';
+import { Eye } from 'lucide-react';
 import GuidePreview from '@/components/mods/features/guide/guide-preview';
 
 interface GuidePreviewDrawerProps {
@@ -59,14 +57,14 @@ const GuidePreviewDrawer: React.FC<GuidePreviewDrawerProps> = ({
           </div>
         </div>
 
-        <DrawerFooter className="pt-2">
+        {/* <DrawerFooter className="pt-2">
           <DrawerClose asChild>
             <Button variant="outline" className="w-full rounded-lg">
               <X className="h-4 w-4 mr-2" />
               Close Preview
             </Button>
           </DrawerClose>
-        </DrawerFooter>
+        </DrawerFooter> */}
       </DrawerContent>
     </Drawer>
   );

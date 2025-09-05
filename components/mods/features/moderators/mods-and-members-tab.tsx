@@ -7,17 +7,19 @@ import ApprovedCampers from "@/components/mods/features/moderators/approved-camp
 import InvitesMod from "@/components/mods/features/moderators/invites-mod";
 import ModeratorRecruiting from "@/components/mods/features/moderators/recruiting";
 import { getCampfireIdWithSlug } from "@/queries/campfires/getCampfireIdWithSlug";
+import ModMemberTabSkeleton from "@/components/shared/loaders/ModMemberTabSkeleton";
+import ModMembersTabError from "@/components/shared/Errors/ModMembersTabError";
 
 const ModsAndMemberTab = ({slug}: {slug: string}) => {
   const [activeTab, setActiveTab] = useState("moderators");
-  const { data: campfireData, isPending, isError } = getCampfireIdWithSlug(slug);
+  const { data: campfireData, isPending, isError, error , refetch} = getCampfireIdWithSlug(slug);
 
   if (isPending) {
-    return <div>Loading...</div>
+    return <ModMemberTabSkeleton/>
   }
 
   if (isError) {
-    return <div>Error loading campfire</div>
+    return <ModMembersTabError error={error} slug={slug} refetch={refetch}/>
   }
 
   const tabOptions: { key: string; label: string; children: React.ReactNode }[] = [

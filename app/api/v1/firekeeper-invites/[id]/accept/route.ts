@@ -24,7 +24,7 @@ export async function POST(
         return NextResponse.json({ error: 'Profile not found' }, { status: 404 })
       }
   
-      const { data, error } = await supabase.rpc('accept_firekeeper_invitation', {
+      const { error } = await supabase.rpc('accept_firekeeper_invitation', {
         p_invitation_id: params.id,
         p_user_id: profile.id
       })
