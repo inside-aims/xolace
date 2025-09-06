@@ -185,7 +185,6 @@ const EnhancedFeedList = () => {
     );
   }
 
-  console.log(posts);
 
   return (
     <LazyMotion features={domAnimation}>
