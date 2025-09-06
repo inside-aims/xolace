@@ -185,6 +185,8 @@ const EnhancedFeedList = () => {
     );
   }
 
+  console.log(posts);
+
   return (
     <LazyMotion features={domAnimation}>
       <div className="flex flex-col gap-4">
