@@ -9,6 +9,9 @@ import ExploreFeedList from '@/components/hocs/exploreComponents/ExploreFeedList
 import { Post } from '@/types/global';
 import { usePosts } from '@/hooks/posts/usePostsData';
 import FeedSkeletonLoader from '@/components/shared/loaders/FeedSkeletonLoader';
+import { getFeatureModalConfig } from '@/utils/featureModals';
+import { useFeatureModal } from '@/hooks/useFeatureModal';
+import { FeatureOverviewModal } from '@/components/modals/FeatureOverViewModal';
 
 interface ExploreContentProps {
   query: string;
@@ -68,6 +71,19 @@ const filterPosts = (posts: Post[], filter: string) => {
 };
 
 const ExploreContent = ({ query, filter }: ExploreContentProps) => {
+
+  // feature modal
+    const modalConfig = getFeatureModalConfig('/explore');
+    const {
+      isOpen: isFeatureModalOpen,
+      hideModal: hideFeatureModal,
+      dismissModal: dismissFeatureModal,
+    } = useFeatureModal({
+      config: modalConfig!,
+      delay: 2000,
+      autoShow: true,
+    });
+
   const { data: queryPosts, isPending, isError, error } = usePosts();
 
   const filteredPosts = useMemo(() => {
@@ -98,6 +114,15 @@ const ExploreContent = ({ query, filter }: ExploreContentProps) => {
       {isError && <div>{error.message}</div>}
       {!isPending && !isError && !filteredPosts && <div>No posts found.</div>}
       {filteredPosts && <ExploreFeedList filteredPosts={filteredPosts} />}
+
+      {modalConfig && (
+              <FeatureOverviewModal
+                isOpen={isFeatureModalOpen}
+                onClose={hideFeatureModal}
+                config={modalConfig}
+                onDismissForever={dismissFeatureModal}
+              />
+            )}
     </div>
   );
 };

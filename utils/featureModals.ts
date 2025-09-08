@@ -153,6 +153,26 @@ import {
       ],
       hasStepByStep: true
     },
+     // Collections Page
+     '/explore': {
+      route: '/explore',
+      storageKey: 'explore',
+      title: 'Explore Central',
+      description: 'Explore post contents',
+      features: [
+        {
+          icon: FileText,
+          title: 'Enhanced feed',
+          description: 'Explore is just like your feed of contents with extra features'
+        },
+        {
+          icon: ScanSearch,
+          title: 'Search & Filter',
+          description: 'Search posts by content or filter by trending , popular etc.'
+        }
+      ],
+      hasStepByStep: true
+    },
 
      // Manage Campfires Page
      '/manage-campfires': {
