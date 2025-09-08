@@ -17,7 +17,8 @@ import {
     Folders,
     ScanSearch,
     PackageSearch,
-    SlidersHorizontal
+    SlidersHorizontal,
+    CirclePlus
   } from 'lucide-react';
   import { FeatureModalConfig } from './helpers/featureModalStorageHelper';
 
@@ -190,6 +191,11 @@ import {
           icon: SlidersHorizontal,
           title: 'Search and Filter',
           description: 'Search campfire name or filter by purpose'
+        },
+        {
+          icon: CirclePlus,
+          title: 'Join campfire',
+          description: 'Join campfire by clicking the join button'
         }
       ],
       hasStepByStep: true
