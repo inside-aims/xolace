@@ -23,6 +23,9 @@ import { useInView } from 'react-intersection-observer';
 import { getUserJoinedCampfires } from '@/queries/campfires/getUserJoinedCampfires';
 import { getUserFavoriteCampfires } from '@/queries/campfires/getUserFavouriteCampfires';
 import { DotLottieReact } from '@lottiefiles/dotlottie-react';
+import { getFeatureModalConfig } from '@/utils/featureModals';
+import { useFeatureModal } from '@/hooks/useFeatureModal';
+import { FeatureOverviewModal } from '../modals/FeatureOverViewModal';
 
 const tabOptions: { key: string; label: string }[] = [
   { key: 'allCampfires', label: 'All Campfires' },
@@ -49,6 +52,18 @@ const ManageCampfireList = () => {
     threshold: 0,
     rootMargin: '100px',
   });
+
+    // feature modal
+    const modalConfig = getFeatureModalConfig('/manage-campfires');
+    const {
+      isOpen: isFeatureModalOpen,
+      hideModal: hideFeatureModal,
+      dismissModal: dismissFeatureModal,
+    } = useFeatureModal({
+      config: modalConfig!,
+      delay: 1500,
+      autoShow: true,
+    });
 
   // Fetch user joined campfires
   const joinedQuery = getUserJoinedCampfires(user?.id, debouncedSearchTerm);
@@ -380,6 +395,15 @@ const ManageCampfireList = () => {
           </div>
         </div>
       </div>
+
+      {modalConfig && (
+              <FeatureOverviewModal
+                isOpen={isFeatureModalOpen}
+                onClose={hideFeatureModal}
+                config={modalConfig}
+                onDismissForever={dismissFeatureModal}
+              />
+            )}
     </div>
   );
 };

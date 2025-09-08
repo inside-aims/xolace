@@ -14,6 +14,10 @@ import {
     Search,
     Filter,
     FileText,
+    Folders,
+    ScanSearch,
+    PackageSearch,
+    SlidersHorizontal
   } from 'lucide-react';
   import { FeatureModalConfig } from './helpers/featureModalStorageHelper';
 
@@ -144,6 +148,48 @@ import {
           icon: Video,
           title: 'Saved Videos',
           description: 'View your saved videos'
+        }
+      ],
+      hasStepByStep: true
+    },
+
+     // Manage Campfires Page
+     '/manage-campfires': {
+      route: '/user/x/campfires',
+      storageKey: 'manage-campfires',
+      title: 'Manage Campfires',
+      description: 'Manage your campfires:',
+      features: [
+        {
+          icon: ScanSearch,
+          title: 'Find your campfires',
+          description: 'View campfires you have joined, added to favorites or created'
+        },
+        {
+          icon: Folders,
+          title: 'Adding to favorites',
+          description: 'Add or remove campfires to or from your favorites by clicking the star icon'
+        }
+      ],
+      hasStepByStep: true
+    },
+
+     // Manage Campfires Page
+     '/campfires-discover': {
+      route: '/campfires/discover',
+      storageKey: 'campfires-discover',
+      title: 'Discover Campfires',
+      description: 'Discover new campfires:',
+      features: [
+        {
+          icon: PackageSearch,
+          title: 'Find campfires',
+          description: 'Find campfires based on your interests'
+        },
+        {
+          icon: SlidersHorizontal,
+          title: 'Search and Filter',
+          description: 'Search campfire name or filter by purpose'
         }
       ],
       hasStepByStep: true
