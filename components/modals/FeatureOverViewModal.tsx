@@ -220,7 +220,7 @@ export const FeatureOverviewModal: React.FC<FeatureOverviewModalProps> = ({
                     }}
                     className="text-xs text-gray-500 hover:text-gray-700"
                   >
-                    Don't show again
+                    Don&apos;t show again
                   </Button>
                 )}
                 
