@@ -10,6 +10,9 @@ import {Stats} from "@/components/profile/stats";
 import {Tabs, TabsList, TabsContent, TabsTrigger} from '@/components/ui/tabs'
 import Posts from "@/components/profile/posts";
 import { Badge } from '@/components/ui/badge';
+import { getFeatureModalConfig } from '@/utils/featureModals';
+import { useFeatureModal } from '@/hooks/useFeatureModal';
+import { FeatureOverviewModal } from '@/components/modals/FeatureOverViewModal';
 
 const Profile = () => {
   // get user profile data
@@ -18,6 +21,18 @@ const Profile = () => {
   const {roles} = useUserState()
   const [selectedCategory, setSelectedCategory] = useState<string>("stats")
   const scrollRef = useRef<HTMLDivElement>(null);
+
+  // feature modal
+  const modalConfig = getFeatureModalConfig('/profile');
+  const {
+    isOpen: isFeatureModalOpen,
+    hideModal: hideFeatureModal,
+    dismissModal: dismissFeatureModal,
+  } = useFeatureModal({
+    config: modalConfig!,
+    delay: 1500,
+    autoShow: true
+  });
 
   // Handle date format to humanize
   const formattedDate = (joinedDate: string) => {
@@ -165,6 +180,15 @@ const Profile = () => {
             </Tabs>
           </div>
         </div>
+
+        {modalConfig && (
+        <FeatureOverviewModal
+          isOpen={isFeatureModalOpen}
+          onClose={hideFeatureModal}
+          config={modalConfig}
+          onDismissForever={dismissFeatureModal}
+        />
+      )}
       </div>
   );
 };
