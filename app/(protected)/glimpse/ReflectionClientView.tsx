@@ -5,6 +5,9 @@ import SharedHeaderWrapper from '@/components/health-space/reflection/SharedHead
 import VideoListWrapper from '@/components/health-space/reflection/VideoListWrapper'
 import { Suspense } from 'react'
 import { VideoSkeleton } from '@/components/health-space/reflection/video-skeleton'
+import { getFeatureModalConfig } from '@/utils/featureModals'
+import { useFeatureModal } from '@/hooks/useFeatureModal'
+import { FeatureOverviewModal } from '@/components/modals/FeatureOverViewModal'
 
 export default function ReflectionsClientView() {
   const router = useRouter()
@@ -41,6 +44,19 @@ export default function ReflectionsClientView() {
     updateURL({ query: searchQuery, filter: f })
   }, [updateURL, searchQuery]);
 
+
+  // Add feature modal
+  const modalConfig = getFeatureModalConfig('/glimpse');
+  const {
+    isOpen: isFeatureModalOpen,
+    hideModal: hideFeatureModal,
+    dismissModal: dismissFeatureModal,
+  } = useFeatureModal({
+    config: modalConfig!,
+    delay: 1500,
+    autoShow: true
+  });
+
   return (
     <main className='px-4'>
       <SharedHeaderWrapper
@@ -55,6 +71,15 @@ export default function ReflectionsClientView() {
           filter={filter}
         />
       </Suspense>
+
+      {modalConfig && (
+        <FeatureOverviewModal
+          isOpen={isFeatureModalOpen}
+          onClose={hideFeatureModal}
+          config={modalConfig}
+          onDismissForever={dismissFeatureModal}
+        />
+      )}
     </main>
   )
 }

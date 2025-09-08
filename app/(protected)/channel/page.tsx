@@ -11,6 +11,9 @@ import {
   HeartIcon,
 } from 'lucide-react';
 import { useUserState } from '@/lib/store/user';
+import { useFeatureModal } from '@/hooks/useFeatureModal';
+import { getFeatureModalConfig } from '@/utils/featureModals';
+import { FeatureOverviewModal } from '@/components/modals/FeatureOverViewModal';
 
 // Dynamically import non-critical components
 const ChannelAboutCard = dynamic(
@@ -73,6 +76,17 @@ const ChatbotWidget = dynamic(
 const Channel = () => {
   const { user } = useUserState();
   const [activeTab, setActiveTab] = useState('about');
+
+  const modalConfig = getFeatureModalConfig('/channel');
+  const {
+    isOpen: isFeatureModalOpen,
+    hideModal: hideFeatureModal,
+    dismissModal: dismissFeatureModal,
+  } = useFeatureModal({
+    config: modalConfig!,
+    delay: 1000,
+    autoShow: true
+  });
 
   // const tabs = [
   //   { id: 'about', icon: <MaskOffIcon />, component: <ChannelAboutCard /> },
@@ -169,6 +183,15 @@ const Channel = () => {
 
         {user && !user.is_anonymous && <ChatbotWidget />}
       </div>
+
+      {modalConfig && (
+        <FeatureOverviewModal
+          isOpen={isFeatureModalOpen}
+          onClose={hideFeatureModal}
+          config={modalConfig}
+          onDismissForever={dismissFeatureModal}
+        />
+      )}
     </div>
   );
 };

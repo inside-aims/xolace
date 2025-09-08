@@ -66,6 +66,9 @@ import { DefaultLoader } from '../shared/loaders/DefaultLoader';
 import { NewBadge } from '../shared/NewBadge';
 import { CampfireSelector, UserCampfire } from '../campfires/campfire-selector';
 import { getUserCampfires } from '@/queries/campfires/getUserCampfires';
+import { getFeatureModalConfig } from '@/utils/featureModals';
+import { useFeatureModal } from '@/hooks/useFeatureModal';
+import { FeatureOverviewModal } from '../modals/FeatureOverViewModal';
 
 // Dynamic Imports
 const EmojiPicker = dynamic(() => import('emoji-picker-react'), {
@@ -613,6 +616,18 @@ export function PostForm({ submitToSlug, promptTextQuery, promptIdQuery }: PostF
       }
     }, 800);
   }
+
+  // Add feature modal
+  const modalConfig = getFeatureModalConfig('/create-post');
+  const {
+    isOpen: isFeatureModalOpen,
+    hideModal: hideFeatureModal,
+    dismissModal: dismissFeatureModal,
+  } = useFeatureModal({
+    config: modalConfig!,
+    delay: 2000, // Show after 2 seconds
+    autoShow: true
+  });
 
   //
   const currentContent =
@@ -1213,6 +1228,15 @@ export function PostForm({ submitToSlug, promptTextQuery, promptIdQuery }: PostF
             setShowConsent(false);
           }}
           user={user}
+        />
+      )}
+
+{modalConfig && (
+        <FeatureOverviewModal
+          isOpen={isFeatureModalOpen}
+          onClose={hideFeatureModal}
+          config={modalConfig}
+          onDismissForever={dismissFeatureModal}
         />
       )}
     </div>
