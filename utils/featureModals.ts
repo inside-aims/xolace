@@ -12,7 +12,13 @@ import {
     Info,
     Video,
     Search,
-    Filter
+    Filter,
+    FileText,
+    Folders,
+    ScanSearch,
+    PackageSearch,
+    SlidersHorizontal,
+    CirclePlus
   } from 'lucide-react';
   import { FeatureModalConfig } from './helpers/featureModalStorageHelper';
 
@@ -125,7 +131,95 @@ import {
         }
       ],
       hasStepByStep: true
-    }
+    },
+
+     // Collections Page
+     '/collections': {
+      route: '/collections',
+      storageKey: 'collections',
+      title: 'Collections Central',
+      description: 'Manage your saved content:',
+      features: [
+        {
+          icon: FileText,
+          title: 'Saved Posts',
+          description: 'View your saved posts'
+        },
+        {
+          icon: Video,
+          title: 'Saved Videos',
+          description: 'View your saved videos'
+        }
+      ],
+      hasStepByStep: true
+    },
+     // Collections Page
+     '/explore': {
+      route: '/explore',
+      storageKey: 'explore',
+      title: 'Explore Central',
+      description: 'Explore post contents',
+      features: [
+        {
+          icon: FileText,
+          title: 'Enhanced feed',
+          description: 'Explore is just like your feed of contents with extra features'
+        },
+        {
+          icon: ScanSearch,
+          title: 'Search & Filter',
+          description: 'Search posts by content or filter by trending , popular etc.'
+        }
+      ],
+      hasStepByStep: true
+    },
+
+     // Manage Campfires Page
+     '/manage-campfires': {
+      route: '/user/x/campfires',
+      storageKey: 'manage-campfires',
+      title: 'Manage Campfires',
+      description: 'Manage your campfires:',
+      features: [
+        {
+          icon: ScanSearch,
+          title: 'Find your campfires',
+          description: 'View campfires you have joined, added to favorites or created'
+        },
+        {
+          icon: Folders,
+          title: 'Adding to favorites',
+          description: 'Add or remove campfires to or from your favorites by clicking the star icon'
+        }
+      ],
+      hasStepByStep: true
+    },
+
+     // Manage Campfires Page
+     '/campfires-discover': {
+      route: '/campfires/discover',
+      storageKey: 'campfires-discover',
+      title: 'Discover Campfires',
+      description: 'Discover new campfires:',
+      features: [
+        {
+          icon: PackageSearch,
+          title: 'Find campfires',
+          description: 'Find campfires based on your interests'
+        },
+        {
+          icon: SlidersHorizontal,
+          title: 'Search and Filter',
+          description: 'Search campfire name or filter by purpose'
+        },
+        {
+          icon: CirclePlus,
+          title: 'Join campfire',
+          description: 'Join campfire by clicking the join button'
+        }
+      ],
+      hasStepByStep: true
+    },
   };
   
   // Helper function to get config by route
