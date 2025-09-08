@@ -13,7 +13,6 @@ interface UseFeatureModalOptions {
 }
 
 export const useFeatureModal = ({ 
-  config, 
   delay = 1000, 
   autoShow = true 
 }: UseFeatureModalOptions) => {
