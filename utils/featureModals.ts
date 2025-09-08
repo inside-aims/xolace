@@ -12,7 +12,8 @@ import {
     Info,
     Video,
     Search,
-    Filter
+    Filter,
+    FileText,
   } from 'lucide-react';
   import { FeatureModalConfig } from './helpers/featureModalStorageHelper';
 
@@ -125,7 +126,28 @@ import {
         }
       ],
       hasStepByStep: true
-    }
+    },
+
+     // Collections Page
+     '/collections': {
+      route: '/collections',
+      storageKey: 'collections',
+      title: 'Collections Central',
+      description: 'Manage your saved content:',
+      features: [
+        {
+          icon: FileText,
+          title: 'Saved Posts',
+          description: 'View your saved posts'
+        },
+        {
+          icon: Video,
+          title: 'Saved Videos',
+          description: 'View your saved videos'
+        }
+      ],
+      hasStepByStep: true
+    },
   };
   
   // Helper function to get config by route
