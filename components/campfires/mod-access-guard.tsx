@@ -44,7 +44,7 @@ export const ModAccessDenied: React.FC<ModAccessGuardProps> = ({ error, slug }) 
             <AlertCircle className="w-5 h-5 text-blue-600 dark:text-blue-400 flex-shrink-0 mt-0.5" />
             <div className="text-sm text-blue-800 dark:text-blue-200">
               <p className="font-medium mb-1">Need mod access?</p>
-              <p>Contact the campfire's Firestarter or existing Firekeepers to request moderator permissions.</p>
+              <p>Contact the campfire&apos;s Firestarter or existing Firekeepers to request moderator permissions.</p>
             </div>
           </div>
         </div>
