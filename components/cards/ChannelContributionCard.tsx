@@ -118,19 +118,19 @@ const ChannelContributionCard = () => {
             <div>
               <p className='mb-2 text-lg font-semibold'>Media Outlets</p>
              <div className='flex items-center gap-4'>
-             <Link href="https://wa.me/2348166666666">
+             <Link target='_blank' href="https://whatsapp.com/channel/0029Vb68RgXGpLHPmY1pL73s">
                 <WhatsApp className='h-8 w-8'/>
               </Link>
-              <Link className='dark:hidden' href="https://www.instagram.com/xolaceinc/">
+              <Link target='_blank' className='dark:hidden' href="https://www.instagram.com/xolaceinc/">
                 <LightInstagram className='h-7 w-7'/>
               </Link>
-              <Link className='hidden dark:block' href="https://www.instagram.com/xolaceinc/">
+              <Link target='_blank' className='hidden dark:block' href="https://www.instagram.com/xolaceinc/">
                 <DarkInstagram className='h-7 w-7'/>
               </Link>
-              <Link className='dark:hidden' href="https://x.com/xolaceinc">
+              <Link target='_blank' className='dark:hidden' href="https://x.com/xolaceinc">
                 <LightXformerlyTwitter className='h-6 w-6'/>
               </Link>
-              <Link className='hidden dark:block' href="https://x.com/xolaceinc">
+              <Link target='_blank' className='hidden dark:block' href="https://x.com/xolaceinc">
                 <DarkXformerlyTwitter className='h-6 w-6'/>
               </Link>
              </div>
