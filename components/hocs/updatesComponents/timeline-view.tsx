@@ -5,15 +5,7 @@ import TimelineItem from './timeline-item';
 import { Activity, MessageCircle, Sparkles } from 'lucide-react';
 import { Card, CardContent } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
-
-interface UpdateLog {
-  version: string;
-  date: string;
-  title: string;
-  changes: string[];
-  type?: 'major' | 'minor' | 'patch';
-  status?: 'released' | 'upcoming';
-}
+import { UpdateLog } from '@/constants/changeLogs';
 
 interface TimelineViewProps {
   updates: UpdateLog[];
