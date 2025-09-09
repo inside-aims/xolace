@@ -5,17 +5,17 @@ import { createClient } from '@/utils/supabase/server';
 import InitUser from '@/lib/store/initUser';
 import { SidebarInset, SidebarProvider } from '@/components/ui/sidebar';
 import { SiteHeader } from '@/components/site-header';
-import { ModsSidebarLeft } from "@/components/mods/layout/mod-siderbar-left";
+import { ModsSidebarLeft } from '@/components/mods/layout/mod-siderbar-left';
 import { checkModeratorAccess } from '@/utils/campfires/permissions';
 import { ModAccessDenied } from '@/components/campfires/mod-access-guard';
-import type { Metadata } from "next";
+import type { Metadata } from 'next';
 
 export const metadata: Metadata = {
   title: {
     template: '%s • Mod Tools | Xolace',
     default: 'Mod Tools | Xolace',
   },
-  description: "Mod tools for your campfire"
+  description: 'Mod tools for your campfire',
 };
 
 interface ModLayoutProps {
@@ -30,7 +30,7 @@ export default async function ModLayout({ children, params }: ModLayoutProps) {
   // Check authentication
   const supabase_user_id: string | null =
     (await supabase.auth.getClaims()).data?.claims?.sub ?? null;
-  
+
   if (!supabase_user_id) {
     redirect('/sign-in');
   }
@@ -50,7 +50,7 @@ export default async function ModLayout({ children, params }: ModLayoutProps) {
   const accessCheck = await checkModeratorAccess(slug, profileUser.id);
 
   // If no access, show access denied page
-  if (accessCheck.hasAccess) {
+  if (!accessCheck.hasAccess) {
     return (
       <div className="[--header-height:calc(--spacing(14))]">
         <SidebarProvider
@@ -79,11 +79,9 @@ export default async function ModLayout({ children, params }: ModLayoutProps) {
       >
         <SiteHeader />
         <div className="flex flex-1">
-          <ModsSidebarLeft collapsible='icon' />
+          <ModsSidebarLeft collapsible="icon" />
           <SidebarInset>
-            <section className="p-4 md:p-8">
-              {children}
-            </section>
+            <section className="p-4 md:p-8">{children}</section>
             <Bottombar />
           </SidebarInset>
         </div>
