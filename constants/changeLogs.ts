@@ -4,7 +4,7 @@ export interface UpdateLog {
   date: string
   title: string
   changes: string[]
-  type?: "major" | "minor" | "patch"
+  type?: "major" | "minor" | "patch" | "hotfix" | "bugfix"
   status?: "released" | "upcoming"
 }
 
@@ -100,16 +100,20 @@ export const updates: UpdateLog[] = [
   },
   {
     version: "3.0",
-    date: "July 15, 2025",
-    title: "Community Features",
+    date: "August 18, 2025",
+    title: "Campfire Features",
     type: "major",
-    status: "upcoming",
+    status: "released",
     changes: [
-      "**Community Hub**",
-      "- 👥 Group discussions: Create and join topic-based discussion groups.",
-      "- 🏆 Achievement system: Earn badges for wellness milestones.",
-      "- 📊 Community insights: View aggregated wellness trends.",
-    ],
+      "**Campfire Hub**",
+      "- 👥 Group discussions: Create and join purpose-based discussion groups.",
+      "- 🔍 Discovery Page: Easily find Campfires based on purpose, interest, or popular topics.",
+      "- 📝 Purpose-driven spaces: Focus on specific themes like **Support Circles**, **Growth Groups**, and **Creative Outlets**.",
+      "**Core Functionality**",
+      "- 🙋 Membership & Roles: Join Campfires as a **Camper** or take on leadership as a **Firekeeper** or **Firestarter**.",
+      "- 📢 Scoped Posting: Share posts, thoughts, and media directly within a Campfire's dedicated feed.",
+      "- 🪵 Dedicated Feeds: Experience a focused, distraction-free feed for each Campfire you join.",
+    ]
   },
   {
     version: '2.2',
@@ -158,6 +162,33 @@ export const updates: UpdateLog[] = [
       '**Freedom to Reply or Ignore**',
       '- 🚫 Not feeling a message? No pressure. No one will know.',
     ]
+  },
+  {
+    version: '3.1',
+    date: 'August 25, 2025',
+    title: 'New Feature Alert: Campfire Moderation',
+    type: "major",
+    status: "released",
+    changes: [
+      '**Campfire Moderation**',
+      '- 🛡️ Essential Moderation: Get the tools needed to manage your Campfire and maintain a safe, respectful environment.',
+      '- 📝 Invite Moderators: Invite trusted campers to be firekeepers to help moderate your Campfire.',
+      '- 🛠️ Edit your campfire name and description anytime.',
+      '- 📚 Setup your campfire guide to help welcome new campers',
+    ]
+  },
+  {
+    version: '3.2',
+    date: 'September 9, 2025',
+    title: 'Minor Fixes & Updates',
+    type: "hotfix",
+    status: "released",
+    changes: [
+      '**Channel Contribution Card**',
+      '- 📲 Add social media links to channel contribution card',
+      '**Mod Pages**',
+      '- 📝 Fix layout shift at mod settings page',
+      '- ⚙️ Reorganized the mod structure/layout under /c/[slug]/mod, with new layout and access control logic'
+    ]
   }
-  
 ];

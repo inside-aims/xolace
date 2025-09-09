@@ -151,7 +151,7 @@ const SettingsItem = ({
   return (
     <div className="flex w-full flex-col">
       <div
-        className={`${disabled ? 'cursor-not-allowed opacity-50' : 'cursor-pointer'} group flex w-full items-center justify-between`}
+        className={`${disabled ? 'cursor-not-allowed opacity-50' : 'cursor-pointer'} group flex w-full items-center justify-between gap-5`}
         onClick={() => {
           if (disabled || isLoading) return;
           if (!toggle) {
@@ -162,7 +162,7 @@ const SettingsItem = ({
         <div>
           <p className="font-medium">{label}</p>
           {description && (
-            <p className="text-muted-foreground truncate text-sm">
+            <p className="text-muted-foreground text-sm">
               {description}
             </p>
           )}
