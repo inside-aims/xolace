@@ -19,7 +19,7 @@ export interface ModsSidebarSection {
 }
 
 export const getModsSidebarSections = (username?: string): ModsSidebarSection[] => {
-  const parentRoute = username ? `/mod/${username}` : "/mod";
+  const parentRoute = username ? `/c/${username}/mod` : "/mod";
 
   return [
     {
