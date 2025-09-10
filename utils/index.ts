@@ -13,3 +13,23 @@ export function toTitleCase(str: string | undefined) {
     });
   }
 
+
+  // util function to check if string is a valid url
+export const isValidUrl = (url: string) => {
+  try {
+    new URL(url);
+    return true;
+  } catch (e) {
+    return false;
+  }
+};
+
+
+// utils function to substitute {username} with actual username if it is present
+export const substituteUsername = (str: string, username: string) => {
+  if (str.includes('{username}')) {
+    return str.replace('{username}', username);
+  }
+  return str;
+};
+

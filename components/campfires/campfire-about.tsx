@@ -4,7 +4,7 @@ import {Crown, Globe, TicketCheck} from "lucide-react";
 import {Button} from "@/components/ui/button";
 import {Separator} from "@/components/ui/separator";
 import {Accordion, AccordionContent, AccordionItem, AccordionTrigger} from "@/components/ui/accordion";
-import React from "react";
+import React, {useState} from "react";
 import { formatMembers} from "@/components/campfires/campfires.types";
 import CampfireAvatar from "@/components/campfires/campfire-avatar";
 import Link from 'next/link';
@@ -19,11 +19,12 @@ import { getSignedProfileAvatarUrls } from "@/hooks/storage/getSignedProfileAvat
 
 interface CampfireAboutProps {
   campfire: CampfireDetails | undefined;
+  setDrawerOpen: (open: boolean) => void;
 }
 
 
 
-const CampfireAbout = ({campfire}: CampfireAboutProps) => {
+const CampfireAbout = ({campfire, setDrawerOpen}: CampfireAboutProps) => {
   const user = useUserState(state => state.user);
 
   // Fetch campfire rules
@@ -101,6 +102,7 @@ const CampfireAbout = ({campfire}: CampfireAboutProps) => {
           size={"sm"}
           variant={"outline"}
           className={"w-full items-center  h-8 bg-neutral-100 dark:bg-neutral-900  text-black dark:text-white border border-neutral-400 rounded-full"}
+          onClick={() => setDrawerOpen(true)}
         >
           Campfire Guide
         </Button>
