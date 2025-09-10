@@ -11,11 +11,13 @@ interface GuidePreview {
   welcomeMsg: string;
   resource?: { label: string; value: string }[];
   icon: string | null;
+  modTitle?: string;
 }
 const GuidePreview = ({
   campfireName,
   welcomeMsg,
   resource,
+  modTitle = "Campfire Mod Team",
   icon,
 }: GuidePreview) => {
   return (
@@ -41,8 +43,7 @@ const GuidePreview = ({
         </Alert>
 
         <div className="text-muted-foreground text-sm">
-          {' '}
-          - Campfire Mod Team
+          {`- ${modTitle}`}
         </div>
       </div>
 
