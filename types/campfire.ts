@@ -1,3 +1,5 @@
+import { Database } from "./types_db";
+
 export interface CampfireGuideResource {
     id: number;
     label: string;

@@ -21,8 +21,7 @@ import {
   useRemoveFavoriteCampfireMutation,
 } from '@/hooks/campfires/useFavoriteCampfireMutation';
 import CampfireGuideModal from "@/components/campfires/campfire-guide-modal";
-import {getCampfireGuide} from "@/queries/campfires/moderations/getCampfireGuide";
-import {getCampfireIdWithSlug} from "@/queries/campfires/getCampfireIdWithSlug";
+import {getCampfireResources} from "@/queries/campfires/moderations/getCampfireResources";
 
 const CampfireDetails = ({ slug }: { slug: string }) => {
   const user = useUserState(state => state.user);
@@ -38,16 +37,13 @@ const CampfireDetails = ({ slug }: { slug: string }) => {
     refetch,
   } = getCampfireWithSlug(slug, user?.id);
 
-  // Get campfire ID from slug
-  const { data: campfireData } = getCampfireIdWithSlug(slug, user?.id);
-
-  // Fetch guide data
+  // Fetch resources data
   const {
-    data: guideData,
-  } = getCampfireGuide(campfireData?.campfireId || '');
+    data: resourcesData,
+  } = getCampfireResources(campfire?.campfireId || '');
 
   // Transform resources for UI compatibility
-  const uiResources = guideData?.resources.map(r => ({
+  const uiResources = resourcesData?.map(r => ({
     label: r.label,
     value: r.url || r.label
   })) || [];
@@ -412,10 +408,10 @@ const CampfireDetails = ({ slug }: { slug: string }) => {
 
       { openGuideModal && (
         <CampfireGuideModal
-          welcomeMsg={guideData?.guide_welcome_message || 'You are welcome !'}
-          campfireName={"Name goes here"}
+          welcomeMsg={campfire.guideWelcomeMessage || 'You are welcome !'}
+          campfireName={campfire.name}
           resource={uiResources}
-          icon={''} //icon url goes here
+          icon={campfire.iconURL || null}
           drawerOpen={openGuideModal}
           setDrawerOpen={setOpenGuideModal}
         />

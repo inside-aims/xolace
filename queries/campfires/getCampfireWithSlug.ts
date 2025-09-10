@@ -18,6 +18,10 @@ export interface CampfireDetails {
   visibility: 'public' | 'private' | 'restricted' | 'secret';
   memberRole: 'camper' | 'firestarter' | 'firekeeper' ;
   isFavorite: boolean;
+  guideEnabled: boolean;
+  guideShowOnJoin: boolean;
+  guideHeaderLayout: 'Avatar and name';
+  guideWelcomeMessage?: string;
 }
 
 const QUERY_STALE_TIME = 5 * 60 * 1000; // 5 minutes
@@ -44,7 +48,11 @@ export function getCampfireWithSlug(slug: string, userId?: string) {
           banner_url,
           visibility,
           created_at,
-          created_by
+          created_by,
+          guide_enabled,
+          guide_show_on_join,
+          guide_header_layout, 
+          guide_welcome_message
         `,
         )
         .eq('visibility', 'public')
@@ -98,6 +106,10 @@ export function getCampfireWithSlug(slug: string, userId?: string) {
         isMember,
         memberRole,
         isFavorite,
+        guideEnabled: campfireData.guide_enabled,
+        guideShowOnJoin: campfireData.guide_show_on_join,
+        guideHeaderLayout: campfireData.guide_header_layout,
+        guideWelcomeMessage: campfireData.guide_welcome_message,
       } as CampfireDetails;
     },
     staleTime: QUERY_STALE_TIME,
