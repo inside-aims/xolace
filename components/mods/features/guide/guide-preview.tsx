@@ -77,6 +77,7 @@ const GuidePreview = ({
            (
             <div
             className="text-muted-foreground flex w-full items-center justify-between text-sm group"
+            key={`${item.label}-${i}`}
           >
             <p className={'flex flex-row gap-1'}>
               <Book className={'h-4 w-4'} />
