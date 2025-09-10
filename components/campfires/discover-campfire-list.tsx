@@ -19,6 +19,9 @@ import { Button } from '@/components/ui/button';
 import { Separator } from '@/components/ui/separator';
 import { toast } from 'sonner';
 import { DotLottieReact } from '@lottiefiles/dotlottie-react';
+import { getFeatureModalConfig } from '@/utils/featureModals';
+import { useFeatureModal } from '@/hooks/useFeatureModal';
+import { FeatureOverviewModal } from '../modals/FeatureOverViewModal';
 
 const DiscoverCampfireList = () => {
   const user = useUserState(state => state.user);
@@ -26,6 +29,18 @@ const DiscoverCampfireList = () => {
   const [selectedPurposes, setSelectedPurposes] = useState<CampfirePurpose[]>(
     [],
   );
+
+  // feature modal
+  const modalConfig = getFeatureModalConfig('/campfires-discover');
+  const {
+    isOpen: isFeatureModalOpen,
+    hideModal: hideFeatureModal,
+    dismissModal: dismissFeatureModal,
+  } = useFeatureModal({
+    config: modalConfig!,
+    delay: 1500,
+    autoShow: true,
+  });
 
   const {
     data: campfires,
@@ -187,6 +202,15 @@ const DiscoverCampfireList = () => {
             </>
           )}
         </div>
+
+        {modalConfig && (
+          <FeatureOverviewModal
+            isOpen={isFeatureModalOpen}
+            onClose={hideFeatureModal}
+            config={modalConfig}
+            onDismissForever={dismissFeatureModal}
+          />
+        )}
       </div>
     </CampfireWrapper>
   );

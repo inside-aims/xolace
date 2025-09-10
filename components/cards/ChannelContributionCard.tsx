@@ -1,6 +1,7 @@
 'use client';
 
 import React from 'react';
+import Link from 'next/link';
 import dynamic from 'next/dynamic';
 import { motion } from 'motion/react';
 import {
@@ -19,6 +20,12 @@ import {
   DialogTrigger,
 } from '@/components/ui/dialog';
 import { Button } from '../ui/button';
+
+import WhatsApp from '../icons/IconWhatsApp';
+import LightInstagram from '../icons/IconLightInstagram';
+import DarkInstagram from '../icons/IconDarkInstagram';
+import LightXformerlyTwitter from '../icons/IconLightX';
+import DarkXformerlyTwitter from '../icons/IconDarkX';
 //import { KvngSheet } from '../shared/KvngSheet';
 //import FeedbackForm from '../forms/FeedbackForm';
 
@@ -52,7 +59,7 @@ const ChannelContributionCard = () => {
             </p>
           </motion.div>
         </DialogTrigger>
-        <DialogContent className="w-full max-w-[95%] sm:max-w-md">
+        <DialogContent className="w-full max-w-[95%] sm:max-w-md border-none rounded-2xl!">
           <DialogHeader>
             <DialogTitle className="mb-4 text-2xl font-bold">
               🤝🏽 Support Xolace
@@ -65,12 +72,12 @@ const ChannelContributionCard = () => {
             <div>
               <h3 className="mb-2 flex items-center text-lg font-semibold">
                 <HandCoins size={18} strokeWidth={1.25} className="mr-2" />
-                Donate
+                Donate To Xolace Foundation
               </h3>
               <p className="mb-2 text-gray-600 dark:text-gray-300">
                 Help us keep Xolace running and improving.
               </p>
-              <Button variant="outline">Make a Donation</Button>
+              <Button disabled variant="outline">Make a Donation (coming soon)</Button>
             </div>
             <div>
               <h3 className="mb-2 flex items-center text-lg font-semibold">
@@ -106,6 +113,27 @@ const ChannelContributionCard = () => {
                 <MailPlusIcon className="mr-2 h-5 w-5" />
                 Email Us
               </a>
+            </div>
+
+            <div>
+              <p className='mb-2 text-lg font-semibold'>Media Outlets</p>
+             <div className='flex items-center gap-4'>
+             <Link target='_blank' href="https://whatsapp.com/channel/0029Vb68RgXGpLHPmY1pL73s">
+                <WhatsApp className='h-8 w-8'/>
+              </Link>
+              <Link target='_blank' className='dark:hidden' href="https://www.instagram.com/xolaceinc/">
+                <LightInstagram className='h-7 w-7'/>
+              </Link>
+              <Link target='_blank' className='hidden dark:block' href="https://www.instagram.com/xolaceinc/">
+                <DarkInstagram className='h-7 w-7'/>
+              </Link>
+              <Link target='_blank' className='dark:hidden' href="https://x.com/xolaceinc">
+                <LightXformerlyTwitter className='h-6 w-6'/>
+              </Link>
+              <Link target='_blank' className='hidden dark:block' href="https://x.com/xolaceinc">
+                <DarkXformerlyTwitter className='h-6 w-6'/>
+              </Link>
+             </div>
             </div>
           </div>
         </DialogContent>

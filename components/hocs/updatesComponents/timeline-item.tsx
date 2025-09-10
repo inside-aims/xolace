@@ -10,6 +10,8 @@ import {
   Zap,
   RefreshCw,
   Clock,
+  Bug,
+  ThermometerSun,
 } from 'lucide-react';
 
 interface TimelineItemProps {
@@ -25,6 +27,12 @@ const getVersionIcon = (type: string) => {
       return <Sparkles className="h-5 w-5" />;
     case 'patch':
       return <Zap className="h-5 w-5" />;
+    case 'upcoming':
+      return <Clock className="h-5 w-5" />;
+    case 'hotfix':
+      return <ThermometerSun className="h-5 w-5" />;
+    case 'bugfix':
+      return <Bug className="h-5 w-5" />;
     default:
       return <RefreshCw className="h-5 w-5" />;
   }
@@ -42,12 +50,24 @@ const parseChanges = (changes: string[]) => {
         </h4>
       );
     }
+
+    // New logic to handle inline bold text
+    const parts = change.split(/(\*\*.*?\*\*)/g);
     return (
       <p
         key={index}
         className="text-muted-foreground mb-1 leading-relaxed dark:text-gray-300"
       >
-        {change}
+        {parts.map((part, i) => {
+          if (part.startsWith('**') && part.endsWith('**')) {
+            return (
+              <span key={i} className="font-bold">
+                {part.replace(/\*\*/g, '')}
+              </span>
+            );
+          }
+          return <span key={i}>{part}</span>;
+        })}
       </p>
     );
   });
