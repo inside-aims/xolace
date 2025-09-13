@@ -37,6 +37,11 @@ import {
           description: 'Share your experiences with single posts or multi-slide carousels'
         },
         {
+          icon: PenTool,
+          title: "Post Tags",
+          description: "Use the # symbol to add tags to your posts. You can add up to 3 tags"
+        },
+        {
           icon: Smile,
           title: 'Express Mood',
           description: 'Add your current mood to give context to your posts'
