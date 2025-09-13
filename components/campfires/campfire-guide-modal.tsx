@@ -48,6 +48,7 @@ const CampfireGuideModal = (
               resource={resource}
               icon={icon}
               modTitle={campfireName}
+              setDrawerOpen={setDrawerOpen}
             />
           </DialogContent>
         </Dialog>
@@ -66,6 +67,7 @@ const CampfireGuideModal = (
               resource={resource}
               icon={icon}
               modTitle={campfireName}
+              setDrawerOpen={setDrawerOpen}
             />
           </DrawerContent>
         </Drawer>
