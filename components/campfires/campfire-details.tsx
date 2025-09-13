@@ -338,7 +338,7 @@ const CampfireDetails = ({ slug }: { slug: string }) => {
                 }
                 size="sm"
                 variant="outline"
-                onClick={() => router.replace(`/mod/${campfire.slug}/moderators`)}
+                onClick={() => router.replace(`/c/${campfire.slug}/mod/moderators`)}
               >
                 Mod Tools
               </Button>
