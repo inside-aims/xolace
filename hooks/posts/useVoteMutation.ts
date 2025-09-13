@@ -28,6 +28,7 @@ export function useVoteMutations() {
     onSuccess: (data, variables) => {
       // Invalidate the posts query to refetch updated vote counts
       queryClient.invalidateQueries({ queryKey: ['posts'] });
+      queryClient.invalidateQueries({ queryKey: ['enhanced-feed', variables.user_id] });
       // Invalidate the user vote query for the specific post to refetch the user's current vote
       queryClient.invalidateQueries({
         queryKey: ['userVote', variables.postId, variables.user_id],

@@ -21,9 +21,11 @@ import { FeedEnhancedPostCard } from '../cards/FeedEnhancedPostCard';
  */
 const EnhancedFeedList = () => {
   const user = useUserState(state => state.user);
+  const isUserLoading = useUserState(state => state.isLoading);
+
   const {
     posts,
-    isLoading,
+    isPending: isPostsLoading,
     isError,
     error,
     fetchNextPage,
@@ -130,31 +132,28 @@ const EnhancedFeedList = () => {
     router.push(`/post/${postId}`);
   }, [isDesktop, scrollableContainer, router]);
 
-  // Render priority indicator
-//   const renderPriorityIndicator = (post: any) => {
-//     if (post.is_new_post) {
-//       return (
-//         <div className="mb-2 flex items-center gap-2 text-xs text-green-600 dark:text-green-400">
-//           <Clock className="h-3 w-3" />
-//           <span className="font-medium">New</span>
-//         </div>
-//       );
-//     }
-    
-//     if (post.is_campfire_post && post.campfire_name) {
-//       return (
-//         <div className="mb-2 flex items-center gap-2 text-xs text-purple-600 dark:text-purple-400">
-//           <Users className="h-3 w-3" />
-//           <span className="font-medium">{post.campfire_name}</span>
-//         </div>
-//       );
-//     }
-    
-//     return null;
-//   };
+ // Show loading while user state is being determined or posts are loading
+ const isLoading = isUserLoading || (user && isPostsLoading);
 
   if (isLoading) {
     return <FeedSkeletonLoader />;
+  }
+
+  // If no user after loading is complete, show appropriate message
+  if (!isUserLoading && !user) {
+    return (
+      <div className="flex flex-col items-center justify-center p-8 text-center">
+        <AlertCircle className="h-12 w-12 text-red-500 mb-4" />
+        <h3 className="text-lg font-semibold mb-2">Authentication required</h3>
+        <p className="text-muted-foreground mb-4">Please sign in to view your feed</p>
+        <button
+          onClick={() => router.push('/sign-in')}
+          className="px-4 py-2 bg-primary text-primary-foreground rounded-lg hover:bg-primary/90"
+        >
+          Sign In
+        </button>
+      </div>
+    );
   }
 
   if (isError) {
