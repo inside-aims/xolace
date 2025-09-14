@@ -138,6 +138,10 @@ export function useCommentMutation(post: DetailPost) {
           comment.id === context?.optimisticComment.id ? newComment : comment,
         ),
       );
+
+      queryClient.invalidateQueries({
+        queryKey: ['enhanced-feed', user?.id],
+      });
       // You might want to show a success toast notification here
     },
     onSettled: (data, error, variables) => {

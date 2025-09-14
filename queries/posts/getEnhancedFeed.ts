@@ -48,7 +48,7 @@ interface FeedPage {
 
 const POSTS_PER_PAGE = 50;
 const QUERY_STALE_TIME = 2 * 60 * 1000; // 2 minutes
-const QUERY_CACHE_TIME = 5 * 60 * 1000; // 5 minutes
+const QUERY_CACHE_TIME = 3 * 60 * 1000; // 3 minutes
 
 export function getEnhancedFeed(userId: string | undefined) {
   const supabase = getSupabaseBrowserClient();
