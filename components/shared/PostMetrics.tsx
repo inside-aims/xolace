@@ -58,7 +58,7 @@ const PostMetrics = ({
     const previousVote = currentVote;
 
     try {
-      setCurrentVote(prevVote => (prevVote === voteType ? null : voteType));
+      // setCurrentVote(prevVote => (prevVote === voteType ? null : voteType));
 
       // Make server request
       await mutateVote({
@@ -71,13 +71,13 @@ const PostMetrics = ({
 
       if (isError) {
         // Revert changes if server request fails
-        setCurrentVote(previousVote);
+        // setCurrentVote(previousVote);
         // setUpvoteCount(post.upvotes);
         // setDownvoteCount(post.downvotes);
       }
     } catch (_) {
       // Revert changes on error
-      setCurrentVote(previousVote);
+      // setCurrentVote(previousVote);
     }
   };
 

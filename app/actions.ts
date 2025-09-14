@@ -469,6 +469,7 @@ export async function voteAction(
     if(!voteResult.success){
       return { success: false, error: voteResult.error };
     }
+    console.log("voteResult ", voteResult)
     const relatedUser = relatedUserId === user_id ? undefined : relatedUserId;
 
     // Log the vote activity
@@ -478,7 +479,7 @@ export async function voteAction(
       entityType: ActivityType.VOTE,
       action: voteType === 'upvote' ? 'upvoted' : 'downvoted',
       postId,
-      voteId: voteResult.vote,
+      voteId: voteResult.vote ? voteResult.vote.id : null,
       metadata: {
         vote_type: voteType,
         action: voteResult.action,
@@ -511,6 +512,7 @@ export async function voteAction(
 
     return { success: true, data: voteResult };
   } catch (error) {
+    console.log(error)
     return error
       ? { success: false, error: 'Failed to process vote' }
       : { success: false, error: 'Failed to process vote, Try again' };
