@@ -101,7 +101,7 @@ const CampfireAbout = ({campfire, setDrawerOpen}: CampfireAboutProps) => {
         <Button
           size={"sm"}
           variant={"outline"}
-          className={"w-full items-center  h-8 bg-neutral-100 dark:bg-neutral-900  text-black dark:text-white border border-neutral-400 rounded-full"}
+          className={"w-full items-center  h-8 bg-neutral-200 hover:bg-neutral-100 dark:bg-neutral-900 dark:hover:bg-neutral-800  text-black dark:text-white border border-neutral-300 dark:border-neutral-600 rounded-full"}
           onClick={() => setDrawerOpen(true)}
         >
           Campfire Guide

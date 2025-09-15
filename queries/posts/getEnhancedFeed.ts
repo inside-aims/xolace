@@ -17,7 +17,13 @@ export interface EnhancedPost {
   is_sensitive: boolean;
   is_prompt_response: boolean;
   type: string;
-  author_roles: ("normal_user" | "verified" | "blue_team" | "help_professional" | "mentor")[];
+  author_roles: (
+    | 'normal_user'
+    | 'verified'
+    | 'blue_team'
+    | 'help_professional'
+    | 'mentor'
+  )[];
   campfire_id: string | null;
   campfire_name: string | null;
   campfire_slug: string | null;
@@ -42,7 +48,7 @@ interface FeedPage {
 
 const POSTS_PER_PAGE = 50;
 const QUERY_STALE_TIME = 2 * 60 * 1000; // 2 minutes
-const QUERY_CACHE_TIME = 5 * 60 * 1000; // 5 minutes
+const QUERY_CACHE_TIME = 3 * 60 * 1000; // 3 minutes
 
 export function getEnhancedFeed(userId: string | undefined) {
   const supabase = getSupabaseBrowserClient();
@@ -55,15 +61,14 @@ export function getEnhancedFeed(userId: string | undefined) {
       }
 
       const offset = pageParam as number;
-      
+
       const { data, error } = await supabase.rpc('get_personalized_feed', {
         user_id_param: userId,
         page_size: POSTS_PER_PAGE,
-        offset_param: offset
+        offset_param: offset,
       });
 
       if (error) {
-        console.error('Error fetching enhanced feed:', error);
         throw new Error(error.message);
       }
 
@@ -74,29 +79,32 @@ export function getEnhancedFeed(userId: string | undefined) {
       return {
         posts,
         nextOffset,
-        hasMore
+        hasMore,
       } as unknown as FeedPage;
     },
-    getNextPageParam: (lastPage) => lastPage.nextOffset,
+    getNextPageParam: lastPage => lastPage.nextOffset,
     initialPageParam: 0,
     staleTime: QUERY_STALE_TIME,
     gcTime: QUERY_CACHE_TIME,
     enabled: !!userId,
     refetchOnWindowFocus: false,
     // Optimistic updates for better UX
-    refetchOnMount: 'always',
+    // Better loading state handling
+    refetchOnMount: false, // Prevent unnecessary refetch if we have cached data
+    // This ensures better performance on navigation
+    networkMode: 'always',
   });
 }
 
 // Hook for getting flattened posts array
 export function getEnhancedFeedPosts(userId: string | undefined) {
   const query = getEnhancedFeed(userId);
-  
+
   const posts = query.data?.pages.flatMap(page => page.posts) ?? [];
-  
+
   return {
     ...query,
     posts,
-    totalPosts: posts.length
+    totalPosts: posts.length,
   };
 }

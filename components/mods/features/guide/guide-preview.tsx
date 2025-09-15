@@ -15,6 +15,7 @@ interface GuidePreview {
   resource?: { label: string; value: string }[];
   icon: string | null;
   modTitle?: string;
+  setDrawerOpen?: (open: boolean) => void;
 }
 
 const GuidePreview = ({
@@ -23,11 +24,18 @@ const GuidePreview = ({
   resource,
   modTitle = "Campfire Mod Team",
   icon,
+  setDrawerOpen,
 }: GuidePreview) => {
 
   const user = useUserState(state => state.user);
 
   const subsitutedWelcomeMsg = substituteUsername(welcomeMsg, user?.username || '');
+
+  const handleGotIt = () => {
+    if (setDrawerOpen) {
+      setDrawerOpen(false);
+    }
+  };
 
   return (
     <div className="flex w-full flex-col gap-4 pt-2">
@@ -91,7 +99,7 @@ const GuidePreview = ({
           ))}
       </div>
 
-      <Button className="bg-lavender-500 hover:bg-lavender-600 rounded-full text-white">
+      <Button onClick={handleGotIt}  className="bg-lavender-500 hover:bg-lavender-600 rounded-full text-white">
         Got It
       </Button>
 

@@ -469,6 +469,7 @@ export async function voteAction(
     if(!voteResult.success){
       return { success: false, error: voteResult.error };
     }
+    console.log("voteResult ", voteResult)
     const relatedUser = relatedUserId === user_id ? undefined : relatedUserId;
 
     // Log the vote activity
@@ -478,7 +479,7 @@ export async function voteAction(
       entityType: ActivityType.VOTE,
       action: voteType === 'upvote' ? 'upvoted' : 'downvoted',
       postId,
-      voteId: voteResult.vote,
+      voteId: voteResult.vote ? voteResult.vote.id : null,
       metadata: {
         vote_type: voteType,
         action: voteResult.action,

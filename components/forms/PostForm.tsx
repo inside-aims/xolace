@@ -46,16 +46,11 @@ import { Textarea } from '@/components/ui/textarea';
 import { toast } from 'sonner';
 //import Loader from '../shared/loaders/Loader';
 import { PostSchema } from '@/validation';
-import { getSupabaseBrowserClient } from '@/utils/supabase/client';
 import { moods } from '@/constants/moods';
 import { Send } from 'lucide-react';
 // import MoodCarousel from '../hocs/createPostComponent/mood-carousel';
 // import ShinyButton from '../ui/shiny-button';
-import { calculateExpiryDate } from '@/lib/utils';
-import { removeHashtags } from '@/lib/utils';
 import { useUserState } from '@/lib/store/user';
-import { logActivity } from '@/lib/activity-logger';
-import { ActivityType } from '@/types/activity';
 import { usePreferencesStore } from '@/lib/store/preferences-store';
 import { useRouter, usePathname } from 'next/navigation';
 //import mascot from '../../public/assets/images/mas.webp';
@@ -69,6 +64,7 @@ import { getUserCampfires } from '@/queries/campfires/getUserCampfires';
 import { getFeatureModalConfig } from '@/utils/featureModals';
 import { useFeatureModal } from '@/hooks/useFeatureModal';
 import { FeatureOverviewModal } from '../modals/FeatureOverViewModal';
+import { usePostSubmission } from '@/hooks/posts/usePostSubmission';
 
 // Dynamic Imports
 const EmojiPicker = dynamic(() => import('emoji-picker-react'), {
@@ -101,11 +97,14 @@ const placeholders = [
   'Use # for tags! At most 3',
   'Share your experiences',
 ];
-export function PostForm({ submitToSlug, promptTextQuery, promptIdQuery }: PostFormProps) {
+export function PostForm({
+  submitToSlug,
+  promptTextQuery,
+  promptIdQuery,
+}: PostFormProps) {
   const router = useRouter();
   const pathname = usePathname();
   const { preferences } = usePreferencesStore();
-  const supabase = getSupabaseBrowserClient();
 
   //get user profile
   const user = useUserState(state => state.user);
@@ -135,6 +134,9 @@ export function PostForm({ submitToSlug, promptTextQuery, promptIdQuery }: PostF
 
   const { data: userCampfires = [], isLoading: loadingCampfires } =
     getUserCampfires(user?.id);
+
+  // post submission mutation
+  const { submitPost, isSubmitting } = usePostSubmission();
 
   const intervalRef = useRef<NodeJS.Timeout | null>(null);
   // const startAnimation = () => {
@@ -169,20 +171,23 @@ export function PostForm({ submitToSlug, promptTextQuery, promptIdQuery }: PostF
       if (document.visibilityState !== 'visible' && intervalRef.current) {
         clearInterval(intervalRef.current);
         intervalRef.current = null;
-      } else if (document.visibilityState === 'visible' && !intervalRef.current) {
+      } else if (
+        document.visibilityState === 'visible' &&
+        !intervalRef.current
+      ) {
         intervalRef.current = setInterval(() => {
           setCurrentPlaceholder(prev => (prev + 1) % placeholders.length);
         }, 3000);
       }
     };
-  
+
     // Start initial animation
     intervalRef.current = setInterval(() => {
       setCurrentPlaceholder(prev => (prev + 1) % placeholders.length);
     }, 3000);
-  
+
     document.addEventListener('visibilitychange', handleVisibilityChange);
-  
+
     return () => {
       if (intervalRef.current) {
         clearInterval(intervalRef.current);
@@ -249,25 +254,21 @@ export function PostForm({ submitToSlug, promptTextQuery, promptIdQuery }: PostF
   };
 
   // retrieve tags from content
-  const handleInput = useCallback(
-    (value: string) => {
-      const newTags = value.match(/#\w+/g) || [];
-      const cleanTags = newTags
-        .filter((_, index) => index < 3) // Limit to 3 tags
-        .map(tag =>
-          tag
-            .slice(1)
-            .replace(/[^a-zA-Z0-9_]/g, '')
-            .toLowerCase(),
-        );
-      setTags([...new Set(cleanTags)]);
-    },
-    [],
-  ); // setTags is stable from useState
+  const handleInput = useCallback((value: string) => {
+    const newTags = value.match(/#\w+/g) || [];
+    const cleanTags = newTags
+      .filter((_, index) => index < 3) // Limit to 3 tags
+      .map(tag =>
+        tag
+          .slice(1)
+          .replace(/[^a-zA-Z0-9_]/g, '')
+          .toLowerCase(),
+      );
+    setTags([...new Set(cleanTags)]);
+  }, []); // setTags is stable from useState
 
   // Effect to load draft or prefill from prompt on component mount
   useEffect(() => {
-
     // Handle submit parameter - pre-select campfire
     if (submitToSlug && userCampfires.length > 0) {
       const targetCampfire = userCampfires.find(c => c.slug === submitToSlug);
@@ -296,24 +297,31 @@ export function PostForm({ submitToSlug, promptTextQuery, promptIdQuery }: PostF
         handleInput(savedDraft);
       }
     }
-  }, [submitToSlug, promptTextQuery, setValue, preferences?.auto_save_drafts, handleInput, userCampfires]);
+  }, [
+    submitToSlug,
+    promptTextQuery,
+    setValue,
+    preferences?.auto_save_drafts,
+    handleInput,
+    userCampfires,
+  ]);
 
   useEffect(() => {
     if (!preferences?.auto_save_drafts) return;
 
     const currentContent = content; // Use the watched content directly
-    
+
     let isInitialPromptFill = false;
     if (promptTextQuery) {
       const initialContentPattern = `\n\n#DailyPrompt `;
       if (currentContent.trim() === initialContentPattern.trim()) {
-      isInitialPromptFill = true;
+        isInitialPromptFill = true;
+      }
     }
-  }
 
-  if (!isInitialPromptFill && currentContent) {
-    debouncedSaveDraft(currentContent);
-  }
+    if (!isInitialPromptFill && currentContent) {
+      debouncedSaveDraft(currentContent);
+    }
     return () => {
       debouncedSaveDraft.cancel();
     };
@@ -480,7 +488,7 @@ export function PostForm({ submitToSlug, promptTextQuery, promptIdQuery }: PostF
 
   // Modified onSubmit function
   async function onSubmit(data: z.infer<typeof PostSchema>) {
-    if (animating) return; // Prevent multiple submissions during animation
+    if (animating || isSubmitting) return; // Prevent multiple submissions during animation
 
     if (user?.has_consented) {
       if (user?.consent_version !== CURRENT_CONSENT_VERSION) {
@@ -495,126 +503,46 @@ export function PostForm({ submitToSlug, promptTextQuery, promptIdQuery }: PostF
     vanishAndSubmit(); // Start animation
 
     setTimeout(async () => {
-      // save post values to db
-      setIsLoading(true);
-      const { content, is24HourPost, type } = data;
-      // remove tags from post content
-      const contentWithoutTags = removeHashtags(content);
-      const duration = is24HourPost ? 24 : null;
-      const expires_at = duration ? calculateExpiryDate(duration) : null;
-
-      // Filter out empty slides before submission
-      const filteredSlides = slides.filter(slide => slide.trim() !== '');
-
-      // remove hashtags from slides
-      const slidesWithoutTags = filteredSlides.map(slide =>
-        removeHashtags(slide),
-      );
-
       try {
+        setIsLoading(true);
+
         // Get prompt_id from searchParams if it exists
         const promptId = promptIdQuery;
         const promptText = promptTextQuery;
-        const is_prompt_response = promptId ? true : false;
 
-        const { data: post_id, error: postError } = await supabase.rpc(
-          'create_post_with_tags',
-          {
-            content: contentWithoutTags || slides[0],
-            mood: selectedMood?.id,
-            expires_in_24hr: is24HourPost,
-            duration: duration ? `${duration}` : duration,
-            expires_at,
-            is_sensitive: preferences?.mark_sensitive_by_default ?? false,
-            is_prompt_response,
-            tag_names: tags,
-            type,
-            slide_contents: slidesWithoutTags,
-            campfire_id: selectedCampfire ? selectedCampfire.campfireId : undefined,
-            daily_prompt_id: is_prompt_response ? promptId : undefined,
-          },
-        );
+        await submitPost({
+          content: data.content,
+          is24HourPost: data.is24HourPost,
+          type: data.type,
+          selectedMood,
+          tags,
+          slides,
+          selectedCampfire,
+          promptId,
+          promptText,
+          userId: user.id,
+          preferences,
+        });
 
-        if (postError) {
-          toast.error('Oops, something must have gone wrong 😵‍💫! try again', {
-            position: 'bottom-center',
-          });
-          return;
-        }
-
-        // If this is a prompt response, create the prompt response record
-        if (promptId && post_id && user) {
-          const { error: promptResponseError } = await supabase
-            .from('prompt_responses')
-            .insert({
-              post_id: post_id,
-              prompt_id: promptId,
-              user_id: user.id,
-            });
-
-          if (promptResponseError) {
-            console.error(
-              'Error creating prompt response:',
-              promptResponseError,
-            );
-          }
-        }
-
-        // show notification
-        if (promptId) {
-          toast.success('Your response has been saved!🙂‍↕️', {
-            position: 'bottom-center',
-          });
-        } else {
-          toast.success('Post created successfully🤭 !', {
-            position: 'bottom-center',
-          });
-        }
-
-        // Log the post creation activity
-        if (user && post_id) {
-          await logActivity({
-            userId: user.id,
-            entityType: ActivityType.POST,
-            action: 'created',
-            postId: post_id,
-            metadata: {
-              expires_in_24: is24HourPost,
-              mood: selectedMood?.id,
-              is_prompt_response: !!promptId,
-              prompt_text: promptText || undefined,
-              type: type,
-            },
-          });
-        }
-
-        // Clear the form and tags
-        if (type === 'single') {
+        // Clear the form and tags on success
+        if (data.type === 'single') {
           form.reset();
           setSelectedMood(moods[1]);
           setTags([]);
           clearDraft();
-        }
-        {
+        } else {
           setSlides(['']);
           setSelectedMood(moods[1]);
           setTags([]);
           router.refresh();
         }
-
-        if (promptId) {
-          router.replace(pathname);
-        }
-        // eslint-disable-next-line @typescript-eslint/no-unused-vars
-      } catch (_) {
-        toast('Error!', {
-          description: 'Ooops🫢 !! Could not create post, Please try again',
-          position: 'bottom-center',
-        });
+      } catch (error) {
+        // Error handling is done in the mutation hook
+        console.error('Post submission error:', error);
       } finally {
         setIsLoading(false);
       }
-    }, 800);
+    }, 600);
   }
 
   // Add feature modal
@@ -626,7 +554,7 @@ export function PostForm({ submitToSlug, promptTextQuery, promptIdQuery }: PostF
   } = useFeatureModal({
     config: modalConfig!,
     delay: 2000, // Show after 2 seconds
-    autoShow: true
+    autoShow: true,
   });
 
   //
@@ -862,7 +790,7 @@ export function PostForm({ submitToSlug, promptTextQuery, promptIdQuery }: PostF
                   name="content"
                   render={({ field }) => (
                     <FormItem>
-                      <div className="relative postTextArea">
+                      <div className="postTextArea relative">
                         <FormControl>
                           <Textarea
                             {...field}
@@ -887,7 +815,7 @@ export function PostForm({ submitToSlug, promptTextQuery, promptIdQuery }: PostF
                             disabled={animating}
                           />
                         </FormControl>
-                        <div className="text-muted-foreground absolute right-3 bottom-3 text-xs counter">
+                        <div className="text-muted-foreground counter absolute right-3 bottom-3 text-xs">
                           {charCount}/{maxChars}
                         </div>
 
@@ -1002,12 +930,12 @@ export function PostForm({ submitToSlug, promptTextQuery, promptIdQuery }: PostF
                       onFocus={() => setIsTextareaFocused(true)}
                       onBlur={() => setIsTextareaFocused(false)}
                       placeholder={`Slide ${currentSlide + 1} content... Tell part of your story here`}
-                      className="border-border min-h-[140px] resize-none rounded-xl border-2 border-dashed bg-transparent text-base leading-relaxed transition-all duration-200 focus:ring-0 focus-visible:ring-0 postTextArea"
+                      className="border-border postTextArea min-h-[140px] resize-none rounded-xl border-2 border-dashed bg-transparent text-base leading-relaxed transition-all duration-200 focus:ring-0 focus-visible:ring-0"
                       maxLength={maxChars}
                       id="tags-guide"
                       disabled={animating}
                     />
-                    <div className="text-muted-foreground absolute right-3 bottom-3 text-xs counter">
+                    <div className="text-muted-foreground counter absolute right-3 bottom-3 text-xs">
                       {charCount}/{maxChars}
                     </div>
 
@@ -1090,7 +1018,7 @@ export function PostForm({ submitToSlug, promptTextQuery, promptIdQuery }: PostF
                   </Popover>
 
                   {/* Mood Button with Slow Pulse Animation */}
-                  <div className="relative mood-display">
+                  <div className="mood-display relative">
                     <Button
                       type="button"
                       variant="ghost"
@@ -1111,7 +1039,7 @@ export function PostForm({ submitToSlug, promptTextQuery, promptIdQuery }: PostF
                         <h4 className="text-foreground mb-4 text-center font-semibold">
                           How are you feeling?
                         </h4>
-                        <div className="grid max-h-54 lg:max-h-64 grid-cols-4 gap-2 overflow-y-auto">
+                        <div className="grid max-h-54 grid-cols-4 gap-2 overflow-y-auto lg:max-h-64">
                           {moods.map(mood => (
                             <button
                               key={mood.id}
@@ -1141,7 +1069,7 @@ export function PostForm({ submitToSlug, promptTextQuery, promptIdQuery }: PostF
 
                   {/* Current Mood Display */}
                   {selectedMood && (
-                    <div className="bg-muted flex items-center gap-2 rounded-lg px-3 py-2 selected-mood">
+                    <div className="bg-muted selected-mood flex items-center gap-2 rounded-lg px-3 py-2">
                       <div
                         className={`h-2 w-2 rounded-full ${selectedMood.color}`}
                       ></div>
@@ -1231,7 +1159,7 @@ export function PostForm({ submitToSlug, promptTextQuery, promptIdQuery }: PostF
         />
       )}
 
-{modalConfig && (
+      {modalConfig && (
         <FeatureOverviewModal
           isOpen={isFeatureModalOpen}
           onClose={hideFeatureModal}
