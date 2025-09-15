@@ -512,7 +512,6 @@ export async function voteAction(
 
     return { success: true, data: voteResult };
   } catch (error) {
-    console.log(error)
     return error
       ? { success: false, error: 'Failed to process vote' }
       : { success: false, error: 'Failed to process vote, Try again' };

@@ -69,7 +69,6 @@ export function getEnhancedFeed(userId: string | undefined) {
       });
 
       if (error) {
-        console.error('Error fetching enhanced feed:', error);
         throw new Error(error.message);
       }
 
