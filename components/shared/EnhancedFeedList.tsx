@@ -31,6 +31,7 @@ const EnhancedFeedList = () => {
     fetchNextPage,
     hasNextPage,
     isFetchingNextPage,
+    refetch
   } = getEnhancedFeedPosts(user?.id);
 
   const { data: signedUrls } = useSignedAvatarUrls(posts);
@@ -72,34 +73,40 @@ const EnhancedFeedList = () => {
       if (savedContext) {
         try {
           const viewContext = JSON.parse(savedContext);
-          setTimeout(() => {
-            if (isDesktop) {
-              if (!scrollableContainer) return;
-              scrollableContainer.scrollTo({
-                top: viewContext.scrollY,
-                behavior: 'instant',
-              });
-            } else {
-              window.scrollTo({
-                top: viewContext.scrollY,
-                behavior: 'instant',
-              });
-            }
+          
+          // Wait for posts to load before restoring scroll
+          if (posts.length > 0) {
+            setTimeout(() => {
+              if (isDesktop) {
+                if (!scrollableContainer) return;
+                scrollableContainer.scrollTo({
+                  top: viewContext.scrollY,
+                  behavior: 'instant',
+                });
+              } else {
+                window.scrollTo({
+                  top: viewContext.scrollY,
+                  behavior: 'instant',
+                });
+              }
 
-            const lastPost = document.getElementById(viewContext.lastVisiblePost);
-            if (lastPost) {
-              lastPost.classList.add('briefly-highlight');
-              setTimeout(() => lastPost.classList.remove('briefly-highlight'), 1500);
-            }
+              const lastPost = document.getElementById(viewContext.lastVisiblePost);
+              if (lastPost) {
+                lastPost.classList.add('briefly-highlight');
+                setTimeout(() => lastPost.classList.remove('briefly-highlight'), 1500);
+              }
 
-            sessionStorage.removeItem('feedViewContext');
-          }, 600);
-        } catch (_) {
+              // Clean up after successful restoration
+              sessionStorage.removeItem('feedViewContext');
+            }, 300); // Reduced delay
+          }
+        } catch (error) {
+          console.error('Error restoring scroll position:', error);
           sessionStorage.removeItem('feedViewContext');
         }
       }
     }
-  }, [pathname, scrollableContainer, isDesktop]);
+  }, [pathname, scrollableContainer, isDesktop, posts.length]);
 
   // Handle post click (keep your existing logic)
   const handlePostClick = useCallback((postId: string) => {
@@ -126,6 +133,8 @@ const EnhancedFeedList = () => {
           document.elementFromPoint(0, window.innerHeight - 10)?.id || postId,
         section: 'feed',
       };
+
+      console.log("viewContext ", viewContext)
     }
 
     sessionStorage.setItem('feedViewContext', JSON.stringify(viewContext));
@@ -163,7 +172,7 @@ const EnhancedFeedList = () => {
         <h3 className="text-lg font-semibold mb-2">Failed to load feed</h3>
         <p className="text-muted-foreground mb-4">{error?.message}</p>
         <button
-          onClick={() => window.location.reload()}
+          onClick={() => refetch()}
           className="px-4 py-2 bg-primary text-primary-foreground rounded-lg hover:bg-primary/90"
         >
           Try Again
@@ -180,6 +189,13 @@ const EnhancedFeedList = () => {
         <p className="text-muted-foreground">
           Join some campfires or wait for new posts to appear in your feed!
         </p>
+
+        <button
+          onClick={() => refetch()}
+          className="mt-4 px-4 py-2 bg-primary text-primary-foreground rounded-lg hover:bg-primary/90"
+        >
+          Refresh Feed
+        </button>
       </div>
     );
   }
@@ -187,7 +203,7 @@ const EnhancedFeedList = () => {
 
   return (
     <LazyMotion features={domAnimation}>
-      <div className="flex flex-col gap-4">
+      <div className="flex flex-col gap-4" id="feedList">
         <BlurFade>
           <div
             className="flex w-full flex-1 flex-col gap-3 pt-3 md:px-8"

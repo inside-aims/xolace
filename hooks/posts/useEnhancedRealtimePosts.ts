@@ -65,7 +65,6 @@ export function useEnhancedRealtimePosts() {
           table: 'posts'
         },
         async (payload) => {
-          
           // For new posts, we need to check if they should appear in user's feed
           if (payload.eventType === 'INSERT') {
             const newPost = payload.new as any;
