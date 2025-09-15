@@ -34,15 +34,15 @@ interface Vote {
   created_at?: string; // present in INSERT/UPDATE
 }
 
-interface VotePayload {
-  schema: string;
-  table: string;
-  commit_timestamp: string; // ISO timestamp
-  eventType: "INSERT" | "UPDATE" | "DELETE";
-  new: Partial<Vote>; // INSERT/UPDATE fill this
-  old: Partial<Vote>; // DELETE/UPDATE fill this
-  errors: string | null;
-}
+// interface VotePayload {
+//   schema: string;
+//   table: string;
+//   commit_timestamp: string; // ISO timestamp
+//   eventType: "INSERT" | "UPDATE" | "DELETE";
+//   new: Partial<Vote>; // INSERT/UPDATE fill this
+//   old: Partial<Vote>; // DELETE/UPDATE fill this
+//   errors: string | null;
+// }
 
 
 
