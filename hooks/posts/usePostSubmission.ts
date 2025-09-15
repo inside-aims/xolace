@@ -158,7 +158,6 @@ export function usePostSubmission() {
         });
       }
 
-      console.log('Post created successfully', userId);
       // Invalidate and refetch the enhanced feed
       queryClient.invalidateQueries({
         queryKey: ['enhanced-feed'],
@@ -209,8 +208,7 @@ export function usePostSubmission() {
       // });
     },
 
-    onError: (error, variables) => {
-      console.error('Post submission failed:', error);
+    onError: () => {
       toast.error('Oops, something must have gone wrong 😵‍💫! Please try again', {
         position: 'bottom-center',
       });

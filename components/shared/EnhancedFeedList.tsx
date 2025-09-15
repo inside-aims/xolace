@@ -84,7 +84,8 @@ const EnhancedFeedList = () => {
                   behavior: 'instant',
                 });
               } else {
-                window.scrollTo({
+                if (!scrollableContainer) return;
+                scrollableContainer.scrollTo({
                   top: viewContext.scrollY,
                   behavior: 'instant',
                 });
@@ -125,8 +126,19 @@ const EnhancedFeedList = () => {
         section: 'feed',
       };
     } else {
+    const getScrollPosition = () => {
+      const feedContainer = document.getElementById('feed-scroll-container') || document.querySelector('.main-container');
+      const containerScrollTop = feedContainer?.scrollTop || 0;
+      
+      return containerScrollTop;
+    };
+
+     // Wait a bit for any momentum scrolling to settle
+     requestAnimationFrame(() => {
+      const finalScrollY = getScrollPosition();
+      
       viewContext = {
-        scrollY: window.scrollY,
+        scrollY: finalScrollY,
         timestamp: Date.now(),
         viewportHeight: window.innerHeight,
         lastVisiblePost:
@@ -134,7 +146,11 @@ const EnhancedFeedList = () => {
         section: 'feed',
       };
 
-      console.log("viewContext ", viewContext)
+      sessionStorage.setItem('feedViewContext', JSON.stringify(viewContext));
+      router.push(`/post/${postId}`);
+    }); // Small delay to capture accurate scroll position
+    
+    return; // Exit early for mobile to prevent duplicate navigation
     }
 
     sessionStorage.setItem('feedViewContext', JSON.stringify(viewContext));
