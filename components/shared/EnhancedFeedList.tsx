@@ -101,8 +101,7 @@ const EnhancedFeedList = () => {
               sessionStorage.removeItem('feedViewContext');
             }, 300); // Reduced delay
           }
-        } catch (error) {
-          console.error('Error restoring scroll position:', error);
+        } catch (_) {
           sessionStorage.removeItem('feedViewContext');
         }
       }
