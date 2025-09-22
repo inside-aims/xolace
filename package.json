@@ -53,6 +53,7 @@
     "@radix-ui/react-tooltip": "^1.2.7",
     "@radix-ui/react-visually-hidden": "^1.2.3",
     "@reactour/tour": "^3.7.0",
+    "@sentry/nextjs": "^10.13.0",
     "@supabase/postgrest-js": "1.19.4",
     "@supabase/ssr": "^0.6.1",
     "@supabase/supabase-js": "^2.52.0",
@@ -150,8 +151,6 @@
     "uuid": "^11.1.0"
   },
   "overrides": {
-    "@types/react": "19.0.2",
-    "@types/react-dom": "19.0.2",
     "@radix-ui/react-icons": {
       "react": "$react"
     }
