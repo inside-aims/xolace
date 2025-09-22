@@ -49,7 +49,7 @@ export default async function EnhancedFeedPage() {
           <EnhancedFeedList />
         </HealthTipsWrapper>
       </HydrationBoundary>
-      <div className="fixed right-6 bottom-10 z-50 block rounded-full md:right-20 md:bottom-10 bg-green-500">
+      <div className="fixed max-md:left-6 bottom-10 z-50 block rounded-full md:right-45 md:bottom-5 ">
         <TourButton />
       </div>
       <WelcomeModalCard />
