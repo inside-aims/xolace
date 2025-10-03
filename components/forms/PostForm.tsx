@@ -20,8 +20,12 @@ import {
 } from 'lucide-react';
 import { motion, AnimatePresence } from 'motion/react';
 import debounce from 'lodash.debounce';
-
 import { Button } from '@/components/ui/button';
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipTrigger,
+} from "@/components/ui/tooltip"
 import {
   Form,
   FormControl,
@@ -43,7 +47,6 @@ import {
   SelectValue,
 } from '@/components/ui/select';
 import { Textarea } from '@/components/ui/textarea';
-import { toast } from 'sonner';
 //import Loader from '../shared/loaders/Loader';
 import { PostSchema } from '@/validation';
 import { moods } from '@/constants/moods';
@@ -52,7 +55,7 @@ import { Send } from 'lucide-react';
 // import ShinyButton from '../ui/shiny-button';
 import { useUserState } from '@/lib/store/user';
 import { usePreferencesStore } from '@/lib/store/preferences-store';
-import { useRouter, usePathname } from 'next/navigation';
+import { useRouter } from 'next/navigation';
 //import mascot from '../../public/assets/images/mas.webp';
 import { CURRENT_CONSENT_VERSION } from '@/constants/terms';
 import { Card, CardContent } from '@/components/ui/card';
@@ -103,7 +106,6 @@ export function PostForm({
   promptIdQuery,
 }: PostFormProps) {
   const router = useRouter();
-  const pathname = usePathname();
   const { preferences } = usePreferencesStore();
 
   //get user profile
@@ -132,11 +134,20 @@ export function PostForm({
   );
   const [showCampfireSelector, setShowCampfireSelector] = useState(false);
 
+  const [showMoodTooltip, setShowMoodTooltip] = useState(false);
+  const [tooltipShowCount, setTooltipShowCount] = useState(0);
+  const [userHasSelectedMood, setUserHasSelectedMood] = useState(false);
+  const showTimerRef = useRef<NodeJS.Timeout | null>(null);
+  const hideTimerRef = useRef<NodeJS.Timeout | null>(null);
+  const moodRef = useRef<HTMLDivElement>(null);
+
+
   const { data: userCampfires = [], isLoading: loadingCampfires } =
     getUserCampfires(user?.id);
 
   // post submission mutation
   const { submitPost, isSubmitting } = usePostSubmission();
+
 
   const intervalRef = useRef<NodeJS.Timeout | null>(null);
   // const startAnimation = () => {
@@ -307,9 +318,43 @@ export function PostForm({
   ]);
 
   useEffect(() => {
+    if (userHasSelectedMood || tooltipShowCount >= 3) return;
+
+    let typingTimer: NodeJS.Timeout;
+    let showTimer: NodeJS.Timeout;
+    let hideTimer: NodeJS.Timeout;
+
+    typingTimer = setTimeout(() => {
+      const showTooltip = (count: number) => {
+        if (userHasSelectedMood || count >= 3) return;
+
+        setShowMoodTooltip(true);
+        setTooltipShowCount(prev => prev + 1);
+
+        hideTimer = setTimeout(() => {
+          setShowMoodTooltip(false);
+
+          showTimer = setTimeout(() => {
+            showTooltip(count + 1);
+          }, 10000);
+        }, 3000);
+      };
+
+      showTooltip(tooltipShowCount);
+    }, 5000);
+
+    return () => {
+      clearTimeout(typingTimer);
+      clearTimeout(showTimer);
+      clearTimeout(hideTimer);
+    };
+  }, [content, slides, currentSlide, postType, tooltipShowCount, userHasSelectedMood]);
+
+
+  useEffect(() => {
     if (!preferences?.auto_save_drafts) return;
 
-    const currentContent = content; // Use the watched content directly
+    const currentContent = content;
 
     let isInitialPromptFill = false;
     if (promptTextQuery) {
@@ -536,6 +581,10 @@ export function PostForm({
           setTags([]);
           router.refresh();
         }
+
+        setUserHasSelectedMood(false);
+        setTooltipShowCount(0);
+        setShowMoodTooltip(false);
       } catch (error) {
         // Error handling is done in the mutation hook
         console.error('Post submission error:', error);
@@ -1025,27 +1074,89 @@ export function PostForm({
                     open={showMoodPicker}
                     onOpenChange={(open) => {
                       setShowMoodPicker(open)
-                      if (open) setIsEmojiPickerOpen(false)
+                      if (open) {
+                        setIsEmojiPickerOpen(false)
+                        setUserHasSelectedMood(true)
+                        setShowMoodTooltip(false)
+                      }
                     }}
                   >
-                    <PopoverTrigger asChild>
-                      <Button
-                        type="button"
-                        variant="ghost"
-                        size="sm"
-                        className={`rounded-xl p-3 transition-all duration-900 ${
-                          isTextareaFocused || showMoodPicker
-                            ? `${selectedMood.color} scale-110 animate-[pulse_9s_ease-in-out_infinite] text-white shadow-lg`
-                            : 'text-muted-foreground hover:text-foreground hover:bg-muted'
-                        }`}
-                      >
-                        {selectedMood.icon}
-                      </Button>
-                    </PopoverTrigger>
+                    <div className="relative" ref={moodRef}>
+                      <PopoverTrigger asChild>
+                        <Button
+                          type="button"
+                          variant="ghost"
+                          size="sm"
+                          className={`rounded-xl p-3 transition-all duration-900 ${
+                            isTextareaFocused || showMoodPicker
+                              ? `${selectedMood.color} scale-110 animate-[pulse_9s_ease-in-out_infinite] text-white shadow-lg`
+                              : 'text-muted-foreground hover:text-foreground hover:bg-muted'
+                          }`}
+                          onClick={() => {
+                            // Track that user clicked on mood button
+                            setUserHasSelectedMood(true);
+                            // Hide tooltip immediately
+                            setShowMoodTooltip(false);
+                          }}
+                        >
+                          {selectedMood.icon}
+                        </Button>
+                      </PopoverTrigger>
+                      <AnimatePresence>
+                        {showMoodTooltip && !userHasSelectedMood && (
+                          <>
+                            <motion.div
+                              initial={{ opacity: 0, y: -10, scale: 0.95 }}
+                              animate={{ opacity: 1, y: 0, scale: 1 }}
+                              exit={{ opacity: 0, y: -10, scale: 0.95 }}
+                              transition={{ duration: 0.3, ease: "easeOut" }}
+                              className="absolute left-1/2 -translate-x-1/2 -top-14 z-50 pointer-events-none"
+                            >
+                              <div className="relative bg-gradient-to-r from-purple-500 to-blue-500 text-white px-4 py-2.5 rounded-lg shadow-xl text-sm font-semibold whitespace-nowrap">
+                                <span className="relative z-10 flex items-center gap-1.5">
+                                  <motion.span
+                                    animate={{ rotate: [0, -10, 10, -10, 0] }}
+                                    transition={{ duration: 0.5, repeat: Infinity, repeatDelay: 1 }}
+                                  >
+                                    ✨
+                                  </motion.span>
+                                  Pick your mood!
+                                </span>
+                                <motion.div
+                                  className="absolute inset-0 bg-purple-400 rounded-lg opacity-30"
+                                  animate={{ scale: [1, 1.05, 1] }}
+                                  transition={{ duration: 1.5, repeat: Infinity }}
+                                />
+                                <motion.div
+                                  className="absolute left-1/2 -translate-x-1/2 -bottom-1 w-2 h-2 bg-purple-500 rotate-45"
+                                  animate={{ y: [0, 2, 0] }}
+                                  transition={{ duration: 0.8, repeat: Infinity, ease: "easeInOut" }}
+                                />
+                              </div>
+                            </motion.div>
+
+                            <motion.div
+                              initial={{ opacity: 0, y: 10 }}
+                              animate={{ opacity: 1, y: 0 }}
+                              exit={{ opacity: 0, y: 10 }}
+                              transition={{ duration: 0.3, delay: 0.2 }}
+                              className="absolute left-1/2 -translate-x-1/2 top-14 z-40 pointer-events-none"
+                            >
+                              <motion.div
+                                animate={{ y: [-2, 2, -2] }}
+                                transition={{ duration: 1, repeat: Infinity, ease: "easeInOut" }}
+                                className="text-purple-500 text-2xl"
+                              >
+                                ↑
+                              </motion.div>
+                            </motion.div>
+                          </>
+                        )}
+                      </AnimatePresence>
+                    </div>
 
                     <PopoverContent
-                      className="bg-card border-border animate-in slide-in-from-top-2 z-50 mt-3 w-80 rounded-xl border p-4 shadow-2xl duration-200"
-                      align="start"
+                      className="bg-card border-border animate-in slide-in-from-top-2 z-50 mt-3 w-80 rounded-xl border p-4 shadow-2xl duration-200" align="start"
                     >
                       <h4 className="text-foreground mb-4 text-center font-semibold">
                         How are you feeling?
@@ -1058,6 +1169,8 @@ export function PostForm({
                             onClick={() => {
                               setSelectedMood(mood)
                               setShowMoodPicker(false)
+                              setUserHasSelectedMood(true)
+
                             }}
                             className={`rounded-xl p-3 transition-all duration-200 hover:scale-105 ${
                               selectedMood.id === mood.id
@@ -1097,11 +1210,11 @@ export function PostForm({
                 >
                   {isLoading ? (
                     <span className="flex gap-2">
-                      <DefaultLoader size={20} />
+                      <DefaultLoader size={20}/>
                     </span>
                   ) : (
                     <>
-                      <Send size={20} strokeWidth={1.75} absoluteStrokeWidth />
+                      <Send size={20} strokeWidth={1.75} absoluteStrokeWidth/>
                     </>
                   )}
                 </ShinyButton>
