@@ -72,6 +72,7 @@
     "embla-carousel-react": "^8.6.0",
     "emoji-picker-react": "^4.13.2",
     "geist": "^1.4.1",
+    "import-in-the-middle": "^1.14.4",
     "input-otp": "^1.4.2",
     "libphonenumber-js": "^1.12.10",
     "lodash": "^4.17.21",
