@@ -92,7 +92,7 @@ const PostMetrics = ({
     };
 
     sessionStorage.setItem('feedViewContext', JSON.stringify(viewContext));
-    router.push(`post/${post.id}?type=comment`);
+    router.push(`/post/${post.id}?type=comment`);
   };
 
   const upvoteCount = post.upvotes;
