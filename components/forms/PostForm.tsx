@@ -988,7 +988,10 @@ export function PostForm({
                   {/* Emoji Button */}
                   <Popover
                     open={isEmojiPickerOpen}
-                    onOpenChange={setIsEmojiPickerOpen}
+                    onOpenChange={(open) => {
+                      setIsEmojiPickerOpen(open)
+                      if (open) setShowMoodPicker(false)
+                    }}
                   >
                     <PopoverTrigger asChild>
                       <Button
@@ -1018,54 +1021,59 @@ export function PostForm({
                   </Popover>
 
                   {/* Mood Button with Slow Pulse Animation */}
-                  <div className="mood-display relative">
-                    <Button
-                      type="button"
-                      variant="ghost"
-                      size="sm"
-                      onClick={() => setShowMoodPicker(!showMoodPicker)}
-                      className={`rounded-xl p-3 transition-all duration-900 ${
-                        isTextareaFocused || showMoodPicker
-                          ? `${selectedMood.color} scale-110 animate-[pulse_9s_ease-in-out_infinite] text-white shadow-lg`
-                          : 'text-muted-foreground hover:text-foreground hover:bg-muted'
-                      }`}
-                    >
-                      {selectedMood.icon}
-                    </Button>
+                  <Popover
+                    open={showMoodPicker}
+                    onOpenChange={(open) => {
+                      setShowMoodPicker(open)
+                      if (open) setIsEmojiPickerOpen(false)
+                    }}
+                  >
+                    <PopoverTrigger asChild>
+                      <Button
+                        type="button"
+                        variant="ghost"
+                        size="sm"
+                        className={`rounded-xl p-3 transition-all duration-900 ${
+                          isTextareaFocused || showMoodPicker
+                            ? `${selectedMood.color} scale-110 animate-[pulse_9s_ease-in-out_infinite] text-white shadow-lg`
+                            : 'text-muted-foreground hover:text-foreground hover:bg-muted'
+                        }`}
+                      >
+                        {selectedMood.icon}
+                      </Button>
+                    </PopoverTrigger>
 
-                    {/* Mood Picker Dropdown */}
-                    {showMoodPicker && (
-                      <div className="bg-card border-border animate-in slide-in-from-top-2 absolute top-full left-0 z-50 mt-3 w-80 rounded-xl border p-4 shadow-2xl duration-200">
-                        <h4 className="text-foreground mb-4 text-center font-semibold">
-                          How are you feeling?
-                        </h4>
-                        <div className="grid max-h-54 grid-cols-4 gap-2 overflow-y-auto lg:max-h-64">
-                          {moods.map(mood => (
-                            <button
-                              key={mood.id}
-                              type="button"
-                              onClick={() => {
-                                setSelectedMood(mood);
-                                setShowMoodPicker(false);
-                              }}
-                              className={`rounded-xl p-3 transition-all duration-200 hover:scale-105 ${
-                                selectedMood.id === mood.id
-                                  ? `${mood.color} scale-105 text-white shadow-lg`
-                                  : `bg-muted hover:bg-muted/80 text-foreground ${mood.hoverColor}`
-                              }`}
-                            >
-                              <div className="flex flex-col items-center gap-1">
-                                {mood.icon}
-                                <span className="text-xs font-medium">
-                                  {mood.label}
-                                </span>
-                              </div>
-                            </button>
-                          ))}
-                        </div>
+                    <PopoverContent
+                      className="bg-card border-border animate-in slide-in-from-top-2 z-50 mt-3 w-80 rounded-xl border p-4 shadow-2xl duration-200"
+                      align="start"
+                    >
+                      <h4 className="text-foreground mb-4 text-center font-semibold">
+                        How are you feeling?
+                      </h4>
+                      <div className="grid max-h-54 grid-cols-4 gap-2 overflow-y-auto lg:max-h-64">
+                        {moods.map(mood => (
+                          <button
+                            key={mood.id}
+                            type="button"
+                            onClick={() => {
+                              setSelectedMood(mood)
+                              setShowMoodPicker(false)
+                            }}
+                            className={`rounded-xl p-3 transition-all duration-200 hover:scale-105 ${
+                              selectedMood.id === mood.id
+                                ? `${mood.color} scale-105 text-white shadow-lg`
+                                : `bg-muted hover:bg-muted/80 text-foreground ${mood.hoverColor}`
+                            }`}
+                          >
+                            <div className="flex flex-col items-center gap-1">
+                              {mood.icon}
+                              <span className="text-xs font-medium">{mood.label}</span>
+                            </div>
+                          </button>
+                        ))}
                       </div>
-                    )}
-                  </div>
+                    </PopoverContent>
+                  </Popover>
 
                   {/* Current Mood Display */}
                   {selectedMood && (
