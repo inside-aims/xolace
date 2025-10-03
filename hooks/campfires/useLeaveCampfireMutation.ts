@@ -81,11 +81,14 @@ export function useLeaveCampfireMutation() {
       }
 
       // Show err.message when it is Firestarters cannot leave their campfire. Transfer ownership first. or general message
-      if (err.message === 'Firestarters cannot leave their campfire. Transfer ownership first.') {
+      if (
+        err.message ===
+        'Firestarters cannot leave their campfire. Transfer ownership first.'
+      ) {
         toast.error(err.message);
         return;
       }
-      toast.error("Failed to leave campfire. Please try again.");
+      toast.error('Failed to leave campfire. Please try again.');
     },
     onSuccess: (_, campfireId) => {
       toast.success(
@@ -96,6 +99,11 @@ export function useLeaveCampfireMutation() {
       queryClient.invalidateQueries({
         queryKey: ['campfires', 'public', campfireId],
       });
+
+      queryClient.invalidateQueries({
+        queryKey: ['campfires', 'public', 'feed'],
+      });
+
       queryClient.invalidateQueries({
         queryKey: ['campfire', 'members', campfireId],
       });
@@ -105,6 +113,10 @@ export function useLeaveCampfireMutation() {
       });
       queryClient.invalidateQueries({
         queryKey: ['campfires', 'user', 'favorites', user?.id],
+      });
+
+      queryClient.invalidateQueries({
+        queryKey: ['campfires', 'user', user?.id, 'count'],
       });
     },
     onSettled: () => {
