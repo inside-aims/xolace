@@ -315,11 +315,10 @@ export function PostForm({
   useEffect(() => {
     if (userHasSelectedMood || tooltipShowCount >= 3) return;
 
-    let typingTimer: NodeJS.Timeout;
     let showTimer: NodeJS.Timeout;
     let hideTimer: NodeJS.Timeout;
 
-    typingTimer = setTimeout(() => {
+    const typingTimer = setTimeout(() => {
       const showTooltip = (count: number) => {
         if (userHasSelectedMood || count >= 3 || !content.trim()) return;
 
@@ -343,7 +342,7 @@ export function PostForm({
       clearTimeout(showTimer);
       clearTimeout(hideTimer);
     };
-  }, [content, slides, currentSlide, postType, tooltipShowCount, userHasSelectedMood]);
+  }, [content, slides, currentSlide, postType, tooltipShowCount, userHasSelectedMood, showMoodTooltip]);
 
 
   useEffect(() => {
