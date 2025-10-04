@@ -52,6 +52,8 @@ export function useJoinCampfireMutation() {
       toast.success('Successfully joined campfire!');
       queryClient.invalidateQueries({ queryKey: ['campfires', 'user', 'joined', user?.id] });
       queryClient.invalidateQueries({ queryKey: ['campfires', 'user', 'favorites', user?.id] });
+      queryClient.invalidateQueries({ queryKey: ['campfires', 'public', 'feed'] });
+      queryClient.invalidateQueries({ queryKey: ['campfires', 'user', user?.id, 'count'] });
     },
     onSettled: () => {
       queryClient.invalidateQueries({ queryKey: ['campfires', 'public'] });
