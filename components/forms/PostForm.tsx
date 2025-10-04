@@ -22,11 +22,6 @@ import { motion, AnimatePresence } from 'motion/react';
 import debounce from 'lodash.debounce';
 import { Button } from '@/components/ui/button';
 import {
-  Tooltip,
-  TooltipContent,
-  TooltipTrigger,
-} from "@/components/ui/tooltip"
-import {
   Form,
   FormControl,
   FormField,
@@ -326,7 +321,7 @@ export function PostForm({
 
     typingTimer = setTimeout(() => {
       const showTooltip = (count: number) => {
-        if (userHasSelectedMood || count >= 3) return;
+        if (userHasSelectedMood || count >= 3 || !content.trim()) return;
 
         setShowMoodTooltip(true);
         setTooltipShowCount(prev => prev + 1);
@@ -336,12 +331,12 @@ export function PostForm({
 
           showTimer = setTimeout(() => {
             showTooltip(count + 1);
-          }, 10000);
-        }, 3000);
+          }, 50000);
+        }, 4000);
       };
 
       showTooltip(tooltipShowCount);
-    }, 5000);
+    }, 1000);
 
     return () => {
       clearTimeout(typingTimer);
@@ -1087,9 +1082,9 @@ export function PostForm({
                           type="button"
                           variant="ghost"
                           size="sm"
-                          className={`rounded-xl p-3 transition-all duration-900 ${
+                          className={`rounded-xl p-3 transition-all  ${
                             isTextareaFocused || showMoodPicker
-                              ? `${selectedMood.color} scale-110 animate-[pulse_9s_ease-in-out_infinite] text-white shadow-lg`
+                              ? `${selectedMood.color} animate-[pulse_9s_ease-in-out_infinite] text-white shadow-lg`
                               : 'text-muted-foreground hover:text-foreground hover:bg-muted'
                           }`}
                           onClick={() => {
@@ -1156,7 +1151,7 @@ export function PostForm({
                     </div>
 
                     <PopoverContent
-                      className="bg-card border-border animate-in slide-in-from-top-2 z-50 mt-3 w-80 rounded-xl border p-4 shadow-2xl duration-200" align="start"
+                      className="w-80 rounded-xl border p-4 shadow-2xl" align="start"
                     >
                       <h4 className="text-foreground mb-4 text-center font-semibold">
                         How are you feeling?
@@ -1170,7 +1165,6 @@ export function PostForm({
                               setSelectedMood(mood)
                               setShowMoodPicker(false)
                               setUserHasSelectedMood(true)
-
                             }}
                             className={`rounded-xl p-3 transition-all duration-200 hover:scale-105 ${
                               selectedMood.id === mood.id
