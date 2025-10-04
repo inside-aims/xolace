@@ -71,7 +71,7 @@ export default function JoinCampfiresStep({
         </AlertDialogDescription>
         {isAnon && (
           <AlertDialogDescription className="text-center text-gray-500 dark:text-gray-300">
-           <span className="font-medium text-amber-400">NB:</span> Anonymous users can't join campfires.
+           <span className="font-medium text-amber-400">NB:</span> Anonymous users can&apos;t join campfires.
           </AlertDialogDescription>
         )}
         </>
