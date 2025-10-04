@@ -1,32 +1,33 @@
 'use client';
 
 import { useState, useEffect } from 'react';
-import { Button } from '@/components/ui/button';
-import {
-  AlertDialog,
-  AlertDialogContent,
-  AlertDialogDescription,
-  AlertDialogFooter,
-  AlertDialogHeader,
-  AlertDialogTitle,
-} from '@/components/ui/alert-dialog';
 import { useUserState } from '@/lib/store/user';
 import { getSupabaseBrowserClient } from '@/utils/supabase/client';
-import { HeartHandshake, Zap, Medal } from 'lucide-react';
+import { useUserCampfireCount } from '@/queries/users/useUserCampfireCount';
+import { getLimitedPublicCampfires } from '@/queries/campfires/getLimitedPublicCampfies';
+import { useJoinCampfireMutation } from '@/hooks/campfires/useJoinCampfireMutation';
 import confetti from 'canvas-confetti';
+import WelcomeStep from '@/components/modals/WelcomeStep';
+import JoinCampfiresStep from '../modals/JoinCampfireStep';
+import { AlertDialog, AlertDialogContent } from '@/components/ui/alert-dialog';
 
 export default function WelcomeModalCard() {
-  // initialize supabase client
   const supabase = getSupabaseBrowserClient();
-
-  // get user profile data
   const user = useUserState(state => state.user);
+  const { data: campfireCount, isLoading } = useUserCampfireCount(user?.id);
+  const { data: publicCampfires, isLoading: isLoadingCampfires } =
+    getLimitedPublicCampfires(user?.id);
+  const joinCampfireMutation = useJoinCampfireMutation();
 
   const [isOpen, setIsOpen] = useState(false);
   const [isLoaded, setIsLoaded] = useState(false);
+  const [currentStep, setCurrentStep] = useState<'welcome' | 'join'>('welcome');
+  const [joiningCampfireId, setJoiningCampfireId] = useState<string | null>(
+    null,
+  );
 
   useEffect(() => {
-    if (!user) return; // Ensure user is loaded before proceeding
+    if (!user || isLoading) return;
     setIsLoaded(true);
 
     const dismissed = localStorage.getItem('welcomePopupDismissed');
@@ -36,31 +37,41 @@ export default function WelcomeModalCard() {
         setIsOpen(true);
       }
     } else {
-      if (!dismissed && !user?.has_seen_welcome) {
+      console.log('dismissed', dismissed);
+      console.log('has_seen_welcome', user?.has_seen_welcome);
+      console.log('campfireCount', campfireCount);
+      if ((!dismissed && !user?.has_seen_welcome) || campfireCount === 0) {
         setIsOpen(true);
       }
     }
-  }, [user]);
+  }, [user, campfireCount, isLoading]);
 
-  const handleDismiss = async () => {
-    localStorage.setItem('welcomePopupDismissed', 'true');
-    setIsOpen(false);
+  const hasJoinedCampfire = publicCampfires?.some(c => c.isMember) ?? false;
 
-    if (user && !user.is_anonymous) {
-      // Update user profile in Supabase
-      await supabase
-        .from('profiles')
-        .update({ has_seen_welcome: true })
-        .eq('id', user.id);
+  const handleJoinCampfire = async (campfireId: string) => {
+    setJoiningCampfireId(campfireId);
+    try {
+      await joinCampfireMutation.mutateAsync(campfireId);
+    } finally {
+      setJoiningCampfireId(null);
     }
+  };
 
-    // confetti animation
-    const end = Date.now() + 3 * 1000; // 3 seconds
-    const colors = ["#a786ff", "#fd8bbc", "#eca184", "#f8deb1"];
- 
+  const handleNext = () => {
+    setCurrentStep('join');
+  };
+
+  const handleBack = () => {
+    setCurrentStep('welcome');
+  };
+
+  const triggerConfetti = () => {
+    const end = Date.now() + 3 * 1000;
+    const colors = ['#a786ff', '#fd8bbc', '#eca184', '#f8deb1'];
+
     const frame = () => {
       if (Date.now() > end) return;
- 
+
       confetti({
         particleCount: 2,
         angle: 60,
@@ -77,55 +88,79 @@ export default function WelcomeModalCard() {
         origin: { x: 1, y: 0.5 },
         colors: colors,
       });
- 
+
       requestAnimationFrame(frame);
     };
- 
+
     frame();
-    
   };
 
-  // Prevent rendering the popup before the user state is fully loaded
+  const handleFinish = async () => {
+    if (!hasJoinedCampfire && !user?.is_anonymous) return;
+
+    console.log('hasJoinedCampfire', hasJoinedCampfire);
+    
+    localStorage.setItem('welcomePopupDismissed', 'true');
+    setIsOpen(false);
+
+    if (user && !user.is_anonymous) {
+      await supabase
+        .from('profiles')
+        .update({ has_seen_welcome: true })
+        .eq('id', user.id);
+    }
+
+    triggerConfetti();
+  };
+
+  const handleOpenChange = (open: boolean) => {
+    // Only allow closing if user has joined at least one campfire and is on join step
+    if (!open && currentStep === 'join' && hasJoinedCampfire) {
+      handleFinish();
+    }
+  };
+
   if (!isLoaded) return null;
 
   return (
-    <AlertDialog open={isOpen} onOpenChange={() => {}}>
-      <AlertDialogContent className="mx-auto max-w-[90%] rounded-xl border-gray-700 bg-gray-900 text-gray-100 md:max-w-[425px]">
-        <AlertDialogHeader>
-          <AlertDialogTitle className="text-center text-2xl font-bold">
-          You&apos;re Early — and Essential! 🚀 
-          </AlertDialogTitle>
-          <AlertDialogDescription className="text-center text-gray-300">
-          <span className='text-lavender-500'>Welcome to Xolace 🎉</span>, and thank you for being part of the few hundreds shaping Xolace&apos;s future.
-          </AlertDialogDescription>
-        </AlertDialogHeader>
-        <div className="py-4">
-        <div className=" text-gray-300 flex items-start gap-2">
-        <Medal className="mt-1 h-5 w-5 flex-shrink-0 text-ocean-400" />
-       <p>
-       <span className="font-medium text-purple-300">Early adopters like you</span> will define what this space becomes. 
-       We can&apos;t wait to see what you&apos;ll share.
-       </p>
-      </div>
-          <div className="mb-4 text-gray-300 flex items-start gap-2">
-          <HeartHandshake className="mt-1 h-5 w-5 flex-shrink-0 text-pink-400" />
-           <p> At <span className='text-ocean-400'>Xolace</span>, we believe someone out there needs your story just as much as you need to tell it. Share your journey and help us grow something meaningful together.</p>
-          </div>
-          <div className="rounded-lg border border-purple-900/50 bg-gray-800/50 p-3">
-        <div className="flex items-center gap-2 text-sm text-purple-300">
-          <Zap className="h-4 w-4" />
-          <span>Early adopter perks coming soon</span>
-        </div>
-      </div>
-        </div>
-        <AlertDialogFooter>
-          <Button
-            onClick={handleDismiss}
-            className="w-full bg-indigo-600 text-white hover:bg-indigo-700"
+    <AlertDialog open={isOpen} onOpenChange={handleOpenChange}>
+      <AlertDialogContent className="mx-auto max-w-[90%] overflow-hidden !rounded-2xl border-none dark:bg-gray-800 dark:text-gray-100 md:max-w-[500px]">
+        <div className="relative">
+          <div
+            className={`transition-all duration-500 ease-in-out ${
+              currentStep === 'welcome'
+                ? 'translate-x-0 opacity-100'
+                : 'pointer-events-none absolute inset-0 -translate-x-full opacity-0'
+            }`}
           >
-            I&apos;m ready to share!
-          </Button>
-        </AlertDialogFooter>
+            <WelcomeStep
+              onNext={handleNext}
+              onSkip={handleNext}
+              isAnon={user?.is_anonymous}
+              onFinish={handleFinish}
+              hasJoinedCampfire={hasJoinedCampfire}
+            />
+          </div>
+
+          <div
+            className={`transition-all duration-500 ease-in-out ${
+              currentStep === 'join'
+                ? 'translate-x-0 opacity-100'
+                : 'pointer-events-none absolute inset-0 translate-x-full opacity-0'
+            }`}
+          >
+            <JoinCampfiresStep
+              publicCampfires={publicCampfires}
+              isLoadingCampfires={isLoadingCampfires}
+              joiningCampfireId={joiningCampfireId}
+              hasJoinedCampfire={hasJoinedCampfire}
+              onJoinCampfire={handleJoinCampfire}
+              onBack={handleBack}
+              onFinish={handleFinish}
+              isAnon={user?.is_anonymous}
+            />
+          </div>
+        </div>
       </AlertDialogContent>
     </AlertDialog>
   );
