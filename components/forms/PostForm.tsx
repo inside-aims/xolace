@@ -1114,7 +1114,7 @@ export function PostForm({
                                   >
                                     ✨
                                   </motion.span>
-                                  Pick your mood!
+                                  Pick how you feel!
                                 </span>
                                 <motion.div
                                   className="absolute inset-0 bg-purple-400 rounded-lg opacity-30"

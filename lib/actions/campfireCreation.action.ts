@@ -100,7 +100,6 @@ export const createCampfire = async (formData: FormData) => {
     }
   }
 
-  console.log('Campfire ', campfire);
   return { success: true, data: campfire };
 };
 

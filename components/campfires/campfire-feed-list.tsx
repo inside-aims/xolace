@@ -108,7 +108,6 @@ const CampfireFeedList = ({
         campfireId,
       };
     }
-    console.log("clicking")
     sessionStorage.setItem(`campfireFeedViewContext-${campfireId}`, JSON.stringify(viewContext));
     router.push(`/post/${postId}`);
   };
