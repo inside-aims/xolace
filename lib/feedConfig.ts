@@ -116,6 +116,7 @@ export const FEED_CONFIG = {
    */
   export type FeedItemType = 'post' | 'featured';
   
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   export interface FeedItem<T = any> {
     type: FeedItemType;
     data: T;
