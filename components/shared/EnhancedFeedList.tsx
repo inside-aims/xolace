@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect, useState, useCallback } from 'react';
+import { useEffect, useState, useCallback, useMemo } from 'react';
 import { useRouter, usePathname } from 'next/navigation';
 import { useInView } from 'react-intersection-observer';
 import { LazyMotion, domAnimation } from 'motion/react';
@@ -15,6 +15,10 @@ import { useEnhancedRealtimePosts } from '@/hooks/posts/useEnhancedRealtimePosts
 import { DefaultLoader } from './loaders/DefaultLoader';
 import { AlertCircle, Users} from 'lucide-react';
 import { FeedEnhancedPostCard } from '../cards/FeedEnhancedPostCard';
+import { buildFeedItems, isFeedPost, isFeaturedCampfire } from '@/utils/feed/buildFeedItems';
+import { useGetFeaturedCampfire } from '@/queries/posts/useGetFeaturedCampfire';
+import { FEED_CONFIG } from '@/lib/feedConfig';
+import { FeaturedCampfireCard } from '../cards/FeaturedCampfireCard';
 
 /**
  * Enhanced Feed List with infinite scroll and smart prioritization
@@ -34,6 +38,9 @@ const EnhancedFeedList = () => {
     refetch
   } = getEnhancedFeedPosts(user?.id);
 
+  // Fetch featured campfire (silently fails if unavailable)
+  const { data: featuredCampfire } = useGetFeaturedCampfire();
+
   const { data: signedUrls } = useSignedAvatarUrls(posts);
   const router = useRouter();
   const pathname = usePathname();
@@ -41,8 +48,8 @@ const EnhancedFeedList = () => {
 
   // Infinite scroll trigger
   const { ref: loadMoreRef, inView } = useInView({
-    threshold: 0,
-    rootMargin: '100px',
+    threshold: FEED_CONFIG.INFINITE_SCROLL.THRESHOLD,
+    rootMargin: FEED_CONFIG.INFINITE_SCROLL.ROOT_MARGIN,
   });
 
   // States
@@ -50,6 +57,14 @@ const EnhancedFeedList = () => {
 
   // Real-time updates
   useEnhancedRealtimePosts();
+
+   /**
+   * Build unified feed items array with featured campfires injected
+   * Memoized for optimal performance - only recalculates when dependencies change
+   */
+   const feedItems = useMemo(() => {
+    return buildFeedItems(posts, featuredCampfire);
+  }, [posts, featuredCampfire]);
 
   // Load more posts when intersection observer triggers
   useEffect(() => {
@@ -94,12 +109,12 @@ const EnhancedFeedList = () => {
               const lastPost = document.getElementById(viewContext.lastVisiblePost);
               if (lastPost) {
                 lastPost.classList.add('briefly-highlight');
-                setTimeout(() => lastPost.classList.remove('briefly-highlight'), 1500);
+                setTimeout(() => lastPost.classList.remove('briefly-highlight'), FEED_CONFIG.SCROLL_RESTORATION.HIGHLIGHT_DURATION);
               }
 
               // Clean up after successful restoration
               sessionStorage.removeItem('feedViewContext');
-            }, 300); // Reduced delay
+            }, FEED_CONFIG.SCROLL_RESTORATION.DELAY);
           }
         } catch (_) {
           sessionStorage.removeItem('feedViewContext');
@@ -108,7 +123,7 @@ const EnhancedFeedList = () => {
     }
   }, [pathname, scrollableContainer, isDesktop, posts.length]);
 
-  // Handle post click (keep your existing logic)
+  // Handle post click
   const handlePostClick = useCallback((postId: string) => {
     let viewContext = {};
     if (isDesktop) {
@@ -225,24 +240,31 @@ const EnhancedFeedList = () => {
             id="feedList"
             data-tour="feedList"
           >
-            {posts.map((post, index) => (
+            {feedItems.map((item) => (
               <BlurFade
-                key={post.id}
-                postId={`post-${index + 1}`}
+                key={item.key}
+                postId={`item-${item.index + 1}`}
                 duration={0.3}
                 inView
               >
                 <div>
-                  {/* {renderPriorityIndicator(post)} */}
-                  <FeedEnhancedPostCard
-                    post={post}
-                    onClick={() => handlePostClick(post.id)}
-                    className="bg-bg dark:bg-bg-dark mb-5 w-full rounded-none border-x-0 md:w-full dark:ring-zinc-800 dark:hover:ring-zinc-700 dark:focus-visible:ring-[#193a47]"
-                    signedUrls={signedUrls}
-                  />
+                  {isFeedPost(item) ? (
+                    <FeedEnhancedPostCard
+                      post={item.data}
+                      onClick={() => handlePostClick(item.data.id)}
+                      className="bg-bg dark:bg-bg-dark mb-5 w-full rounded-none border-x-0 md:w-full dark:ring-zinc-800 dark:hover:ring-zinc-700 dark:focus-visible:ring-[#193a47]"
+                      signedUrls={signedUrls}
+                    />
+                  ) : isFeaturedCampfire(item) ? (
+                    <FeaturedCampfireCard
+                      campfire={item.data}
+                      className="mb-5 w-full md:w-full"
+                    />
+                  ) : null}
                 </div>
               </BlurFade>
             ))}
+
 
             {/* Infinite scroll loader */}
             <div ref={loadMoreRef} className="flex justify-center py-8">
