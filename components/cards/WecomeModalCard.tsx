@@ -37,9 +37,6 @@ export default function WelcomeModalCard() {
         setIsOpen(true);
       }
     } else {
-      console.log('dismissed', dismissed);
-      console.log('has_seen_welcome', user?.has_seen_welcome);
-      console.log('campfireCount', campfireCount);
       if ((!dismissed && !user?.has_seen_welcome) || campfireCount === 0) {
         setIsOpen(true);
       }
@@ -98,7 +95,6 @@ export default function WelcomeModalCard() {
   const handleFinish = async () => {
     if (!hasJoinedCampfire && !user?.is_anonymous) return;
 
-    console.log('hasJoinedCampfire', hasJoinedCampfire);
     
     localStorage.setItem('welcomePopupDismissed', 'true');
     setIsOpen(false);
