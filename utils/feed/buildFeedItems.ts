@@ -1,6 +1,6 @@
 import { FeedItem, calculateFeaturedPositions } from '@/lib/feedConfig';
 import { EnhancedPost } from '@/queries/posts/getEnhancedFeed';
-import { FeaturedCampfire } from '@/queries/posts/useGetFeaturedCampfire';
+import { FeaturedCampfireWithMembership } from '@/queries/posts/useGetFeaturedCampfire';
 
 /**
  * Builds a unified feed items array with posts and featured content injected at calculated positions
@@ -17,7 +17,7 @@ import { FeaturedCampfire } from '@/queries/posts/useGetFeaturedCampfire';
  */
 export function buildFeedItems(
   posts: EnhancedPost[],
-  featuredCampfire: FeaturedCampfire | null | undefined
+  featuredCampfire: FeaturedCampfireWithMembership | null | undefined
 ): FeedItem[] {
   // Early return if no posts
   if (!posts || posts.length === 0) {
@@ -66,6 +66,6 @@ export function isFeedPost(item: FeedItem): item is FeedItem<EnhancedPost> {
 /**
  * Type guard to check if a feed item is a featured campfire
  */
-export function isFeaturedCampfire(item: FeedItem): item is FeedItem<FeaturedCampfire> {
+export function isFeaturedCampfire(item: FeedItem): item is FeedItem<FeaturedCampfireWithMembership> {
   return item.type === 'featured';
 }

@@ -1,5 +1,6 @@
 import { useQuery } from '@tanstack/react-query';
 import { getSupabaseBrowserClient } from '@/utils/supabase/client';
+import { useCampfireMembership } from '@/hooks/campfires/useCampfireMembership';
 
 export interface FeaturedCampfire {
   id: string;
@@ -12,6 +13,10 @@ export interface FeaturedCampfire {
   member_count: number;
   created_at: string;
 }
+
+export interface FeaturedCampfireWithMembership extends FeaturedCampfire {
+    is_member: boolean;
+  }
 
 const FEATURED_CAMPFIRE_STALE_TIME = 15 * 60 * 1000; // 15 minutes (featured content doesn't change often)
 const FEATURED_CAMPFIRE_CACHE_TIME = 30 * 60 * 1000; // 30 minutes
@@ -30,7 +35,7 @@ const DUMMY_FEATURED_CAMPFIRE: FeaturedCampfire = {
   created_at: new Date().toISOString(),
 };
 
-export function useGetFeaturedCampfire() {
+export function useGetFeaturedCampfireBase() {
   const supabase = getSupabaseBrowserClient();
 
   return useQuery<FeaturedCampfire, Error>({
@@ -120,3 +125,77 @@ export function useGetFeaturedCampfire() {
     retryDelay: 1000,
   });
 }
+
+
+export function useGetFeaturedCampfire(userId?: string) {
+    // Fetch featured campfire (long cache)
+    const { 
+      data: campfire, 
+      isLoading: isCampfireLoading,
+      isError: isCampfireError,
+      error: campfireError 
+    } = useGetFeaturedCampfireBase();
+  
+    // Fetch membership status separately (short cache)
+    const { 
+      data: isMember = false,
+      isLoading: isMembershipLoading 
+    } = useCampfireMembership({
+      campfireId: campfire?.id || '',
+      userId: userId || '',
+    });
+  
+    // Combine the results
+    return {
+      data: campfire ? {
+        ...campfire,
+        is_member: isMember,
+      } as FeaturedCampfireWithMembership : undefined,
+      isLoading: isCampfireLoading || isMembershipLoading,
+      isError: isCampfireError,
+      error: campfireError,
+    };
+  }
+
+
+
+
+
+  /**
+ * Utility function to invalidate featured campfire cache
+ * Use when campfire data changes (rare)
+ */
+export function invalidateFeaturedCampfireCache(queryClient: any) {
+    queryClient.invalidateQueries({ queryKey: ['featured-campfire'] });
+  }
+  
+  /**
+   * Utility function to invalidate membership cache
+   * Use when user joins/leaves a campfire (common)
+   */
+  export function invalidateMembershipCache(
+    queryClient: any, 
+    campfireId: string, 
+    userId: string
+  ) {
+    queryClient.invalidateQueries({ 
+      queryKey: ['campfire-membership', campfireId, userId] 
+    });
+  }
+  
+  /**
+   * Utility function to update membership cache optimistically
+   * Use for instant UI updates when joining/leaving
+   */
+  export function updateMembershipCacheOptimistically(
+    queryClient: any,
+    campfireId: string,
+    userId: string,
+    isMember: boolean
+  ) {
+    queryClient.setQueryData(
+      ['campfire-membership', campfireId, userId],
+      isMember
+    );
+  }
+  
