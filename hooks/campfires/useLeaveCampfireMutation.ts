@@ -5,6 +5,7 @@ import { useUserState } from '@/lib/store/user';
 import { Campfire } from '@/queries/campfires/getAllPublicCampfires';
 import { CampfireDetails } from '@/queries/campfires/getCampfireWithSlug';
 import { toast } from 'sonner';
+import { invalidateFeaturedCampfireCache } from '@/queries/posts/useGetFeaturedCampfire';
 
 interface LeaveCampfireContext {
   previousCampfires: Campfire[] | undefined;
@@ -118,6 +119,11 @@ export function useLeaveCampfireMutation() {
       queryClient.invalidateQueries({
         queryKey: ['campfires', 'user', user?.id, 'count'],
       });
+
+      queryClient.invalidateQueries({
+        queryKey: ['campfire-membership', campfireId, user?.id],
+      });
+      invalidateFeaturedCampfireCache(queryClient);
     },
     onSettled: () => {
       // Always refetch the campfires list

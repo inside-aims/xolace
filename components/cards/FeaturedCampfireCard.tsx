@@ -2,12 +2,12 @@
 
 import { useRouter } from 'next/navigation';
 import { Users, Flame, TrendingUp, ArrowRightSquare } from 'lucide-react';
-import { FeaturedCampfire } from '@/queries/posts/useGetFeaturedCampfire';
+import { FeaturedCampfireWithMembership } from '@/queries/posts/useGetFeaturedCampfire';
 import { motion } from 'motion/react';
 import { Button } from '../ui/button';
 
 interface FeaturedCampfireCardProps {
-  campfire: FeaturedCampfire;
+  campfire: FeaturedCampfireWithMembership;
   className?: string;
 }
 
@@ -20,19 +20,6 @@ export function FeaturedCampfireCard({
   const handleNavigate = () => {
     router.push(`/x/${campfire.slug}`);
   };
-
-  //   const handleJoin = async (e: React.MouseEvent) => {
-  //     e.stopPropagation();
-  //     setIsJoining(true);
-
-  //     // TODO: Implement join logic
-  //     // await joinCampfire(campfire.id);
-
-  //     setTimeout(() => {
-  //       setIsJoining(false);
-  //       router.push(`/campfire/${campfire.slug}`);
-  //     }, 500);
-  //   };
 
   const formatMemberCount = (count: number) => {
     if (count >= 1000) {
@@ -122,7 +109,7 @@ export function FeaturedCampfireCard({
             onClick={handleNavigate}
             className="w-1/2 rounded-full bg-gradient-to-r from-amber-500 to-orange-500 px-2 py-2.5 text-sm font-semibold text-white shadow-md shadow-amber-500/25 transition-all duration-200 hover:scale-[1.02] hover:shadow-lg hover:shadow-amber-500/30 active:scale-[0.98] disabled:cursor-not-allowed disabled:opacity-50"
           >
-            Connect <ArrowRightSquare className="h-4 w-4 ml-2" />
+            {campfire.is_member ? 'See Trending' : 'Connect'} <ArrowRightSquare className="h-4 w-4 ml-2" />
           </Button>
         </div>
 

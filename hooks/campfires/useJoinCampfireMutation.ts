@@ -3,6 +3,7 @@ import { joinCampfire } from '@/lib/actions/campfireCreation.action';
 import { useUserState } from '@/lib/store/user';
 import { Campfire } from '@/queries/campfires/getAllPublicCampfires';
 import { toast } from 'sonner';
+import { invalidateFeaturedCampfireCache } from '@/queries/posts/useGetFeaturedCampfire';
 
 interface JoinCampfireContext {
   previousCampfires: Campfire[] | undefined;
@@ -48,12 +49,15 @@ export function useJoinCampfireMutation() {
       toast.error('Failed to join campfire. Please try again.');
       console.error('Failed to join campfire:', err);
     },
-    onSuccess: () => {
+    onSuccess: (_, campfireId) => {
       toast.success('Successfully joined campfire!');
       queryClient.invalidateQueries({ queryKey: ['campfires', 'user', 'joined', user?.id] });
       queryClient.invalidateQueries({ queryKey: ['campfires', 'user', 'favorites', user?.id] });
       queryClient.invalidateQueries({ queryKey: ['campfires', 'public', 'feed'] });
       queryClient.invalidateQueries({ queryKey: ['campfires', 'user', user?.id, 'count'] });
+      //['campfire-membership', campfireId, userId]
+      queryClient.invalidateQueries({ queryKey: ['campfire-membership', campfireId, user?.id] });
+      invalidateFeaturedCampfireCache(queryClient);
     },
     onSettled: () => {
       queryClient.invalidateQueries({ queryKey: ['campfires', 'public'] });
