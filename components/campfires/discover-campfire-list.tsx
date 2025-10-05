@@ -22,9 +22,12 @@ import { DotLottieReact } from '@lottiefiles/dotlottie-react';
 import { getFeatureModalConfig } from '@/utils/featureModals';
 import { useFeatureModal } from '@/hooks/useFeatureModal';
 import { FeatureOverviewModal } from '../modals/FeatureOverViewModal';
+import { useQueryClient } from '@tanstack/react-query';
+import { invalidateMembershipCache, updateMembershipCacheOptimistically } from '@/queries/posts/useGetFeaturedCampfire';
 
 const DiscoverCampfireList = () => {
   const user = useUserState(state => state.user);
+  const queryClient = useQueryClient();
   const [searchTerm, setSearchTerm] = useState<string>('');
   const [selectedPurposes, setSelectedPurposes] = useState<CampfirePurpose[]>(
     [],
@@ -51,7 +54,7 @@ const DiscoverCampfireList = () => {
   const joinCampfireMutation = useJoinCampfireMutation();
 
   // Helper function for join campfire
-  const handleJoinClick = (campfireId: string) => {
+  const handleJoinClick = async (campfireId: string) => {
     if (!user) {
       toast.error('Please sign in to join this campfire, or reload the page.');
       return;
@@ -66,7 +69,63 @@ const DiscoverCampfireList = () => {
       );
       return;
     }
-    joinCampfireMutation.mutate(campfireId);
+
+    updateMembershipCacheOptimistically(
+      queryClient,
+      campfireId,
+      user.id,
+      true
+    );
+
+    // Also update the batch membership cache for the list
+    const campfireIds = campfires?.map(c => c.campfireId) || [];
+    queryClient.setQueryData(
+      ['campfire-membership-batch', campfireIds, user.id],
+      (old: Record<string, boolean> | undefined) => ({
+        ...old,
+        [campfireId]: true,
+      })
+    );
+
+    try {
+      // ============================================
+      // STEP 2: API Call
+      // ============================================
+      await joinCampfireMutation.mutateAsync(campfireId);
+
+      // ============================================
+      // STEP 3: Confirm with server
+      // ============================================
+      // Invalidate membership cache to refetch from server
+      invalidateMembershipCache(queryClient, campfireId, user.id);
+      
+      // Also invalidate batch cache
+      queryClient.invalidateQueries({
+        queryKey: ['campfire-membership-batch'],
+      });
+
+    } catch (error) {
+      // ============================================
+      // STEP 4: Rollback on error
+      // ============================================
+      
+      // Revert optimistic update
+      updateMembershipCacheOptimistically(
+        queryClient,
+        campfireId,
+        user.id,
+        false
+      );
+
+      // Revert batch cache
+      queryClient.setQueryData(
+        ['campfire-membership-batch', campfireIds, user.id],
+        (old: Record<string, boolean> | undefined) => ({
+          ...old,
+          [campfireId]: false,
+        })
+      );
+    }
   };
 
   // Clear filters
