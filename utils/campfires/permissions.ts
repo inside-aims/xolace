@@ -28,7 +28,6 @@ export async function checkModeratorAccess(slug: string, userId: string): Promis
     // }
 
     // Get campfire ID from slug
-    console.log(slug);
     const { data: campfire , error: campfireError } = await supabase
       .from('campfires')
       .select('id')

@@ -96,7 +96,6 @@ export default function SupportButton({
                           transition={{ delay: index * 0.05 }}
                           className="w-full flex items-center gap-3 px-4 py-3 text-left hover:bg-gray-50 transition-colors group"
                           onClick={() => {
-                            console.log(`Clicked: ${option.label}`)
                             setIsOpen(false)
                           }}
                         >
