@@ -39,7 +39,7 @@ const EnhancedFeedList = () => {
   } = getEnhancedFeedPosts(user?.id);
 
   // Fetch featured campfire (silently fails if unavailable)
-  const { data: featuredCampfire } = useGetFeaturedCampfire();
+  const { data: featuredCampfire } = useGetFeaturedCampfire(user?.id);
 
   const { data: signedUrls } = useSignedAvatarUrls(posts);
   const router = useRouter();
