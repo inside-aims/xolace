@@ -15,7 +15,7 @@ export interface FeaturedHealthTipsProps {
   badge_text: string;
   image_url: string;
   source_label: string;
-  type: 'health-tip' | 'glimpse';
+  type: 'health-tips' | 'glimpse';
   theme_color?: 'pink' | 'yellow' | 'red' | 'green' | 'blue' | 'purple' | 'orange';
 }
 
