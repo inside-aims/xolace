@@ -19,10 +19,23 @@ import { buildFeedItems, isFeedPost, isFeaturedCampfire } from '@/utils/feed/bui
 import { useGetFeaturedCampfire } from '@/queries/posts/useGetFeaturedCampfire';
 import { FEED_CONFIG } from '@/lib/feedConfig';
 import { FeaturedCampfireCard } from '../cards/FeaturedCampfireCard';
+import {FeaturedHealthTipCard, FeaturedHealthTipsProps} from "@/components/cards/FeaturedHealthTipCard";
 
 /**
  * Enhanced Feed List with infinite scroll and smart prioritization
  */
+const dummyHealthTips: FeaturedHealthTipsProps = {
+  slug: 'breast-cancer-awareness',
+  title: 'Understanding Early Signs of Breast Cancer',
+  description:
+    'Learn how to recognize early warning signs and practice regular screening to improve detection.',
+  badge_text: 'Breast Cancer Awareness Month',
+  image_url: '/assets/images/health-tips/pink-month.jpg',
+  source_label: 'Xolace Health Team',
+  type: 'glimpse',
+  theme_color: "orange"
+}
+
 const EnhancedFeedList = () => {
   const user = useUserState(state => state.user);
   const isUserLoading = useUserState(state => state.isLoading);
@@ -248,6 +261,9 @@ const EnhancedFeedList = () => {
                 inView
               >
                 <div>
+                  <FeaturedHealthTipCard
+                    healthTip={dummyHealthTips}
+                    />
                   {isFeedPost(item) ? (
                     <FeedEnhancedPostCard
                       post={item.data}
