@@ -83,7 +83,7 @@ export default function MentalHealthChat() {
           </div>
         </div>
 
-        <div className="flex-1 overflow-y-auto px-4 space-y-2 min-h-0">
+        <div className="flex-1 overflow-y-auto px-4 space-y-2 min-h-0 pb-4">
           {displayList.map((item, idx) => (
             <ChatCard key={idx} title={item.title} description={item.description}/>
           ))}
