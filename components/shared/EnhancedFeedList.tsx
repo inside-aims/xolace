@@ -15,14 +15,18 @@ import { useEnhancedRealtimePosts } from '@/hooks/posts/useEnhancedRealtimePosts
 import { DefaultLoader } from './loaders/DefaultLoader';
 import { AlertCircle, Users} from 'lucide-react';
 import { FeedEnhancedPostCard } from '../cards/FeedEnhancedPostCard';
-import { buildFeedItems, isFeedPost, isFeaturedCampfire } from '@/utils/feed/buildFeedItems';
+import { buildFeedItems, isFeedPost, isFeaturedCampfire, isHighlightedContent } from '@/utils/feed/buildFeedItems';
 import { useGetFeaturedCampfire } from '@/queries/posts/useGetFeaturedCampfire';
 import { FEED_CONFIG } from '@/lib/feedConfig';
 import { FeaturedCampfireCard } from '../cards/FeaturedCampfireCard';
+import { HighlightedContentCard } from '../cards/FeaturedHealthTipCard';
+import { useGetActiveHighlightedContent } from '@/hooks/highlightedContent/useGetActiveHighlightedContent';
 
 /**
  * Enhanced Feed List with infinite scroll and smart prioritization
  */
+
+
 const EnhancedFeedList = () => {
   const user = useUserState(state => state.user);
   const isUserLoading = useUserState(state => state.isLoading);
@@ -40,6 +44,9 @@ const EnhancedFeedList = () => {
 
   // Fetch featured campfire (silently fails if unavailable)
   const { data: featuredCampfire } = useGetFeaturedCampfire(user?.id);
+
+  // Fetch highlighted content (health awareness campaigns)
+  const { data: highlightedContent = [] } = useGetActiveHighlightedContent();
 
   const { data: signedUrls } = useSignedAvatarUrls(posts);
   const router = useRouter();
@@ -59,12 +66,12 @@ const EnhancedFeedList = () => {
   useEnhancedRealtimePosts();
 
    /**
-   * Build unified feed items array with featured campfires injected
+   * Build unified feed items array with featured campfires and highlighted content injected
    * Memoized for optimal performance - only recalculates when dependencies change
    */
    const feedItems = useMemo(() => {
-    return buildFeedItems(posts, featuredCampfire);
-  }, [posts, featuredCampfire]);
+    return buildFeedItems(posts, featuredCampfire, highlightedContent);
+  }, [posts, featuredCampfire, highlightedContent]);
 
   // Load more posts when intersection observer triggers
   useEffect(() => {
@@ -258,6 +265,11 @@ const EnhancedFeedList = () => {
                   ) : isFeaturedCampfire(item) ? (
                     <FeaturedCampfireCard
                       campfire={item.data}
+                      className="mb-5 w-full md:w-full"
+                    />
+                  ) : isHighlightedContent(item) ? (
+                    <HighlightedContentCard
+                      content={item.data}
                       className="mb-5 w-full md:w-full"
                     />
                   ) : null}
