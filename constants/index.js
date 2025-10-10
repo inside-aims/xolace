@@ -4,6 +4,7 @@ import {
   UserPen,
   MessageSquareDiff,
   Zap,
+  MessageSquareMore,
   ThumbsUp,
   Flame,
   Clock,
@@ -76,6 +77,11 @@ export const sidebarLinks = [
     icon: <UserPen className='size-5!'/>,
     route: '/profile',
     label: 'Profile',
+  },
+  {
+    icon: <MessageSquareMore className='size-5!'/>,
+    label: "Talk Space",
+    route: "/talk-space"
   },
   {
     icon: <Bomb className='size-5!' strokeWidth={1.75} />,
