@@ -49,6 +49,37 @@ export const FEED_CONFIG = {
        */
       ENABLED: true,
     },
+
+    HIGHLIGHTED_CONTENT: {
+      /**
+       * Positions where highlighted content should appear
+       * Array of post numbers (1-based) where highlights will be injected
+       * 
+       * Examples:
+       * - [5]: Show first highlight after 5th post
+       * - [5, 15, 25]: Show up to 3 highlights at these positions
+       * - [5, 15, 25, 35, 45]: Show up to 5 highlights
+       * 
+       * Notes:
+       * - Each active highlight appears ONCE at its designated position
+       * - If 3 active highlights but 5 positions configured, only 3 will show
+       * - If 5 active highlights but 3 positions configured, only top 3 priority show
+       * - Easily adjustable based on content team needs
+       */
+      POSITIONS: [5, 15, 25],
+  
+      /**
+       * Enable/disable highlighted content globally
+       */
+      ENABLED: true,
+  
+      /**
+       * Cache settings
+       * Longer cache since health awareness campaigns don't change frequently
+       */
+      STALE_TIME: 30 * 60 * 1000, // 30 minutes
+      CACHE_TIME: 60 * 60 * 1000, // 1 hour
+    },
   
     /**
      * Infinite Scroll Configuration
@@ -110,11 +141,22 @@ export const FEED_CONFIG = {
   
     return positions;
   }
+
+  /**
+ * Helper function to get highlighted content positions
+ * @returns Array of positions where highlighted content should appear
+ */
+export function getHighlightedContentPositions(): number[] {
+  if (!FEED_CONFIG.HIGHLIGHTED_CONTENT.ENABLED) {
+    return [];
+  }
+  return FEED_CONFIG.HIGHLIGHTED_CONTENT.POSITIONS;
+}
   
   /**
    * Type definitions for feed items
    */
-  export type FeedItemType = 'post' | 'featured';
+  export type FeedItemType = 'post' | 'featured' | 'highlighted_content';
   
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   export interface FeedItem<T = any> {

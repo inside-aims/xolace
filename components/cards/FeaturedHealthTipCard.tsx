@@ -1,38 +1,56 @@
 'use client';
 
 import { useRouter } from 'next/navigation';
-import { Sparkles, ArrowRight, Heart, Play } from 'lucide-react';
+import { Sparkles, ArrowRight, Heart, Play, HandHeart } from 'lucide-react';
 import { motion } from 'motion/react';
 import { Button } from '../ui/button';
 import { useState } from 'react';
 import {colorConfig} from "@/styles/healthTipsStyles";
 import Image from 'next/image';
+import { HighlightedContent } from '@/types/highlightedContent';
+import { useTrackHighlightClick } from '@/hooks/highlightedContent/useTrackHighlightClicks';
 
-export interface FeaturedHealthTipsProps {
-  slug: string;
-  title: string;
-  description: string;
-  badge_text: string;
-  image_url: string;
-  source_label: string;
-  type: 'health-tips' | 'glimpse';
-  theme_color?: 'pink' | 'yellow' | 'red' | 'green' | 'blue' | 'purple' | 'orange';
-}
-
-interface FeaturedHealthTipCardProps {
-  healthTip: FeaturedHealthTipsProps;
+interface HighlightedContentCardProps {
+  content: HighlightedContent;
   className?: string;
 }
 
-export function FeaturedHealthTipCard({healthTip, className = ''}: FeaturedHealthTipCardProps) {
+export function HighlightedContentCard({content, className = ''}: HighlightedContentCardProps) {
   const router = useRouter();
   const [isHovered, setIsHovered] = useState(false);
 
-  const themeColor = healthTip.theme_color || 'pink';
-  const colors = colorConfig[themeColor];
+  const trackClick = useTrackHighlightClick();
 
-  const handleNavigate = () => {
-    router.push(`/${healthTip.type}/${healthTip.slug}`);
+  const themeColor = content.theme_color || 'pink';
+  const colors = colorConfig[themeColor as keyof typeof colorConfig];
+
+  const handleHealthTipClick = (e: React.MouseEvent) => {
+    e.stopPropagation();
+    if (!content.health_tip_link) return;
+
+    // Track click (fire and forget)
+    trackClick.mutate({ 
+      highlightId: content.id, 
+      clickType: 'health_tip' 
+    });
+
+    // Navigate
+    router.push(content.health_tip_link);
+  };
+
+
+  const handleGlimpseClick = (e: React.MouseEvent) => {
+    e.stopPropagation();
+    if (!content.glimpse_link) return;
+
+    // Track click (fire and forget)
+    trackClick.mutate({ 
+      highlightId: content.id, 
+      clickType: 'glimpse' 
+    });
+
+    // Navigate
+    router.push(content.glimpse_link);
   };
 
   return (
@@ -42,19 +60,19 @@ export function FeaturedHealthTipCard({healthTip, className = ''}: FeaturedHealt
       transition={{ duration: 0.35 }}
       onMouseEnter={() => setIsHovered(true)}
       onMouseLeave={() => setIsHovered(false)}
-      className={`mb-5 group relative overflow-hidden rounded-2xl bg-white shadow-lg transition-all duration-500 hover:shadow-2xl dark:bg-gray-900 border ${colors.border} ${className}`}
+      className={`mb-5 group relative overflow-hidden rounded-2xl bg-white shadow-lg transition-all duration-500 hover:shadow-2xl dark:bg-card/80 border ${colors.border} ${className}`}
       style={{
         transform: isHovered ? 'translateY(-4px)' : 'translateY(0)',
       }}
     >
       <div className="relative h-48 overflow-hidden">
-        {healthTip.image_url ? (
+        {content.image_url ? (
           <Image
-            src={healthTip.image_url}
-            alt={healthTip.title}
-            width={48}
-            height={48}
-            className="h-full w-full object-cover transition-transform duration-700 group-hover:scale-110"
+            src={content.image_url}
+            alt={content.title}
+            width={200}
+            height={200}
+            className="h-full w-full object-fill transition-transform duration-700 group-hover:scale-110"
           />
         ) : (
           <div className="flex h-full w-full items-center justify-center bg-gradient-to-br from-emerald-400 to-teal-500">
@@ -80,17 +98,17 @@ export function FeaturedHealthTipCard({healthTip, className = ''}: FeaturedHealt
           </div>
         </div>
 
-        {healthTip.type === 'glimpse' && (
+        {content.glimpse_link && (
           <div className="absolute top-4 right-4">
-            <div className="flex h-12 w-12 items-center justify-center rounded-full bg-red-500 shadow-xl">
+            <Button className="flex h-12 w-12 items-center justify-center rounded-full bg-red-500 shadow-xl" onClick={handleGlimpseClick}>
               <Play className="h-5 w-5 text-white" fill="white" />
-            </div>
+            </Button>
           </div>
         )}
 
         <div className="absolute bottom-0 left-0 right-0 p-6">
           <h3 className="text-xl font-bold leading-tight text-white drop-shadow-lg">
-            {healthTip.title}
+            {content.title}
           </h3>
         </div>
       </div>
@@ -98,47 +116,42 @@ export function FeaturedHealthTipCard({healthTip, className = ''}: FeaturedHealt
       {/* Content Section */}
       <div className="p-6 flex flex-col gap-3">
         {/* Badge Text with Icon */}
-        {healthTip.badge_text && (
+        {content.badge_text && (
           <div className="flex items-center gap-2">
             <div className={`flex h-8 w-8 items-center justify-center rounded-lg bg-gradient-to-br ${colors.badgeGradient}`}>
               <Heart className="h-4 w-4 text-white" />
             </div>
             <span className={`bg-gradient-to-r ${colors.textGradient} bg-clip-text text-sm font-semibold text-transparent`}>
-              {healthTip.badge_text}
+              {content.badge_text}
             </span>
           </div>
         )}
 
         {/* Description */}
         <p className="line-clamp-2 text-sm leading-relaxed text-gray-600 dark:text-gray-400">
-          {healthTip.description}
+          {content.description}
         </p>
 
         {/* Bottom Section*/}
         <div className="flex items-center justify-between gap-4">
-          <div className="flex items-center gap-2">
-            <div className="flex h-8 w-8 items-center justify-center rounded-full bg-gradient-to-br from-lavender-400 to-blue-500 text-xs font-bold text-white shadow-md">
-              {healthTip.source_label.substring(0, 2).toUpperCase()}
+        <div className="flex items-center gap-2 rounded-full bg-gray-100/95 dark:bg-gray-900/95 px-3 py-1.5 backdrop-blur-sm">
+            <div className="flex items-center justify-center w-6 h-6 rounded-full bg-gradient-to-br from-purple-500 to-pink-500">
+              <HandHeart className="h-3.5 w-3.5 text-white" />
             </div>
-            <div className="flex flex-col">
-              <span className="text-xs font-medium text-gray-900 dark:text-white">
-                {healthTip.source_label}
-              </span>
-              <span className="text-xs text-gray-500 dark:text-gray-400">
-                Health Expert
-              </span>
-            </div>
+            <span className="text-xs font-semibold text-gray-900 dark:text-white">
+              {content.source_label}
+            </span>
           </div>
 
           <Button
-            onClick={handleNavigate}
+            onClick={ content.health_tip_link ? handleHealthTipClick : handleGlimpseClick}
             className={`group/btn relative overflow-hidden rounded-xl bg-gradient-to-r ${colors.buttonGradient} px-6 py-3 font-semibold text-white shadow-lg transition-all duration-300 ${colors.buttonShadow}`}
             style={{
               transform: isHovered ? 'scale(1.05)' : 'scale(1)',
             }}
           >
             <span className="relative z-10 flex items-center gap-2 text-sm">
-              {healthTip.type === 'glimpse' ? 'Watch' : 'Read'}
+              {content.health_tip_link ? 'Read' : 'Watch'}
               <ArrowRight className="h-4 w-4 transition-transform duration-300 group-hover/btn:translate-x-1" />
             </span>
             {/* Animated shimmer effect */}
@@ -163,4 +176,8 @@ export function FeaturedHealthTipCard({healthTip, className = ''}: FeaturedHealt
       `}</style>
     </motion.div>
   );
+}
+
+function useTrackHighlightClicks() {
+  throw new Error('Function not implemented.');
 }
