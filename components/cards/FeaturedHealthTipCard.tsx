@@ -72,7 +72,7 @@ export function HighlightedContentCard({content, className = ''}: HighlightedCon
             alt={content.title}
             width={200}
             height={200}
-            className="h-full w-full object-fill transition-transform duration-700 group-hover:scale-110"
+            className="h-full w-full object-cover transition-transform duration-700 group-hover:scale-110"
           />
         ) : (
           <div className="flex h-full w-full items-center justify-center bg-gradient-to-br from-emerald-400 to-teal-500">
