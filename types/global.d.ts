@@ -143,3 +143,5 @@ export interface PostMetricData {
   upvotes: number;
   downvotes: number;
 }
+
+export type HighLightedFeedContent = Database['public']['Tables']['highlighted_feed_content']['Row']
