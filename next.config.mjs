@@ -17,6 +17,7 @@ const nextConfig = {
         pathname: '**',
       },
     ],
+    domains: ["qdjrwasidlmgqxakdxkl.supabase.co"],
   },
   turbopack: {
     resolveExtensions: ['.mdx', '.tsx', '.ts', '.jsx', '.js', '.mjs', '.json'],
