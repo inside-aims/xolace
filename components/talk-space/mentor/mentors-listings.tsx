@@ -4,12 +4,12 @@ import { DropdownMenu, DropdownMenuTrigger, DropdownMenuContent, DropdownMenuIte
 import { useState, useMemo } from 'react';
 import {Award, Sparkles, TrendingUp,BookOpen, Heart, Search, X, ChevronDown, Zap } from 'lucide-react';
 import {Input} from "@/components/ui/input";
-import MentorCard, {MentorProps} from "@/components/talk-space/mentors-card";
+import MentorCard, {MentorProps} from "@/components/talk-space/mentor/mentors-card";
 import TalkSpaceWrapper from "@/components/talk-space/talk-space-wrapper";
 import {useTalkSpaceStore} from "@/hooks/talkSpace/useTalkSpaceStore";
 import {useRouter} from "next/navigation";
-import ViewModal from "@/components/talk-space/view-modal";
-import MentorsDetails from "@/components/talk-space/mentors-details";
+import ViewModal from "@/components/talk-space/mentor/view-modal";
+import MentorsDetails from "@/components/talk-space/mentor/mentors-details";
 
 export const mentors: MentorProps[] = [
   {
@@ -154,7 +154,7 @@ export const mentors: MentorProps[] = [
   },
 ];
 
-const MentorsPage = () => {
+const MentorsListings = () => {
   const [searchQuery, setSearchQuery] = useState('');
   const [selectedCategory, setSelectedCategory] = useState('all');
   const [favoriteIds, setFavoriteIds] = useState(new Set());
@@ -317,10 +317,10 @@ const MentorsPage = () => {
             isFavorite={favoriteIds.has(selectMentor.id)}
             onToggleFavorite={toggleFavorite}
             onStartChart={() => handleStartChart(selectMentor.id)}
-            />
+          />
         </ViewModal>
       )}
     </>
   )
 }
-export default MentorsPage;
+export default MentorsListings;

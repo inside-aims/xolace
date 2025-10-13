@@ -6,7 +6,7 @@ import {
   MentorAvatar,
   MentorBadges, MentorBio, MentorFeatures, MentorLanguages, MentorPricingEnhanced, MentorProps,
   MentorRating, MentorSpecializations, MentorStats, MentorTags
-} from "@/components/talk-space/mentors-card";
+} from "@/components/talk-space/mentor/mentors-card";
 
 
 interface MentorCardProps {

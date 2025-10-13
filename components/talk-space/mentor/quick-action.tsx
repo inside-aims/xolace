@@ -1,6 +1,6 @@
 'use client';
 
-import {ActionButton, QuickLink} from "@/components/talk-space/action-links";
+import {ActionButton, QuickLink} from "@/components/talk-space/mentor/action-links";
 
 const QuickAction = () => {
   return (
