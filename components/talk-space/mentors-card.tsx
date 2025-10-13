@@ -2,7 +2,7 @@
 
 import {
   CheckCircle, Award, Heart, User, MessageCircle, Calendar, Star,
-  Clock, Video, Zap, ChevronRight
+  Clock, Video, Zap, ChevronRight, Globe, Sparkles
 } from 'lucide-react';
 import React from "react";
 
@@ -58,8 +58,8 @@ interface MentorCardProps {
   mentor: MentorProps;
   isFavorite: boolean;
   onToggleFavorite: (mentorId: string) => void;
-  onStartChart: (mentorId: string) => void;
-  onReadMore?: (mentorId: string) => void;
+  onStartChart: () => void;
+  onReadMore?: () => void;
 }
 
 export default function MentorCard({ mentor, isFavorite, onToggleFavorite, onReadMore, onStartChart }: MentorCardProps) {
@@ -107,19 +107,6 @@ export default function MentorCard({ mentor, isFavorite, onToggleFavorite, onRea
         <p className="text-gray-700 dark:text-gray-200 font-semibold mb-3">{mentor.specialty}</p>
 
         <MentorRating rating={mentor.rating} reviewCount={mentor.reviewCount} />
-        <MentorStats
-          mentees={mentor.mentees}
-          sessions={mentor.sessions}
-          experience={mentor.experience}
-        />
-
-        {/*<MentorBio bio={mentor.bio} />*/}
-        {/*<MentorFeatures*/}
-        {/*  responseTime={mentor.responseTime}*/}
-        {/*  instantBooking={mentor.instantBooking}*/}
-        {/*  videoCallAvailable={mentor.videoCallAvailable}*/}
-        {/*/>*/}
-        {/*<MentorTags tags={mentor.tags} />*/}
         <MentorPricing sessionRate={mentor.pricing.session} />
         <MentorActions onStartChart={onStartChart} onReadMore={onReadMore}/>
       </div>
@@ -127,7 +114,7 @@ export default function MentorCard({ mentor, isFavorite, onToggleFavorite, onRea
   );
 }
 
-const MentorBadges = ({ isVerified, isPro }: { isVerified: boolean; isPro: boolean }) => (
+export const MentorBadges = ({ isVerified, isPro }: { isVerified: boolean; isPro: boolean }) => (
   <div className="absolute top-3 left-3 flex gap-2">
     {isVerified && (
       <div className="flex items-center gap-1.5 bg-blue-600 text-white px-3 py-1.5 rounded-full text-xs font-bold shadow-lg">
@@ -144,7 +131,7 @@ const MentorBadges = ({ isVerified, isPro }: { isVerified: boolean; isPro: boole
   </div>
 );
 
-const MentorAvatar = ({ avatar, name, isOnline }: { avatar: string, name: string, isOnline?:boolean }) => (
+export const MentorAvatar = ({ avatar, name, isOnline }: { avatar: string, name: string, isOnline?:boolean }) => (
   <div className="relative px-6 -mt-12">
     <div className="relative inline-block">
       {/*img will be change to next image - img is only for testing*/}
@@ -165,8 +152,8 @@ const MentorAvatar = ({ avatar, name, isOnline }: { avatar: string, name: string
   </div>
 );
 
-const MentorRating = ({ rating, reviewCount }: { rating: number; reviewCount: number }) => (
-  <div className="flex items-center gap-1.5 mb-4 pb-4 border-b border-gray-100">
+export const MentorRating = ({ rating, reviewCount }: { rating: number; reviewCount: number }) => (
+  <div className="flex items-center gap-1.5 pb-4">
     {[...Array(5)].map((_, i) => (
       <Star
         key={i}
@@ -179,7 +166,7 @@ const MentorRating = ({ rating, reviewCount }: { rating: number; reviewCount: nu
   </div>
 );
 
-const MentorStats = ({ mentees, sessions, experience }: { mentees: number, sessions: number, experience: string }) => (
+export const MentorStats = ({ mentees, sessions, experience }: { mentees: number, sessions: number, experience: string }) => (
   <div className="grid grid-cols-3 gap-3 mb-4">
     <StatCard
       icon={User}
@@ -206,7 +193,7 @@ const MentorStats = ({ mentees, sessions, experience }: { mentees: number, sessi
 );
 
 
-const StatCard = ({ icon: Icon, color, bg, value, label }: StatCardProps) => (
+export const StatCard = ({ icon: Icon, color, bg, value, label }: StatCardProps) => (
   <div className={`text-center p-3 bg-gradient-to-br ${bg} rounded-xl`}>
     <Icon size={18} className={`${color} mx-auto mb-1`} />
     <div className="font-bold text-gray-900">{value}</div>
@@ -214,11 +201,11 @@ const StatCard = ({ icon: Icon, color, bg, value, label }: StatCardProps) => (
   </div>
 );
 
-const MentorBio = ({ bio }: { bio: string }) => (
+export const MentorBio = ({ bio }: { bio: string }) => (
   <p className="text-gray-600 dark:text-white text-sm leading-relaxed mb-4 line-clamp-3">{bio}</p>
 );
 
-const MentorFeatures = ({ videoCallAvailable, instantBooking, responseTime }: { videoCallAvailable?: boolean, instantBooking?: boolean, responseTime: string}) => (
+export const MentorFeatures = ({ videoCallAvailable, instantBooking, responseTime }: { videoCallAvailable?: boolean, instantBooking?: boolean, responseTime: string}) => (
   <div className="flex flex-wrap gap-2 mb-4">
     {videoCallAvailable && (
       <Feature icon={Video} text="Video" color="text-blue-700" bg="bg-blue-50" />
@@ -231,13 +218,13 @@ const MentorFeatures = ({ videoCallAvailable, instantBooking, responseTime }: { 
 );
 
 
-const Feature = ({ icon: Icon, text, color, bg }: FeatureProps) => (
+export const Feature = ({ icon: Icon, text, color, bg }: FeatureProps) => (
   <div className={`flex items-center gap-1 text-xs ${bg} ${color} px-2 py-1 rounded-lg`}>
     <Icon size={12} /> {text}
   </div>
 );
 
-const MentorTags = ({ tags }: { tags: string[] }) => (
+export const MentorTags = ({ tags }: { tags: string[] }) => (
   <div className="flex flex-wrap gap-2 mb-4">
     {tags.slice(0, 3).map((tag, idx) => (
       <span
@@ -255,7 +242,7 @@ const MentorTags = ({ tags }: { tags: string[] }) => (
   </div>
 );
 
-const MentorPricing = ({ sessionRate }: { sessionRate: string }) => (
+export const MentorPricing = ({ sessionRate }: { sessionRate: string }) => (
   <div className="bg-gradient-to-r from-gray-50 to-gray-100 rounded-xl p-3 mb-4">
     <div className="flex items-center justify-between text-sm">
       <span className="text-gray-600">Session Rate</span>
@@ -264,9 +251,9 @@ const MentorPricing = ({ sessionRate }: { sessionRate: string }) => (
   </div>
 );
 
-const MentorActions = ({onStartChart, onReadMore}: {
-    onStartChart: (mentorId: string) => void,
-    onReadMore?: (mentorId: string) => void
+export const MentorActions = ({onStartChart, onReadMore}: {
+    onStartChart: () => void,
+    onReadMore?: () => void
   }) => (
   <div className="flex gap-2">
     <button
@@ -275,11 +262,144 @@ const MentorActions = ({onStartChart, onReadMore}: {
     >
       <MessageCircle size={18} /> Start Chat
     </button>
-    <button
-      className="px-5 bg-gradient-to-r from-gray-100 to-gray-200 text-gray-700 py-3.5 rounded-xl font-bold hover:from-gray-200 hover:to-gray-300 transition-all hover:scale-105"
-      onClick={onReadMore}
-    >
-      <ChevronRight size={20} />
-    </button>
+    {onReadMore && (
+      <button
+        className="px-5 bg-gradient-to-r from-gray-100 to-gray-200 text-gray-700 py-3.5 rounded-xl font-bold hover:from-gray-200 hover:to-gray-300 transition-all hover:scale-105"
+        onClick={onReadMore}
+      >
+        <ChevronRight size={20}/>
+      </button>
+    )}
   </div>
 );
+
+
+export const MentorLanguages = ({ languages }: { languages: string[] }) => {
+  if (!languages || languages.length === 0) return null;
+
+  return (
+    <div className="mb-4">
+      <div className="flex items-center gap-2 mb-2">
+        <Globe size={16} className="text-indigo-600" />
+        <h4 className="text-sm font-semibold text-gray-700 dark:text-gray-300">Languages</h4>
+      </div>
+      <div className="flex flex-wrap gap-2">
+        {languages.map((lang, idx) => (
+          <span
+            key={idx}
+            className="px-3 py-1.5 bg-gradient-to-r from-blue-50 to-cyan-50 dark:from-blue-900/30 dark:to-cyan-900/30 text-blue-700 dark:text-blue-300 text-xs font-medium rounded-full border border-blue-200 dark:border-blue-800"
+          >
+            {lang}
+          </span>
+        ))}
+      </div>
+    </div>
+  );
+};
+
+// Availability Component
+export const MentorAvailability = ({ availability }: { availability: string }) => {
+  if (!availability) return null;
+
+  return (
+    <div className="mb-4 bg-gradient-to-r from-green-50 to-emerald-50 dark:from-green-900/20 dark:to-emerald-900/20 rounded-xl p-3 border border-green-100 dark:border-green-800">
+      <div className="flex items-center gap-2">
+        <Calendar size={16} className="text-green-600 dark:text-green-400" />
+        <div>
+          <p className="text-xs text-gray-600 dark:text-gray-400 font-medium">Available</p>
+          <p className="text-sm font-bold text-gray-900 dark:text-gray-100">{availability}</p>
+        </div>
+      </div>
+    </div>
+  );
+};
+
+// Specializations Component
+export const MentorSpecializations = ({ specializations }: { specializations: string[] }) => {
+  if (!specializations || specializations.length === 0) return null;
+
+  return (
+    <div className="mb-4">
+      <div className="flex items-center gap-2 mb-2">
+        <Sparkles size={16} className="text-purple-600" />
+        <h4 className="text-sm font-semibold text-gray-700 dark:text-gray-300">Specializations</h4>
+      </div>
+      <div className="space-y-2">
+        {specializations.map((spec, idx) => (
+          <div
+            key={idx}
+            className="flex items-center gap-2 text-sm text-gray-700 dark:text-gray-300"
+          >
+            <div className="w-1.5 h-1.5 bg-purple-500 rounded-full"></div>
+            <span>{spec}</span>
+          </div>
+        ))}
+      </div>
+    </div>
+  );
+};
+
+// Achievements Component
+export const MentorAchievements = ({ achievements }: { achievements: string[] }) => {
+  if (!achievements || achievements.length === 0) return null;
+
+  return (
+    <div className="mb-4">
+      <div className="flex items-center gap-2 mb-2">
+        <Award size={16} className="text-yellow-600" />
+        <h4 className="text-sm font-semibold text-gray-700 dark:text-gray-300">Achievements</h4>
+      </div>
+      <div className="space-y-2">
+        {achievements.map((achievement, idx) => (
+          <div
+            key={idx}
+            className="flex items-center gap-2 bg-gradient-to-r from-yellow-50 to-orange-50 dark:from-yellow-900/20 dark:to-orange-900/20 rounded-lg px-3 py-2 border border-yellow-100 dark:border-yellow-800"
+          >
+            <Award size={14} className="text-yellow-600 dark:text-yellow-400 flex-shrink-0" />
+            <span className="text-xs font-medium text-gray-700 dark:text-gray-300">{achievement}</span>
+          </div>
+        ))}
+      </div>
+    </div>
+  );
+};
+
+export const MentorPricingEnhanced = ({pricing}: {
+  pricing: { session: string; package: string }
+}) => {
+  return (
+    <div className="mb-4">
+      <h4 className="text-sm font-semibold text-gray-700 dark:text-gray-300 mb-3">Pricing Options</h4>
+      <div className="space-y-2">
+        {/* Session Rate */}
+        <div className="bg-gradient-to-r from-gray-50 to-gray-100 dark:from-gray-800 dark:to-gray-700 rounded-xl p-3 border border-gray-200 dark:border-gray-600">
+          <div className="flex items-center justify-between">
+            <div>
+              <p className="text-xs text-gray-600 dark:text-gray-400 font-medium">Single Session</p>
+              <p className="text-lg font-bold text-gray-900 dark:text-gray-100">{pricing.session}</p>
+            </div>
+            <div className="px-3 py-1 bg-white dark:bg-gray-800 rounded-lg text-xs font-semibold text-gray-700 dark:text-gray-300">
+              Per Hour
+            </div>
+          </div>
+        </div>
+
+        {/* Package Rate */}
+        <div className="bg-gradient-to-r from-indigo-50 to-purple-50 dark:from-indigo-900/30 dark:to-purple-900/30 rounded-xl p-3 border-2 border-indigo-200 dark:border-indigo-800 relative overflow-hidden">
+          <div className="absolute top-0 right-0 bg-gradient-to-r from-indigo-600 to-purple-600 text-white text-xs font-bold px-3 py-1 rounded-bl-lg">
+            BEST VALUE
+          </div>
+          <div className="flex items-center justify-between mt-2">
+            <div>
+              <p className="text-xs text-gray-600 dark:text-gray-400 font-medium">Monthly Package</p>
+              <p className="text-lg font-bold text-indigo-700 dark:text-indigo-300">{pricing.package}</p>
+            </div>
+            <div className="px-3 py-1 bg-white dark:bg-gray-800 rounded-lg text-xs font-semibold text-indigo-700 dark:text-indigo-300">
+              Per Month
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+};

@@ -3,7 +3,7 @@
 import {MessageSquareMore} from "lucide-react";
 import {Button} from "@/components/ui/button";
 
-const IdleCallRoom = ({onCall}: {onCall: (state: boolean) => void}) => {
+const IdleCallRoom = ({onCall}: {onCall: () => void}) => {
   return (
     <div className="relative z-10 flex flex-col items-center text-center">
       <div className="bg-gradient-to-br from-purple-400 to-lavender-600 p-6 rounded-2xl shadow-lg mb-6">

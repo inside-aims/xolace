@@ -8,6 +8,8 @@ import MentorCard, {MentorProps} from "@/components/talk-space/mentors-card";
 import TalkSpaceWrapper from "@/components/talk-space/talk-space-wrapper";
 import {useTalkSpaceStore} from "@/hooks/talkSpace/useTalkSpaceStore";
 import {useRouter} from "next/navigation";
+import ViewModal from "@/components/talk-space/view-modal";
+import MentorsDetails from "@/components/talk-space/mentors-details";
 
 export const mentors: MentorProps[] = [
   {
@@ -158,6 +160,8 @@ const MentorsPage = () => {
   const [favoriteIds, setFavoriteIds] = useState(new Set());
   const setCallStatus = useTalkSpaceStore((s) => s.setCallStatus);
   const setMentor = useTalkSpaceStore((s) => s.setMentor);
+  const [isReadMore, setIsReadMore] = useState<boolean>(true);
+  const [selectMentor, setSelectMentor] = useState<MentorProps>()
 
   const router = useRouter();
 
@@ -176,7 +180,6 @@ const MentorsPage = () => {
     if (selectedCategory !== 'all') {
       result = result.filter(m => m.category === selectedCategory);
     }
-
     if (searchQuery) {
       result = result.filter(mentor =>
         mentor.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
@@ -187,6 +190,7 @@ const MentorsPage = () => {
     return result;
   }, [searchQuery, selectedCategory]);
 
+  // Handle adding to favorite
   const toggleFavorite = (id: string) => {
     setFavoriteIds(prev => {
       const newSet = new Set(prev);
@@ -199,98 +203,124 @@ const MentorsPage = () => {
     });
   };
 
+  // Handle call initiation - by requesting first
   const handleStartChart = (mentorId: string) => {
     const selectedMentor = mentors.find((m) => m.id === mentorId);
     if (!selectedMentor) return;
 
-    setMentor({mentor: selectedMentor});
-
+    setMentor(selectedMentor);
     setCallStatus("requesting")
     router.push(`/talk-space?mentorId=${mentorId}`);
   }
 
+  // Handle read full details about selected mentor
   const handleReadMore = (mentorId: string) => {
+    const mentor = mentors.find((m) => m.id === mentorId);
+    if (!mentor) return;
+
+    setSelectMentor(mentor);
+    setIsReadMore(true)
     console.log(mentorId)
   }
 
   return (
-    <TalkSpaceWrapper>
-      <div className="sticky top-0">
-        <div className="max-w-7xl mx-auto">
-          <div className={"flex flex-col items-start md:items-center justify-center"}>
-            <h1 className="text-2xl md:text-3xl font-semibold">
-              Discover Your Perfect Mentor
-            </h1>
-            <p className="text-gray-600 dark:text-gray-300 mt-2">
-              Connect with verified experts who can transform your journey
-            </p>
-          </div>
-          <div className={"flex items-center justify-between mt-2 md:mt-4"}>
-            <div className="relative group w-full max-w-md lg:max-w-lg hidden md:flex">
-              <Search className="absolute left-4 top-1/2 -translate-y-1/2 transition" size={20}/>
-              <Input
-                type="text"
-                placeholder="Search by name, expertise, skills..."
-                value={searchQuery}
-                onChange={(e) => setSearchQuery(e.target.value)}
-                className="w-full border py-6 pl-12 border-neutral-200 rounded-full focus:ring-4 focus:ring-indigo-200 focus:border-indigo-400 transition-all text-lg"
-              />
-              {searchQuery && (
-                <button onClick={() => setSearchQuery('')} className="absolute right-4 top-1/2 -translate-y-1/2">
-                  <X size={20}/>
-                </button>
-              )}
+    <>
+      <TalkSpaceWrapper>
+        <div className="sticky top-0">
+          <div className="max-w-7xl mx-auto">
+            <div className={"flex flex-col items-start md:items-center justify-center"}>
+              <h1 className="text-2xl md:text-3xl font-semibold">
+                Discover Your Perfect Mentor
+              </h1>
+              <p className="text-gray-600 dark:text-gray-300 mt-2">
+                Connect with verified experts who can transform your journey
+              </p>
+            </div>
+            <div className={"flex items-center justify-between mt-2 md:mt-4"}>
+              <div className="relative group w-full max-w-md lg:max-w-lg hidden md:flex">
+                <Search className="absolute left-4 top-1/2 -translate-y-1/2 transition" size={20}/>
+                <Input
+                  type="text"
+                  placeholder="Search by name, expertise, skills..."
+                  value={searchQuery}
+                  onChange={(e) => setSearchQuery(e.target.value)}
+                  className="w-full border py-6 pl-12 border-neutral-200 rounded-full focus:ring-4 focus:ring-indigo-200 focus:border-indigo-400 transition-all text-lg"
+                />
+                {searchQuery && (
+                  <button onClick={() => setSearchQuery('')} className="absolute right-4 top-1/2 -translate-y-1/2">
+                    <X size={20}/>
+                  </button>
+                )}
+              </div>
+
+              <div className={"ml-auto"}>
+                <DropdownMenu>
+                  <DropdownMenuTrigger asChild>
+                    <button
+                      className=" flex items-center justify-between gap-2 rounded-md border border-neutral-200 px-4 py-2 text-sm transition-all">
+                      {categories.find(cat => cat.id === selectedCategory)?.name || "Select Category"}
+                      <ChevronDown className="ml-1 h-4 w-4"/>
+                    </button>
+                  </DropdownMenuTrigger>
+
+                  <DropdownMenuContent align="end" className="flex flex-col min-w-[200px]">
+                    {categories.map(cat => {
+                      const Icon = cat.icon;
+                      return (
+                        <DropdownMenuItem
+                          key={cat.id}
+                          onClick={() => setSelectedCategory(cat.id)}
+                          className={`flex items-center gap-2 px-3 py-2 text-sm ${
+                            selectedCategory === cat.id ? "bg-indigo-100 text-indigo-700" : ""}`}>
+                          <Icon size={16}/>{cat.name}
+                        </DropdownMenuItem>
+                      );
+                    })}
+                  </DropdownMenuContent>
+                </DropdownMenu>
+              </div>
             </div>
 
-           <div className={"ml-auto"}>
-             <DropdownMenu>
-               <DropdownMenuTrigger asChild>
-                 <button
-                   className=" flex items-center justify-between gap-2 rounded-md border border-neutral-200 px-4 py-2 text-sm transition-all">
-                   {categories.find(cat => cat.id === selectedCategory)?.name || "Select Category"}
-                   <ChevronDown className="ml-1 h-4 w-4"/>
-                 </button>
-               </DropdownMenuTrigger>
-
-               <DropdownMenuContent align="end" className="flex flex-col min-w-[200px]">
-                 {categories.map(cat => {
-                   const Icon = cat.icon;
-                   return (
-                     <DropdownMenuItem
-                       key={cat.id}
-                       onClick={() => setSelectedCategory(cat.id)}
-                       className={`flex items-center gap-2 px-3 py-2 text-sm ${
-                         selectedCategory === cat.id ? "bg-indigo-100 text-indigo-700" : ""}`}>
-                       <Icon size={16}/>{cat.name}
-                     </DropdownMenuItem>
-                   );
-                 })}
-               </DropdownMenuContent>
-             </DropdownMenu>
-           </div>
-          </div>
-
-          <span className="w-full flex items-end justify-end text-sm text-gray-600 dark:text-gray-300 font-medium">
+            <span className="w-full flex items-end justify-end text-sm text-gray-600 dark:text-gray-300 font-medium">
               {filteredMentors.length} mentor{filteredMentors.length !== 1 ? 's' : ''} found
             </span>
+          </div>
         </div>
-      </div>
 
-      <div className="w-full mx-auto pt-4">
-        <div className={`grid gap-8 grid-cols-1 md:grid-cols-2 xl:grid-cols-3`}>
-          {filteredMentors.map((mentor) => (
-            <MentorCard
-              key={mentor.id}
-              mentor={mentor}
-              isFavorite={favoriteIds.has(mentor.id)}
-              onToggleFavorite={toggleFavorite}
-              onStartChart={() => handleStartChart(mentor.id)}
-              onReadMore={() => handleReadMore(mentor.id)}
-            />
-          ))}
+        <div className="w-full mx-auto pt-4">
+          <div className={`grid gap-8 grid-cols-1 md:grid-cols-2 xl:grid-cols-3`}>
+            {/*list available mentors*/}
+            {filteredMentors.map((mentor) => (
+              <MentorCard
+                key={mentor.id}
+                mentor={mentor}
+                isFavorite={favoriteIds.has(mentor.id)}
+                onToggleFavorite={toggleFavorite}
+                onStartChart={() => handleStartChart(mentor.id)}
+                onReadMore={() => handleReadMore(mentor.id)}
+              />
+            ))}
+          </div>
         </div>
-      </div>
-    </TalkSpaceWrapper>
+      </TalkSpaceWrapper>
+
+      {/*mentor details page visibility */}
+      {selectMentor && (
+        <ViewModal
+          key={selectMentor.id}
+          drawerOpen={isReadMore}
+          setDrawerOpen={setIsReadMore}
+          title={`Welcome to ${selectMentor.name}'s profile`}
+        >
+          <MentorsDetails
+            mentor={selectMentor}
+            isFavorite={favoriteIds.has(selectMentor.id)}
+            onToggleFavorite={toggleFavorite}
+            onStartChart={() => handleStartChart(selectMentor.id)}
+            />
+        </ViewModal>
+      )}
+    </>
   )
 }
 export default MentorsPage;

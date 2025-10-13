@@ -3,13 +3,14 @@
 import {useEffect, useState} from 'react';
 import { MessageSquareMore, ChevronRight } from 'lucide-react';
 import { Input } from '@/components/ui/input';
-import SelectProfessionalModal from "@/components/talk-space/select-professinal-modal";
-import {ActionButton, ChatCard, QuickLink} from "@/components/talk-space/quick-actions";
+import {ActionButton, ChatCard} from "@/components/talk-space/action-links";
 import CallRoom from "@/components/talk-space/call-room";
 import IdleCallRoom from "@/components/talk-space/idle-call-room";
 import {useTalkSpaceStore} from "@/hooks/talkSpace/useTalkSpaceStore";
 import {useSearchParams} from "next/navigation";
 import { mentors } from './mentors-page';
+import ViewModal from "@/components/talk-space/view-modal";
+import QuickAction from "@/components/talk-space/quick-action";
 
 type ChatItem = {
   title: string;
@@ -156,36 +157,15 @@ export default function MentalHealthChat() {
             {callStatus === "in-call" && <CallRoom/>}
           </div>
         </main>
-
-        <aside className="w-full lg:w-80 bg-white/80 dark:bg-background shadow-lg p-4 lg:p-6 space-y-3 overflow-y-auto">
-          <h3 className="text-sm font-bold text-gray-500 uppercase tracking-wider mb-4">
-            Quick Actions
-          </h3>
-          <ActionButton/>
-          <div
-            className="mt-8 bg-gradient-to-br from-purple-100 to-indigo-100 rounded-2xl p-5 border border-purple-200">
-            <h4 className="font-bold text-sm mb-3 text-purple-900">
-              Quick Links
-            </h4>
-            <div className="space-y-2.5">
-              <QuickLink emoji="🧠" text="Mental Health Resources"/>
-              <QuickLink emoji="❤️" text="How to Talk Safely Online"/>
-              <QuickLink emoji="📘" text="Community Guidelines"/>
-            </div>
-          </div>
-
-          <div className="mt-4 bg-white dark:bg-dark-2 rounded-lg p-4 border">
-            <p className="text-xs italic text-center">
-              {"You're not alone. We're here to listen and support you."}
-            </p>
-          </div>
-        </aside>
+        <QuickAction/>
       </div>
       {isProfessionalModalOpen && (
-        <SelectProfessionalModal
+        <ViewModal
           drawerOpen={isProfessionalModalOpen}
           setDrawerOpen={setIsProfessionalModalOpen}
-        />
+          title={"Select a conversation"}>
+          <ActionButton/>
+        </ViewModal>
         )}
     </>
   );
