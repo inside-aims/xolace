@@ -1,8 +1,8 @@
 'use client';
 
-import React from 'react';
-import { MessageCircle, FileText, Target } from 'lucide-react';
-import IconButton from "@/components/talk-space/mentor/icon-button";
+import React, {useState} from 'react';
+import { MessageCircle, FileText, Target, Award, Timer, Mic, MicOff, Video, VideoOff, Phone, PhoneOff } from 'lucide-react';
+import {ActionCard} from "@/components/talk-space/mentor/action-links";
 
 interface SidebarProps {
   isChatOpen: boolean;
@@ -13,7 +13,33 @@ interface SidebarProps {
   onToggleGoals: () => void;
 }
 
-export default function Sidebar(
+interface TopBarProps {
+  mentorName: string;
+  sessionTime: string;
+  isRecording: boolean;
+}
+
+interface Mentor {
+  name: string;
+  avatar: string;
+}
+
+interface VideoAreaProps {
+  mentor: Mentor;
+}
+
+interface RightPanelProps {
+  isChatOpen: boolean;
+}
+
+interface IconButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
+  active?: boolean;
+  icon: React.ElementType;
+  color?: string;
+  label?: string;
+}
+
+export function Sidebar(
   {
     isChatOpen,
     isNotesOpen,
@@ -45,3 +71,104 @@ export default function Sidebar(
     </div>
   );
 }
+
+export function TopBar({ mentorName, sessionTime, isRecording }: TopBarProps) {
+  return (
+    <div className="flex items-center justify-between px-6 py-3 border-b border-white/10 bg-neutral-800">
+      <h1 className="text-lg font-semibold">Session with {mentorName}</h1>
+      <div className="flex items-center gap-3 text-sm">
+        {isRecording && (
+          <div className="flex items-center text-red-500 gap-1">
+            <Video size={16}/> Recording
+          </div>
+        )}
+        <div className="flex items-center gap-1 text-gray-400">
+          <Timer size={16}/> {sessionTime}
+        </div>
+      </div>
+      <div className="flex items-center gap-3">
+        <button
+          className="px-4 py-2 bg-gradient-to-r from-purple-600 to-pink-600 text-white rounded-xl font-semibold hover:scale-105 transition flex items-center gap-2">
+          <Award size={18}/>
+          <span className="hidden sm:inline">End & Review</span>
+        </button>
+      </div>
+    </div>
+
+  );
+}
+
+export function VideoArea({ mentor }: VideoAreaProps) {
+  return (
+    <div className="flex-1 flex items-center justify-center relative">
+      <img
+        src={mentor.avatar}
+        alt={mentor.name}
+        className="w-2/3 rounded-2xl shadow-lg object-cover"
+      />
+      <div className="absolute bottom-6 right-6 flex gap-3">
+        <ActionCard label="Take Notes" />
+        <ActionCard label="Mark Goal" />
+      </div>
+    </div>
+  );
+}
+
+
+export function RightPanel({isChatOpen}: RightPanelProps) {
+  return (
+    <div className="w-80 border-l border-white/10 bg-neutral-800 p-4 overflow-y-auto">
+      {isChatOpen && <ChatPanel />}
+    </div>
+  );
+}
+
+
+export  function BottomControls() {
+  const [audio, setAudio] = useState(true);
+  const [video, setVideo] = useState(true);
+
+  return (
+    <div className="flex items-center justify-center py-4 md:justify-around  border-t border-white/10 bg-neutral-800">
+      <div className="flex items-center justify-center gap-4">
+        <IconButton icon={audio ? Mic : MicOff} onClick={() => setAudio(!audio)}/>
+        <IconButton icon={video ? Video : VideoOff} onClick={() => setVideo(!video)}/>
+        <IconButton icon={Phone} color="from-red-600 to-pink-600"/>
+      </div>
+      <IconButton
+        icon={PhoneOff}
+        color="from-red-600 to-pink-600"
+        label={"End Session"}
+        className={"px-6 py-3 bg-gradient-to-r from-red-600 to-red-700 text-white rounded-xl font-bold hover:scale-105 transition flex items-center gap-2 shadow-lg"}
+      />
+
+    </div>
+  );
+}
+
+export function IconButton({ active, icon: Icon, color,label, className = '', ...props }: IconButtonProps) {
+  return (
+    <button
+      {...props}
+      className={`p-3 rounded-xl transition-all ${
+        active
+          ? `bg-gradient-to-br ${color ?? 'from-blue-500 to-cyan-500'} text-white shadow-lg`
+          : 'bg-white/10 text-gray-400 hover:bg-white/20'
+      } ${className}`}
+    >
+      <Icon size={22} /> {label && <span className="text-lg">{label}</span>}
+    </button>
+  );
+}
+
+export function ChatPanel() {
+  return(
+    <div>
+      Chat panel
+    </div>
+  )
+}
+
+
+
+

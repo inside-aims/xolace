@@ -1,15 +1,10 @@
 'use client';
 
 import React, { useState } from 'react';
-import Sidebar from "@/components/talk-space/mentor/sider-bar";
-import TopBar from "@/components/talk-space/mentor/top-bar";
-import VideoArea from "@/components/talk-space/mentor/video-area";
-import BottomControls from "@/components/talk-space/mentor/bottom-controls";
-import RightPanel from "@/components/talk-space/mentor/right-panel";
+import {BottomControls, Sidebar, TopBar, VideoArea} from "@/components/talk-space/mentor/call-room-layout";
 
 
 export default function CallRoom() {
-  const [drawerOpen, setDrawerOpen] = useState(false);
   const [isChatOpen, setIsChatOpen] = useState(true);
   const [isNotesOpen, setIsNotesOpen] = useState(false);
   const [isGoalsOpen, setIsGoalsOpen] = useState(false);

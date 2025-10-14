@@ -1,5 +1,5 @@
 import type {Metadata} from "next";
-import MentorsPage from "@/components/talk-space/mentors-page";
+import MentorsListings from "@/components/talk-space/mentor/mentors-listings";
 
 export const metadata: Metadata = {
   title: 'Browse Mentors',
@@ -11,7 +11,7 @@ export const metadata: Metadata = {
 export default function Mentors(){
   return(
     <main>
-      <MentorsPage/>
+      <MentorsListings/>
     </main>
   )
 }

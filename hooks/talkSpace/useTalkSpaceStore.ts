@@ -1,5 +1,5 @@
 import { create } from 'zustand';
-import {MentorProps} from "@/components/talk-space/mentors-card";
+import {MentorProps} from "@/components/talk-space/mentor/mentors-card";
 
 export type CallStatus =
   | 'idle'
