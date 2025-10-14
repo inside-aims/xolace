@@ -19,6 +19,12 @@ export const navItems: NavItem[] = [
     route: 'home',
   },
   {
+    key: 'requests',
+    title: 'Requests',
+    icon: <CalendarDays className="w-5 h-5" />,
+    route: 'requests',
+  },
+  {
     key: 'upcoming',
     title: 'Upcoming',
     icon: <CalendarDays className="w-5 h-5" />,
