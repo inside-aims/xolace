@@ -22,7 +22,7 @@ interface CreateCommentContext {
   optimisticComment: Comment;
 }
 
-export function useCommentMutation(post: DetailPost) {
+export function useCommentMutation(post: DetailPost | {created_by : string | undefined | null , campfire_id : string | null}) {
   const queryClient = useQueryClient();
   const user = useUserState(state => state.user);
 
@@ -40,6 +40,8 @@ export function useCommentMutation(post: DetailPost) {
       const { data, error } = await supabase
         .from('comments')
         .insert({
+          author_name: 'Flux Ai',
+          author_avatar_url: 'http://127.0.0.1:54321/storage/v1/object/public/xolace.bucket//sad-anonymous.png',
           post: postId,
           comment_text: commentText,
           parent_id: parentId ? Number(parentId) : null,

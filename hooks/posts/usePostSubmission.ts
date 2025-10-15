@@ -114,6 +114,7 @@ export function usePostSubmission() {
         }
       }
 
+      let match = ''
       // Log the post creation activity
       if (post_id) {
         try {
@@ -130,6 +131,19 @@ export function usePostSubmission() {
               type: type,
             },
           });
+
+          const response = await fetch('/api/v1/lemurRequest', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ post: content || slides[0] }),
+          });
+
+          const responseBody = await response.json();
+          const lemurResponse = responseBody.response;
+          console.log(lemurResponse);
+
+          match = lemurResponse.split(/[*]*suggestion:\**/i)[1]?.trim();
+          console.log(match);
         } catch (activityError) {
           console.error('Error logging activity:', activityError);
           // Don't throw as post creation was successful
@@ -140,6 +154,7 @@ export function usePostSubmission() {
         post_id,
         is_prompt_response,
         promptId,
+        match
       };
     },
 
@@ -163,8 +178,8 @@ export function usePostSubmission() {
         queryKey: ['enhanced-feed'],
       });
 
-       // CRITICAL FIX 2: Also invalidate with specific user ID
-       await queryClient.invalidateQueries({
+      // CRITICAL FIX 2: Also invalidate with specific user ID
+      await queryClient.invalidateQueries({
         queryKey: ['enhanced-feed', userId],
         exact: false,
       });

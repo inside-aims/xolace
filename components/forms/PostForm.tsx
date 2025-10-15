@@ -63,6 +63,7 @@ import { getFeatureModalConfig } from '@/utils/featureModals';
 import { useFeatureModal } from '@/hooks/useFeatureModal';
 import { FeatureOverviewModal } from '../modals/FeatureOverViewModal';
 import { usePostSubmission } from '@/hooks/posts/usePostSubmission';
+import { useCommentMutation } from '@/hooks/posts/useCommentMutation';
 
 // Dynamic Imports
 const EmojiPicker = dynamic(() => import('emoji-picker-react'), {
@@ -142,6 +143,10 @@ export function PostForm({
 
   // post submission mutation
   const { submitPost, isSubmitting } = usePostSubmission();
+
+   // Use the comment mutation hook
+    const { mutate: createComment, isPending: isCreatingComment } =
+      useCommentMutation({created_by: user?.id, campfire_id: selectedCampfire?.campfireId || null});
 
 
   const intervalRef = useRef<NodeJS.Timeout | null>(null);
@@ -549,7 +554,7 @@ export function PostForm({
         const promptId = promptIdQuery;
         const promptText = promptTextQuery;
 
-        await submitPost({
+        const {post_id, match} = await submitPost({
           content: data.content,
           is24HourPost: data.is24HourPost,
           type: data.type,
@@ -562,6 +567,15 @@ export function PostForm({
           userId: user.id,
           preferences,
         });
+
+
+        createComment(
+      {
+        postId: post_id,
+        commentText: match,
+        postCreatedBy: user?.id ?? '',
+        campfireId: selectedCampfire?.campfireId,
+      })
 
         // Clear the form and tags on success
         if (data.type === 'single') {
