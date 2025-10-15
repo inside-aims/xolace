@@ -1,10 +1,10 @@
 'use client';
 
 import {CalendarDays} from 'lucide-react';
-import {CallCard} from "@/components/talk-space/mentor/call-card";
+import {CallCard, CallCardProps} from "@/components/talk-space/mentor/call-card";
 
 const MentorPreviousPage = () => {
-  const previousCalls = [
+  const previousCalls: CallCardProps[] = [
     {
       id: 1,
       title: "Instant Meeting",
@@ -13,9 +13,7 @@ const MentorPreviousPage = () => {
         {id: 1, initials: "JM"},
         {id: 2, initials: "SK"},
         {id: 3, initials: "AL"},
-        {id: 4, initials: "MR"}
       ],
-      additionalCount: 5
     },
     {
       id: 2,
@@ -25,12 +23,10 @@ const MentorPreviousPage = () => {
         {id: 1, initials: "JM"},
         {id: 2, initials: "SK"},
         {id: 3, initials: "AL"},
-        {id: 4, initials: "MR"}
       ],
-      additionalCount: 5
     },
     {
-      id: 3,
+      id: 20,
       title: "Instant Meeting",
       date: "2024-03-20T10:18:18.663256Z",
       participants: [
@@ -39,20 +35,7 @@ const MentorPreviousPage = () => {
         {id: 3, initials: "AL"},
         {id: 4, initials: "MR"}
       ],
-      additionalCount: 5
     },
-    {
-      id: 4,
-      title: "Standup Meeting",
-      date: "2024-03-20T10:18:18.663256Z",
-      participants: [
-        {id: 1, initials: "JM"},
-        {id: 2, initials: "SK"},
-        {id: 3, initials: "AL"},
-        {id: 4, initials: "MR"}
-      ],
-      additionalCount: 5
-    }
   ];
 
   return (
@@ -74,7 +57,6 @@ const MentorPreviousPage = () => {
               hour12: true,
             })}
             participants={call.participants}
-            additionalCount={call.additionalCount}
             icon={CalendarDays}
           />
         ))}

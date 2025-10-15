@@ -6,18 +6,34 @@ import ViewModal from "@/components/talk-space/mentor/view-modal";
 import {CallButton} from "@/components/talk-space/mentor/call-room-layout";
 import {useTalkSpaceStore} from "@/hooks/talkSpace/useTalkSpaceStore";
 import {Input} from "@/components/ui/input";
-import {Label} from "@/components/ui/label";
 import {Textarea} from "@/components/ui/textarea";
 import {Popover, PopoverContent, PopoverTrigger} from "@/components/ui/popover"
 import {Calendar} from "@/components/ui/calendar"
-import {format} from "date-fns"
-import {useForm, Controller} from "react-hook-form";
+import {useForm} from "react-hook-form";
+import { zodResolver } from '@hookform/resolvers/zod';
+import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '@/components/ui/form';
+import { toast } from 'sonner';
+import {z} from "zod";
 
 
-type ScheduleSessionData = {
-  description: string;
-  date: Date;
-};
+const scheduleSessionSchema = z.object({
+  description: z.string().min(10, 'Please provide more details about the session.'),
+  date: z.date({ required_error: 'Please select a session date.' }),
+});
+
+const joinSessionSchema = z.object({
+  sessionLink: z.string()
+    .url("Please enter a valid session link (starting with https://)")
+    .min(10, "Session link cannot be empty."),
+});
+
+export type JoinSessionData = z.infer<typeof joinSessionSchema>;
+export type ScheduleSessionData = z.infer<typeof scheduleSessionSchema>;
+
+interface ScheduleSessionFormProps {
+  onSubmit: (data: ScheduleSessionData) => void;
+}
+
 
 type actionKeys = "startSession" | "joinSession" | "scheduleSession" | "recordings";
 
@@ -171,83 +187,45 @@ const ActionCard = ({title, description, onClick, icon, color}: ActionProps) => 
   );
 };
 
-const ScheduleSessionForm = (
-  {onSubmit,}: { onSubmit: (data: ScheduleSessionData) => void; }) => {
-  const {handleSubmit, control, register} = useForm<ScheduleSessionData>();
-  const [selectedDate, setSelectedDate] = useState<Date>();
+
+export const JoinSession = ({ onSubmit }: { onSubmit: (data: JoinSessionData) => void }) => {
+  const form = useForm<JoinSessionData>({
+    resolver: zodResolver(joinSessionSchema),
+    defaultValues: { sessionLink: "" },
+  });
+
+  const handleSubmit = (data: JoinSessionData) => {
+    onSubmit(data);
+  };
 
   return (
-    <form
-      onSubmit={handleSubmit(onSubmit)}
-      className="w-full flex flex-col gap-4">
-      <div className="flex flex-col gap-4">
-        <div>
-          <Label>Session Description</Label>
-          <Textarea
-            className={"border border-neutral-400"}
-            placeholder="Describe your upcoming session..."
-            {...register("description", {required: true})}
-          />
-        </div>
-
-        <div>
-          <Label>Select Date and Time</Label>
-          <Controller
-            name="date"
-            control={control}
-            rules={{required: true}}
-            render={({field}) => (
-              <Popover>
-                <PopoverTrigger asChild>
-                  <Input
-                    value={selectedDate ? format(selectedDate, "PPP") : ""}
-                    placeholder="Pick a date"
-                    readOnly
-                    className="border border-neutral-400 cursor-pointer"
-                  />
-                </PopoverTrigger>
-                <PopoverContent className="w-full p-0">
-                  <Calendar
-                    mode="single"
-                    selected={selectedDate}
-                    onSelect={(date) => {
-                      setSelectedDate(date);
-                      field.onChange(date);
-                    }}
-                    initialFocus
-                  />
-                </PopoverContent>
-              </Popover>
-            )}
-          />
-        </div>
-      </div>
-      <CallButton
-        label="Schedule Session"
-        onStartAction={handleSubmit(onSubmit)}
-        size="default"
-      />
-    </form>
-  );
-};
-
-
-const JoinSession = ({onSubmit}: { onSubmit: () => void }) => {
-  return (
-    <div className="w-full flex flex-col gap-4">
-      <div>
-        <Label className={""}>Enter Session Link</Label>
-        <Input
-          placeholder="Paste your session link here"
-          className="border border-neutral-400"
+    <Form {...form}>
+      <form className="flex flex-col gap-4">
+        <FormField
+          control={form.control}
+          name="sessionLink"
+          render={({ field }) => (
+            <FormItem>
+              <FormLabel>Session Link</FormLabel>
+              <FormControl>
+                <Input
+                  placeholder="Paste your session link here"
+                  className="border border-neutral-400"
+                  {...field}
+                />
+              </FormControl>
+              <FormMessage />
+            </FormItem>
+          )}
         />
-      </div>
-      <CallButton
-        label="Join Session"
-        onStartAction={onSubmit}
-        size="default"
-      />
-    </div>
+        <CallButton
+          type="submit"
+          label="Join Session"
+          onStartAction={form.handleSubmit(handleSubmit)}
+          size="default"
+        />
+      </form>
+    </Form>
   );
 };
 
@@ -260,6 +238,137 @@ const StartSession = ({onStart}: { onStart: () => void }) => {
         onStartAction={onStart}
         size="lg"/>
     </div>
+  );
+};
+
+
+const ScheduleSessionForm = ({ onSubmit }: ScheduleSessionFormProps) => {
+  const [selectedDate, setSelectedDate] = useState<Date>();
+  const [month, setMonth] = useState<Date | undefined>(new Date());
+  const [open, setOpen] = useState(false);
+  const [inputValue, setInputValue] = useState('');
+
+  const form = useForm<ScheduleSessionData>({
+    resolver: zodResolver(scheduleSessionSchema),
+    defaultValues: {
+      description: '',
+      date: undefined,
+    },
+  });
+
+  const formatDate = (date: Date | undefined) => {
+    if (!date) return '';
+    return date.toLocaleDateString('en-US', {
+      day: '2-digit',
+      month: 'long',
+      year: 'numeric',
+    });
+  };
+
+  const isValidDate = (date: Date | undefined) => {
+    if (!date) return false;
+    return !isNaN(date.getTime());
+  };
+
+  const handleSubmit = (values: ScheduleSessionData) => {
+    toast.success('Session scheduled successfully!');
+    onSubmit(values);
+  };
+
+  return (
+    <Form {...form}>
+      <form className="w-full flex flex-col gap-4">
+        <FormField
+          control={form.control}
+          name="description"
+          render={({ field }) => (
+            <FormItem>
+              <FormLabel>Session Description</FormLabel>
+              <FormControl>
+                <Textarea
+                  placeholder="Describe your upcoming session..."
+                  className="border border-neutral-400"
+                  {...field}
+                />
+              </FormControl>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
+
+        <FormField
+          control={form.control}
+          name="date"
+          render={({ field }) => (
+            <FormItem>
+              <FormLabel>Select Date & Time</FormLabel>
+              <FormControl>
+                <div className="relative flex gap-2">
+                  <Input
+                    value={inputValue}
+                    placeholder="Pick a date"
+                    className="border border-neutral-400 cursor-pointer "
+                    onClick={() => setOpen(true)}
+                    readOnly
+                    onChange={(e) => {
+                      const date = new Date(e.target.value);
+                      setInputValue(e.target.value);
+                      if (isValidDate(date)) {
+                        setSelectedDate(date);
+                        setMonth(date);
+                        field.onChange(date);
+                      }
+                    }}
+                    onKeyDown={(e) => {
+                      if (e.key === 'ArrowDown') {
+                        e.preventDefault();
+                        setOpen(true);
+                      }
+                    }}
+                  />
+                  <Popover open={open} onOpenChange={setOpen}>
+                    <PopoverTrigger asChild>
+                      <div className="absolute top-1/2 right-2 size-6 -translate-y-1/2">
+                        <CalendarDays/>
+                        <span className="sr-only">Select date</span>
+                      </div>
+                    </PopoverTrigger>
+                    <PopoverContent
+                      className="w-full flex p-0 overflow-hidden"
+                      align="end"
+                      alignOffset={-8}
+                      sideOffset={10}
+                    >
+                      <Calendar
+                        mode="single"
+                        selected={selectedDate}
+                        month={month}
+                        onMonthChange={setMonth}
+                        captionLayout="dropdown"
+                        onSelect={(date) => {
+                          setSelectedDate(date);
+                          setInputValue(formatDate(date));
+                          field.onChange(date);
+                          setOpen(false);
+                        }}
+                      />
+                    </PopoverContent>
+                  </Popover>
+                </div>
+              </FormControl>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
+
+        <CallButton
+          type="submit"
+          label="Schedule Session"
+          onStartAction={form.handleSubmit(handleSubmit)}
+          size="default"
+        />
+      </form>
+    </Form>
   );
 };
 

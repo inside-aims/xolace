@@ -68,7 +68,7 @@ export const MentorIdleSidebar = ({ activeRoute, onNavigate }: {
             variant={activeRoute === item.route ? "secondary" : "ghost"}
             className={`w-full justify-start gap-3 ${
               activeRoute === item.route
-                ? ' bg-neutral-300 hover:bg-neutral-200 dark:bg-neutral-700'
+                ? ' bg-neutral-300 dark:bg-neutral-700 hover:bg-neutral-300 dark:hover:bg-neutral-700'
                 : 'hover:bg-neutral-200 dark:hover:bg-neutral-600'
             }`}
             onClick={() => onNavigate(item.route)}

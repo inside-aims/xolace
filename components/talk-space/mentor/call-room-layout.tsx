@@ -178,12 +178,14 @@ export const CallButton = (
     label,
     onStartAction,
     icon,
+    type = "button",
     size = "default",
   }: {
   label: string;
   icon?: React.ReactNode;
   onStartAction: () => void;
   size?: "lg" | "sm" | "default" | "icon";
+  type?: "button" | "reset" | "submit"
 }) => {
   const sizeClasses = {
     lg: "px-8 py-6 text-lg",
@@ -194,6 +196,7 @@ export const CallButton = (
 
   return (
     <Button
+      type={type}
       onClick={onStartAction}
       className={cn(
         "flex-1 bg-gradient-to-r from-purple-400 to-lavender-600 text-white rounded-xl font-bold hover:from-purple-500 hover:to-lavender-700 transition-all hover:scale-105 shadow-lg hover:shadow-xl flex items-center justify-center gap-2",

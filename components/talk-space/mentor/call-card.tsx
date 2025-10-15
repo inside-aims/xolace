@@ -8,13 +8,12 @@ interface Participant {
   initials: string;
 }
 
-interface CallCardProps {
+export interface CallCardProps {
   id: number;
   title: string;
   date: string;
   participants: Participant[];
-  additionalCount: number;
-  icon: LucideIcon;
+  icon?: LucideIcon;
   actions?: React.ReactNode;
   clickable?: boolean;
   onClick?: () => void;
@@ -26,12 +25,14 @@ export const CallCard = (
     title,
     date,
     participants,
-    additionalCount,
     icon: Icon,
     actions,
     clickable = false,
     onClick
   }: CallCardProps) => {
+  const visibleParticipants = participants.slice(0, 4);
+  const remainingCount = participants.length - visibleParticipants.length;
+
   return (
     <Card
       key={id}
@@ -42,7 +43,7 @@ export const CallCard = (
     >
       <CardHeader>
         <div className="flex items-start gap-3">
-          <Icon className="w-8 h-8 text-neutral-400 mt-1"/>
+          {Icon && (<Icon className="w-8 h-8 text-neutral-400 mt-1"/>)}
           <div className="flex-1">
             <CardTitle className="text-xl mb-2">{title}</CardTitle>
             <CardDescription className="text-neutral-400">
@@ -54,19 +55,21 @@ export const CallCard = (
       <CardContent>
         <div className="flex items-center justify-between">
           <div className="flex items-center">
-            {participants.map((participant, idx) => (
+            {visibleParticipants.map((participant, idx) => (
               <Avatar
                 key={participant.id}
-                className={`w-10 h-10 border-2 border-slate-800 ${idx > 0 ? '-ml-3' : ''}`}
+                className={`w-10 h-10 border-2  ${idx > 0 ? '-ml-3' : ''}`}
               >
-                <AvatarFallback className="bg-gradient-to-br from-blue-500 to-purple-500 text-white text-xs">
+                <AvatarFallback className="bg-gradient-to-r from-purple-400 to-lavender-600 text-white text-xs">
                   {participant.initials}
                 </AvatarFallback>
               </Avatar>
             ))}
-            <Badge variant="secondary" className="ml-2 shadow-md border dark:bg-neutral-500">
-              +{additionalCount}
-            </Badge>
+            {remainingCount > 0 && (
+              <Badge variant="secondary" className="ml-2 shadow-md border dark:bg-neutral-500">
+                +{remainingCount}
+              </Badge>
+            )}
           </div>
 
           {actions && <div className="flex gap-2">{actions}</div>}

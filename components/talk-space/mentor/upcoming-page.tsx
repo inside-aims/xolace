@@ -14,9 +14,7 @@ const MentorUpcomingPage = () => {
         { id: 1, initials: "JM" },
         { id: 2, initials: "SK" },
         { id: 3, initials: "AL" },
-        { id: 4, initials: "MR" }
       ],
-      additionalCount: 5
     },
     {
       id: 2,
@@ -26,9 +24,9 @@ const MentorUpcomingPage = () => {
         { id: 1, initials: "JM" },
         { id: 2, initials: "SK" },
         { id: 3, initials: "AL" },
-        { id: 4, initials: "MR" }
+        { id: 4, initials: "MR" },
+        { id: 7, initials: "AL" },
       ],
-      additionalCount: 5
     }
   ];
 
@@ -51,14 +49,13 @@ const MentorUpcomingPage = () => {
               hour12: true,
             })}
             participants={meeting.participants}
-            additionalCount={meeting.additionalCount}
             icon={CalendarDays}
             actions={
               <>
                 <Button className="bg-lavender-500 hover:bg-lavender-600">
                   Start
                 </Button>
-                <Button variant="outline" className="border-lavender-600 hover:bg-lavender-700">
+                <Button variant="outline" className="hover:bg-ocean-600 hover:text-white">
                   <ExternalLink className="w-4 h-4 mr-1" />
                   Copy Link
                 </Button>

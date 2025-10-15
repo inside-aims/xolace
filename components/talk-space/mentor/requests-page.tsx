@@ -100,9 +100,8 @@ export default function MentorIncomingRequestsPage() {
                   onClick={() => setExpandedId(expandedId === request.id ? null : request.id)}
                 >
                   <div className="flex items-center gap-4">
-                    {/* Avatar */}
                     <Avatar className="w-14 h-14 border-2 border-white dark:border-slate-700 shadow-lg">
-                      <AvatarFallback className="bg-gradient-to-br from-blue-500 to-purple-500 text-white text-lg font-bold">
+                      <AvatarFallback className="bg-gradient-to-r from-purple-400 to-lavender-600 text-white text-lg font-bold">
                         {request.camperInitials}
                       </AvatarFallback>
                     </Avatar>

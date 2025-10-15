@@ -14,9 +14,10 @@ const MentorRecordingsPage = () => {
         { id: 1, initials: "JM" },
         { id: 2, initials: "SK" },
         { id: 3, initials: "AL" },
-        { id: 4, initials: "MR" }
+        { id: 4, initials: "MR" },
+        { id: 9, initials: "AL" },
+        { id: 10, initials: "MR" }
       ],
-      additionalCount: 5
     },
     {
       id: 2,
@@ -28,7 +29,6 @@ const MentorRecordingsPage = () => {
         { id: 3, initials: "AL" },
         { id: 4, initials: "MR" }
       ],
-      additionalCount: 5
     },
     {
       id: 3,
@@ -40,7 +40,6 @@ const MentorRecordingsPage = () => {
         { id: 3, initials: "AL" },
         { id: 4, initials: "MR" }
       ],
-      additionalCount: 5
     }
   ];
 
@@ -63,7 +62,6 @@ const MentorRecordingsPage = () => {
               hour12: true,
             })}
             participants={recording.participants}
-            additionalCount={recording.additionalCount}
             icon={Video}
             actions={
               <>
@@ -71,7 +69,7 @@ const MentorRecordingsPage = () => {
                   <Play className="w-4 h-4 mr-1" />
                   Play
                 </Button>
-                <Button variant="outline" className="border-lavender-600 hover:bg-lavender-700">
+                <Button variant="outline" className="hover:bg-ocean-600 hover:text-white">
                   <ExternalLink className="w-4 h-4 mr-1" />
                   Copy Link
                 </Button>

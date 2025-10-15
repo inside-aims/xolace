@@ -46,15 +46,15 @@ const MentorPersonalRoomPage = () => {
             </div>
           </div>
 
-          <div className="flex gap-3 pt-4">
-            <Button className="bg-lavender-500 hover:bg-lavender-600">
+          <div className="flex gap-4 pt-4">
+            <Button className="bg-gradient-to-r from-purple-400 to-lavender-600 text-white hover:from-purple-500 hover:to-lavender-700 hover transition-transform hover:scale-102 ease-in-out">
               <Video className="w-4 h-4 mr-2" />
               Start Meeting
             </Button>
             <Button
-              variant="secondary"
+              variant="outline"
               onClick={handleCopyInvitation}
-              className="bg-ocean-700 hover:bg-ocean-600 text-white"
+              className={"hover:bg-ocean-600 hover:text-white"}
             >
               <Copy className="w-4 h-4 mr-2" />
               {copied ? 'Copied!' : 'Copy Invitation'}
