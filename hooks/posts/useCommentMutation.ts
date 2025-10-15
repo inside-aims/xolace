@@ -4,6 +4,7 @@ import { Comment, DetailPost } from '@/types/global';
 import { logActivity } from '@/lib/activity-logger';
 import { useUserState } from '@/lib/store/user';
 import { createNotification } from '@/lib/actions/notifications.action';
+import { CommentPinType } from '@/types/global';
 
 const supabase = getSupabaseBrowserClient();
 
@@ -15,6 +16,10 @@ interface CreateCommentVariables {
   depth?: number;
   parentAuthorId? : string;
   campfireId?: string | null;
+  authorName?: string;
+  authorAvatarUrl?: string;
+  pinnedStatus?: CommentPinType;
+  ai_suggestion?: boolean;
 }
 
 interface CreateCommentContext {
@@ -32,7 +37,7 @@ export function useCommentMutation(post: DetailPost | {created_by : string | und
     CreateCommentVariables, // Variables passed to the mutation function
     CreateCommentContext // Context type for onMutate/onError
   >({
-    mutationFn: async ({ postId, commentText, parentId , depth, parentAuthorId, campfireId  }) => {
+    mutationFn: async ({ postId, commentText, parentId , depth, parentAuthorId, campfireId, authorName, authorAvatarUrl, pinnedStatus, ai_suggestion  }) => {
       if (!user?.id) {
         throw new Error('User not authenticated');
       }
@@ -40,13 +45,15 @@ export function useCommentMutation(post: DetailPost | {created_by : string | und
       const { data, error } = await supabase
         .from('comments')
         .insert({
-          author_name: 'Flux Ai',
-          author_avatar_url: 'http://127.0.0.1:54321/storage/v1/object/public/xolace.bucket//sad-anonymous.png',
           post: postId,
           comment_text: commentText,
           parent_id: parentId ? Number(parentId) : null,
           depth: depth ? depth : 0,
           campfire_id: campfireId,
+          author_name: authorName ? authorName : null,
+          author_avatar_url: authorAvatarUrl ? authorAvatarUrl : null,
+          pinned_status: pinnedStatus ? pinnedStatus : 'none',
+          ai_suggestion: ai_suggestion ? ai_suggestion : false,
         })
         .select()
         .single();

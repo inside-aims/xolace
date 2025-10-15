@@ -137,17 +137,18 @@ export function PostForm({
   const hideTimerRef = useRef<NodeJS.Timeout | null>(null);
   const moodRef = useRef<HTMLDivElement>(null);
 
-
   const { data: userCampfires = [], isLoading: loadingCampfires } =
     getUserCampfires(user?.id);
 
   // post submission mutation
   const { submitPost, isSubmitting } = usePostSubmission();
 
-   // Use the comment mutation hook
-    const { mutate: createComment, isPending: isCreatingComment } =
-      useCommentMutation({created_by: user?.id, campfire_id: selectedCampfire?.campfireId || null});
-
+  // Use the comment mutation hook
+  const { mutate: createComment, isPending: isCreatingComment } =
+    useCommentMutation({
+      created_by: user?.id,
+      campfire_id: selectedCampfire?.campfireId || null,
+    });
 
   const intervalRef = useRef<NodeJS.Timeout | null>(null);
   // const startAnimation = () => {
@@ -347,8 +348,15 @@ export function PostForm({
       clearTimeout(showTimer);
       clearTimeout(hideTimer);
     };
-  }, [content, slides, currentSlide, postType, tooltipShowCount, userHasSelectedMood, showMoodTooltip]);
-
+  }, [
+    content,
+    slides,
+    currentSlide,
+    postType,
+    tooltipShowCount,
+    userHasSelectedMood,
+    showMoodTooltip,
+  ]);
 
   useEffect(() => {
     if (!preferences?.auto_save_drafts) return;
@@ -554,7 +562,7 @@ export function PostForm({
         const promptId = promptIdQuery;
         const promptText = promptTextQuery;
 
-        const {post_id, match} = await submitPost({
+        const { post_id, match } = await submitPost({
           content: data.content,
           is24HourPost: data.is24HourPost,
           type: data.type,
@@ -568,14 +576,17 @@ export function PostForm({
           preferences,
         });
 
-
-        createComment(
-      {
-        postId: post_id,
-        commentText: match,
-        postCreatedBy: user?.id ?? '',
-        campfireId: selectedCampfire?.campfireId,
-      })
+        createComment({
+          postId: post_id,
+          commentText: match,
+          postCreatedBy: user?.id ?? '',
+          campfireId: selectedCampfire?.campfireId,
+          authorName: 'Flux AI',
+          authorAvatarUrl:
+            'http://127.0.0.1:54321/storage/v1/object/public/xolace.bucket//sad-anonymous.png',
+          pinnedStatus: 'author',
+          ai_suggestion: true,
+        });
 
         // Clear the form and tags on success
         if (data.type === 'single') {
@@ -1045,9 +1056,9 @@ export function PostForm({
                   {/* Emoji Button */}
                   <Popover
                     open={isEmojiPickerOpen}
-                    onOpenChange={(open) => {
-                      setIsEmojiPickerOpen(open)
-                      if (open) setShowMoodPicker(false)
+                    onOpenChange={open => {
+                      setIsEmojiPickerOpen(open);
+                      if (open) setShowMoodPicker(false);
                     }}
                   >
                     <PopoverTrigger asChild>
@@ -1080,12 +1091,12 @@ export function PostForm({
                   {/* Mood Button with Slow Pulse Animation */}
                   <Popover
                     open={showMoodPicker}
-                    onOpenChange={(open) => {
-                      setShowMoodPicker(open)
+                    onOpenChange={open => {
+                      setShowMoodPicker(open);
                       if (open) {
-                        setIsEmojiPickerOpen(false)
-                        setUserHasSelectedMood(true)
-                        setShowMoodTooltip(false)
+                        setIsEmojiPickerOpen(false);
+                        setUserHasSelectedMood(true);
+                        setShowMoodTooltip(false);
                       }
                     }}
                   >
@@ -1095,7 +1106,7 @@ export function PostForm({
                           type="button"
                           variant="ghost"
                           size="sm"
-                          className={`rounded-xl p-3 transition-all  ${
+                          className={`rounded-xl p-3 transition-all ${
                             isTextareaFocused || showMoodPicker
                               ? `${selectedMood.color} animate-[pulse_9s_ease-in-out_infinite] text-white shadow-lg`
                               : 'text-muted-foreground hover:text-foreground hover:bg-muted'
@@ -1117,28 +1128,39 @@ export function PostForm({
                               initial={{ opacity: 0, y: -10, scale: 0.95 }}
                               animate={{ opacity: 1, y: 0, scale: 1 }}
                               exit={{ opacity: 0, y: -10, scale: 0.95 }}
-                              transition={{ duration: 0.3, ease: "easeOut" }}
-                              className="absolute left-1/2 -translate-x-1/2 -top-14 z-50 pointer-events-none"
+                              transition={{ duration: 0.3, ease: 'easeOut' }}
+                              className="pointer-events-none absolute -top-14 left-1/2 z-50 -translate-x-1/2"
                             >
-                              <div className="relative bg-gradient-to-r from-purple-500 to-blue-500 text-white px-4 py-2.5 rounded-lg shadow-xl text-sm font-semibold whitespace-nowrap">
+                              <div className="relative rounded-lg bg-gradient-to-r from-purple-500 to-blue-500 px-4 py-2.5 text-sm font-semibold whitespace-nowrap text-white shadow-xl">
                                 <span className="relative z-10 flex items-center gap-1.5">
                                   <motion.span
                                     animate={{ rotate: [0, -10, 10, -10, 0] }}
-                                    transition={{ duration: 0.5, repeat: Infinity, repeatDelay: 1 }}
+                                    transition={{
+                                      duration: 0.5,
+                                      repeat: Infinity,
+                                      repeatDelay: 1,
+                                    }}
                                   >
                                     ✨
                                   </motion.span>
                                   Pick how you feel!
                                 </span>
                                 <motion.div
-                                  className="absolute inset-0 bg-purple-400 rounded-lg opacity-30"
+                                  className="absolute inset-0 rounded-lg bg-purple-400 opacity-30"
                                   animate={{ scale: [1, 1.05, 1] }}
-                                  transition={{ duration: 1.5, repeat: Infinity }}
+                                  transition={{
+                                    duration: 1.5,
+                                    repeat: Infinity,
+                                  }}
                                 />
                                 <motion.div
-                                  className="absolute left-1/2 -translate-x-1/2 -bottom-1 w-2 h-2 bg-purple-500 rotate-45"
+                                  className="absolute -bottom-1 left-1/2 h-2 w-2 -translate-x-1/2 rotate-45 bg-purple-500"
                                   animate={{ y: [0, 2, 0] }}
-                                  transition={{ duration: 0.8, repeat: Infinity, ease: "easeInOut" }}
+                                  transition={{
+                                    duration: 0.8,
+                                    repeat: Infinity,
+                                    ease: 'easeInOut',
+                                  }}
                                 />
                               </div>
                             </motion.div>
@@ -1148,12 +1170,16 @@ export function PostForm({
                               animate={{ opacity: 1, y: 0 }}
                               exit={{ opacity: 0, y: 10 }}
                               transition={{ duration: 0.3, delay: 0.2 }}
-                              className="absolute left-1/2 -translate-x-1/2 top-14 z-40 pointer-events-none"
+                              className="pointer-events-none absolute top-14 left-1/2 z-40 -translate-x-1/2"
                             >
                               <motion.div
                                 animate={{ y: [-2, 2, -2] }}
-                                transition={{ duration: 1, repeat: Infinity, ease: "easeInOut" }}
-                                className="text-purple-500 text-2xl"
+                                transition={{
+                                  duration: 1,
+                                  repeat: Infinity,
+                                  ease: 'easeInOut',
+                                }}
+                                className="text-2xl text-purple-500"
                               >
                                 ↑
                               </motion.div>
@@ -1164,7 +1190,8 @@ export function PostForm({
                     </div>
 
                     <PopoverContent
-                      className="w-80 rounded-xl border p-4 shadow-2xl" align="start"
+                      className="w-80 rounded-xl border p-4 shadow-2xl"
+                      align="start"
                     >
                       <h4 className="text-foreground mb-4 text-center font-semibold">
                         How are you feeling?
@@ -1175,9 +1202,9 @@ export function PostForm({
                             key={mood.id}
                             type="button"
                             onClick={() => {
-                              setSelectedMood(mood)
-                              setShowMoodPicker(false)
-                              setUserHasSelectedMood(true)
+                              setSelectedMood(mood);
+                              setShowMoodPicker(false);
+                              setUserHasSelectedMood(true);
                             }}
                             className={`rounded-xl p-3 transition-all duration-200 hover:scale-105 ${
                               selectedMood.id === mood.id
@@ -1187,7 +1214,9 @@ export function PostForm({
                           >
                             <div className="flex flex-col items-center gap-1">
                               {mood.icon}
-                              <span className="text-xs font-medium">{mood.label}</span>
+                              <span className="text-xs font-medium">
+                                {mood.label}
+                              </span>
                             </div>
                           </button>
                         ))}
@@ -1217,11 +1246,11 @@ export function PostForm({
                 >
                   {isLoading ? (
                     <span className="flex gap-2">
-                      <DefaultLoader size={20}/>
+                      <DefaultLoader size={20} />
                     </span>
                   ) : (
                     <>
-                      <Send size={20} strokeWidth={1.75} absoluteStrokeWidth/>
+                      <Send size={20} strokeWidth={1.75} absoluteStrokeWidth />
                     </>
                   )}
                 </ShinyButton>

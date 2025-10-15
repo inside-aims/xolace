@@ -145,3 +145,5 @@ export interface PostMetricData {
 }
 
 export type HighLightedFeedContent = Database['public']['Tables']['highlighted_feed_content']['Row']
+
+export type CommentPinType = Database["public"]["Enums"]["comment_pin_type"]
