@@ -583,7 +583,7 @@ export function PostForm({
           campfireId: selectedCampfire?.campfireId,
           authorName: 'Flux AI',
           authorAvatarUrl:
-            'http://127.0.0.1:54321/storage/v1/object/public/xolace.bucket//sad-anonymous.png',
+            'https://qdjrwasidlmgqxakdxkl.supabase.co/storage/v1/object/public/xolace.bucket/flux-ai.JPG',
           pinnedStatus: 'author',
           ai_suggestion: true,
         });
