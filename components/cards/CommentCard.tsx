@@ -2,7 +2,8 @@
 import * as React from 'react';
 import { useEffect, useState } from 'react';
 import { format } from 'timeago.js';
-import { ChevronDown, ChevronRight, MessageCircle, Pin } from 'lucide-react';
+import { BrainCircuit, ChevronDown, ChevronRight, MessageCircle, Pin, Sparkles } from 'lucide-react';
+import { Badge } from '../ui/badge';
 
 import { Card, CardContent, CardHeader } from '@/components/ui/card';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
@@ -125,9 +126,19 @@ const CommentCard = ({
                 </AvatarFallback>
               </Avatar>
               <div className="flex flex-col items-start justify-center gap-1">
-                <h5 className="text-sm font-semibold tracking-tight text-gray-900 dark:text-white">
-                  {displayName}
+                <h5 className="flex items-center gap-1 text-sm font-semibold tracking-tight text-gray-900 dark:text-white">
+                  {displayName} {comment.ai_suggestion && <BrainCircuit className='text-primary-500' size={14} />}
                 </h5>
+                {
+                  comment.ai_suggestion && (
+                    <Badge variant="minimal" className="text-[9px] py-[1px] text-orange-400 bg-orange-900/90 dark:bg-orange-900/20 border-orange-800/50">
+                      <span>
+                        <Sparkles size={10}/>
+                      </span>
+                    AI SUGGESTION
+                  </Badge>
+                  )
+                }
               </div>
               <small className="ml-2 text-xs text-zinc-500 dark:text-gray-400">
                 {timestamp}
