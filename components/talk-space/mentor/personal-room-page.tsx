@@ -9,7 +9,7 @@ const MentorPersonalRoomPage = () => {
   const [copied, setCopied] = useState(false);
 
   const meetingData = {
-    topic: "jssmastery's Meeting Room",
+    topic: "DoeDiego Meeting Room",
     meetingId: "user_2dwpWYOcMMeoXapfDNoLY48cwxb",
     inviteLink: "https://yoom.vercel.app/meeting/user_2dwpWYOcMMeoXapfDNoLY48cwx..."
   };

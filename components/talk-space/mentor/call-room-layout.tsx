@@ -1,8 +1,10 @@
 'use client';
 
+import { cn } from "@/lib/utils";
 import React, {useState} from 'react';
 import { MessageCircle, FileText, Target, Award, Timer, Mic, MicOff, Video, VideoOff, Phone, PhoneOff } from 'lucide-react';
 import {ActionCard} from "@/components/talk-space/mentor/action-links";
+import {Button} from "@/components/ui/button";
 
 interface SidebarProps {
   isChatOpen: boolean;
@@ -124,7 +126,7 @@ export function RightPanel({isChatOpen}: RightPanelProps) {
 }
 
 
-export  function BottomControls() {
+export  function BottomControls({onEndASession}: {onEndASession: () => void}) {
   const [audio, setAudio] = useState(true);
   const [video, setVideo] = useState(true);
 
@@ -139,6 +141,7 @@ export  function BottomControls() {
         icon={PhoneOff}
         color="from-red-600 to-pink-600"
         label={"End Session"}
+        onClick={onEndASession}
         className={"px-6 py-3 bg-gradient-to-r from-red-600 to-red-700 text-white rounded-xl font-bold hover:scale-105 transition flex items-center gap-2 shadow-lg"}
       />
 
@@ -170,5 +173,37 @@ export function ChatPanel() {
 }
 
 
+export const CallButton = (
+  {
+    label,
+    onStartAction,
+    icon,
+    size = "default",
+  }: {
+  label: string;
+  icon?: React.ReactNode;
+  onStartAction: () => void;
+  size?: "lg" | "sm" | "default" | "icon";
+}) => {
+  const sizeClasses = {
+    lg: "px-8 py-6 text-lg",
+    default: "px-6 py-3 text-base",
+    sm: "px-4 py-2 text-sm",
+    icon: "p-3",
+  };
+
+  return (
+    <Button
+      onClick={onStartAction}
+      className={cn(
+        "flex-1 bg-gradient-to-r from-purple-400 to-lavender-600 text-white rounded-xl font-bold hover:from-purple-500 hover:to-lavender-700 transition-all hover:scale-105 shadow-lg hover:shadow-xl flex items-center justify-center gap-2",
+        sizeClasses[size]
+      )}
+    >
+      {icon && <span className="text-xl">{icon}</span>}
+      {label}
+    </Button>
+  );
+};
 
 

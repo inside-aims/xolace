@@ -1,17 +1,15 @@
 'use client';
 
-import { CalendarDays,Play, ExternalLink} from 'lucide-react';
+import {CalendarDays, ExternalLink,} from 'lucide-react';
 import { Button } from '@/components/ui/button';
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
-import { Badge } from '@/components/ui/badge';
-import { Avatar, AvatarFallback } from '@/components/ui/avatar';
+import {CallCard} from "@/components/talk-space/mentor/call-card";
 
 const MentorUpcomingPage = () => {
   const upcomingMeetings = [
     {
       id: 1,
-      title: "JSM Masterclass Meeting",
-      date: "28/03/2024, 20:30:00",
+      title: "John Doe",
+      date: "2024-03-20T10:18:18.663256Z",
       participants: [
         { id: 1, initials: "JM" },
         { id: 2, initials: "SK" },
@@ -23,7 +21,7 @@ const MentorUpcomingPage = () => {
     {
       id: 2,
       title: "Standup Meeting",
-      date: "27/03/2024, 18:30:00",
+      date: "2024-03-20T10:18:18.663256Z",
       participants: [
         { id: 1, initials: "JM" },
         { id: 2, initials: "SK" },
@@ -40,46 +38,33 @@ const MentorUpcomingPage = () => {
 
       <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
         {upcomingMeetings.map((meeting) => (
-          <Card key={meeting.id} className="bg-white shadow-sm dark:bg-neutral-800 border transition-colors">
-            <CardHeader>
-              <div className="flex items-start gap-3">
-                <CalendarDays className="w-8 h-8 text-neutral-400 mt-1" />
-                <div className="flex-1">
-                  <CardTitle className="text-xl mb-2">{meeting.title}</CardTitle>
-                  <CardDescription className="text-neutral-400">
-                    {meeting.date}
-                  </CardDescription>
-                </div>
-              </div>
-            </CardHeader>
-            <CardContent>
-              <div className="flex items-center justify-between">
-                <div className="flex items-center">
-                  {meeting.participants.map((participant, idx) => (
-                    <Avatar key={participant.id} className={`w-10 h-10 border-2 border-slate-800 ${idx > 0 ? '-ml-3' : ''}`}>
-                      <AvatarFallback className="bg-gradient-to-br from-blue-500 to-purple-500 text-white text-xs">
-                        {participant.initials}
-                      </AvatarFallback>
-                    </Avatar>
-                  ))}
-                  <Badge variant="secondary" className="ml-2 shadow-md border">
-                    +{meeting.additionalCount}
-                  </Badge>
-                </div>
-
-                <div className="flex gap-2">
-                  <Button className="bg-lavender-500 hover:bg-lavender-600">
-                    <Play className="w-4 h-4 mr-1" />
-                    Start
-                  </Button>
-                  <Button variant="outline" className="border-lavender-600  hover:bg-lavender-700">
-                    <ExternalLink className="w-4 h-4 mr-1" />
-                    Copy Link
-                  </Button>
-                </div>
-              </div>
-            </CardContent>
-          </Card>
+          <CallCard
+            key={meeting.id}
+            id={meeting.id}
+            title={meeting.title}
+            date={new Date(meeting.date).toLocaleString('en-US', {
+              year: 'numeric',
+              month: 'short',
+              day: '2-digit',
+              hour: '2-digit',
+              minute: '2-digit',
+              hour12: true,
+            })}
+            participants={meeting.participants}
+            additionalCount={meeting.additionalCount}
+            icon={CalendarDays}
+            actions={
+              <>
+                <Button className="bg-lavender-500 hover:bg-lavender-600">
+                  Start
+                </Button>
+                <Button variant="outline" className="border-lavender-600 hover:bg-lavender-700">
+                  <ExternalLink className="w-4 h-4 mr-1" />
+                  Copy Link
+                </Button>
+              </>
+            }
+          />
         ))}
       </div>
     </div>

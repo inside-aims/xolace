@@ -38,14 +38,14 @@ export default function MentalHealthChat() {
 
   return (
     <div className="flex flex-col h-screen w-full">
-      {callStatus === 'idle' && (
+      {(callStatus === 'idle' || callStatus == "ended") && (
         // <CamperIdleRoom
         //   onSelectProfessional={() => setIsProfessionalModalOpen(true)}
         // />
         <MentorIdleRoom/>
       )}
       {callStatus === "in-call" && (
-        <CallRoom/>
+        <CallRoom onEndASessionAction={() => setCallStatus("ended")}/>
       )}
       {callStatus === "requesting" && (
         <div className={"text-black"}>

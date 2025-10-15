@@ -4,7 +4,7 @@ import React, { useState } from 'react';
 import {BottomControls, Sidebar, TopBar, VideoArea} from "@/components/talk-space/mentor/call-room-layout";
 
 
-export default function CallRoom() {
+export default function CallRoom({onEndASessionAction} : {onEndASessionAction: () => void}) {
   const [isChatOpen, setIsChatOpen] = useState(true);
   const [isNotesOpen, setIsNotesOpen] = useState(false);
   const [isGoalsOpen, setIsGoalsOpen] = useState(false);
@@ -30,7 +30,7 @@ export default function CallRoom() {
         />
         <VideoArea mentor={mentor} />
       </div>
-      <BottomControls />
+      <BottomControls onEndASession={onEndASessionAction}/>
 
       {/*<RightPanel*/}
       {/*  isChatOpen={isChatOpen}*/}

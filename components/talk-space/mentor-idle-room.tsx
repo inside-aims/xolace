@@ -7,6 +7,7 @@ import MentorPreviousPage from "@/components/talk-space/mentor/previous-page";
 import MentorRecordingsPage from "@/components/talk-space/mentor/recordings-page";
 import MentorPersonalRoomPage from "@/components/talk-space/mentor/personal-room-page";
 import MentorRequestsPage from "@/components/talk-space/mentor/requests-page";
+import MentorIncomingRequestsPage from "@/components/talk-space/mentor/requests-page";
 
 const MentorIdleRoom = () => {
   const [activeRoute, setActiveRoute] = useState('home');
@@ -22,7 +23,7 @@ const MentorIdleRoom = () => {
       case 'home':
         return <HomeContent onNavigate={handleNavigation}/>;
       case "requests":
-        return <MentorRequestsPage/>
+        return <MentorIncomingRequestsPage/>
       case 'upcoming':
         return <MentorUpcomingPage/>
       case 'previous':

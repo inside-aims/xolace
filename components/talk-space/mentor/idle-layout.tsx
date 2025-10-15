@@ -1,5 +1,5 @@
 'use client';
-import {CalendarDays, Video, Home, Plus} from 'lucide-react';
+import {CalendarDays, Video, Home, Plus, Inbox} from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { ScrollArea } from '@/components/ui/scroll-area';
 
@@ -20,8 +20,8 @@ export const navItems: NavItem[] = [
   },
   {
     key: 'requests',
-    title: 'Requests',
-    icon: <CalendarDays className="w-5 h-5" />,
+    title: 'Incoming Requests',
+    icon: <Inbox className="w-5 h-5" />,
     route: 'requests',
   },
   {

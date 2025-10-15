@@ -1,146 +1,194 @@
-'use client';
-
 import { useState } from 'react';
-import { CalendarDays, Clock } from 'lucide-react';
+import { Inbox, Check, X, Calendar, ChevronRight, Clock } from 'lucide-react';
 import { Button } from '@/components/ui/button';
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Avatar, AvatarFallback } from '@/components/ui/avatar';
 
-const MentorRequestsPage = () => {
+export default function MentorIncomingRequestsPage() {
+
   const [requests, setRequests] = useState([
     {
-      id: 1,
+      id: "1",
       camperName: "Sarah Johnson",
       camperInitials: "SJ",
-      requestedDate: "28/03/2024",
-      requestedTime: "14:30:00",
+      date: "28/03/2024",
+      time: "14:30",
       topic: "Career Guidance Session",
-      message: "Hi! I'd love to discuss career paths in software development.",
+      message: "Hi! I'd love to discuss career paths in software development and get your insights.",
       status: "pending"
     },
     {
-      id: 2,
+      id: "2",
       camperName: "Mike Chen",
       camperInitials: "MC",
-      requestedDate: "29/03/2024",
-      requestedTime: "16:00:00",
+      date: "29/03/2024",
+      time: "16:00",
       topic: "Code Review Session",
-      message: "Need help reviewing my React project.",
+      message: "Need help reviewing my React project and discussing best practices.",
       status: "pending"
     },
     {
-      id: 3,
+      id:" 3",
       camperName: "Emily Davis",
       camperInitials: "ED",
-      requestedDate: "30/03/2024",
-      requestedTime: "10:00:00",
+      date: "30/03/2024",
+      time: "10:00",
       topic: "Interview Preparation",
-      message: "Preparing for upcoming technical interviews.",
+      message: "Preparing for upcoming technical interviews at major tech companies.",
+      status: "pending"
+    },
+    {
+      id: "4",
+      camperName: "James Wilson",
+      camperInitials: "JW",
+      date: "31/03/2024",
+      time: "15:30",
+      topic: "Portfolio Review",
+      message: "Would love feedback on my portfolio website and project selection.",
       status: "pending"
     }
   ]);
 
-  const handleAccept = (id: number) => {
-    setRequests(requests.map(req =>
-      req.id === id ? { ...req, status: 'accepted' } : req
-    ));
+  const [expandedId, setExpandedId] = useState<string | null>(null);
+
+  const handleAccept = (id: string) => {
+    setRequests(requests.filter(req => req.id !== id));
   };
 
-  const handleReject = (id: number) => {
-    setRequests(requests.map(req =>
-      req.id === id ? { ...req, status: 'rejected' } : req
-    ));
+  const handleReject = (id: string) => {
+    setRequests(requests.filter(req => req.id !== id));
   };
 
-  const handleReschedule = (id: number) => {
-    alert('Reschedule dialog would open here');
+  const handleReschedule = (id: string) => {
+    console.log('Open reschedule modal for:', id);
   };
+
+  const pendingCount = requests.filter(r => r.status === 'pending').length;
 
   return (
-    <div className="space-y-6">
-      <div className="flex items-center justify-between">
-        <h1 className="text-4xl font-bold text-slate-900 dark:text-white">Meeting Requests</h1>
-        <Badge className="bg-blue-600 text-white px-3 py-1 text-lg">
-          {requests.filter(r => r.status === 'pending').length} Pending
-        </Badge>
-      </div>
+    <div className="min-h-screen p-6">
+      <div className="space-y-6">
+        <div className="flex items-center justify-between">
+          <div className="space-y-1">
+            <h1 className="text-4xl font-semibold">
+              Incoming Requests
+            </h1>
+          </div>
+          {pendingCount > 0 && (
+            <div className="flex items-center gap-2 ">
+              <div className="w-2 h-2 bg-blue-500 rounded-full animate-pulse"></div>
+              <span className="font-semibold ">{pendingCount} Pending</span>
+            </div>
+          )}
+        </div>
 
-      <div className="grid grid-cols-1 gap-6">
-        {requests.map((request) => (
-          <Card key={request.id} className={`border-slate-700 transition-all ${
-            request.status === 'accepted' ? 'bg-green-900/20 border-green-700' :
-              request.status === 'rejected' ? 'bg-red-900/20 border-red-700' :
-                'bg-slate-800 dark:bg-slate-900'
-          }`}>
-            <CardHeader>
-              <div className="flex items-start justify-between">
-                <div className="flex items-start gap-4">
-                  <Avatar className="w-12 h-12">
-                    <AvatarFallback className="bg-gradient-to-br from-blue-500 to-purple-500 text-white text-lg font-semibold">
-                      {request.camperInitials}
-                    </AvatarFallback>
-                  </Avatar>
-                  <div className="flex-1">
-                    <CardTitle className="text-white text-xl mb-1">{request.camperName}</CardTitle>
-                    <CardDescription className="text-slate-400">
-                      {request.topic}
-                    </CardDescription>
+        {requests.length === 0 ? (
+          <div className="bg-white shadow-sm dark:bg-neutral-800 border rounded-2xl p-16 text-center">
+            <Inbox className="w-20 h-20 mx-auto mb-4" />
+            <h3 className="text-xl font-semibold mb-2">All caught up!</h3>
+            <p className="text-neutral-500 dark:text-neutral-300">No pending requests at the moment</p>
+          </div>
+        ) : (
+          <div className="space-y-3">
+            {requests.map((request) => (
+              <div
+                key={request.id}
+                className="bg-white shadow-sm dark:bg-neutral-800 border rounded-xl transition-all duration-300 overflow-hidden group"
+              >
+                <div
+                  className="p-5 cursor-pointer"
+                  onClick={() => setExpandedId(expandedId === request.id ? null : request.id)}
+                >
+                  <div className="flex items-center gap-4">
+                    {/* Avatar */}
+                    <Avatar className="w-14 h-14 border-2 border-white dark:border-slate-700 shadow-lg">
+                      <AvatarFallback className="bg-gradient-to-br from-blue-500 to-purple-500 text-white text-lg font-bold">
+                        {request.camperInitials}
+                      </AvatarFallback>
+                    </Avatar>
+
+                    <div className="flex-1 min-w-0">
+                      <div className="flex items-center gap-2 mb-1">
+                        <h3 className="text-lg font-semibold">
+                          {request.camperName}
+                        </h3>
+                        <Badge className="bg-blue-100 text-blue-700 dark:bg-blue-900 dark:text-blue-300 border-0">
+                          New
+                        </Badge>
+                      </div>
+                      <p className="text-slate-600 dark:text-slate-300 font-medium mb-2">{request.topic}</p>
+                      <div className="flex items-center gap-4 text-sm text-slate-500 dark:text-slate-400">
+                        <div className="flex items-center gap-1">
+                          <Calendar className="w-4 h-4" />
+                          <span>{request.date}</span>
+                        </div>
+                        <div className="flex items-center gap-1">
+                          <Clock className="w-4 h-4" />
+                          <span>{request.time}</span>
+                        </div>
+                      </div>
+                    </div>
+                    <ChevronRight
+                      className={`w-5 h-5 text-slate-400 transition-transform duration-300 ${
+                        expandedId === request.id ? 'rotate-90' : ''
+                      }`}
+                    />
                   </div>
                 </div>
-                {request.status === 'accepted' && (
-                  <Badge className="bg-green-600">Accepted</Badge>
-                )}
-                {request.status === 'rejected' && (
-                  <Badge className="bg-red-600">Rejected</Badge>
-                )}
-              </div>
-            </CardHeader>
-            <CardContent className="space-y-4">
-              <div className="flex items-center gap-4 text-slate-300">
-                <div className="flex items-center gap-2">
-                  <CalendarDays className="w-4 h-4" />
-                  <span>{request.requestedDate}</span>
-                </div>
-                <div className="flex items-center gap-2">
-                  <Clock className="w-4 h-4" />
-                  <span>{request.requestedTime}</span>
-                </div>
-              </div>
 
-              <div className="bg-slate-900/50 rounded-lg p-4">
-                <p className="text-slate-300 text-sm italic">{request.message}</p>
-              </div>
+                <div
+                  className={`overflow-hidden transition-all duration-300 ${
+                    expandedId === request.id ? 'max-h-96' : 'max-h-0'
+                  }`}
+                >
+                  <div className="px-5 pb-5 pt-2 border-t bg-white shadow-sm dark:bg-neutral-800 border ">
+                    <div className="mb-4 p-4 bg-white shadow-sm dark:bg-neutral-800 rounded-lg border border-neutral-300 dark:border-neutral-500">
+                      <p className="text-sm  italic leading-relaxed">
+                        {request.message}
+                      </p>
+                    </div>
 
-              {request.status === 'pending' && (
-                <div className="flex gap-3 pt-2">
-                  <Button
-                    className="bg-green-600 hover:bg-green-700 flex-1"
-                    onClick={() => handleAccept(request.id)}
-                  >
-                    Accept
-                  </Button>
-                  <Button
-                    variant="outline"
-                    className="border-blue-600 text-blue-400 hover:bg-blue-900/20 flex-1"
-                    onClick={() => handleReschedule(request.id)}
-                  >
-                    Reschedule
-                  </Button>
-                  <Button
-                    variant="outline"
-                    className="border-red-600 text-red-400 hover:bg-red-900/20 flex-1"
-                    onClick={() => handleReject(request.id)}
-                  >
-                    Reject
-                  </Button>
+                    <div className="flex flex-col sm:flex-row gap-2">
+                      <Button
+                        className="flex-1 bg-gradient-to-r from-green-500 to-green-600 hover:from-green-600 hover:to-green-700 text-white shadow-lg hover:shadow-xl transition-all"
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          handleAccept(request.id);
+                        }}
+                      >
+                        <Check className="w-4 h-4 mr-2" />
+                        Accept Request
+                      </Button>
+                      <Button
+                        variant="outline"
+                        className="flex-1 border-2 border-blue-500 text-blue-600 hover:bg-blue-50 dark:border-blue-400 dark:text-blue-400 dark:hover:bg-blue-950 shadow-md hover:shadow-lg transition-all"
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          handleReschedule(request.id);
+                        }}
+                      >
+                        <Calendar className="w-4 h-4 mr-2" />
+                        Propose New Time
+                      </Button>
+                      <Button
+                        variant="outline"
+                        className="flex-1 border-2 border-red-500 text-red-600 hover:bg-red-50 dark:border-red-400 dark:text-red-400 dark:hover:bg-red-950 shadow-md hover:shadow-lg transition-all"
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          handleReject(request.id);
+                        }}
+                      >
+                        <X className="w-4 h-4 mr-2" />
+                        Decline
+                      </Button>
+                    </div>
+                  </div>
                 </div>
-              )}
-            </CardContent>
-          </Card>
-        ))}
+              </div>
+            ))}
+          </div>
+        )}
       </div>
     </div>
   );
-};
-export default MentorRequestsPage;
+}
