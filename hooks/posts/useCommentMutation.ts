@@ -119,6 +119,7 @@ export function useCommentMutation(post: DetailPost | {created_by : string | und
         parent_id: parentId ? Number(parentId) : null,
         pinned_status: 'none',
         campfire_id: post.campfire_id,
+        ai_suggestion: false,
       };
 
       // Optimistically update the comments list
