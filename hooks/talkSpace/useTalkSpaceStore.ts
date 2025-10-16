@@ -14,7 +14,7 @@ interface TalkSpaceState {
   callStatus: CallStatus;
   setCallStatus: (status: CallStatus) => void;
   resetCall: () => void;
-  mentor: MentorProps;
+  mentor: MentorProps | null;
   setMentor: (mentor: MentorProps  | undefined) => void;
 }
 
@@ -22,6 +22,6 @@ export const useTalkSpaceStore = create<TalkSpaceState>((set) => ({
   callStatus: 'idle',
   setCallStatus: (status) => set({ callStatus: status }),
   resetCall: () => set({ callStatus: 'idle' }),
-  mentor: undefined,
+  mentor: null,
   setMentor: (mentor) => set({ mentor: mentor }),
 }));
