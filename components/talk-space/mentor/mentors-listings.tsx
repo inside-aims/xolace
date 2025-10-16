@@ -210,7 +210,7 @@ const MentorsListings = () => {
 
     setMentor(selectedMentor);
     setCallStatus("requesting")
-    router.push(`/talk-space?mentorId=${mentorId}`);
+    router.push(`/talk-space`);
   }
 
   // Handle read full details about selected mentor

@@ -1,8 +1,7 @@
 'use client';
-import {CalendarDays, Video, Home, Plus, Inbox} from 'lucide-react';
+import { CalendarDays, Video, Home, Plus, Inbox } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { ScrollArea } from '@/components/ui/scroll-area';
-
 
 interface NavItem {
   key: string;
@@ -50,46 +49,56 @@ export const navItems: NavItem[] = [
   },
 ];
 
-export const MentorIdleSidebar = ({ activeRoute, onNavigate }: {
+export const MentorIdleSidebar = ({
+                                    activeRoute,
+                                    onNavigate,
+                                  }: {
   activeRoute: string;
   onNavigate: (route: string) => void;
-}) => (
-  <aside className="w-72 flex flex-col border-r bg-white shadow-sm text-neutral-700 dark:bg-neutral-800 dark:text-white">
-    <div className="p-6 border-b  dark:border-neutral-800">
-      <h2 className="text-xl font-bold">Mentor Office</h2>
-      <p className="text-sm text-neutral-400 mt-1">Welcome back!</p>
-    </div>
-
-    <ScrollArea className="flex-1 px-3 py-4">
-      <nav className="space-y-2">
-        {navItems.map((item) => (
-          <Button
-            key={item.key}
-            variant={activeRoute === item.route ? "secondary" : "ghost"}
-            className={`w-full justify-start gap-3 ${
-              activeRoute === item.route
-                ? ' bg-neutral-300 dark:bg-neutral-700 hover:bg-neutral-300 dark:hover:bg-neutral-700'
-                : 'hover:bg-neutral-200 dark:hover:bg-neutral-600'
-            }`}
-            onClick={() => onNavigate(item.route)}
-          >
-            {item.icon}
-            <span>{item.title}</span>
-          </Button>
-        ))}
-      </nav>
-    </ScrollArea>
-
-    <div className="p-4 border-t border-neutral-800">
-      <div className="flex items-center gap-3">
-        <div className="w-10 h-10 rounded-full bg-gradient-to-br from-purple-500 to-pink-500 flex items-center justify-center text-white font-semibold">
-          M
-        </div>
-        <div className="flex-1 min-w-0">
-          <p className="text-sm font-medium truncate">Mentor User</p>
-          <p className="text-xs text-neutral-400 truncate">mentor@example.com</p>
-        </div>
+}) => {
+  return (
+    <aside className="w-64 flex flex-col border-r border-neutral-200 bg-white dark:bg-neutral-900 dark:border-neutral-800">
+      {/* Header Section */}
+      <div className="px-4 py-6 border-b border-neutral-200 dark:border-neutral-800">
+        <h2 className="text-lg font-semibold text-neutral-900 dark:text-white">
+          Mentor Dashboard
+        </h2>
+        <p className="text-sm text-neutral-500 dark:text-neutral-400 mt-1">
+          Manage your sessions
+        </p>
       </div>
-    </div>
-  </aside>
-);
+
+      {/* Navigation Section */}
+      <ScrollArea className="flex-1 py-4">
+        <nav className="px-3 space-y-1">
+          {navItems.map((item) => {
+            const isActive = activeRoute === item.route;
+
+            return (
+              <Button
+                key={item.key}
+                variant="ghost"
+                className={`
+                  w-full justify-start gap-3 h-11 px-3 
+                  transition-all duration-200 rounded-lg
+                  ${
+                  isActive
+                    ? 'bg-lavender-50 text-lavender-700 hover:bg-lavender-100 dark:bg-lavender-950 dark:text-lavender-300 dark:hover:bg-lavender-900 font-medium border-l-4 border-lavender-500 pl-2'
+                    : 'text-neutral-700 hover:bg-neutral-100 dark:text-neutral-300 dark:hover:bg-neutral-800 border-l-4 border-transparent'
+                }
+                `}
+                onClick={() => onNavigate(item.route)}
+              >
+                <span className={isActive ? 'text-lavender-600 dark:text-lavender-400' : ''}>
+                  {item.icon}
+                </span>
+                <span className="text-sm">{item.title}</span>
+              </Button>
+            );
+          })}
+        </nav>
+      </ScrollArea>
+
+    </aside>
+  );
+};

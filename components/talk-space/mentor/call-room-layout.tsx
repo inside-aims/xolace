@@ -2,8 +2,20 @@
 
 import { cn } from "@/lib/utils";
 import React, {useState} from 'react';
-import { MessageCircle, FileText, Target, Award, Timer, Mic, MicOff, Video, VideoOff, Phone, PhoneOff } from 'lucide-react';
-import {ActionCard} from "@/components/talk-space/mentor/action-links";
+import {
+  MessageCircle,
+  FileText,
+  Target,
+  Award,
+  Timer,
+  Mic,
+  MicOff,
+  Video,
+  VideoOff,
+  Phone,
+  PhoneOff,
+  Sparkles
+} from 'lucide-react';
 import {Button} from "@/components/ui/button";
 
 interface SidebarProps {
@@ -51,24 +63,27 @@ export function Sidebar(
     onToggleGoals,
   }: SidebarProps) {
   return (
-    <div className="flex flex-col items-center gap-4 px-3 py-6 bg-neutral-800 border-r border-white/10">
+    <div className="flex flex-col items-center gap-4 px-3 py-6 bg-purple-400 border-r border-white/10 text-white">
       <IconButton
         icon={MessageCircle}
         active={isChatOpen}
         onClick={onToggleChat}
-        color="from-blue-600 to-cyan-600"
+        color="from-blue-600 to-cyan-600 text-white"
+        className={"control-btn"}
       />
       <IconButton
         icon={FileText}
         active={isNotesOpen}
         onClick={onToggleNotes}
         color="from-purple-600 to-pink-600"
+        className={"control-btn"}
       />
       <IconButton
         icon={Target}
         active={isGoalsOpen}
         onClick={onToggleGoals}
         color="from-green-600 to-emerald-600"
+        className={"control-btn"}
       />
     </div>
   );
@@ -76,15 +91,21 @@ export function Sidebar(
 
 export function TopBar({ mentorName, sessionTime, isRecording }: TopBarProps) {
   return (
-    <div className="flex items-center justify-between px-6 py-3 border-b border-white/10 bg-neutral-800">
-      <h1 className="text-lg font-semibold">Session with {mentorName}</h1>
+    <div className="flex items-center justify-between px-6 py-3 border-b border-white/10 bg-gradient-to-r from-purple-400 to-lavender-600">
+      <div className="flex items-center gap-2">
+        <Sparkles size={28} color="gold" />
+        <div className={"flex flex-col"}>
+          <h4 className={"text-lg font-semibold capitalize"}>Mentorship session</h4>
+          <p className={"text-sm text-neutral-600 dark:text-neutral-100"}>Career Development Discussion</p>
+        </div>
+      </div>
       <div className="flex items-center gap-3 text-sm">
         {isRecording && (
           <div className="flex items-center text-red-500 gap-1">
             <Video size={16}/> Recording
           </div>
         )}
-        <div className="flex items-center gap-1 text-gray-400">
+        <div className="flex items-center gap-1">
           <Timer size={16}/> {sessionTime}
         </div>
       </div>
@@ -102,40 +123,32 @@ export function TopBar({ mentorName, sessionTime, isRecording }: TopBarProps) {
 
 export function VideoArea({ mentor }: VideoAreaProps) {
   return (
-    <div className="flex-1 flex items-center justify-center relative">
-      <img
-        src={mentor.avatar}
-        alt={mentor.name}
-        className="w-2/3 rounded-2xl shadow-lg object-cover"
-      />
-      <div className="absolute bottom-6 right-6 flex gap-3">
-        <ActionCard label="Take Notes" />
-        <ActionCard label="Mark Goal" />
-      </div>
+    <div className="flex-1 flex items-center justify-center relative bg-gradient-to-br from-indigo-50 via-purple-50 to-pink-50 dark:from-gray-900 dark:via-gray-800 dark:to-gray-900">
+
     </div>
   );
 }
-
-
-export function RightPanel({isChatOpen}: RightPanelProps) {
-  return (
-    <div className="w-80 border-l border-white/10 bg-neutral-800 p-4 overflow-y-auto">
-      {isChatOpen && <ChatPanel />}
-    </div>
-  );
-}
-
 
 export  function BottomControls({onEndASession}: {onEndASession: () => void}) {
   const [audio, setAudio] = useState(true);
   const [video, setVideo] = useState(true);
 
   return (
-    <div className="flex items-center justify-center py-4 md:justify-around  border-t border-white/10 bg-neutral-800">
+    <div className="flex items-center justify-center py-4 md:justify-around  border-t border-white/10 bg-gradient-to-r from-purple-400 to-lavender-600">
       <div className="flex items-center justify-center gap-4">
-        <IconButton icon={audio ? Mic : MicOff} onClick={() => setAudio(!audio)}/>
-        <IconButton icon={video ? Video : VideoOff} onClick={() => setVideo(!video)}/>
-        <IconButton icon={Phone} color="from-red-600 to-pink-600"/>
+        <IconButton
+          icon={audio ? Mic : MicOff} onClick={() => setAudio(!audio)}
+          className={"control-btn"}
+        />
+        <IconButton
+          icon={video ? Video : VideoOff}
+          onClick={() => setVideo(!video)}
+          className={"control-btn"}
+        />
+        <IconButton
+          icon={Phone}
+          className={"control-btn"}
+        />
       </div>
       <IconButton
         icon={PhoneOff}
@@ -163,15 +176,6 @@ export function IconButton({ active, icon: Icon, color,label, className = '', ..
     </button>
   );
 }
-
-export function ChatPanel() {
-  return(
-    <div>
-      Chat panel
-    </div>
-  )
-}
-
 
 export const CallButton = (
   {

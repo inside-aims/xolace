@@ -832,6 +832,9 @@ code {
   .custom-phone-input {
     @apply items-center flex bg-slate-50 dark:bg-bg-dark;
   }
+  .control-btn {
+    @apply py-3 text-white rounded-xl font-bold hover:scale-105 transition flex items-center shadow-lg
+  }
 
 }
 

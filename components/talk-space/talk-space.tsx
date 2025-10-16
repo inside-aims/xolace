@@ -17,7 +17,7 @@ export default function MentalHealthChat() {
   const params = useSearchParams();
   const mentorId = params.get('mentorId');
   console.log(mentorId);
-  const { callStatus, setMentor, setCallStatus, resetCall } = useTalkSpaceStore();
+  const { callStatus, setMentor, setCallStatus } = useTalkSpaceStore();
 
   useEffect(() => {
     if (!mentorId) {
@@ -38,16 +38,20 @@ export default function MentalHealthChat() {
 
   return (
     <div className="flex flex-col h-screen w-full">
+      {/*idle page for mentor and camper - that's empty space. */}
       {(callStatus === 'idle' || callStatus == "ended") && (
+        // To see camper idle room, comment <MentorIdleRoom/> and uncomment <CamperIdleRoom/>
+
         // <CamperIdleRoom
         //   onSelectProfessional={() => setIsProfessionalModalOpen(true)}
         // />
+
         <MentorIdleRoom/>
       )}
       {callStatus === "in-call" && (
         <CallRoom onEndASessionAction={() => setCallStatus("ended")}/>
       )}
-      {callStatus === "requesting" && (
+      {(mentor && callStatus === "requesting") && (
         <div className={"text-black"}>
           {`We're connecting you to mentor ${mentor.name}`}
         </div>
