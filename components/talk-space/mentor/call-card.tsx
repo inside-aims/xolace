@@ -4,12 +4,12 @@ import {Badge} from '@/components/ui/badge';
 import {Avatar, AvatarFallback} from '@/components/ui/avatar';
 
 interface Participant {
-  id: number;
-  initials: string;
+  id: string;
+  camperName: string;
 }
 
 export interface CallCardProps {
-  id: number;
+  id: string;
   title: string;
   date: string;
   participants: Participant[];
@@ -60,8 +60,8 @@ export const CallCard = (
                 key={participant.id}
                 className={`w-10 h-10 border-2  ${idx > 0 ? '-ml-3' : ''}`}
               >
-                <AvatarFallback className="bg-gradient-to-r from-purple-400 to-lavender-600 text-white text-xs">
-                  {participant.initials}
+                <AvatarFallback className="bg-gradient-to-r uppercase from-purple-400 to-lavender-600 text-white text-xs">
+                  {participant.camperName.slice(0,2)}
                 </AvatarFallback>
               </Avatar>
             ))}

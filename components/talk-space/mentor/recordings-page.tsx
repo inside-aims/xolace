@@ -2,50 +2,51 @@
 
 import { Video, Play, ExternalLink } from 'lucide-react';
 import { Button } from '@/components/ui/button';
-import {CallCard} from "@/components/talk-space/mentor/call-card";
+import {CallCard, CallCardProps} from "@/components/talk-space/mentor/call-card";
+
+const recordings: CallCardProps[] = [
+  {
+    id: "1",
+    title: "rec_default_ae7ac503",
+    date: "2024-03-20T10:18:18.663256Z",
+    participants: [
+      { id:" 1", camperName: "JM" },
+      { id: "2", camperName: "SK" },
+      { id: "3", camperName: "AL" },
+      { id: "4", camperName: "MR" },
+      { id: "9", camperName: "AL" },
+      { id: "10", camperName: "MR" }
+    ],
+  },
+  {
+    id: "2",
+    title: "rec_default_ae7ac503",
+    date: "2024-03-20T10:18:18.663256Z",
+    participants: [
+      { id: "1", camperName: "JM" },
+      { id: "2", camperName: "SK" },
+      { id: "3", camperName: "AL" },
+      { id: "4", camperName: "MR" }
+    ],
+  },
+  {
+    id: "3",
+    title: "rec_default_ae7ac503",
+    date: "2024-03-20T10:18:18.663256Z",
+    participants: [
+      { id: "1", camperName: "JM" },
+      { id: "2", camperName: "SK" },
+      { id: "3", camperName: "AL" },
+      { id: "4", camperName: "MR" }
+    ],
+  }
+];
 
 const MentorRecordingsPage = () => {
-  const recordings = [
-    {
-      id: 1,
-      title: "rec_default_ae7ac503",
-      date: "2024-03-20T10:18:18.663256Z",
-      participants: [
-        { id: 1, initials: "JM" },
-        { id: 2, initials: "SK" },
-        { id: 3, initials: "AL" },
-        { id: 4, initials: "MR" },
-        { id: 9, initials: "AL" },
-        { id: 10, initials: "MR" }
-      ],
-    },
-    {
-      id: 2,
-      title: "rec_default_ae7ac503",
-      date: "2024-03-20T10:18:18.663256Z",
-      participants: [
-        { id: 1, initials: "JM" },
-        { id: 2, initials: "SK" },
-        { id: 3, initials: "AL" },
-        { id: 4, initials: "MR" }
-      ],
-    },
-    {
-      id: 3,
-      title: "rec_default_ae7ac503",
-      date: "2024-03-20T10:18:18.663256Z",
-      participants: [
-        { id: 1, initials: "JM" },
-        { id: 2, initials: "SK" },
-        { id: 3, initials: "AL" },
-        { id: 4, initials: "MR" }
-      ],
-    }
-  ];
 
   return (
     <div className="space-y-6">
-      <h1 className="text-4xl font-semibold">Recordings</h1>
+      <h1 className="text-lg md:text-3xl font-semibold">Recordings</h1>
 
       <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
         {recordings.map((recording) => (
