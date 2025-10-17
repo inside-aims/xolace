@@ -31,6 +31,7 @@ import { useMoodTooltip } from '@/hooks/postForm/useMoodTooltip';
 import { CampfireSection } from '@/components/post-form/features/CampfireSection';
 import { PostFormFields } from '@/components/post-form/features/PostFormFields';
 import { PostFormFooter } from '@/components/post-form/ui/PostFormFooter';
+import { useCommentMutation } from '@/hooks/posts/useCommentMutation';
 
 // Dynamic Imports
 const ConsentModal = dynamic(() => import('@/components/modals/ConsentModal'), {
@@ -157,6 +158,13 @@ export function PostForm({
   // Post submission mutation
   const { submitPost, isSubmitting } = usePostSubmission();
 
+   // Use the comment mutation hook
+    const { mutate: createComment, isPending: isCreatingComment } =
+      useCommentMutation({
+        created_by: user?.id,
+        campfire_id: selectedCampfire?.campfireId || null,
+      });
+
   // Feature modal
   const modalConfig = getFeatureModalConfig('/create-post');
   const {
@@ -236,7 +244,7 @@ export function PostForm({
         setIsLoading(true);
 
         console.log("data content", data.content);
-        await submitPost({
+        const { post_id, match } = await submitPost({
           content: data.content,
           is24HourPost: data.is24HourPost,
           type: data.type,
@@ -248,6 +256,18 @@ export function PostForm({
           promptText: promptTextQuery,
           userId: user.id,
           preferences,
+        });
+
+        createComment({
+          postId: post_id,
+          commentText: match,
+          postCreatedBy: user?.id ?? '',
+          campfireId: selectedCampfire?.campfireId,
+          authorName: 'Flux AI',
+          authorAvatarUrl:
+            'https://qdjrwasidlmgqxakdxkl.supabase.co/storage/v1/object/public/xolace.bucket/flux-ai.JPG',
+          pinnedStatus: 'author',
+          ai_suggestion: true,
         });
 
         // Reset form on success
