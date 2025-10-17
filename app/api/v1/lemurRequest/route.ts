@@ -14,7 +14,6 @@ export async function POST(request: Request) {
     }
 
   const apiKey = process.env.ASSEMBLY_API_KEY;
-  console.log('apiKey : ', apiKey);
   if (!apiKey) {
     return NextResponse.error();
   }
@@ -22,11 +21,8 @@ export async function POST(request: Request) {
   const client = new AssemblyAI({ apiKey: apiKey });
   const body = await request.json();
 
-  console.log('body : ', body);
-
   const post = body?.post;
 
-  console.log('post : ', post);
 
   if (!post) {
     return NextResponse.error();
@@ -63,6 +59,5 @@ Example formats(these are just example formats , you can always structure it as 
     response: lemurResponse.response,
   };
 
-  console.log('response : ', response);
   return NextResponse.json(response);
 }
