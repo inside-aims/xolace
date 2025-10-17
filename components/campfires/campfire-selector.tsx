@@ -24,6 +24,7 @@ interface CampfireSelectorProps {
     setShowCampfireSelector: React.Dispatch<React.SetStateAction<boolean>>;
     userCampfires: UserCampfire[];
     loadingCampfires: boolean;
+    disabled?: boolean;
 }
 
 export const CampfireSelector = ({
