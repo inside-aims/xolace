@@ -63,7 +63,7 @@ export function Sidebar(
     onToggleGoals,
   }: SidebarProps) {
   return (
-    <div className="flex flex-col items-center gap-4 px-3 py-6 bg-purple-400 border-r border-white/10 text-white">
+    <div className="flex flex-col items-center gap-4 px-1 md:px-3 py-6 bg-purple-400 border-r border-white/10 text-white">
       <IconButton
         icon={MessageCircle}
         active={isChatOpen}
@@ -91,12 +91,12 @@ export function Sidebar(
 
 export function TopBar({ mentorName, sessionTime, isRecording }: TopBarProps) {
   return (
-    <div className="flex items-center justify-between px-6 py-3 border-b border-white/10 bg-gradient-to-r from-purple-400 to-lavender-600">
+    <div className="flex items-center justify-between px-2 md:px-6 py-1 md:py-3 border-b border-white/10 bg-gradient-to-r from-purple-400 to-lavender-600">
       <div className="flex items-center gap-2">
         <Sparkles size={28} color="gold" />
         <div className={"flex flex-col"}>
-          <h4 className={"text-lg font-semibold capitalize"}>Mentorship session</h4>
-          <p className={"text-sm text-neutral-600 dark:text-neutral-100"}>Career Development Discussion</p>
+          <h4 className={"text-base md:text-lg font-semibold capitalize"}>Mentorship session</h4>
+          <p className={"text-xs md:text-sm text-neutral-600 dark:text-neutral-100"}>Career Development Discussion</p>
         </div>
       </div>
       <div className="flex items-center gap-3 text-sm">
@@ -134,7 +134,7 @@ export  function BottomControls({onEndASession}: {onEndASession: () => void}) {
   const [video, setVideo] = useState(true);
 
   return (
-    <div className="flex items-center justify-center py-4 md:justify-around  border-t border-white/10 bg-gradient-to-r from-purple-400 to-lavender-600">
+    <div className="flex items-center justify-center px-2 md:px-6 py-1 md:py-3 md:justify-around  border-t border-white/10 bg-gradient-to-r from-purple-400 to-lavender-600">
       <div className="flex items-center justify-center gap-4">
         <IconButton
           icon={audio ? Mic : MicOff} onClick={() => setAudio(!audio)}
