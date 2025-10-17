@@ -119,8 +119,6 @@ export function PostForm({
     removeSlide,
     updateSlide,
     navigateToSlide,
-    navigateNext,
-    navigatePrev,
     resetSlides,
   } = useCarouselSlides('');
 
@@ -159,7 +157,7 @@ export function PostForm({
   const { submitPost, isSubmitting } = usePostSubmission();
 
    // Use the comment mutation hook
-    const { mutate: createComment, isPending: isCreatingComment } =
+    const { mutate: createComment } =
       useCommentMutation({
         created_by: user?.id,
         campfire_id: selectedCampfire?.campfireId || null,
@@ -293,7 +291,7 @@ export function PostForm({
   }
 
   // Calculate if submit should be disabled
-  const currentContent = postType === 'single' ? content : slides[currentSlide];
+  //const currentContent = postType === 'single' ? content : slides[currentSlide];
   const isSubmitDisabled = 
     (postType === 'single' && (!content.trim() || content.length > 500)) ||
     (postType === 'carousel' && !slides.some(s => s.trim())) ||

@@ -12,6 +12,7 @@ import { MoodType } from '@/constants/moods';
 
 interface PostFormFieldsProps {
   // Form control
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   control: Control<any>;
   postType: PostType;
   is24HourPost: boolean;
