@@ -67,7 +67,7 @@ export default function MentorIncomingRequestsPage() {
   const pendingCount = requests.filter(r => r.status === 'pending').length;
 
   return (
-    <div className="min-h-screen p-6">
+    <div className="min-h-screen ">
       <div className="space-y-6">
         <div className="flex items-center justify-between">
           <div className="space-y-1">

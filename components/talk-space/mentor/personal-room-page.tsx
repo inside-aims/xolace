@@ -22,11 +22,11 @@ const MentorPersonalRoomPage = () => {
 
   return (
     <div className="space-y-6">
-      <h1 className="text-4xl font-bold">Personal Meeting Room</h1>
+      <h1 className="text-xl md:text-3xl font-semibold">Personal Meeting Room</h1>
 
       <Card className="bg-white shadow-sm dark:bg-neutral-800 border">
         <CardHeader>
-          <CardTitle className="text-2xl">Your Meeting Room Details</CardTitle>
+          <CardTitle className="text-lg md:text-2xl">Your Meeting Room Details</CardTitle>
         </CardHeader>
         <CardContent className="space-y-6">
           <div className="space-y-4">

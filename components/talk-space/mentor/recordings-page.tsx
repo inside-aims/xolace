@@ -54,7 +54,7 @@ const MentorRecordingsPage = () => {
 
   return (
     <div className="space-y-6">
-      <h1 className="text-lg md:text-3xl font-semibold">
+      <h1 className="text-xl md:text-3xl font-semibold">
         {playVideo ? (`Recording video for ${playVideo}`) : ("Recordings")}
       </h1>
       {playVideo ? (

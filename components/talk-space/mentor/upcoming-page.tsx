@@ -33,7 +33,7 @@ const upcomingMeetings: CallCardProps[] = [
 const MentorUpcomingPage = () => {
   return (
     <div className="space-y-6">
-      <h1 className="text-lg md:text-3xl font-semibold">Upcoming Meeting</h1>
+      <h1 className="text-xl md:text-3xl font-semibold">Upcoming Meeting</h1>
 
       <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
         {upcomingMeetings.map((meeting) => (

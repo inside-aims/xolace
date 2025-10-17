@@ -122,8 +122,8 @@ const HomeContent = ({onNavigate}: { onNavigate: (route: string) => void; }) => 
             Upcoming meeting at 12:30pm
           </p>
           <div className="flex flex-col gap-2">
-            <p className="text-6xl font-bold">{time}</p>
-            <p className="text-xl font-semibold text-neutral-500">{date}</p>
+            <p className="text-4xl md:text-6xl font-bold">{time}</p>
+            <p className="text-lg md:text-xl font-semibold text-neutral-500">{date}</p>
           </div>
         </div>
 

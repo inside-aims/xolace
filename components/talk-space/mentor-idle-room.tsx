@@ -1,18 +1,22 @@
 'use client';
+
 import { useState } from "react";
-import { MentorIdleSidebar } from "@/components/talk-space/mentor/idle-layout";
+import {MentorIdleSidebar} from "@/components/talk-space/mentor/idle-layout";
 import HomeContent from "@/components/talk-space/mentor/home-content";
 import MentorUpcomingPage from "@/components/talk-space/mentor/upcoming-page";
 import MentorPreviousPage from "@/components/talk-space/mentor/previous-page";
 import MentorRecordingsPage from "@/components/talk-space/mentor/recordings-page";
 import MentorPersonalRoomPage from "@/components/talk-space/mentor/personal-room-page";
 import MentorIncomingRequestsPage from "@/components/talk-space/mentor/requests-page";
+import {ArrowLeftCircle, X} from "lucide-react";
 
 const MentorIdleRoom = () => {
   const [activeRoute, setActiveRoute] = useState('home');
+  const [openMobileSider, setOpenMobileSider] = useState<boolean>(false)
 
   const handleNavigation = (route: string) => {
     setActiveRoute(route);
+    setOpenMobileSider(false)
   };
 
   console.log("Route key", activeRoute);
@@ -41,9 +45,17 @@ const MentorIdleRoom = () => {
       <MentorIdleSidebar
         activeRoute={activeRoute}
         onNavigate={handleNavigation}
+        open={openMobileSider}
       />
-      <main className="flex-1 overflow-auto pt-[57px] lg:pt-0 pb-20 lg:pb-0">
-        <div className="p-4 sm:p-6 lg:p-8">
+      <main className="flex flex-col flex-1 overflow-auto pb-20 lg:pb-0">
+        <button
+          onClick={() => setOpenMobileSider(!openMobileSider)}
+          className="md:hidden flex items-center justify-start gap-1"
+        >
+          {openMobileSider ? <X/> : <ArrowLeftCircle/>}
+          <span>{openMobileSider ? 'Hide panel' : 'Show panel'}</span>
+        </button>
+        <div className="p-4 pt-6 md:p-8">
           {renderContent()}
         </div>
       </main>
