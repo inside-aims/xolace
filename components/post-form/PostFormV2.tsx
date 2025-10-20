@@ -182,6 +182,13 @@ export function PostForm({
     extractTags(value);
   }, [extractTags]);
 
+  const handleSlideUpdate = useCallback((index: number, content: string) => {
+  updateSlide(index, content);
+  // Extract tags from all slides combined
+  const allContent = slides.map((s, i) => i === index ? content : s).join(' ');
+  extractTags(allContent);
+}, [updateSlide, extractTags, slides]);
+
   /**
    * Handle emoji insertion
    */
@@ -332,7 +339,7 @@ export function PostForm({
                 onContentChange={handleContentChange}
                 slides={slides}
                 currentSlide={currentSlide}
-                onSlideChange={updateSlide}
+                onSlideChange={handleSlideUpdate}
                 onNavigateSlide={navigateToSlide}
                 onAddSlide={addSlide}
                 onRemoveSlide={removeSlide}
