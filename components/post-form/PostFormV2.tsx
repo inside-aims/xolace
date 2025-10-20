@@ -188,16 +188,20 @@ export function PostForm({
   const handleEmojiSelect = useCallback((emoji: string) => {
     const textarea = postType === 'single' ? textareaRef.current : carouselTextareaRef.current;
     if (textarea) {
-        console.log("textarea ", textarea)
       const start = textarea.selectionStart;
       const end = textarea.selectionEnd;
+
+      if (postType === 'single') {
+      // Single post: update content field
       const currentContent = form.getValues('content');
-      const newContent =
-        currentContent.substring(0, start) +
-        emoji +
-        currentContent.substring(end);
-      
+      const newContent = currentContent.substring(0, start) + emoji + currentContent.substring(end);
       form.setValue('content', newContent, { shouldValidate: true });
+    } else {
+      // Carousel: update current slide
+      const currentSlideContent = slides[currentSlide];
+      const newContent = currentSlideContent.substring(0, start) + emoji + currentSlideContent.substring(end);
+      updateSlide(currentSlide, newContent);
+    }
 
       setTimeout(() => {
         textarea.selectionStart = textarea.selectionEnd = start + emoji.length;
@@ -205,7 +209,7 @@ export function PostForm({
       }, 0);
     }
     setIsEmojiPickerOpen(false);
-  }, [postType, form]);
+  }, [postType, form, slides, currentSlide, updateSlide]);
 
   /**
    * Handle mood change
@@ -241,7 +245,6 @@ export function PostForm({
       try {
         setIsLoading(true);
 
-        console.log("data content", data.content);
         const { post_id, match } = await submitPost({
           content: data.content,
           is24HourPost: data.is24HourPost,
