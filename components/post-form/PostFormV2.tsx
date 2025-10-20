@@ -278,6 +278,10 @@ export function PostForm({
       try {
         setIsLoading(true);
 
+        const contentForLLM = postType === 'carousel'
+        ? slides.filter(s => s.trim()).join('\n\n---SLIDE BREAK---\n\n')
+        : content;
+
         const { post_id, match } = await submitPost({
           content: data.content,
           is24HourPost: data.is24HourPost,
@@ -290,6 +294,7 @@ export function PostForm({
           promptText: promptTextQuery,
           userId: user.id,
           preferences,
+          contentForLLM,
         });
 
         createComment({
