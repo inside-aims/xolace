@@ -52,7 +52,7 @@ interface PostFormProps {
 
 /**
  * PostForm Component (Refactored)
- * 
+ *
  * Main post creation form with support for:
  * - Single posts and carousels
  * - Mood selection
@@ -60,7 +60,7 @@ interface PostFormProps {
  * - Draft auto-save
  * - Canvas animations
  * - Campfire selection
- * 
+ *
  * @improvements
  * - Reduced from 1000+ lines to ~250 lines
  * - Separated concerns into focused hooks and components
@@ -103,11 +103,13 @@ export function PostForm({
   const [showMoodPicker, setShowMoodPicker] = useState(false);
   const [isEmojiPickerOpen, setIsEmojiPickerOpen] = useState(false);
   const [showConsent, setShowConsent] = useState(false);
-  const [selectedCampfire, setSelectedCampfire] = useState<UserCampfire | null>(null);
+  const [selectedCampfire, setSelectedCampfire] = useState<UserCampfire | null>(
+    null,
+  );
 
   // Custom Hooks
   const { tags, extractTags, clearTags } = useTagExtraction();
-  
+
   const {
     slides,
     currentSlide,
@@ -149,19 +151,19 @@ export function PostForm({
     markAsSelected: markMoodAsSelected,
     resetTooltip: resetMoodTooltip,
   } = useMoodTooltip({
-    hasContent: postType === 'single' ? !!content.trim() : slides.some(s => s.trim()),
+    hasContent:
+      postType === 'single' ? !!content.trim() : slides.some(s => s.trim()),
     maxShowCount: 3,
   });
 
   // Post submission mutation
   const { submitPost, isSubmitting } = usePostSubmission();
 
-   // Use the comment mutation hook
-    const { mutate: createComment } =
-      useCommentMutation({
-        created_by: user?.id,
-        campfire_id: selectedCampfire?.campfireId || null,
-      });
+  // Use the comment mutation hook
+  const { mutate: createComment } = useCommentMutation({
+    created_by: user?.id,
+    campfire_id: selectedCampfire?.campfireId || null,
+  });
 
   // Feature modal
   const modalConfig = getFeatureModalConfig('/create-post');
@@ -178,43 +180,78 @@ export function PostForm({
   /**
    * Handle content changes and extract tags
    */
-  const handleContentChange = useCallback((value: string) => {
-    extractTags(value);
-  }, [extractTags]);
+  const handleContentChange = useCallback(
+    (value: string) => {
+      extractTags(value);
+    },
+    [extractTags],
+  );
+
+  const handleSlideUpdate = useCallback(
+    (index: number, content: string) => {
+      updateSlide(index, content);
+      // Extract tags from all slides combined
+      const allContent = slides
+        .map((s, i) => (i === index ? content : s))
+        .join(' ');
+      extractTags(allContent);
+    },
+    [updateSlide, extractTags, slides],
+  );
 
   /**
    * Handle emoji insertion
    */
-  const handleEmojiSelect = useCallback((emoji: string) => {
-    const textarea = postType === 'single' ? textareaRef.current : carouselTextareaRef.current;
-    if (textarea) {
-        console.log("textarea ", textarea)
-      const start = textarea.selectionStart;
-      const end = textarea.selectionEnd;
-      const currentContent = form.getValues('content');
-      const newContent =
-        currentContent.substring(0, start) +
-        emoji +
-        currentContent.substring(end);
-      
-      form.setValue('content', newContent, { shouldValidate: true });
+  const handleEmojiSelect = useCallback(
+    (emoji: string) => {
+      const textarea =
+        postType === 'single'
+          ? textareaRef.current
+          : carouselTextareaRef.current;
+      if (textarea) {
+        const start = textarea.selectionStart;
+        const end = textarea.selectionEnd;
 
-      setTimeout(() => {
-        textarea.selectionStart = textarea.selectionEnd = start + emoji.length;
-        textarea.focus();
-      }, 0);
-    }
-    setIsEmojiPickerOpen(false);
-  }, [postType, form]);
+        if (postType === 'single') {
+          // Single post: update content field
+          const currentContent = form.getValues('content');
+          const newContent =
+            currentContent.substring(0, start) +
+            emoji +
+            currentContent.substring(end);
+          form.setValue('content', newContent, { shouldValidate: true });
+        } else {
+          // Carousel: update current slide
+          const currentSlideContent = slides[currentSlide];
+          const newContent =
+            currentSlideContent.substring(0, start) +
+            emoji +
+            currentSlideContent.substring(end);
+          updateSlide(currentSlide, newContent);
+        }
+
+        setTimeout(() => {
+          textarea.selectionStart = textarea.selectionEnd =
+            start + emoji.length;
+          textarea.focus();
+        }, 0);
+      }
+      setIsEmojiPickerOpen(false);
+    },
+    [postType, form, slides, currentSlide, updateSlide],
+  );
 
   /**
    * Handle mood change
    */
-  const handleMoodChange = useCallback((mood: typeof moods[0]) => {
-    setSelectedMood(mood);
-    setShowMoodPicker(false);
-    markMoodAsSelected();
-  }, [markMoodAsSelected]);
+  const handleMoodChange = useCallback(
+    (mood: (typeof moods)[0]) => {
+      setSelectedMood(mood);
+      setShowMoodPicker(false);
+      markMoodAsSelected();
+    },
+    [markMoodAsSelected],
+  );
 
   /**
    * Handle form submission
@@ -241,7 +278,6 @@ export function PostForm({
       try {
         setIsLoading(true);
 
-        console.log("data content", data.content);
         const { post_id, match } = await submitPost({
           content: data.content,
           is24HourPost: data.is24HourPost,
@@ -292,7 +328,7 @@ export function PostForm({
 
   // Calculate if submit should be disabled
   //const currentContent = postType === 'single' ? content : slides[currentSlide];
-  const isSubmitDisabled = 
+  const isSubmitDisabled =
     (postType === 'single' && (!content.trim() || content.length > 500)) ||
     (postType === 'carousel' && !slides.some(s => s.trim())) ||
     isLoading ||
@@ -329,7 +365,7 @@ export function PostForm({
                 onContentChange={handleContentChange}
                 slides={slides}
                 currentSlide={currentSlide}
-                onSlideChange={updateSlide}
+                onSlideChange={handleSlideUpdate}
                 onNavigateSlide={navigateToSlide}
                 onAddSlide={addSlide}
                 onRemoveSlide={removeSlide}
