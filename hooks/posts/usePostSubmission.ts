@@ -38,6 +38,7 @@ export interface PostSubmissionData {
   promptText?: string;
   userId: string;
   preferences: UserPreferences | null;
+  contentForLLM: string;
 }
 
 export function usePostSubmission() {
@@ -58,6 +59,7 @@ export function usePostSubmission() {
         promptText,
         userId,
         preferences,
+        contentForLLM,
       } = data;
 
       // Process content and slides
@@ -135,7 +137,7 @@ export function usePostSubmission() {
           const response = await fetch('/api/v1/lemurRequest', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ post: content || slides[0] }),
+            body: JSON.stringify({ post: contentForLLM }),
           });
 
           const responseBody = await response.json();
