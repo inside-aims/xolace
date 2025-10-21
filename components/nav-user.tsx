@@ -165,15 +165,14 @@ export function NavUser({
             <DropdownMenuSeparator /> */}
             <DropdownMenuGroup>
               {navUserFeatures.map(feature => (
-               <>
+               <div key={feature.key}>
                  <DropdownMenuItem
-                   key={feature.key}
                    onClick={() => handleUserNavRouting(feature.route)}
                  >
                    {feature.icon} {feature.label}
                  </DropdownMenuItem>
                  <DropdownMenuSeparator />
-               </>
+               </div>
               ))}
             </DropdownMenuGroup>
             {/* <DropdownMenuGroup>

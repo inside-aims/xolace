@@ -78,11 +78,11 @@ export const sidebarLinks = [
     label: "Talk Space",
     route: "/talk-space"
   },
-  {
-    icon: <Bomb className='size-5!' strokeWidth={1.75} />,
-    route: '/explore',
-    label: 'Explore',
-  },
+  // {
+  //   icon: <Bomb className='size-5!' strokeWidth={1.75} />,
+  //   route: '/explore',
+  //   label: 'Explore',
+  // },
   {
     icon: <Rss className='size-5!'/>,
     route: '/channel',
