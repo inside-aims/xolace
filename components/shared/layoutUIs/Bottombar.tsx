@@ -12,7 +12,7 @@ function Bottombar() {
   return (
     <section className="bottombar">
       <div className="bottombar_container">
-        {sidebarLinks.map(link => {
+        {sidebarLinks.slice(0,2).map(link => {
           const isActive: boolean =
             (pathName.includes(link.route) && link.route.length > 1) ||
             pathName == link.route;
