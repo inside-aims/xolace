@@ -1,7 +1,6 @@
 'use client';
 import { CalendarDays, Video, Home, Plus, Inbox } from 'lucide-react';
 import { Button } from '@/components/ui/button';
-import { ScrollArea } from '@/components/ui/scroll-area';
 import { motion, AnimatePresence } from 'motion/react';
 
 interface NavItem {
@@ -11,7 +10,7 @@ interface NavItem {
   route: string;
 }
 
-interface SiderInterface {
+interface SidebarItemsInterface {
   activeRoute: string;
   onNavigate: (route: string) => void;
   open: boolean;
@@ -56,20 +55,23 @@ export const navItems: NavItem[] = [
   },
 ];
 
-export const MentorIdleSidebar = ({activeRoute, onNavigate, open}: SiderInterface) => {
+export const MentorIdleSidebar = ({activeRoute, onNavigate, open}: SidebarItemsInterface) => {
   return (
     <>
-      <aside className="hidden md:flex w-64 flex-col border-r border-neutral-200 bg-white dark:bg-neutral-900 dark:border-neutral-800">
-        <SiderScrollArea
-          activeRoute={activeRoute}
-          onNavigate={onNavigate}
-        />
-      </aside>
+      <div className="hidden md:flex left-0 w-64 h-screen bg-white dark:bg-gray-900 overflow-hidden">
+        <aside
+          className="fixed hidden md:flex min-h-screen w-64 flex-col border-r border-neutral-200 bg-white dark:bg-neutral-900 dark:border-neutral-800">
+          <SidebarItems
+            activeRoute={activeRoute}
+            onNavigate={onNavigate}
+          />
+        </aside>
+      </div>
       <AnimatePresence>
         {open && (
           <motion.aside
             className="flex md:hidden w-64 flex-col border-r border-neutral-200 bg-white dark:bg-neutral-900 dark:border-neutral-800 fixed inset-y-0 left-0 z-50"
-            initial={{ x: -300, opacity: 0, scale: 0.98 }}
+            initial={{x: -300, opacity: 0, scale: 0.98 }}
             animate={{ x: 0, opacity: 1, scale: 1 }}
             exit={{
               x: -300,
@@ -87,7 +89,7 @@ export const MentorIdleSidebar = ({activeRoute, onNavigate, open}: SiderInterfac
               scale: { duration: 0.25, ease: "easeOut" },
             }}
           >
-            <SiderScrollArea
+            <SidebarItems
               activeRoute={activeRoute}
               onNavigate={onNavigate}
               />
@@ -98,7 +100,7 @@ export const MentorIdleSidebar = ({activeRoute, onNavigate, open}: SiderInterfac
   );
 };
 
-const SiderScrollArea = ({activeRoute, onNavigate}: {activeRoute: string;
+const SidebarItems = ({activeRoute, onNavigate}: {activeRoute: string;
   onNavigate: (route: string) => void;}) => {
   return(
     <>
@@ -110,7 +112,7 @@ const SiderScrollArea = ({activeRoute, onNavigate}: {activeRoute: string;
           Manage your sessions
         </p>
       </div>
-      <ScrollArea className="flex-1 p-2 md:p-4">
+      <div className="p-2 md:p-4">
         <nav className="flex items-center justify-center flex-col gap-1">
           {navItems.map((item) => {
             const isActive = activeRoute === item.route;
@@ -138,7 +140,7 @@ const SiderScrollArea = ({activeRoute, onNavigate}: {activeRoute: string;
             );
           })}
         </nav>
-      </ScrollArea>
+      </div>
     </>
   )
 }
