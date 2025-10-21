@@ -7,7 +7,7 @@ import Image from "next/image"
 import {
   ChevronsUpDown,
   LogOut,
-  Settings,
+  Settings, SettingsIcon, UserPen,
 } from "lucide-react"
 
 import {
@@ -34,6 +34,26 @@ import { getSupabaseBrowserClient } from '@/utils/supabase/client';
 import SignoutAlert from "./shared/SignoutAlert"
 import profBadge from "../public/assets/images/user-role-badges/consellors-badge.webp"
 
+interface NavUserFeaturesProps {
+  key: string,
+  label: string,
+  route: string,
+  icon: React.ReactNode,
+}
+const navUserFeatures: NavUserFeaturesProps[] = [
+  {
+    key: "profile",
+    label: "Profile",
+    route: "/profile",
+    icon: <UserPen />,
+  },
+  {
+    key: "settings",
+    label: "Settings",
+    route: "/settings",
+    icon: <SettingsIcon />,
+  }
+]
 
 export function NavUser({
   user,
@@ -92,10 +112,11 @@ export function NavUser({
     };
   }, [router , supabase.auth]);
 
-  const handleOpenSettings = () =>{ 
+  const handleUserNavRouting = (path: string) =>{
     setOpenMobile(false)
-    router.push('/settings')
+    router.push(path);
   }
+
 
   return (
     <SidebarMenu>
@@ -143,14 +164,18 @@ export function NavUser({
             </DropdownMenuGroup>
             <DropdownMenuSeparator /> */}
             <DropdownMenuGroup>
-              <DropdownMenuItem
-                onClick={handleOpenSettings}
-              >
-                <Settings/>
-               Settings
-              </DropdownMenuItem>
+              {navUserFeatures.map(feature => (
+               <>
+                 <DropdownMenuItem
+                   key={feature.key}
+                   onClick={() => handleUserNavRouting(feature.route)}
+                 >
+                   {feature.icon} {feature.label}
+                 </DropdownMenuItem>
+                 <DropdownMenuSeparator />
+               </>
+              ))}
             </DropdownMenuGroup>
-            <DropdownMenuSeparator />
             {/* <DropdownMenuGroup>
               <DropdownMenuItem>
                 <BadgeCheck />

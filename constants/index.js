@@ -74,11 +74,6 @@ export const sidebarLinks = [
     label: 'Create Post',
   },
   {
-    icon: <UserPen className='size-5!'/>,
-    route: '/profile',
-    label: 'Profile',
-  },
-  {
     icon: <MessageSquareMore className='size-5!'/>,
     label: "Talk Space",
     route: "/talk-space"
