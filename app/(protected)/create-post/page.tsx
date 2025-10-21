@@ -1,6 +1,6 @@
 import type { Metadata } from 'next';
 
-import { PostForm } from '@/components/forms/PostForm';
+import { PostForm } from '@/components/post-form/PostFormV2';
 import TourButton from '@/components/shared/Tour/TourButton';
 import TourProvider from '@/components/shared/Tour/TourProvider';
 import { createPostSteps } from '@/constants/tourSteps';

@@ -4,6 +4,7 @@ import { Comment, DetailPost } from '@/types/global';
 import { logActivity } from '@/lib/activity-logger';
 import { useUserState } from '@/lib/store/user';
 import { createNotification } from '@/lib/actions/notifications.action';
+import { CommentPinType } from '@/types/global';
 
 const supabase = getSupabaseBrowserClient();
 
@@ -15,6 +16,10 @@ interface CreateCommentVariables {
   depth?: number;
   parentAuthorId? : string;
   campfireId?: string | null;
+  authorName?: string;
+  authorAvatarUrl?: string;
+  pinnedStatus?: CommentPinType;
+  ai_suggestion?: boolean;
 }
 
 interface CreateCommentContext {
@@ -22,7 +27,7 @@ interface CreateCommentContext {
   optimisticComment: Comment;
 }
 
-export function useCommentMutation(post: DetailPost) {
+export function useCommentMutation(post: DetailPost | {created_by : string | undefined | null , campfire_id : string | null}) {
   const queryClient = useQueryClient();
   const user = useUserState(state => state.user);
 
@@ -32,7 +37,7 @@ export function useCommentMutation(post: DetailPost) {
     CreateCommentVariables, // Variables passed to the mutation function
     CreateCommentContext // Context type for onMutate/onError
   >({
-    mutationFn: async ({ postId, commentText, parentId , depth, parentAuthorId, campfireId  }) => {
+    mutationFn: async ({ postId, commentText, parentId , depth, parentAuthorId, campfireId, authorName, authorAvatarUrl, pinnedStatus, ai_suggestion  }) => {
       if (!user?.id) {
         throw new Error('User not authenticated');
       }
@@ -45,6 +50,10 @@ export function useCommentMutation(post: DetailPost) {
           parent_id: parentId ? Number(parentId) : null,
           depth: depth ? depth : 0,
           campfire_id: campfireId,
+          author_name: authorName ? authorName : null,
+          author_avatar_url: authorAvatarUrl ? authorAvatarUrl : null,
+          pinned_status: pinnedStatus ? pinnedStatus : 'none',
+          ai_suggestion: ai_suggestion ? ai_suggestion : false,
         })
         .select()
         .single();
@@ -110,6 +119,7 @@ export function useCommentMutation(post: DetailPost) {
         parent_id: parentId ? Number(parentId) : null,
         pinned_status: 'none',
         campfire_id: post.campfire_id,
+        ai_suggestion: false,
       };
 
       // Optimistically update the comments list

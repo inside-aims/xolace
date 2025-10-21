@@ -402,7 +402,6 @@ export const helpFaqs = [
 ];
 
 export const getMoodLabelStyle = mood => {
-  console.log(mood);
   switch (mood) {
     case 'neutral':
       return ' text-pink-500! !dark:text-pink-400 ';

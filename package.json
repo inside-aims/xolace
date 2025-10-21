@@ -61,6 +61,7 @@
     "@tanstack/react-query": "^5.83.0",
     "@vercel/speed-insights": "^1.2.0",
     "ai": "^4.3.19",
+    "assemblyai": "^4.17.0",
     "autoprefixer": "10.4.21",
     "bright": "^1.0.0",
     "canvas-confetti": "^1.9.3",

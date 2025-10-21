@@ -837,6 +837,7 @@ export type Database = {
       }
       comments: {
         Row: {
+          ai_suggestion: boolean
           author_avatar_url: string | null
           author_name: string | null
           campfire_id: string | null
@@ -850,6 +851,7 @@ export type Database = {
           post: string
         }
         Insert: {
+          ai_suggestion?: boolean
           author_avatar_url?: string | null
           author_name?: string | null
           campfire_id?: string | null
@@ -863,6 +865,7 @@ export type Database = {
           post: string
         }
         Update: {
+          ai_suggestion?: boolean
           author_avatar_url?: string | null
           author_name?: string | null
           campfire_id?: string | null
@@ -2317,6 +2320,7 @@ export type Database = {
       get_comments_with_replies: {
         Args: { post_id_param: string }
         Returns: {
+          ai_suggestion: boolean
           author_avatar_url: string | null
           author_name: string | null
           campfire_id: string | null

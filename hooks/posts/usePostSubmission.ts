@@ -38,6 +38,7 @@ export interface PostSubmissionData {
   promptText?: string;
   userId: string;
   preferences: UserPreferences | null;
+  contentForLLM: string;
 }
 
 export function usePostSubmission() {
@@ -58,6 +59,7 @@ export function usePostSubmission() {
         promptText,
         userId,
         preferences,
+        contentForLLM,
       } = data;
 
       // Process content and slides
@@ -114,6 +116,7 @@ export function usePostSubmission() {
         }
       }
 
+      let match = ''
       // Log the post creation activity
       if (post_id) {
         try {
@@ -130,6 +133,21 @@ export function usePostSubmission() {
               type: type,
             },
           });
+
+          const response = await fetch('/api/v1/lemurRequest', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ post: contentForLLM }),
+          });
+
+          const responseBody = await response.json();
+          const lemurResponse = responseBody.response;
+
+          // match = lemurResponse.split(/[*]*suggestion:\**/i)[1]?.trim();
+          const m = lemurResponse.match(/Emotion:\s*([a-zA-Z-]+)\s*\|\s*suggestion:\s*(.+)/i);
+          const emotion = m?.[1]?.toLowerCase() ?? null;
+          const suggestion = m?.[2]?.trim() ?? null;
+          match = suggestion;
         } catch (activityError) {
           console.error('Error logging activity:', activityError);
           // Don't throw as post creation was successful
@@ -140,6 +158,7 @@ export function usePostSubmission() {
         post_id,
         is_prompt_response,
         promptId,
+        match
       };
     },
 
@@ -163,8 +182,8 @@ export function usePostSubmission() {
         queryKey: ['enhanced-feed'],
       });
 
-       // CRITICAL FIX 2: Also invalidate with specific user ID
-       await queryClient.invalidateQueries({
+      // CRITICAL FIX 2: Also invalidate with specific user ID
+      await queryClient.invalidateQueries({
         queryKey: ['enhanced-feed', userId],
         exact: false,
       });

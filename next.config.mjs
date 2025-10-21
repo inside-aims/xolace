@@ -16,6 +16,13 @@ const nextConfig = {
         port: '54321',
         pathname: '**',
       },
+      {
+        protocol: 'https',
+        hostname: 'qdjrwasidlmgqxakdxkl.supabase.co',
+        port: '',
+        pathname: '/storage/**',
+        search: '',
+      },
     ],
     domains: ["qdjrwasidlmgqxakdxkl.supabase.co"],
   },
