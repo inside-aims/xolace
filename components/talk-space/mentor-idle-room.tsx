@@ -24,43 +24,45 @@ const MentorIdleRoom = () => {
   const renderContent = () => {
     switch (activeRoute) {
       case 'home':
-        return <HomeContent onNavigate={handleNavigation} />;
+        return <HomeContent onNavigate={handleNavigation}/>;
       case "requests":
-        return <MentorIncomingRequestsPage />
+        return <MentorIncomingRequestsPage/>
       case 'upcoming':
-        return <MentorUpcomingPage />
+        return <MentorUpcomingPage/>
       case 'previous':
-        return <MentorPreviousPage />
+        return <MentorPreviousPage/>
       case 'recordings':
-        return <MentorRecordingsPage />
+        return <MentorRecordingsPage/>
       case 'personalRoom':
-        return <MentorPersonalRoomPage />
+        return <MentorPersonalRoomPage/>
       default:
-        return <HomeContent onNavigate={handleNavigation} />;
+        return <HomeContent onNavigate={handleNavigation}/>;
     }
   };
 
   return (
-    <div className="flex h-screen bg-gradient-to-br from-indigo-50 via-purple-50 to-pink-50 dark:from-gray-900 dark:via-gray-800 dark:to-gray-900">
+    <div
+      className="flex min-h-screen bg-gradient-to-br from-indigo-50 via-purple-50 to-pink-50 dark:from-gray-900 dark:via-gray-800 dark:to-gray-900">
       <MentorIdleSidebar
         activeRoute={activeRoute}
         onNavigate={handleNavigation}
         open={openMobileSider}
       />
-      <main className="flex flex-col flex-1 overflow-auto pb-20 lg:pb-0">
+
+      <main className="flex-1 flex flex-col overflow-y-auto pb-20 lg:pb-0">
         <button
           onClick={() => setOpenMobileSider(!openMobileSider)}
-          className="md:hidden flex items-center justify-start gap-1"
+          className="md:hidden flex items-center gap-1 p-4"
         >
           {openMobileSider ? <X/> : <ArrowLeftCircle/>}
           <span>{openMobileSider ? 'Hide panel' : 'Show panel'}</span>
         </button>
-        <div className="p-4 pt-6 md:p-8">
+
+        <div className="p-4 md:p-8">
           {renderContent()}
         </div>
       </main>
     </div>
-  )
+  );
 }
-
 export default MentorIdleRoom

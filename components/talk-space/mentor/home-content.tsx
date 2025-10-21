@@ -115,19 +115,19 @@ const HomeContent = ({onNavigate}: { onNavigate: (route: string) => void; }) => 
 
   return (
     <>
-      <div className="flex flex-col gap-8 min-h-screen">
-        <div
-          className="bg-white shadow-sm border text-neutral-700 dark:bg-neutral-800 dark:text-white rounded-2xl p-4 flex-1 items-start justify-center flex flex-col gap-8">
-          <p className="inline-block rounded-lg px-4 py-2 bg-neutral-300 dark:bg-neutral-700 text-sm font-medium mb-6">
+      <div className="w-full flex flex-col min-h-screen overflow-hidden gap-4 md:gap-8">
+        <div className="bg-white shadow-sm border text-neutral-700 dark:bg-neutral-800 dark:text-white rounded-2xl p-4 h-60 md:h-80 flex flex-col gap-8">
+          <p className="w-fit rounded-lg px-4 py-2 bg-neutral-300 dark:bg-neutral-700 text-sm font-medium mb-6">
             Upcoming meeting at 12:30pm
           </p>
+
           <div className="flex flex-col gap-2">
             <p className="text-4xl md:text-6xl font-bold">{time}</p>
             <p className="text-lg md:text-xl font-semibold text-neutral-500">{date}</p>
           </div>
         </div>
 
-        <section className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
           {actions.map((card) => (
             <ActionCard
               key={card.key}
@@ -138,7 +138,7 @@ const HomeContent = ({onNavigate}: { onNavigate: (route: string) => void; }) => 
               onClick={() => handleCardAction(card.key)}
             />
           ))}
-        </section>
+        </div>
       </div>
       {openModal === "scheduleSession" && (
         <ViewModal
@@ -188,10 +188,10 @@ const ActionCard = ({title, description, onClick, icon, color}: ActionProps) => 
 };
 
 
-export const JoinSession = ({ onSubmit }: { onSubmit: (data: JoinSessionData) => void }) => {
+export const JoinSession = ({onSubmit}: { onSubmit: (data: JoinSessionData) => void }) => {
   const form = useForm<JoinSessionData>({
     resolver: zodResolver(joinSessionSchema),
-    defaultValues: { sessionLink: "" },
+    defaultValues: {sessionLink: ""},
   });
 
   const handleSubmit = (data: JoinSessionData) => {
@@ -204,7 +204,7 @@ export const JoinSession = ({ onSubmit }: { onSubmit: (data: JoinSessionData) =>
         <FormField
           control={form.control}
           name="sessionLink"
-          render={({ field }) => (
+          render={({field}) => (
             <FormItem>
               <FormLabel>Session Link</FormLabel>
               <FormControl>
