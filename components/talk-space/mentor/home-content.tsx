@@ -13,7 +13,7 @@ import {
   PopoverTrigger,
 } from '@/components/ui/popover';
 import { Calendar } from '@/components/ui/calendar';
-import { useForm } from 'react-hook-form';
+import { useForm, ControllerRenderProps } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import {
   Form,
@@ -25,7 +25,7 @@ import {
 } from '@/components/ui/form';
 import { toast } from 'sonner';
 import { z } from 'zod';
-import { CalendarWithTimePresets } from '@/components/builders/calendar-with-time-presets';
+import {cn} from "@/utils/cn";
 
 const scheduleSessionSchema = z.object({
   description: z
@@ -288,12 +288,17 @@ const ScheduleSessionForm = ({ onSubmit }: ScheduleSessionFormProps) => {
   });
 
   const formatDate = (date: Date | undefined) => {
-    if (!date) return '';
-    return date.toLocaleDateString('en-US', {
-      day: '2-digit',
-      month: 'long',
-      year: 'numeric',
+    if (!date) return "";
+    const datePart = date.toLocaleDateString("en-US", {
+      day: "2-digit",
+      month: "long",
+      year: "numeric",
     });
+    const timePart = date.toLocaleTimeString("en-US", {
+      hour: "2-digit",
+      minute: "2-digit",
+    });
+    return `${datePart} at ${timePart}`;
   };
 
   const isValidDate = (date: Date | undefined) => {
@@ -301,9 +306,42 @@ const ScheduleSessionForm = ({ onSubmit }: ScheduleSessionFormProps) => {
     return !isNaN(date.getTime());
   };
 
+  const handleDateSelect = (
+    date: Date | undefined,
+    field: ControllerRenderProps<ScheduleSessionData, "date">
+  ) => {
+    if (!date) return;
+    setSelectedDate(date);
+
+    if (selectedTime) {
+      const [hours, minutes] = selectedTime.split(":").map(Number);
+      date.setHours(hours, minutes);
+    }
+    setInputValue(formatDate(date));
+    field.onChange(date);
+    setOpen(false);
+  };
+
+  const handleTimeChange = (
+    timeValue: string,
+    field: ControllerRenderProps<ScheduleSessionData, "date">
+  ) => {
+    setSelectedTime(timeValue);
+    if (selectedDate) {
+      const [hours, minutes] = timeValue.split(":").map(Number);
+      const updatedDate = new Date(selectedDate);
+      updatedDate.setHours(hours, minutes);
+
+      setSelectedDate(updatedDate);
+      setInputValue(formatDate(updatedDate));
+      field.onChange(updatedDate);
+    }
+  };
+
   const handleSubmit = (values: ScheduleSessionData) => {
     toast.success('Session scheduled successfully!');
     onSubmit(values);
+    console.log("values", values);
   };
 
   return (
@@ -337,7 +375,7 @@ const ScheduleSessionForm = ({ onSubmit }: ScheduleSessionFormProps) => {
                 <div className="relative flex gap-2">
                   <Input
                     value={inputValue}
-                    placeholder="Pick a date"
+                    placeholder="Select date"
                     className="cursor-pointer border border-neutral-400"
                     onClick={() => setOpen(true)}
                     readOnly
@@ -365,30 +403,32 @@ const ScheduleSessionForm = ({ onSubmit }: ScheduleSessionFormProps) => {
                       </div>
                     </PopoverTrigger>
                     <PopoverContent
-                      className="flex h-[87vh] md:h-auto min-w-72 md:w-full md:min-w-full p-0 max-sm:overflow-auto"
-                      align="end"
-                      alignOffset={-8}
-                      sideOffset={10}
+                      align={"end"}
+                      className="p-4 space-y-2"
                     >
-                      {/* <Calendar
+                      <Calendar
                         mode="single"
                         selected={selectedDate}
                         month={month}
                         onMonthChange={setMonth}
                         captionLayout="dropdown"
-                        onSelect={(date) => {
-                          setSelectedDate(date);
-                          setInputValue(formatDate(date));
-                          field.onChange(date);
-                          setOpen(false);
-                        }}
-                      /> */}
-                      <CalendarWithTimePresets
-                        selectedDate={selectedDate}
-                        setSelectedDate={setSelectedDate}
-                        selectedTime={selectedTime}
-                        setSelectedTime={setSelectedTime}
+                        className={cn("w-auto p-2 pointer-events-auto")}
+                        onSelect={(date) => handleDateSelect(date, field)}
                       />
+
+                      <div className="flex items-center gap-2 ">
+                        <label htmlFor="time" className="text-sm">
+                          Time:
+                        </label>
+                        <input
+                          id="time"
+                          type="time"
+                          value={selectedTime || ""}
+                          onChange={(e) => handleTimeChange(e.target.value,field)
+                          }
+                          className="flex-1 rounded-md border border-neutral-400 p-2 text-sm"
+                        />
+                      </div>
                     </PopoverContent>
                   </Popover>
                 </div>
@@ -397,7 +437,6 @@ const ScheduleSessionForm = ({ onSubmit }: ScheduleSessionFormProps) => {
             </FormItem>
           )}
         />
-
         <CallButton
           type="submit"
           label="Schedule Session"
