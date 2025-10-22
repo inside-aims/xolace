@@ -1,30 +1,44 @@
 'use client';
 
-import {CalendarDays, FolderOpen, UserPlus, Video} from "lucide-react";
-import React, {useState} from "react";
-import ViewModal from "@/components/talk-space/mentor/view-modal";
-import {CallButton} from "@/components/talk-space/mentor/call-room-layout";
-import {useTalkSpaceStore} from "@/hooks/talkSpace/useTalkSpaceStore";
-import {Input} from "@/components/ui/input";
-import {Textarea} from "@/components/ui/textarea";
-import {Popover, PopoverContent, PopoverTrigger} from "@/components/ui/popover"
-import {Calendar} from "@/components/ui/calendar"
-import {useForm} from "react-hook-form";
+import { CalendarDays, FolderOpen, UserPlus, Video } from 'lucide-react';
+import React, { useState } from 'react';
+import ViewModal from '@/components/talk-space/mentor/view-modal';
+import { CallButton } from '@/components/talk-space/mentor/call-room-layout';
+import { useTalkSpaceStore } from '@/hooks/talkSpace/useTalkSpaceStore';
+import { Input } from '@/components/ui/input';
+import { Textarea } from '@/components/ui/textarea';
+import {
+  Popover,
+  PopoverContent,
+  PopoverTrigger,
+} from '@/components/ui/popover';
+import { Calendar } from '@/components/ui/calendar';
+import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
-import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '@/components/ui/form';
+import {
+  Form,
+  FormControl,
+  FormField,
+  FormItem,
+  FormLabel,
+  FormMessage,
+} from '@/components/ui/form';
 import { toast } from 'sonner';
-import {z} from "zod";
-
+import { z } from 'zod';
+import { CalendarWithTimePresets } from '@/components/builders/calendar-with-time-presets';
 
 const scheduleSessionSchema = z.object({
-  description: z.string().min(10, 'Please provide more details about the session.'),
+  description: z
+    .string()
+    .min(10, 'Please provide more details about the session.'),
   date: z.date({ required_error: 'Please select a session date.' }),
 });
 
 const joinSessionSchema = z.object({
-  sessionLink: z.string()
-    .url("Please enter a valid session link (starting with https://)")
-    .min(10, "Session link cannot be empty."),
+  sessionLink: z
+    .string()
+    .url('Please enter a valid session link (starting with https://)')
+    .min(10, 'Session link cannot be empty.'),
 });
 
 export type JoinSessionData = z.infer<typeof joinSessionSchema>;
@@ -34,8 +48,11 @@ interface ScheduleSessionFormProps {
   onSubmit: (data: ScheduleSessionData) => void;
 }
 
-
-type actionKeys = "startSession" | "joinSession" | "scheduleSession" | "recordings";
+type actionKeys =
+  | 'startSession'
+  | 'joinSession'
+  | 'scheduleSession'
+  | 'recordings';
 
 interface ActionProps {
   key: actionKeys;
@@ -47,42 +64,46 @@ interface ActionProps {
   isNav?: boolean;
 }
 
-
 const actions: ActionProps[] = [
   {
-    key: "startSession",
+    key: 'startSession',
     title: 'Start Session',
     description: 'Instantly connect with your camper',
-    icon: <Video className="w-6 h-6"/>,
+    icon: <Video className="h-6 w-6" />,
     color: 'bg-orange-500',
   },
   {
-    key: "joinSession",
+    key: 'joinSession',
     title: 'Join Session',
     description: 'Use session code or invite link',
-    icon: <UserPlus className="w-6 h-6"/>,
+    icon: <UserPlus className="h-6 w-6" />,
     color: 'bg-blue-500',
   },
   {
-    key: "scheduleSession",
+    key: 'scheduleSession',
     title: 'Schedule Session',
     description: 'Plan and manage future sessions',
-    icon: <CalendarDays className="w-6 h-6"/>,
+    icon: <CalendarDays className="h-6 w-6" />,
     color: 'bg-purple-500',
   },
   {
-    key: "recordings",
+    key: 'recordings',
     title: 'View Records',
     description: 'Access previous session notes',
-    icon: <FolderOpen className="w-6 h-6"/>,
+    icon: <FolderOpen className="h-6 w-6" />,
     color: 'bg-yellow-500',
     isNav: true,
   },
 ];
 
-const HomeContent = ({onNavigate}: { onNavigate: (route: string) => void; }) => {
+const HomeContent = ({
+  onNavigate,
+}: {
+  onNavigate: (route: string) => void;
+}) => {
   const [openModal, setOpenModal] = useState<actionKeys | null>(null);
-  const {callStatus, setMentor, setCallStatus, resetCall} = useTalkSpaceStore();
+  const { callStatus, setMentor, setCallStatus, resetCall } =
+    useTalkSpaceStore();
 
   const date = new Date().toLocaleDateString(undefined, {
     weekday: 'long',
@@ -91,44 +112,47 @@ const HomeContent = ({onNavigate}: { onNavigate: (route: string) => void; }) => 
     year: 'numeric',
   });
 
-  const time = new Date().toLocaleTimeString([], {hour: '2-digit', minute: '2-digit'});
+  const time = new Date().toLocaleTimeString([], {
+    hour: '2-digit',
+    minute: '2-digit',
+  });
 
   const handleCardAction = (key: actionKeys) => {
-    if (key === "recordings") return onNavigate("recordings");
+    if (key === 'recordings') return onNavigate('recordings');
     setOpenModal(key);
   };
 
   // Helper for Mentor start a session
   const handleStartSession = () => {
-    setCallStatus("in-call")
-  }
+    setCallStatus('in-call');
+  };
 
   // Helper for mentor join a session
   const handleJoinSession = () => {
-    setCallStatus("in-call")
-  }
+    setCallStatus('in-call');
+  };
 
   // Helper form for Mentor schedule a session
-  const handleScheduleSession = () => {
-  }
-
+  const handleScheduleSession = () => {};
 
   return (
     <>
-      <div className="w-full flex flex-col min-h-screen overflow-hidden gap-4 md:gap-8">
-        <div className="bg-white shadow-sm border text-neutral-700 dark:bg-neutral-800 dark:text-white rounded-2xl p-4 h-60 md:h-80 flex flex-col gap-8">
-          <p className="w-fit rounded-lg px-4 py-2 bg-neutral-300 dark:bg-neutral-700 text-sm font-medium mb-6">
+      <div className="flex min-h-screen w-full flex-col gap-4 overflow-hidden md:gap-8">
+        <div className="flex h-60 flex-col gap-8 rounded-2xl border bg-white p-4 text-neutral-700 shadow-sm md:h-80 dark:bg-neutral-800 dark:text-white">
+          <p className="mb-6 w-fit rounded-lg bg-neutral-300 px-4 py-2 text-sm font-medium dark:bg-neutral-700">
             Upcoming meeting at 12:30pm
           </p>
 
           <div className="flex flex-col gap-2">
-            <p className="text-4xl md:text-6xl font-bold">{time}</p>
-            <p className="text-lg md:text-xl font-semibold text-neutral-500">{date}</p>
+            <p className="text-4xl font-bold md:text-6xl">{time}</p>
+            <p className="text-lg font-semibold text-neutral-500 md:text-xl">
+              {date}
+            </p>
           </div>
         </div>
 
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
-          {actions.map((card) => (
+        <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-4">
+          {actions.map(card => (
             <ActionCard
               key={card.key}
               title={card.title}
@@ -140,45 +164,51 @@ const HomeContent = ({onNavigate}: { onNavigate: (route: string) => void; }) => 
           ))}
         </div>
       </div>
-      {openModal === "scheduleSession" && (
+      {openModal === 'scheduleSession' && (
         <ViewModal
           drawerOpen
           setDrawerOpen={() => setOpenModal(null)}
-          title={"Arrange a Session with a Camper"}
+          title={'Arrange a Session with a Camper'}
         >
-          <ScheduleSessionForm onSubmit={handleScheduleSession}/>
+          <ScheduleSessionForm onSubmit={handleScheduleSession} />
         </ViewModal>
       )}
-      {openModal === "joinSession" && (
+      {openModal === 'joinSession' && (
         <ViewModal
           drawerOpen
           setDrawerOpen={() => setOpenModal(null)}
-          title={"Quickly join a session"}
+          title={'Quickly join a session'}
         >
-          <JoinSession onSubmit={handleJoinSession}/>
+          <JoinSession onSubmit={handleJoinSession} />
         </ViewModal>
       )}
-      {openModal === "startSession" && (
+      {openModal === 'startSession' && (
         <ViewModal
           drawerOpen
           setDrawerOpen={() => setOpenModal(null)}
-          title={"Start a New Session"}
+          title={'Start a New Session'}
         >
-          <StartSession onStart={handleStartSession}/>
+          <StartSession onStart={handleStartSession} />
         </ViewModal>
       )}
     </>
   );
-}
+};
 export default HomeContent;
 
-
-const ActionCard = ({title, description, onClick, icon, color}: ActionProps) => {
+const ActionCard = ({
+  title,
+  description,
+  onClick,
+  icon,
+  color,
+}: ActionProps) => {
   return (
     <div
-      className={`${color} rounded-2xl p-6 flex flex-col justify-between h-60 shadow-md hover:scale-105 transition-transform cursor-pointer text-white`}
-      onClick={onClick}>
-      <div className="bg-white/20 p-3 rounded-lg w-fit">{icon}</div>
+      className={`${color} flex h-60 cursor-pointer flex-col justify-between rounded-2xl p-6 text-white shadow-md transition-transform hover:scale-105`}
+      onClick={onClick}
+    >
+      <div className="w-fit rounded-lg bg-white/20 p-3">{icon}</div>
       <div className="flex flex-col gap-1">
         <h3 className="text-xl font-semibold">{title}</h3>
         <p className="text-sm opacity-90">{description}</p>
@@ -187,11 +217,14 @@ const ActionCard = ({title, description, onClick, icon, color}: ActionProps) => 
   );
 };
 
-
-export const JoinSession = ({onSubmit}: { onSubmit: (data: JoinSessionData) => void }) => {
+export const JoinSession = ({
+  onSubmit,
+}: {
+  onSubmit: (data: JoinSessionData) => void;
+}) => {
   const form = useForm<JoinSessionData>({
     resolver: zodResolver(joinSessionSchema),
-    defaultValues: {sessionLink: ""},
+    defaultValues: { sessionLink: '' },
   });
 
   const handleSubmit = (data: JoinSessionData) => {
@@ -204,7 +237,7 @@ export const JoinSession = ({onSubmit}: { onSubmit: (data: JoinSessionData) => v
         <FormField
           control={form.control}
           name="sessionLink"
-          render={({field}) => (
+          render={({ field }) => (
             <FormItem>
               <FormLabel>Session Link</FormLabel>
               <FormControl>
@@ -229,21 +262,19 @@ export const JoinSession = ({onSubmit}: { onSubmit: (data: JoinSessionData) => v
   );
 };
 
-
-const StartSession = ({onStart}: { onStart: () => void }) => {
+const StartSession = ({ onStart }: { onStart: () => void }) => {
   return (
-    <div className="py-4 w-full flex">
-      <CallButton
-        label="Start Session"
-        onStartAction={onStart}
-        size="lg"/>
+    <div className="flex w-full py-4">
+      <CallButton label="Start Session" onStartAction={onStart} size="lg" />
     </div>
   );
 };
 
-
 const ScheduleSessionForm = ({ onSubmit }: ScheduleSessionFormProps) => {
   const [selectedDate, setSelectedDate] = useState<Date>();
+  const [selectedTime, setSelectedTime] = React.useState<string | null>(
+    '10:00',
+  );
   const [month, setMonth] = useState<Date | undefined>(new Date());
   const [open, setOpen] = useState(false);
   const [inputValue, setInputValue] = useState('');
@@ -277,7 +308,7 @@ const ScheduleSessionForm = ({ onSubmit }: ScheduleSessionFormProps) => {
 
   return (
     <Form {...form}>
-      <form className="w-full flex flex-col gap-4">
+      <form className="flex w-full flex-col gap-4">
         <FormField
           control={form.control}
           name="description"
@@ -307,10 +338,10 @@ const ScheduleSessionForm = ({ onSubmit }: ScheduleSessionFormProps) => {
                   <Input
                     value={inputValue}
                     placeholder="Pick a date"
-                    className="border border-neutral-400 cursor-pointer "
+                    className="cursor-pointer border border-neutral-400"
                     onClick={() => setOpen(true)}
                     readOnly
-                    onChange={(e) => {
+                    onChange={e => {
                       const date = new Date(e.target.value);
                       setInputValue(e.target.value);
                       if (isValidDate(date)) {
@@ -319,7 +350,7 @@ const ScheduleSessionForm = ({ onSubmit }: ScheduleSessionFormProps) => {
                         field.onChange(date);
                       }
                     }}
-                    onKeyDown={(e) => {
+                    onKeyDown={e => {
                       if (e.key === 'ArrowDown') {
                         e.preventDefault();
                         setOpen(true);
@@ -329,17 +360,17 @@ const ScheduleSessionForm = ({ onSubmit }: ScheduleSessionFormProps) => {
                   <Popover open={open} onOpenChange={setOpen}>
                     <PopoverTrigger asChild>
                       <div className="absolute top-1/2 right-2 size-6 -translate-y-1/2">
-                        <CalendarDays/>
+                        <CalendarDays />
                         <span className="sr-only">Select date</span>
                       </div>
                     </PopoverTrigger>
                     <PopoverContent
-                      className="w-full flex p-0 overflow-hidden"
+                      className="flex h-[87vh] md:h-auto min-w-72 md:w-full md:min-w-full p-0 max-sm:overflow-auto"
                       align="end"
                       alignOffset={-8}
                       sideOffset={10}
                     >
-                      <Calendar
+                      {/* <Calendar
                         mode="single"
                         selected={selectedDate}
                         month={month}
@@ -351,6 +382,12 @@ const ScheduleSessionForm = ({ onSubmit }: ScheduleSessionFormProps) => {
                           field.onChange(date);
                           setOpen(false);
                         }}
+                      /> */}
+                      <CalendarWithTimePresets
+                        selectedDate={selectedDate}
+                        setSelectedDate={setSelectedDate}
+                        selectedTime={selectedTime}
+                        setSelectedTime={setSelectedTime}
                       />
                     </PopoverContent>
                   </Popover>
@@ -371,4 +408,3 @@ const ScheduleSessionForm = ({ onSubmit }: ScheduleSessionFormProps) => {
     </Form>
   );
 };
-
