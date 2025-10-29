@@ -52,14 +52,14 @@ export function BreathingOverlay({ currentStage, strategy }: BreathingOverlayPro
   const remainingTime = Math.ceil(step.duration - (step.duration * progress));
 
   return (
-    <div className="flex flex-col items-center justify-center space-y-8 p-8">
+    <div className="flex flex-col items-center justify-center space-y-6 px-6 py-6">
       {/* Pattern Info */}
       <motion.div
         initial={{ opacity: 0, y: -20 }}
         animate={{ opacity: 1, y: 0 }}
         className="text-center space-y-2"
       >
-        <div className="text-4xl mb-2">{pattern.icon}</div>
+        <div className="text-2xl mb-2">{pattern.icon}</div>
         <h3 className="text-xl font-semibold text-white">
           {pattern.name}
         </h3>
@@ -69,7 +69,7 @@ export function BreathingOverlay({ currentStage, strategy }: BreathingOverlayPro
       </motion.div>
 
       {/* Breathing Circle */}
-      <div className="relative w-64 h-64 flex items-center justify-center">
+      <div className="relative w-52 h-52 flex items-center justify-center">
         {/* Outer glow rings */}
         <motion.div
           className={`absolute inset-0 rounded-full bg-gradient-to-br ${phaseColor} opacity-20 blur-2xl`}
@@ -84,7 +84,7 @@ export function BreathingOverlay({ currentStage, strategy }: BreathingOverlayPro
 
         {/* Middle ring */}
         <motion.div
-          className={`absolute w-48 h-48 rounded-full bg-gradient-to-br ${phaseColor} opacity-30`}
+          className={`absolute w-44 h-44 rounded-full bg-gradient-to-br ${phaseColor} opacity-30`}
           animate={{
             scale: scale,
           }}
@@ -96,7 +96,7 @@ export function BreathingOverlay({ currentStage, strategy }: BreathingOverlayPro
 
         {/* Inner breathing circle */}
         <motion.div
-          className={`absolute w-32 h-32 rounded-full bg-gradient-to-br ${phaseColor} flex items-center justify-center shadow-2xl`}
+          className={`absolute w-28 h-28 rounded-full bg-gradient-to-br ${phaseColor} flex items-center justify-center shadow-2xl`}
           animate={{
             scale: scale,
           }}
@@ -107,7 +107,7 @@ export function BreathingOverlay({ currentStage, strategy }: BreathingOverlayPro
         >
           {/* Countdown number */}
           <motion.div
-            className="text-4xl font-bold text-white"
+            className="text-3xl font-bold text-white"
             key={`${step.phase}-${remainingTime}`}
             initial={{ scale: 1.2, opacity: 0 }}
             animate={{ scale: 1, opacity: 1 }}
@@ -143,7 +143,7 @@ export function BreathingOverlay({ currentStage, strategy }: BreathingOverlayPro
         transition={{ duration: 0.5 }}
         className="text-center space-y-3"
       >
-        <p className="text-2xl font-light text-white">
+        <p className="text-xl font-light text-white">
           {step.instruction}
         </p>
         <p className="text-sm text-white/60 capitalize">
@@ -152,13 +152,13 @@ export function BreathingOverlay({ currentStage, strategy }: BreathingOverlayPro
       </motion.div>
 
       {/* Progress indicator */}
-      <div className="space-y-2 w-full max-w-xs">
+      {/* <div className="space-y-2 w-full max-w-xs">
         <div className="flex justify-between text-xs text-white/60">
           <span>Cycle {Math.floor(elapsedSeconds / pattern.totalCycleDuration) + 1}</span>
           <span>{pattern.benefits}</span>
         </div>
         
-        {/* Subtle post creation status */}
+
         <motion.div
           className="text-center text-xs text-white/50"
           animate={{ opacity: [0.5, 0.8, 0.5] }}
@@ -166,7 +166,7 @@ export function BreathingOverlay({ currentStage, strategy }: BreathingOverlayPro
         >
           Your post is being created in the background...
         </motion.div>
-      </div>
+      </div> */}
 
       {/* Phase indicators */}
       <div className="flex space-x-2">
