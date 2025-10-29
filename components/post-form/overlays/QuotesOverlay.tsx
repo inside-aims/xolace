@@ -42,7 +42,7 @@ export function QuotesOverlay({ currentStage, strategy }: QuotesOverlayProps) {
   if (!currentQuote) return null;
 
   return (
-    <div className="flex flex-col items-center justify-center space-y-8 p-8 max-w-lg mx-auto">
+    <div className="flex flex-col items-center justify-center space-y-4 px-6 py-4 max-w-lg mx-auto">
       {/* Quote Icon with gentle pulse */}
       <motion.div
         initial={{ scale: 0 }}
@@ -52,7 +52,7 @@ export function QuotesOverlay({ currentStage, strategy }: QuotesOverlayProps) {
           stiffness: 260,
           damping: 20,
         }}
-        className="text-6xl"
+        className="text-3xl"
       >
         <motion.span
           animate={{ 
@@ -79,7 +79,7 @@ export function QuotesOverlay({ currentStage, strategy }: QuotesOverlayProps) {
           transition={{ duration: 0.5 }}
           className="text-center space-y-4"
         >
-          <blockquote className="text-2xl font-light text-white leading-relaxed">
+          <blockquote className="text-xl font-light text-white leading-relaxed">
             "{currentQuote.text}"
           </blockquote>
           
@@ -93,13 +93,13 @@ export function QuotesOverlay({ currentStage, strategy }: QuotesOverlayProps) {
 
       {/* Subtle progress indicator */}
       <div className="space-y-3 w-full">
-        <motion.div
+        {/* <motion.div
           className="text-center text-sm text-white/80"
           animate={{ opacity: [0.6, 1, 0.6] }}
           transition={{ duration: 1.5, repeat: Infinity }}
         >
           Creating your safe space...
-        </motion.div>
+        </motion.div> */}
 
         {/* Gentle animated line */}
         <div className="relative h-1 bg-white/10 rounded-full overflow-hidden">
@@ -119,7 +119,7 @@ export function QuotesOverlay({ currentStage, strategy }: QuotesOverlayProps) {
       </div>
 
       {/* Stage indicator (subtle) */}
-      <motion.div
+      {/* <motion.div
         initial={{ opacity: 0 }}
         animate={{ opacity: 0.7 }}
         className="text-xs text-white/60 text-center"
@@ -128,10 +128,10 @@ export function QuotesOverlay({ currentStage, strategy }: QuotesOverlayProps) {
         {currentStage === 'analyzing' && 'Understanding your emotions...'}
         {currentStage === 'finalizing' && 'Almost ready...'}
         {currentStage === 'complete' && 'Complete ✓'}
-      </motion.div>
+      </motion.div> */}
 
       {/* Floating particles for ambiance */}
-      <div className="absolute inset-0 pointer-events-none overflow-hidden">
+      {/* <div className="absolute inset-0 pointer-events-none overflow-hidden">
         {[...Array(6)].map((_, i) => (
           <motion.div
             key={i}
@@ -151,7 +151,7 @@ export function QuotesOverlay({ currentStage, strategy }: QuotesOverlayProps) {
             }}
           />
         ))}
-      </div>
+      </div> */}
     </div>
   );
 }
