@@ -144,10 +144,10 @@ export function usePostSubmission() {
           const lemurResponse = responseBody.response;
 
           // match = lemurResponse.split(/[*]*suggestion:\**/i)[1]?.trim();
-          const m = lemurResponse.match(/Emotion:\s*([a-zA-Z-]+)\s*\|\s*suggestion:\s*(.+)/i);
-          const emotion = m?.[1]?.toLowerCase() ?? null;
-          const suggestion = m?.[2]?.trim() ?? null;
-          match = suggestion;
+          // const m = lemurResponse.match(/(?:Emotion:\s*)?([A-Za-z-]+)\s*\|\s*suggestion:\s*(.+)$/i);
+          // const emotion = m?.[1]?.toLowerCase() ?? null;
+          // const suggestion = m?.[2]?.trim() ?? null;
+          match = lemurResponse;
         } catch (activityError) {
           console.error('Error logging activity:', activityError);
           // Don't throw as post creation was successful
