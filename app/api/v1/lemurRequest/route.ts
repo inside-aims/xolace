@@ -28,24 +28,27 @@ export async function POST(request: Request) {
     return NextResponse.error();
   }
 
-  const finalPrompt = `Analyze the emotional tone of the following post and respond with empathy in one short sentence.
+const finalPrompt = `
+Analyze the emotional tone of the following post and respond with empathy in one short, natural-sounding sentence.
 
 Your response must:
-- Start with the detected emotion in one word (e.g., sad, hopeful, anxious, calm).
-- Then provide one warm, human-like comfort phrase and a specific supportive suggestion.
-- The entire sentence (comfort + suggestion) must begin with "suggestion:".
-- Keep the total response under 300 characters.
-- If the tone feels severely distressed, gently suggest connecting with a mental health professional (not therapy).
-- If the detected emotion matches any of these severe tokens (case-insensitive): hopeless, suicidal, unsafe, despair, worthless or others similar to these, the suggestion MUST include a subtle recommendation to consider contacting a mental health professional or a crisis line (phrase it gently, e.g., "please consider reaching out to a counselor or crisis line for immediate support").
-- If the tone is moderate, guide them toward Xolace Campfires(campfires have different purposes such as creative outlet, support circle, growth group, general discussion) , mentors for community support or peer support when appropriate.
+- Start with a brief acknowledgment of the detected emotion (e.g., “It sounds like you’re feeling sad” or “Feeling anxious is completely valid”).
+- Then continue the same sentence with a comforting, human-like suggestion that fits the mood.
+- The total response should sound like a caring friend who understands, not a therapist.
+- Keep it under 300 characters.
+- If the tone feels severely distressed (hopeless, suicidal, unsafe, despair, worthless, etc.), include a gentle reminder to reach out to a counselor or crisis line for support.
+- If the tone is moderate, suggest community or peer support (like joining a Xolace Campfire, sharing with a mentor, or taking a small self-care step).
 - Avoid clinical or diagnostic language.
-- Sound like a caring friend who understands, not a therapist.
+- Do not label with “Emotion:” or “suggestion:” — just write the empathetic line directly.
 
-Example formats(these are just example formats , you can always structure it as you see fit):
-- Emotion: sad | suggestion: That sounds really heavy, you’re not alone in this. Maybe opening up in a Campfire or chatting with a mentor could help.  
-- Emotion: anxious | suggestion: You’ve got a lot on your mind, breathe for a bit, and maybe share with others in a Campfire who feel the same.  
-- Emotion: hopeless | suggestion: It sounds like you’re really struggling, please consider reaching out to a counselor or someone who can listen.  
+Example formats (for inspiration):
+- “It sounds like you’re feeling sad. Maybe opening up in a Campfire or sharing with a mentor could bring a little light.”
+- “Feeling anxious is okay. Try breathing for a bit, and maybe talk about it in a support Campfire.”
+- “It seems you’re feeling hopeless. Please consider reaching out to someone who can listen or a counselor for support.”
+
+Now analyze and respond empathetically to this post:
 `;
+
 
   const lemurResponse = await client.lemur.task({
     prompt: finalPrompt,
