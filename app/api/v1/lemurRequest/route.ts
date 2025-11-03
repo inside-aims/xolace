@@ -51,7 +51,7 @@ Example formats(these are just example formats , you can always structure it as 
     prompt: finalPrompt,
     input_text: post,
     // TODO: For now we just give some context, but here we could add the actual meeting text.
-    final_model: 'anthropic/claude-3-5-sonnet',
+    final_model: 'anthropic/claude-sonnet-4-20250514',
   });
 
   const response = {
