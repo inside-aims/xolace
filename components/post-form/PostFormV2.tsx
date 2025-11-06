@@ -33,8 +33,14 @@ import { PostFormFields } from '@/components/post-form/features/PostFormFields';
 import { PostFormFooter } from '@/components/post-form/ui/PostFormFooter';
 import { useCommentMutation } from '@/hooks/posts/useCommentMutation';
 
+import { usePostingOverlay } from './overlays/PostingOverlay';
+
 // Dynamic Imports
 const ConsentModal = dynamic(() => import('@/components/modals/ConsentModal'), {
+  ssr: false,
+});
+
+const PostingOverlay = dynamic(() => import('./overlays/PostingOverlay'), {
   ssr: false,
 });
 
@@ -106,6 +112,15 @@ export function PostForm({
   const [selectedCampfire, setSelectedCampfire] = useState<UserCampfire | null>(
     null,
   );
+
+  // 🆕 Adaptive Overlay State
+  const {
+    isOpen: isOverlayOpen,
+    currentStage,
+    open: openOverlay,
+    close: closeOverlay,
+    updateStage,
+  } = usePostingOverlay();
 
   // Custom Hooks
   const { tags, extractTags, clearTags } = useTagExtraction();
@@ -273,14 +288,24 @@ export function PostForm({
     // Start animation
     startAnimation();
 
+    // 🆕 Open adaptive overlay after brief delay
+    setTimeout(() => {
+      openOverlay();
+      updateStage('creating');
+    }, 300);
+
     // Submit after animation
     setTimeout(async () => {
       try {
         setIsLoading(true);
 
-        const contentForLLM = postType === 'carousel'
-        ? slides.filter(s => s.trim()).join('\n\n---SLIDE BREAK---\n\n')
-        : content;
+        // 🆕 Stage 1: Creating post
+        updateStage('creating');
+
+        const contentForLLM =
+          postType === 'carousel'
+            ? slides.filter(s => s.trim()).join('\n\n---SLIDE BREAK---\n\n')
+            : content;
 
         const { post_id, match } = await submitPost({
           content: data.content,
@@ -297,17 +322,37 @@ export function PostForm({
           contentForLLM,
         });
 
-        createComment({
-          postId: post_id,
-          commentText: match,
-          postCreatedBy: user?.id ?? '',
-          campfireId: selectedCampfire?.campfireId,
-          authorName: 'Flux AI',
-          authorAvatarUrl:
-            'https://qdjrwasidlmgqxakdxkl.supabase.co/storage/v1/object/public/xolace.bucket/flux-ai.JPG',
-          pinnedStatus: 'author',
-          ai_suggestion: true,
-        });
+        // 🆕 Stage 2: AI is analyzing (happens in submitPost)
+        updateStage('analyzing');
+
+        // Small delay for visual feedback (AI is processing in background)
+        await new Promise(resolve => setTimeout(resolve, 1000));
+
+        // 🆕 Stage 3: Finalizing with AI comment
+        updateStage('finalizing');
+
+        // Create AI suggestion comment
+        if (match) {
+          createComment({
+            postId: post_id,
+            commentText: match,
+            postCreatedBy: user?.id ?? '',
+            campfireId: selectedCampfire?.campfireId,
+            authorName: 'Flux AI',
+            authorAvatarUrl:
+              'https://qdjrwasidlmgqxakdxkl.supabase.co/storage/v1/object/public/xolace.bucket/flux-ai.JPG',
+            pinnedStatus: 'author',
+            ai_suggestion: true,
+          });
+        }
+
+        updateStage('complete');
+
+        // Brief pause to show completion
+        await new Promise(resolve => setTimeout(resolve, 500));
+
+        // 🆕 Close overlay with smooth transition
+        closeOverlay();
 
         // Reset form on success
         if (data.type === 'single') {
@@ -325,6 +370,8 @@ export function PostForm({
         resetMoodTooltip();
       } catch (error) {
         console.error('Post submission error:', error);
+        // 🆕 Close overlay on error
+        closeOverlay();
       } finally {
         setIsLoading(false);
       }
@@ -421,6 +468,14 @@ export function PostForm({
           onDismissForever={dismissFeatureModal}
         />
       )}
+
+      <PostingOverlay
+        isOpen={isOverlayOpen}
+        moodId={selectedMood.id}
+        currentStage={currentStage}
+        onClose={closeOverlay}
+        allowSkip={true} // Set to true if you want users to skip with Escape
+      />
     </div>
   );
 }
