@@ -3,6 +3,7 @@
 import React, { useEffect } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
 import { ProgressOverlay } from './ProgressOverlay';
+import { ProgressToast } from './ProgressToast';
 import { QuotesOverlay } from './QuotesOverlay';
 import { BreathingOverlay } from './BreathingOverlay';
 import { getMoodLoadingStrategy, type LoadingStage } from '@/config/moodLoadingConfig';
@@ -69,114 +70,116 @@ export default function PostingOverlay({
 
   return (
     <AnimatePresence>
-      {isOpen && (
+     {isOpen && (
         <>
-          {/* Backdrop with glassmorphism */}
-          <motion.div
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            exit={{ opacity: 0 }}
-            transition={{ duration: 0.3 }}
-            className="fixed inset-0 z-50 flex items-center justify-center p-4"
-            style={{
-              backdropFilter: 'blur(12px)',
-              WebkitBackdropFilter: 'blur(12px)',
-            }}
-            onClick={allowSkip ? onClose : undefined}
-          >
-            {/* Glass panel */}
-            <motion.div
-              initial={{ scale: 0.9, opacity: 0, y: 20 }}
-              animate={{ scale: 1, opacity: 1, y: 0 }}
-              exit={{ scale: 0.9, opacity: 0, y: 20 }}
-              transition={{ 
-                type: 'spring',
-                stiffness: 300,
-                damping: 30,
-              }}
-              onClick={(e) => e.stopPropagation()}
-              className={`
-                relative w-full max-w-2xl rounded-3xl overflow-hidden
-                bg-gradient-to-br ${strategy.color} 
-                shadow-2xl
-              `}
-              style={{
-                background: `linear-gradient(135deg, 
-                  rgba(139, 92, 246, 0.9) 0%, 
-                  rgba(59, 130, 246, 0.9) 100%)`,
-                backdropFilter: 'blur(20px)',
-                WebkitBackdropFilter: 'blur(20px)',
-                border: '1px solid rgba(255, 255, 255, 0.2)',
-              }}
-            >
-              {/* Animated gradient background */}
-              <div className="absolute inset-0 opacity-30">
+          {/* Render ProgressToast without backdrop (non-blocking) */}
+          {strategy.type === 'progress' && (
+            <ProgressToast
+              currentStage={currentStage}
+              strategy={strategy}
+              onDismiss={allowSkip ? onClose : undefined}
+              allowDismiss={allowSkip}
+            />
+          )}
+
+          {/* Render overlays with backdrop (blocking) */}
+          {(strategy.type === 'quotes' || strategy.type === 'breathing') && (
+            <>
+              {/* Backdrop with glassmorphism */}
+              <motion.div
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                exit={{ opacity: 0 }}
+                transition={{ duration: 0.3 }}
+                className="fixed inset-0 z-50 flex items-center justify-center p-4"
+                style={{
+                  backdropFilter: 'blur(12px)',
+                  WebkitBackdropFilter: 'blur(12px)',
+                }}
+                onClick={allowSkip ? onClose : undefined}
+              >
+                {/* Glass panel - Reduced size */}
                 <motion.div
-                  className={`absolute inset-0 bg-gradient-to-br ${strategy.color}`}
-                  animate={{
-                    scale: [1, 1.1, 1],
-                    rotate: [0, 5, 0],
-                  }}
+                  initial={{ scale: 0.9, opacity: 0, y: 20 }}
+                  animate={{ scale: 1, opacity: 1, y: 0 }}
+                  exit={{ scale: 0.9, opacity: 0, y: 20 }}
                   transition={{
-                    duration: 10,
-                    repeat: Infinity,
-                    ease: 'easeInOut',
+                    type: 'spring',
+                    stiffness: 300,
+                    damping: 30,
                   }}
-                />
-              </div>
-
-              {/* Content */}
-              <div className="relative z-10">
-                <AnimatePresence mode="wait">
-                  {strategy.type === 'progress' && (
+                  onClick={(e) => e.stopPropagation()}
+                  className={`
+                    relative w-full rounded-3xl overflow-hidden
+                    ${strategy.type === 'quotes' ? 'max-w-lg' : 'max-w-md'}
+                    bg-gradient-to-br ${strategy.color} 
+                    shadow-2xl
+                  `}
+                  style={{
+                    background: `linear-gradient(135deg, 
+                      rgba(139, 92, 246, 0.9) 0%, 
+                      rgba(59, 130, 246, 0.9) 100%)`,
+                    backdropFilter: 'blur(20px)',
+                    WebkitBackdropFilter: 'blur(20px)',
+                    border: '1px solid rgba(255, 255, 255, 0.2)',
+                  }}
+                >
+                  {/* Animated gradient background */}
+                  <div className="absolute inset-0 opacity-30">
                     <motion.div
-                      key="progress"
-                      initial={{ opacity: 0 }}
-                      animate={{ opacity: 1 }}
-                      exit={{ opacity: 0 }}
-                    >
-                      <ProgressOverlay 
-                        currentStage={currentStage} 
-                        strategy={strategy}
-                      />
-                    </motion.div>
-                  )}
+                      className={`absolute inset-0 bg-gradient-to-br ${strategy.color}`}
+                      animate={{
+                        scale: [1, 1.1, 1],
+                        rotate: [0, 5, 0],
+                      }}
+                      transition={{
+                        duration: 10,
+                        repeat: Infinity,
+                        ease: 'easeInOut',
+                      }}
+                    />
+                  </div>
 
-                  {strategy.type === 'quotes' && (
-                    <motion.div
-                      key="quotes"
-                      initial={{ opacity: 0 }}
-                      animate={{ opacity: 1 }}
-                      exit={{ opacity: 0 }}
-                    >
-                      <QuotesOverlay 
-                        currentStage={currentStage} 
-                        strategy={strategy}
-                      />
-                    </motion.div>
-                  )}
+                  {/* Content */}
+                  <div className="relative z-10">
+                    <AnimatePresence mode="wait">
+                      {strategy.type === 'quotes' && (
+                        <motion.div
+                          key="quotes"
+                          initial={{ opacity: 0 }}
+                          animate={{ opacity: 1 }}
+                          exit={{ opacity: 0 }}
+                        >
+                          <QuotesOverlay
+                            currentStage={currentStage}
+                            strategy={strategy}
+                          />
+                        </motion.div>
+                      )}
 
-                  {strategy.type === 'breathing' && (
-                    <motion.div
-                      key="breathing"
-                      initial={{ opacity: 0 }}
-                      animate={{ opacity: 1 }}
-                      exit={{ opacity: 0 }}
-                    >
-                      <BreathingOverlay 
-                        currentStage={currentStage} 
-                        strategy={strategy}
-                      />
-                    </motion.div>
-                  )}
-                </AnimatePresence>
-              </div>
+                      {strategy.type === 'breathing' && (
+                        <motion.div
+                          key="breathing"
+                          initial={{ opacity: 0 }}
+                          animate={{ opacity: 1 }}
+                          exit={{ opacity: 0 }}
+                        >
+                          <BreathingOverlay
+                            currentStage={currentStage}
+                            strategy={strategy}
+                          />
+                        </motion.div>
+                      )}
+                    </AnimatePresence>
+                  </div>
 
-              {/* Decorative elements */}
-              <div className="absolute top-0 left-0 w-32 h-32 bg-white/5 rounded-full blur-3xl" />
-              <div className="absolute bottom-0 right-0 w-40 h-40 bg-white/5 rounded-full blur-3xl" />
-            </motion.div>
-          </motion.div>
+                  {/* Decorative elements - Reduced */}
+                  <div className="absolute top-0 left-0 w-24 h-24 bg-white/5 rounded-full blur-2xl" />
+                  <div className="absolute bottom-0 right-0 w-32 h-32 bg-white/5 rounded-full blur-2xl" />
+                </motion.div>
+              </motion.div>
+            </>
+          )}
         </>
       )}
     </AnimatePresence>

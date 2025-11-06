@@ -326,7 +326,7 @@ export function PostForm({
         updateStage('analyzing');
 
         // Small delay for visual feedback (AI is processing in background)
-        await new Promise(resolve => setTimeout(resolve, 9000));
+        await new Promise(resolve => setTimeout(resolve, 1000));
 
         // 🆕 Stage 3: Finalizing with AI comment
         updateStage('finalizing');
@@ -349,7 +349,7 @@ export function PostForm({
         updateStage('complete');
 
         // Brief pause to show completion
-        await new Promise(resolve => setTimeout(resolve, 8000));
+        await new Promise(resolve => setTimeout(resolve, 500));
 
         // 🆕 Close overlay with smooth transition
         closeOverlay();
