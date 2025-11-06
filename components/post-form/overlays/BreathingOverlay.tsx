@@ -22,7 +22,7 @@ interface BreathingOverlayProps {
  * Interactive breathing exercise during post creation
  * Used for anxious, stressed, or overwhelmed moods
  */
-export function BreathingOverlay({ currentStage, strategy }: BreathingOverlayProps) {
+export function BreathingOverlay({ strategy }: BreathingOverlayProps) {
   const [elapsedSeconds, setElapsedSeconds] = useState(0);
   const [pattern, setPattern] = useState<BreathingPattern | null>(null);
 

@@ -2,7 +2,7 @@
 
 import React, { useEffect } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
-import { ProgressOverlay } from './ProgressOverlay';
+// import { ProgressOverlay } from './ProgressOverlay';
 import { ProgressToast } from './ProgressToast';
 import { QuotesOverlay } from './QuotesOverlay';
 import { BreathingOverlay } from './BreathingOverlay';

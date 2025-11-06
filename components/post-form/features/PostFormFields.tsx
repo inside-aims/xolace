@@ -88,7 +88,6 @@ export function PostFormFields({
   control,
   postType,
   is24HourPost,
-  content,
   textareaRef,
   carouselTextareaRef,
   canvasRef,

@@ -16,7 +16,7 @@ interface QuotesOverlayProps {
  * Shows supportive, mood-appropriate quotes during loading
  * Used for reflective, sad, or contemplative moods
  */
-export function QuotesOverlay({ currentStage, strategy }: QuotesOverlayProps) {
+export function QuotesOverlay({ strategy }: QuotesOverlayProps) {
   const [currentQuote, setCurrentQuote] = useState<Quote | null>(null);
   const [quoteIndex, setQuoteIndex] = useState(0);
 
@@ -80,7 +80,7 @@ export function QuotesOverlay({ currentStage, strategy }: QuotesOverlayProps) {
           className="text-center space-y-4"
         >
           <blockquote className="text-xl font-light text-white leading-relaxed">
-            "{currentQuote.text}"
+            &quot;{currentQuote.text}&quot;
           </blockquote>
           
           {currentQuote.author && (
