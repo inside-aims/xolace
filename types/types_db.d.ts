@@ -1157,7 +1157,7 @@ export type Database = {
         }
         Relationships: [
           {
-            foreignKeyName: "help center_created_by_fkey"
+            foreignKeyName: "help_center_created_by_fkey"
             columns: ["created_by"]
             isOneToOne: false
             referencedRelation: "profiles"
@@ -1737,6 +1737,7 @@ export type Database = {
           daily_prompt_enabled: boolean | null
           guided_tour_enabled: boolean | null
           id: string
+          loading_experience: Database["public"]["Enums"]["loading_experience_types"]
           mark_sensitive_by_default: boolean | null
           preferred_language: string | null
           privacy: Database["public"]["Enums"]["privacy_options"] | null
@@ -1752,6 +1753,7 @@ export type Database = {
           daily_prompt_enabled?: boolean | null
           guided_tour_enabled?: boolean | null
           id?: string
+          loading_experience?: Database["public"]["Enums"]["loading_experience_types"]
           mark_sensitive_by_default?: boolean | null
           preferred_language?: string | null
           privacy?: Database["public"]["Enums"]["privacy_options"] | null
@@ -1767,6 +1769,7 @@ export type Database = {
           daily_prompt_enabled?: boolean | null
           guided_tour_enabled?: boolean | null
           id?: string
+          loading_experience?: Database["public"]["Enums"]["loading_experience_types"]
           mark_sensitive_by_default?: boolean | null
           preferred_language?: string | null
           privacy?: Database["public"]["Enums"]["privacy_options"] | null
@@ -1876,7 +1879,7 @@ export type Database = {
           created_at?: string | null
           id?: string
           user_id: string
-          video_id?: string
+          video_id: string
         }
         Update: {
           collection_name?: string | null
@@ -2606,6 +2609,7 @@ export type Database = {
         | "video"
         | "campfire"
       feedback_status: "open" | "closed"
+      loading_experience_types: "adaptive" | "minimal" | "none"
       moderation_action_type:
         | "ban_user_temporary"
         | "ban_user_permanent"
@@ -2836,6 +2840,7 @@ export const Constants = {
         "campfire",
       ],
       feedback_status: ["open", "closed"],
+      loading_experience_types: ["adaptive", "minimal", "none"],
       moderation_action_type: [
         "ban_user_temporary",
         "ban_user_permanent",
