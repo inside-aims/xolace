@@ -198,7 +198,7 @@ export function DetailCard({
           {type === 'carousel' ? (
             <CarouselPost slides={post_slides} postId={postId} />
           ) : (
-            content
+            <div className="whitespace-pre-wrap break-words leading-relaxed">{content}</div>
           )}
 
           <div className="mt-4 flex flex-wrap gap-2">
