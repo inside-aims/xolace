@@ -99,8 +99,8 @@ export default async function HealthTips() {
                   className="hover:bg-muted group w-full rounded-lg px-3 py-2 text-left transition-colors"
                 >
                   <div className="flex items-center justify-between">
-                    <span className="text-foreground text-sm transition-colors group-hover:text-lavender-400">
-                      {topic.title}
+                    <span className="text-foreground text-sm transition-colors group-hover:text-lavender-400 capitalize">
+                      {topic.title === 'stress' ? 'Stress Management' : topic.title === 'sleep' ? 'Sleep Better' : topic.title}
                     </span>
                     <span className="text-muted-foreground text-xs">
                       {topic.count.toString()}
