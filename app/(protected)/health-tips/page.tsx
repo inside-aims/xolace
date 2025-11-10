@@ -1,18 +1,16 @@
-import HealthTipsWrapper from '@/components/shared/layoutUIs/HealthTipsWrapper';
-import { CircleArrowRight } from 'lucide-react';
-import React from 'react';
-import type { Metadata } from 'next'
+import { BookOpen } from 'lucide-react';
+import type { Metadata } from 'next';
 import { getHealthTips } from '@/queries/tips/getHealthTips.action';
-import Link from 'next/link';
-import { Preview } from '@/components/editor/Preview';
-import {
-  QueryClient,
-} from '@tanstack/react-query';
+import { QueryClient } from '@tanstack/react-query';
+import { Card } from '@/components/ui/card';
+import HealthTipsCard from '@/components/cards/HealthTipsCard';
+import XolaceLinks from '@/components/shared/xolace-links';
 
 export const metadata: Metadata = {
   title: 'Health Tips',
-  description: "Discover daily health tips and expert-backed advice to boost your wellness, fitness, and mental health—trusted by millions worldwide."
-}
+  description:
+    'Discover daily health tips and expert-backed advice to boost your wellness, fitness, and mental health—trusted by millions worldwide.',
+};
 
 export default async function HealthTips() {
   const queryClient = new QueryClient();
@@ -23,22 +21,40 @@ export default async function HealthTips() {
     queryFn: getHealthTips,
   });
 
-  const truncateText = (words: string | string[], limit = 150): string => {
-    // Ensure words is treated as a string by joining if it's an array
-    const text = Array.isArray(words) ? words.join(' ') : words;
+  const categoryCounts = healthTips.reduce(
+    (acc, tip): Record<string, number> => {
+      const topic = tip.topic;
 
-    if (text.length <= limit) {
-      return text;
-    }
-    return text.slice(0, limit) + '...';
-  };
+      if (topic) {
+        acc[topic] = (acc[topic] || 0) + 1;
+      }
+      return acc;
+    },
+    {} as Record<string, number>,
+  );
+
+  const popularTopics = Object.entries(categoryCounts)
+    .map(([title, count]) => ({
+      title,
+      count,
+    } as { title: string; count: number }))
+    .sort((a, b) => b.count - a.count);
+
+  // const truncateText = (words: string | string[], limit = 150): string => {
+  //   // Ensure words is treated as a string by joining if it's an array
+  //   const text = Array.isArray(words) ? words.join(' ') : words;
+
+  //   if (text.length <= limit) {
+  //     return text;
+  //   }
+  //   return text.slice(0, limit) + '...';
+  // };
 
   return (
-    <HealthTipsWrapper>
-      <div
-        className={'-mt-5 flex w-full flex-col items-start gap-4 max-md:pb-6'}
-      >
-        <div className="group animate-in fade-in slide-in-from-left-5 relative mb-2 flex items-center gap-2 px-4 text-3xl font-semibold duration-700 md:text-4xl">
+    <div className="h-[calc(100vh-var(--header-height))] overflow-auto px-2 pb-12 md:px-4">
+      <div className="mt-5 mb-5 md:px-2">
+        <div className="group animate-in fade-in slide-in-from-left-5 relative mb-2 flex items-center gap-2 text-2xl font-semibold duration-700 md:text-4xl">
+          <BookOpen className="h-8 w-8 text-emerald-500" />
           <span className="from-lavender-400 via-lavender-500 to-lavender-600 bg-gradient-to-r bg-clip-text text-transparent">
             Xolace
           </span>
@@ -51,52 +67,63 @@ export default async function HealthTips() {
             <div className="bg-lavender-400/20 absolute top-1/2 -right-6 h-4 w-4 -translate-y-1/2 animate-pulse rounded-full"></div>
           </span>
         </div>
-        <div className={`flex w-full flex-col gap-4 px-4 md:gap-8`}>
-          {healthTips.map(tip => (
-            <div
-              className={'flex w-full flex-col items-start gap-2'}
-              key={tip?.id}
-            >
-              <div className={'flex flex-col gap-1'}>
-                <h3 className={'text-xl font-semibold md:text-xl'}>
-                  {tip.title}
-                </h3>
-                <div className={'flex flex-row gap-2 text-sm text-neutral-500'}>
-                  by
-                  <span className={'text-lavender-500'}>{tip.author_name}</span>
-                  <span>
-                    {new Date(tip?.created_at).toLocaleDateString('en-US', {
-                      month: 'short',
-                      year: 'numeric',
-                    })}
-                  </span>
-                </div>
-              </div>
+        <p className="text-muted-foreground">
+          Expert-backed articles and guides for your mental health journey
+        </p>
+      </div>
 
-              <div className={''}>
-                {/* {truncateText(tip.content)} */}
-                {typeof truncateText(tip.content) === 'string' && (
-                  <Preview
-                    content={truncateText(tip.content)}
-                    className="max-sm:pb-0"
-                  />
-                )}
-              </div>
-              <Link
-                href={`/health-tips/${tip.slug}`}
-                className={
-                  'text-lavender-400 hover:text-lavender-600 hover:lavender-500 mb-4 flex items-center text-sm hover:cursor-pointer hover:underline'
-                }
-              >
-                Read more
-                <span className={'text-lavender-400 hover:lavender-500 ml-1'}>
-                  <CircleArrowRight size={16} />
-                </span>
-              </Link>
+      <div className="grid w-full grid-cols-12 gap-6">
+        <div
+          className={
+            'col-span-12 -mt-5 flex w-full flex-col items-start gap-4 px-0! pt-8 pb-12 max-md:pb-6 sm:container md:col-span-8'
+          }
+        >
+          <div className={`flex w-full flex-col gap-4 md:gap-6`}>
+            {healthTips.map(tip => (
+              <HealthTipsCard
+                key={tip.id}
+                tip={tip}
+                setSelectedTip={() => {}}
+              />
+            ))}
+          </div>
+        </div>
+        <div className={'col-span-12 hidden h-full md:col-span-4 md:block'}>
+          <div className='sticky top-1'>
+            <Card className=" rounded-xl p-6 shadow-sm dark:border-gray-500/20">
+            <h2 className="text-foreground mb-4 font-bold">Popular Topics</h2>
+            <div className="space-y-2">
+              {popularTopics.map(topic => (
+                <button
+                  key={topic.title}
+                  className="hover:bg-muted group w-full rounded-lg px-3 py-2 text-left transition-colors"
+                >
+                  <div className="flex items-center justify-between">
+                    <span className="text-foreground text-sm transition-colors group-hover:text-lavender-400">
+                      {topic.title}
+                    </span>
+                    <span className="text-muted-foreground text-xs">
+                      {topic.count.toString()}
+                    </span>
+                  </div>
+                </button>
+              ))}
             </div>
-          ))}
+
+            {/* <div className="border-border mt-6 border-t pt-6">
+              <p className="text-muted-foreground mb-3 text-xs">
+                Want to contribute tips?
+              </p>
+              <button className="w-full rounded-lg bg-emerald-600 px-4 py-2 text-sm font-semibold text-white transition-colors hover:bg-emerald-700">
+                Suggest a Tip
+              </button>
+            </div> */}
+          </Card>
+
+          <XolaceLinks className='mt-5' />
+          </div>
         </div>
       </div>
-    </HealthTipsWrapper>
+    </div>
   );
 }
