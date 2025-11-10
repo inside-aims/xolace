@@ -13,7 +13,7 @@ interface HealthTipCardProps {
     content: string;
     created_at: string;
     read_time: number;
-    category: string;
+    topic: string;
     excerpt: string;
   };
   setSelectedTip: (tip: HealthTipCardProps['tip']) => void;
@@ -44,7 +44,7 @@ const HealthTipsCard = ({ tip, setSelectedTip }: HealthTipCardProps) => {
                 {tip.title}
               </h3>
               <span className="mt-1 inline-block rounded-full bg-emerald-100 px-2 py-1 text-xs font-medium text-emerald-700 capitalize dark:bg-emerald-900/30 dark:text-emerald-300">
-                {tip.category}
+                {tip.topic}
               </span>
             </div>
             <span className="text-muted-foreground flex-shrink-0 text-xs whitespace-nowrap">
