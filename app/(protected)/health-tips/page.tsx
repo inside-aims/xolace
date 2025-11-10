@@ -4,6 +4,7 @@ import { getHealthTips } from '@/queries/tips/getHealthTips.action';
 import { QueryClient } from '@tanstack/react-query';
 import { Card } from '@/components/ui/card';
 import HealthTipsCard from '@/components/cards/HealthTipsCard';
+import XolaceLinks from '@/components/shared/xolace-links';
 
 export const metadata: Metadata = {
   title: 'Health Tips',
@@ -22,13 +23,7 @@ export default async function HealthTips() {
 
   const categoryCounts = healthTips.reduce(
     (acc, tip): Record<string, number> => {
-      //
-      // !! IMPORTANT !!
-      // I am assuming your 'tip' object has a property named 'category'.
-      // If your column in Supabase is named 'topic', 'tag', etc.,
-      // you MUST change 'tip.category' to 'tip.topic' or the correct name.
-      //
-      const topic = tip.topic; // <-- CHANGE THIS IF YOUR COLUMN NAME IS DIFFERENT
+      const topic = tip.topic;
 
       if (topic) {
         acc[topic] = (acc[topic] || 0) + 1;
@@ -38,8 +33,6 @@ export default async function HealthTips() {
     {} as Record<string, number>,
   );
 
-  // This transforms the counts object { "Mindfulness": 11, ... }
-  // into an array [{ title: "Mindfulness", count: 11 }, ...]
   const popularTopics = Object.entries(categoryCounts)
     .map(([title, count]) => ({
       title,
@@ -47,15 +40,15 @@ export default async function HealthTips() {
     } as { title: string; count: number }))
     .sort((a, b) => b.count - a.count);
 
-  const truncateText = (words: string | string[], limit = 150): string => {
-    // Ensure words is treated as a string by joining if it's an array
-    const text = Array.isArray(words) ? words.join(' ') : words;
+  // const truncateText = (words: string | string[], limit = 150): string => {
+  //   // Ensure words is treated as a string by joining if it's an array
+  //   const text = Array.isArray(words) ? words.join(' ') : words;
 
-    if (text.length <= limit) {
-      return text;
-    }
-    return text.slice(0, limit) + '...';
-  };
+  //   if (text.length <= limit) {
+  //     return text;
+  //   }
+  //   return text.slice(0, limit) + '...';
+  // };
 
   return (
     <div className="h-[calc(100vh-var(--header-height))] overflow-auto px-2 pb-12 md:px-4">
@@ -96,7 +89,8 @@ export default async function HealthTips() {
           </div>
         </div>
         <div className={'col-span-12 hidden h-full md:col-span-4 md:block'}>
-          <Card className="sticky top-1 rounded-xl p-6 shadow-sm dark:border-gray-500/20">
+          <div className='sticky top-1'>
+            <Card className=" rounded-xl p-6 shadow-sm dark:border-gray-500/20">
             <h2 className="text-foreground mb-4 font-bold">Popular Topics</h2>
             <div className="space-y-2">
               {popularTopics.map(topic => (
@@ -116,15 +110,18 @@ export default async function HealthTips() {
               ))}
             </div>
 
-            <div className="border-border mt-6 border-t pt-6">
+            {/* <div className="border-border mt-6 border-t pt-6">
               <p className="text-muted-foreground mb-3 text-xs">
                 Want to contribute tips?
               </p>
               <button className="w-full rounded-lg bg-emerald-600 px-4 py-2 text-sm font-semibold text-white transition-colors hover:bg-emerald-700">
                 Suggest a Tip
               </button>
-            </div>
+            </div> */}
           </Card>
+
+          <XolaceLinks className='mt-5' />
+          </div>
         </div>
       </div>
     </div>

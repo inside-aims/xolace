@@ -70,7 +70,7 @@ const HealthTipsCard = ({ tip, setSelectedTip }: HealthTipCardProps) => {
 
             <div
               className={
-                'text-lavender-400 group-hover:text-lavender-600 flex items-center text-sm'
+                'text-lavender-400 group-hover:text-lavender-600 flex items-center text-xs md:text-sm'
               }
             >
               Read more
