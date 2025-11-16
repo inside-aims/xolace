@@ -30,6 +30,9 @@ import { getSupabaseBrowserClient } from '@/utils/supabase/client';
 import { Separator } from '@/components/ui/separator';
 import AnonymousSignIn from '../ui/AnonymousSignIn';
 import Image from 'next/image';
+import {FormInput} from "@/components/forms/FormInput";
+import {FormCheckbox} from "@/components/forms/FormCheckbox";
+import {AuthRedirect} from "@/components/forms/AuthRedirect";
 
 const CookieInstructionsModal = dynamic(() => import('../extras/CookieInstructionModal'), { ssr: false });
 const CookieAlert = dynamic(() => import('../extras/CookieAlert'), { ssr: false });
@@ -139,83 +142,36 @@ const SignInForm = () => {
         <Form {...form}>
           <form
             onSubmit={form.handleSubmit(onSubmit)}
-            className="flex flex-col gap-8"
+            className="flex flex-col gap-6"
           >
             <div className={'flex w-full flex-col gap-4'}>
               {/* Email Field */}
-              <FormField
+              <FormInput
                 control={form.control}
                 name="email"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>Email</FormLabel>
-                    <FormControl>
-                      <Input
-                        placeholder="Enter your email"
-                        {...field}
-                        type="email"
-                        className="rounded-lg px-4"
-                        autoComplete="off"
-                        required
-                      />
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
+                type="email"
+                label="Email"
+                placeholder="Enter your email"
               />
 
-              {/* Password Field */}
-              <FormField
+              {/*Password field*/}
+              <FormInput
                 control={form.control}
                 name="password"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>Password</FormLabel>
-                    <FormControl>
-                      <div className="relative">
-                        <Input
-                          placeholder="Enter your password"
-                          {...field}
-                          className="items-center rounded-lg px-4"
-                          type={showPassword ? 'text' : 'password'}
-                          autoComplete="off"
-                          required
-                        />
-                        <button
-                          type="button"
-                          onClick={() => setShowPassword(!showPassword)}
-                          className="absolute top-[10] right-3 text-neutral-400 md:top-[-5]"
-                        >
-                          <ToggleEyeIcon showPassword={showPassword} />
-                        </button>
-                      </div>
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
+                type="password"
+                label="Password"
+                placeholder="Enter your password"
+                info="Min 8 chars, 1 uppercase & 1 number"
               />
 
               {/* Forgot Password Link */}
               <div className="flex items-center justify-between">
-                <FormField
+                <FormCheckbox
                   control={form.control}
                   name="remember"
-                  render={({ field }) => (
-                    <FormItem className="flex items-center justify-center space-x-2">
-                      <FormControl>
-                        <Checkbox
-                          checked={field.value}
-                          onCheckedChange={field.onChange}
-                          className={'h-4 w-4 rounded-none'}
-                        />
-                      </FormControl>
-                      <FormLabel className="mb-1 items-center text-sm">
-                        Remember me
-                      </FormLabel>
-                    </FormItem>
-                  )}
+                  label="Remember me"
+                  shape="rounded"
                 />
-
                 <Link
                   href={'/forgot-password'}
                   className="text-lavender-400 text-sm hover:underline"
@@ -251,15 +207,12 @@ const SignInForm = () => {
             <AnonymousSignIn />
 
             {/* Register Redirect */}
-            <p className="text-center text-sm md:text-left">
-              Don&apos;t have an account?{' '}
-              <Link
-                href={nexturl ? `/sign-up?nexturl=${nexturl}` : '/sign-up'}
-                className="text-lavender-400 hover:text-lavender-500 ml-1 font-medium hover:underline"
-              >
-                Create one
-              </Link>
-            </p>
+            <AuthRedirect
+              text="Don’t have an account?"
+              linkText="Create one"
+              href="/sign-up"
+              nexturl={nexturl}
+            />
           </form>
         </Form>
       </div>
