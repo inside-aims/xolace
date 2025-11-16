@@ -819,7 +819,7 @@ code {
     border: none !important;
     box-shadow: none !important;
   }
-  .custom-phone-input input {
+  .custom-phone-input input  {
     border: none !important;
     outline: none !important;
     box-shadow: none !important;
@@ -847,4 +847,19 @@ code {
   [role='button']:not(:disabled) {
     cursor: pointer;
   }
+
+  input, textarea {
+    background-color: transparent !important;
+  }
+
+  input:-webkit-autofill, textarea:-webkit-autofill {
+    -webkit-box-shadow: 0 0 0px 1000px transparent inset !important;
+    -webkit-text-fill-color: inherit !important;
+    transition: background-color 5000s ease-in-out 0s;
+  }
+
+  .dark input, .dark textarea {
+    background-color: transparent !important;
+  }
+
 }
