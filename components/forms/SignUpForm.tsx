@@ -1,7 +1,6 @@
 'use client';
 
 import React, { useActionState, useRef, useEffect } from 'react';
-import Link from 'next/link';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useForm } from 'react-hook-form';
 import { z } from 'zod';
@@ -16,7 +15,6 @@ import {
   FormLabel,
 } from '@/components/ui/form';
 import { TermsConditions } from '../shared/TermsConditions';
-import { Checkbox } from '@/components/ui/checkbox';
 import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group';
 import { toast } from 'sonner';
 import { signUpSchema } from '@/validation';

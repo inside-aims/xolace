@@ -5,25 +5,15 @@ import Link from 'next/link';
 import { useSearchParams } from 'next/navigation';
 import dynamic from 'next/dynamic';
 import mascot from '../../public/assets/images/mas.webp';
-
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useForm } from 'react-hook-form';
 import { z } from 'zod';
 import { toast } from 'sonner';
 import { useRouter } from 'next/navigation';
-
 import { Button } from '@/components/ui/button';
 import {
   Form,
-  FormControl,
-  FormField,
-  FormItem,
-  FormLabel,
-  FormMessage,
 } from '@/components/ui/form';
-import { Input } from '@/components/ui/input';
-import { Checkbox } from '@/components/ui/checkbox';
-import ToggleEyeIcon from '../ui/ToggleEyeIcon';
 import { signinSchema } from '@/validation';
 import Loader from '../shared/loaders/Loader';
 import { getSupabaseBrowserClient } from '@/utils/supabase/client';
@@ -42,7 +32,6 @@ const SignInForm = () => {
   const router = useRouter();
   const searchParams = useSearchParams();
   const nexturl = searchParams.get('nexturl');
-  const [showPassword, setShowPassword] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const [showCookieAlert, setShowCookieAlert] = useState(true);
   const [showCookieModal, setShowCookieModal] = useState(false);
@@ -172,12 +161,7 @@ const SignInForm = () => {
                   label="Remember me"
                   shape="rounded"
                 />
-                <Link
-                  href={'/forgot-password'}
-                  className="text-lavender-400 text-sm hover:underline"
-                >
-                  Forgot password?
-                </Link>
+                <AuthRedirect linkText={"Forgot password?"} href={"/forgot-password"} />
               </div>
             </div>
 

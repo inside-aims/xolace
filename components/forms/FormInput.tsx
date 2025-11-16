@@ -76,7 +76,7 @@ export function FormInput<T extends FieldValues>(
                 </>
               )}
 
-              {/* ADDON SECTION (only for non-textarea fields) */}
+              {/* Addon section (only for non-textarea fields) */}
               {!isTextarea && (info || isPassword) && (
                 <InputGroupAddon align="inline-end">
                   {info && (
