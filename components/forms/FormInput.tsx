@@ -13,12 +13,12 @@ import {
   InputGroup,
   InputGroupInput,
   InputGroupAddon,
-  InputGroupButton,
+  InputGroupButton, InputGroupTextarea,
 } from '@/components/ui/input-group';
 
 import {Tooltip, TooltipTrigger, TooltipContent} from '@/components/ui/tooltip';
 import {InfoIcon} from 'lucide-react';
-import {Textarea} from '@/components/ui/textarea';
+import {useState} from "react";
 
 interface FormInputProps<T extends FieldValues> {
   control: Control<T>;
@@ -46,6 +46,8 @@ export function FormInput<T extends FieldValues>(
   const isPassword = type === 'password';
   const isTextarea = type === 'textarea';
 
+  const [open, setOpen] = useState(false);
+
   return (
     <FormField
       control={control}
@@ -57,7 +59,7 @@ export function FormInput<T extends FieldValues>(
           <FormControl>
             <InputGroup>
               {isTextarea ? (
-                <Textarea
+                <InputGroupTextarea
                   {...field}
                   disabled={disabled}
                   placeholder={placeholder}
@@ -80,8 +82,8 @@ export function FormInput<T extends FieldValues>(
               {!isTextarea && (info || isPassword) && (
                 <InputGroupAddon align="inline-end">
                   {info && (
-                    <Tooltip>
-                      <TooltipTrigger asChild>
+                    <Tooltip open={open} onOpenChange={setOpen}>
+                      <TooltipTrigger asChild onClick={() => setOpen(!open)}>
                         <InputGroupButton
                           variant="ghost"
                           size="icon-xs"
