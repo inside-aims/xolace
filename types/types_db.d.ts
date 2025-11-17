@@ -1057,11 +1057,14 @@ export type Database = {
           content: string
           created_at: string
           created_by: string | null
+          excerpt: string | null
           id: number
           is_approved: boolean
           is_sponsored: boolean
+          read_time: number
           slug: string
           title: string
+          topic: string
         }
         Insert: {
           author_avatar_url?: string | null
@@ -1069,11 +1072,14 @@ export type Database = {
           content: string
           created_at?: string
           created_by?: string | null
+          excerpt?: string | null
           id?: number
           is_approved?: boolean
           is_sponsored?: boolean
+          read_time?: number
           slug: string
           title: string
+          topic?: string
         }
         Update: {
           author_avatar_url?: string | null
@@ -1081,11 +1087,14 @@ export type Database = {
           content?: string
           created_at?: string
           created_by?: string | null
+          excerpt?: string | null
           id?: number
           is_approved?: boolean
           is_sponsored?: boolean
+          read_time?: number
           slug?: string
           title?: string
+          topic?: string
         }
         Relationships: [
           {
