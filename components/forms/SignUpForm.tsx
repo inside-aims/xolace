@@ -1,7 +1,6 @@
 'use client';
 
-import React, { useState, useActionState, useRef, useEffect } from 'react';
-import Link from 'next/link';
+import React, { useActionState, useRef, useEffect } from 'react';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useForm } from 'react-hook-form';
 import { z } from 'zod';
@@ -11,17 +10,12 @@ import { Button } from '@/components/ui/button';
 import {
   Form,
   FormControl,
-  FormDescription,
   FormField,
   FormItem,
   FormLabel,
 } from '@/components/ui/form';
 import { TermsConditions } from '../shared/TermsConditions';
-import { Input } from '@/components/ui/input';
-import { Checkbox } from '@/components/ui/checkbox';
-import ToggleEyeIcon from '../ui/ToggleEyeIcon';
 import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group';
-//import { useToast } from '@/components/ui/use-toast';
 import { toast } from 'sonner';
 import { signUpSchema } from '@/validation';
 import { signUpAction } from '@/app/actions';
@@ -31,6 +25,9 @@ import Loader from '../shared/loaders/Loader';
 import { FormMessage as SubmitFormMessage } from '../shared/form-message';
 import Image from "next/image";
 import mascot from "@/public/assets/images/mas.webp";
+import {FormInput} from "@/components/forms/FormInput";
+import {FormCheckbox} from "@/components/forms/FormCheckbox";
+import {AuthRedirect} from "@/components/forms/AuthRedirect";
 
 const male = 'male' as const;
 const female = 'female' as const;
@@ -41,7 +38,6 @@ const SignUpForm = () => {
   const searchParams = useSearchParams();
     const nexturl = searchParams.get('nexturl');
   const toastIdRef = useRef<string | number | null>(null);
-  const [showPassword, setShowPassword] = useState(false);
   const [state, formAction, pending] = useActionState<ActionState, FormData>(
     signUpAction,
     { success: false, message: '' },
@@ -135,101 +131,34 @@ const SignUpForm = () => {
         <Form {...form}>
           <form
             action={formAction}
-            className="flex flex-col gap-8">
+            className="flex flex-col gap-6">
             <div className={"w-full flex flex-col gap-4"}>
-              {/* username */}
-              <FormField
+              {/* username field */}
+              <FormInput
                 control={form.control}
                 name="username"
-                render={({field}) => (
-                  <FormItem>
-                    <FormLabel>Username</FormLabel>
-                    <FormControl>
-                      <Input
-                        {...field}
-                        type="text"
-                        className="w-full rounded-lg"
-                        required
-                        min={2}
-                        max={12}
-                        autoComplete="off"
-                      />
-                    </FormControl>
-                    <FormDescription className="text-xs text-neutral-400">
-                      Tip: Pick a unique name - Definitely not the name your mom gave you
-                    </FormDescription>
-
-                    {state?.errors?.username && (
-                      <div className="text-sm text-red-500">
-                        {state.errors.username[0]}
-                      </div>
-                    )}
-                  </FormItem>
-                )}
+                label="Username"
+                placeholder="Enter your username"
+                info="Pick a unique username"
               />
-
-              {/* Email input */}
-              <FormField
+              {/* Email field */}
+              <FormInput
                 control={form.control}
                 name="email"
-                render={({field}) => (
-                  <FormItem>
-                    <FormLabel>Email</FormLabel>
-                    <FormControl>
-                      <Input
-                        {...field}
-                        type="email"
-                        className="w-full rounded-lg"
-                        required
-                        autoComplete="off"
-                      />
-                    </FormControl>
-                    {state?.errors?.email && (
-                      <div className="text-sm text-red-500">
-                        {state.errors.email[0]}
-                      </div>
-                    )}
-                  </FormItem>
-                )}
+                type="email"
+                label="Email"
+                placeholder="Enter your email"
               />
-
-              {/* Password input */}
-              <FormField
+              {/*Password field*/}
+              <FormInput
                 control={form.control}
                 name="password"
-                render={({field}) => (
-                  <FormItem>
-                    <FormLabel>Password</FormLabel>
-                    <FormControl>
-                      <div className="relative">
-                        <Input
-                          {...field}
-                          className="w-full rounded-lg"
-                          type={showPassword ? 'text' : 'password'}
-                          required
-                          autoComplete="off"
-                        />
-                        <button
-                          type="button"
-                          onClick={() => setShowPassword(!showPassword)}
-                          className="absolute right-3 top-[10] md:top-[-5] text-neutral-400"
-                        >
-                          <ToggleEyeIcon showPassword={showPassword}/>
-                        </button>
-                      </div>
-                    </FormControl>
-                    <FormDescription className="text-sm text-neutral-400">
-                      Tip: Min 8 chars,at least 1 uppercase & 1 number.
-                    </FormDescription>
-
-                    {state?.errors?.password && (
-                      <div className="text-sm text-red-500">
-                        {state.errors.password[0]}
-                      </div>
-                    )}
-                  </FormItem>
-                )}
+                type="password"
+                label="Password"
+                placeholder="Enter your password"
+                info="Min 8 chars, 1 uppercase & 1 number"
               />
+
 
               {username.length >= 2 && password.length >= 8 && (
                 <FormField
@@ -278,29 +207,18 @@ const SignUpForm = () => {
                   )}
                 />
               )}
-
               {/* Terms & conditions */}
-              <FormField
+              <FormCheckbox
                 control={form.control}
                 name="terms"
-                render={({field}) => (
-                  <FormItem className="flex flex-row items-center space-x-2 space-y-0">
-                    <FormControl>
-                      <Checkbox
-                        checked={field.value}
-                        onCheckedChange={field.onChange}
-                      />
-                    </FormControl>
-                    <div className="space-x-4 space-y-1 leading-none">
-                      <FormLabel className="">
-                        I’ve read and agree to the <TermsConditions />
-                      </FormLabel>
-                    </div>
-                  </FormItem>
-                )}
+                label={<>
+                  I’ve read and agree to the <TermsConditions />
+                </>}
+                shape="square"
               />
-
-              {state?.message && !state?.success && <SubmitFormMessage message={errorMessage}/>}
+              {state?.message && !state?.success &&
+                <SubmitFormMessage message={errorMessage}/>
+              }
             </div>
 
             {/* submit button */}
@@ -321,17 +239,13 @@ const SignUpForm = () => {
                 )}
               </Button>
             </div>
-
             {/*Already existing user - login*/}
-            <p className="text-sm text-center md:text-left">
-              Already registered?{' '}
-              <Link
-                href={nexturl ? `/sign-in?nexturl=${nexturl}` : '/sign-in'}
-                className="font-semibold ml-1 text-lavender-500 hover:text-lavender-600 hover:underline"
-              >
-                Sign In
-              </Link>
-            </p>
+            <AuthRedirect
+              text="Already registered?"
+              linkText="Sign In"
+              href="/sign-in"
+              nexturl={nexturl}
+            />
           </form>
         </Form>
       </div>
