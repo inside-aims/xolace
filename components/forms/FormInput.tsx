@@ -82,17 +82,33 @@ export function FormInput<T extends FieldValues>(
               {!isTextarea && (info || isPassword) && (
                 <InputGroupAddon align="inline-end">
                   {info && (
-                    <Tooltip open={open} onOpenChange={setOpen}>
-                      <TooltipTrigger asChild onClick={() => setOpen(!open)}>
+                    <Tooltip
+                      open={open}
+                      onOpenChange={setOpen}
+                      delayDuration={0}
+                    >
+                      <TooltipTrigger
+                        asChild
+                        onClick={(e) => {
+                          e.preventDefault();
+                          setOpen(prev => !prev);
+                        }}
+                        onPointerDown={(e) => e.preventDefault()}
+                        onPointerEnter={(e) => e.preventDefault()}
+                        onPointerLeave={(e) => e.preventDefault()}
+                      >
                         <InputGroupButton
                           variant="ghost"
                           size="icon-xs"
                           aria-label="Info"
+                          type="button"
                         >
                           <InfoIcon size={18}/>
                         </InputGroupButton>
                       </TooltipTrigger>
-                      <TooltipContent>{info}</TooltipContent>
+                      <TooltipContent onPointerDownOutside={() => setOpen(false)}>
+                        {info}
+                      </TooltipContent>
                     </Tooltip>
                   )}
                 </InputGroupAddon>
