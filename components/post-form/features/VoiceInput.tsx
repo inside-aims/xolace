@@ -175,7 +175,7 @@ export function VoiceInput({
       disabled={disabled}
       size="icon"
       icon={<Mic className="size-4" />}
-      className="h-9 w-9 shrink-0"
+      className="size-9 shrink-0 bg-muted"
       variant="ghost"
       aria-label={
           state === "recording"
