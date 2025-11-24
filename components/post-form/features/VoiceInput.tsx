@@ -33,6 +33,12 @@ interface VoiceInputProps {
    * @default "/api/transcribe"
    */
   apiEndpoint?: string
+
+  /**
+   * Maximum recording duration in seconds
+   * @default 120 (2 minutes)
+   */
+  maxDuration?: number
 }
 
 interface TranscriptionResult {
@@ -46,16 +52,22 @@ export function VoiceInput({
     disabled,
     apiEndpoint = "/api/v1/transcribe",
     onError,
+    maxDuration = 120,
 }: VoiceInputProps) {
   const [state, setState] = useState<VoiceButtonState>("idle")
   const mediaRecorderRef = useRef<MediaRecorder | null>(null)
   const audioChunksRef = useRef<Blob[]>([])
   const streamRef = useRef<MediaStream | null>(null)
+  const recordingTimeoutRef = useRef<NodeJS.Timeout | null>(null)
 
   const cleanupStream = useCallback(() => {
     if (streamRef.current) {
       streamRef.current.getTracks().forEach((track) => track.stop())
       streamRef.current = null
+    }
+    if (recordingTimeoutRef.current) {
+      clearTimeout(recordingTimeoutRef.current)
+      recordingTimeoutRef.current = null
     }
   }, [])
 
@@ -134,13 +146,20 @@ export function VoiceInput({
 
       mediaRecorder.start()
       setState("recording")
+
+      // Set max duration timeout
+      if (maxDuration > 0) {
+        recordingTimeoutRef.current = setTimeout(() => {
+          stopRecording()
+        }, maxDuration * 1000)
+      }
     } catch (err) {
       const errorMessage = "Microphone permission denied"
       console.error("Microphone error:", err)
       onError?.(errorMessage)
       setState("error")
     }
-  }, [processAudio])
+  }, [processAudio, maxDuration, stopRecording])
 
   const handleToggleRecording = useCallback(() => {
     if (state === "recording") {
