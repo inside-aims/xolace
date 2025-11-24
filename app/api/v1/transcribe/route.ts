@@ -1,6 +1,8 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { AssemblyAI } from 'assemblyai';
 
+export const maxDuration = 20;
+
 const client = new AssemblyAI({
   apiKey: process.env.ASSEMBLY_API_KEY || '',
 });
