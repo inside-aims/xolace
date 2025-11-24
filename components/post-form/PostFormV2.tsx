@@ -257,6 +257,72 @@ export function PostForm({
   );
 
   /**
+   * Handle voice transcription
+   */
+  const handleVoiceTranscription = useCallback(
+    (text: string) => {
+      const textarea =
+        postType === 'single'
+          ? textareaRef.current
+          : carouselTextareaRef.current;
+
+      const textToInsert = text + ' ';
+
+      if (textarea) {
+        const start = textarea.selectionStart;
+        const end = textarea.selectionEnd;
+
+        if (postType === 'single') {
+          const currentContent = form.getValues('content');
+          const newContent =
+            currentContent.substring(0, start) +
+            textToInsert +
+            currentContent.substring(end);
+          form.setValue('content', newContent, { shouldValidate: true });
+          extractTags(newContent);
+        } else {
+          const currentSlideContent = slides[currentSlide];
+          const newContent =
+            currentSlideContent.substring(0, start) +
+            textToInsert +
+            currentSlideContent.substring(end);
+          handleSlideUpdate(currentSlide, newContent);
+        }
+
+        setTimeout(() => {
+          textarea.focus();
+          textarea.selectionStart = textarea.selectionEnd =
+            start + textToInsert.length;
+        }, 0);
+      } else {
+        // Fallback if no ref
+        if (postType === 'single') {
+          const currentContent = form.getValues('content');
+          const newContent = currentContent
+            ? currentContent + ' ' + textToInsert
+            : textToInsert;
+          form.setValue('content', newContent, { shouldValidate: true });
+          extractTags(newContent);
+        } else {
+          const currentSlideContent = slides[currentSlide];
+          const newContent = currentSlideContent
+            ? currentSlideContent + ' ' + textToInsert
+            : textToInsert;
+          handleSlideUpdate(currentSlide, newContent);
+        }
+      }
+    },
+    [
+      postType,
+      form,
+      slides,
+      currentSlide,
+      handleSlideUpdate,
+      extractTags,
+    ],
+  );
+
+  /**
    * Handle mood change
    */
   const handleMoodChange = useCallback(
@@ -431,6 +497,7 @@ export function PostForm({
                 showMoodTooltip={showMoodTooltip}
                 onMoodTooltipDismiss={markMoodAsSelected}
                 onEmojiSelect={handleEmojiSelect}
+                onVoiceTranscription={handleVoiceTranscription}
                 currentPlaceholderText={currentPlaceholder}
                 isAnimating={isAnimating}
                 isLoading={isLoading}
