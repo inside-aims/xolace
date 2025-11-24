@@ -9,6 +9,8 @@ import { ActionBar } from '../ui/ActionBar';
 import { EmojiPickerButton } from '../ui/EmojiPickerButton';
 import { MoodSelector, SelectedMoodDisplay } from '../ui/MoodSelector';
 import { MoodType } from '@/constants/moods';
+import { VoiceInput } from './VoiceInput';
+import { toast } from 'sonner';
 
 interface PostFormFieldsProps {
   // Form control
@@ -48,6 +50,9 @@ interface PostFormFieldsProps {
 
   // Emoji
   onEmojiSelect: (emoji: string) => void;
+
+  // Voice
+  onVoiceTranscription: (text: string) => void;
 
   // Placeholder
   currentPlaceholderText?: string;
@@ -109,6 +114,7 @@ export function PostFormFields({
   showMoodTooltip,
   onMoodTooltipDismiss,
   onEmojiSelect,
+  onVoiceTranscription,
   currentPlaceholderText,
   isAnimating,
   isLoading,
@@ -140,6 +146,13 @@ export function PostFormFields({
       setIsEmojiPickerOpen(false);
       onMoodTooltipDismiss();
     }
+  };
+/**
+ * 🆕 Handle transcription errors
+ */
+  const handleVoiceError = (error: string) => {
+    console.error('Voice transcription error:', error);
+    toast.error('Voice transcription failed: ' + error);
   };
 
   return (
@@ -208,6 +221,13 @@ export function PostFormFields({
           disabled={isLoading || isAnimating}
           open={isEmojiPickerOpen}
           onOpenChange={handleEmojiPickerChange}
+        />
+
+        {/* Voice Input */}
+        <VoiceInput
+          onTranscriptionComplete={onVoiceTranscription}
+          disabled={isLoading || isAnimating}
+          onError={handleVoiceError}
         />
 
         {/* Mood Selector */}
