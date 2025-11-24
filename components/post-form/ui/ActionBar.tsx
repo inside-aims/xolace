@@ -47,7 +47,7 @@ export function ActionBar({
       className={`border-border flex items-center justify-between border-t pt-4 ${className}`}
     >
       {/* Left side - Tools */}
-      <div className="flex items-center gap-3">{children}</div>
+      <div className="flex items-center gap-2 md:gap-3">{children}</div>
 
       {/* Right side - Submit Button */}
       <ShinyButton

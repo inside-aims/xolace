@@ -10,6 +10,7 @@ import { EmojiPickerButton } from '../ui/EmojiPickerButton';
 import { MoodSelector, SelectedMoodDisplay } from '../ui/MoodSelector';
 import { MoodType } from '@/constants/moods';
 import { VoiceInput } from './VoiceInput';
+import { InfoPopover } from '../ui/InfoPopover';
 import { toast } from 'sonner';
 
 interface PostFormFieldsProps {
@@ -215,6 +216,9 @@ export function PostFormFields({
 
       {/* Action Bar with Tools */}
       <ActionBar isLoading={isLoading} isDisabled={isDisabled || isAnimating}>
+        {/* Info Popover */}
+        <InfoPopover />
+
         {/* Emoji Picker */}
         <EmojiPickerButton
           onEmojiSelect={onEmojiSelect}
