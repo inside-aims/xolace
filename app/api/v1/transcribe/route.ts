@@ -12,7 +12,6 @@ export async function POST(req: NextRequest) {
     const formData = await req.formData();
     const file = formData.get('audio') as File;
 
-    console.log("file : ",file)
 
     if (!file) {
       return NextResponse.json(
@@ -54,7 +53,7 @@ export async function POST(req: NextRequest) {
 
     const transcriptionText = transcript.text
     await client.transcripts.delete(transcript.id);
-    
+
     const endTime = Date.now()
     const transcriptionTime = endTime - startTime
     console.log("Transcription time : ",transcriptionTime)
