@@ -78,6 +78,25 @@ interface PostFormFieldsProps {
   maxChars?: number;
 }
 
+interface PostFormActionProps {
+  selectedMood: MoodType;
+  onMoodChange: (mood: MoodType) => void;
+  isTextareaFocused: boolean;
+  showMoodTooltip: boolean;
+  onMoodTooltipDismiss: () => void;
+  onEmojiSelect: (emoji: string) => void;
+  onVoiceTranscription: (text: string) => void;
+  showMoodPicker: boolean;
+  isEmojiPickerOpen: boolean;
+  isLoading: boolean;
+  isDisabled: boolean;
+  isAnimating:boolean;
+  onMoodPickerChange: (value: boolean) => void;
+  onEmojiPickerChange: (value: boolean) => void;
+  onVoiceError: (reason: string) => void;
+
+}
+
 /**
  * PostFormFields Component
  *
@@ -188,6 +207,25 @@ export function PostFormFields({
           maxChars={maxChars}
           isAnimating={isAnimating}
           disabled={isLoading || isAnimating}
+          actionComponents={
+          <PostFormActions
+            selectedMood = {selectedMood}
+            onMoodChange = {onMoodChange}
+            isTextareaFocused = {isTextareaFocused}
+            showMoodTooltip = {showMoodTooltip}
+            onEmojiSelect = {onEmojiSelect}
+            onVoiceTranscription = {onVoiceTranscription}
+            isDisabled = {isDisabled}
+            showMoodPicker = {showMoodPicker}
+            isLoading = {isLoading}
+            isAnimating = {isAnimating}
+            isEmojiPickerOpen = {isEmojiPickerOpen}
+            onVoiceError = {handleVoiceError}
+            onMoodPickerChange = {handleMoodPickerChange}
+            onEmojiPickerChange = {handleEmojiPickerChange}
+            onMoodTooltipDismiss = {onMoodTooltipDismiss}
+          />
+          }
         />
       ) : (
         <CarouselEditor
@@ -208,6 +246,25 @@ export function PostFormFields({
           textareaRef={carouselTextareaRef}
           canvasRef={canvasRef}
           isAnimating={isAnimating}
+          actionComponents={
+            <PostFormActions
+              selectedMood = {selectedMood}
+              onMoodChange = {onMoodChange}
+              isTextareaFocused = {isTextareaFocused}
+              showMoodTooltip = {showMoodTooltip}
+              onEmojiSelect = {onEmojiSelect}
+              onVoiceTranscription = {onVoiceTranscription}
+              isDisabled = {isDisabled}
+              showMoodPicker = {showMoodPicker}
+              isLoading = {isLoading}
+              isAnimating = {isAnimating}
+              isEmojiPickerOpen = {isEmojiPickerOpen}
+              onVoiceError = {handleVoiceError}
+              onMoodPickerChange = {handleMoodPickerChange}
+              onEmojiPickerChange = {handleEmojiPickerChange}
+              onMoodTooltipDismiss = {onMoodTooltipDismiss}
+            />
+          }
         />
       )}
 
@@ -215,40 +272,64 @@ export function PostFormFields({
       {tags.length > 0 && <TagsList tags={tags} maxVisible={3} />}
 
       {/* Action Bar with Tools */}
-      <ActionBar isLoading={isLoading} isDisabled={isDisabled || isAnimating}>
-        {/* Info Popover */}
-        <InfoPopover />
 
-        {/* Emoji Picker */}
-        <EmojiPickerButton
-          onEmojiSelect={onEmojiSelect}
-          disabled={isLoading || isAnimating}
-          open={isEmojiPickerOpen}
-          onOpenChange={handleEmojiPickerChange}
-        />
-
-        {/* Voice Input */}
-        <VoiceInput
-          onTranscriptionComplete={onVoiceTranscription}
-          disabled={isLoading || isAnimating}
-          onError={handleVoiceError}
-        />
-
-        {/* Mood Selector */}
-        <MoodSelector
-          selectedMood={selectedMood}
-          onMoodChange={onMoodChange}
-          isTextareaFocused={isTextareaFocused}
-          showTooltip={showMoodTooltip}
-          onTooltipDismiss={onMoodTooltipDismiss}
-          disabled={isLoading || isAnimating}
-          open={showMoodPicker}
-          onOpenChange={handleMoodPickerChange}
-        />
-
-        {/* Selected Mood Display */}
-        {selectedMood && <SelectedMoodDisplay mood={selectedMood} />}
-      </ActionBar>
     </div>
+  );
+}
+
+const PostFormActions = (
+  {
+    selectedMood,
+    onMoodChange,
+    isTextareaFocused,
+    showMoodTooltip,
+    onEmojiSelect,
+    onVoiceTranscription,
+    isDisabled,
+    showMoodPicker,
+    isLoading,
+    isAnimating,
+    isEmojiPickerOpen,
+    onVoiceError,
+    onMoodPickerChange,
+    onEmojiPickerChange,
+    onMoodTooltipDismiss
+  }: PostFormActionProps
+) => {
+  return(
+    <ActionBar isLoading={isLoading} isDisabled={isDisabled || isAnimating}>
+      {/* Info Popover */}
+      <InfoPopover />
+
+      {/* Emoji Picker */}
+      <EmojiPickerButton
+        onEmojiSelect={onEmojiSelect}
+        disabled={isLoading || isAnimating}
+        open={isEmojiPickerOpen}
+        onOpenChange={onEmojiPickerChange}
+      />
+
+      {/* Voice Input */}
+      <VoiceInput
+        onTranscriptionComplete={onVoiceTranscription}
+        disabled={isLoading || isAnimating}
+        onError={onVoiceError}
+      />
+
+      {/* Mood Selector */}
+      <MoodSelector
+        selectedMood={selectedMood}
+        onMoodChange={onMoodChange}
+        isTextareaFocused={isTextareaFocused}
+        showTooltip={showMoodTooltip}
+        onTooltipDismiss={onMoodTooltipDismiss}
+        disabled={isLoading || isAnimating}
+        open={showMoodPicker}
+        onOpenChange={onMoodPickerChange}
+      />
+
+      {/* Selected Mood Display */}
+      {selectedMood && <SelectedMoodDisplay mood={selectedMood} />}
+    </ActionBar>
   );
 }

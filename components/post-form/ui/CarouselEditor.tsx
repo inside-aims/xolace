@@ -2,6 +2,7 @@ import React, { RefObject } from 'react';
 import { ArrowLeft, ArrowRight, Plus, X } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Textarea } from '@/components/ui/textarea';
+import {InputGroup, InputGroupAddon, InputGroupButton} from "@/components/ui/input-group";
 
 interface CarouselEditorProps {
   slides: string[];
@@ -21,6 +22,7 @@ interface CarouselEditorProps {
   textareaRef: RefObject<HTMLTextAreaElement | null> | null;
   canvasRef: RefObject<HTMLCanvasElement | null> | null;
   isAnimating?: boolean;
+  actionComponents?: React.ReactNode;
 }
 
 /**
@@ -53,6 +55,7 @@ export function CarouselEditor({
   disabled = false,
   textareaRef,
   canvasRef,
+  actionComponents,
   isAnimating = false,
 }: CarouselEditorProps) {
   const currentContent = slides[currentSlide] || '';
@@ -118,38 +121,47 @@ export function CarouselEditor({
       </div>
 
       {/* Slide Content */}
-      <div className="relative">
-        <Textarea
-          ref={textareaRef}
-          value={currentContent}
-          onChange={(e) => onSlideChange(currentSlide, e.target.value)}
-          onFocus={onFocus}
-          onBlur={onBlur}
-          placeholder={`Slide ${currentSlide + 1} content... Tell part of your story here`}
-          className="border-border postTextArea min-h-[140px] resize-none rounded-xl border-2 border-dashed bg-transparent text-base leading-relaxed transition-all duration-200 focus:ring-0 focus-visible:ring-0"
-          maxLength={maxChars}
-          id="tags-guide"
-          disabled={disabled || isAnimating}
-          aria-label={`Slide ${currentSlide + 1} content`}
-        />
-        <div className="text-muted-foreground counter absolute right-3 bottom-3 text-xs">
+      <div className={"flex flex-col m-0 p-0"}>
+        <div className="relative">
+          <InputGroup className={"relative"}>
+            <Textarea
+              ref={textareaRef}
+              value={currentContent}
+              onChange={(e) => onSlideChange(currentSlide, e.target.value)}
+              onFocus={onFocus}
+              onBlur={onBlur}
+              placeholder={`Slide ${currentSlide + 1} content... Tell part of your story here`}
+              className="border-border postTextArea rounded-xl border-2 border-dashed bg-transparent text-base leading-relaxed transition-all duration-200 focus:ring-0 focus-visible:ring-0"
+              maxLength={maxChars}
+              id="tags-guide"
+              disabled={disabled || isAnimating}
+              aria-label={`Slide ${currentSlide + 1} content`}
+            />
+            {actionComponents && (
+              <InputGroupAddon className="absolute bottom-1 right-2 left-2 z-20">
+                {actionComponents}
+              </InputGroupAddon>
+            )}
+          </InputGroup>
+
+          {/* Canvas for animation */}
+          {canvasRef && (
+            <canvas
+              ref={canvasRef}
+              className={`pointer-events-none absolute inset-0 z-10 pt-8 ${
+                isAnimating ? 'opacity-100' : 'opacity-0'
+              }`}
+              aria-hidden="true"
+            />
+          )}
+        </div>
+        <div className="ml-auto text-muted-foreground counter text-xs">
           {charCount}/{maxChars}
         </div>
-
-        {/* Canvas for animation */}
-        {canvasRef && (
-          <canvas
-            ref={canvasRef}
-            className={`pointer-events-none absolute inset-0 z-10 pt-8 ${
-              isAnimating ? 'opacity-100' : 'opacity-0'
-            }`}
-            aria-hidden="true"
-          />
-        )}
       </div>
 
       {/* Slide Indicators */}
-      <div className="flex justify-center gap-2 pt-2">
+      <div className="flex justify-center gap-2 ">
         {slides.map((slide, index) => (
           <button
             key={index}

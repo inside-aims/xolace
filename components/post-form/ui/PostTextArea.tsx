@@ -7,7 +7,12 @@ import {
   FormItem,
   FormMessage,
 } from '@/components/ui/form';
-import { Textarea } from '@/components/ui/textarea';
+import {
+  InputGroup,
+  InputGroupAddon,
+  InputGroupTextarea
+} from "@/components/ui/input-group"
+import {Textarea} from "@/components/ui/textarea";
 
 interface PostTextAreaProps<T extends FieldValues> {
   control: Control<T>;
@@ -23,6 +28,7 @@ interface PostTextAreaProps<T extends FieldValues> {
   isAnimating?: boolean;
   disabled?: boolean;
   showCanvas?: boolean;
+  actionComponents?: React.ReactNode;
 }
 
 /**
@@ -51,6 +57,7 @@ export function PostTextArea<T extends FieldValues>({
   isAnimating = false,
   disabled = false,
   showCanvas = true,
+  actionComponents,
 }: PostTextAreaProps<T>) {
   return (
     <FormField
@@ -62,40 +69,37 @@ export function PostTextArea<T extends FieldValues>({
         return (
           <FormItem>
             <div className="postTextArea relative">
-              <FormControl>
-                <Textarea
-                  {...field}
-                  ref={textareaRef}
-                  onFocus={() => {
-                    onFocus?.();
-                  }}
-                  onBlur={() => {
-                    onBlur?.();
-                  }}
-                  onChange={(e: React.ChangeEvent<HTMLTextAreaElement>) => {
-                    field.onChange(e);
-                    onChange?.(e.target.value);
-                  }}
-                  className={`border-border min-h-[140px] resize-none rounded-xl border-2 border-dashed bg-transparent text-base leading-relaxed transition-all duration-200 focus:border-purple-400 focus:ring-0 focus-visible:ring-0 ${
-                    isAnimating && 'text-transparent dark:text-transparent'
-                  }`}
-                  maxLength={maxChars}
-                  id="tags-guide"
-                  disabled={disabled || isAnimating}
-                  aria-label="Post content"
-                  aria-describedby="char-counter"
-                />
+              <FormControl className={"w-full grid"}>
+                <InputGroup className={"relative"}>
+                  <Textarea
+                    {...field}
+                    ref={textareaRef}
+                    onFocus={() => {
+                      onFocus?.();
+                    }}
+                    onBlur={() => {
+                      onBlur?.();
+                    }}
+                    onChange={(e: React.ChangeEvent<HTMLTextAreaElement>) => {
+                      field.onChange(e);
+                      onChange?.(e.target.value);
+                    }}
+                    className={`border-border min-h-[140px] resize-none rounded-xl border-2 border-dashed bg-transparent text-base leading-relaxed transition-all duration-200 focus:border-purple-400  focus:ring-0 focus-visible:ring-0 ${
+                      isAnimating && 'text-transparent dark:text-transparent'
+                    }`}
+                    maxLength={maxChars}
+                    id="tags-guide"
+                    disabled={disabled || isAnimating}
+                    aria-label="Post content"
+                    aria-describedby="char-counter"
+                  />
+                  {actionComponents && (
+                    <InputGroupAddon className="absolute bottom-1 right-2 left-2 z-20">
+                      { actionComponents }
+                    </InputGroupAddon>
+                  )}
+                </InputGroup>
               </FormControl>
-
-              {/* Character Counter */}
-              <div
-                id="char-counter"
-                className="text-muted-foreground counter absolute right-3 bottom-3 text-xs"
-                aria-live="polite"
-              >
-                {charCount}/{maxChars}
-              </div>
-
               {/* Canvas for animation */}
               {showCanvas && (
                 <canvas
@@ -113,7 +117,7 @@ export function PostTextArea<T extends FieldValues>({
                   <AnimatePresence mode="wait">
                     {!field.value && (
                       <motion.p
-                        initial={{ y: 5, opacity: 0 }}
+                        initial={{ y: 2, opacity: 0 }}
                         key={`placeholder-${currentPlaceholder}`}
                         animate={{ y: 0, opacity: 1 }}
                         exit={{ y: -15, opacity: 0 }}
@@ -127,7 +131,18 @@ export function PostTextArea<T extends FieldValues>({
                 </div>
               )}
             </div>
-            <FormMessage />
+           <div className={"flex items-center justify-between"}>
+             <FormMessage />
+             {/* Character Counter */}
+             <div
+               id="char-counter"
+               className="ml-auto text-muted-foreground counter text-xs"
+               aria-live="polite"
+             >
+               {charCount}/{maxChars}
+             </div>
+
+           </div>
           </FormItem>
         );
       }}

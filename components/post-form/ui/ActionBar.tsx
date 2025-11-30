@@ -44,7 +44,7 @@ export function ActionBar({
 }: ActionBarProps) {
   return (
     <div
-      className={`border-border flex items-center justify-between border-t pt-4 ${className}`}
+      className={`w-full flex items-center justify-between pt-4 ${className}`}
     >
       {/* Left side - Tools */}
       <div className="flex items-center gap-2 md:gap-3">{children}</div>
