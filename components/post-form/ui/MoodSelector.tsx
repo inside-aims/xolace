@@ -66,18 +66,25 @@ export function MoodSelector({
             type="button"
             variant="ghost"
             size="sm"
-            className={`rounded-xl p-3 transition-all ${
-              isTextareaFocused || open
-                ? `${selectedMood.color} animate-[pulse_9s_ease-in-out_infinite] text-white shadow-lg`
-                : 'text-muted-foreground hover:text-foreground hover:bg-muted'
+            className={`p-0 m-0 transition-all ${
+              moodRef.current
+                ? ``
+                : isTextareaFocused || open
+                  ? `animate-[pulse_9s_ease-in-out_infinite] text-white shadow-lg`
+                  : 'text-muted-foreground hover:text-foreground hover:bg-muted'
             }`}
             onClick={onTooltipDismiss}
             disabled={disabled}
             aria-label={`Current mood: ${selectedMood.label}. Click to change mood.`}
           >
-            {selectedMood.icon}
+            {moodRef.current ? (
+              <SelectedMoodDisplay mood={selectedMood} />
+            ) : (
+              selectedMood.icon
+            )}
           </Button>
         </PopoverTrigger>
+
 
         {/* Animated Tooltip */}
         <AnimatePresence>
@@ -89,9 +96,9 @@ export function MoodSelector({
                 animate={{ opacity: 1, y: 0, scale: 1 }}
                 exit={{ opacity: 0, y: -10, scale: 0.95 }}
                 transition={{ duration: 0.3, ease: 'easeOut' }}
-                className="pointer-events-none absolute -top-14 left-1/2 z-50 -translate-x-1/2"
+                className="pointer-events-none absolute -top-10 left-1/2 z-20 -translate-x-1/2"
               >
-                <div className="relative rounded-lg bg-gradient-to-r from-purple-500 to-blue-500 px-4 py-2.5 text-sm font-semibold whitespace-nowrap text-white shadow-xl">
+                <div className="relative rounded-lg bg-gradient-to-r from-purple-500 to-blue-500 p-2 text-xs font-semibold whitespace-nowrap text-white shadow-xl">
                   <span className="relative z-10 flex items-center gap-1.5">
                     <motion.span
                       animate={{ rotate: [0, -10, 10, -10, 0] }}
@@ -128,7 +135,7 @@ export function MoodSelector({
                 animate={{ opacity: 1, y: 0 }}
                 exit={{ opacity: 0, y: 10 }}
                 transition={{ duration: 0.3, delay: 0.2 }}
-                className="pointer-events-none absolute top-14 left-1/2 z-40 -translate-x-1/2"
+                className="pointer-events-none absolute top-8 left-1/2 z-20 -translate-x-1/2"
               >
                 <motion.div
                   animate={{ y: [-2, 2, -2] }}

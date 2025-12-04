@@ -94,7 +94,7 @@ export function PostTextArea<T extends FieldValues>({
                     aria-describedby="char-counter"
                   />
                   {actionComponents && (
-                    <InputGroupAddon className="absolute bottom-1 right-2 left-2 z-20">
+                    <InputGroupAddon className="w-full flex absolute bottom-1 insect-x-0 pe-4 z-20">
                       { actionComponents }
                     </InputGroupAddon>
                   )}

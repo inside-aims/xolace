@@ -131,7 +131,7 @@ export function CarouselEditor({
               onFocus={onFocus}
               onBlur={onBlur}
               placeholder={`Slide ${currentSlide + 1} content... Tell part of your story here`}
-              className="border-border postTextArea rounded-xl border-2 border-dashed bg-transparent text-base leading-relaxed transition-all duration-200 focus:ring-0 focus-visible:ring-0"
+              className="border-border postTextArea min-h-[140px] rounded-xl border-2 border-dashed bg-transparent text-base leading-relaxed transition-all duration-200 focus:ring-0 focus-visible:ring-0"
               maxLength={maxChars}
               id="tags-guide"
               disabled={disabled || isAnimating}

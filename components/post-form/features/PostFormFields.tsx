@@ -12,6 +12,9 @@ import { MoodType } from '@/constants/moods';
 import { VoiceInput } from './VoiceInput';
 import { InfoPopover } from '../ui/InfoPopover';
 import { toast } from 'sonner';
+import {Popover, PopoverContent, PopoverTrigger} from "@/components/ui/popover";
+import {Button} from "@/components/ui/button";
+import {Info, Mic, Plus, SmileIcon, Zap} from "lucide-react";
 
 interface PostFormFieldsProps {
   // Form control
@@ -297,26 +300,29 @@ const PostFormActions = (
   }: PostFormActionProps
 ) => {
   return(
-    <ActionBar isLoading={isLoading} isDisabled={isDisabled || isAnimating}>
-      {/* Info Popover */}
-      <InfoPopover />
-
-      {/* Emoji Picker */}
-      <EmojiPickerButton
-        onEmojiSelect={onEmojiSelect}
-        disabled={isLoading || isAnimating}
-        open={isEmojiPickerOpen}
-        onOpenChange={onEmojiPickerChange}
-      />
-
-      {/* Voice Input */}
-      <VoiceInput
-        onTranscriptionComplete={onVoiceTranscription}
-        disabled={isLoading || isAnimating}
-        onError={onVoiceError}
-      />
-
-      {/* Mood Selector */}
+    <ActionBar
+      isLoading={isLoading}
+      isDisabled={isDisabled || isAnimating}
+      isAnimating={isAnimating}
+      onVoiceTranscription={onVoiceTranscription}
+      onVoiceError={onVoiceError}
+    >
+      <Popover>
+        <PopoverTrigger asChild>
+          <Button
+            variant="ghost"
+            size="icon"
+            className="p-2 shrink-0 bg-muted rounded-full text-muted-foreground hover:text-foreground"
+          >
+            <Plus size={20} />
+          </Button>
+        </PopoverTrigger>
+        <PopoverContent className="w-80 dark:bg-bg-dark bg-bg" align="start">
+          <div className={"w-full flex flex-col gap-2"}>
+            No content
+          </div>
+        </PopoverContent>
+      </Popover>
       <MoodSelector
         selectedMood={selectedMood}
         onMoodChange={onMoodChange}
@@ -327,9 +333,27 @@ const PostFormActions = (
         open={showMoodPicker}
         onOpenChange={onMoodPickerChange}
       />
+      {/*{selectedMood && <SelectedMoodDisplay mood={selectedMood} />}*/}
+      {/* Info Popover */}
+      {/*<InfoPopover />*/}
+
+      {/*/!* Emoji Picker *!/*/}
+      {/*<EmojiPickerButton*/}
+      {/*  onEmojiSelect={onEmojiSelect}*/}
+      {/*  disabled={isLoading || isAnimating}*/}
+      {/*  open={isEmojiPickerOpen}*/}
+      {/*  onOpenChange={onEmojiPickerChange}*/}
+      {/*/>*/}
+
+      {/*/!* Voice Input *!/*/}
+      {/*<VoiceInput*/}
+      {/*  onTranscriptionComplete={onVoiceTranscription}*/}
+      {/*  disabled={isLoading || isAnimating}*/}
+      {/*  onError={onVoiceError}*/}
+      {/*/>*/}
 
       {/* Selected Mood Display */}
-      {selectedMood && <SelectedMoodDisplay mood={selectedMood} />}
+
     </ActionBar>
   );
 }
