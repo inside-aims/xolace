@@ -19,8 +19,7 @@ console.log('user:', user);
   }
 
   
-  console.log('Creating AssemblyAI client...');
-  const client = new AssemblyAI({ apiKey: apiKey });
+  console.log('Processing lemur request...');
   const body = await request.json();
 
   const post = body?.post;
@@ -51,21 +50,74 @@ Example formats (for inspiration):
 Now analyze and respond empathetically to this post:
 `;
 
-console.log('Sending request to AssemblyAI...');
-console.log('Post: ', post);
-  const lemurResponse = await client.lemur.task({
-    prompt: finalPrompt,
-    input_text: post,
-    // TODO: For now we just give some context, but here we could add the actual meeting text.
-    final_model: 'anthropic/claude-sonnet-4-20250514',
-  });
 
-  console.log('lemurResponse: ', lemurResponse);
 
-  const response = {
-    prompt: post,
-    response: lemurResponse.response,
-  };
+console.log('Sending request to AssemblyAI LLM Gateway...');
+console.log('Post content:', post);
+console.log('api key : ', process.env.ASSEMBLY_API_KEY);
+const response = await fetch(
+    "https://llm-gateway.assemblyai.com/v1/chat/completions",
+    {
+      method: "POST",
+      headers: {
+        authorization: process.env.ASSEMBLY_API_KEY!,
+        "content-type": "application/json",
+      },
+      body: JSON.stringify({
+        model: "claude-sonnet-4-20250514",
+        messages: [
+          {
+            role: "user",
+            content: `Analyze this post for emotional sentiment:\n\n${post}\n\n${finalPrompt}`,
+          },
+        ],
+        max_tokens: 1000,
+      }),
+    }
+  );
+  const result = await response.json();
+  console.log('LLM Response:', result.choices[0].message.content);
 
-  return NextResponse.json(response);
+  return NextResponse.json({ response: result.choices[0].message.content, post: post });
 }
+
+
+
+/*
+migrating to this 
+import { AssemblyAI } from "assemblyai";
+const client = new AssemblyAI({
+  apiKey: "<YOUR_API_KEY>",
+});
+const run = async () => {
+  // Step 1: Transcribe an audio file
+  const audioFile = "https://assembly.ai/call.mp4";
+  const transcript = await client.transcripts.transcribe({ audio: audioFile });
+  // Step 2: Prepare for LLM Gateway
+  const prompt = "What was the emotional sentiment of the phone call?";
+  const response = await fetch(
+    "https://llm-gateway.assemblyai.com/v1/chat/completions",
+    {
+      method: "POST",
+      headers: {
+        authorization: "<YOUR_API_KEY>",
+        "content-type": "application/json",
+      },
+      body: JSON.stringify({
+        model: "claude-sonnet-4-20250514",
+        messages: [
+          {
+            role: "user",
+            content: `Analyze this phone call transcript for emotional sentiment:\n\n${transcript.text}\n\n${prompt}`,
+          },
+        ],
+        max_tokens: 1000,
+      }),
+    }
+  );
+  const result = await response.json();
+  console.log(result.choices[0].message.content);
+};
+run();
+
+*/
