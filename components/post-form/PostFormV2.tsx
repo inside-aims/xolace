@@ -373,7 +373,7 @@ export function PostForm({
             ? slides.filter(s => s.trim()).join('\n\n---SLIDE BREAK---\n\n')
             : content;
 
-        const { post_id, match } = await submitPost({
+        const { post_id } = await submitPost({
           content: data.content,
           is24HourPost: data.is24HourPost,
           type: data.type,
@@ -398,19 +398,20 @@ export function PostForm({
         updateStage('finalizing');
 
         // Create AI suggestion comment
-        if (match) {
-          createComment({
-            postId: post_id,
-            commentText: match,
-            postCreatedBy: user?.id ?? '',
-            campfireId: selectedCampfire?.campfireId,
-            authorName: 'Flux AI',
-            authorAvatarUrl:
-              'https://qdjrwasidlmgqxakdxkl.supabase.co/storage/v1/object/public/xolace.bucket/flux-ai.JPG',
-            pinnedStatus: 'author',
-            ai_suggestion: true,
-          });
-        }
+        // const match = false
+        // if (match) {
+        //   createComment({
+        //     postId: post_id,
+        //     commentText: match,
+        //     postCreatedBy: user?.id ?? '',
+        //     campfireId: selectedCampfire?.campfireId,
+        //     authorName: 'Flux AI',
+        //     authorAvatarUrl:
+        //       'https://qdjrwasidlmgqxakdxkl.supabase.co/storage/v1/object/public/xolace.bucket/flux-ai.JPG',
+        //     pinnedStatus: 'author',
+        //     ai_suggestion: true,
+        //   });
+        // }
 
         updateStage('complete');
 
