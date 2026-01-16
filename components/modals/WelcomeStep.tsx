@@ -45,7 +45,7 @@ export default function WelcomeStep({ onNext, onSkip, isAnon, onFinish, hasJoine
             At <span className="text-ocean-500 dark:text-ocean-300">Xolace</span>, we believe
             someone out there needs your story just as much as you need to
             tell it. Share your journey and help us grow something meaningful
-            together.
+            together. For quick access add Xolace to your home screen
           </p>
         </div>
         <div className="rounded-lg border  bg-gray-200 p-3 dark:border-purple-500 dark:bg-gray-800/50">
