@@ -99,8 +99,8 @@
   --color-honey-900: #785b0f;
   --color-honey-950: #453303;
 
-  --color-muted: hsl(var(--muted));
-  --color-muted-foreground: hsl(var(--muted-foreground));
+  --color-muted: var(--muted);
+  --color-muted-foreground: var(--muted-foreground);
 
   --color-label-dark: #000000;
   --color-label-light: #ffffff;
@@ -122,6 +122,96 @@
   --color-sidebar-accent: hsl(var(--sidebar-accent));
   --color-sidebar-accent-foreground: hsl(var(--sidebar-accent-foreground));
   --color-sidebar-border: hsl(var(--sidebar-border));
+
+  /* ============================================================
+     ADDED FROM FILE 2 — second color system (OKLCH / shadcn-style)
+     These tokens are namespaced separately below in :root/.dark
+     under their own variable names so they don't collide with the
+     HSL --background/--foreground pair already defined further
+     down in this same file. Anything copied in from the other
+     project that expects --primary, --card, --popover, --chart-*,
+     --shadow-*, --tracking-*, etc. will resolve correctly here.
+     ============================================================ */
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+
+  --color-primary: var(--primary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-primary-border: var(--primary-border);
+
+  --color-secondary: var(--secondary);
+  --color-secondary-v2: var(--secondary);
+  --color-secondary-foreground: var(--secondary-foreground);
+  --color-secondary-v2-foreground: var(--secondary-foreground);
+
+  --color-accent: var(--accent);
+  --color-accent-v2: var(--accent);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-accent-v2-foreground: var(--accent-foreground);
+
+  --color-destructive-v2: var(--destructive);
+  --color-destructive-v2-foreground: var(--destructive-foreground);
+
+  --color-card: var(--card);
+  --color-card-foreground: var(--card-foreground);
+  --color-popover: var(--popover);
+  --color-popover-foreground: var(--popover-foreground);
+
+  --color-border: var(--border);
+  --color-border-v2: var(--border);
+  --color-input: var(--input);
+  --color-input-v2: var(--input);
+  --color-ring: var(--ring);
+  --color-ring-v2: var(--ring);
+
+  --color-chart-1: var(--chart-1);
+  --color-chart-2: var(--chart-2);
+  --color-chart-3: var(--chart-3);
+  --color-chart-4: var(--chart-4);
+  --color-chart-5: var(--chart-5);
+
+  --color-sidebar-v2: var(--sidebar);
+  --color-sidebar-v2-foreground: var(--sidebar-foreground);
+  --color-sidebar-v2-primary: var(--sidebar-primary);
+  --color-sidebar-v2-primary-foreground: var(--sidebar-primary-foreground);
+  --color-sidebar-v2-accent: var(--sidebar-accent);
+  --color-sidebar-v2-accent-foreground: var(--sidebar-accent-foreground);
+  --color-sidebar-v2-border: var(--sidebar-border);
+  --color-sidebar-v2-ring: var(--sidebar-ring);
+
+  --radius-sm: calc(var(--radius) - 4px);
+  --radius-md: calc(var(--radius) - 2px);
+  --radius-lg: var(--radius);
+  --radius-xl: calc(var(--radius) + 4px);
+
+  --font-weight-light: 700;
+  --font-weight-normal: 700;
+  --font-weight-medium: 700;
+  --font-weight-semibold: 700;
+  --font-serif-v2: 'PT Serif', serif;
+
+  --tracking-tighter: calc(var(--tracking-normal) - 0.05em);
+  --tracking-tight: calc(var(--tracking-normal) - 0.025em);
+  --tracking-wide: calc(var(--tracking-normal) + 0.025em);
+  --tracking-wider: calc(var(--tracking-normal) + 0.05em);
+  --tracking-widest: calc(var(--tracking-normal) + 0.1em);
+  --tracking-normal: var(--tracking-normal);
+
+  --shadow-2xl: var(--shadow-2xl);
+  --shadow-xl: var(--shadow-xl);
+  --shadow-lg: var(--shadow-lg);
+  --shadow-md: var(--shadow-md);
+  --shadow: var(--shadow);
+  --shadow-sm: var(--shadow-sm);
+  --shadow-xs: var(--shadow-xs);
+  --shadow-2xs: var(--shadow-2xs);
+
+  --shadow-offset-y: var(--shadow-offset-y);
+  --shadow-offset-x: var(--shadow-offset-x);
+  --shadow-spread: var(--shadow-spread);
+  --shadow-blur: var(--shadow-blur);
+  --shadow-opacity: var(--shadow-opacity);
+  --color-shadow-color: var(--shadow-color);
 
   /*Screen sizes- extends default*/
   --breakpoint-xl: 80rem;
@@ -186,18 +276,18 @@
   @keyframes pulse-glow {
     0% {
       box-shadow:
-        0 5px 15px rgba(124, 58, 237, 0.1),
-        0 0 0 0 rgba(124, 58, 237, 0.1);
+              0 5px 15px rgba(124, 58, 237, 0.1),
+              0 0 0 0 rgba(124, 58, 237, 0.1);
     }
     50% {
       box-shadow:
-        0 5px 25px rgba(124, 58, 237, 0.2),
-        0 0 10px 5px rgba(124, 58, 237, 0.1);
+              0 5px 25px rgba(124, 58, 237, 0.2),
+              0 0 10px 5px rgba(124, 58, 237, 0.1);
     }
     100% {
       box-shadow:
-        0 5px 15px rgba(124, 58, 237, 0.1),
-        0 0 0 0 rgba(124, 58, 237, 0.1);
+              0 5px 15px rgba(124, 58, 237, 0.1),
+              0 0 0 0 rgba(124, 58, 237, 0.1);
     }
   }
   @keyframes float {
@@ -258,8 +348,8 @@
 @utility btn-depth {
   @apply rounded-btn border-depth-btn-border active:border-depth-btn-border-active w-full border px-6 py-2 text-center text-white;
   background-image: linear-gradient(
-    var(--color-ocean-500) 0%,
-    var(--color-ocean-600) 100%
+          var(--color-ocean-500) 0%,
+          var(--color-ocean-600) 100%
   );
   box-shadow: var(--inset-shadow-depth-btn), var(--shadow-depth-btn);
   transition: all 0.2s ease;
@@ -276,8 +366,8 @@
 @utility btn-depth-active {
   @apply border-depth-btn-border-active;
   background-image: linear-gradient(
-    var(--color-ocean-700) 0%,
-    var(--color-ocean-800) 100%
+          var(--color-ocean-700) 0%,
+          var(--color-ocean-800) 100%
   );
   transform: translateY(1px);
 }
@@ -288,9 +378,9 @@
 
 @utility btn-depth-hover {
   box-shadow:
-    var(--inset-shadow-depth-btn),
-    var(--shadow-depth-btn),
-    0 0 0 4px rgba(5, 54, 255, 0.1);
+          var(--inset-shadow-depth-btn),
+          var(--shadow-depth-btn),
+          0 0 0 4px rgba(5, 54, 255, 0.1);
 }
 
 @utility btn-flat-hover {
@@ -425,15 +515,6 @@
     src: url('../fonts/TiltNeon-Regular.ttf') format('truetype');
   }
 
-  /* .markdown {
-    @apply max-w-full prose dark:prose-p:text-light-700 dark:prose-ol:text-light-700 dark:prose-ul:text-light-500 dark:prose-strong:text-white dark:prose-headings:text-white prose-headings:text-dark-400 prose-h1:text-dark-300 prose-h2:text-dark-300 prose-p:text-dark-500 prose-ul:text-dark-500 prose-ol:text-dark-500;
-  }
-
-  .markdown-editor {
-    @apply prose max-w-full prose-p:m-0 dark:prose-headings:text-white prose-headings:text-dark-400 prose-p:text-dark-500 dark:prose-p:text-light-700 prose-ul:text-dark-500 dark:prose-ul:text-light-700 prose-ol:text-dark-500 dark:prose-ol:text-light-700 dark:prose-strong:text-white prose-blockquote:text-dark-500 dark:prose-blockquote:text-light-700;
-  } */
-
-  /* global.css or equivalent */
   .markdown {
     @apply prose max-w-full;
   }
@@ -462,6 +543,7 @@
 
 @layer base {
   :root {
+    /* Original File 1 HSL tokens — unchanged, still drive --color-muted etc above */
     --background: 0 0% 100%;
     --foreground: 0 0% 3.9%;
     --foreground-rgb: 0, 0, 0;
@@ -546,6 +628,137 @@
     --bg-size: 200%;
     --ocean-600: 228, 100%, 51%;
     --sidebar-width: 16rem;
+  }
+}
+
+/* ============================================================
+   ADDED FROM FILE 2 — OKLCH variable block (namespaced as -v2
+   where names would otherwise collide with the HSL block above).
+   This keeps both systems fully intact and independently usable.
+   ============================================================ */
+@layer base {
+  :root {
+    --radius: 0.5rem;
+    --background-v2: oklch(0.9816 0.0017 247.839);
+    --foreground-v2: oklch(0.1649 0.0352 281.8285);
+    --card: oklch(1 0 0);
+    --card-foreground: oklch(0.1649 0.0352 281.8285);
+    --popover: oklch(1 0 0);
+    --popover-foreground: oklch(0.1649 0.0352 281.8285);
+    --primary: oklch(0.6726 0.2904 341.4084);
+    --primary-border: oklch(56.481% 0.20217 337.995);
+    --primary-foreground: oklch(1 0 0);
+    --secondary: oklch(0.9595 0.02 286.0164);
+    --secondary-foreground: oklch(0.1649 0.0352 281.8285);
+    --muted: oklch(0.9595 0.02 286.0164);
+    --muted-foreground: oklch(0.1649 0.0352 281.8285);
+    --accent: oklch(0.8903 0.1739 171.269);
+    --accent-foreground: oklch(0.1649 0.0352 281.8285);
+    --destructive: oklch(0.6535 0.2348 34.037);
+    --destructive-foreground: oklch(1 0 0);
+    --border: oklch(0.9205 0.0086 225.0878);
+    --input: oklch(0.9205 0.0086 225.0878);
+    --ring: oklch(0.6726 0.2904 341.4084);
+    --chart-1: oklch(0.6726 0.2904 341.4084);
+    --chart-2: oklch(0.5488 0.2944 299.0954);
+    --chart-3: oklch(0.8442 0.1457 209.2851);
+    --chart-4: oklch(0.8903 0.1739 171.269);
+    --chart-5: oklch(0.9168 0.1915 101.407);
+    --sidebar: oklch(0.9595 0.02 286.0164);
+    --sidebar-foreground: oklch(0.1649 0.0352 281.8285);
+    --sidebar-primary: oklch(0.6726 0.2904 341.4084);
+    --sidebar-primary-foreground: oklch(1 0 0);
+    --sidebar-accent: oklch(0.8903 0.1739 171.269);
+    --sidebar-accent-foreground: oklch(0.1649 0.0352 281.8285);
+    --sidebar-border: oklch(0.9205 0.0086 225.0878);
+    --sidebar-ring: oklch(0.6726 0.2904 341.4084);
+    --destructive-foreground: oklch(1 0 0);
+    --font-sans-v2: 'Reddit Sans', ui-sans-serif, sans-serif, system-ui;
+    --font-serif-v2: 'Reddit Mono', ui-monospace, monospace;
+    --font-mono-v2: 'Reddit Mono', ui-monospace, monospace;
+    --shadow-color: hsl(325.78 58.18% 56.86% / 0.5);
+    --shadow-opacity: 1;
+    --shadow-blur: 0px;
+    --shadow-spread: 0px;
+    --shadow-offset-x: 3px;
+    --shadow-offset-y: 3px;
+    --letter-spacing: 0.025em;
+    --spacing-v2: 0.25rem;
+    --shadow-2xs: 3px 3px 0px 0px hsl(325.78 58.1800% 56.8600% / 0.5);
+    --shadow-xs: 3px 3px 0px 0px hsl(325.78 58.1800% 56.8600% / 0.5);
+    --shadow-sm:
+            3px 3px 0px 0px hsl(325.78 58.1800% 56.8600% / 1), 3px 1px 2px -1px
+            hsl(325.78 58.1800% 56.8600% / 1);
+    --shadow:
+            3px 3px 0px 0px hsl(325.78 58.1800% 56.8600% / 1), 3px 1px 2px -1px
+            hsl(325.78 58.1800% 56.8600% / 1);
+    --shadow-md:
+            3px 3px 0px 0px hsl(325.78 58.1800% 56.8600% / 1), 3px 2px 4px -1px
+            hsl(325.78 58.1800% 56.8600% / 1);
+    --shadow-lg:
+            3px 3px 0px 0px hsl(325.78 58.1800% 56.8600% / 1), 3px 4px 6px -1px
+            hsl(325.78 58.1800% 56.8600% / 1);
+    --shadow-xl:
+            3px 3px 0px 0px hsl(325.78 58.1800% 56.8600% / 1), 3px 8px 10px -1px
+            hsl(325.78 58.1800% 56.8600% / 1);
+    --shadow-2xl: 3px 3px 0px 0px hsl(325.78 58.1800% 56.8600% / 2.5);
+    --tracking-normal: 0.025em;
+  }
+
+  .dark {
+    --background-v2: oklch(0.1649 0.0352 281.8285);
+    --foreground-v2: oklch(0.9513 0.0074 260.7315);
+    --card: oklch(0.2542 0.0611 281.1423);
+    --card-foreground: oklch(0.9513 0.0074 260.7315);
+    --popover: oklch(0.2542 0.0611 281.1423);
+    --popover-foreground: oklch(0.9513 0.0074 260.7315);
+    --primary: oklch(0.6726 0.2904 341.4084);
+    --primary-border: oklch(51.527% 0.16092 337.309);
+    --primary-foreground: oklch(1 0 0);
+    --secondary: oklch(0.2542 0.0611 281.1423);
+    --secondary-foreground: oklch(0.9513 0.0074 260.7315);
+    --muted: oklch(0.2123 0.0522 280.9917);
+    --muted-foreground: oklch(0.6245 0.05 278.1046);
+    --accent: oklch(0.8903 0.1739 171.269);
+    --accent-foreground: oklch(0.1649 0.0352 281.8285);
+    --destructive: oklch(0.6535 0.2348 34.037);
+    --border: oklch(0.3279 0.0832 280.789);
+    --input: oklch(0.3279 0.0832 280.789);
+    --ring: oklch(0.6726 0.2904 341.4084);
+    --chart-1: oklch(0.6726 0.2904 341.4084);
+    --chart-2: oklch(0.5488 0.2944 299.0954);
+    --chart-3: oklch(0.8442 0.1457 209.2851);
+    --chart-4: oklch(0.8903 0.1739 171.269);
+    --chart-5: oklch(0.9168 0.1915 101.407);
+    --sidebar: oklch(0.1649 0.0352 281.8285);
+    --sidebar-foreground: oklch(0.9513 0.0074 260.7315);
+    --sidebar-primary: oklch(0.6726 0.2904 341.4084);
+    --sidebar-primary-foreground: oklch(1 0 0);
+    --sidebar-accent: oklch(0.8903 0.1739 171.269);
+    --sidebar-accent-foreground: oklch(0.1649 0.0352 281.8285);
+    --sidebar-border: oklch(0.3279 0.0832 280.789);
+    --sidebar-ring: oklch(0.6726 0.2904 341.4084);
+    --destructive-foreground: oklch(1 0 0);
+    --radius: 0.5rem;
+    --font-sans-v2: 'Reddit Sans', ui-sans-serif, sans-serif, system-ui;
+    --font-serif-v2: 'Reddit Mono', ui-monospace, monospace;
+    --font-mono-v2: 'Reddit Mono', ui-monospace, monospace;
+    --shadow-color: #324859;
+    --shadow-opacity: 1;
+    --shadow-blur: 0px;
+    --shadow-spread: 0px;
+    --shadow-offset-x: 3px;
+    --shadow-offset-y: 3px;
+    --letter-spacing: 0.025em;
+    --spacing-v2: 0.25rem;
+    --shadow-2xs: 3px 3px 0px 0px var(--border);
+    --shadow-xs: 3px 3px 0px 0px var(--border);
+    --shadow-sm: 3px 3px 0px 0px var(--border), 3px 1px 2px -1px var(--border);
+    --shadow: 3px 3px 0px 0px var(--border), 3px 1px 2px -1px var(--border);
+    --shadow-md: 3px 3px 0px 0px var(--border), 3px 2px 4px -1px var(--border);
+    --shadow-lg: 3px 3px 0px 0px var(--border), 3px 4px 6px -1px var(--border);
+    --shadow-xl: 3px 3px 0px 0px var(--border), 3px 8px 10px -1px var(--border);
+    --shadow-2xl: 3px 3px 0px 0px var(--border);
   }
 }
 
@@ -653,11 +866,11 @@ code {
   body {
     color: rgb(var(--foreground-rgb));
     background: linear-gradient(
-        to bottom,
-        transparent,
-        rgb(var(--background-end-rgb))
-      )
-      rgb(var(--background-start-rgb));
+            to bottom,
+            transparent,
+            rgb(var(--background-end-rgb))
+    )
+    rgb(var(--background-start-rgb));
   }
 }
 
@@ -732,50 +945,50 @@ code {
   }
 
   /* Alert base styling */
-.alert {
-  padding: 16px;
-  border-radius: 8px;
-  margin: 20px 0;
-  display: flex;
-  align-items: flex-start;
-  border-left: 4px solid;
-}
+  .alert {
+    padding: 16px;
+    border-radius: 8px;
+    margin: 20px 0;
+    display: flex;
+    align-items: flex-start;
+    border-left: 4px solid;
+  }
 
-.alert-icon {
-  font-size: 1.5rem;
-  margin-right: 12px;
-  line-height: 1;
-}
+  .alert-icon {
+    font-size: 1.5rem;
+    margin-right: 12px;
+    line-height: 1;
+  }
 
-.alert-content {
-  flex: 1;
-  font-size: 12px;
-}
+  .alert-content {
+    flex: 1;
+    font-size: 12px;
+  }
 
-/* Info variant */
-.alert-info {
-  background-color: #e0f2fe;
-  border-color: #0ea5e9;
-  color: #075985;
-}
+  /* Info variant */
+  .alert-info {
+    background-color: #e0f2fe;
+    border-color: #0ea5e9;
+    color: #075985;
+  }
 
-/* Warning variant */
-.alert-warning {
-  background-color: #fef3c7;
-  border-color: #f59e0b;
-  color: #92400e;
-}
+  /* Warning variant */
+  .alert-warning {
+    background-color: #fef3c7;
+    border-color: #f59e0b;
+    color: #92400e;
+  }
 
-/* Tip variant */
-.alert-tip {
-  background-color: #dcfce7;
-  border-color: #10b981;
-  color: #047857;
-}
+  /* Tip variant */
+  .alert-tip {
+    background-color: #dcfce7;
+    border-color: #10b981;
+    color: #047857;
+  }
 
-.alert-bold-text{
-  color: black;
-}
+  .alert-bold-text{
+    color: black;
+  }
 
   @keyframes slide {
     0% {
@@ -832,7 +1045,6 @@ code {
   .custom-phone-input {
     @apply items-center flex bg-slate-50 dark:bg-bg-dark;
   }
-
 }
 
 @layer base {
@@ -862,4 +1074,19 @@ code {
     background-color: transparent !important;
   }
 
+  .main {
+    @apply m-0;
+  }
+
+  .section-parent-header {
+    @apply flex flex-col gap-4 md:gap-8 mb-4 md:mb-8;
+  }
+
+  .section {
+    @apply w-full  px-4 md:px-8 py-12 sm:py-16;
+  }
+
+  .section-header {
+    @apply text-3xl md:text-5xl font-bold;
+  }
 }
