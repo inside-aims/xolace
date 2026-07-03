@@ -17,12 +17,12 @@ const promises = [
     id: "feed",
     title: ["No followers,", "no feed"],
     description:
-      "No audience. No performance. You show up for yourself — not for anyone watching.",
+      "No audience. No performance. You show up for yourself, not for anyone watching.",
   },
   {
     id: "ads",
     title: ["No ads,", "no data sold"],
-    description: "Your trust is the product — not your data.",
+    description: "Your trust is the product, not your data.",
   },
 ];
 

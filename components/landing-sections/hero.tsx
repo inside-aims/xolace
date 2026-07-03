@@ -21,11 +21,11 @@ export const HeroSection = () => {
 
           <h1 className="text-4xl md:text-6xl font-bold leading-tight">
             For the moments that{" "}
-            <span className="text-primary">don't have a name</span> yet
+            <span className="text-primary">don&apos;t have a name</span> yet
           </h1>
 
           <p className="max-w-screen-sm mx-auto text-xl text-muted-foreground">
-            A quiet place to say what's true, when you can't find the words. Not
+            A quiet place to say what&apos;s true, when you can&apos;t find the words. Not
             therapy. Not a chatbot. Not a social platform.
           </p>
 
@@ -34,10 +34,10 @@ export const HeroSection = () => {
           <p className="text-sm text-muted-foreground">
             Or{" "}
             <Link
-              href="/sign-up"
+              href="https://www.xolaceinc.com"
               className="underline underline-offset-4 hover:text-foreground transition-colors"
             >
-              continue to the web app
+              continue to the company website
             </Link>
           </p>
         </div>

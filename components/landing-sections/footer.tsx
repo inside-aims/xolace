@@ -27,7 +27,7 @@ const footerColumns = [
   },
   {
     title: "Legal",
-    links: ["About Us", "Terms & Conditions", "Privacy Policy"],
+    links: ["About Us", "terms", "privacy"],
   },
 ];
 
@@ -76,7 +76,7 @@ export const FooterSection = () => {
             <p className="text-sm text-foreground/60">
               Or{" "}
               <Link
-                href="/sign-up"
+                href="https://www.xolaceinc.com"
                 className="underline underline-offset-4 hover:text-foreground transition-colors"
               >
                 continue to the web app
@@ -108,7 +108,7 @@ export const FooterSection = () => {
               {col.links.map((link) => (
                 <Link
                   key={link}
-                  href="#"
+                  href={link.startsWith("http") ? link : `https://www.xolaceinc.com/${link.toLowerCase().replace(/\s+/g, "-")}`}
                   className="text-sm text-foreground/70 hover:text-foreground transition-colors mb-2"
                 >
                   {link}

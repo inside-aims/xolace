@@ -14,7 +14,7 @@ export const FeaturesSection = () => {
         <blockquote className="text-3xl md:text-5xl font-light italic leading-relaxed text-foreground/80">
           &ldquo;We built this because we&apos;ve sat in those same quiet, heavy
           rooms. Where something is wrong but nothing has a name. Where you need
-          more than a scroll — but less than a diagnosis.&rdquo;
+          more than a scroll, but less than a diagnosis.&rdquo;
         </blockquote>
 
         <p className="text-base text-muted-foreground mt-10 font-medium">
