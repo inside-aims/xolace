@@ -1,30 +1,27 @@
-// import Image from 'next/image';
-// import { Button } from '@/components/ui/button';
-// import { RocketIcon } from '@radix-ui/react-icons';
-// import Link from 'next/link';
-import React from 'react';
-// import XolaceBetaBadge from '@/components/shared/XolaceBetaBadge';
-// import xolaceImage from "../public/assets/images/xolace-1.png"
-import WhyXolaceSection from "@/components/landing-page/why-xolace";
-import HowItWorksSection from "@/components/landing-page/how-it-works";
-import ReadyToSpeakSection from "@/components/landing-page/ready-to-speak";
-import HeroSection from "@/components/landing-page/hero-section";
-import {NavBar} from "@/components/landing-page/nav-bar";
+import { BenefitsSection } from "@/components/landing-sections/benefits";
+import { EmotionalSlapSection } from "@/components/landing-sections/emotional-slap";
+import { FAQSection } from "@/components/landing-sections/faq";
+import { FeaturesSection } from "@/components/landing-sections/features";
+import { FooterSection } from "@/components/landing-sections/footer";
+import { HeroSection } from "@/components/landing-sections/hero";
+import { HowItWorksSection } from "@/components/landing-sections/how-it-works";
+import { Navbar } from "@/components/landing-sections/navbar";
+import { TestimonialSection } from "@/components/landing-sections/testimonial";
 
-export default async function Index() {
+export default function Home() {
   return (
-    <>
-      <main className={"flex items-start justify-start w-full overflow-x-hidden min-h-screen mx-0"}>
-        <div className="flex items-start justify-start w-full flex-col ">
-          <NavBar/>
-          <HeroSection/>
-          <WhyXolaceSection/>
-          <HowItWorksSection/>
-          <ReadyToSpeakSection/>
+      <main className={"main bg-background text-foreground"}>
+        <Navbar />
+        <div className="flex flex-col items-center overflow-x-hidden">
+          <HeroSection />
+          <EmotionalSlapSection />
+          <HowItWorksSection />
+          <FeaturesSection />
+          <BenefitsSection />
+          <TestimonialSection />
+          <FAQSection />
+          <FooterSection />
         </div>
       </main>
-    </>
   );
 }
-
-
